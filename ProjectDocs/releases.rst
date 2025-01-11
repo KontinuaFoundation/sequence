@@ -28,7 +28,9 @@ PDFs
 -----
 
 Currently, the PDFs of the workbooks will be released:
+
 * in US English
+
 * in Letter-size
 
 (These options will expand over time.)
