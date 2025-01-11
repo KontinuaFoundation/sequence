@@ -1,9 +1,8 @@
 The Build Directory
 ===================
 
-This folder contains the scripts and supporting resources for those
-scripts. After you run the scripts, the products will appear in this
-directory too.
+This folder contains the scripts and supporting resources for those scripts. After you run the scripts, the products will appear in this directory too.
+
 
 Before You Build
 ================
@@ -101,14 +100,6 @@ Scripts
 -  | ``build_chapterlist.py``: creates ``Resources/chaplist.txt`` which
      contains the titles of every chapter for every book.
    | Example: ``python3 build_chapterlist.py``
-
--  | ``resource_wizard.py``: Each chapter has a
-     ``digital_resources.json`` file. Formatting it is sort of a pain,
-     so ``resource_wizard.py`` asks you a series of questions and
-     formats your answers correctly. It is invoked in a directory with a
-     ``student.tex`` file. If there is already a
-     ``digital_resources.json`` file that is parseable, it will use it.
-   | Example: ``python3 ../../../Build/resource_wizard.py``
 
 Status
 ------
