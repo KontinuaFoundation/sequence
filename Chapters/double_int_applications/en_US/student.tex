@@ -660,6 +660,201 @@ $$R = \sqrt{\overline{\overline{x}}^2 + \overline{\overline{y}}^2} = \sqrt{
 \end{Answer}
 
 \section{Surface Area}
+We have already seen how to find the areas of surfaces of revolution using 
+single-variable calculus. Now, we will use multivariable calculus to find the 
+surface area of a generic, two-variable function, $z = f(x, y)$. Suppose a 
+surface, $S$, is defined by the continuous, partially differentiable function, 
+$f(x, y)$, over a rectangular region, $R$ (see figure \ref{fig:surface}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[x = {(-0.86cm, -0.5cm)}, y = {(0.86cm, -0.5cm)}, 
+    z = {(0cm, 1cm)}]
+        \draw[-latex] (0,0,0) -- (5,0,0) node[left] {$x$};
+        \draw[-latex] (0,0,0) -- (0,5,0) node[right] {$y$};
+        \draw[-latex] (0,0,0) -- (0,0,3) node[above] {$z$};
+        \filldraw[draw = red, fill = red!30] (1, 1.5, 0) -- (3.5, 1.5, 0) -- 
+        (3.5, 4, 0) -- (1, 4, 0) -- cycle;
+        \node[] at (1.75, 3, 0) {$R$};
+        \filldraw[draw = blue, fill = blue!30, opacity = 0.4] (3.5, 1.5, 2) 
+        to[out = 85, in = 180, looseness = 0.9] (1, 1.5, 3) 
+        to[out = 0, in = 100] (1, 4, 2.5) 
+        to[out = 135, in = 45, looseness = 1] (3.5, 4, 3) 
+        to[out = 145, in = 30] (3.5, 1.5, 2);
+        \draw[dashed] (3.5, 1.5, 0) -- (3.5, 1.5, 2);
+        \draw[dashed] (3.5, 4, 0) -- (3.5, 4, 3);
+        \draw[dashed] (1, 4, 0) -- (1, 4, 2.5);
+        \draw[-latex] (1, 2.5, 4) -- (1, 2.5, 3);
+        \node[] at (1, 2.5, 4.1) {$z = f(x,y)$};
+        \node[] at (3.2, 4, 4) {$S$};
+    \end{tikzpicture}
+    \caption{The graph of $f$ over the region $R$ creates a surface, $S$}
+    \label{fig:surface}
+\end{figure}
+
+We begin by dividing the region, \textit{R}, into sub-rectangles, $R_{ij}$, 
+each with area $\Delta A = \Delta x \Delta y$. Then projecting upwards from 
+the point closest to the origin, $(x_i, y_j, 0)$, we find a point on the 
+surface, $P_{ij} = (x_i, y_j, f(x_i, y_j))$. Then there is a small plane, 
+$\Delta T_{ij}$, tangent to the surface at $P_{ij}$, and the area of the 
+tangent plane is approximately the same as the area of the surface over the 
+sub-rectangle $R_{ij}$ (see figure \ref{fig:subsurface}).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[x = {(-0.86cm, -0.5cm)}, y = {(0.86cm, -0.5cm)}, 
+    z = {(0cm, 1cm)}]
+        \draw[-latex] (0,0,0) -- (5,0,0) node[left] {$x$};
+        \draw[-latex] (0,0,0) -- (0,5,0) node[right] {$y$};
+        \draw[-latex] (0,0,0) -- (0,0,3) node[above] {$z$};
+        \draw[red, thick] (1, 1.5, 0) -- (3.5, 1.5, 0) -- (3.5, 4, 0) -- 
+        (1, 4, 0) -- cycle;
+        \node[] at (1.6, 3.2, 0) {$R_{ij}$};
+        \draw[thick, orange, fill = orange!30, opacity = 0.4] (2, 2, 0) -- 
+        (2, 2.5, 0) -- (2.5, 2.5, 0) -- (2.5, 2, 0) -- cycle;
+        \draw[-latex] (1.75, 3, 0) -- (2.25, 2.35, 0);
+        \draw[dashed] (2, 2, 0) -- (2, 0, 0);
+        \draw[dashed] (2.5, 2, 0) -- (2.5, 0, 0);
+        \node[] at (2.25, -0.5, 0) {$\Delta x$};
+        \draw[dashed] (2, 2, 0) -- (0, 2, 0);
+        \draw[dashed] (2, 2.5, 0) -- (0, 2.5, 0);
+        \node[] at (-0.5, 2.25, 0) {$\Delta y$};
+        \filldraw[draw = blue, fill = blue!30, opacity = 0.4] (3.5, 1.5, 2) 
+        to[out = 85, in = 180, looseness = 0.9] (1, 1.5, 3) 
+        to[out = 0, in = 100] (1, 4, 2.5) 
+        to[out = 135, in = 45, looseness = 1] (3.5, 4, 3) 
+        to[out = 145, in = 30] (3.5, 1.5, 2);
+        \node[] at (3.2, 4, 4) {$S$};
+        \filldraw[draw = blue, fill = blue, opacity = 0.4] (2.5, 2, 3)
+        to[out = 85, in = 180, looseness = 0.9] (2, 2, 3)
+        to[out = 0, in = 100] (2, 2.5, 3)
+        to[out = 135, in = 45, looseness = 1] (2.5, 2.5, 3)
+        to[out = 145, in = 30] (2.5, 2, 3);
+        \draw[thick, red, fill = red!30] (2, 2, 3.15) -- (2, 2.5, 3.15) -- 
+        (2.5, 2.5, 3.15) -- (2.5, 2, 3.15) -- cycle;
+        \draw[black, fill = black] (2, 2, 0) circle (0.05cm);
+        \draw[latex-] (1.95, 1.95, 0) -- (1.7, 0.65, 0) node[font = 
+        \scriptsize, above] {$(x_i, y_j)$};
+        \draw[dashed] (2.5, 2, 0) -- (2.5, 2, 3);
+        \draw[dashed] (2.5, 2.5, 0) -- (2.5, 2.5, 3);
+        \draw[dashed] (2, 2.5, 0) -- (2, 2.5, 3);
+        \draw[black, fill = black] (2, 2, 3.15) circle (0.05cm);
+        \draw[latex-] (1.95, 1.95, 3.15) -- (1.75, 0.5, 3.2) node[font = 
+        \scriptsize, above] {$P_{ij}$};
+        \draw[latex-] (2.2, 2.25, 3.15) -- (0.5, 1.75, 3.2) node[font = 
+        \scriptsize, above] {$\Delta T_{ij}$};
+        \draw[latex-] (2.5, 2.4, 3.1) -- (2.5, 0, 3.2) node[font = 
+        \scriptsize, above] {$S_{ij}$};
+    \end{tikzpicture}
+    \caption{The tangent surface, $\Delta T_{ij}$, is approximately the same 
+    surface area as the surface, $S_{ij}$, over the sub-rectangle, $R_{ij}$}
+    \label{fig:subsurface}
+\end{figure}
+
+It follows that the total surface area of the surface, $S$, is the sum of all 
+these little tangent surfaces as the number of tangent surfaces approaches 
+infinity:
+$$A(S) = \lim_{m, n \to \infty} \sum_{i = 1}^m \sum_{j = 1}^n \Delta T_{ij}$$
+
+How can we find an expression for $\Delta T_{ij}$? We will define two vectors, 
+\textbf{a} and \textbf{b}, that are equal to the sides of $\Delta T_{ij}$ (see 
+figure \ref{fig:vectors}). Geometrically, the area of $\Delta T_{ij}$ is the 
+absolute value of the cross product of the two vectors. Mathematically, 
+$$\Delta T_{ij} = |\textbf{a} \times \textbf{b}|$$
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[x = {(-0.86cm, -0.5cm)}, y = {(0.86cm, -0.5cm)}, 
+    z = {(0cm, 1cm)}]
+        \draw[-latex] (0,0,0) -- (4,0,0) node[left] {$x$};
+        \draw[-latex] (0,0,0) -- (0,4,0) node[right] {$y$};
+        \draw[-latex] (0,0,0) -- (0,0,3) node[above] {$z$};
+        \draw[orange, thick, fill = orange!30, opacity = 0.4](1, 1, 0) -- 
+        (1, 3, 0) -- (3, 3, 0) -- (3, 1, 0) -- cycle;
+        \draw[red, thick, fill = red!30, opacity = 0.4] (1, 1, 2.5) -- 
+        (1, 3, 2.7) -- (3, 3, 2.4) -- (3, 1, 2.5) -- cycle;
+        \draw[dashed] (1, 1, 0) -- (1, 1, 2.5);
+        \draw[dashed] (1, 3, 0) -- (1, 3, 2.7);
+        \draw[dashed] (3, 3, 0) -- (3, 3, 2.4);
+        \draw[dashed] (3, 1, 0) -- (3, 1, 2.5);
+        \draw[red, thick, -latex] (1, 1, 2.5) -- (3, 1, 2.5) node[black, 
+        pos = 0.5, above] {\textbf{a}};
+        \draw[red, thick, -latex] (1, 1, 2.5) -- (1, 3, 2.7) node[black, 
+        pos = 0.5, above] {\textbf{b}};
+    \end{tikzpicture}
+    \caption{The vectors \textbf{a} and \textbf{b} define the sides of the 
+    tangent surface $\Delta T_{ij}$}
+    \label{fig:vectors}
+\end{figure}
+
+Recall the three unit vectors: \textbf{i} in the $x$-direction, \textbf{j} in 
+the $y$-direction, and \textbf{k} in the $z$-direction. Then we can describe 
+\textbf{a} and \textbf{b} in terms of \textbf{i}, \textbf{j}, and \textbf{k}:
+$$\textbf{a} = \Delta x \textbf{i} + f_x(x_i, y_j) \Delta x \textbf{k}$$
+$$\textbf{b} = \Delta y \textbf{j} + f_y(x_i, y_j) \Delta y \textbf{k}$$
+
+(Recall that $f_x$ is the partial derivative of $f(x, y)$ with respect to $x$, 
+and $f_y$ is the partial derivative with respect to $y$.) This is true because 
+the partial derivative of $f_x$ gives the slope of a tangent line parallel to 
+the $x$-axis, and $f_y$ parallel to the $y$-axis. Then we find an expression 
+for $| \textbf{a} \times \textbf{b} |$ (we've omitted some details here):
+$$\textbf{a} \times \textbf{b} = -f_x(x_i, y_j) \Delta x \Delta y \textbf{i} - 
+f_y(x_i, y_j) \Delta x \Delta y \textbf{j} + \Delta x \Delta y \textbf{k}$$
+
+Substituting $\Delta A = \Delta x \Delta y$:
+$$\textbf{a} \times \textbf{b} = \left[ -f_x(x_i, y_j) \textbf{i} - f_y(x_i, 
+y_j) \textbf{j} + \textbf{k} \right] \Delta A$$
+
+To find the area of $\Delta T_{ij}$, we need to find the length of $\textbf{a} 
+\times \textbf{b}$. Recall that we can use the Pythagorean theorem to find the 
+length of a vector. For a 3-dimensional vector $\textbf{v} = r \textbf{i} + s 
+\textbf{j} + t \textbf{k}$, it's length is given by:
+$$|\textbf{v}| = \sqrt{r^2 + s^2 + t^2}$$
+
+Applying this, we find the length of $\textbf{a} \times \textbf{b}$ (which is 
+the same as the area of $\Delta T_{ij}$ is:
+$$\Delta T_{ij} = |\left[ -f_x(x_i, y_j) \textbf{i} - f_y(x_i, y_j) \textbf{j} 
++ \textbf{k} \right] \Delta A|$$
+$$= \sqrt{\left(-f_x(x_i, y_j) \Delta A \right)^2 + \left( - f_y(x_i, y_j) 
+\Delta A \right)^2 + \left( \Delta A \right)^2}$$
+$$= \sqrt{\left[ f_x(x, y)\right]^2 + \left[f_y(x, y) \right]^2 + 1} \Delta A$$
+
+And then the area of the entire surface over region \textit{R} is:
+$$A(S) = \lim_{m, n \to \infty} \sum_{i = 1}^m \sum_{j = 1}^n \sqrt{\left[ f_x(
+x, y)\right]^2 + \left[f_y(x, y) \right]^2 + 1} \Delta A$$
+
+This is the definition of a double integral, and therefore the surface area of 
+a two-variable function, $f(x, y)$ over a region, $R$, where $f_x$ and $f_y$ 
+are continuous, is:
+$$A(S) = \iint_{\textit{R}} \sqrt{\left[ f_x(x, y)\right]^2 + \left[f_y(x, y) 
+\right]^2 + 1}\,dA$$
+
+Using the notation of partial derivatives, this is also expressed as:
+$$A(S) = \iint_{\textit{R}} \sqrt{1 + \left( \frac{\partial z}{\partial x} 
+\right)^2 + \left( \frac{\partial z}{\partial y} \right)^2}\,dA$$
+
+\textbf{Example}: Find the surface area of the part of the surface $z = 2 - 
+y^2$ that lies over the triangle whose vertices are at $(0, 0)$, $(0, 4)$, and 
+$(3, 4)$. 
+
+\textbf{Solution}: We can define $\textit{R} = \{(x, y)\text{ }|\text{ }0 \leq 
+x \leq {3}{4}y,\text{ }0 \leq y \leq 4\}$. Additionally, 
+$$\frac{\partial z}{\partial x} = 0$$
+$$\frac{\partial z}{\partial y} = -2y$$
+
+And therefore the area of the surface that lies above \textit{R} is:
+$$A(S) = \iint_{\textit{R}} \sqrt{1 + 0^2 + \left( -2y \right)^2}\,dA = 
+\int_0^4 \int_0^{\frac{3}{4}y} \sqrt{1 + 4y^2}\,dx\,dy$$
+$$= \int_0^4 \sqrt{1 + 4y^2} \left[ x \right]_{x = 0}^{x = \frac{3}{4}y}\,dy 
+= \frac{3}{4} \int_0^4 y \sqrt{1 + 4y^2}\,dy$$
+
+Let $u = 1 + 4y^2$, then $du = (8y)dy$ and $(y)dy = \frac{du}{8}$. Substituting:
+$$A(S) = \frac{3}{4} \int_{y = 0}^{y = 4} \frac{1}{8} \sqrt{u}\,du = \frac{3}{
+32} \left[ \frac{2}{3} u^{3/2} \right]_{y = 0}^{y = 4}$$
+$$= \frac{1}{16} \left[ \left(1 + 4y^2 \right)^{3/2} \right]_{y = 0}^{y = 4} = 
+\frac{1}{16} \left[ \left( 65 \right)^{3/2} - 1 \right] \approx 32.69$$
+
+
 
 \section{Average Value}
 Recall that the average value of a one-variable function over the interval $x 
@@ -704,6 +899,58 @@ $$= \frac{1}{2\pi} \int_0^2 -x\cos{y}|_{y = 0}^{y = \pi}\,dx = \frac{1}{2\pi}
 \int_0^2 -x \left( \cos{\pi} - \cos{0} \right)\,dx$$
 $$= \frac{1}{2\pi} \int_0^2 (-x)(-1 - 1)\,dx = \frac{1}{2\pi} \int_0^2 2x\,dx$$
 $$= \frac{1}{2\pi} x^2|_{x = 0}^{x = 2} = \frac{2}{\pi}$$
+\item Since \textit{D} is a circle of radius $r = 1$, the area is $A = \pi r^2 
+= \pi$. \textit{D} can be described with $\textit{D} = \{ (r, \theta)\text{ }|
+\text{ } 0 \leq r \leq 2\cos{\theta},\text{ } -\pi/2 \leq \theta \leq \pi/2\}$.
+Therefore, the average value of $f(x, y) = x + y$ over \textit{D} is:
+$$f_{ave} = \frac{1}{\pi} \iint_{\textit{D}} \left(x + y \right)\,dA = 
+\frac{1}{\pi} \int_{-\pi/2}^{\pi/2} \int_0^{2\cos{\theta}} r \cdot \left(r\cos{
+\theta} + r\sin{\theta} \right)\,dr\,d\theta$$
+$$= \frac{1}{\pi} \int_{-\pi/2}^{\pi/2} \left(\cos{\theta} + \sin{\theta} 
+\right) \left[\int_0^{2\cos{\theta}} r^2 \,dr \right]\,d\theta$$
+$$= \frac{1}{\pi} \int_{-\pi/2}^{\pi/2} \left(\cos{\theta} + \sin{\theta} 
+\right) \cdot \left[ \frac{1}{3} r^3 \right]_{r = 0}^{r = 2\cos{\theta}}\,d
+\theta$$
+$$= \frac{8}{3\pi} \int_{-\pi/2}^{\pi/2} \left(\cos{\theta} + \sin{\theta} 
+\right) \cos^3{\theta}\,d\theta = \frac{8}{3\pi} \int_{\pi/2}^{\pi/2} \left( 
+\cos^4{\theta} + \sin{\theta} \cos^3{\theta} \right)\,d\theta$$
+$$= \frac{8}{3\pi} \left[ \int_{-\pi/2}^{\pi/2} \left( \frac{1 + \cos{2
+\theta}}{2} \right)^2\,d\theta - \left[ \frac{1}{4} \cos^4{\theta} \right]_{
+\theta = -\pi/2}^{\theta = \pi/2} \right]$$
+$$= \frac{2}{3\pi} \int_{-\pi/2}^{\pi/2} \left(1 + 2\cos{2\theta} + \cos^2{2
+\theta} \right)\,d\theta = \frac{2}{3\pi} \left[ \left(\theta + \sin{2\theta} 
+\right)_{\theta = -\pi/2}^{\theta = \pi/2} + \int_{-\pi/2}^{\pi/2} \frac{1 + 
+\cos{4\theta}}{2}\,d\theta \right]$$
+$$= \frac{2}{3\pi} \left[ \pi + \frac{1}{2} \left(\theta + \frac{1}{4}\sin{4
+\theta} \right)_{\theta = -\pi/2}^{\theta = \pi/2} \right] = \frac{2}{3\pi} 
+\left[ \pi + \frac{1}{2} \left( \pi \right) \right] = \frac{2}{3\pi} \left( 
+\frac{3\pi}{2} \right) = 1$$
+\item Let's visualize \textit{D}:
+
+\begin{tikzpicture}
+    \draw[-latex] (-0.5, 0) -- (5, 0) node[right] {$x$};
+    \draw[-latex] (0, -0.5) -- (0, 5) node[above] {$y$};
+    \draw[blue, thick, fill = blue!30, opacity = 0.4] (0,0) -- (4, 0) -- 
+    (4,4) -- cycle;
+    \draw[latex-] (2,2) -- (1.75, 2.5) node[left] {$y = x$};
+    \draw[blue, fill = blue] (0,0) circle (0.05cm) node[black, right, yshift = 
+    -0.25cm] {$(0, 0)$};
+    \draw[blue, fill = blue] (4, 0) circle (0.05cm) node[black, below] {
+    $(2, 0)$};
+    \draw[blue, fill = blue] (4, 4) circle (0.05cm) node[black, right] {
+    $(2, 2)$};
+\end{tikzpicture}
+
+So, \textit{D} can be described $\textit{D} = \{(x, y)\text{ }|\text{ }0 \leq 
+x \leq 2,\text{ }0 \leq y \leq x\}$. Additionally, \textit{D} has area $A = 
+\frac{1}{2} \left( 2^2 \right) = 2$. Therefore, the average value of $f(x,y) = 
+xy$ over \textit{D} is:
+$$f_{ave} = \frac{1}{2} \iint_{\textit{D}} \left(xy \right)\,dA = \frac{1}{2} 
+\int_0^2 \int_0^x \left(xy \right)\,dy\,dx$$
+$$= \frac{1}{2} \int_0^2 x \left[ \frac{1}{2}y^2 \right]_{y = 0}^{y = x}\,dx = 
+\frac{1}{4} \int_0^2 x^3\,dx = \frac{1}{4} \left[ \frac{1}{4}x^4 \right]_{x = 0
+}^{x = 2}$$
+$$= \frac{1}{16} \left(2^4 \right) = 1$$
 \end{enumerate}
 \end{Answer}
 
