@@ -574,7 +574,7 @@ Find the requested moment of inertia and radius of gyration of the lamina with
 the given density function. 
 \begin{enumerate}
 \item about the $x$-axis, $\textit{D} = \{(x, y)\text{ }|\text{ } 1 \leq x \leq
-4,\text{ } 0 \leq y \leq 3\}$, $rho(x, y) = xy$.
+4,\text{ } 0 \leq y \leq 3\}$, $\rho(x, y) = xy$.
 \item about the $y$-axis, \textit{D} is enclosed by the curves $y = 0$ and $y =
 2\cos{x}$ for $-\pi/2 \leq x \leq \pi/2$, $\rho(x, y) = x$.
 \item about the origin, $\textit{D} = \{(r, \theta)\text{ }|\text{ }1 \leq r 
@@ -854,7 +854,64 @@ $$A(S) = \frac{3}{4} \int_{y = 0}^{y = 4} \frac{1}{8} \sqrt{u}\,du = \frac{3}{
 $$= \frac{1}{16} \left[ \left(1 + 4y^2 \right)^{3/2} \right]_{y = 0}^{y = 4} = 
 \frac{1}{16} \left[ \left( 65 \right)^{3/2} - 1 \right] \approx 32.69$$
 
+\begin{Exercise}[title = {Surface Area of Two-Variable Functions}, label = 
+surface]
+Find the area of the surface.
+\begin{enumerate}
+\item The part of the plane $9x + 6y - 3z + 6 = 0$ that lies above the 
+rectangle $\left[2, 6 \right] \times \left[1, 4 \right]$.
+\item The part of the paraboloid in the circle $z = 2x^2 + 2y^2$ that lies 
+under the plane $z = 32$. 
+\item The part of the surface $z = 3xy$ that lies in the cylinder $x^2 + y^2 
+= 4$.
+\end{enumerate}
+\end{Exercise}
 
+\begin{Answer}[ref = surface]
+\begin{enumerate}
+\item Rearranging the formula for the plane, we find that $z = 3x + 2y + 2$ 
+and therefore $\partial z / \partial x = 3$ and $\partial z / \partial y = 2$. 
+Then the surface area is given by:
+$$A(S) = \int_2^6 \int_1^4 \sqrt{1 + 3^2 + 2^2}\,dy\,dx = \int_2^6 \sqrt{14}y|_
+{y = 1}^{y = 4}\,dx$$
+$$= \int_2^6 3\sqrt{14}\,dx = 3\sqrt{14}x|_{x = 2}^{x = 6} = 12\sqrt{14}$$
+\item The paraboloid intersects the plane when $2x^2 + 2y^2 = 32$, which is the
+circle of radius 4 centered at the origin. So, we are looking for the area of 
+the surface $z = 2x^2 + 2y^2$ that lies above the region $\textit{R} - \{(r, 
+\theta)\text{ }|\text{ }0 \leq r \leq 4,\text{ } 0 \leq \theta \leq 2\pi \}$. 
+The surface area is:
+$$A(S) = \iint_{\textit{R}} \sqrt{1 + \left(4x \right)^2 + \left( 4y \right)^2}
+\,dA = \int_0^4 \int_0^{2\pi} r \sqrt{1 + \left(4 r \cos{\theta} \right)^2 + 
+\left( 4 r \sin{\theta} \right)^2}\,d\theta\,dr$$
+$$= \int_0^4 \int_0^{2\pi} r \sqrt{1 + 16r^2}\,d\theta\,dr = \int_0^4 r \sqrt{
+1 + 16r^2} \left[\theta \right]_{\theta = 0}^{\theta = 2\pi}\,dr$$
+$$= \int_0^4 2\pi r \sqrt{1 + 16r^2}\,dr$$
+
+Let $u = 1 + 16r^2$, then $du = 32r (dr)$ and $r(dr) = du/32$. Substituting:
+$$A(S) = \frac{2\pi}{32} \int_{r = 0}^{r = 4} \sqrt{u}\,du = \frac{\pi}{16} 
+\left( \frac{2}{3} \right) \left[u^{3/2} \right]_{r = 0}^{r = 4}$$
+$$= \frac{\pi}{24} \left[ \left(1 + 16r^2 \right)^{3/2} \right]_{r = 0}^{r = 4}
+= \frac{\pi}{24} \left[ \left(257 \right)^{3/2} - 1\right] \approx 6470.15$$
+
+\item The region, \textit{R}, we are interested in is the circle of radius 2 
+centered at the origin of the $xy$-plane, described by $\textit{R} = \{(r, 
+\theta)\text{ }|\text{ }0 \leq r \leq 2,\text{ }0 \leq \theta \leq 2\pi \}$. 
+Noting that $\partial z / \partial x = 3y$ and $\partial z / \partial y = 3x$, 
+we see that the surface area is given by:
+$$A(S) = \iint_{\textit{R}} \sqrt{1 + \left(3y \right)^2 + \left( 3x \right)^2}
+\,dA = \int_0^2 \int_0^{2\pi} r \sqrt{1 + 9r^2\sin^2{\theta} + 9r^2\cos^2{
+\theta}}\,d\theta\,dr$$
+$$= \int_0^2 \int_0^{2\pi} r \sqrt{1 + 9r^2}\,d\theta\,dr = 2\pi \int_0^2 r 
+\sqrt{1 + 9r^2}\,dr$$
+
+Let $u = 1 + 9r^2$, then $du = 18r(dr)$, which means that $r(dr) = du/18$. 
+Substituting:
+$$A(S) = \frac{2\pi}{18} \int_{r = 0}^{r = 2} \sqrt{u}\,du = \frac{\pi}{9} 
+\left( \frac{2}{3} \right) \left[ u^{3/2} \right]_{r = 0}^{r = 2}$$
+$$= \frac{2\pi}{27} \left[ \left(1 + 9(4) \right)^{3/2} - 1 \right] = \frac{2
+\pi}{27} \left[ \left(37 \right)^{3/2} - 1 \right] \approx 52.14$$
+\end{enumerate}
+\end{Answer}
 
 \section{Average Value}
 Recall that the average value of a one-variable function over the interval $x 
@@ -955,5 +1012,57 @@ $$= \frac{1}{16} \left(2^4 \right) = 1$$
 \end{Answer}
 
 \section{Probability}
+Recall that you've learned about \textit{probability density functions} in a 
+previous chapter. For some variable, $X$, with probability density function 
+$f(x)$, the likelihood that $X$ lies between $a$ and $b$ is given by:
+$$P(a \leq X \leq b) = \int_a^b f(x)\,dx$$
+
+We can extend this to two random variables, $X$ and $Y$. A function that 
+describes the distribution of both variables is called a \textit{joint 
+density function}\index{joint density function}. In particular, the probability
+that $X$ and $Y$ lie in a region $D$ is:
+$$P((X, Y) \in D) = \iint_{\textit{D}} f(x,y)\,dA$$
+
+Where $f(x, y)$ is the two-variable joint density function. Just like with one 
+variable, all probabilities are positive and the sum of the probabilities of 
+all possibilities must be 1. Mathematically, 
+$$f(x, y) \geq 0$$
+$$\iint_{\mathbb{R}} f(x, y)\,dA = \int_{-\infty}^{\infty} \int_{-\infty}^{
+\infty} f(x, y)\,dx\,dy = 1$$
+
+\textbf{Example}: Suppose the joint density function for $X$ and $Y$ is given 
+by:
+$$f(x, y) = 
+\begin{cases}
+C(3x + y),& \text{if }0 \leq x \leq 15\text{, }0 \leq y \leq 15\\
+0,&\text{otherwise}
+\end{cases}
+$$
+
+where $C$ is a constant. Find the value of $C$ and the likelihood that $X \geq 
+Y$.
+
+\textbf{Solution}: To find $C$, we take advantage of the fact that the sum of 
+all probabilities is 1. Therefore,
+$$1 = \int_0^{15} \int_0^{15} C(3x + y)\,dx\,dy = \int_0^{15} C \left[ \frac{3
+}{2}x^2 + xy \right]_{x = 0}^{x = 15}\,dy$$
+$$= \int_0^{15} C \left[ \frac{675}{2} + 15y \right]\,dy = C \left[ \frac{675}{
+2}y + \frac{15}{2}y^2 \right]_{y = 0}^{y = 15}$$
+$$= C \left[ \frac{10125}{2} + \frac{3375}{2} \right] = 6750C = 1$$
+
+Which implies that $C = \frac{1}{6750}$.
+
+To find the probability that $X \geq Y$, we note that this is represented by 
+the region $R = \{(x, y)\text{ }|\text{ }0 \leq x \leq 15, 0 \leq y \leq x$. 
+Then the likelihood that $X \geq Y$ is given by:
+$$\frac{1}{6750} \int_0^{15} \int_0^x \left( 3x + y \right) \,dy\,dx = \frac{
+1}{6750} \int_0^{15} \left[ 3xy + \frac{1}{2}y^2 \right]_{y = 0}^{y = x}\,dx$$
+$$= \frac{1}{6750} \int_0^{15} \left(3x^2 + \frac{1}{2}x^2 \right)\,dx = \frac{
+1}{6750} \left( \frac{7}{2} \right) \int_0^{15} x^2\,dx$$
+$$= \frac{7}{13500} \left( \frac{1}{3} \right) \left[x^3 \right]_{x = 0}^{x = 
+15} = \frac{7}{13500} \left( \frac{1}{3} \right) 15^3 = \frac{7 \cdot 3375}{3 
+\cdot 13500} = \frac{7}{12}$$
+
+And this answer makes sense, as it is less than 1. 
 
 \section{Expected Values}
