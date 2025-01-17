@@ -1,8 +1,184 @@
 \chapter{Calculus Applications to Probability}
 
 \section{Probability Density Functions}
+Recall from the chapter \textit{Continuous Probability Distributions} that for 
+a single variable, $X$, the likelihood that variable $X$ has a certain value, 
+$x$, is given by the probability distribution function (PDF), $f(x)$. 
+Additionally, the total area under a PDF is always 1. Mathematically, this is 
+because the PDF is the derivative of the cumulative density function (CDF), 
+which always starts at 0 and ends at 1. Logically, the area under the PDF from 
+$x = a$ to $x = b$ represents the likelihood that $X$ will be between $a$ and 
+$b$. 
 
-\section{Expected Value}
+\begin{mdframed}[style = important, frametitle = {Probability that $X$ lies 
+between $a$ and $b$}]
+For a single variable, $X$, with a continuous density function, $f(x)$, the 
+probability that $X$ lies between $a$ and $b$ is given by:
+$$P( a \leq X \leq b) = \int_a^b f(x)\,dx$$
+\end{mdframed}
+
+Suppose that we know the PDF for human body mass and we wanted to know the 
+probability that a randomly-selected person has a body mass between 70 and 80 
+kgs. That probability would be represented by the integral of the PDF from $x 
+= 70$ to $x = 80$ (see figure \ref{fig:mass_PDF}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = 0, xmax = 120, ymin = 0, 
+        xlabel = mass (kg), ylabel = probability, clip = false]
+            \addplot[name path = A, blue, thick, domain = 70:80]{
+            (1/(10*sqrt(2*3.14159)))*(2.718)^(-1*(x - 72)^2/(2*10)^2)};
+            \addplot[name path = B, black, thin, domain = 70:80]{0};
+            \addplot[blue, thick, domain = 1:120, samples = 100] {
+            (1/(10*sqrt(2*3.14159)))*(2.718)^(-1*(x - 72)^2/(2*10)^2)};
+            \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+            \draw[black, thin, dashed] (70, 0) -- (70, 0.04);
+            \draw[latex-] (70, 0.035) -- (65, 0.04) node[left] {70 kg};
+            \draw[black, thin, dashed] (80, 0) -- (80, 0.035);
+            \draw[latex-] (80, 0.03) -- (90, 0.04) node[right] {80 kg};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The highlighted area is equal to the probability that a person 
+    has a mass between 70 and 80 kgs}
+    \label{fig:mass_PDF}
+\end{figure}
+
+If we expand that integral to include all possible masses, what would the 
+integral evaluate to? Since that would represent the probability that a random 
+person has mass (which all people do), the integral should be equal to 1. In 
+fact, the integral of a PDF over all possible values of the variable must be 
+equal to 1, since that represents the sum of all the probabilities that the 
+variable will hold all possible values. 
+
+\begin{mdframed}[style = important]
+For any probability density function, $f(x)$, the integral over the domain of 
+$x$ is always 1.
+$$\int_{-\infty}^{\infty} f(x)\,dx = 1$$
+\end{mdframed} 
+
+\textbf{Example}: Let $f(x) = kx(10-x)$ for $0 \leq x \leq 10$ and $0$ for all 
+other values of $x$. Find a value for $k$. Then find the probability that $x$ 
+lies between 7 and 10. 
+
+\textbf{Solution}: Since $f(x)$ is a PDF, we know that:
+$$\int_{-\infty}^{\infty} f(x)\,dx = 1$$
+
+Solving for $k$:
+$$1 = \int_{0}^{10} kx(10-x)\,dx = k\int_0^{10} 10x - x^2\,dx$$
+$$= k \left[5x^2 - \frac{1}{3}x^3 \right]_{x = 0}^{x = 10} = k\left[500 - 
+\frac{1000}{3} \right] = k \left( \frac{500}{3} \right) = 1$$
+
+Which implies that $k = \frac{3}{500} = 0.006$
+
+Therefore, in order to be a PDF, $f(x) = 0.006x(10-x)$ and we can find the 
+probability that $X$ lies between 7 and 10:
+$$P(7 \leq X \leq 10) = \int_7^{10} 0.006x(10 - x)\,dx$$
+$$= 0.006 \left[5x^2 - \frac{1}{3}x^3 \right]_{x = 7}^{x = 10} = 0.006 \left[ 
+5 \left(100 - 49 \right) - \frac{1}{3} \left(1000 - 343 \right) \right]$$
+$$= 0.006 \left[ 255 - \frac{657}{3} \right] = 0.006(36) = 0.216 = 21.6\%$$
+
+Therefore, there is a 21.6\% chance that $X$ lies between 7 and 10. 
+
+\begin{Exercise}[title = {Representing Probabilities as Integrals}, 
+label = rep_int]
+Let $f(t)$ be the probability density function for the time it takes you to 
+complete your weekly chores at home. Express the following probabilities as 
+integrals or state what the given integral represents in words. 
+\begin{enumerate}
+\item that you spend less that 15 minutes on your chores.
+\item that you spend between half an hour and an hour on your chores.
+\item that you spend more than 45 minutes on your chores. 
+\item $\int_{20}^{\infty} f(t)\,dt$
+\item $\int_{60}^{120} f(t)\,dt$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = rep_int]
+\begin{enumerate}
+\item $\int_0^{15} f(t)\,dt$
+\item $\int_{30}^{60} f(t)\,dt$
+\item $\int_{45}^{\infty} f(t)\,dt$
+\item the probability that you spend more than 20 minutes on your weekly 
+chores.
+\item the probability that you spend between 1 and 2 hours on your weekly 
+chores.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title = {Using PDFs to Find Probabilities}, label = int_pdf]
+For each $f(x)$, find $k$ such that $f(x)$ is a PDF. Then, find the requested 
+probability. 
+\begin{enumerate}
+\item $f(x) = \frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)^2}$, $P(X \geq 2)$
+\item $f(x) = \frac{k}{2 + 4x^2}$, $P(1 \leq X \leq 4)$
+\item $f(x) = k(6x - 3x^2)$ for $0 \leq x \leq 2$ and 0 otherwise, $P(X > 3/4)$
+\vspace{75mm}
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = int_pdf]
+\begin{enumerate}
+    \item We know that:
+    $$1 = \int_{-\infty}^{\infty} \frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)
+    ^2}\,dx = k \int_{\infty}^{\infty} \frac{1}{\left(1 + e^{2 - x} \right)^2} 
+    \left( e^{2 - x} \right)\,dx$$
+    Let $u = 1 + e^{2 - x}$, then $du = -e^{2 - x}dx$ and $-du = e^{2 - x}dx$. 
+    Substituting:
+    $$1 = k \int_{x = -\infty}^{x = \infty} \frac{-1}{u^2}\,du = k \left[\frac{
+    1}{u} \right]_{x = -\infty}^{x = \infty} = k \left[\frac{1}{1 + e^{2 - x}} 
+    \right]_{x = -\infty}^{x = \infty}$$
+    $$= k \left[ \frac{1}{1 + e^{2 - \infty}} - \frac{1}{1 + e^{2 + \infty}} 
+    \right] = k \left[ \frac{1}{1 + 0} - \frac{1}{1 + \infty} \right] = k [1 - 
+    0] = k = 1$$
+
+    And therefore
+    $$P(X \geq 2) = \int_{2}^{\infty} \frac{e^{2 - x}}{\left(1 + e^{2 - x} 
+    \right)^2}\,dx = \left[ \frac{1}{1 + e^{2 - x}} \right]_{x = 2}^{x = 
+    \infty}$$
+    $$= \frac{1}{1 + e^{-\infty}} - \frac{1}{1 + e^{0}} = \frac{1}{1 + 0} - 
+    \frac{1}{1 + 1} = \frac{1}{2} = 50\%$$
+
+    \item We know that:
+    $$1 = \int_{-\infty}^{\infty} \frac{k}{2 + 4x^2}\,dx = \frac{k}{2} \int_{-
+    \infty}^{\infty} \frac{1}{1 + 2x^2}\,dx$$
+    $$= \frac{k}{2} \left[ \frac{\arctan{(\sqrt{2}x)}}{\sqrt{2}} \right]_{x = -
+    \infty}^{x = \infty} = \frac{k}{2} \left[ \frac{\arctan{(\infty)}}{
+    \sqrt{2}} - \frac{\arctan{(-\infty)}}{\sqrt{2}} \right] $$
+    $$= \frac{k}{2} \left( \frac{\pi}{2\sqrt{2}} - \frac{-\pi}{2\sqrt{2}} 
+    \right) = \frac{k}{2} \left( \frac{\pi}{\sqrt{2}} \right) = \frac{\pi k}{2
+    \sqrt{2}} = 1$$
+
+    Which implies that $k = \frac{2\sqrt{2}}{\pi}$. Therefore $f(x) = \frac{
+    \sqrt{2}}{\pi \left(1 + 2x^2 \right)}$. Additionally, 
+    $$P(1 \leq X \leq 4) = \int_1^4 \frac{\sqrt{2}}{\pi \left(1 + 2x^2 \right)
+    }\,dx = \frac{\sqrt{2}}{\pi} \int_1^4 \frac{1}{1 + 2x^2}\,dx$$
+    $$= \frac{\sqrt{2}}{\pi} \left[ \frac{\arctan{(\sqrt{2}x)}}{\sqrt{2}} 
+    \right]_{x = 1}^{x = 4} = \frac{1}{\pi} \left[ \arctan{(4\sqrt{2})} - 
+    \arctan{(\sqrt{2})} \right] \approx \frac{0.441}{\pi} \approx 0.140 = 14\%$$
+
+    \item We know that:
+    $$1 = \int_{-\infty}^{\infty} k \left(6x - 3x^2 \right)\,dx = 3k \int_{0}^{
+    2} 2x - x^2\,dx$$
+    $$= 3k \left[x^2 - \frac{1}{3}x^3 \right]_{x = 0}^{x = 2} = 3k \left( 4 - 
+    \frac{8}{3} \right) = 3k \left( \frac{4}{3} \right) = 4k = 1$$
+
+    Which implies that $k = 1/4$. And therefore,
+    $$P(X > \frac{3}{4} ) = \int_{3/4}^2 \frac{6x - 3x^2}{4}\,dx = \frac{3}{4} 
+    \int_{3/4}^2 2x - x^2\,dx$$
+    $$= \frac{3}{4} \left[ x^2 - \frac{1}{3}x^3 \right]_{x = 3/4}^{x = 2} = 
+    \frac{3}{4} \left[ (2)^2 - \left( \frac{3}{4} \right)^2 - \frac{1}{3} 
+    \left( 2^3 - \left( \frac{3}{4} \right)^3 \right) \right]$$
+    $$= \frac{3}{4} \left( \frac{175}{192} \right) = \frac{175}{256} \approx 
+    68.4\%$$
+\end{enumerate}
+\end{Answer}
+
+\subsection{Exponential PDFs}
+
+\subsection{Normal Distributions}
+
+\section{Expected Value/Mean}
 
 \section{Joint Density Functions}
 Recall that you've learned about \textit{probability density functions} in a 
