@@ -110,34 +110,40 @@ chores.
 For each $f(x)$, find $k$ such that $f(x)$ is a PDF. Then, find the requested 
 probability. 
 \begin{enumerate}
-\item $f(x) = \frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)^2}$, $P(X \geq 2)$
+\item $f(x) = 
+\begin{cases}
+\frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)^2},&-2 \leq x \leq 6\\
+0,&\text{otherwise}
+\end{cases}$, $P(X \geq 2)$
 \item $f(x) = \frac{k}{2 + 4x^2}$, $P(1 \leq X \leq 4)$
 \item $f(x) = k(6x - 3x^2)$ for $0 \leq x \leq 2$ and 0 otherwise, $P(X > 3/4)$
-\vspace{75mm}
+\vspace{95mm}
 \end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref = int_pdf]
 \begin{enumerate}
-    \item We know that:
-    $$1 = \int_{-\infty}^{\infty} \frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)
-    ^2}\,dx = k \int_{\infty}^{\infty} \frac{1}{\left(1 + e^{2 - x} \right)^2} 
-    \left( e^{2 - x} \right)\,dx$$
-    Let $u = 1 + e^{2 - x}$, then $du = -e^{2 - x}dx$ and $-du = e^{2 - x}dx$. 
-    Substituting:
-    $$1 = k \int_{x = -\infty}^{x = \infty} \frac{-1}{u^2}\,du = k \left[\frac{
-    1}{u} \right]_{x = -\infty}^{x = \infty} = k \left[\frac{1}{1 + e^{2 - x}} 
-    \right]_{x = -\infty}^{x = \infty}$$
-    $$= k \left[ \frac{1}{1 + e^{2 - \infty}} - \frac{1}{1 + e^{2 + \infty}} 
-    \right] = k \left[ \frac{1}{1 + 0} - \frac{1}{1 + \infty} \right] = k [1 - 
-    0] = k = 1$$
+    \item We know that
+	$$1 = \int_{-\infty}^{\infty} f(x)\,dx = \int_{-2}^{6} \frac{ke^{2 - x}}{
+	\left( 1 + e^{2 - x} \right)^2}\,dx$$
 
-    And therefore
-    $$P(X \geq 2) = \int_{2}^{\infty} \frac{e^{2 - x}}{\left(1 + e^{2 - x} 
-    \right)^2}\,dx = \left[ \frac{1}{1 + e^{2 - x}} \right]_{x = 2}^{x = 
-    \infty}$$
-    $$= \frac{1}{1 + e^{-\infty}} - \frac{1}{1 + e^{0}} = \frac{1}{1 + 0} - 
-    \frac{1}{1 + 1} = \frac{1}{2} = 50\%$$
+	Let $u = e^{2 - x}$, then $-du = e^{2 - x}dx$. Substituting:
+	$$= \int_{x = -2}^{x = 6} \frac{-k}{\left(1 + u \right)^2}\,du = k \left[
+	 \frac{1}{1 + u} \right]_{x = -2}^{x = 6} = k \left[ \frac{1}{1 + e^{2 - x}} 
+	 \right]_{x = -2}^{x = 6}$$
+	$$= k \left[ \frac{1}{1 + e^{-4}} - \frac{1}{1 + e^4} \right] = \frac{k \left(
+	e^4 - 1 \right)}{1 + e^4} = 1$$
+
+	Which implies that $k = \frac{1 + e^4}{e^4 - 1}$. Substituting for $k$, we 
+	find the probability that $X \geq 2$ is:
+	$$P(X \geq 2) = \frac{1 + e^4}{e^4 - 1} \int_2^6 \frac{e^{2 - x}}{\left( 1 + 
+	e^{2 - x} \right)^2}\,dx = \frac{1 + e^4}{e^4 - 1} \left[ \frac{1}{1 + e^{2 - 
+	x}} \right]_{x = 2}^{x = 6}$$
+	$$= \frac{1 + e^4}{e^4 - 1} \left( \frac{1}{1 + e^{-4}} - \frac{1}{1 + 1} 
+	\right) = \frac{1 + e^4}{e^4 - 1} \left(\frac{1}{1 + e^{-4}} - \frac{1}{2} 
+	\right) \approx 0.5$$
+
+	There is a 50\% chance the variable will be greater than 2. 
 
     \item We know that:
     $$1 = \int_{-\infty}^{\infty} \frac{k}{2 + 4x^2}\,dx = \frac{k}{2} \int_{-
@@ -175,10 +181,289 @@ probability.
 \end{Answer}
 
 \subsection{Exponential PDFs}
+There are two common PDFs used to model real-world probability distributions: 
+exponential and normal distributions. We address exponential PDFs in this 
+section and will discuss normal PDFs in the next. 
+
+The time it takes for a radioactive particle to decay, or a bank teller to 
+serve a customer, or a piece of equipment to fail are all commonly modeled 
+with exponentially decreasing PDFs. These take the form:
+$$f(t) = 
+\begin{cases}
+0,&\text{if }t<0\\
+ce^{-ct},&\text{if }t \geq 0
+\end{cases}$$
+
+\textbf{Example}: Carbon-14 has a half-life of 5700 years, and the probability 
+that a single particle will undergo decay after a given amount of time, $t$, 
+is given by:
+$$f(t) = 
+\begin{cases}
+    0,\text{ if}t<0\\
+    \frac{1}{5700}e^{-t/5700}&\text{if }t \geq 0
+\end{cases}$$
+
+Where $t$ is in years. Find the probability that a particle of carbon-14 
+decays before 5700 years. 
+
+\textbf{Solution}: 
+$$P(T \leq 5700) = \int_0^{5700} \frac{1}{5700} e^{-t/5700}\,dt$$
+$$= \frac{1}{5700} \left(-5700 \right) \left[e^{-t/5700} \right]_{t = 0}^{
+t = 5700}$$
+$$= -1 \left[ e^{-1} - e^{0} \right] = 1 - \frac{1}{e} \approx 63.5\%$$
 
 \subsection{Normal Distributions}
+Other natural phenomena, such as annual snowfall, height of individuals in a 
+population, or birth weight are best modeled with a normal distribution. 
+Professors often find that test scores are normally-distributed as well. 
+Normal distributions have three key properties:
+\begin{enumerate}
+\item unimodal - there is one "peak" on a graph of a normal distribution
+\item symmetric - there is an equal probability represented on either side of 
+the "peak"
+\item equal mean and median - the mean and median of a normal distribution are 
+the same
+\end{enumerate}
+
+An example normal distribution is shown in figure \ref{fig:normal}. Notice 
+that there is one peak and the graph is symmetric about that peak. 
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.2, 
+		axis lines = center, xlabel = $x$, ylabel = $y$]
+			\addplot[name path = A, blue, thick, fill = blue!30, opacity = 0.4, 
+			domain = 0:20, samples = 300] 
+			{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \draw[black, dashed] (10, 0) -- (10, 0.15) node[above] {mean = 10};
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:normal}
+    \caption{A normal distribution with a mean of 10 and a standard deviation 
+    of 3}
+\end{figure}
+
+Normal PDFs take the form:
+$$f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\left(x - \mu \right)/\left(2 
+\sigma^2 \right)}$$
+
+Where $\sigma$ is the \textit{standard deviation}\index{standard deviation} 
+and $\mu$ is the \textit{mean}\index{mean}. Recall that for a normal 
+distribution, the standard deviation is the distance you have to go from the 
+mean to reach 68\% of the population. That is, if you look at the population 
+within one standard deviation on either side of the mean, it represents 
+approximately 68\% of the total population (see figure \ref{fig:stddev}). The 
+lower $\sigma$ is, the narrower the distribution. The higher $\sigma$ is, the 
+wider the distribution (see figure \ref{fig:stddevs}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.2, axis lines = 
+	center, xlabel = $x$, ylabel = $y$]
+		\addplot[blue, thick, domain = 0:20, samples = 300] 
+		{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \draw[red, dashed] (10, 0) -- (10, 0.15) node[above] {$\mu = 10$};
+            \draw[black, dashed] (7, 0) -- (7, 0.11) node[above] {$\mu - 
+            \sigma$};
+            \draw[black, dashed] (13, 0) -- (13, 0.11) node[above] {$\mu + 
+            \sigma$};
+            \addplot[name path = A, blue, thick, domain = 7:13, samples = 200]
+            {1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \addplot[name path = B, domain = 7:13]{0};
+            \addplot[fill = blue!30, opacity = 0.4] fill between [of = A and B];
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:stddev}
+    \caption{The shaded area represents approximately 68\% of the population}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.3, axis lines = 
+	center, xlabel = $x$, ylabel = $y$]
+		\addplot[blue, thick, domain = 0:20, samples = 300] 
+		{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \addplot[red, thick, domain = 0:20, samples = 300] 
+            {1/(5*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*5^2))};
+            \addplot[orange, thick, domain = 0:20, samples = 300] 
+            {1/(1.5*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*1.5^2))};
+            \node[orange] at (6, 0.15) {$\sigma = 1.5$};
+            \node[blue] at (5.5, 0.1) {$\sigma = 3$};
+            \node[red] at (3, 0.05) {$\sigma = 5$};
+            \draw[black, dashed] (10, 0) -- (10, 0.27) node[above] {$\mu = 10$};
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:stddevs}
+    \caption{Changing $\sigma$ affects the width of the distribution, but not 
+    its center}
+\end{figure}
+
+\textbf{Example}: Birth weights in the United States are normally distributed 
+with a mean of 7 lbs 6 oz and a standard deviation 1 lb 2 oz. Write a PDF to 
+represent this data. What percentage of US babies are born at less than 5 lbs? 
+Over 9 lbs?
+
+\textbf{Solution}: For simplicity, let's express everything in ounces. Recall 
+that there are 16 oz in a pound. Therefore, 
+$$\mu = 118\text{ oz}$$
+$$\sigma = 18\text{ oz}$$
+
+And we can write the PDF for US birth weight:
+$$f(x) = \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 \right)^2/\left(2 \left( 18 
+\right)^2 \right)}$$
+
+To find the percentage of babies with a birth weight below 5 lbs, we integrate 
+from 0 (since a baby must have some weight) to 80 oz (the equivalent of 5 lbs):
+$$P(X \leq 80) = \int_0^{80} \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 \right)^2/
+\left(2 \left( 18 \right)^2 \right)}\,dx$$
+
+Unfortunately for us, there is no anti-derivative to $e^{-x^2}$, so we cannot 
+evaluate the integral by hand. However, you can use a calculator or computer 
+to find the approximate value of the integral. Inputting the integral into a 
+calculator (such as a TI-89), we find that:
+$$P(X \leq 80) \approx 0.0174$$
+
+And therefore, approximately 1.74\% of US babies are born weighing less than 5 
+lbs. 
+
+To find the percentage of babies born weighing more than 9 lbs, we integrate 
+from 144 oz to infinity (obviously, babies are not born with infinite weight, 
+but this will do just fine for an approximation):
+$$P(X \geq 144) = \int_{144}^{\infty} \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 
+\right)^2/\left(2 \left( 18 \right)^2 \right)}\,dx$$
+
+Again, using a calculator or computer, we find that:
+$$P(X \geq 144) \approx 0.0743$$
+
+And therefore approximately 7.43\% of US babies are born weighing more than 9 
+lbs. 
 
 \section{Expected Value/Mean}
+How can we find the average (mean) of a variable with a given probability 
+distribution function? Consider the example of transaction processing times. 
+If we knew the total time spent processing transactions and the total number 
+of customers, then the mean processing time would be the total processing time 
+divided by the total number of customers. 
+
+Suppose we have a PDF that describes processing time for electronic 
+transactions, $f(t)$, where $t$ is processing time and $f(t)$ is the 
+probability that an individual transaction takes a particular amount of time, 
+$t$. Electronic transactions are fast, and we can assume no transaction takes 
+longer than 2 seconds, so we restrict the domain of $f(t)$ to $0 \leq t \leq 
+2$. We can divide the PDF into intervals of width $\Delta t$ (see figure 
+\ref{fig:mean}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[xmin = -0.5, xmax = 250, ymin = 0, ymax = 0.007, axis lines = 
+	center, xlabel = $t$, ylabel = $f(t)$, ticks = none, clip = false]
+		\addplot[blue, thick, domain = 0:250, samples = 300] {(1/160)*e^(-1*x/160)};
+        \draw[black, dashed] (125, 0.00285) -- (125, -0.00035) node[below] {
+        $\overline{t}_i$};
+        \draw[black, fill = blue!30, opacity = 0.4] (115, 0) rectangle 
+        (135, 0.00285);
+        \draw[latex-] (115, 0) -- (110, -0.0003) node[left] {$t_{i-1}$};
+        \draw[latex-] (135, 0) -- (140, -0.0003) node[right] {$t_i$};
+        \draw[decorate, decoration = brace] (115, 0.003) -- (135, 0.003) 
+        node[above, xshift = -5] {$\Delta t$};
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:mean}
+    \caption{The probability that an individual transaction takes between 
+    $t_{i-1}$ and $t_i$ seconds is approximated by the shaded area}
+\end{figure}
+
+If a total of $N$ transactions are processed, then the number of transactions 
+that take between $t_{i-1}$ and $t_i$ is the probability of a transaction 
+taking between $t_{i-1}$ and $t_i$ times $N$. That probability is approximately $f(\overline{t}_i) \Delta t$, and so the number of transactions taking between 
+$t_{i-1}$ and $t_i$ is $Nf(\overline{t}_i) \Delta t$. Each of these 
+transactions took approximately $\overline{t}_i$, and therefore the total 
+processing time for these transactions is the number of transactions multiplied
+by the processing time:
+$$\overline{t}_i \left[ N f(\overline{t}_i) \Delta t \right]$$
+
+To find the total processing time for all transactions, we would add up the 
+total processing time for each interval:
+$$\sum_{i = 1}^n N \overline{t}_i f(\overline{t}_i) \Delta t$$
+
+And to find the average or mean processing time, we would divide this sum by 
+the total number of customers, $N$:
+$$\text{mean processing time} = \sum_{i = 1}^n \overline{t}_i f(\overline{
+t}_i) \Delta t$$
+
+Taking the limit as $n \to \infty$, the sum becomes an integral:
+$$\text{mean processing time} = \int_0^2 t \cdot f(t)\,dt$$
+
+Recall that we use $\mu$ to represent the mean. Therefore, for a general PDF, 
+$f(x)$, the mean is given by:
+$$\mu = \int_{-\infty}^{\infty} x \cdot f(x)\,dx$$
+
+\textbf{Example}: Find the mean value of the general exponential PDF, 
+$$f(x) = 
+\begin{cases}
+0,&\text{if }x < 0\\
+ce^{-cx},&\text{if }x \geq 0
+\end{cases}$$
+
+\textbf{Solution}: Applying the definition of the mean:
+$$\mu = \int_{-\infty}^{\infty} xf(x)\,dx = \int_0^{\infty} xce^{-cx}\,dx$$
+$$= -xe^{-cx}|_{x = 0}^{x = \infty} - \int_0^{\infty} -e^{-cx}\,dx$$
+$$= 0 + \left[-\frac{1}{c}e^{-cx} \right]_{x = 0}^{x = \infty} = \frac{1}{c}$$
+
+And since $\mu = 1/c$, we can re-write the general exponential PDF in terms of 
+the mean:
+$$f(x) = 
+\begin{cases}
+0,&\text{if }x < 0\\
+\mu^{-1}e^{-x/\mu},&\text{if }x \geq 0
+\end{cases}$$
+
+\begin{Exercise}[title = {Onset of Symptoms}, label = symptoms]
+Researchers find that the time between infection by the COVID virus and the 
+onset of symptoms can be described by the PDF:
+$$f(t) = 
+\begin{cases}
+\frac{1}{595} te^{-0.04t},&\text{if }0 \leq t \leq 120\\
+0,&\text{otherwise}
+\end{cases}$$
+
+What is the mean time between infection and the onset of symptoms?
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = symptoms]
+$$\mu = \int_{-\infty}^{\infty} tf(t)\,dt = \frac{1}{595} \int_{0}^{120} t^2 
+e^{-0.04t}\,dt$$
+
+Applying integration by parts, we set $f = t^2$ and $dg = e^{-0.04t}dt$, which 
+means $df = 2t\text{ }dt$ and $g = -25e^{-0.04t}$. Substituting, 
+$$\frac{1}{595} \int_{0}^{120} t^2 e^{-0.04t}\,dt = \left[ \frac{-25t^2 
+e^{-0.04t}}{595} \right]_{t = 0}^{t = 120} - \int_{0}^{120} \frac{-50te^{-0.04t
+}}{595}\,dt$$
+$$= -\frac{72000 e^{-4.8}}{119} + \frac{10}{119} \int_0^{120} t e^{-0.04t}\,dt$$
+
+We apply integration by parts again to evaluate the integral. Let $f = t$ and 
+$dg = e^{-0.04t} dt$, which means $df = dt$ and $g = -25e^{-0.04t}$. 
+Substituting:
+$$\mu = -\frac{72000 e^{-4.8}}{119} + \left( \frac{10}{119} \right) \left[ 
+\left( -25te^{-0.04t} \right)_{t = 0}^{t = 120} - \int_0^{120} -25e^{-0.04t}
+\,dt \right]$$
+$$= -\frac{72000e^{-4.8}}{119} + \left( \frac{10}{119} \right) \left[ -25(120)
+e^{-4.8} + \int_0^{120} 25e^{-0.04t}\,dt \right]$$
+$$= -\frac{72000e^{-4.8}}{119} - \frac{30000e^{-4.8}}{119} + \frac{250}{119} 
+\int_0^{120} e^{-0.04t}\,dt$$
+$$= -\frac{6000e^{-4.8}}{7} + \frac{250}{119} \left[ -25e^{-0.04t} \right]_{
+t = 0}^{t = 120}$$
+$$= -\frac{6000 e^{-4.8}}{119} - \frac{6250}{119} \left[e^{-0.04t} \right]_{
+t = 0}^{t = 120} = -\frac{6000e^{-4.8}}{119} - \frac{6250}{119}e^{-4.8} + 
+\frac{6250}{119}e^{-1} \approx 45.035$$
+
+Therefore, the mean time until the onset of symptoms is approximately 45 hours. 
+\end{Answer}
 
 \section{Joint Density Functions}
 Recall that you've learned about \textit{probability density functions} in a 
@@ -246,6 +531,7 @@ $$f(x, y) =
 \item Find $P(X \leq \frac{1}{2}, Y \leq 1)$.
 \item Find $P(X + Y \geq 1)$.
 \end{enumerate}
+\vspace{70mm}
 \end{Exercise}
 
 \begin{Answer}[ref = joint]
@@ -468,6 +754,7 @@ $$f(x, y) =
 	0,&\text{ otherwise}
 \end{cases}$$
 What are the expected values of $X$ and $Y$?
+\vspace{75mm}
 \end{Exercise}
 
 \begin{Answer}[ref = expect]
