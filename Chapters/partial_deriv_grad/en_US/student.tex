@@ -63,3 +63,235 @@ will unlock a powerful mathematical framework for analyzing and
 optimizing functions of multiple variables. These tools will equip you
 to tackle advanced calculus problems and gain deeper insights into the
 behavior of functions in diverse fields.
+
+\section{Calculating Partial Derivatives}
+For a function of two variables, $f(x,y)$, we can take the derivative with 
+respect to $x$ or with respect to $y$. These are called the \textit{partial 
+derivatives} of $f$.\index{partial derivative} Formally, the partial 
+derivatives are defined as:
+
+\begin{mdframed}[style = important, frametitle = {Limit Definition of Partial 
+Derivatives}]
+$$f_x(x, y) = \lim_{h \to 0} \frac{f(x + h, y) - f(x, y)}{h}$$
+$$f_y(x, y) = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}$$
+\end{mdframed}
+
+Let's consider a polynomial function of two variables: $f(x, y) = 3x^2 + y^3 + 
+4xy$. We will use the limit definition to find the partial derivative with 
+respect to $x$, then compare this to what we already know about derivatives of 
+single-variable functions. Recall that if we can describe a function as a sum of 
+two other functions, the derivative of the original function is the same as the 
+sum of the derivatives of the other functions. That is, 
+$$\text{if } f(x) = g(x) + h(x)$$
+$$\text{then } f'(x) = g'(x) + h'(x)$$
+
+Let's then define $r(x, y) = 3x^2$, $s(x, y) = y^3$, and $t(x, y) = 4xy$. And 
+so $f(x, y) = r(x, y) + s(x, y) + t(x, y)$, which means $f_x(x, y) = r_x(x, y) 
++ s_x(x, y) + t_x(x, y)$. Then,
+$$f_x(x, y) = \lim_{h \to 0} \frac{r(x + h, y) - r(x, y)}{h} + \lim_{h \to 0} 
+\frac{s(x + h, y) - s(x, y)}{h} + \lim_{h \to 0} \frac{t(x + h, y) - t(x, y)}{
+h}$$
+$$= \lim_{h \to 0} \frac{3(x + h)^2 - 3x^2}{h} + \lim_{h \to 0} \frac{y^3 - 
+y^3}{h} + \lim_{h \to 0} \frac{4(x + h)y - 4xy}{h}$$
+$$= \lim_{h \to 0} \frac{3x^2 + 6xh + h^2 - 3x^2}{h} + 0 + \lim_{h \to 0} 
+\frac{4xy + 4hy - 4xy}{h}$$
+
+Notice that $s_x(x, y) = 0$. This term only had $y$, and its derivative with 
+respect to $x$ is zero. Continuing, 
+
+$$f_x(x, y) = \lim_{h \to 0} \frac{6xh + h^2}{h} + \lim_{h \to 0} \frac{4hy}{h}
+= \lim_{h \to 0} 6x + h + \lim_{h \to 0} 4y$$
+$$= 6x + 4y$$
+
+As you can see, $r_x(x, y) = 6x$ and $t_x(x, y) = 4y$. Recall the polynomial 
+rule for single derivatives. The derivative of $3x^2$ is $6x$, which is also 
+what we see with the partial derivative in this case. What about the other 
+term, $4xy$? Well, we know the derivative of $bx$, where $b$ is a constant, is 
+$b$. The partial derivative of $4xy$ with respect to $x$ being $4y$ suggests 
+the rule for determining partial derivatives:
+
+\begin{mdframed}[style = important, frametitle = {Rule for Finding Partial 
+Derivatives of $f(x, y)$}]
+\begin{enumerate}
+    \item To find the partial derivative with respect to $x$, $f_x$, treat $y$ 
+    as a constant and differentiate with respect to $x$.
+    \item To find the partial derivative with respect to $y$, $f_y$, treat $x$ 
+    as a constant and differentiate with respect to $y$.
+\end{enumerate}
+\end{mdframed}
+
+Let's check this by predicting $f_y$ and then using the limit definition to 
+confirm our prediction. Applying the polynomial rule, we predict that $f_y$ is:
+$$f_y(x, y) = 3y^2 + 4x$$
+
+Which we found by treating $x$ as a constant and taking the derivative of each 
+term with respect to $y$. Let's see if we get the same result using the limit 
+definition of the derivative with respect to $y$:
+$$f_y(x, y) = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}$$
+$$= \lim_{h \to 0} \frac{\left[3x^2 + \left(y + h \right)^3 + 4x \left(y + h 
+\right) \right] - \left[ 3x^2 + y^3 + 4xy \right]}{h}$$
+$$= \lim_{h \to 0} \frac{3x^2 + y^3 + 3y^2h + 3yh^2 + h^3 + 4xy + 4xh - 3x^2 - 
+y^3 - 4xy}{h}$$
+$$= \lim_{h \to 0} \frac{3y^2h + 3yh^2 + h^3 + 4xh}{h} = \lim_{h \to 0} 3y^2 + 
+3yh + h^2 + 4x = 3y^2 + 4x$$
+
+Which is our expected result. In summary, you find the partial derivative with 
+respect to a particular variable by treating all the other variables as 
+constants and differentiating with respect to the particular variable, applying
+the rules of differentiation you've already learned. 
+
+\subsection{Partial Derivative Notation}
+There are many ways to denote a partial derivative. We've already seen one way,
+$f_x$ and $f_y$. Another common notation uses a lowercase Greek letter delta, 
+and a further uses capital D. They are shown below:
+
+\begin{mdframed}[style = important, frametitle = {Partial Derivative Notations}]
+$$f_x(x, y) = f_x = \frac{\partial f}{\partial x} = \frac{\partial}{\partial x}
+f(x, y) = D_x f$$
+$$f_y(x, y) = f_y = \frac{\partial f}{\partial y} = \frac{\partial}{\partial y}
+f(x, y) = D_y f$$
+\end{mdframed}
+
+\begin{Exercise}[title = {First Partial Derivatives}, label = first]
+Find $f_x$ and $f_y$ for the following functions.
+\begin{enumerate}
+\item $f(x, y) = 3x^4 + 4x^2y^3$
+\item $f(x, y) = xe^{-y}$
+\item $f(x, y) = \sqrt{3x + 4y^2}$
+\item $f(x, y) = \sin{x^2y}$
+\item $f(x, y) = \ln{ \left(x^y \right)}$
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = first]
+\begin{enumerate}
+    \item $f_x(x, y) = \frac{\partial}{\partial x} \left[ 3x^4 + 4x^2y^3 
+    \right] = 12x^3 + 8y^3$ and $f_y(x, y) = \frac{\partial}{\partial y} 
+    \left[ 3x^4 + 4x^2y^3 \right] = 12x^2y^2$
+    \item $f_x(x, y) = \frac{\partial}{\partial x} \left(xe^{-y} \right) = 
+    e^{-y}$ and $f_y(x, y) = \frac{\partial}{\partial y} \left(xe^{-y} \right) 
+    = -xe^{-y}$
+    \item $f_x(x, y) = \frac{\partial}{\partial x} \sqrt{3x + 4y^2} = \left( 
+    \frac{1}{2\sqrt{3x + 4y^2}} \right) \left( \frac{\partial}{\partial x } 
+    \left(3x + 4y^2 \right) \right) = \frac{3}{2\sqrt{3x + 4y^2}}$ and $f)y(x, 
+    y) = \frac{\partial}{\partial y} \sqrt{3x + 4y^2} = \frac{1}{2\sqrt{3x + 
+    4y^2}} \left( \frac{\partial}{\partial y} \left(3x + 4y^2 \right) \right) 
+    = \frac{8y}{2\sqrt{3x + 4y^2}} = \frac{4y}{\sqrt{3x + 4y^2}}$
+    \item $f_x(x, y) = \frac{\partial}{\partial x} \sin{ \left(x^2y \right)} = 
+    \cos{\left( x^2y \right)} \left( \frac{\partial}{\partial x} \left(x^2y 
+    \right) \right) = 2xy\cos{\left(x^2y \right)}$ and $f_y(x, y) = \frac{
+    \partial}{\partial y} \sin{ \left(x^2y \right)} = \cos{ \left(x^2y \right)}
+    \left( \frac{\partial}{\partial y} \left(x^2 y \right) \right) = x^2\cos{ 
+    \left( x^2 y \right)}$
+    \item $f_x(x, y) = \frac{\partial}{\partial x} \ln{ \left( x^y \right)} = 
+    \frac{\partial}{\partial x} \left(y \ln{x} \right) = \frac{y}{x}$ and $f_y(
+    x, y) = \frac{\partial}{\partial y} \left(y \ln{x} \right) = \ln{x}$
+\end{enumerate}
+\end{Answer}
+
+\subsection{Partial Derivatives of Functions of More than Two Variables}
+The above method of determining partial derivatives applies to functions with 
+three, four, or any number of variables.
+
+\textbf{Example}: Find all the first derivatives of the function $f(x, y, z) = 
+y\cos{ \left(x^2 + 3z \right)}$. 
+
+\textbf{Solution}: 
+$$\frac{\partial f}{\partial x} = \frac{\partial}{\partial x} \left[ y \cos{ 
+\left(x^2 + 3z \right)} \right] = -y\sin{\left(x^2 + 3z \right)} \left( \frac{
+\partial}{\partial x} \left( x^2 + 3z \right) \right)$$
+$$\frac{\partial f}{\partial x} = -2xy \sin{ \left( x^2 + 3z \right)}$$
+
+And
+$$\frac{\partial f}{\partial y} = \frac{\partial}{\partial y} \left[ y\cos{ 
+\left(x^2 + 3z \right)} \right]$$
+$$\frac{\partial f}{\partial y} = \cos{ \left(x^2 + 3z \right)}$$
+
+And
+$$\frac{\partial f}{\partial z} = \frac{\partial}{\partial z} \left[ y \cos{ 
+\left(x^2 + 3z \right)} \right] = -y\sin{ \left(x^2 + 3z \right)} \left( \frac{
+\partial}{\partial z} \left( x^2 + 3z \right) \right)$$
+$$\frac{\partial f}{\partial z} = -3y \sin{ \left(x^2 + 3z \right)}$$
+
+\begin{Exercise}[title = {Partial Derivatives with 3 or More Variables}, 
+label = three]
+Find all first partial derivatives of the following functions.
+\begin{enumerate}
+\item $f = \sin{\left( x^2 - y^2 \right)} \cos{\left( \sqrt{z} \right)}$
+\item $q = \sqrt[3]{t^3 + u^3\sin{\left(5v \right)}}$
+\item $w = x^z y^x$
+\end{enumerate}
+\vspace{100mm}
+\end{Exercise}
+
+\begin{Answer}[ref = three]
+\begin{enumerate}
+    \item Finding $f_x$:
+    $$f_x = \frac{\partial}{\partial x} \left[ \sin{ \left( x^2 - y^2 \right)} 
+    \cos{ \left( \sqrt{z} \right)} \right] = \cos{ \left(x^2 - y^2 \right)} 
+    \cos{ \left( \sqrt{z} \right)} \left[ \frac{\partial}{\partial x} \left( 
+    x^2 - y^2 \right) \right]$$
+    $$f_x = 2x \cos{ \left(x^2 - y^2 \right)} \cos{ \left( \sqrt{z} \right) }$$
+
+    Finding $f_y$:
+    $$f_y = \frac{\partial}{\partial y} \left[ \sin{\left( x^2 - y^2 \right)} 
+    \cos{\left( \sqrt{z} \right)} \right] = \cos{ \left( x^2 - y^2 \right)} 
+    \cos{ \left( \sqrt{z} \right) } \left[ \frac{\partial}{\partial y} \left(
+    x^2 - y^2 \right) \right]$$
+    $$f_y = -2y \cos{ \left( x^2 - y^2 \right)} \cos{\left( \sqrt{z} \right)}$$
+
+    Finding $f_z$:
+    $$f_z = \frac{\partial}{\partial z} \left[ \sin{\left( x^2 - y^2 \right)} 
+    \cos{\left( \sqrt{z} \right)} \right] = \sin{ \left( x^2 - y^2 \right) } 
+    \left( -\sin{ \sqrt{z} } \right) \cdot \left( \frac{\partial}{\partial z} 
+    \sqrt{z} \right)$$
+    $$f_z = \frac{-\sin{ \left( x^2 - y^2 \right)} \sin{ \left( \sqrt{z} 
+    \right)}}{2\sqrt{z}}$$
+
+    \item Finding $q_t$:
+    $$q_t = \frac{\partial}{\partial t} \sqrt[3]{t^3 + u^3 \sin{ \left(5v 
+    \right)}} = \frac{1}{3 \left(t^3 + u^3 \sin{ \left( 5v \right)} \right)^{
+    2/3}} \left( \frac{\partial}{\partial t} \left(t^3 + u^3 \sin{ \left(5v 
+    \right)} \right) \right)$$
+    $$q_t = \frac{t^2}{\left( t^3 + u^3 \sin{\left(5v \right)} \right)^{2/3}}$$
+
+    Finding $q_u$:
+    $$q_u = \frac{\partial}{\partial u} \sqrt[3]{t^3 + u^3\sin{\left(5v \right)
+    }} = \frac{1}{3 \left( t^3 + u^3 \sin{ \left(5v \right)} \right)^{2/3}} 
+    \left( \frac{\partial}{\partial u} \left(t^3 + u^3 \sin{ \left(5 v \right)}
+    \right) \right) $$
+    $$q_u = \frac{u^2 \sin{ \left( 5v \right) }}{\left( t^3 + u^3 \sin{ \left( 
+    5v \right)} \right)^{2/3}}$$
+
+    Finding $q_v$:
+    $$q_v = \frac{\partial}{\partial v} \sqrt[3]{t^3 + u^3\sin{\left(5v \right)
+    }} = \frac{1}{3 \left(t^3 + u^3 \sin{\left( 5v \right)} \right)^{2/3}} 
+    \left( \frac{\partial}{\partial v} \left(t^3 + u^3 \sin{ \left( 5v \right)}
+    \right) \right)$$
+    $$q_v = \frac{u^3 \cos{ \left( 5v \right)}}{3 \left( t^3 + u^3 \sin{ \left(
+    5v \right)} \right)^{2/3}} \left( \frac{\partial}{\partial v} \left( 5v 
+    \right) \right) = \frac{5u^3 \cos{ \left( 5v \right)}}{3 \left( t^3 + u^3 
+    \sin{ \left( 5v \right)} \right)^{2/3}}$$
+
+    \item Finding $w_x$:
+    $$w_x = \frac{\partial}{\partial x} \left( x^z y^x \right) = \left( x^z 
+    \right) \cdot \left( \frac{\partial}{\partial x} y^x \right) + \left( y^x 
+    \right) \cdot \left( \frac{\partial}{\partial x} x^z \right)$$
+    $$w_x = \left(x^z \right) \left( \ln{ \left( y \right)} y^x \right) + 
+    \left( y^x \right) \left(zx^{z-1} \right) = \left(x^{z-1} y^x \right) 
+    \left( x\ln{\left( y \right)} + z \right)$$
+
+    Finding $w_y$:
+    $$w_y = \frac{\partial}{\partial y} \left(x^z y^x \right) = \left( x^z 
+    \right) \left( \frac{\partial}{\partial y} y^x \right) = x^z \left( xy^{
+    x - 1} \right)$$
+    $$w_y = x^{z + 1} y^{x - 1}$$
+
+    Finding $w_z$:
+    $$w_z = \frac{\partial}{\partial z} \left( x^z y^x \right) = \left( y^x 
+    \right) \left( \frac{\partial}{\partial z} x^z \right) = \left( y^x \right)
+    \left( \ln{\left(x \right)} x^z \right)$$
+    $$w_z = \ln{ \left(x \right)} y^x x^z$$
+\end{enumerate}
+\end{Answer}
