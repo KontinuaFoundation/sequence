@@ -556,7 +556,174 @@ plane $y = \pi/3$ (see figure \ref{fig:tangent}). Alternatively, you could
 think of $f_x$ as the slope of the tangent line to the surface that is 
 parallel to the $x$-axis. 
 
+Similarly, we can fix $x = 1$ and look at the intersection between the surface 
+$z = \cos{y} - x^2$ and the plane $x = 1$ (see figure \ref{fig:ytangent}. And 
+just like before, we can describe this intersection as $h(y) = f(1, y)$, which 
+means the slope of a line tangent to the intersection is given by $h'(y) = 
+f_{y}(1, y)$. Therefore, as with $f_x$, $f_y(a, b)$ gives the slope of a line 
+tangent to the point $\left(a, b, f(a, b) \right)$ and parallel to the $y$-axis. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[]
+        \addplot3[mesh, samples = 50, domain = -3:3]{cos(deg(y)) - x^2};
+        \addplot3[black, mark=*] coordinates {(1, 1.047, -0.5)};
+        \filldraw[blue!30, opacity = 0.4] (1, -3, -10) -- (1, -3, 0.5) 
+        -- (1, 3, 0.5) -- (1, 3, -10) -- cycle;
+        \addplot3+[draw=blue, line width = 1pt, domain = -3:3, samples y = 0, 
+        mark=none] (1, {x}, {cos(deg(x))-1});
+    \end{axis}
+\end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xlabel = $y$, ylabel = $z$]
+            \addplot[blue, thick, domain = -4:4, samples = 150] 
+            {cos(deg(x)) - 1};
+            \addplot[black, thin, dashed, domain = 0.5:2] 
+            {-0.866*(x - 1.047) - 0.5};
+            \addplot[black, mark=*] coordinates {(1.047, -0.5)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The intersection between the surface $z = \cos{y} - x^2$ and 
+    $x = 1$ is the trigonometric function $z = \cos{y} - 1$}
+    \label{fig:ytangent}
+\end{figure}
+
+\textbf{Example}: The density of bacterial growth at a point $(x, y)$ on a 
+flat agar plate is given by $D = 45/\left(2 + x^2 + y^2 \right)$. Find the 
+rate of change of bacterial density at the point $(1, 3)$ (a) in the 
+$x$-direction and (b) in the $y$-direction. Interpret the meaning of your 
+results. 
+
+\textbf{Solution}: The rate of change of a two-variable function in the 
+$x$-direction is given by the partial derivative with respect to $x$:
+$$D_x = \frac{\partial}{\partial x} \frac{45}{2 + x^2 + y^2} = \frac{-45 
+\left( \partial/\partial x \right) \left(2 + x^2 + y^2 \right)}{\left(2 + 
+x^2 + y^2 \right)^2}$$
+$$= \frac{-90x}{\left( 2 + x^2 + y^2 \right)^2}$$
+
+And the rate of change in the $x$-direction at $(x, y) = (1, 3)$ is given by:
+$$D_x(1, 3) = \frac{-90(1)}{\left( 2 + 1^2 + 3^2 \right)^2} = \frac{-90}{\left(
+12 \right)^2} = \frac{-90}{144} = -\frac{5}{8}$$
+
+This means that at $(1, 3)$ the density of bacteria is decreasing as you move 
+away $x = 0$ along the line $y = 3$.
+
+Similarly, the rate of change in the $y$-direction is given by the partial 
+derivative with respect to $y$:
+$$D_y = \frac{\partial}{\partial y} \frac{45}{2 + x^2 + y^2} = \frac{-45 \left(
+\partial/\partial y \right) \left(2 + x^2 + y^2 \right)}{\left( 2 + x^2 + y^2 
+\right)^2}$$
+$$= \frac{-90y}{\left(2 + x^2 + y^2 \right)^2}$$
+
+And the rate of change in the $y$-direction at $(x, y) = (1, 3)$ is given by:
+$$D_y(1, 3) = \frac{-90(3)}{\left(2 + 1^2 + 3^2 \right)^2} = \frac{-270}{144} 
+= -\frac{15}{8}$$
+
+This means that at $(1, 3)$ the density of bacteria is decreasing faster along 
+the $y$-direction than along the $x$-direction. 
+
+\begin{Exercise}[title = {Using partial derivatives to find tangent lines}, 
+label = tangent]
+Find equations for tangent lines to the surface at the given $xy$-coordinate. 
+In which direction is the function changing the fastest?
+\begin{enumerate}
+\item $z = x^2e^{y/x}$, $(1, -1)$
+\item $z = \cos{x} + y\sin{y}$, $(\pi, \pi/2)$
+\item $z = x^2y - 3xy^2$, $(3, 2)$
+\end{enumerate}
+\vspace{75mm}
+\end{Exercise}
+
+\begin{Answer}[ref = tangent]
+\begin{enumerate}
+    \item $z(1, -1) = (1)^2e({-1/1} = 1/e$. Therefore, we are looking for 
+    tangent lines through the point $(1, -1, 1/e)$. Finding a tangent line 
+    parallel to the $x$-axis: $\frac{\partial z}{\partial x} = \frac{\partial}{
+    \partial x} \left( x^2e^{y/x} \right) = x^2 \left( \frac{\partial}{\partial
+    x}e^{y/x} \right) + e^{y/x} \left( \frac{\partial}{\partial x}x^2 \right) =
+    x^2e^{y/x} \left( \frac{\partial}{\partial x} \frac{y}{x} \right) + 2x
+    e^{y/x} = x^2 e^{y/x} \left( \frac{-y}{x^2} \right) + 2xe^{y/x} = \left( 
+    2x - y \right)e^{y/x}$ and $z_x(1, -1) = \left( 2(1) - (-1) \right) 
+    e^{-1/1} = \left(3 \right)e^{-1} = 3/e$. So the slope of a line tangent to 
+    the surface at $(1, -1, 1/e)$ parallel to the $x$-axis is $3/e$ and an 
+    equation for that line is $z = 3/e \left(x - 1 \right) - 1/e$. 
+
+    Finding a tangent line parallel to the $y$-axis: $\frac{\partial z}{
+    \partial y} = \frac{\partial}{\partial y} \left( x^2e^{y/x} \right) = x
+    e^{y/x}$ and $z_y(1, -1) = (1)e^{-1/1} = 1/e$. So the slope of a line 
+    tangent to the surface at $(1, -1, 1/e)$ parallel to the $y$-axis is $1/e$ 
+    and an equation for that line is $z = 1/e \left(y + 1 \right) - 1/e$. 
+
+    The function is changing faster in the $x$-direction. 
+
+    \item $z(\pi, \pi/2) = \cos{(\pi)} + \frac{\pi}{2}\sin{(\pi/2)} = \frac{
+    \pi}{2} - 1 $. Therefore, we are looking for tangent lines through the 
+    point $(\pi, \pi/2, \pi/2 - 1)$. Finding a tangent line parallel to the 
+    $x$-axis: $\frac{\partial z}{\partial x} = \frac{\partial}{\partial x} 
+    \left( \cos{x} + y\sin{y} \right) = -\sin{x}$ and $z_x(\pi, \pi/2) = -\sin{
+    \pi} = 0$. So the slope of a line tangent to the surface at $(\pi, \pi/2, 
+    \pi/2 - 1)$ parallel to the $x$-axis is $0$ and an equation for that line 
+    is $z = \pi/2 - 1$.
+
+    Finding a tangent line parallel to the $y$-axis: $\frac{\partial z}{
+    \partial y} = \frac{\partial}{\partial y} \left( \cos{x} + y\sin{y} \right)
+    = y \left( \frac{\partial}{\partial y}\sin{y} \right) + \sin{y} \left( 
+    \frac{\partial}{\partial y} y \right) = y\cos{y} + \sin{y}$ and $z_y(\pi, 
+    \pi/2) = \left( \frac{\pi}{2} \right) \cos{ \left( \frac{\pi}{2} \right) } 
+    + \sin{ \left( \frac{\pi}{2} \right) } = 1$. So the slope of a line tangent
+    to the surface at $( \pi, \pi/2, \pi/2 - 1 )$ parallel to the $y$-axis is 
+    $1$ and an equation for that line is $z = \left( y - \pi/2 \right) - \left(
+    \pi/2 - 1 \right) = y - \pi + 1$. 
+
+    The function is changing faster in the $y$-direction.
+
+    \item $z(3, 2) = 3^2(2) - 3(3)(2^2) = 18 - 36 = -18$. Therefore, we are 
+    looking for tangent lines through the point $(3, 2, -18)$. Finding a 
+    tangent line parallel to the $x$-axis: $\frac{\partial z}{\partial x} = 
+    \frac{\partial}{\partial x} \left( x^2y - 3xy^2 \right) = 2xy - 3y^2$ and 
+    $z_x(3, 2) = 2(3)(2) - 3(2)^2 = 0$. So the slope of a line tangent to the 
+    surface at $(3, 2, -18)$ is $0$ and an equation for that line is $z = -18$
+
+    Finding a tangent line parallel to the $y$-axis: $\frac{\partial z}{
+    \partial y} = \frac{\partial}{\partial y} \left( x^2y - 3xy^2 \right) = 
+    x^2 - 6xy$ and $z_y(3, 2) = 3^2 - 6(3)(2) = 9 - 36 = -27$. So the slope of 
+    a line tangent to the surface at $(3, 2, -18)$ is $-27$ and an equation for
+    that line is $z = -27(y - 2) + -18 = -27y + 54 - 18 = 36 - 27y$.
+
+    The function is changing faster in the $y$-direction. 
+\end{enumerate}
+\end{Answer}
+
 \section{Gradient Vectors}
+The gradient vector is used to find the direction of the maximum rate of change of a surface (for example, the steepest part of a mountain). In order to understand the gradient, we must first discuss directional derivatives. 
+
+\subsection{Directional Derivatives}
+The contour map in figure (fix me make figure) shows the elevation, $H(x, y)$ for a mountain. You already know that you can use the partial derivatives, $H_x$ and $H_y$ to find the rate of change in elevation going east-west or north-south. But what about other directions? Suppose the hiking path you're on goes north-east. How can you predict the steepness (i.e. the rate of elevation change) along this path? The directional derivative allows us to find the rate of change in any direction. 
+
+[explanation]
+
+\begin{mdframed}[style = important, frametitle = {The Directional Derivative}]
+Let $f$ be a differentiable function and \textbf{u} be a unit vector, $\textbf{u} = <a, b>$. Then the directional derivative in the direction of \textbf{u} is:
+$$D_u f(x, y) = f_x(x, y)a + f_y(x, y)b$$
+\end{mdframed}
+
+\textbf{Example}: Find the directional derivative $D_u f(x, y)$ if $f(x, y) = y^3 - 3xy + 4x^2$ and \textbf{u} is the unit vector given by the angle $\theta = \pi/3$. What is the rate of change in the direction of \textbf{u} at $(1, 2)$?
+
+\textbf{Solution}: We can describe \textbf{u} thusly:
+$$\textbf{u} = \left[ \cos{ \frac{\pi}{3} }, \sin{ \frac{\pi}{3}} \right] = \left[ \frac{1}{2}, \frac{\sqrt{3}}{2} \right]$$
+
+And therefore:
+$$D_u f(x, y) = f_x(x, y) \left( \frac{1}{2} \right) + f_y(x, y) \left( \frac{\sqrt{3}}{2} \right) $$
+$$= \frac{\partial}{\partial x} \left( y^3 - 3xy + 4x^2 \right) \left( \frac{1}{2} \right) + \frac{\partial}{\partial y} \left( y^3 - 3xy + 4x^2 \right) \left( \frac{\sqrt{3}}{2} \right)$$
+$$= \frac{1}{2} \left( -3y + 8x \right) + \frac{\sqrt{3}}{2} \left( 3y^2 - 3x \right)$$
+$$= \frac{-3}{2}y + 4x + \frac{3\sqrt{3}}{2}y^2 - \frac{3\sqrt{3}}{2}x = \frac{3\sqrt{3}}{2}y^2 + \frac{8-3\sqrt{3}}{2}x - \frac{3}{2}y$$
+
+And therefore $D_u f(1, 2)$ is:
+$$= \frac{3\sqrt{3}}{2} \left( 2 \right)^2 + \frac{8 - 3\sqrt{3}}{2} \left( 1 \right) - \frac{3}{2} \left( 2 \right) = 6\sqrt{3} + 4 - \frac{3\sqrt{3}}{2} - 3$$
+$$= 1 + \frac{9\sqrt{3}}{2}$$
+
+
 
 \section{Applications of Partial Derivatives and Gradients}
 
