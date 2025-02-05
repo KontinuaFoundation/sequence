@@ -1,7 +1,7 @@
 \chapter{Simulation with Vectors}
 
-You wrote a python program that simulated to the flight of a hammer to predict its altitude.   Your simulation
-dealt only with scalars.  Now you are ready to create simulations of positions, velocities, accelerations, and forces as vectors.
+In an earlier chapter, you wrote a python program that simulated the flight of a hammer to predict its altitude. Your simulation
+dealt only with scalars.  Now, you are ready to create simulations of positions, velocities, accelerations, and forces as vectors.
 
 In this chapter, you are going to simulate two moons that, as they wandered through the vast universe,  get caught
 in each other's gravity well.   We will assume there are no other forces acting upon the moons.
@@ -12,16 +12,16 @@ We talked about the magnitude of a gravitational attraction between two masses:
 
 $$F = G\frac{m_1 m_2}{r^2}$$
 
-Where $F$ is the magnitude of the force in newtons, $m_1$ and $m_2$ are the masses in kg,  $r$ is the distance between them in meters, and $g$ is the universal gravitational constant: $6.67430 \times 10^{−11}$.
+where $F$ is the magnitude of the force in newtons, $m_1$ and $m_2$ are the masses in kg,  $r$ is the distance between them in meters, and $g$ is the universal gravitational constant: $6.67430 \times 10^{−11}$.
 
 What is the direction?  For the two moons,  the force on moon 1 will pull toward moon 2.  
-And the force on moon 2 will pull toward moon 1.
+Likewise, the force on moon 2 will pull toward moon 1.
  
 Of course,  if something is big (like the sun),  you need to be more specific:  The force points directly at the center
 of mass of the object that is generating the force.
 
-Each of the moons will start off with a velocity vector.   That velocity vector will change over time a the moon is
-accelerated by the force of gravity.  If you have a mass $m$ with an initial velocity vector of $\vec{v_0}$ that is being accelerated with a constant force vector $\vec{F}$,  at time $t$ the new velocity vector will be:
+Each of the moons will start off with a velocity vector. That velocity vector will change over time as the moon is
+accelerated by the force of gravity.  If you have a mass $m$ with an initial velocity vector of $\vec{v_0}$ that is being accelerated with a constant force vector $\vec{F}$, at time $t$, the new velocity vector will be:
 
 $$\vec{v}_t = \vec{v}_0  + \frac{t}{m}  \vec{F}$$
 
@@ -34,18 +34,18 @@ $$\vec{p}_t = \vec{p}_0  + t \vec{v}$$
 
 As two moons orbit each other,  the force, acceleration, velocity, and position are changing smoothly and continuously.  It is difficult to simulate truly continuous things on a digital computer.
 
-However,  think about a movie:  It shows you many frames each second.   Each frame is a still picture of the 
-state of the system.  And the more frames per second,  the smoother it looks.
+However,  think about how a movie shows you many frames each second.   Each frame is a still picture of the 
+state of the system.  The more frames per second,  the smoother it looks.
 
-We do a similar trick in simulations.   We say "We are going run our simulation in 2 hour steps.   We will assume
-that the acceleration and velocity were constant for those two hours.   We will update our position vectors accordingly,  and then we will recalculate our acceleration and velocity vectors."
+We do a similar trick in simulations. We say "We are going run our simulation in 2 hour steps. We will assume
+that the acceleration and velocity were constant for those two hours.   We will update our position vectors accordingly, then we will recalculate our acceleration and velocity vectors."
 
-Generally,  as you make the step size smaller,  your simulation will get more accurate and take longer to execute.
+Generally, as you make the step size smaller,  your simulation will get more accurate and take longer to execute.
 
 \section{Make a Text-based Simulation}
 
-To start,  you are going to write a Python program that simulates the moons and prints out their
-position for every time step.  Later we will add graphs and even animation.
+To start, you are going to write a Python program that simulates the moons and prints out their
+position for every time step.  Later, we will add graphs and even animation.
 
 We are going to assume the two moons are traveling the same plane so we can do all the math and graphing 
 in 2 dimensions.
@@ -53,13 +53,13 @@ in 2 dimensions.
 Each moon will be represented by a dictionary containing the state of the moon:
 \begin{itemize}
 \item Its mass in kilograms
-\item Its position -- a 2-dimensional vector represent $x$ and $y$ coordinates of the center of the moon.
-\item Its velocity -- a 2-dimensional vector
-\item Its radius -- Each moon has a radius so we know when the centers of the two moons are so close to each other that they must have collided.
-\item Its color -- We will use that when do the plots and animations.  One moon will be red, the other blue.
+\item Its position --- A 2-dimensional vector represent $x$ and $y$ coordinates of the center of the moon.
+\item Its velocity --- A 2-dimensional vector
+\item Its radius --- Each moon has a radius so we know when the centers of the two moons are so close to each other that they must have collided.
+\item Its color --- We will use that when do the plots and animations.  One moon will be red, the other blue.
 \end{itemize}
 
-Then there will be a loop where we will update the positions of the moons and then recalculate the 
+There will then be a loop where we will update the positions of the moons and then recalculate the 
 acceleration and velocities.    
 
 How much time will be simulated?  100 days or until the moons collide,  whichever
@@ -67,7 +67,7 @@ comes first.
 
 We will use numpy arrays to represent our vectors.
 
-Create a file called \filename{moons.py}  and type in this code:
+Create a file called \filename{moons.py}, and type in this code:
 
 \begin{verbatim}
 import numpy as np
@@ -173,12 +173,12 @@ Day 100.00:
 Generated 1201 data points.
 \end{verbatim}
 
-Look over the code.   Make sure you understand what every line does.
+Look over the code. Make sure you understand what every line does.
 
 \section{Graph the Paths of the Moons}
 
-Now you will use the matplotlib to graph the paths of the moons.   Add this line to the beginning of 
-\filename{moons.py}
+Now, you will use the matplotlib to graph the paths of the moons. Add this line to the beginning of 
+\filename{moons.py}.
 
 \begin{verbatim}
 import matplotlib.pyplot as plt
@@ -214,7 +214,7 @@ When you run it,   your \filename{plotmoons.png} should look like this:
 
 It is nifty to see the paths,  but we don't know where each moon was at a particular time.  In fact, it is difficult to figure out which end of each curve was the beginning and which was the ending.
 
-What if we added some lines and labels every 300 steps to put a sense of time into the plot?  Add one more  constant after the import statements:
+What if we added some lines and labels every 300 steps to put a sense of time into the plot?  Add one more constant after the import statements:
 \begin{verbatim}
 PAIR_LINE_STEP = 300  # How time steps between pair lines
 \end{verbatim}
@@ -246,9 +246,9 @@ When you run it,  your plot should look like this:
 
 \includegraphics[width=0.5\textwidth]{plotmoons_02.png}
 
-Now you can get a feel for what happened:  The moons were attracted to each other by gravity and started to circle each other. The heavier moon accelerates less quickly,  thus it makes a smaller loop.
+Now you can get a feel for what happened.  The moons were attracted to each other by gravity and started to circle each other. The heavier moon accelerates less quickly,  so it makes a smaller loop.
 
-Maybe we will get a better feel for what is happening if we look at more time.   Let's increase it to 400 days.  Change the relevant constant:
+Maybe we will get a better feel for what is happening if we look at more time. Let's increase it to 400 days. Change the relevant constant:
 
 \begin{verbatim}
 MAX_TIME = 400 * SEC_PER_DAY # 100 days
@@ -258,12 +258,12 @@ Now it should look like this:
 
 \includegraphics[width=0.5\textwidth]{plotmoons_03.png}
 
-Now you can see the pattern: They are rotating around each other and the pair is gradually migrating
+Now you can see the pattern. They are rotating around each other and the pair is gradually migrating
 up and to the right.
 
 \section{Conservation of Momentum}
 
-You are observing a really important idea: the momentum of a system will be conserved.   That is,  absent forces from outside the system,  the velocity of the center of mass will not change.
+You are observing an extra important idea: the momentum of a system will be conserved. That is,  absent forces from outside the system,  the velocity of the center of mass will not change.
 
 We can compute the initial center of mass and its velocity.   In both cases,  we just do a weighted average using the mass of the moon as the weight. 
 
@@ -294,7 +294,7 @@ Anywhere later in the loop (after you update the positions of the moon),  update
     cm_position = cm_position + cm_velocity * TIME_STEP
 \end{verbatim}
 
-Now let's look at the positions of the moons relative to the center of mass.   Before you do any plotting,  
+Now, let's look at the positions of the moons relative to the center of mass.   Before you do any plotting,  
 convert the list to a numpy array and subtract it from the positions:
 
 \begin{verbatim}
@@ -305,7 +305,7 @@ positions1 = positions1 - cms
 positions2 = positions2 - cms
 \end{verbatim}
 
-Now when you run it you can really see what is happening:
+When you run it, you can really see what is happening:
 
 \includegraphics[width=0.5\textwidth]{plotmoons_04.png}
 
@@ -317,7 +317,7 @@ One of the features of matplotlib that not a lot of people understand is how to 
 seems like a really great opportunity to make an animation showing the position, velocity, acceleration of the moons.  We will also show the center of mass.
 
 The trick to animations is that you create a bunch "artist" objects.  You create a function that updates the 
-artists.   matplotlib will call your functions,  tell the artists to draw themselves,  and make a movie out of that.
+artists. matplotlib will call your functions,  tell the artists to draw themselves,  and make a movie out of that.
 
 Make a copy of \filename{moons.py} called \filename{animate\_moons.py}. 
 
@@ -512,10 +512,10 @@ center of mass:
 
 It is time to stretch a little as a physicist and programmer:  You are going to make a new version of \filename{moons.py} that handles three moons instead of just two.
 
-This is known as "The Three-Body Problem," and people have tried for centuries to come up with 
+This is known as ''The Three-Body Problem'', and people have tried for centuries to come up with 
 a way to figure out (from the initial conditions) where the three moons would be at time $t$ without doing a simulation.  And no one has.
 
-For a lot of problems,  the outcome is not very sensitive to the initial conditions.   For example,  the flight of a
+For a lot of problems,  the outcome is not very sensitive to the initial conditions. For example, consider the flight of a
 cannonball:  If it leaves the muzzle of the cannon a little faster,  it will go a little farther.
 
 For the three-body problem,  the outcome can be radically different even if the initial conditions are very similar.  
@@ -535,11 +535,11 @@ m3 = {
 }  
 \end{verbatim}
 
-If I run that simulation for 100 days,  I get a plot like this:
+If we run that simulation for 100 days, we get a plot like this:
 
 \includegraphics[width=0.6\textwidth]{plot3moons_01.png}
 
-Visibly you can see this is very different from the two-body problem that just traced ellipses around the center of mass.
+Visibly, you can see this is very different from the two-body problem that just traced ellipses around the center of mass.
 
 
 
