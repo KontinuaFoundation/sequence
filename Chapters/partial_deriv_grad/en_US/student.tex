@@ -353,6 +353,7 @@ $f_{xy} = f_{yx}$).
     \item $f(x, y) = \frac{x^2}{x + y}$
     \item $f(x, y) = \ln{\left( 2x + 3y \right)}$
 \end{enumerate}
+\vspace{70mm}
 \end{Exercise}
 
 \begin{Answer}
@@ -427,6 +428,7 @@ Find all second order partial derivatives of the function.
 \item $v = \sin{\left( p^3 + q^2 \right)}$
 \item $T = e^{-3r} \cos{\theta^2}$
 \end{enumerate}
+\vspace{75mm}
 \end{Exercise}
 
 \begin{Answer}[ref = second]
@@ -738,10 +740,15 @@ find the rate of change in any direction.
 
 \begin{mdframed}[style = important, frametitle = {The Directional Derivative}]
 Let $f$ be a differentiable function and \textbf{u} be a unit vector, 
-$\textbf{u} = <a, b>$. Then the directional derivative in the direction of 
+$\textbf{u} = \left[ a, b \right]$. Then the directional derivative in the direction of 
 \textbf{u} is:
-$$D_u f(x, y) = f_x(x, y)a + f_y(x, y)b$$
+$$D_u f(x, y) = f_x(x, y)a + f_y(x, y)b = \textbf{u}_x \left[ \frac{\partial}{
+\partial x} f(x, y) \right] + \textbf{u}_y \left[ \frac{\partial}{\partial y} 
+f(x, y) \right]$$
 \end{mdframed}
+
+Where $\textbf{u}_x$ and $\textbf{u}_y$ are the $x$- and $y$-components of 
+\textbf{u}, respectively. 
 
 \textbf{Example}: Find the directional derivative $D_u f(x, y)$ if $f(x, y) = 
 y^3 - 3xy + 4x^2$ and \textbf{u} is the unit vector given by the angle $\theta 
@@ -768,7 +775,321 @@ $$= \frac{3\sqrt{3}}{2} \left( 2 \right)^2 + \frac{8 - 3\sqrt{3}}{2} \left( 1
 3$$
 $$= 1 + \frac{9\sqrt{3}}{2}$$
 
+\subsection{Unit Vectors in Two Dimensions}
 
+What if the given vector is not a unit vector? We can scale the given vector 
+to find a unit vector in the same direction:
+
+\textbf{Example}: Find the directional derivative of $f(x, y) = 3x\sqrt{y}$ 
+at $(1, 4)$ in the direction of $\textbf{v} = \left[2, 1 \right]$.
+
+\textbf{Solution}: First, we need to find a unit vector in the same direction 
+as \textbf{v}. There are several ways to do this. In two dimensions, a unit 
+vector in the same direction as \textbf{v} can be found using trigonometry 
+(see figure \ref{fig:vector} for an illustration). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \draw[black, -latex] (-0.5, 0) -- (5, 0) node[right] {$x$};
+        \draw[black, -latex] (0, -0.5) -- (0, 3) node[above] {$y$};
+        \draw[red, thick, -latex] (0, 0) -- (4, 2);
+        \draw[red, thin, dashed] (0,0) -- (4, 0);
+        \draw[red, thin, dashed] (4, 0) -- (4, 2);
+        \draw[red, decorate, decoration = {brace, amplitude = 5pt, mirror}] 
+        (0, 0) -- (4, 0) node[midway, yshift = -0.5cm] {$\textbf{v}_x$};
+        \draw[red, decorate, decoration = {brace, amplitude = 5pt, mirror}] 
+        (4, 0) -- (4, 2) node[midway, xshift = 0.5cm] {$\textbf{v}_y$};
+        \draw[red, latex-] (2.4, 1.2) arc(180:135:2) node[right] {\textbf{v}};
+        \draw[blue, thick, -latex] (0, 0) -- (2, 1);
+        \draw[blue, latex-] (0.8, 0.4) arc(45:90:2) node[left] {\textbf{u}};
+        \node[font = \footnotesize] at (0.75, 0.2) {$\theta$};
+        \draw[blue, thin, dashed] (2, 0) -- (2, 1) -- (0, 1);
+        \draw[blue, decorate, decoration = {brace, amplitude = 5pt, mirror}] 
+        (2, 0) -- (2, 1) node[midway, xshift = 0.5cm] {$\textbf{u}_x$};
+        \draw[blue, decorate, decoration = {brace, amplitude = 5pt}] 
+        (0, 1) -- (2, 1) node[midway, yshift = 0.5cm] {$\textbf{u}_y$};
+    \end{tikzpicture}
+    \caption{\textbf{u} is a unit vector in the same direction as \textbf{v}}
+    \label{fig:vector}
+\end{figure}
+
+We know that $\theta = \arctan{ \left( \textbf{v}_y / \textbf{v}_x \right)}$. 
+Therefore, the $x$-component of the unit vector, \textbf{u}, is given by:
+$$\textbf{u}_x = |\textbf{u}| \cos{ \theta} = \cos{ \left( \arctan{ \frac{
+\textbf{v}_y}{\textbf{v}_x}} \right)}$$
+
+And similarly, we know that:
+$$\textbf{u}_y = |\textbf{u}| \sin{ \theta} = \sin{ \left( \arctan{ \frac{
+\textbf{v}_y}{\textbf{v}_x}} \right)}$$
+
+(Recall that since \textbf{u} is a unit vector, $|\textbf{u}| = 1$). 
+
+Let's use this method to find a unit vector, \textbf{u}, in the same direction 
+as $\textbf{v} = \left[ 2, 1 \right]$:
+$$\textbf{u}_x = \cos{ \left( \arctan{ \frac{1}{2} } \right) } \approx \cos{ 
+\left( 0.464 \right) } = \frac{2}{\sqrt{5}}$$
+$$\textbf{u}_y = \sin{ \left( \arctan{ \frac{1}{2} } \right) } \approx \sin{ 
+\left( 0.464 \right)} = \frac{1}{\sqrt{5}}$$
+
+Therefore, a unit vector in the same direction as \textbf{v} is $\textbf{u} = 
+\left[ 2/\sqrt{5}, 1/\sqrt{5} \right]$. 
+
+And we can find the directional derivative:
+$$D_u(x, y) = \textbf{u}_x \left[ \frac{\partial}{\partial x} f(x, y) \right] 
++ \textbf{u}_y \left[ \frac{\partial}{\partial y} f(x, y) \right]$$
+$$D_u(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left[ \frac{\partial}{
+\partial x} \left( 3x\sqrt{y} \right) \right] + \left( \frac{1}{\sqrt{5}} 
+\right) \left[ \frac{\partial}{\partial y} \left( 3x\sqrt{y} \right) \right]$$
+$$D_u(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left( 3\sqrt{y} \right) + 
+\left( \frac{1}{\sqrt{5}} \right) \left( \frac{3x}{2\sqrt{y}} \right)$$
+$$D_u(x, y) = \frac{12y + 3x}{2\sqrt{5y}}$$
+
+And to find the magnitude of the directional derivative at $(1, 4)$, we 
+substitute for $x$ and $y$:
+$$D_u(1, 4) = \frac{12(4) + 3(1)}{2\sqrt{5(4)}} = \frac{51}{4\sqrt{5}} 
+\approx 5.702$$
+
+\subsection{Unit Vectors in Higher Dimensions}
+The trigonometric explanation for finding unit vectors is more difficult to visualize in higher dimensions. However, there is another method that works well in 2, 3, and higher dimensions. Recall that the magnitude of a vector, $\textbf{v} = \left[ \textbf{v}_x, \textbf{v}_y \right]$ is given by $| \textbf{v} | = \sqrt{\left( \textbf{v}_x \right)^2 + \left( \textbf{v}_y \right)^2}$. For a vector with $n$ dimensions, $\textbf{v} = \left[ \textbf{v}_1, \textbf{v}_2, \cdots , \textbf{v}_n \right]$, the magnitude is given by $| \textbf{v} | = \sqrt{ \left( \textbf{v}_1 \right)^2 + \left( \textbf{v}_2 \right)^2 + \cdots + \left( \textbf{v}_n \right)^2}$. 
+
+To find a unit vector, \textbf{u}, in the same direction as \textbf{v}, we can scale \textbf{v} up or down so that its magnitude is 1. We can do this by dividing by \textbf{v}'s magnitude. Consider the two-dimensional vector used in the last example, $\textbf{v} = \left[ 2, 1 \right]$. Its magnitude is:
+$$| \textbf{v} | = \sqrt{\left( 2 \right)^2 + \left( 1 \right)^2} = \sqrt{5}$$
+
+Let's check if $\textbf{v} / | \textbf{v} |$ is a unit vector:
+$$ \frac{\textbf{v}}{|\textbf{v}|} = \left( \frac{1}{\sqrt{5}} \right) \left[ 2, 1 \right] = \left[ \frac{2}{\sqrt{5}}, \frac{1}{\sqrt{5}} \right]$$
+
+And the magnitude of this scaled vector is:
+$$ \left| \frac{\textbf{v}}{| \textbf{v} |} \right| = \sqrt{\left( \frac{2}{\sqrt{5}} \right)^2 + \left( \frac{1}{\sqrt{5}} \right)^2} = \sqrt{\frac{4}{5} + \frac{1}{5}} = \sqrt{1} = 1$$
+
+Notice our unit vector is the same as we found using the trigonometric method above. 
+
+Another way to think of the question is: what factor, $k$, can we multiply \textbf{v} by to yield a vector with a magnitude of 1? Let's see this method for the 3-dimensional vector $\textbf{v} = \left[ 3, 2, 1 \right]$. We are looking for a $k$ such that:
+$$|k\textbf{v}| = 1$$
+$$|k \textbf{v}| = \left| \left[ 3k, 2k, 1k \right] \right| = \sqrt{\left( 3k \right)^2 + \left( 2k \right)^2 + \left( 1k \right)^2}$$
+$$= \sqrt{9k^2 + 4k^2 + k^2} = k\sqrt{14} = 1$$
+
+Which implies that $k = 1/\sqrt{14}$, which is $1/|\textbf{v}|$. And therefore a unit vector in the same direction as $\textbf{v} = \left[ 3, 2, 1 \right]$ is:
+$$\textbf{u} = \frac{1}{\sqrt{14}} \left[ 3, 2, 1 \right] = \left[ \frac{3}{\sqrt{14}}, \frac{2}{\sqrt{14}}, \frac{1}{\sqrt{14}} \right]$$
+
+
+\begin{Exercise}[title = {Finding Directional Derivatives}, label = direction]
+Find the directional derivative of the function at the given point in the 
+direction of the given vector. 
+\begin{enumerate}
+    \item $f(x, y) = e^{3x} \sin{2y}$, $(0, \pi/6)$, $\textbf{v} = \left[ -3, 
+    4 \right]$
+    \item $f(x, y) = x^2y + xy^3$, $(2, 4)$, $\textbf{v} = 2 \textbf{i} - 
+    \textbf{j}$
+    \item $f(x, y, z) = \ln{ \left( x^2 + 3y - z \right)}$, $(2, 2, 1)$, 
+    $\textbf{v} = \left[ 1, 1, 1 \right]$
+\end{enumerate}
+\vspace{100mm}
+\end{Exercise}
+
+\begin{Answer}[ref = direction]
+\begin{enumerate}
+    \item First, we define \textbf{u} such that $|\textbf{u}| = 1$ and 
+    \textbf{u} is in the same direction as \textbf{v}:
+    $$\textbf{u} = k \textbf{v} = \left[ -3k, -4k \right]$$
+    $$\sqrt{ \left( -3k \right)^2 + \left( 4k \right)^2} = 1$$
+    $$\sqrt{9k^2 + 16k^2} = \sqrt{25k^2} = 5k = 1$$
+    $$k = \frac{1}{5}$$
+
+    Therefore, we define $\textbf{u} = \left[ -3/5, 4/5 \right]$ and the 
+    directional derivative is given by:
+    $$D_u(x, y) = \left( \frac{-3}{5} \right) \frac{\partial}{\partial x} f(x, 
+    y) + \left( \frac{4}{5} \right) \frac{\partial}{\partial y} f(x, y)$$
+    $$= \left( \frac{-3}{5} \right) \frac{\partial}{\partial x} \left[ e^{3x} 
+    \sin{2y} \right] + \left( \frac{4}{5} \right) \frac{\partial}{\partial y} 
+    \left[ e^{3x} \sin{2y} \right]$$
+    $$= \left( \frac{-3}{5} \right) \left( 3e^{3x} \sin{2y} \right) + \left( 
+    \frac{4}{5} \right) \left( 2e^{3x} \cos{2y} \right)$$
+
+    And substituting for $(x, y) = (0, \pi/6)$:
+    $$D_u(0, \pi/6) = \left( \frac{-3}{5} \right) \cdot \left[ 3e^{3 \cdot 0} 
+    \sin{ \left( \frac{\pi}{3} \right)} \right] + \left( \frac{4}{5} \right) 
+    \cdot \left[ 2e^{3 \cdot 0} \cos{ \left( \frac{\pi}{3} \right)} \right]$$
+    $$D_u(0, \pi/6) = \left( \frac{-3}{5} \right) \cdot \left[ 3 \cdot \frac{
+    \sqrt{3}}{2} \right] + \left( \frac{4}{5} \right) \cdot \left[ 2 \cdot 
+    \frac{1}{2} \right]$$
+    $$d_u(0, \pi/6) = \left( \frac{-3}{5} \right) \cdot \left( \frac{3
+    \sqrt{3}}{2} \right) + \left( \frac{4}{5} \right) \cdot \left( 1 \right)$$
+    $$D_u(0, \pi/6) = \frac{-9\sqrt{3}}{10} + \frac{8}{10} = \frac{8-9\sqrt{3}
+    }{10} \approx -0.759$$
+
+    \item We can express \textbf{v} as $\textbf{v} = \left[ 2, -1 \right]$. 
+    And we define \textbf{u} such that $| \textbf{u} | = 1$ and \textbf{u} is 
+    in the same direction as \textbf{v}:
+    $$\textbf{u} = k\textbf{v} = \left[ 2k, -k \right]$$
+    $$\sqrt{\left( 2k \right)^2 + \left( -k \right)^2} = 1$$
+    $$\sqrt{4k^2 + k^2} = \sqrt{5}k = 1$$
+    $$k = \frac{1}{\sqrt{5}} = \frac{\sqrt{5}}{5}$$
+
+    Therefore, we define $\textbf{u} = \left[ 2\sqrt{5}/5, -\sqrt{5}/5 \right]$
+    and the directional derivative is given by:
+    $$D_u(x, y) = \left( \frac{2\sqrt{5}}{5} \right) \frac{\partial}{\partial 
+    x}f(x, y) + \left( \frac{-\sqrt{5}}{5} \right) \frac{\partial}{\partial y}
+    f(x, y)$$
+    $$= \left( \frac{2\sqrt{5}}{5} \right) \frac{\partial}{\partial x} \left[ 
+    x^2y + xy^3 \right] + \left( \frac{-\sqrt{5}}{5} \right) \frac{\partial}{
+    \partial y} \left[ x^2y + xy^3 \right]$$
+    $$= \left( \frac{2\sqrt{5}}{5} \right) \left[ 2xy + y^3 \right] + \left( 
+    \frac{-\sqrt{5}}{5} \right) \left[ x^2 + 3xy^2 \right]$$
+
+    And substituting $(x, y) = (2, 4)$:
+    $$D_u(2, 4) = \left( \frac{2\sqrt{5}}{5} \right) \left[ 2(2)(4) + 4^3 
+    \right] + \left( \frac{-\sqrt{5}}{5} \right) \left[ 2^2 + 3(2)(4^2) 
+    \right]$$
+    $$D_u(2, 4) = \left( \frac{2\sqrt{5}}{5} \right) \left[ 80 \right] + \left(
+    \frac{-\sqrt{5}}{5} \right) \left[ 100 \right]$$
+    $$D_u(2, 4) = 32\sqrt{5} - 20\sqrt{5} = 12\sqrt{5} \approx 26.833$$
+
+    \item We define \textbf{u} such that $| \textbf{u} | = 1$ and \textbf{u} 
+    is in the same direction as \textbf{v}:
+    $$\textbf{u} = k\textbf{v} = \left[k, k, k \right]$$
+    $$\sqrt{k^2 + k^2 + k^2} = 1$$
+    $$\sqrt{3}k = 1$$
+    $$k = \frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$$
+
+    Therefore, we let $\textbf{u} = \left[ \sqrt{3}/3, \sqrt{3}/3, \sqrt{3}/3 
+    \right]$ and the directional derivative is given by:
+    $$D_u(x, y, z) = \left( \frac{\sqrt{3}}{3} \right) \frac{\partial}{
+    \partial x} f(x, y, z) + \left( \frac{\sqrt{3}}{3} \right) \frac{
+    \partial}{\partial y}f(x, y, z) + \left( \frac{\sqrt{3}}{3} \right) 
+    \frac{\partial}{\partial z} f(x, y, z)$$
+    $$= \left( \frac{\sqrt{3}}{3} \right) \left[ \frac{\partial}{\partial x} 
+    \ln{ \left( x^2 + 3y - z \right)} + \frac{\partial}{\partial y} \ln{ 
+    \left( x^2 + 3y - z \right)} + \frac{\partial}{\partial z} \ln{ \left( 
+    x^2 + 3y - z \right)} \right]$$
+    $$= \left( \frac{\sqrt{3}}{3} \right) \left[ \frac{2x}{x^2 + 3y - z} + 
+    \frac{3}{x^2 + 3y - z} + \frac{-1}{x^2 + 3y - z} \right]$$
+    $$= \left( \frac{\sqrt{3}}{3} \right) \left[ \frac{2x + 2}{x^2 + 3y - z} 
+    \right] = \frac{\sqrt{3} \left( 2x + 2 \right)}{3 \left( x^2 + 3y - z 
+    \right)}$$
+
+    And substituting $(x, y, z) = (2, 2, 1)$:
+    $$D_u(2, 2, 1) = \frac{\sqrt{3} \left( 2(2) + 2 \right)}{3 \left( 2^2 + 
+    3(2) - 1 \right)} = \frac{\sqrt{3} \left( 6 \right)}{3 \left( 9 \right)} 
+    = \frac{2\sqrt{3}}{9} \approx 0.385$$
+\end{enumerate}
+\end{Answer}
+
+\subsection{Maximizing the Gradient}
+The directional derivative can be written as the dot product of two vectors:
+$$D_u f(x, y) = af_x(x, y) + bf_y(x, y) = \left[ f_x(x, y), f_y(x, y) \right] 
+\cdot \textbf{u}$$
+
+The first vector, $\left[ f_x(x, y), f_y(x, y) \right]$ is called \textit{the 
+gradient of f}\index{gradient} and is noted as $\nabla f$. 
+
+\begin{mdframed}[style = important, frametitle = {The Gradient}]
+For a two-variable function, $f(x, y)$, the gradient of $f$ is the vector:
+$$\nabla f = \left[ f_x(x, y), f_y(x, y) \right] = \frac{\partial f}{\partial 
+x} \textbf{i} + \frac{\partial f}{\partial y} \textbf{j}$$
+
+Where \textbf{i} and \textbf{j} are the unit vectors in the $x$- and 
+$y$-directions, respectively.
+\end{mdframed}
+
+Think back to the elevation example we opened the chapter with. What if we 
+wanted to complete our ascent as quickly as possible? Then we would want to 
+know the direction in which the elevation is changing the fastest. This occurs 
+when the direction we are going is the same direction as the gradient vector, 
+$\nabla f$. 
+
+Recall that the dot product is defined as:
+$$\textbf{u} \cdot \textbf{v} = \left| \textbf{u} \right| \left| \textbf{v} 
+\right| \cos{ \theta}$$
+
+Where $\theta$ is the angle between the vectors \textbf{u} and \textbf{v}. 
+Applying this to the directional derivative, we see that:
+$$D_u f = \nabla f \cdot \textbf{u} = \left| \nabla f \right| \left| 
+\textbf{u} \right| \cos{\theta} = \left| \nabla f \right| \cos{\theta}$$
+
+Which is at its maximum when $\nabla f$ and \textbf{u} point in the same 
+direction (because $\cos{\left( 0 \right)} = 1$). Therefore, the gradient 
+vector points in the direction of maximum change and the magnitude of that 
+vector is the rate of maximum change. 
+
+\textbf{Example}: Find the maximum rate of change of $f(x, y) = 4y\sqrt{x}$ at 
+$(4, 1)$. In what direction does the maximum change occur?
+
+\textbf{Solution}: We begin by finding $\nabla f$:
+$$\nabla f = \left[ \frac{\partial}{\partial x} \left( 4y\sqrt{x} \right), 
+\frac{\partial}{\partial y} \left( 4y\sqrt{x} \right) \right]$$
+$$\nabla f = \left[ \frac{2y}{\sqrt{x}}, 4\sqrt{x} \right]$$
+
+And thus, 
+$$\nabla f(4, 1) = \left[ \frac{2(1)}{\sqrt{4}}, 4\sqrt{4} \right] = \left[ 1, 
+8 \right]$$
+
+Therefore, the maximum value of $\nabla f$ at $(4, 1)$ is:
+$$\left| \nabla f \right| = \sqrt{1^2 + 8^2} = \sqrt{65}$$
+
+in the direction of the vector $\left[ 1, 8 \right]$. 
+
+\begin{Exercise}[title = {Using the Gradient to find Maximum Change}, 
+label = maximum]
+Suppose you are climbing a mountain whose elevation is described by $z = 3000 
+- 0.01x^2 - 0.02y^2$. Take the positive $x$-direction to be east and the 
+positive $y$-direction to be north. 
+\begin{enumerate}
+    \item If you are at $(x, y) = (50, 50)$, what is your elevation?
+    \item If you walk south, will you ascend or descend?
+    \item If you walk northwest, will you ascend or descend? Will the rate of 
+    elevation change be greater or less than if you walked south?
+    \item In what direction should you walk for the steepest ascent? What will 
+    your ascension rate be?
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = maximum]
+\begin{enumerate}
+    \item $z = f(50, 50) = 3000 - 0.01(50)^2 - 0.02(50)^2 = 2925$
+    \item A south-pointing unit vector is $\textbf{u} = \left[ 0, -1 \right]$. 
+    To find the rate of change, we find the directional derivative in the 
+    direction of \textbf{u} at $(50, 50)$:
+    $$D_u f(x, y) = \left( -1 \right) \left[ \frac{\partial}{\partial y} 
+    \left( 3000 - 0.01x^2 - 0.02y^2 \right) \right]$$
+    $$D_u f(x, y) = \left( -1 \right) \left( -0.04 y \right) = 0.04y$$
+
+    And at $(50, 50)$, $D_u f(50, 50) = 0.04(50) = 2 > 0$. Therefore, if you 
+    walk south, you will ascend.
+    \item A northwest-pointing unit vector is $\textbf{u} = \left[ -\sqrt{2}
+    /2, \sqrt{2}/2 \right]$. To find the rate of change, we find the 
+    directional derivative at $(50, 50)$ in the direction of \textbf{u}:
+    $$D_u f(x, y) = \left( \frac{-\sqrt{2}}{2} \right) \left[ \frac{\partial}{
+    \partial x} f(x, y) \right] + \left( \frac{\sqrt{2}}{2} \right) \left[ 
+    \frac{\partial}{\partial y} f(x, y) \right]$$
+    $$D_u f(x, y) = \left( \frac{-\sqrt{2}}{2} \right) \left[ -0.02x \right] 
+    + \left( \frac{\sqrt{2}}{2} \right) \left[ -0.04 y \right]$$
+    $$D_u f(x, y) = 0.01\sqrt{2}x - 0.02\sqrt{2}y$$
+    $$D_u f(50, 50) = 0.01 \sqrt{2} \left( 50 \right) - 0.02 \sqrt{2} \left( 
+    50 \right) = \frac{-\sqrt{2}}{2} \approx -0.707$$
+
+    The rate of elevation change walking northwest is approximately $-0.707$, 
+    so you will descend and your rate of elevation change would be less than 
+    if you walked south. 
+
+    \item To find the direction of maximum elevation gain, we find the 
+    direction the gradient vector points in:
+    $$\nabla f = \left[ \frac{\partial f}{\partial x}, \frac{\partial f}{
+    \partial y} \right]$$
+    $$\nabla f = \left[ -0.02x, -0.04y \right]$$
+
+    And at $(50, 50)$, 
+    $$\nabla f(50, 50) = \left[ -0.02(50), -0.04(50) \right] = \left[ -1, -2 
+    \right]$$
+
+    Therefore the rate of greatest elevation change is in a south-by-southwest 
+    direction indicated by the vector $\left[ -1, -2 \right]$ and the rate of 
+    elevation change is $\left| \nabla f(50, 50) \right| = \sqrt{(-1)^2 + (-2)^
+    2} = \sqrt{5}$. Notice this is greater than the other two rates of change 
+    we have found. 
+\end{enumerate}
+\end{Answer}
 
 \section{Applications of Partial Derivatives and Gradients}
 
