@@ -10,7 +10,7 @@ dealing with lists of coefficients as polynomials. Create a file called \filenam
 \item \pyfunction{subtract\_polynomial}
 \end{itemize}
 
-Now create another file in the same directory called \filename{test.py}. Type this into that file:
+Now, create another file in the same directory called \filename{test.py}. Type this into that file:
 \begin{Verbatim}
 import poly
 
@@ -47,7 +47,7 @@ A + B = 1.0x^4 + -3.0x^3 + 7.0x^2 + -4.0x
 A - B = -1.0x^4 + -7.0x^3 + -1.0x^2 + -4.0x + 18.0
 \end{Verbatim}
 
-Now you are ready to implement multiplication of polynomials. The function will look like this:
+You are now ready to implement the multiplication of polynomials. The function will look like this:
 \begin{Verbatim}
 def multiply_polynomials(a, b):
   ...Your code here...
@@ -61,13 +61,13 @@ degree 12.  What is the degree of their product?'' The answer was $23 +
 
 In our implementation, a polynomial of degree 23 is held in a list of length 24.
 
-In Python we wil be trying to multiply a polynomial $a$ and a
+In Python, we wil be trying to multiply a polynomial $a$ and a
 polynomial $b$ represented as lists. What is the degree of that product?
 \begin{Verbatim}
       result_degree = (len(a) - 1) + (len(b) - 1)
 \end{Verbatim}
 
-Now, we need to create an array of zeros that is one longer than that. Here is a cute Python trick: if you have a list, you can replicate it using the * operator. 
+Now, we need to create an array of zeros that is one longer than that. Here is a cute Python trick: If you have a list, you can replicate it using the * operator. 
 \begin{Verbatim}
 a = [5,7]
 b = a * 4
@@ -75,17 +75,17 @@ print(b)
 # [5, 7, 5, 7, 5, 7, 5, 7]
 \end{Verbatim}
 
-Here's how you will get a list of zeros:
+Here iss how you will get a list of zeros:
 \begin{Verbatim}
       result = [0.0] * (result_degree + 1)
 \end{Verbatim}
 
-We will step through $a$ getting the index and value of each entry. You can do this in one line using \pyfunction{enumerate}:
+We will step through $a$, getting the index and value of each entry. You can do this in one line using \pyfunction{enumerate}:
 \begin{Verbatim}
       for a_degree, a_coefficient in enumerate(a):
 \end{Verbatim}
 For each of those, we will step through the entire $b$ polynomial. As
-you multiply together each term, you will add it to appropriate
+you multiply together each term, you will add it to the appropriate
 coefficient of the result.
 
 Here is the whole function:
@@ -134,7 +134,7 @@ d[1] = -2.0
 \end{Verbatim}
 
 If you printed out $c$, you would get $[1.0, -2.0, 1.0]$.  Why? You
-assigned two variables ($c$ and $d$) to the \emph{the same list}.  So
+assigned two variables ($c$ and $d$) to the \emph{the same list}.  So,
 when you use one reference ($d$) to change the list, you see the
 change if you look at the list from either reference. \emph{FIXME:
   Diagram of two references to the same list here.}

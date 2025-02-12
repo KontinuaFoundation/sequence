@@ -2,11 +2,11 @@
 
 Let's say someone on a distant planet records video of a hammer being
 throw up into the air.  They send you three random frames of the
-hammer in flight. Each frame has a timestamp and you can clearly see
+hammer in flight. Each frame has a timestamp, and you can clearly see
 how high the hammer is in each one. Can you create a 2nd degree
 polynomial that explains the entire flight of the hammer?
 
-That is, you have three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$.
+In other words, you have three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$.
 Can you find $a,b,c$ such that the graph of $at^2 + bt + c = t$ passes
 through all three points?
 
@@ -36,7 +36,7 @@ f_0(x) = \frac{5}{(2 - 3)(2 - 4)}(x - 3)(x - 4) = \frac{5}{2}x^2 - \frac{35}{2}x
 \end{equation*}
 This is a second degree polynomial that is 5 at $t=2$ and 0 at $t=3$ and $t=4$.
 
-Now we create a polynomial that is 7 at $t=3$ and 0 at $t= 2$ and $t=4$:
+Now, we create a polynomial that is 7 at $t=3$ and 0 at $t= 2$ and $t=4$:
 \begin{equation*}
 f_1(x) = \frac{7}{(3 - 2)(3 - 4)}(x - 2)(x - 4) = -7x^2 +42x - 56
 \end{equation*}
@@ -92,7 +92,7 @@ plt.show()
 You should get a nice plot that shows the graph of the polynomial
 passing through those three points.
 
-In general, then, if you give me any three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$, here is a second degree polynomial that pass through all three points:
+In general, then, if you provide any three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$, there is a second degree polynomial that pass through all three:
 \begin{equation*}
 \frac{h_0}{(t_0 - t_1)(t_0 - t_2)}(x - t_1)(x - t_2) + \frac{h_1}{(t_1 - t_0)(t_1 - t_2)}(x - t_0)(x - t_2) + \frac{h_2}{(t_2 - t_0)(t_2 - t_1)}(x - t_0)(x - t_1)
 \end{equation*}
@@ -111,7 +111,7 @@ The general solution is, given $n$ points, the $n-1$ degree polynomial that goes
   y =\sum_{i=0}^{n}\left ( \prod_{\stackrel{\!0\leq j\leq n}{j\neq i}}\frac{x-t_j}{t_i-t_j}\right ) h_i
 \end{equation*}
 
-That would be tedious for a person to compute, but computers love this
+That would be tedious for a person to compute, but computers are perfect for this
 stuff. Let's create a method that creates instances of Polynomial
 using interpolation.
 
@@ -159,7 +159,7 @@ Add the following method to your Polynomial class in \filename{Polynomial.py}
 \end{Verbatim}
 
 It should work exactly the same as before.  You should get the same
-polynomial printed out as before. You shoud get the same plot of the
+polynomial printed out as before as well as the same plot of the
 curve passing through the three points.
 
 How about five points? Change \pyvar{in\_x} and \pyvar{in\_y} at the
