@@ -728,7 +728,7 @@ other than the $x$- and $y$-directions.
 \end{figure}
 
 \subsection{Directional Derivatives}
-The contour map in figure (fix me make figure) shows the elevation, $H(x, y)$ 
+The contour map in figure \ref{fig:mountain} shows the elevation, $H(x, y)$ 
 for a mountain. You already know that you can use the partial derivatives, 
 $H_x$ and $H_y$ to find the rate of change in elevation going east-west or 
 north-south. But what about other directions? Suppose the hiking path you're 
@@ -736,7 +736,300 @@ on goes north-east. How can you predict the steepness (i.e. the rate of
 elevation change) along this path? The directional derivative allows us to 
 find the rate of change in any direction. 
 
-[explanation]
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[xmin = 0, xmax = 20, ymin = 0, ymax = 20, ticks = none, 
+        axis lines = center]
+        \draw[fill = violet!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 2.3) (0.5, 2.25) (1, 2.2) (1.5, 2.05) (2, 1.7) 
+        (2.5, 1.1) (2.9, 0) (0,0)};
+        \draw[fill = blue!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 2.3) (0.5, 2.25) (1, 2.2) (1.5, 2.05) (2, 1.7) 
+        (2.5, 1.1) (2.9, 0) (5.4, 0) (5, 0.7) (4.5, 1.5) (4, 2) (3.5, 2.7) 
+        (3, 3.2) (2.5, 3.9) (2, 4.2) (1.5, 4.6) (1, 4.8) (0.5, 5) (0, 5.1)};
+        \draw[fill = green!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(5.4, 0) (5, 0.7) (4.5, 1.5) (4, 2) (3.5, 2.7) (3, 3.2) 
+        (2.5, 3.9) (2, 4.2) (1.5, 4.6) (1, 4.8) (0.5, 5) (0, 5.1) (0, 8.2) 
+        (0.5, 8) (1, 7.8) (1.5, 7.5) (2, 7) (2.5, 6.7) (3, 6.2) (3.5, 5.9) 
+        (4, 5.6) (4.5, 5.4) (5, 5) (5.5, 5.7) (6, 4.1) (6.5, 3.7) (7, 2.3) 
+        (7.5, 1.5) (8, 0.5) (8.2, 0)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 8.2) (0.5, 8) (1, 7.8) (1.5, 7.5) (2, 7) (2.5, 6.7) 
+        (3, 6.2) (3.5, 5.9) (4, 5.6) (4.5, 5.4) (5, 5) (5.5, 5.7) (6, 4.1) 
+        (6.5, 3.7) (7, 2.3) (7.5, 1.5) (8, 0.5) (8.2, 0) (10.1, 0) (10, 0.7) 
+        (9.5, 1.6) (9, 2.2) (8.5, 3.6) (8, 3.9) (7.5, 4.5) (7, 4.8) (6.5, 5.2) 
+        (6, 5.6) (5.5, 5.9) (5, 6.2) (4.5, 6.5) (4, 7) (3.5, 7.3) (3, 7.6) 
+        (2.5, 8) (2, 8.5) (1.5, 9.5) (1, 10.7) (0.5, 11.5) (0, 12)};
+        \draw[fill = orange!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 0) (10.1, 0) (10, 0.8) (9.5, 1.5) (9, 2.2) 
+        (8.5, 3.5) (8, 3.9) (7.5, 4.5) (7, 4.8) (6.5, 5.2) (6, 5.6) (5.5, 6) 
+        (5, 6.3) (4.5, 6.5) (4, 7) (3.5, 7.3) (3, 7.5) (2.5, 8) (2, 8.4) 
+        (1.5, 9.5) (1, 10.7) (0.5, 11.5) (0, 12) (0, 14) (0.5, 14.5) (1, 14.8) 
+        (1.5, 14.75) (2, 14.7) (2.5, 14.5) (3, 14.4) (3.5, 14.35) (4, 14.2) 
+        (4.5, 14.1) (5, 14) (5.5, 13.85) (6, 13.7) (6.5, 13.4) (7, 13.1) 
+        (7.5, 12.8) (8, 12.6) (8.5, 12.4) (9, 12.2) (9.5, 12) (10, 11.9) 
+        (10.5, 11.8) (11, 11.6) (11.5, 11.5) (12, 11.2) (12.5, 10.9) 
+        (13, 10.2) (13.5, 10) (14, 9.5) (14.5, 9.2) (15, 8.9) (15.5, 8.6) 
+        (16, 8.3) (16.5, 8) (17, 7.6) (17.5, 7.4) (18, 7.2) (18.5, 6.9) 
+        (19, 6.5) (19.5, 6.2) (20, 5.8)};
+        \draw[fill = red!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 0) (11.5, 0) (11, 1.8) (10.5, 2.6) (10, 3) 
+        (9.5, 3.6) (9, 3.8) (8.5, 4.3) (8, 4.7) (7.5, 5.1) (7, 5.5) (6.5, 5.8) 
+        (6, 6.1) (5.5, 6.5) (5, 6.9) (4.5, 7.4) (4, 8) (3.5, 8.6) (3, 9.5) 
+        (2.5, 11.5) (2, 12.8) (1.8, 13.5) (2, 13.2) (2.5, 12.8) (3, 12.3) 
+        (3.5, 12) (4, 11.6) (4.5, 11.2) (5, 11.1) (5.5, 11) (6, 10.9) 
+        (6.5, 10.8) (7, 10.7) (7.5, 10.7) (8, 10.5) (8.5, 10.4) (9, 10.2) 
+        (9.5, 10) (10, 9.8) (10.5, 9.7) (11, 9.4) (11.5, 9.1) (12, 8.7) 
+        (12.5, 8.1) (13, 7.8) (13.5, 7.4) (14, 7.2) (14.5, 7) (15, 6.9) 
+        (15.5, 6.8) (16, 6.5) (16.5, 6.4) (17, 6) (17.5, 5.6) (18, 5.2) 
+        (18.5, 4.8) (19, 4.3) (19.5, 3.8) (20, 3.3)};
+        \draw[fill = gray!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(14.5, 0) (14.4, 1) (14.2, 2) (14, 2.3) (13.5, 3.8) 
+        (13, 3.1) (12.5, 3.4) (12, 3.6) (11.5, 4) (11, 4.5) (10.5, 5) 
+        (10, 5.4) (9.5, 5.6) (9, 5.9) (8.5, 6.3) (8, 6.6) (7.6, 7) (7.5, 7.5) 
+        (7.7, 8) (8, 8.2) (8.5, 8.3) (9, 8.2) (9.5, 8.1) (10, 8) (10.5, 7.8) 
+        (11, 7.6) (11.5, 7.4) (12, 7.1) (12.5, 6.6) (13, 6.4) (13.5, 6) 
+        (14, 5.55) (14.5, 5.4) (15, 5) (15.5, 4.7) (16, 4.5) (16.5, 4.2) 
+        (17, 3.8) (17.5, 3.5) (18, 3) (18.5, 2.6) (19, 2.4) (19.5, 2.2) 
+        (20, 2) (20, 0)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 14) (0.5, 14.5) (1, 14.8) (1.5, 14.75) (2, 14.65) 
+        (2.5, 14.5) (3, 14.4) (3.5, 14.3) (4, 14.2) (4.5, 14.1) (5, 14) 
+        (5.5, 13.9) (6, 13.7) (6.5, 13.4) (7, 13.2) (7.5, 12.8) (8, 12.6) 
+        (8.5, 12.4) (9, 12.2) (9.5, 12) (10, 11.9) (10.5, 11.8) (11, 11.7) 
+        (11.5, 11.5) (12, 11.2) (12.5, 10.9) (13, 10.3) (13.5, 10) (14, 9.6) 
+        (14.5, 9.2) (15, 8.8) (15.5, 8.6) (16, 8.3) (16.5, 8) (17, 7.6) 
+        (17.5, 7.4) (18, 7.2) (18.5, 6.9) (19, 6.5) (19.5, 6.3) (20, 5.8) 
+        (20, 7.8) (19.5, 8.3) (19, 8.6) (18.5, 9) (18, 9.3) (17.5, 9.8) 
+        (17, 10.3) (16.5, 10.7) (16, 11.1) (15.5, 11.5) (15, 11.8) 
+        (14.5, 12.2) (14, 12.3) (13.5, 12.5) (13, 12.7) (12.5, 13) (12, 13.2) 
+        (11.5, 13.4) (11, 13.6) (10.5, 13.8) (10, 14.1) (9.5, 14.3) (9, 14.5) 
+        (8.5, 14.7) (8, 14.7) (7.5, 14.8) (7, 15) (6.5, 15.2) (6, 15.3) 
+        (5.5, 15.5) (5, 15.6) (4.5, 15.8) (4, 15.9) (3.5, 16) (3, 16.1) 
+        (2.5, 16.2) (2, 16.3) (1.5, 16.3) (1, 16.3) (0.5, 16.35) (0, 16.4)};
+        \draw[fill = green!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 7.8) (19.5, 8.3) (19, 8.6) (18.5, 9) (18, 9.3) 
+        (17.5, 9.8) (17, 10.3) (16.5, 10.7) (16, 11.1) (15.5, 11.5) (15, 11.8) 
+        (14.5, 12.2) (14, 12.3) (13.5, 12.5) (13, 12.7) (12.5, 13) (12, 13.2) 
+        (11.5, 13.4) (11, 13.6) (10.5, 13.8) (10, 14.1) (9.5, 14.3) (9, 14.5) 
+        (8.5, 14.7) (8, 14.7) (7.5, 14.8) (7, 15) (6.5, 15.2) (6, 15.3) 
+        (5.5, 15.5) (5, 15.6) (4.5, 15.8) (4, 15.9) (3.5, 16) (3, 16.1) 
+        (2.5, 16.2) (2, 16.3) (1.5, 16.3) (1, 16.3) (0.5, 16.35) (0, 16.4) 
+        (0, 20) (20, 20)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 13) (19.5, 13.6) (19, 13.9) (18.5, 14.3) (18, 14.4) 
+        (17.5, 14.6) (17, 14.7) (16.5, 14.8) (16, 14.9) (15.5, 14.95) (15, 15) 
+        (14.5, 15.05) (14, 15.1) (13.5, 15.15) (13, 15.2) (12.5, 15.2) 
+        (12, 15.25) (11.5, 15.25) (11, 15.25) (10.5, 15.25) (10, 15.3) 
+        (9.5, 15.4) (9, 15.5) (8.5, 15.6) (8, 15.8) (7.5, 15.9) (7, 16.2) 
+        (6.5, 16.45) (6, 16.7) (5.5, 16.85) (5, 17.05) (4.5, 17.25) (4, 17.5) 
+        (3.5, 18) (3.5, 18.5) (4, 19) (4.5, 19.2) (5, 19.1) (5.5, 19) 
+        (6, 18.95) (6.5, 18.9) (7, 18.8) (7.5, 18.7) (8, 18.8) (8.5, 18.9) 
+        (9, 19) (9.5, 19) (10, 19.1) (10.5, 19) (11, 19) (11.5, 18.9) 
+        (12, 18.8) (12.5, 18.8) (13, 18.8) (13.5, 18.75) (14, 18.75) 
+        (14.5, 18.7) (15, 18.75) (15.5, 18.8) (16, 18.9) (16.5, 19) 
+        (17, 19.2) (17.5, 19.5) (18, 20) (20, 20)};
+        \draw[fill = orange!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 15.6) (19.5, 15.6) (19, 15.55) (18.5, 15.6) 
+        (18, 15.7) (17.5, 15.85) (17, 16) (16.5, 16.3) (16, 16.4) (15.5, 16.3) 
+        (15, 16.2) (14.5, 16.2) (14, 16.15) (13.5, 16.1) (13, 16.1) 
+        (12.5, 16.05) (12, 16.05) (11.5, 16.05) (11, 16.1) (10.5, 16.15) 
+        (10, 16.2) (9.5, 16.25) (9, 16.3) (8.5, 16.35) (8, 16.4) (7.5, 16.7) 
+        (7.3, 17) (7.5, 17.2) (8, 17.2) (8.5, 17.25) (9, 17.3) (9.5, 17.3) 
+        (10, 17.25) (10.5, 17.2) (11, 17.2) (11.5, 17.15) (12, 17.1) 
+        (12.5, 17.2) (13, 17.3) (13.5, 17.35) (14, 17.4) (14.5, 17.5) 
+        (15, 17.5) (15.5, 17.55) (16, 17.6) (16.5, 17.6) (17, 17.5) 
+        (17.5, 17.4) (18, 17.35) (18.5, 17.2) (19, 17) (19.5, 16.9) 
+        (20, 16.8)};
+        \draw[fill = white, draw = black] (19.5, 2.8) rectangle (16, 8.5);
+        \draw[fill = violet!30, draw = black, thick] (16.1, 8.4) rectangle 
+        (16.6, 7.8) node[right, font = \scriptsize, yshift = 0.09cm] {1900 ft};
+        \draw[fill = blue!50, draw = black, thick] (16.1, 7.6) rectangle 
+        (16.6, 7) node[right, font = \scriptsize, yshift = 0.09cm] {2000 ft};
+        \draw[fill = green!40, draw = black, thick] (16.1, 6.8) rectangle 
+        (16.6, 6.2) node[right, font = \scriptsize, yshift = 0.09cm] {2100 ft};
+        \draw[fill = yellow!50, draw = black, thick] (16.1, 6) rectangle 
+        (16.6, 5.4) node[right, font = \scriptsize, yshift = 0.09cm] {2200 ft};
+        \draw[fill = orange!30, draw = black, thick] (16.1, 5.2) rectangle 
+        (16.6, 4.6) node[right, font = \scriptsize, yshift = 0.09cm] {2300 ft};
+        \draw[fill = red!50, draw = black, thick] (16.1, 4.4) rectangle 
+        (16.6, 3.8) node[right, font = \scriptsize, yshift = 0.09cm] {2400 ft};
+        \draw[fill = gray!40, draw = black, thick] (16.1, 3.6) rectangle 
+        (16.6, 3) node[right, font = \scriptsize, yshift = 0.09cm] {2500 ft};
+        \draw[-latex, black, thick] (17.75, 17) -- (17.75, 19.5);
+        \draw[black, thick] (17.25, 17.7) -- (18.25, 17.7);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The contour plot shows the elevation of a mountain. $H_x$ gives 
+    the slope going east, while $H_y$ gives the slope going north}
+    \label{fig:mountain}
+\end{figure}
+
+At some point, $(x_o, y_o)$, the partial derivatives $H_x(x_o, y_o)$ and $H_y(x_o, y_o)$ give the rate of change of elevation in the east-west and north-south directions, respectively (see figure \ref{fig:mount_deriv}). To find the rate of change at $(x_o, y_o)$, in the direction of some arbitrary unit vector, $\textbf{u} = \left[ a, b \right] = a\textbf{i} + b\textbf{j}$, we first note that the point $(x_o, y_o, z_o)$, where $z_o = H(x_o, y_o)$, lies on the surface defined by $z = H(x, y)$. There is a vertical plane, $P$, that passes through $(x_o, y_o, z_o)$ and points in the direction of \textbf{u}. This intersection defines curve $C$, which lies on the surface, and the slope of this curve at $(x_o, y_o, z_o)$ is the directional derivative of $H$ in the direction of \textbf{u} (see figure \ref{fig:direct_deriv}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[xmin = 0, xmax = 20, ymin = 0, ymax = 20, ticks = none, 
+        axis lines = center]
+        \draw[fill = violet!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 2.3) (0.5, 2.25) (1, 2.2) (1.5, 2.05) (2, 1.7) 
+        (2.5, 1.1) (2.9, 0) (0,0)};
+        \draw[fill = blue!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 2.3) (0.5, 2.25) (1, 2.2) (1.5, 2.05) (2, 1.7) 
+        (2.5, 1.1) (2.9, 0) (5.4, 0) (5, 0.7) (4.5, 1.5) (4, 2) (3.5, 2.7) 
+        (3, 3.2) (2.5, 3.9) (2, 4.2) (1.5, 4.6) (1, 4.8) (0.5, 5) (0, 5.1)};
+        \draw[fill = green!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(5.4, 0) (5, 0.7) (4.5, 1.5) (4, 2) (3.5, 2.7) (3, 3.2) 
+        (2.5, 3.9) (2, 4.2) (1.5, 4.6) (1, 4.8) (0.5, 5) (0, 5.1) (0, 8.2) 
+        (0.5, 8) (1, 7.8) (1.5, 7.5) (2, 7) (2.5, 6.7) (3, 6.2) (3.5, 5.9) 
+        (4, 5.6) (4.5, 5.4) (5, 5) (5.5, 5.7) (6, 4.1) (6.5, 3.7) (7, 2.3) 
+        (7.5, 1.5) (8, 0.5) (8.2, 0)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 8.2) (0.5, 8) (1, 7.8) (1.5, 7.5) (2, 7) (2.5, 6.7) 
+        (3, 6.2) (3.5, 5.9) (4, 5.6) (4.5, 5.4) (5, 5) (5.5, 5.7) (6, 4.1) 
+        (6.5, 3.7) (7, 2.3) (7.5, 1.5) (8, 0.5) (8.2, 0) (10.1, 0) (10, 0.7) 
+        (9.5, 1.6) (9, 2.2) (8.5, 3.6) (8, 3.9) (7.5, 4.5) (7, 4.8) (6.5, 5.2) 
+        (6, 5.6) (5.5, 5.9) (5, 6.2) (4.5, 6.5) (4, 7) (3.5, 7.3) (3, 7.6) 
+        (2.5, 8) (2, 8.5) (1.5, 9.5) (1, 10.7) (0.5, 11.5) (0, 12)};
+        \draw[fill = orange!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 0) (10.1, 0) (10, 0.8) (9.5, 1.5) (9, 2.2) 
+        (8.5, 3.5) (8, 3.9) (7.5, 4.5) (7, 4.8) (6.5, 5.2) (6, 5.6) (5.5, 6) 
+        (5, 6.3) (4.5, 6.5) (4, 7) (3.5, 7.3) (3, 7.5) (2.5, 8) (2, 8.4) 
+        (1.5, 9.5) (1, 10.7) (0.5, 11.5) (0, 12) (0, 14) (0.5, 14.5) (1, 14.8) 
+        (1.5, 14.75) (2, 14.7) (2.5, 14.5) (3, 14.4) (3.5, 14.35) (4, 14.2) 
+        (4.5, 14.1) (5, 14) (5.5, 13.85) (6, 13.7) (6.5, 13.4) (7, 13.1) 
+        (7.5, 12.8) (8, 12.6) (8.5, 12.4) (9, 12.2) (9.5, 12) (10, 11.9) 
+        (10.5, 11.8) (11, 11.6) (11.5, 11.5) (12, 11.2) (12.5, 10.9) 
+        (13, 10.2) (13.5, 10) (14, 9.5) (14.5, 9.2) (15, 8.9) (15.5, 8.6) 
+        (16, 8.3) (16.5, 8) (17, 7.6) (17.5, 7.4) (18, 7.2) (18.5, 6.9) 
+        (19, 6.5) (19.5, 6.2) (20, 5.8)};
+        \draw[fill = red!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 0) (11.5, 0) (11, 1.8) (10.5, 2.6) (10, 3) 
+        (9.5, 3.6) (9, 3.8) (8.5, 4.3) (8, 4.7) (7.5, 5.1) (7, 5.5) (6.5, 5.8) 
+        (6, 6.1) (5.5, 6.5) (5, 6.9) (4.5, 7.4) (4, 8) (3.5, 8.6) (3, 9.5) 
+        (2.5, 11.5) (2, 12.8) (1.8, 13.5) (2, 13.2) (2.5, 12.8) (3, 12.3) 
+        (3.5, 12) (4, 11.6) (4.5, 11.2) (5, 11.1) (5.5, 11) (6, 10.9) 
+        (6.5, 10.8) (7, 10.7) (7.5, 10.7) (8, 10.5) (8.5, 10.4) (9, 10.2) 
+        (9.5, 10) (10, 9.8) (10.5, 9.7) (11, 9.4) (11.5, 9.1) (12, 8.7) 
+        (12.5, 8.1) (13, 7.8) (13.5, 7.4) (14, 7.2) (14.5, 7) (15, 6.9) 
+        (15.5, 6.8) (16, 6.5) (16.5, 6.4) (17, 6) (17.5, 5.6) (18, 5.2) 
+        (18.5, 4.8) (19, 4.3) (19.5, 3.8) (20, 3.3)};
+        \draw[fill = gray!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(14.5, 0) (14.4, 1) (14.2, 2) (14, 2.3) (13.5, 3.8) 
+        (13, 3.1) (12.5, 3.4) (12, 3.6) (11.5, 4) (11, 4.5) (10.5, 5) 
+        (10, 5.4) (9.5, 5.6) (9, 5.9) (8.5, 6.3) (8, 6.6) (7.6, 7) (7.5, 7.5) 
+        (7.7, 8) (8, 8.2) (8.5, 8.3) (9, 8.2) (9.5, 8.1) (10, 8) (10.5, 7.8) 
+        (11, 7.6) (11.5, 7.4) (12, 7.1) (12.5, 6.6) (13, 6.4) (13.5, 6) 
+        (14, 5.55) (14.5, 5.4) (15, 5) (15.5, 4.7) (16, 4.5) (16.5, 4.2) 
+        (17, 3.8) (17.5, 3.5) (18, 3) (18.5, 2.6) (19, 2.4) (19.5, 2.2) 
+        (20, 2) (20, 0)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(0, 14) (0.5, 14.5) (1, 14.8) (1.5, 14.75) (2, 14.65) 
+        (2.5, 14.5) (3, 14.4) (3.5, 14.3) (4, 14.2) (4.5, 14.1) (5, 14) 
+        (5.5, 13.9) (6, 13.7) (6.5, 13.4) (7, 13.2) (7.5, 12.8) (8, 12.6) 
+        (8.5, 12.4) (9, 12.2) (9.5, 12) (10, 11.9) (10.5, 11.8) (11, 11.7) 
+        (11.5, 11.5) (12, 11.2) (12.5, 10.9) (13, 10.3) (13.5, 10) (14, 9.6) 
+        (14.5, 9.2) (15, 8.8) (15.5, 8.6) (16, 8.3) (16.5, 8) (17, 7.6) 
+        (17.5, 7.4) (18, 7.2) (18.5, 6.9) (19, 6.5) (19.5, 6.3) (20, 5.8) 
+        (20, 7.8) (19.5, 8.3) (19, 8.6) (18.5, 9) (18, 9.3) (17.5, 9.8) 
+        (17, 10.3) (16.5, 10.7) (16, 11.1) (15.5, 11.5) (15, 11.8) 
+        (14.5, 12.2) (14, 12.3) (13.5, 12.5) (13, 12.7) (12.5, 13) (12, 13.2) 
+        (11.5, 13.4) (11, 13.6) (10.5, 13.8) (10, 14.1) (9.5, 14.3) (9, 14.5) 
+        (8.5, 14.7) (8, 14.7) (7.5, 14.8) (7, 15) (6.5, 15.2) (6, 15.3) 
+        (5.5, 15.5) (5, 15.6) (4.5, 15.8) (4, 15.9) (3.5, 16) (3, 16.1) 
+        (2.5, 16.2) (2, 16.3) (1.5, 16.3) (1, 16.3) (0.5, 16.35) (0, 16.4)};
+        \draw[fill = green!40, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 7.8) (19.5, 8.3) (19, 8.6) (18.5, 9) (18, 9.3) 
+        (17.5, 9.8) (17, 10.3) (16.5, 10.7) (16, 11.1) (15.5, 11.5) (15, 11.8) 
+        (14.5, 12.2) (14, 12.3) (13.5, 12.5) (13, 12.7) (12.5, 13) (12, 13.2) 
+        (11.5, 13.4) (11, 13.6) (10.5, 13.8) (10, 14.1) (9.5, 14.3) (9, 14.5) 
+        (8.5, 14.7) (8, 14.7) (7.5, 14.8) (7, 15) (6.5, 15.2) (6, 15.3) 
+        (5.5, 15.5) (5, 15.6) (4.5, 15.8) (4, 15.9) (3.5, 16) (3, 16.1) 
+        (2.5, 16.2) (2, 16.3) (1.5, 16.3) (1, 16.3) (0.5, 16.35) (0, 16.4) 
+        (0, 20) (20, 20)};
+        \draw[fill = yellow!50, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 13) (19.5, 13.6) (19, 13.9) (18.5, 14.3) (18, 14.4) 
+        (17.5, 14.6) (17, 14.7) (16.5, 14.8) (16, 14.9) (15.5, 14.95) (15, 15) 
+        (14.5, 15.05) (14, 15.1) (13.5, 15.15) (13, 15.2) (12.5, 15.2) 
+        (12, 15.25) (11.5, 15.25) (11, 15.25) (10.5, 15.25) (10, 15.3) 
+        (9.5, 15.4) (9, 15.5) (8.5, 15.6) (8, 15.8) (7.5, 15.9) (7, 16.2) 
+        (6.5, 16.45) (6, 16.7) (5.5, 16.85) (5, 17.05) (4.5, 17.25) (4, 17.5) 
+        (3.5, 18) (3.5, 18.5) (4, 19) (4.5, 19.2) (5, 19.1) (5.5, 19) 
+        (6, 18.95) (6.5, 18.9) (7, 18.8) (7.5, 18.7) (8, 18.8) (8.5, 18.9) 
+        (9, 19) (9.5, 19) (10, 19.1) (10.5, 19) (11, 19) (11.5, 18.9) 
+        (12, 18.8) (12.5, 18.8) (13, 18.8) (13.5, 18.75) (14, 18.75) 
+        (14.5, 18.7) (15, 18.75) (15.5, 18.8) (16, 18.9) (16.5, 19) (17, 19.2) 
+        (17.5, 19.5) (18, 20) (20, 20)};
+        \draw[fill = orange!30, draw = black, thick] plot[smooth cycle] 
+        coordinates {(20, 15.6) (19.5, 15.6) (19, 15.55) (18.5, 15.6) 
+        (18, 15.7) (17.5, 15.85) (17, 16) (16.5, 16.3) (16, 16.4) (15.5, 16.3) 
+        (15, 16.2) (14.5, 16.2) (14, 16.15) (13.5, 16.1) (13, 16.1) 
+        (12.5, 16.05) (12, 16.05) (11.5, 16.05) (11, 16.1) (10.5, 16.15) 
+        (10, 16.2) (9.5, 16.25) (9, 16.3) (8.5, 16.35) (8, 16.4) (7.5, 16.7) 
+        (7.3, 17) (7.5, 17.2) (8, 17.2) (8.5, 17.25) (9, 17.3) (9.5, 17.3) 
+        (10, 17.25) (10.5, 17.2) (11, 17.2) (11.5, 17.15) (12, 17.1) 
+        (12.5, 17.2) (13, 17.3) (13.5, 17.35) (14, 17.4) (14.5, 17.5) 
+        (15, 17.5) (15.5, 17.55) (16, 17.6) (16.5, 17.6) (17, 17.5) 
+        (17.5, 17.4) (18, 17.35) (18.5, 17.2) (19, 17) (19.5, 16.9) 
+        (20, 16.8)};
+        \draw[black, fill = black] (10, 4) circle (0.5mm);
+        \draw[black, thick, -latex] (10, 4) -- (10, 6.5) node[above, 
+        font = \scriptsize] {$H_y$}; 
+        \draw[black, thick, -latex] (10, 4) -- (12, 4) node[right, 
+        font = \scriptsize] {$H_x$};
+        \draw[black, thick, dashed, -latex] (10, 4) -- (12, 6) node[right, 
+        font = \scriptsize] {$D_u [H(x, y)]$};
+        \draw[-latex, black, thick] (17.75, 17) -- (17.75, 19.5);
+        \draw[black, thick] (17.25, 17.7) -- (18.25, 17.7);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{If \textbf{u} points north-east, then the directional derivative 
+    of $H(x, y)$, $D_u \left[ H(x, y ) \right]$, tells the rate of change 
+    going north-east}
+    \label{fig:mount_deriv}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[x = {(-0.86cm, -0.5cm)}, y = {(0.86cm, -0.5cm)}, 
+    z = {(0cm, 1cm)}]
+        \draw[-latex] (0,0,0) -- (5,0,0) node[left] {$x$};
+        \draw[-latex] (0,0,0) -- (0,5,0) node[right] {$y$};
+        \draw[-latex] (0,0,0) -- (0,0,3) node[above] {$z$};
+        \draw[blue, thick, fill = blue!30, opacity = 0.4] plot[smooth cycle] 
+        coordinates {(3, 0, 0) (2.598, 0, 1.5) (2.121, 0, 2.121) 
+        (1.5, 0, 2.598) (0, 0, 3) (0, 1.5, 2.598) (0, 2.121, 2.121) 
+        (0, 2.598, 1.5) (0, 3, 0) (1.5, 2.598, 0) (2.121, 2.121, 0) 
+        (2.598, 1.5, 0)};
+        \draw[orange, thick, fill = orange!30, opacity = 0.4] (0, 0, 0) -- 
+        (0, 0, 4) -- (2, 4, 4) -- (2, 4, 0);
+        \draw[red, thick, -latex] (0.4, 0.8, 0) -- (0.9, 1.8, 0) 
+        node[right, font = \scriptsize] {\textbf{u}};
+        \draw[blue, thick] (0,0,3) -- (0.1, 0.2, 2.992) -- (0.2, 0.4, 2.996) 
+        -- (0.3, 0.6, 2.924) -- (0.4, 0.8, 2.864) -- (0.5, 1, 2.784) -- 
+        (0.6, 1.2, 2.683) -- (0.7, 1.4, 2.559) -- (0.8, 1.6, 2.408) -- 
+        (0.9, 1.8, 2.225) -- (1, 2, 2) -- (1.1, 2.2, 1.718) -- 
+        (1.2, 2.4, 1.342) -- (1.3, 2.6, 0.742) -- (1.34, 2.68, 0);
+        \draw[latex-] (0.9, 1.8, 2.225) -- (1.2, 1.6, 2) 
+        node[left, font = \scriptsize] {$C$};
+        \draw[red, dashed] (0.4, 0.8, 0) -- (0.4, 0.8, 2.864);
+        \draw[red, fill = red] (0.4, 0.8, 2.864) circle (0.5mm) 
+        node[right, font = \scriptsize] {$(x_o, y_o, z_o)$};
+        \draw[red, fill = red] (0.4, 0.8, 0) circle (0.5mm) 
+        node[left, font = \scriptsize] {$(x_o, y_o, 0)$};
+        \draw[black, dashed] (-0.4, -0.8, 3.11384) -- (1.2, 2.4, 2.6142);
+        \draw[latex-] (-0.2, -0.4, 3.0514) -- (1, 0, 3) 
+        node[left, font = \scriptsize] {$D_u$}; 
+    \end{tikzpicture}
+    \caption{The slope of the curve formed between the plane parallel to 
+    \textbf{u} and the surface $z = H(x, y)$ is the directional derivative, 
+    $D_u$}
+    \label{fig:direct_deriv}
+\end{figure}
+
+
 
 \begin{mdframed}[style = important, frametitle = {The Directional Derivative}]
 Let $f$ be a differentiable function and \textbf{u} be a unit vector, 
@@ -981,7 +1274,9 @@ $$D_u f(x, y) = af_x(x, y) + bf_y(x, y) = \left[ f_x(x, y), f_y(x, y) \right]
 \cdot \textbf{u}$$
 
 The first vector, $\left[ f_x(x, y), f_y(x, y) \right]$ is called \textit{the 
-gradient of f}\index{gradient} and is noted as $\nabla f$. 
+gradient of f}\index{gradient} and is noted as $\nabla f$. The gradient 
+operator, $\nabla$, is the derivative of a scalar function that results in a 
+vector which shows the magnitude and direction of the greatest rate of change. 
 
 \begin{mdframed}[style = important, frametitle = {The Gradient}]
 For a two-variable function, $f(x, y)$, the gradient of $f$ is the vector:
@@ -1094,3 +1389,22 @@ positive $y$-direction to be north.
 \section{Applications of Partial Derivatives and Gradients}
 
 \subsection{Laplace's Equation}
+A partial differential equation that has applications in fluid dynamics and electronics is Laplace's equation\index{Laplace's equation}. Solutions to Laplace's equation are called \textit{harmonic functions}. 
+
+\begin{mdframed}[style = important, frametitle = {Laplace's Equation}]
+Consider a twice-differntiable function, $f$. In two dimensions, Laplace's Equation is given by:
+$$ \frac{\partial ^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 0$$
+And in three dimensions, 
+$$\frac{\partial ^2 f}{\partial x^2} + \frac{\partial ^2 f}{\partial y^2} + \frac{\partial ^2 f}{\partial z^2} = 0$$
+\end{mdframed}
+
+Another way to represent Laplace's equation is:
+$$\delta f = \nabla^2 f = \nabla \cdot \nabla f = 0$$
+
+Where $\nabla ^2 = \delta$ is called the \textit{Laplace operator}. 
+
+\textbf{Example}:
+
+\subsection{The Wave Equation}
+
+\subsection{Cobb-Douglas Production Function}
