@@ -42,7 +42,7 @@ for i in range(weight_slices):
         sum += prob_density * delta_weight * delta_diameter
 
 print(
-    f"\bThe probability that the weight is between {weight_lower_limit} and {weight_upper_limit}"
+    f"\nThe probability that the weight is between {weight_lower_limit} and {weight_upper_limit}"
 )
 print(
     f"and that the diameter is between {diameter_lower_limit} and {diameter_upper_limit}"
