@@ -11,7 +11,7 @@ support that approach.
 
 These topics are deep and difficult to master, but they are closely
 related and mutually reinforcing.  It is my opinion that they should
-be taught as one integrated sequence of learning experiences -- each
+be taught as one integrated sequence of learning experiences --- each
 idea and technique stacking neatly on the ideas and techniques that came before.
 
 These materials assume that the student can type with reasonable speed
