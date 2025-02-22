@@ -1,33 +1,33 @@
 \chapter{Introduction to Linear Algebra}
 
-Welcome to the world of linear algebra, a branch of mathematics that relies on vectors, matrices, and linear transformations. You are familiar with most of these concepts, so in this workbook you’ll see how you can use them together to solve problems.  
+Welcome to the world of linear algebra, a branch of mathematics that relies on vectors, matrices, and linear transformations. You are familiar with most of these concepts, so in this workbook you will see how you can use them together to solve problems.  
 
 Let’s review what you know.
 
 \begin{itemize}
-\item \textbf{Vectors}. In workbook 5, you saw how vectors can represent forces and then how to add and multiply them to figure out such things as rocket engine force and direction. 
-\item \textbf{Matrices}. In workbook 8 you learned to use spreadsheets to solve problems numerically, like how to figure out the number of barrels a cooper has to produce to achieve a certain take-home pay. Spreadsheets are essentially matrices—a row by column structure that contains values. 
-\item \textbf{Linear transformations}. When you studied congruence in workbook 4, you were introduced to a few linear transformations such as translation and reflection. 
+\item \textbf{Vectors}. In workbook 5, you saw how vectors can represent forces, as well as how to add and multiply them to figure out such things as rocket engine force and direction. 
+\item \textbf{Matrices}. In workbook 8, you learned to use spreadsheets to solve problems numerically, such as how to figure out the number of barrels a cooper has to produce to achieve a certain take-home pay. Spreadsheets are essentially matrices --- a row by column structure that contains values. 
+\item \textbf{Linear transformations}. When you studied congruence in workbook 4, you were introduced to a few linear transformations, such as translation and reflection. 
 \end{itemize}
 
 \section{What's With the Linear?}
 
-You might be thinking, “Hey, haven’t I’ve been doing algebra already?” 
+You might be thinking, “Hey, haven’t I been doing algebra already?” 
 
-You have. You've come a long way in your problem solving journey. You've used algebra to solve simple equations like $7x + 10 = 24$ and quadratic equations like $4x^{2} + 9x + 31 = 0$. What distinguishes linear algebra is that linear combinations are at its heart. Any equation with a power greater than 1, like a quadratic, is nonlinear.
+You have! You have come a long way in your problem solving journey. You have used algebra to solve simple equations like $7x + 10 = 24$ and quadratic equations like $4x^{2} + 9x + 31 = 0$. What distinguishes linear algebra is the focus on linear combinations. Any equation with a power greater than 1, such as a quadratic, is nonlinear.
 
-We’ll first take a look at linear combinations
+We will first take a look at linear combinations
 
 \section{Linear Combinations}
 
-You won’t see any \textbf{sin}, \textbf{cos}, or \textbf{tan} operations in this section. Linear operations do NOT use trigonometric functions. Those are all nonlinear. A linear combination  preserves addition and scalar multiplication. You will see that linear combinations allow you to solve many types of problems in science and engineering. Before we get deep into the numbers, let’s take a look at a few linear operations you can perform on images. This will give you an intuition for the underlying math. Then we’ll take a look at some numbers.
+You won’t see any \textbf{sin}, \textbf{cos}, or \textbf{tan} operations in this section. Linear operations do not use trigonometric functions; those operations are all nonlinear. A linear combination  preserves addition and scalar multiplication. You will see that linear combinations allow you to solve many types of problems in science and engineering. Before we get deep into the numbers, let’s take a look at a few linear operations you can perform on images. This will give you an intuition for the underlying math. After that, we’ll take a look at some numbers.
 
 \section{Image Operations}
-The simplest image, a bitmap, can be represented by a two-dimensional matrix of values, either 0, for black, or 1, for white. Grayscale images are also represented by a two-dimensional matrix of values, but the values typically range from 0 to 255. Zero is black, 255 is white, the values in between represent shades of gray. 
+The simplest image, a bitmap, can be represented by a two-dimensional matrix of values --- either 0 for black, or 1 for white. Grayscale images are also represented by a two-dimensional matrix of values, but the values typically range from 0 to 255. 0 is black, 255 is white, and the values in between represent shades of gray. 
 
 Color images are more complex. The simplest color image is a three-dimensional matrix of values. You can think of it as three 2D matrices, one to represent red values (R), another for green values (G), and the third for blue values (B). The combination of R, G, and B determines the color you see.
 
-Working with images, means working with millions of pixels. Fortunately modern techniques make this a snap. Let's look at some common operations on an image of a rocket.
+Working with images means working with millions of pixels. Fortunately, modern techniques make this a snap. Let's look at some common operations on an image of a rocket.
 
 \includegraphics[width=0.25\textwidth]{flying-rocket.png}
 
@@ -35,21 +35,21 @@ Flipping is a linear operation.
 
 \includegraphics[width=0.25\textwidth]{rocket-flipped.png}
 
-Next, the image is rotated 90 degrees. This rotation is linear, but if you want to rotate it at an angle that isn't a multiple of 90, you would need trigonometry. You'd be treading into nonlinear territory. But that happens in the field of linear algebra. You'll learn about nonlinear extensions later that use trigonometric functions and imaginary numbers.
+Next, the image is rotated 90 degrees. This rotation is linear, but if you want to rotate it at an angle that isn't a multiple of 90, you would need trigonometry. This would be treading into nonlinear territory, but that happens in the field of linear algebra. You will learn about nonlinear extensions later, which use trigonometric functions and imaginary numbers.
 
 \includegraphics[width=0.25\textwidth]{rocket-rotated-90.png}
 
-Inversion is an interesting linear operation that involves redefining the red, green and blue values such that the new value is 1.0 minus the old value. The resulting black background gives the impression the rocket is in deep space, don't you think?
+Inversion is an interesting linear operation that involves redefining the red, green, and blue values, such that the new value is 1.0 minus the old value. The resulting black background gives the impression the rocket is in deep space, don't you think?
 
 \includegraphics[width=0.25\textwidth]{rocket-inverted.png}
 
-It is possible to redefine the red, green, and blue values in many ways. Visit the NASA website and search for false color images. NASA and other scientists redefine colors to communicate such things as the amount of vegetation or water in an area, the temperatures of the sun's surface, and so on. Photographers often do this for artistic effect. For example, the image on the left was taken with an infrared camera. (But not the thermal infrared you've seen. This is the infrared that's emitted by living plants.) The image is further processed to swap channels. For example, the matrix representing red might be swapped with the matrix representing blue. The image on the right shows the image after swapping color values. All these swapping operations are linear.
+It is possible to redefine the red, green, and blue values in many ways. Visit the NASA website and search for false color images. NASA and other scientists redefine colors to communicate such things as the amount of vegetation or water in an area, the temperatures of the sun's surface, and so on. Photographers often do this for artistic effect. For example, the image on the left was taken with an infrared camera. (This infrared is not the same as thermal kind you have likely seen before. This is the infrared that is emitted by living plants.) The image is further processed to swap channels. For example, the matrix representing red might be swapped with the matrix representing blue. The image on the right shows the image after swapping color values. All these swapping operations are linear.
 
 \includegraphics[width=1.0\textwidth]{infrared.png}
 
 \section{The Numbers Behind Some Image Operations}
 
-You'll see a few matrices in this section. Let's first see how a spreadsheet can be represented as a matrix. Recall the barrel making shop example. This is part of that spreadsheet. 
+You will see a few matrices in this section. Let's first look at how a spreadsheet can be represented as a matrix. Recall the barrel-making shop example. This is part of that spreadsheet. 
 
 \includegraphics[width=1.0\textwidth]{spreadsheet.png}
 
@@ -65,9 +65,9 @@ $$\begin{bmatrix}
 3460. & 3680. & 3900.
 \end{bmatrix}$$
  
-A matrix that represents an image contains only pixel values, whereas the barrel making shop matrix represents seven kinds of variables: barrels produced, materials cost, sales price, rent, pretax earnings, taxes, and take home pay. 
+A matrix that represents an image contains only pixel values, whereas the barrel-making shop matrix represents seven kinds of variables: barrels produced, materials cost, sales price, rent, pretax earnings, taxes, and take home pay. 
 
-The simplest image to create is a bitmap because that requires a matrix of zeros and ones. This is a matrix for a 10 pixel by 10 pixel image. Why the decimal points when this is obviously a matrix of integers? It turns out that when you use tools like python to process matrices, you must be conscious of data types. I already know that most of the python methods I use for image operations expect floating points. A few expect integer types, but you'll see how to handle type conversion later, in the section on python. 
+The simplest image to create is a bitmap, because that requires a matrix of zeros and ones. This is a matrix for a 10 pixel by 10 pixel image. Why use decimal points when this is obviously a matrix of integers? It turns out that when you use tools like Python to process matrices, you must be conscious of data types. Most of the Python methods we use for image operations expect floating points. A few expect integer types, but you'll see how to handle type conversion later, in the section on Python. 
 
 $$\begin{bmatrix}
 0. & 0. & 0. & 0. & 1. & 0. & 0. & 0. & 1. & 0\\
@@ -82,11 +82,11 @@ $$\begin{bmatrix}
 0. & 0. & 0. & 0. & 1. & 0. & 0. & 0. & 1. & 0
 \end{bmatrix}$$
 
-When converted to an image, it is very tiny. This is an enlarged version so you can see the pattern.
+When converted to an image, it is very tiny. This is an enlarged version, so you can see the pattern.
 
 \includegraphics[width=0.25\textwidth]{normal.png}
 
-We can create an inverse of this image by changing all the values in the matrix so that 0 becomes 1 and 1 becomes 0. (Technically this is not the way you'd invert a matrix, as you'll see in the python section. For this example, you will get the same visual result, but when you start inverting matrices programmatically, you will learn the formal definition.)
+We can create an inverse of this image by changing all the values in the matrix so that 0 becomes 1 and 1 becomes 0. (Technically this is not the way you would invert a matrix, as you will see in the Python section. For this example, you will get the same visual result, but when you start inverting matrices programmatically, you will learn the formal definition.)
 
 $$\begin{bmatrix}
 1. & 1. & 1. & 1. & 0. & 1. & 1. & 1. & 0. & 1\\
@@ -143,7 +143,7 @@ The resulting image looks like this:
 
 \includegraphics[width=0.25\textwidth]{transpose.png}
 
-What about adding images? That fits the definition of a linear combination. Recall that grayscale images have values from 0 to 255. To make things simple, let's define two matrices with values ranging from 0.0 to 1.0. When we want a grayscale image, it's easy to multiply the matrix by 255. 
+What about adding images? That fits the definition of a linear combination. Recall that grayscale images have values from 0 to 255. To make things simple, let's define two matrices with values ranging from 0.0 to 1.0. When we want a grayscale image, it is easy to multiply the matrix by 255. 
 
 Let's call this matrix f.
 
@@ -177,7 +177,7 @@ $$\begin{bmatrix}
 1.5 & 1.0 & 1.0 
 \end{bmatrix}$$
 
-But the values in k exceed the range of 0.0 to 1.0, so we normalize by dividing the matrix by 1.0
+However, the values in k exceed the range of 0.0 to 1.0, so we normalize by dividing the matrix by 1.0
 
 $$\begin{bmatrix}
 0.75 & 0.25 & 0.00\\
@@ -197,7 +197,7 @@ If you want to keep the pattern in the first column, you could multiply the matr
 
 \includegraphics[width=0.25\textwidth]{onechannel.png}
 
-What do you think will happen if you use the vector [0.0 1.0 0.0] or [0.0 0.0 1.0]? You'll get a chance later to use python to perform image operations.
+What do you think will happen if you use the vector [0.0 1.0 0.0] or [0.0 0.0 1.0]? You'll get a chance later to use Python to perform image operations.
 
 All the operations we performed on these images satisfy the requirement for linear combinations: preserving addition and scalar multiplication. 
 
