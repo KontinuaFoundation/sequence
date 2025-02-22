@@ -16,7 +16,92 @@ provided this limit exists. In words, the derivative of $f$ at $x$ is the
 limit of the rate of change of $f$ at $x$ as the change in $x$ approaches zero. 
 The derivative of a function is equal to the slope  of the function. 
 
-%fix me estimating derivative from data
+Where does the definition of a derivative come from? Consider the function 
+$f(x) = x^2$. Suppose we want to write an equation for a line that is tangent 
+to the curve at $x = 2$ (see figure \ref{fig:tangent}). We already have a 
+point that the line passes through: $(2, 4)$. To write an equation for the 
+tangent line, we would need to know its slope, $m$. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -3, xmax = 3, ymin = -0.5, 
+        ymax = 10, xlabel = $x$, ylabel = $y$]
+            \addplot[blue, thick, samples = 100, domain = -3:3]{x^2};
+            \draw[blue, fill = blue] (2, 4) circle (0.5mm);
+            \addplot[red, thin]{4*(x - 2) + 4};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The red line is tangent to $f(x) = x^2$ at the point $(2, 4)$}
+    \label{fig:tangent}
+\end{figure}
+
+We can estimate the slope by choosing another point, $Q$, near our known 
+point, $P = (2, 4)$, and drawing a secant line through $P$ and $Q$ (see figure 
+\ref{fig:secant}). Using the slope formula, $m = \left( y_2 - y_1 \right) / 
+\left( x_2 - x_1 \right)$, we can find the slope of the secant line. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -3, xmax = 3, ymin = -0.5, 
+        ymax = 10, xlabel = $x$, ylabel = $y$, clip = false]
+            \addplot[blue, thick, samples = 100, domain = -3:3]{x^2};
+            \draw[blue, fill = blue] (2, 4) circle (0.5mm) node[left, font = 
+            \scriptsize] {P};
+            \addplot[red, thin, domain = 1:3]{4*(x - 2) + 4};
+            \draw[black, fill = black] (1, 1) circle (0.5mm) node[left, font = 
+            \scriptsize] {Q};
+            \addplot[black, thin, dashed, domain = 0.6:3]{3*(x - 2) + 4};
+            \draw[latex-, black] (1.35, 2.25) -- (1, 3) node[above, font = 
+            \scriptsize] {secant line};
+            \draw[latex-, black] (1.25, 1) -- (2.5, 2) node[above, font = 
+            \scriptsize] {tangent line};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The slope of the secant line is approximately the slope of the 
+    tangent line}
+    \label{fig:secant}
+\end{figure}
+
+As $Q$ moves closer to $P$, the slope of the secant line is a better and 
+better approximation of the slope of the tangent line (see figure fixme figure showing zoomed in about $P$ and several $Q$s moving closer to $P$ from either side of $P$). 
+
+Much scientific data is not described as continuous functions, but rather as 
+discreet data points. Consider the following data of a falling object:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+time (seconds) & height (m)\\\hline
+0 & 50\\\hline
+0.5 & 48.775\\\hline
+1 & 45.1\\\hline
+1.5 & 38.975\\\hline
+2 & 30.4\\\hline
+2.5 & 19.375\\\hline
+3 & 5.9 \\\hline
+\end{tabular}
+\end{center}
+
+A graph of the data is shown in figure \ref{fig:falling}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -0.5, xmax = 3.5, ymin = 
+        -0.5, ymax = 52, xlabel = time(sec), ylabel = height(m)]
+            \draw[blue, fill = blue] (0, 50) circle (0.7mm);
+            \draw[blue, fill = blue] (0.5, 48.775) circle (0.7mm);
+            \draw[blue, fill = blue] (1, 45.1) circle (0.7mm);
+            \draw[blue, fill = blue] (1.5, 38.975) circle (0.7mm);
+            \draw[blue, fill = blue] (2, 30.4) circle (0.7mm);
+            \draw[blue, fill = blue] (2.5, 19.375) circle (0.7mm);
+            \draw[blue, fill = blue] (3, 5.9) circle (0.7mm);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The height of a falling object over time}
+    \label{fig:falling}
+\end{figure}
 
 \begin{Exercise}[label=slope1]
 	[This question was originally presented as a free-response, calculator-allowed 
