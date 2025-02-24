@@ -125,11 +125,12 @@ def create_workbook(collection: dict, workbook_number: int, token: str) -> dict 
         if response.status_code != 201:
             print(f"Failed to create new workbook: {response.status_code} != 201")
 
+            print("Response Dump:")
             response_data = response.json()
             print_pretty_json(response_data)
 
             if "chapters" in response_data:
-                print("\nValidation Errors in 'chapters':")
+                print("Json Schema Validation Errors:")
                 for error in response_data["chapters"]:
                     print(error)
 
@@ -177,8 +178,9 @@ def main():
     if not new_collection:
         return
 
+    collection_name = f"{new_collection['localization']} v{new_collection['major_version']}.{new_collection['minor_version']}"
     print(
-        f"Going to add {NUMBER_OF_WORKBOOKS} workbooks to collection:\n {new_collection["localization"]} v{new_collection["major_version"]}.{new_collection["minor_version"]}")
+        f"Going to add {NUMBER_OF_WORKBOOKS} workbooks to collection:\n{collection_name}")
     input("Press Enter to continue (ctrl-C to cancel)...")
 
     progress_bar(0, NUMBER_OF_WORKBOOKS)
@@ -193,8 +195,12 @@ def main():
     print("Want to release this collection now?")
     yes_or_no = input("Enter 'yes' to release, 'no' to cancel: ")
 
-    if yes_or_no == "yes":
+    if yes_or_no.lower() == "yes":
         release_collection(new_collection, token)
+        print(f"{collection_name} released!")
+    else:
+        print("Collection not released.")
+
 
 if __name__ == "__main__":
     main()
