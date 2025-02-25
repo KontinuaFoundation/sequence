@@ -14,13 +14,17 @@ f'(x) = \lim_{{h \to 0}} \frac{f(x+h) - f(x)}{h}
 
 provided this limit exists. In words, the derivative of $f$ at $x$ is the 
 limit of the rate of change of $f$ at $x$ as the change in $x$ approaches zero. 
-The derivative of a function is equal to the slope  of the function. 
+The derivative of a function is equal to the slope  of the function. The 
+derivative of a function, $f(x)$, is denoted as $f'(x)$ (read out loud as "f 
+prime of x") or $df/dx$. The origin of this definition was shown in the 
+previous chapter, Differentiation. 
 
-Where does the definition of a derivative come from? Consider the function 
-$f(x) = x^2$. Suppose we want to write an equation for a line that is tangent 
-to the curve at $x = 2$ (see figure \ref{fig:tangent}). We already have a 
-point that the line passes through: $(2, 4)$. To write an equation for the 
-tangent line, we would need to know its slope, $m$. 
+
+\subsection{Estimating the Derivative}
+Consider the function $f(x) = x^2$. Suppose we want to write an equation for a 
+line that is tangent to the curve at $x = 2$ (see figure \ref{fig:tangent}). 
+We already have a point that the line passes through: $(2, 4)$. To write an 
+equation for the tangent line, we would need to know its slope, $m$. 
 
 \begin{figure}[htbp]
     \centering
@@ -36,27 +40,30 @@ tangent line, we would need to know its slope, $m$.
     \label{fig:tangent}
 \end{figure}
 
-We can estimate the slope by choosing another point, $Q$, near our known 
-point, $P = (2, 4)$, and drawing a secant line through $P$ and $Q$ (see figure 
-\ref{fig:secant}). Using the slope formula, $m = \left( y_2 - y_1 \right) / 
-\left( x_2 - x_1 \right)$, we can find the slope of the secant line. 
+We can estimate the slope by choosing points on either side of $P$, drawing a 
+line through those points, and calculating the slope of that secant line (it 
+is a secant line because it intersects the curve more than once). See figure 
+\ref{fig:secant} for a visualization. 
 
 \begin{figure}[htbp]
     \centering
     \begin{tikzpicture}
-        \begin{axis}[axis lines = center, xmin = -3, xmax = 3, ymin = -0.5, 
+        \begin{axis}[axis lines = center, xmin = -0.5, xmax = 3, ymin = -0.5, 
         ymax = 10, xlabel = $x$, ylabel = $y$, clip = false]
-            \addplot[blue, thick, samples = 100, domain = -3:3]{x^2};
+            \addplot[blue, thick, samples = 100, domain = -0.5:3]{x^2};
             \draw[blue, fill = blue] (2, 4) circle (0.5mm) node[left, font = 
             \scriptsize] {P};
             \addplot[red, thin, domain = 1:3]{4*(x - 2) + 4};
-            \draw[black, fill = black] (1, 1) circle (0.5mm) node[left, font = 
+            \draw[black, fill = black] (1.5, 2.25) circle (0.5mm) node[left, font = 
             \scriptsize] {Q};
-            \addplot[black, thin, dashed, domain = 0.6:3]{3*(x - 2) + 4};
-            \draw[latex-, black] (1.35, 2.25) -- (1, 3) node[above, font = 
+            \draw[black, fill = black] (2.5, 6.25) circle (0.5mm) node[left, font = 
+            \scriptsize] {R};
+            \draw[latex-, black] (1.7, 3) -- (1, 3) node[above, font = 
             \scriptsize] {secant line};
-            \draw[latex-, black] (1.25, 1) -- (2.5, 2) node[above, font = 
+            \draw[latex-, black] (2.5, 6) -- (2.5, 2) node[below, font = 
             \scriptsize] {tangent line};
+            \addplot[black, dashed, domain = 0.9:3]{(6.25 - 2.25)*(x - 1.5) + 
+            2.25};
         \end{axis}
     \end{tikzpicture}
     \caption{The slope of the secant line is approximately the slope of the 
@@ -64,11 +71,10 @@ point, $P = (2, 4)$, and drawing a secant line through $P$ and $Q$ (see figure
     \label{fig:secant}
 \end{figure}
 
-As $Q$ moves closer to $P$, the slope of the secant line is a better and 
-better approximation of the slope of the tangent line (see figure fixme figure showing zoomed in about $P$ and several $Q$s moving closer to $P$ from either side of $P$). 
+As the points $Q$ and $R$ get closer to $P$, the better the estimate becomes. 
 
 Much scientific data is not described as continuous functions, but rather as 
-discreet data points. Consider the following data of a falling object:
+discrete data points. Consider the following data of a falling object:
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
@@ -135,6 +141,40 @@ $$v = \frac{h_2 - h_2}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
     \label{fig:velocity}
 \end{figure}
 
+\textbf{Example}: A 1000-gallon tank drains from the bottom in 30 minutes. The 
+volume left in the tank is recorded every 5 minutes, as shown in the data 
+table below. Use the data to estimate $V'(15)$ and $V'(25)$, including 
+appropriate units. At which time is the tank draining faster?
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+t (min) & V (gal)\\\hline
+$5$ & $694$\\\hline
+$10$ & $444$\\\hline
+$15$ & $250$\\\hline
+$20$ & $111$\\\hline
+$25$ & $28$\\\hline
+$30$ & $0$\\\hline
+\end{tabular}
+\end{center}
+
+\textbf{Solution}: To estimate $V'(15)$, we find the slope of the line 
+connecting the data points on either side of $t = 15$:
+$$V'(15) \approx \frac{111\text{gal} - 444text{gal}}{20\text{min} - 10
+\text{min}}$$
+$$V'(15) \approx \frac{-333\text{gal}}{10\text{min}}$$
+$$V'(15) \approx -33.3 \frac{\text{gal}}{\text{min}}$$
+
+And we can use the data at $t = 20$ and $t = 30$ to estimate $V'(25)$:
+$$V'(25) \approx \frac{0\text{gal} - 111\text{gal}}{30\text{min} - 20
+\text{min}}$$
+$$V'(25) \approx \frac{-111\text{gal}}{10\text{min}}$$
+$$V'(25) \approx -11.1 \frac{\text{gal}}{\text{min}}$$
+
+Both answers are negative because the tank is emptying, and the tank is 
+draining faster at $t = 15$ than at $t = 25$. 
+
 \begin{Exercise}[label=slope1]
 	[This question was originally presented as a free-response, calculator-allowed 
 	question on the 2012 AP Calculus BC Exam.] The temperature of water in a tub 
@@ -170,6 +210,101 @@ $$v = \frac{h_2 - h_2}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
 	of the water in the tub. When $t = 12$, the water in the tub is increasing in 
 	temperature at about 1 degree Fahrenheit per minute. 
 \end{Answer}
+
+\section{The Derivative as a Function}
+We have seen how to estimate the value of a derivative at a specific point on 
+a graph. Suppose we wanted to describe the slope of a graph everywhere. That 
+is: can we find a function, $g(x)$ that describes the slope of another 
+function, $f(x)$, over the domain of $f$? Using the definition of a 
+derivative, we can.
+
+You have already seen an algorithm to find the derivatives of polynomial 
+functions (see chapter Differentiating Polynomials). Recall that for a 
+function, $f(x) = x^n$, the derivative is $f'(x) = nx^{n - 1}$. Here is the 
+proof:
+$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{(x + h)^n - x^n}{h}$$
+
+In order to expand the polynomial, $(x + h)^n$, we'll need to apply the 
+Binomial Theorem, which tells us that:
+$$(a + b)^n = a^n + na^{n - 1}b + \frac{n(n - 1)}{2!}a^{n - 2}b^2 + \frac{n(n 
+- 1)(n - 2)}{3!}a^{n - 3}b^3 + \cdots + nab^{n - 1} + b^n$$
+
+Substituting this into our limit definition of a derivative, we see that:
+$$f'(x) = \lim_{h \to 0} \frac{x^n + nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 
++ \cdots nxh^{n-1} + h^n - x^n}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 + 
+\cdots nxh^{n-1} + h^n}{h}$$
+$$f'(x) = \lim_{h \to 0} nx^{n-1} + \frac{n(n-1)}{2!}x^{n-2}h + \cdots nxh^{
+n-2} + h^{n-1}$$
+$$f'(x) = nx^{n-1}$$
+
+\textbf{Example}: Use the limit definition of a derivative to find $f'(x)$ if 
+$f(x) = 2x^3 - x^2$. 
+
+\textbf{Solution}: According to the limit definition, $f'$ is:
+$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \frac{\left[ 2\left( x + 
+h \right)^3 - \left( x + h \right)^2 \right] - \left[ 2x^3 - x^2 \right]}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{\left[ 2 \left( x^3 + 3 h x^2 + 3 h^2 x + h^3 
+\right) - \left( x^2 + 2xh + h^2 \right) \right] - 2 x^3 + x^2}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{2x^3 - 2x^3 + 6 h x^2 + 6 h^2 x + 6 h^3 - x^2 + 
+x^2 -2 x h - h^2}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{6 h x^2 + 6 h^2 x + 6 h^3 - 2 x h - h^2}{h}$$
+$$f'(x) = \lim_{h \to 0} 6 x^2 + 6 h x + 6 h^2 - 2x - h = 6 x^2 - 2 x$$
+
+Therefore, if $f(x) = 2x^3 - x^2$, then $f'(x) = 6x^2 - 2x$. 
+
+\begin{Exercise}[title = {Finding Functions for Derivatives}, label = deriv1]
+Use the limit definition of a derivative to find an equation for $f'(x)$.
+\begin{enumerate}
+\item $f(x) = mx + b$
+\item $f(x) = \sqrt{16 - x}$
+\item $f(x) = \frac{x^2 - 1}{2x - 3}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = deriv1]
+\begin{enumerate}
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\left[ m \left( x + h \right) + b \right] - \left[ mx + b \right]}{
+    h}$$
+    $$f'(x) = \lim_{h \to 0} \frac{mx + mh + b - mx - b}{h} = \lim_{h \to 0} 
+    \frac{mh}{h} = \lim_{h \to 0} m = m$$
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\sqrt{16 - x - h} - \sqrt{16 - x}}{h}$$
+    $$f'(x) = \lim_{h \to 0} \frac{\sqrt{16 - x - h} - \sqrt{16 - x}}{h} \cdot 
+    \frac{\sqrt{16 - x - h} + \sqrt{16 - x}}{\sqrt{16 - x - h} + \sqrt{16 - x}}
+    $$
+    $$f'(x) = \lim_{h \to 0} \frac{\left( 16 - x - h \right) - \left(16 - x 
+    \right)}{h \left( \sqrt{16 - x - h} + \sqrt{16 - x} \right)}$$
+    $$f'(x) = \lim_{h \to 0} \frac{-h}{h \left( \sqrt{16 - x - h} + \sqrt{16 - 
+    x} \right)} = \lim_{h \to 0} \frac{-1}{\sqrt{16 - x - h} + \sqrt{16 - x}}$$
+    $$f'(x) = \frac{-1}{\sqrt{16 - x} + \sqrt{16 - x}} = \frac{-1}{2\sqrt{16 - 
+    x}}$$
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\frac{(x + h)^2 - 1}{2(x + h) - 3} - \frac{x^2 - 1}{2x - 3}}{h}$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{x^2 + 2xh 
+    + h^2 - 1}{2x + 2h - 3} - \frac{x^2 - 1}{2x - 3} \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{x^2 + 2xh 
+    + h^2 - 1}{2x + 2h - 3} \left( \frac{2x - 3}{2x - 3} \right) - \frac{x^2 - 
+    1}{2x - 3} \left( \frac{2x + 2h - 3}{2x + 2h - 3} \right) \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{\left( 
+    x^2 + 2xh + h^2 - 1 \right) \left( 2x - 3 \right) - \left( x^2 - 1 \right) 
+    \left( 2x + 2h - 3 \right)}{\left( 2x - 3 \right) \left(2x + 2h - 3 \right)
+    } \right]$$
+    $$f'(x) = \left( \frac{1}{h} \right) \left[ \frac{2x^3 + 4x^2h + 2xh^2 - 
+    2x - 3x^2 - 6xh - 3h^2 + 3 \left( 2x^3 + 2x^2h - 3x^2 - 2x - 2h + 3 
+    \right)}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{2x^2h + 
+    2xh^2 - 6xh - 3h^2 + 2h}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} 
+    \right]$$
+    $$f'(x) = \lim_{h \to 0} \frac{2x^2 + 2xh - 6x - 3h + 2}{\left( 2x - 3 
+    \right) \left( 2x + 2h - 3 \right)} = \frac{2x^2 - 6x + 2}{\left( 2x - 3 
+    \right)^2}$$
+\end{enumerate}
+\end{Answer}
+
+
 
 \section{Applications in Mathematics}
 \subsection{l'Hospital's Rule}
