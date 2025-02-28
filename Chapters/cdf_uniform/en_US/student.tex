@@ -4,17 +4,17 @@ When we talked about the probability distribution of the sum of two dice,  we as
 
 \includegraphics[width=0.7\textwidth]{dice_histogram.png}
 
-The probabilities all added up to be 1.0.  That is a way of saying "100\% of the times you throw the dice,  the sum will be an integer between 2 and 12."
+The probabilities all added up to be 1.0.  That is a way of saying ``100\% of the times you throw the dice,  the sum will be an integer between 2 and 12.''
 
-Now we need to talk about probabilities of properties that are continuous,  not discrete.   For example, we might want to ask the question "If I randomly pick a cow from all the cows in the 
-world, what is the probability that it will weigh less than 597.34 kg?"  What does a probability distribution for a continuous variable look like?
+Now we need to talk about probabilities of properties that are continuous,  not discrete. For example, we might want to ask the question, ``If I randomly pick a cow from all the cows in the 
+world, what is the probability that it will weigh less than 597.34 kg?''  What does a probability distribution for a continuous variable look like?
 
 \section{Cumulative Distribution Function}
 
-Imagine that you live in ancient times.  You buy, sell, and ship cows.   A lot of people come into your office and brag about their cows: "Bessie is heavier than 99\% of the cows in 
-world!"  So you need to develop some statistics on cow weights.
+Imagine that you live in ancient times.  You buy, sell, and ship cows. A lot of people come into your office and brag about their cows: "Bessie is heavier than 99\% of the cows in 
+world!"  So, you need to develop some statistics on cow weights.
 
-You have ten cows.  You weight them:
+You have ten cows. You weight them:
 
 \begin{tabular}{c|r}
 Cow & Mass in kg \\
@@ -31,7 +31,7 @@ Cow 9 & 489.97 \\
 Cow 10 & 704.15 \\
 \end{tabular}
 
-If someone comes into your shop and says "My Bessie is an astonishing 530 kg!" it would be cool to have a list on the wall that would let you yell back "Half my cows are heavier than that, Silly!"  So you sort the cows by weight.  For each weight,  you say how many of your cows are lighter than that:
+If someone comes into your shop and says, ``My Bessie is an astonishing 530 kg!'' it would be cool to have a list on the wall that would let you yell back, ``Half my cows are heavier than that, Silly!''  So, you sort the cows by weight.  For each weight,  you say how many of your cows are lighter than that:
 
 \begin{tabular}{c|r}
 Proportion of cows lighter & Mass in kg \\
@@ -52,10 +52,10 @@ In fact, for easy reference,  you make a plot:
 
 \includegraphics[width=0.7\textwidth]{cow_sample_cdf.png}
 
-Now for any weight you can quickly look up what proportion of your cows are lighter.  (And, if you subtract that from 1,  what proportion of your cows are heavier.)
+Now, for any weight, you can quickly look up what proportion of your cows are lighter (and, if you subtract that from 1,  what proportion of your cows are heavier).
 
-See how jagged that graph is?  That is because you only have the data for 10 cows.   However, as the years pass and you weight thousands of cows,  the plot will become smoother.   Because it
-always accumulates more cows as you move from left to right,  this is known as a \newterm{cumulative distribution function} or CDF:
+See how jagged that graph is?  That is because you only have the data for 10 cows. However, as the years pass and you weight thousands of cows, the plot will become smoother. Because it
+always accumulates more cows as you move from left to right, this is known as a \newterm{cumulative distribution function}, or CDF:
 
 \includegraphics[width=0.7\textwidth]{cow_cdf.png}
 
@@ -68,48 +68,48 @@ weigh less than 635 kg.  Thus 6\% of all cows must weigh more than 620 kg and le
 
 \section{Probability Density Function}
 
-The cumulative density function is handy,  but some of its information can be hard to see.  For example,  how would you answer the question "What is the most common weight of a cow?"  You would
+The cumulative density function is handy,  but some of its information can be hard to see.  For example, how would you answer the question, ``What is the most common weight of a cow?"  You would
 squint at the CDF and try to determine where it was steepest.
 
 To make these sorts of questions easier to answer,  we take the derivative of the CDF to get the \newterm{probability density function} (or PDF).  For the cows,  it would look like this:
 
 \includegraphics[width=0.7\textwidth]{cow_pdf.png}
 
-Now you can easily see that the CDF was steepest at about 560 kg.  We call the highest point on the PDF the \newterm{most likely estimator}.  For example, you might say "560 kg is the most likely estimator of cow mass."  Sometimes we just say "the MLE".
+Now you can easily see that the CDF was steepest at about 560 kg.  We call the highest point on the PDF the \newterm{most likely estimator}.  For example, you might say ``560 kg is the most likely estimator of cow mass.''  Sometimes we just say ``the MLE''.
 
-Note that the MLE is often different from the mean or the median.  In this case, for example,  the distribution is skewed right -- there are more cows that are heavier than the 
-MLE than there are cows that are lighter than the MLE.    The MLE would be less than the mean or the median.
+Note that the MLE is often different from the mean or the median.  In this case, for example,  the distribution is skewed right --- there are more cows that are heavier than the 
+MLE than there are cows that are lighter than the MLE. The MLE would be less than the mean or the median.
 
-Once again,  lets say you want to know what proportion of cows weight between 620 kg and 635 kg.   This is more difficult with a PDF than it is with a CDF.  With a PDF,  you have to find
+Once again,  let's say you want to know what proportion of cows weight between 620 kg and 635 kg. This is more difficult with a PDF than it is with a CDF.  With a PDF,  you have to find
 the area under the curve between $x=620$ and $x=635$.  
 
 \includegraphics[width=0.7\textwidth]{cow_pdf_bounds.png}
 
-This is why it is called a "probability density" -- to get a true probability you need to multiply the density by the width of the region.
+This is why it is called a "probability density" --- to get a true probability you need to multiply the density by the width of the region.
 
 What is the area under the entire curve?  If you integrated it, you would get the CDF.  The CDF goes from 0 to 1.0.   The area under a PDF is \emph{always} 1.0.
 
 \section{The Continuous Uniform Distribution}
 
-The most simple continuous distribution is the uniform distribution between two numbers $a$ and $b$.   The CDF is a straight line from zero at $a$ to 1 at $b$.  For example,
-here is the CDF for the uniform distribution between 6 and 9.
+The most simple continuous distribution is the uniform distribution between two numbers $a$ and $b$. The CDF is a straight line from zero at $a$ to 1 at $b$.  For example,
+here is the CDF for the uniform distribution between 6 and 9:
 
 \includegraphics[width=0.7\textwidth]{unif_cdf.png}
 
-That line goes from 0 to 1 over a distance of 3,   so its slope is $\frac{1}{3}$ between 6 and  9 and zero everywhere else.   Thus the PDF (its derivative),  looks like this:
+That line goes from 0 to 1 over a distance of 3, so its slope is $\frac{1}{3}$ between 6 and  9 and zero everywhere else. Thus, the PDF (its derivative) looks like this:
 
 \includegraphics[width=0.7\textwidth]{unif_pdf.png}
 
-So we can write the probability distribution of a continuous uniform distribution between $a$ and $b$ as:
+So, we can write the probability distribution of a continuous uniform distribution between $a$ and $b$ as:
 
   $p(x) = \begin{cases}
   \frac{1}{b-a} & \text{for } a \le x \le b, \\[8pt]
   0 & \text{for } x < a \ \text{ or } \ x > b.
   \end{cases}$
 
-Notice that if $a$ and $b$ are less than 1 apart,  the value of $p(x)$ will be greater than 1.  This is a really important difference between a probability and a probability density: 
+Notice that if $a$ and $b$ are less than 1 apart,  the value of $p(x)$ will be greater than 1.  This is an important difference between a probability and a probability density: 
 \begin{itemize}
-\item A probability will always be in  the interval $[0, 1]$.  
+\item A probability will always be in the interval $[0, 1]$.  
 \item A probability density will never be less than 0,  but can be much larger than 1.
 \end{itemize}
 
@@ -134,7 +134,7 @@ functions like this:
 from scipy.stats import uniform
 \end{verbatim}
 
-Now if you wanted a numpy array containing a sample of 300 numbers generated randomly from that distribution:
+Now, if you wanted a numpy array containing a sample of 300 numbers generated randomly from that distribution:
 
 \begin{verbatim}
 samples = uniform.rvs(loc=6,  scale=3,  size=300)
@@ -149,7 +149,7 @@ x_values = np.array([8, 10])
 p_values  = uniform.pdf(x_values,  loc=6,  scale=3)
 \end{verbatim}
 
-Now \pyvar{p\_values} contains 0.33333 and 0.0.
+Now, \pyvar{p\_values} contains 0.33333 and 0.0.
 
 To get the value of the cumulative distribution function at those points,  you would use the \pyfunction{cdf} function:
 
@@ -157,22 +157,22 @@ To get the value of the cumulative distribution function at those points,  you w
 cdf_values = uniform.cdf(x_values,  loc=6,  scale=3)
 \end{verbatim}
 
-Now \pyvar{cdf\_values} contains 0.666667 and 1.0.
+Now, \pyvar{cdf\_values} contains 0.666667 and 1.0.
 
-The inverse of the CDF is very useful.   It answers questions like "How heavy does a cow have to be to be in top 1\%?"
+The inverse of the CDF is very useful.   It answers questions like ``How heavy does a cow have to be to be in top 1\%?''
 
 \begin{verbatim}
 bottom_top_percentiles = np.array([0.01,  0.99])
 boundaries = uniform.ppf(bottom_top_percentiles,  loc=6,  scale=3)
 \end{verbatim}
 
-Now \pyvar{boundaries} contains 6.03 and 8.97.
+Now, \pyvar{boundaries} contains 6.03 and 8.97.
 
 The SciPy library supplies these functions (\pyfunction{rvs}, \pyfunction{pdf},  \pyfunction{cdf}, and \pyfunction{ppf}) for over a hundred 
 common continuous probability distributions.   
 
 The common "bell curve" shaped distribution is called a Gaussian  or Normal distribution.  It is described by its mean (the midpoint of the bell) and its standard deviation.   For the normal distribution,  the standard deviation is the distance you have to go from the mean to reach 68\% of the population. 
-We will talk a lot more about the normal distribution in other chapters,  but lets take this opportunity to plot the CDF and PDF of a normal distribution with a mean of 32 and a standard deviation of 8.
+We will talk a lot more about the normal distribution in other chapters,  but let's take this opportunity to plot the CDF and PDF of a normal distribution with a mean of 32 and a standard deviation of 8.
 
 Create a file called \filename{plot\_norm.py} and add the following lines:
 
@@ -227,14 +227,14 @@ The resulting plot should look like this:
 
 \includegraphics[width=0.7\textwidth]{norm_32_8.png}
 
-What do those vertical lines mean?  An ornithologist might tell you "The wingspan of adult robins are normally distributed with a mean of 32 cm and a
- standard deviation of 8 cm."  Then 68\% of the population of adult robins would have wingspans between the two red lines.
+What do those vertical lines mean?  An ornithologist might tell you, ``The wingspan of adult robins are normally distributed with a mean of 32 cm and a
+ standard deviation of 8 cm.''  This means 68\% of the population of adult robins would have wingspans between the two red lines.
  
 \begin{Exercise}[title={SciPy Stats}, label=scipy_ppf]
 
 Globally,  the height of adult women is approximately normally distributed.  The mean is 164.7 cm.  The standard deviation is 7.1 cm.
 
-Use python and SciPy stats to answer these questions: 
+Use Python and SciPy stats to answer these questions: 
 
 \begin{itemize}
 \item To be in the tallest decile (the top 10\%) of adult women,  how tall does one need to be? 

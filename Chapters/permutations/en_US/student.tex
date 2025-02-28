@@ -1,7 +1,7 @@
 \chapter{Permutations and Sorting}
 
 In the previous chapter, we talked about permutations. If you have a list
-of three letters, like $[a, b, c, d]$, you can rearrange them in $4!$
+of four letters, like $[a, b, c, d]$, you can rearrange them in $4!$
 ways:\index{permutations}
 
 \begin{tabular}{c c c c c c}
@@ -26,7 +26,7 @@ for p in all_permutations:
 
 How do we define or write down a single permutation? You could say
 something like ``Swap the first and second items and swap the third
-and fourth items.'' However, that gets pretty difficult to read. So we
+and fourth items.'' However, that gets pretty difficult to read, so we
 usually write a permutation as two lines: the first line is before
 the permutation and the second line is after.  Like this:
 
@@ -35,7 +35,7 @@ $$\begin{pmatrix}
   2 & 1 & 4 & 3
 \end{pmatrix}$$
 
-And we can assign permutations to variables. For example, if we wanted the
+We can also assign permutations to variables. For example, if we wanted the
 variable $A$ to represent ``swapping the first and second item'', we
 would write this:
 
@@ -58,7 +58,7 @@ $$B \circ A = \begin{pmatrix}
   2 & 1 & 4 & 3
 \end{pmatrix}$$
 
-That is if we have the list $[a, b, c, d]$ and we apply permutation $A$ and then permutation $B$, we get $[b, a, d, c]$.
+In other words, if we have the list $[a, b, c, d]$ and we apply permutation $A$, followed by permutation $B$, we get $[b, a, d, c]$.
 
 \textbf{Important:} Note that permutations are applied from right to
 left. $B \circ A$ means ``Applying $A$ and then $B$.''  Why does this matter?
@@ -77,7 +77,7 @@ $$I = \begin{pmatrix}
 
 (We use a capital ``I'' for the identity.)
 
-\subsection{Challenge} Find an example of two permutations $S$ and $T$ such that $S \circ T$ does not equal $T \circ S$.
+\subsection{Challenge} Find an example of two permutations $S$ and $T$, such that $S \circ T$ does not equal $T \circ S$.
 
 \section{Sorting in Python}
 
@@ -117,7 +117,7 @@ $$S = \begin{pmatrix}
   3 & 4 & 2 & 1
 \end{pmatrix}$$
 
-You could say this permutation shuffles a list a bit.  What is its
+You could say this permutation shuffles a list.  What is its
 inverse? That is, what is the permutation that unshuffles the items
 back to where they were originally?\index{permutations!inverses}
 
@@ -126,14 +126,14 @@ $$S^{-1} = \begin{pmatrix}
   4 & 3 & 1 & 2
 \end{pmatrix}$$
 
-That is, the original moved an item in the first spot to the third
-spot. The inverse must move whatever was in the third spot back to
+In other words, the original moved an item in the first spot to the third
+spot; the inverse must move whatever was in the third spot back to
 the first spot.
 
-(Notation note: Because in multiplication, $b \times b^{-1} = 1$, we
+(Notation note: In multiplication, $b \times b^{-1} = 1$, so we
 use ``to the negative one'' to indicate inverses in lots of places.)
 
-Mechanically, how do you find the inverse? Flip the rows, and then sort the columns using the top number:
+Mechanically, how do you find the inverse? Flip the rows, then sort the columns using the top number:
 % ADD: Inveserse should probably be defined
 $$\begin{pmatrix}
   1 & 2 & 3 & 4 \\
@@ -151,11 +151,11 @@ $$\begin{pmatrix}
 \end{pmatrix}
 $$    
 
-Let's say you have two permutations $A$ and $B$. Permuting by $B$ and then $A$ would look like this:
+Let's say you have two permutations $A$ and $B$. Permuting by $B$ then $A$ would look like this:
 
 $$C = A \circ B$$
 
-If you know $A^{-1}$ and $B^{-1}$, what is $C^{-1}$?  You would undo-$A$ and then undo-$B$, so
+If you know $A^{-1}$ and $B^{-1}$, what is $C^{-1}$?  You would undo-$A$, then undo-$B$, so
 
 $$C^{-1} = B^{-1} \circ A^{-1}$$
 
@@ -170,10 +170,10 @@ $$\begin{pmatrix}
 
 When this is applied, whatever is at 1 gets moved to 2, 2 gets moved
 to 4, and 4 gets moved to 1.  That is a \textit{cycle}: $1 \rightarrow
-2 \rightarrow 4$ and then it goes back to 1. It involves three locations, so we say
+2 \rightarrow 4$, then it goes back to 1. It involves three locations, so we say
 it is a \textit{3-cycle}.\index{permutations!cycles}
 
-There is another cycle in this permutation: $3 \rightarrow 5$ and then it goes back to 3.
+There is another cycle in this permutation: $3 \rightarrow 5$, then it goes back to 3.
 
 Because these cycles share no members, we say the cycles are \textit{disjoint}.
 
@@ -185,11 +185,11 @@ $$T = \begin{pmatrix}
 \end{pmatrix} = (1 \rightarrow 2 \rightarrow 4)(3 \rightarrow 5)$$
 
 The first handy thing about this notation is that it makes it easy for
-us to describe the inverse: we just run the cycles backward:
+us to describe the inverse. We just run the cycles backward:
 
 $$T^{-1} = (4 \rightarrow 2 \rightarrow 1)(5 \rightarrow 3)$$
 
-Starting with the list $[a, b, c, d, e]$, lets repeatedly apply the permutation $T$
+Starting with the list $[a, b, c, d, e]$, let's repeatedly apply the permutation $T$
 
 \begin{tabular}{r | l}
   Initial & {\color{red} a, b,} {\color{blue} c,} {\color{red} d,} {\color{blue} e} \\ 
@@ -201,7 +201,7 @@ Starting with the list $[a, b, c, d, e]$, lets repeatedly apply the permutation 
   $T \circ T \circ T \circ T \circ T \circ T$ applied & {\color{red} a, b,} {\color{blue} c,} {\color{red} d,}  {\color{blue} e}\\
 \end{tabular}
 
-This permutation, results in six combinations, and then it loops back
+This permutation results in six combinations, then it loops back
 on itself. The number of combinations is the least common multiple of
 all the cycles.  In this case, there is a 3-cycle and a 2-cycle. The
 least common multiple of 2 and 3 is 6.
