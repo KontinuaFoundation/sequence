@@ -12,17 +12,174 @@ The derivative of a function $f(x)$ at a point $x$ is defined as the limit:
 f'(x) = \lim_{{h \to 0}} \frac{f(x+h) - f(x)}{h}
 \end{equation}
 
-provided this limit exists. In other words, the derivative of $f$ at $x$ is the 
+provided this limit exists. In words, the derivative of $f$ at $x$ is the 
 limit of the rate of change of $f$ at $x$ as the change in $x$ approaches zero. 
-The derivative of a function is equal to the slope  of the function. 
+The derivative of a function is equal to the slope  of the function. The 
+derivative of a function, $f(x)$, is denoted as $f'(x)$ (read out loud as "f 
+prime of x") or $df/dx$. The origin of this definition was shown in the 
+previous chapter, Differentiation. 
 
-%fix me estimating derivative from data
+
+\subsection{Estimating the Derivative}
+Consider the function $f(x) = x^2$. Suppose we want to write an equation for a 
+line that is tangent to the curve at $x = 2$ (see figure \ref{fig:tangent}). 
+We already have a point that the line passes through: $(2, 4)$. To write an 
+equation for the tangent line, we would need to know its slope, $m$. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -3, xmax = 3, ymin = -0.5, 
+        ymax = 10, xlabel = $x$, ylabel = $y$]
+            \addplot[blue, thick, samples = 100, domain = -3:3]{x^2};
+            \draw[blue, fill = blue] (2, 4) circle (0.5mm);
+            \addplot[red, thin]{4*(x - 2) + 4};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The red line is tangent to $f(x) = x^2$ at the point $(2, 4)$}
+    \label{fig:tangent}
+\end{figure}
+
+We can estimate the slope by choosing points on either side of $P$, drawing a 
+line through those points, and calculating the slope of that secant line (it 
+is a secant line because it intersects the curve more than once). See figure 
+\ref{fig:secant} for a visualization. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -0.5, xmax = 3, ymin = -0.5, 
+        ymax = 10, xlabel = $x$, ylabel = $y$, clip = false]
+            \addplot[blue, thick, samples = 100, domain = -0.5:3]{x^2};
+            \draw[blue, fill = blue] (2, 4) circle (0.5mm) node[left, font = 
+            \scriptsize] {P};
+            \addplot[red, thin, domain = 1:3]{4*(x - 2) + 4};
+            \draw[black, fill = black] (1.5, 2.25) circle (0.5mm) node[left, font = 
+            \scriptsize] {Q};
+            \draw[black, fill = black] (2.5, 6.25) circle (0.5mm) node[left, font = 
+            \scriptsize] {R};
+            \draw[latex-, black] (1.7, 3) -- (1, 3) node[above, font = 
+            \scriptsize] {secant line};
+            \draw[latex-, black] (2.5, 6) -- (2.5, 2) node[below, font = 
+            \scriptsize] {tangent line};
+            \addplot[black, dashed, domain = 0.9:3]{(6.25 - 2.25)*(x - 1.5) + 
+            2.25};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The slope of the secant line is approximately the slope of the 
+    tangent line}
+    \label{fig:secant}
+\end{figure}
+
+As the points $Q$ and $R$ get closer to $P$, the better the estimate becomes. 
+
+Much scientific data is not described as continuous functions, but rather as 
+discrete data points. Consider the following data of a falling object:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+time (seconds) & height (m)\\\hline
+0 & 50\\\hline
+0.5 & 48.775\\\hline
+1 & 45.1\\\hline
+1.5 & 38.975\\\hline
+2 & 30.4\\\hline
+2.5 & 19.375\\\hline
+3 & 5.9 \\\hline
+\end{tabular}
+\end{center}
+
+A graph of the data is shown in figure \ref{fig:falling}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -0.5, xmax = 3.5, ymin = 
+        -0.5, ymax = 52, xlabel = time(sec), ylabel = height(m)]
+            \draw[blue, fill = blue] (0, 50) circle (0.7mm);
+            \draw[blue, fill = blue] (0.5, 48.775) circle (0.7mm);
+            \draw[blue, fill = blue] (1, 45.1) circle (0.7mm);
+            \draw[blue, fill = blue] (1.5, 38.975) circle (0.7mm);
+            \draw[blue, fill = blue] (2, 30.4) circle (0.7mm);
+            \draw[blue, fill = blue] (2.5, 19.375) circle (0.7mm);
+            \draw[blue, fill = blue] (3, 5.9) circle (0.7mm);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The height of a falling object over time}
+    \label{fig:falling}
+\end{figure}
+
+Suppose we wanted to estimate the velocity of the falling object at $t = 
+1.5\text{s}$. Recall that velocity is given by the change in position divided 
+by the change in time. We can select data points on either side of $t = 
+1.5\text{s}$ and use them to find the average velocity from $t = 1\text{s}$ 
+and $t = 2\text{s}$ (see figure \ref{fig:velocity}):
+$$v = \frac{h_2 - h_2}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
+2\text{s} - 1\text{s}} = -14.7 \frac{\text{m}}{\text{s}}$$
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -0.5, xmax = 3.5, ymin = 
+        -0.5, ymax = 52, xlabel = time(sec), ylabel = height(m)]
+            \draw[blue, fill = blue] (0, 50) circle (0.7mm);
+            \draw[blue, fill = blue] (0.5, 48.775) circle (0.7mm);
+            \draw[blue, fill = blue] (1, 45.1) circle (0.7mm);
+            \draw[blue, fill = blue] (1.5, 38.975) circle (0.7mm);
+            \draw[blue, fill = blue] (2, 30.4) circle (0.7mm);
+            \draw[blue, fill = blue] (2.5, 19.375) circle (0.7mm);
+            \draw[blue, fill = blue] (3, 5.9) circle (0.7mm);
+            \addplot[blue, thin, dashed, domain = 0:3] {50 - 0.5*9.8*x^2};
+            \draw[red] (1, 45.1) -- (2, 30.4);
+            \draw[red, dashed] (1, 45.1) -- (1, 30.4);
+            \draw[red, dashed] (1, 30.4) -- (2, 30.4);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The slope of the line connecting the data points on either side 
+    of $t = 1.5\text{s}$ is approximately the velocity of the falling object 
+    at $t = \text{s}$}
+    \label{fig:velocity}
+\end{figure}
+
+\textbf{Example}: A 1000-gallon tank drains from the bottom in 30 minutes. The 
+volume left in the tank is recorded every 5 minutes, as shown in the data 
+table below. Use the data to estimate $V'(15)$ and $V'(25)$, including 
+appropriate units. At which time is the tank draining faster?
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+t (min) & V (gal)\\\hline
+$5$ & $694$\\\hline
+$10$ & $444$\\\hline
+$15$ & $250$\\\hline
+$20$ & $111$\\\hline
+$25$ & $28$\\\hline
+$30$ & $0$\\\hline
+\end{tabular}
+\end{center}
+
+\textbf{Solution}: To estimate $V'(15)$, we find the slope of the line 
+connecting the data points on either side of $t = 15$:
+$$V'(15) \approx \frac{111\text{gal} - 444text{gal}}{20\text{min} - 10
+\text{min}}$$
+$$V'(15) \approx \frac{-333\text{gal}}{10\text{min}}$$
+$$V'(15) \approx -33.3 \frac{\text{gal}}{\text{min}}$$
+
+And we can use the data at $t = 20$ and $t = 30$ to estimate $V'(25)$:
+$$V'(25) \approx \frac{0\text{gal} - 111\text{gal}}{30\text{min} - 20
+\text{min}}$$
+$$V'(25) \approx \frac{-111\text{gal}}{10\text{min}}$$
+$$V'(25) \approx -11.1 \frac{\text{gal}}{\text{min}}$$
+
+Both answers are negative because the tank is emptying, and the tank is 
+draining faster at $t = 15$ than at $t = 25$. 
 
 \begin{Exercise}[label=slope1]
 	[This question was originally presented as a free-response, calculator-allowed 
 	question on the 2012 AP Calculus BC Exam.] The temperature of water in a tub 
 	at time $t$ is modeled by a function, $W$, where $W(t)$ is measured in degrees 
-	Fahrenheit, and $t$ is measured in minutes. Values of $W(t)$ at selected times 
+	Fahrenheit and $t$ is measured in minutes. Values of $W(t)$ at selected times 
 	for the first 20 minutes are given in the table. Use the data in the table to 
 	estimate $W'(12)$. Show the computations that lead to your answer. Using 
 	correct units, interpret the meaning of your answer in the context of the 
@@ -48,15 +205,110 @@ The derivative of a function is equal to the slope  of the function.
 	15$. The slope of the line connecting those points is approximate of the 
 	slope at $t = 12$. $$\frac{y_2 - y_1}{x_2 - x_1} = \frac{67.9 - 61.8}{15 - 9} 
 	= \frac{6.1}{6} = 1.017$$ The units for the numerator are degrees Fahrenheit 
-	and the units for the denominator are minutes. Therefore, the estimated slope has units 
+	and for the denominator are minutes. Therefore, the estimated slope has units 
 	of degrees Fahrenheit per minute. This represents the change in temperature 
 	of the water in the tub. When $t = 12$, the water in the tub is increasing in 
 	temperature at about 1 degree Fahrenheit per minute. 
 \end{Answer}
 
+\section{The Derivative as a Function}
+We have seen how to estimate the value of a derivative at a specific point on 
+a graph. Suppose we wanted to describe the slope of a graph everywhere. That 
+is: can we find a function, $g(x)$ that describes the slope of another 
+function, $f(x)$, over the domain of $f$? Using the definition of a 
+derivative, we can.
+
+You have already seen an algorithm to find the derivatives of polynomial 
+functions (see chapter Differentiating Polynomials). Recall that for a 
+function, $f(x) = x^n$, the derivative is $f'(x) = nx^{n - 1}$. Here is the 
+proof:
+$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{(x + h)^n - x^n}{h}$$
+
+In order to expand the polynomial, $(x + h)^n$, we'll need to apply the 
+Binomial Theorem, which tells us that:
+$$(a + b)^n = a^n + na^{n - 1}b + \frac{n(n - 1)}{2!}a^{n - 2}b^2 + \frac{n(n 
+- 1)(n - 2)}{3!}a^{n - 3}b^3 + \cdots + nab^{n - 1} + b^n$$
+
+Substituting this into our limit definition of a derivative, we see that:
+$$f'(x) = \lim_{h \to 0} \frac{x^n + nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 
++ \cdots nxh^{n-1} + h^n - x^n}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 + 
+\cdots nxh^{n-1} + h^n}{h}$$
+$$f'(x) = \lim_{h \to 0} nx^{n-1} + \frac{n(n-1)}{2!}x^{n-2}h + \cdots nxh^{
+n-2} + h^{n-1}$$
+$$f'(x) = nx^{n-1}$$
+
+\textbf{Example}: Use the limit definition of a derivative to find $f'(x)$ if 
+$f(x) = 2x^3 - x^2$. 
+
+\textbf{Solution}: According to the limit definition, $f'$ is:
+$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \frac{\left[ 2\left( x + 
+h \right)^3 - \left( x + h \right)^2 \right] - \left[ 2x^3 - x^2 \right]}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{\left[ 2 \left( x^3 + 3 h x^2 + 3 h^2 x + h^3 
+\right) - \left( x^2 + 2xh + h^2 \right) \right] - 2 x^3 + x^2}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{2x^3 - 2x^3 + 6 h x^2 + 6 h^2 x + 6 h^3 - x^2 + 
+x^2 -2 x h - h^2}{h}$$
+$$f'(x) = \lim_{h \to 0} \frac{6 h x^2 + 6 h^2 x + 6 h^3 - 2 x h - h^2}{h}$$
+$$f'(x) = \lim_{h \to 0} 6 x^2 + 6 h x + 6 h^2 - 2x - h = 6 x^2 - 2 x$$
+
+Therefore, if $f(x) = 2x^3 - x^2$, then $f'(x) = 6x^2 - 2x$. 
+
+\begin{Exercise}[title = {Finding Functions for Derivatives}, label = deriv1]
+Use the limit definition of a derivative to find an equation for $f'(x)$.
+\begin{enumerate}
+\item $f(x) = mx + b$
+\item $f(x) = \sqrt{16 - x}$
+\item $f(x) = \frac{x^2 - 1}{2x - 3}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = deriv1]
+\begin{enumerate}
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\left[ m \left( x + h \right) + b \right] - \left[ mx + b \right]}{
+    h}$$
+    $$f'(x) = \lim_{h \to 0} \frac{mx + mh + b - mx - b}{h} = \lim_{h \to 0} 
+    \frac{mh}{h} = \lim_{h \to 0} m = m$$
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\sqrt{16 - x - h} - \sqrt{16 - x}}{h}$$
+    $$f'(x) = \lim_{h \to 0} \frac{\sqrt{16 - x - h} - \sqrt{16 - x}}{h} \cdot 
+    \frac{\sqrt{16 - x - h} + \sqrt{16 - x}}{\sqrt{16 - x - h} + \sqrt{16 - x}}
+    $$
+    $$f'(x) = \lim_{h \to 0} \frac{\left( 16 - x - h \right) - \left(16 - x 
+    \right)}{h \left( \sqrt{16 - x - h} + \sqrt{16 - x} \right)}$$
+    $$f'(x) = \lim_{h \to 0} \frac{-h}{h \left( \sqrt{16 - x - h} + \sqrt{16 - 
+    x} \right)} = \lim_{h \to 0} \frac{-1}{\sqrt{16 - x - h} + \sqrt{16 - x}}$$
+    $$f'(x) = \frac{-1}{\sqrt{16 - x} + \sqrt{16 - x}} = \frac{-1}{2\sqrt{16 - 
+    x}}$$
+    \item $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} 
+    \frac{\frac{(x + h)^2 - 1}{2(x + h) - 3} - \frac{x^2 - 1}{2x - 3}}{h}$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{x^2 + 2xh 
+    + h^2 - 1}{2x + 2h - 3} - \frac{x^2 - 1}{2x - 3} \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{x^2 + 2xh 
+    + h^2 - 1}{2x + 2h - 3} \left( \frac{2x - 3}{2x - 3} \right) - \frac{x^2 - 
+    1}{2x - 3} \left( \frac{2x + 2h - 3}{2x + 2h - 3} \right) \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{\left( 
+    x^2 + 2xh + h^2 - 1 \right) \left( 2x - 3 \right) - \left( x^2 - 1 \right) 
+    \left( 2x + 2h - 3 \right)}{\left( 2x - 3 \right) \left(2x + 2h - 3 \right)
+    } \right]$$
+    $$f'(x) = \left( \frac{1}{h} \right) \left[ \frac{2x^3 + 4x^2h + 2xh^2 - 
+    2x - 3x^2 - 6xh - 3h^2 + 3 \left( 2x^3 + 2x^2h - 3x^2 - 2x - 2h + 3 
+    \right)}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} \right]$$
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{2x^2h + 
+    2xh^2 - 6xh - 3h^2 + 2h}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} 
+    \right]$$
+    $$f'(x) = \lim_{h \to 0} \frac{2x^2 + 2xh - 6x - 3h + 2}{\left( 2x - 3 
+    \right) \left( 2x + 2h - 3 \right)} = \frac{2x^2 - 6x + 2}{\left( 2x - 3 
+    \right)^2}$$
+\end{enumerate}
+\end{Answer}
+
+
+
 \section{Applications in Mathematics}
 \subsection{l'Hospital's Rule}
-Consider the function $h(x) = \frac{\ln{x}}{x-1}$. Suppose we are interested 
+Consider the function $h(x) = \frac{\ln{x}}{x-1}$ and suppose we are interested 
 in the behavior of $h(x)$ around $x=1$. If we apply the Quotient Rule, we get 
 an indeterminate result: $$\lim_{x \to 1}\frac{\ln{x}}{x-1} = \frac{0}{0}$$ 
 
@@ -82,7 +334,7 @@ that $\lim_{x \to 1} \frac{\ln{x}}{x-1} = 1$.
 \label{fig:lhospital}
 \end{figure}
 
-Let's examine the numerator and denominator separately. We will define $f(x) = 
+Let's examine the numerator and denominator separately: we'll define $f(x) = 
 \ln{x}$ and $g(x) = x - 1$ (see figure \ref{fig:zoom1}). 
 
 \begin{figure}[htbp]
@@ -103,7 +355,7 @@ Let's examine the numerator and denominator separately. We will define $f(x) =
 \label{fig:zoom1}
 \end{figure}
 
-If we zoom in very close around $x=1$, the graphs begin to look linear (see 
+If we zoom in very far around $x=1$, the graphs begin to look linear (see 
 figure \ref{fig:zoom2}):
 
 \begin{figure}[htbp]
@@ -131,20 +383,20 @@ be
 $$\frac{m_1(x-1)}{m_2(x-1)}=\frac{m_1}{m_2}$$ 
 
 which is the same as the ratio of the derivatives of our linear approximations. 
-This suggests L'Hospital's rule, which is that the limit of a ratio is the same as the 
+This suggests l'Hospital's rule, that the limit of a ratio is the same as the 
 limit of the ratio of the derivatives for certain indeterminate forms: 
 $$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$.
 
-Let's apply L'Hospital's rule to our limit of $h(x)$:
+Let's apply l'Hospital's rule to our limit of $h(x)$:
 $$\lim_{x\to 1} \frac{\ln{x}}{x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx} 
 \ln{x}}{\frac{d}{dx} (x - 1)} = \lim_{x \to 1} \frac{\frac{1}{x}}{1}=1$$
 
-Notice our result with L'Hospital's rule matches our guess based on the graph 
+Notice our result with l'Hospital's rule matches our guess based on the graph 
 of $h(x) = \frac{\ln{x}}{x-1}$. 
 
 L'Hospital's rule also applies to the indeterminate result $\frac{\pm \infty}
 {\pm \infty}$. For a limit of the form $\lim_{x\to a}\frac{f(x)}{g(x)}$, 
-L'Hospital's rule applies if:
+l'Hospital's rule applies if:
 \begin{enumerate}
     \item the original limit is of the indeterminate form $\frac{0}{0}$ or 
     $\frac{\pm \infty}{\pm \infty}$
@@ -159,15 +411,15 @@ L'Hospital's rule applies if:
 $$\lim_{x \to \infty} \frac{e^x}{x^2} = \frac{e^{\infty}}{\infty^2} = 
 \frac{\infty}{\infty}$$
 
-This is an indeterminate form that we can apply L'Hospital's rule to:
+This is an indeterminate form that we can apply l'Hospital's rule to:
 $$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}x^2} = \lim_{x \to 
 \infty} \frac{e^x}{2x}$$
 
 Evaluating this limit, we get another indeterminate form:
 $$=\frac{e^{\infty}}{2 \cdot \infty} = \frac{\infty}{\infty}$$
 
-Don't panic! We can apply L'Hospital's rule again (in fact, we can apply 
-L'Hospital's rule as many times as needed to evaluate a limit, as long as we 
+Don't panic! We can apply l'Hospital's rule again (in fact, we can apply 
+l'Hospital's rule as many times as needed to evaluate a limit, as long as we 
 keep getting $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$):
 $$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}2x} = \lim_{x \to 
 \infty} \frac{e^x}{2} = \frac{\infty}{2} = \infty$$
@@ -179,18 +431,18 @@ What is $\lim_{x \to 0} \frac{\tan{x} - x}{x^3}$?
 \end{Exercise}
 
 \begin{Answer}[ref=LH1]
-First, let's confirm that L'Hospital's rule applies here:
+First, let's confirm that l'Hospital's rule applies here:
 $$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \frac{0 - 0}{0} = \frac{0}{0}$$
 
-Therefore, we can apply L'Hospital's rule:
+Therefore, we can apply l'Hospital's rule:
 $$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\tan{x} - x)}{\frac{d}{dx}x^3}$$
 $$= \lim_{x \to 0} \frac{\sec^2{x} - 1}{3x^2} = \frac{1 - 1}{0} = \frac{0}{0}$$
 
-which is an indeterminate form. We apply L'Hospital's rule again:
+which is an indeterminate form. We apply l'Hospital's rule again:
 $$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
 $$= \lim_{x \to 0} \frac{2\tan{x}\sec^2{x}}{6x} = \frac{2(0)(1^2)}{6 \cdot 0} = \frac{0}{0}$$
 
-which is also an indeterminate form. We apply L'Hospital's rule again:
+which is also an indeterminate form. We apply l'Hospital's rule again:
 $$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(2\tan{x}\sec^2{x})}{\frac{d}{dx}6x}$$
 $$= \lim_{x \to 0} \frac{2\sec^2{x}[2\tan^2{x} + \sec^2{x}]}{6} = \frac{2 \cdot 1 \cdot [2 \cdot 0 + 1]}{6}$$
 $$= \frac{2}{6} = \frac{1}{3}$$
@@ -199,7 +451,7 @@ $$= \frac{2}{6} = \frac{1}{3}$$
 %fixme other indeterminite forms
 
 \begin{Exercise}[label = LH2]
-Evaluate each of the following limits, using L'Hospital's rule where needed.
+Evaluate each of the following limits, using l'Hospital's rule where needed.
 \begin{enumerate}
 \item $\lim_{x \to 3} \frac{x-3}{x^2-9}$
 \item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9}$
@@ -211,10 +463,10 @@ Evaluate each of the following limits, using L'Hospital's rule where needed.
 
 \begin{Answer}[ref=LH2]
 \begin{enumerate}
-\item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply L'Hospital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
-\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply L'Hospital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
-\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit does not require L'Hospital's rule because it is evaluable
-\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \frac{1 \cdot \sin{1 - 1}}{2(1)^2 - 1 - 1} = \frac{0}{0}$, so we apply L'Hospital's rule: $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx}(x\sin{x-1}}{\frac{d}{dx}(2x^2 - x - 1} = \lim_{x \to 1} \frac{x \cdot \cos{x - 1} + \sin{x - 1}}{4x - 1} = \frac{1 \cdot \cos{0} + \sin{0}}{4 - 1} = \frac{1 \cdot 1 + 0}{-3} = \frac{-1}{3}$. 
+\item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply l'Hospital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
+\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply l'Hospital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit does not require l'Hospital's rule because it is evaluable
+\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \frac{1 \cdot \sin{1 - 1}}{2(1)^2 - 1 - 1} = \frac{0}{0}$, so we apply l'Hospital's rule: $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx}(x\sin{x-1}}{\frac{d}{dx}(2x^2 - x - 1} = \lim_{x \to 1} \frac{x \cdot \cos{x - 1} + \sin{x - 1}}{4x - 1} = \frac{1 \cdot \cos{0} + \sin{0}}{4 - 1} = \frac{1 \cdot 1 + 0}{-3} = \frac{-1}{3}$. 
 \end{enumerate}
 \end{Answer}
 
@@ -291,14 +543,14 @@ approximately $0.255$. This result is illustrated in figure \ref{fig:hammer}:
 \subsubsection{MVT Practice}
 \begin{Exercise}
 [label=MVT1]
-At 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
+AT 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
 $50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:340 PM, the car's 
 acceleration is exactly $120 \frac{mi}{hr^2}$. 
 \end{Exercise}
 \begin{Answer}
 [ref=MVT1]
-The speed of a car must be a continuous, differentiable function, since your car 
-can't "jump" from one speed to another. Instead, it must smoothly accelerate from one 
+The speed of a car must a continuous, differentiable function, since your car 
+can't "jump" from one speed to another: it must smoothly accelerate from one 
 speed to another. Therefore, the Mean Value Theorem applies. The average 
 acceleration from 3:30 PM to 3:40 PM is given by:
 $$\frac{\text{change in speed}}{\text{change in time}} = \frac{50 \frac{mi}{hr}
@@ -327,7 +579,7 @@ Find the number $c$ that satisfies the MVT on the given interval.
 slope of the secant line connecting the endpoints:
 $$\frac{f(b)-f(a)}{b-a}=\frac{\sqrt{4}-\sqrt{0}}{4-0}=\frac{2}{4}=\frac{1}{2}$$
 
-So, we are looking for some number $c$, such that $f'(c) = \frac{1}{2}$. Let's 
+So we are looking for some number $c$ such that $f'(c) = \frac{1}{2}$. Let's 
 find $f'(x)$:
 $$f'(x) = \frac{d}{dx}\sqrt{x}=\frac{1}{2\sqrt{x}}$$
 
@@ -343,7 +595,7 @@ $$\frac{f(2) - f(0)}{2 - 0}=\frac{e^{-2} - e^{0}}{2}=\frac{1 - e^{2}}{2e^{2}}
 
 And find $f'(x)$:
 $$f'(x) = -e^{-x}$$
-According to MVT, there must be some $c$, such that $f'(c) \approx-0.432$:
+According to MVT, there must be some $c$ such that $f'(c) \approx-0.432$:
 $$-e^{-c} \approx -0.432$$
 $$e^{-c}\approx 0.432$$
 $$-c \approx \ln{0.432}$$
