@@ -4,7 +4,7 @@ import requests
 import getpass
 import json
 
-API_URL = "http://127.0.0.1:8000/api/"
+API_URL = "http://18.189.208.93/api/"
 NUMBER_OF_WORKBOOKS = 36
 
 
@@ -156,6 +156,8 @@ def main():
 
     if token is None:
         return
+
+    print("Using address: ", API_URL)
 
     localization = input("Localization (i.e. en-US): ")
 
