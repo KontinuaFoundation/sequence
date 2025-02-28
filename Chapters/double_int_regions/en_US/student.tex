@@ -312,7 +312,7 @@ given $y$ values, all $x$ values in the region are contained in $h_1(y) \leq x
 \section{Determining Region Type}
 Many regions can be described as either type I or type II. Consider the region 
 between the curves $y = \frac{3}{2}(x - 1)$ and $y = \frac{1}{2} (x - 1)^2$ 
-(see figure \ref{fig:example1}).[fix me classifying domains examples and explanations]
+(see figure \ref{fig:example1}).
 
 \begin{figure}[htbp]
     \centering
@@ -337,6 +337,214 @@ between the curves $y = \frac{3}{2}(x - 1)$ and $y = \frac{1}{2} (x - 1)^2$
     \label{fig:example1}
 \end{figure}
 
+We could classify this as a type I (see figure \ref{fig:example_typeI}) or a 
+type II domain (see figure \ref{fig:example_typeII}). 
+
+\begin{figure}[htbp]
+    \centering
+        \begin{tikzpicture}
+    \begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
+    xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
+        \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
+        \addplot[blue, thick, samples = 100, name path = B, domain = 1:4] 
+        {(x-1)^2/2};
+        \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+        \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
+        \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
+        \node[] at (4, 2.5) {$y = \frac{(x - 1)^2}{2}$};
+        \node[] at (1.5, 2) {$y = \frac{3(x-1)}{2}$};
+        \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
+        \node[] at (4.5, 4.5) {$(4, 4.5)$};
+        \node[] at (1.25, -0.3) {$(1, 0)$};
+        \draw[-latex, blue, thin] (1.5, 0.125) -- (1.5, 0.5);
+        \draw[blue, thin](1.5, 0.5) -- (1.5, 0.75);
+        \draw[-latex, blue, thin] (2.5, 1.125) -- (2.5, 1.75);
+        \draw[blue, thin] (2.5, 1.75) -- (2.5, 2.25);
+        \draw[-latex, blue, thin] (3.5, 3.125) -- (3.5, 3.45);
+        \draw[blue, thin] (3.5, 3.45) -- (3.5, 3.75);
+    \end{axis}
+\end{tikzpicture}
+    \caption{The region could be classified as type I, with $\frac{\left( x - 
+    1 \right)^2}{2} \leq y \leq \frac{3 \left( x - 1 \right)}{2}$}
+    \label{fig:example_typeI}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+        \begin{tikzpicture}
+    \begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
+    xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
+        \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
+        \addplot[blue, thick, samples = 100, name path = B, domain = 1:4] 
+        {(x-1)^2/2};
+        \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+        \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
+        \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
+        \node[] at (4, 2.5) {$x = \sqrt{2y} + 1$};
+        \node[] at (1.5, 2) {$x= \frac{2y}{3} + 1$};
+        \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
+        \node[] at (4.5, 4.5) {$(4, 4.5)$};
+        \node[] at (1.25, -0.3) {$(1, 0)$};
+        \draw[-latex, blue, thin] (1.6667, 1) -- (2.04, 1);
+        \draw[blue, thin] (2.04, 1) -- (2.41421, 1);
+        \draw[-latex, blue, thin] (2.3333, 2) -- (2.6667, 2);
+        \draw[blue, thin] (2.6667, 2) -- (3, 2);
+        \draw[-latex, blue, thin] (3, 3) -- (3.3, 3);
+        \draw[blue, thin] (3.3, 3) -- (3.44949, 3);
+    \end{axis}
+\end{tikzpicture}
+    \caption{The region could be classified as type II, with $\frac{2y}{3} + 1 
+    \leq x \leq \sqrt{2y} + 1$}
+    \label{fig:example_typeII}
+\end{figure}
+
+However, not all domains can be classified as both type I or type II. A region 
+can be classified as type I if you can take a vertical line ($x = c$, where 
+$c$ is some number in the domain of the region) and move it across the region 
+without any gaps. Consider the two regions shown in figure 
+\ref{fig:vertical_line}. The top is type I, and if you put vertical lines, the 
+line traverses the entire region without leaving it. On the other hand, the 
+lower region is not type I. There are vertical lines where the line exits the 
+lower region before traversing the entire region.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+                \addplot[name path = A, domain = 0.5:2.5, orange, thick] {
+                (0.5*x - 0.75)^2 + 0.5};
+                \addplot[name path = B, domain = 0.5:2.5, orange, thick] {
+                (x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
+                \addplot[fill = orange!30] fill between [of = A and B];
+                \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
+                \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
+                \node[] at (1.25, 1.5) {\textit{D}};
+                \draw[-latex, blue, thin] (0.75, 0.64) -- (0.75, 1.53);
+                \draw[blue, thin] (0.75, 1.53) -- (0.75, 2.42);
+                \draw[-latex, blue, thin] (1.5, 0.5) -- (1.5, 1.44);
+                \draw[blue, thin] (1.5, 1.44) -- (1.5, 2.38);
+                \draw[-latex, blue, thin] (2.25, 0.64) -- (2.25, 1.77);
+                \draw[blue, thin] (2.25, 1.77) -- (2.25, 2.89);
+            \end{axis}
+        \end{tikzpicture}
+    \end{minipage}
+    
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$, 
+            clip = false]                 
+                \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) -- 
+                (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) -- 
+                (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) -- 
+                (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) -- 
+                (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) -- 
+                (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) -- 
+                (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) 
+                -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) 
+                -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) -- 
+                (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) 
+                -- (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) -- 
+                (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) 
+                -- (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- 
+                (1.073, 0.95) -- (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) 
+                -- (1.099, 0.75) -- (1.093, 0.7) -- (1.083, 0.65) -- 
+                (1.021, 0.5) -- (0.922, 0.35) -- (0.795, 0.2) -- cycle;
+                \addplot[name path = A, domain = 0.2:2.9, orange, thick, 
+                samples = 100] (0.5*sin(deg(2*x)) + 0.6, x) ;
+                \addplot[name path = B, domain = 0.2:2.9, orange, thick, 
+                samples = 100] (0.5*cos(deg(3*x)) + 2, x);
+                \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
+                \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
+                \node[] at (1.15, 2) {\textit{D}};
+                \draw[-latex, blue, thin] (0.7, 1.47) -- (0.7, 2.25);
+                \draw[blue, thin] (0.7, 2.25) -- (0.7, 2.9);
+                \draw[-latex, blue, thin] (1.3, 0.2) -- (1.3, 1.6);
+                \draw[blue, thin] (1.3, 1.6) -- (1.3, 2.9);
+                \draw[-latex, blue, thin] (1.9, 0.2) -- (1.9, 1.7);
+                \draw[blue, thin] (1.9, 1.7) -- (1.9, 2.68);
+                \draw[latex-] (1.9, 1) -- (2.2, 1.3) node[above, font = 
+                \scriptsize, xshift = 0.5cm] {the vertical line leaves the 
+                domain};
+            \end{axis}
+        \end{tikzpicture}
+    \end{minipage}
+    \caption{The top domain can be classified as type I; the bottom cannot.}
+    \label{fig:vertical_line}
+\end{figure}
+ 
+To determine if a region can be classified as type II, you can use a 
+horizontal line. If you can move a horizontal line ($y = c$, where $c$ is in 
+the domain of the region) across the region and the line always traverses the 
+entire region without leaving and re-entering it, then the region is type II 
+(see figure \ref{fig:horizontal_line}). 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+                \addplot[name path = A, domain = 0.5:2.5, orange, thick] {
+                (0.5*x - 0.75)^2 + 0.5};
+                \addplot[name path = B, domain = 0.5:2.5, orange, thick] {
+                (x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
+                \addplot[fill = orange!30] fill between [of = A and B];
+                \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
+                \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
+                \node[] at (1.25, 1.5) {\textit{D}};
+                \draw[-latex, blue, thin] (0.5, 1.1) -- (1.5, 1.1);
+                \draw[blue, thin] (1.5, 1.1) -- (2.5, 1.1);
+                \draw[-latex, blue, thin] (0.72, 2.4) -- (1.5, 2.4);
+                \draw[blue, thin] (1.5, 2.4) -- (2.5, 2.4);
+                \draw[latex-] (1.6667, 2.43) -- (1.25, 3) node[above, font = 
+                \scriptsize] {the horizontal line leaves the domain};
+            \end{axis}
+        \end{tikzpicture}
+    \end{minipage}
+    
+    \begin{minipage}{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+                
+                \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) -- 
+                (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) -- 
+                (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) -- 
+                (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) -- 
+                (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) -- 
+                (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) -- 
+                (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) 
+                -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) 
+                -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) -- 
+                (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) 
+                -- (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) -- 
+                (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) 
+                -- (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- 
+                (1.073, 0.95) -- (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) 
+                -- (1.099, 0.75) -- (1.093, 0.7) -- (1.083, 0.65) -- 
+                (1.021, 0.5) -- (0.922, 0.35) -- (0.795, 0.2) -- cycle;
+                \addplot[name path = A, domain = 0.2:2.9, orange, thick, 
+                samples = 100] (0.5*sin(deg(2*x)) + 0.6, x) ;
+                \addplot[name path = B, domain = 0.2:2.9, orange, thick, 
+                samples = 100] (0.5*cos(deg(3*x)) + 2, x);
+                \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
+                \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
+                \node[] at (1.15, 1.9) {\textit{D}};
+                \draw[-latex, blue, thin] (1.09, 0.7) -- (1.42, 0.7);
+                \draw[blue, thin] (1.42, 0.7) -- (1.75, 0.7);
+                \draw[-latex, blue, thin] (0.77, 1.4) -- (1.26, 1.4);
+                \draw[blue, thin] (1.26, 1.4) -- (1.75, 1.4);
+                \draw[-latex, blue, thin] (0.16, 2.1) -- (1.28, 2.1);
+                \draw[blue, thin] (1.28, 2.1) -- (2.5, 2.1);
+            \end{axis}
+        \end{tikzpicture}
+    \end{minipage}
+    \caption{The bottom domain can be classified as type II; the top cannot.}
+    \label{fig:horizontal_line}
+\end{figure}
 
 
 \textbf{Example}: Evaluate $\iint_{\textit{D}} (2x + y)\,dA$, where \textit{D} 
@@ -361,6 +569,7 @@ is the region bounded by the parabolas $y = 3x^2$ and $y = 2 + x^2$. Region
     \label{fig:parabola}
 \end{figure}
 
+
 \textbf{Solution}:This is a type I region, since for a given $x$, $y \in \left[
 3x^2, 2 + x^2 \right]$. We can define region \textit{D} as $\textit{D} = \{(x, 
 y) \text{ }|\text{ } -1 \leq x \leq 1, 3x^2 \leq y \leq 2 + x^2 \}$. Therefore, 
@@ -379,6 +588,77 @@ x = 1}$$
 $$= \left( 2 + 2 + \frac{2}{3} - 1 - \frac{4}{5} \right) - \left( -2 + 2 - 
 \frac{2}{3} - 1 + \frac{4}{5} \right)$$
 $$= 4 + \frac{4}{3} - \frac{8}{5} = \frac{56}{15}$$
+
+\textbf{Example}: Set up integrals to evaluate $\iint_{D} xy\,dA$ if $D$ is 
+the region bounded by $y = x - 2$ and $x = y^2$ as both a type I and type II 
+region. Which method will be easier to evaluate? Evaluate the easier double 
+integral. 
+
+\textbf{Solution}: Let's begin by visualizing $D$:
+
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[xmin = -0.5, xmax = 4.5, ymin = -2.5, ymax = 2.5, axis lines 
+    = center]
+        \addplot[name path = A, blue, thick, domain = -0.5:4.5]{x - 2};
+        \addplot[name path = B, blue, thick, samples = 100, domain = -2.5:2.5]
+        (x^2, x);
+        \draw[blue, thick, fill = orange!30, opacity = 0.4](0,0) -- 
+        (0.01, -0.1) -- (0.02, -0.141) -- (0.03, -0.173) -- (0.04, -0.2) -- 
+        (0.05, -0.224) -- (0.06, -0.245) -- (0.07, -0.265) -- (0.08, -0.283) 
+        -- (0.09, -0.3) -- (0.1, -0.316) -- (0.2, -0.447) -- (0.3, -0.548) -- 
+        (0.4, -0.632) -- (0.5, -0.707) -- (0.6, -0.775) -- (0.7, -0.837) -- 
+        (0.8, -0.894) -- (0.9, -0.949) -- (1, -1) -- (4, 2) -- (3.9, 1.975) -- 
+        (3.8, 1.949) -- (3.7, 1.924) -- (3.6, 1.897) -- (3.5, 1.871) -- 
+        (3.4, 1.845) -- (3.3, 1.817) -- (3.2, 1.789) -- (3.1, 1.761) -- 
+        (3, 1.732) -- (2.9, 1.703) -- (2.8, 1.673) -- (2.7, 1.643) -- 
+        (2.6, 1.612) -- (2.5, 1.581) -- (2.4, 1.549) -- (2.3, 1.517) -- 
+        (2.2, 1.483) -- (2.1, 1.449) -- (2, 1.414) -- (1.9, 1.378) -- 
+        (1.8, 1.342) -- (1.7, 1.304) -- (1.6, 1.265) -- (1.5, 1.225) -- 
+        (1.4, 1.183) -- (1.3, 1.140) -- (1.2, 1.095) -- (1.1, 1.049) -- (1, 1) 
+        -- (0.9, 0.949) -- (0.8, 0.894) -- (0.7, 0.837) -- (0.6, 0.775) -- 
+        (0.5, 0.707) -- (0.4, 0.632) -- (0.3, 0.548) -- (0.2, 0.447) -- 
+        (0.1, 0.316) -- (0.09, 0.3) -- (0.08, 0.283) -- (0.07, 0.265) -- 
+        (0.06, 0.245) -- (0.05, 0.224) -- (0.04, 0.2) -- (0.03, 0.173) -- 
+        (0.02, 0.141) -- (0.01, 0.1) -- cycle;
+        \draw[blue, fill = blue] (1, -1) circle (0.5mm) node[below, font = 
+        \scriptsize, black, yshift = -0.25cm] {$(1, -1)$};
+        \draw[blue, fill = blue] (4, 2) circle (0.5mm) node[above, font = 
+        \scriptsize, black, xshift = -0.3cm] {$(4, 2)$};
+    \end{axis}
+\end{tikzpicture}
+\end{center}
+
+This region could be classified as type I and type II. To set up an integral 
+as if $D$ were a type I region, we need to describe $y$ in terms of $x$. 
+However, we run into a little problem. For $0 \leq x \leq 1$, the region is 
+bounded by the parabola $x = y^2$, and for $1 \leq x \leq 4$, the region is 
+bounded by both the parabola and the line. So, we'll have to split the 
+integral into to parts: $0 \leq x \leq 1$ and $1 \leq x \leq 4$:
+$$\iint_{D} xy\,dA = \int_0^1 \int_{-\sqrt{x}}^{\sqrt{x}} xy\,dy\,dx + \int_1^4 
+\int_{x - 2}^{\sqrt{x}} xy\,dy\,dx$$
+
+To set up an integral as if $D$ were a type II region, we need to describe $x$ 
+in terms of $y$. This time, we won't need to split the integral, because $y + 2 
+\leq x \leq y^2$ over the entire region:
+$$\iint_{D} xy\,dA = \int_{-1}^2 \int_{y + 2}^{y^2} xy\,dx\,dy$$
+
+It is easier to evaluate the integral with $D$ as a type II region, since we 
+don't need to split the integral. Evaluating:
+$$\int_{-1}^2 \int_{y + 2}^{y^2} xy\,dx\,dy = \int_{-1}^2 \frac{y}{2} \left[ 
+x^2 \right]_{x = y + 2}^{x = y^2}\,dy$$
+$$= \int_{-1}^2 \frac{y}{2} \left[ \left( y^2 \right)^2 - \left( y + 2 
+\right)^2 \right]\,dy = \frac{1}{2} \int_{-1}^2 y \left[ y^4 - \left( y^2 + 4y 
++ 4 \right) \right]\,dy$$
+$$= \frac{1}{2} \int_{-1}^2 y^5 - y^3 - 4y^2 - 4y\,dy = \frac{1}{2} \left[ 
+\frac{1}{6}y^6 - \frac{1}{4}y^4 - \frac{4}{3}y^3 - \frac{4}{2}y^2 \right]_{
+y = -1}^{y = 2}$$
+$$= \frac{1}{2} \left[ \frac{1}{6} \left( 2 \right)^6 - \frac{1}{4} \left( 2 
+\right)^4 - \frac{4}{3} \left( 2 \right)^3 - 2 \left( 2 \right)^2 - \left( 
+\frac{1}{6} \left( -1 \right)^6 - \frac{1}{4} \left( -1 \right)^4 - \frac{4}{3} 
+\left( -1 \right)^3 - 2 \left( -1 \right)^2 \right) \right]$$
+$$= \frac{1}{2} \left[ \frac{32}{3} - 4 - \frac{32}{3} - 8 - \frac{1}{6} + 
+\frac{1}{4} - \frac{4}{3} + 2 \right] = -\frac{45}{8}$$
 
 \begin{Exercise}[title = {Double Integrals over Non-Rectangular Regions}, 
 label = non-rect]
