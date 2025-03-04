@@ -1,7 +1,10 @@
 \chapter{u-Substitution}
 
 
-U-Substitution, also known as the method of substitution, is a technique used to simplify the process of finding antiderivatives and integrals of complicated functions. The method is similar to the chain rule for differentiation in reverse.
+U-Substitution, also known as the method of substitution, is a technique used 
+to simplify the process of finding antiderivatives and integrals of 
+complicated functions. The method is similar to the chain rule for 
+differentiation in reverse.
 
 Suppose we have an integral of the form:
 
@@ -9,7 +12,8 @@ Suppose we have an integral of the form:
 \int f(g(x)) \cdot g'(x) \, dx
 \end{equation}
 
-The u-substitution method suggests letting a new variable $u$ equal to the inside function $g(x)$, i.e., 
+The u-substitution method suggests letting a new variable $u$ equal to the 
+inside function $g(x)$, i.e., 
 
 \begin{equation}
 u = g(x)
@@ -27,6 +31,279 @@ Substituting $u$ and $du$ back into the integral gives us a simpler integral:
 \int f(u) \, du
 \end{equation}
 
-This new integral can often be simpler to evaluate. Once the antiderivative of $f(u)$ is found, we can substitute $u=g(x)$ back into the antiderivative to get the antiderivative of the original function in terms of $x$.
+This new integral can often be simpler to evaluate. Once the antiderivative of 
+$f(u)$ is found, we can substitute $u=g(x)$ back into the antiderivative to 
+get the antiderivative of the original function in terms of $x$.
 
-The method of u-substitution is a powerful tool for evaluating integrals, especially when combined with other techniques like integration by parts, partial fractions, and trigonometric substitutions.
+The method of u-substitution is a powerful tool for evaluating integrals, 
+especially when combined with other techniques like integration by parts, 
+partial fractions, and trigonometric substitutions.
+
+\textbf{Example}: Find $\int 2 x^2 \cos{ \left( x^3 - 3 \right)}\,dx$.
+
+\textbf{Solution}: Integrating $\cos{ \left( x^3 - 3 \right)}$ isn't so 
+straightforward, so let's try the substitution $u = x^3 - 3$. Then:
+$$du = 3 x^2 \text{ }dx$$
+
+We don't have $3 x^2$ in the integral, but we do have $2 x^2$:
+$$\frac{2}{3} du = 2 x^2 \text{ } dx$$
+
+Substituting:
+$$\int 2 x^2 \cos{ \left( x^3 - 3 \right)} \,dx = \int \frac{2}{3} cos{ \left( 
+u \right)}\,du$$
+$$= \frac{2}{3} \sin{ \left( u \right)} + C$$
+
+Now that we have the antiderivative of $f(u)$, we can back-substitute in for 
+$u$:
+$$ \frac{2}{3} \sin{ \left( u \right)} + C = \frac{2}{3} \sin{ \left( x^3 - 3 
+\right)} + C$$
+
+We can check our answer by taking its derivative: we should get the original 
+integrand back:
+$$\frac{d}{dx} \left[ \frac{2}{3} \sin{ \left( x^3 - 3 \right)} + C \right] = 
+\frac{2}{3} \cos{ \left( x^3 - 3 \right)}  \cdot \left[ \frac{d}{dx} \left( x^3 
+- 3 \right) \right]$$
+$$= \frac{2}{3} \cos{ \left( x^3 - 3 \right)} \cdot \left( 3 x^2 \right) = 2 
+x^2 \cos{ \left( x^3 - 3 \right)}$$
+
+Sometimes, the right substitution takes a little thinking. Consider the 
+following example:
+
+\textbf{Example}: Find $\int \sqrt{x^2 - 1} \text{ }x^5\,dx$.
+
+\textbf{Solution}: We can guess that $u = x^2 - 1$ could be an appropriate 
+substitution, as that is what is under the square root. What to do with $x^5$? 
+First, let's look at how the $u$-substitution for $x^2 - 1$ works out:
+$$u = x^2 - 1$$
+$$du = 2x\text{ }dx$$
+$$\frac{du}{2} = x\text{ }dx$$
+
+Then we will need to use one of the $x$'s in $x^5$ for the square root 
+$u$-substitution. What can we do with the remaining $x^4$? Well, we see that 
+if $u = x^2 - 1$, then $u + 1 = x^2$ and therefore $\left( u + 1 \right)^2 = 
+x^4$. Substituting this all in:
+$$\int \sqrt{x^2 - 1} \text{ }x^5\,dx = \int x^4 \sqrt{x^2 - 1}\text{ }x\,dx$$
+$$= \frac{1}{2} \int \left( u + 1 \right)^2 \sqrt{u}\,du$$
+
+We can expand this to find the antiderivative:
+$$= \frac{1}{2} \int \left( u^2 + 2u + 1 \right) u^{1/2}\,du = \frac{1}{2} 
+\int u^{5/2} + 2u^{3/2} + u^{1/2}\,du$$
+$$= \frac{1}{2} \left[ \frac{2}{7}u^{7/2} + \frac{4}{5}u^{5/2} + \frac{2}{3}
+u^{3/2} \right] + C$$
+$$= \frac{1}{7}u^{7/2} + \frac{2}{5}u^{5/2} + \frac{1}{3}u^{3/2} + C$$
+$$= \frac{1}{7} \left( x^2 - 1 \right)^{7/2} + \frac{2}{5} \left( x^2 - 1 
+\right)^{5/2} + \frac{1}{3} \left( x^2 - 1 \right)^{3/2} + C$$
+
+\begin{Exercise}[title = {Indefinite Integrals and u-substitution}, 
+label = u_indef]
+Use $u$-substitution to evaluate the following indefinite integrals. Confirm 
+your answer by taking the derivative of the result. 
+\begin{enumerate}
+    \item $\int \sin{x} \sqrt{1 + \cos{x}}\,dx$
+    \item $\int \frac{\cos{ \left( \pi / x \right)}}{x^2}\,dx$
+    \item $\int 2x^2 \left( 9 - x^3 \right)^{2/3}\,dx$
+    \item $\int 3x^2 \sqrt{1 + x}\,dx$
+    \item $\int \frac{3x^2}{x^3 - 1}\,dx$
+\end{enumerate}
+\vspace{75mm}
+\end{Exercise}
+
+\begin{Answer}[ref = u_indef]
+\begin{enumerate}
+    \item Let $u = 1 + \cos{x}$. Then $du = -\sin{x} \text{ } dx$ and $-du = 
+    \sin{x} \text{ } dx$. Substituting:
+    $$\int \sin{x} \sqrt{1 + \cos{x}}\,dx = \int -\sqrt{u}\,du = -\frac{2}{3} 
+    u^{3/2} + C$$
+    $$= -\frac{2}{3} \left( 1 + \cos{x} \right)^{3/2} + C$$
+
+    Taking the derivative:
+    $$\frac{d}{dx} \left[ -\frac{2}{3} \left( 1 + \cos{x} \right)^{3/2} + C 
+    \right] = -\frac{2}{3} \left[ \frac{d}{dx} \left( 1 + \cos{x} 
+    \right)^{3/2} + \frac{d}{dx}C \right]$$
+    $$= -\frac{2}{3} \left[ \frac{3}{2} \left(1 + \cos{x} \right)^{1/2} \cdot 
+    \frac{d}{dx} \left( 1 + \cos{x} \right) \right] = -1 \sqrt{1 + \cos{x}} 
+    \cdot \left( - \sin{x} \right) = \sin{x} \sqrt{1 + \cos{x}}$$
+
+    \item Let $u = \pi / x$. Then $du = (- \pi / x^2)dx$ and $-du / \pi = (1 / 
+    x^2)dx$. Substituting:
+    $$\int \frac{\cos{ \left( \pi / x \right)}}{x^2}\,dx = -\frac{1}{\pi} \int 
+    \cos{u}\,du = -\frac{1}{\pi} \sin{u} + C = -\frac{1}{\pi} \sin{ \left( \pi 
+    / x \right)} + C$$
+
+    Taking the derivative:
+    $$\frac{d}{dx} \left[ - \frac{1}{\pi} \sin{ \left( \pi / x \right)} + C 
+    \right] = -\frac{1}{\pi} \left[ \frac{d}{dx} \sin{ \left( \pi / x \right)} 
+    + \frac{d}{dx} C \right]$$
+    $$= -\frac{1}{\pi} \left[ \cos{ \left( \pi / x \right)} \cdot \frac{d}{dx} 
+    \left( \frac{\pi}{x} \right) \right] = -\frac{1}{\pi} \left[ \cos{ \left( 
+    \pi / x \right)} \cdot \left( \frac{-\pi}{x^2} \right) \right]$$
+    $$= \frac{\cos{ \left( \pi / x \right)}}{x^2}$$
+
+    \item Let $u = 9 - x^3$. Then $du = -3x^2 \text{ } dx$ and $-\frac{2}{3}du 
+    = 2x^2 \text{ } dx$. Substituting:
+    $$\int 2x^2 \left( 9 - x^3 \right)^{2/3}\,dx = -\frac{2}{3} \int \left( u 
+    \right)^{2/3}\,du$$
+    $$= -\frac{2}{3} \left[ \frac{3}{5}u^{5/3} + C \right] = -\frac{2}{5} 
+    \left( 9 - x^3 \right)^{5/3} + C$$
+
+    Taking the derivative:
+    $$\frac{d}{dx} \left[ -\frac{2}{5} \left( 9 - x^3 \right)^{5/3} + C 
+    \right] = -\frac{2}{5} \left[ \frac{d}{dx} \left( 9 - x^3 \right)^{5/3} 
+    \right]+ \frac{d}{dx}C$$
+    $$= -\frac{2}{5} \left[ \frac{5}{3} \left( 9 - x^3 \right)^{2/3} \cdot 
+    \frac{d}{dx} \left( 9 - x^3 \right) \right] = -\frac{2}{3} \left( 9 - x^3 
+    \right)^{2/3} \left( -3x^2 \right) = 2x^2 \left( 9 - x^3 \right)^{2/3}$$
+
+    \item Let $u = 1 + x$. Then $du = dx$. Additionally, $u - 1 = x$ and $x^2 
+    = \left( u - 1 \right)^2$. Substituting:
+    $$\int 3x^2 \sqrt{1 + x}\,dx = \int 3 \left(u - 1 \right)^2 \sqrt{u}\,du = 
+    3 \int \left( u^2 - 2u + 1 \right) \sqrt{u}\,du$$
+    $$= 3 \int u^{5/2} - 2u^{3/2} + u^{1/2}\,du = 3 \left[ \frac{2}{7}u^{7/2} 
+    - \frac{2 \cdot 2}{5}u^{5/2} + \frac{2}{3}u^{3/2} + C \right]$$
+    $$= \frac{6}{7}u^{7/2} - \frac{12}{5}u^{5/2} + 2u^{3/2} + C$$
+    $$= \frac{6}{7} \left( 1 + x \right)^{7/2} - \frac{12}{5} \left( 1 + x 
+    \right)^{5/2} + 2 \left( 1 + x \right)^{3/2} + C$$
+
+    Taking the derivative:
+    $$\frac{d}{dx} \left[ \frac{6}{7} \left( 1 + x \right)^{7/2} - 
+    \frac{12}{5} \left( 1 + x \right)^{5/2} + 2 \left( 1 + x \right)^{3/2} + C 
+    \right]$$
+    $$= \frac{6}{7} \left( \frac{7}{2} \left( 1 + x \right)^{5/2} \right) - 
+    \frac{12}{5} \left( \frac{5}{2} \left( 1 + x \right)^{3/2} \right) + 2 
+    \left( \frac{3}{2} \left( 1 + x \right)^{1/2} \right)$$
+    $$= 3 \left( 1 + x \right)^{5/2} - 6 \left( 1 + x \right)^{3/2} + 3 \left( 
+    1 + x \right)^{1/2}$$
+    $$= \left[ 3 \left( 1 + x \right)^2 - 6 \left( 1 + x \right) + 3 \right] 
+    \left( 1 + x \right)^{1/2}$$
+    $$= \left[ 3 \left( 1 + 2x + x^2 \right) - 6 - 6x + 3 \right] \sqrt{1 + x}$$
+    $$= \left[ 3 + 6x + 3x^2 - 6 - 6x + 3 \right] \sqrt{1 + x} = 3x^2 
+    \sqrt{1 + x}$$
+
+    \item Let $u = x^3 - 1$. Then $du = 3x^2 \text{ } dx$. Substituting:
+    $$\int \frac{3x^2}{x^3 - 1}\,dx = \int \frac{1}{u}\,du = \ln{u} + C$$
+    $$= \ln{ \left( x^3 - 1 \right)} + C$$
+
+    Taking the derivative:
+    $$\frac{d}{dx} \left[ \ln{ \left( x^3 - 1 \right)} + C \right] = 
+    \frac{d}{dx} \ln{ \left( x^3 - 1 \right)} + \frac{d}{dx}C$$
+    $$= \frac{1}{x^3 -1} \cdot \left[ \frac{d}{dx} \left( x^3 - 1 \right) 
+    \right] = \frac{3x^2}{x^3 - 1}$$
+    
+\end{enumerate}
+\end{Answer}
+
+\section{The Substitution Rule for Definite Integrals}
+How to we use $u$-substitution for definite integrals? We will apply the 
+fundamental theorem of calculus to answer this question. We define $f$ and $F$ 
+such that $F$ is the antiderivative of $f$. Then:
+$$\int_a^b f(g(x)) \cdot g'(x)\,dx = F(g(x))|_{a}^{b} = F(g(b)) - F(g(a))$$
+
+This represents the method of finding the indefinite antiderivative and 
+evaluating from the original limits of integration. 
+
+We can also see that:
+$$F(g(b)) - F(g(a)) = F(u)|_{g(a)}^{g(b)} = \int_{g(a)}^{g(b)} f(u)\,du$$
+
+Therefore, if $g'$ is continuous on $\left[ a, b \right]$ and $f$ is continuous 
+on the range of $u = g(x)$, then:
+$$\int_a^b f(g(x)) \cdot g'(x)\,dx = \int_{g(a)}^{g(b)} f(u)\,du$$
+
+This represents changing the limits of integration into the new variable, $u$, 
+then evaluating the integral. While the second method is preferable, both 
+methods yield the same answer. 
+
+\textbf{Example}: Evaluate $\int_0^{5} \sqrt{3x + 1}\,dx$ using both methods 
+outlined above. 
+
+\textbf{Solution}: We start with the first method. We will use the substitution 
+$u = 3x + 1$, and therefore $du/3 = dx$:
+$$\int_0^5 \sqrt{3x + 3}\,dx = \frac{1}{3} \int_{x = 0}^{x = 5} \sqrt{u}\,du$$
+
+(We write the limits as $x = \cdots$ to remind us the limits are for $x$, not 
+$u$.)
+$$\frac{1}{3} \int_{x = 0}^{x = 5} \sqrt{u}\,du = \frac{1}{3} \left[ \frac{2}{3} 
+u^{3/2} \right]_{x = 0}^{x = 5}$$
+
+Now we substitute back in for $u$ and evaluate:
+$$\frac{2}{9} \left( 3x + 1 \right)^{3/2}|_{0}^{5} = \frac{2}{9} \left( 16 
+\right)^{3/2} - \frac{2}{9} \left( 1 \right)^{3/2}$$
+$$= \frac{2}{9} \left( 64 - 1 \right) = \frac{2 \cdot 63}{9} = 14$$
+
+Let's compare this to the second, preferred method. We already know the 
+$u$-substitution we'll make, so next we need to find $g(0)$ and $g(5)$ (recall 
+that we choose $u$ such that $u = g(x)$):
+$$g(x) = 3x + 1$$
+$$g(0) = 1$$
+$$g(5) = 16$$
+
+Now we can make our substitution \textit{and} change the limits of integration:
+$$\int_0^5 \sqrt{3x + 1}\,dx = \frac{1}{3} \int_1^{16} \sqrt{u}\,du$$
+$$= \frac{1}{3} \left[ \frac{2}{3} u^{3/2} \right]_1^{16} = \frac{2}{9} \left[ 
+16^{3/2} - 1^{3/2} \right]$$
+$$= \frac{2}{9} \left(64 - 1 \right) = 14$$
+
+With the second method, we get the same answer in fewer steps. 
+
+\begin{Exercise}[title = {Definite Integrals and u-substitution}, label = u_def]
+Use $u$-substitution to evaluate the following definite integrals. 
+\begin{enumerate}
+\item $\int_0^{\pi / 2} \cos{x} \sin{ \left( \sin{ x } \right) }\,dx$
+\item $\int_0^{13} \frac{1}{\sqrt[3]{\left( 1 + 2x \right)^2}}\,dx$
+\item $\int_1^2 \frac{e^{1/x}}{x^2}\,dx$
+\item $\int_0^{\pi / 6} \frac{\sin{x}}{\cos^2{x}}\,dx$
+\item $\int_0^4 \frac{x}{\sqrt{1 + 2x}}\,dx$
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = u_def]
+\begin{enumerate}
+    \item Let $g(x) = u = \sin{x}$. Then $du = \cos{x} \text{ }dx$. 
+    Additionally, $g(0) = \sin{0} = 0$ and $g(\pi/2) = \sin{\left( \pi / 2 
+    \right)} = 1$. Substituting and changing the limits of integration:
+    $$\int_0^{\pi / 2} \cos{x} \sin{ \left( \sin{x} \right) }\,dx = \int_0^1 
+    \sin{u}\,du = -\cos{u}|_0^1 = \cos{0} - \cos{1} = 1 - \cos{1}$$
+
+    \item Let $g(x) = u = 1 + 2x$. Then $du = 2 \text{ }dx$ and $\frac{du}{2} 
+    = dx$. Additionally, $g(0) = 1$ and $g(13) = 1 + 2(13) = 27$. Substituting 
+    and changing the limits of integration:
+    $$\int_0^{13} \frac{1}{\sqrt[3]{\left( 1 + 2x \right)^2}}\,dx = \frac{1}{2}
+    \int_1^{27} \frac{1}{\sqrt[3]{u^2}}\,du = \frac{1}{2} \int_1^{27} u^{-2/3}
+    \,du$$
+    $$= \frac{1}{2} \left[ 3u^{1/3} \right]_1^{27} = \frac{3}{2} \left[ 
+    \sqrt[3]{27} - \sqrt[3]{1} \right] = \frac{3}{2} \left( 3 - 1 \right) = 3$$
+
+    \item Let $g(x) = u = 1 / x$. Then $du = (-1 / x^2) dx$ and $-du = dx / 
+    x^2$. Additionally, $g(1) = 1$ and $g(2) = 1 / 2$. Substituting and 
+    changing the limits of integration:
+    $$\int_1^2 \frac{e^{1/x}}{x^2}\,dx = -\int_1^{1/2} e^u\,du = \int_{1/2}^1 
+    e^u\,du$$
+    $$= e^u|_{1/2}^1 = e - \sqrt{e}$$
+
+    \item Let $g(x) = u = \cos{x}$. Then $du = -\sin{x} \text{ } dx$ and $-du 
+    = \sin{x} \text{ }dx$. Additionally, $g(0) = \cos{0} = 1$ and $g(\pi / 6) 
+    = \cos{ \frac{\pi}{6}} = \frac{\sqrt{3}}{2}$. Substituting and changing 
+    the limits of integration:
+    $$\int_0^{\pi / 6} \frac{\sin{x}}{\cos^2{x}}\,dx = -\int_{1}^{\sqrt{3} 
+    / 2} \frac{1}{u^2}\,du = \int_{\sqrt{3} / 2}^1 \frac{1}{u^2}\,du$$
+    $$= -\frac{1}{u}|_{\sqrt{3} / 2}^1 = \frac{2}{\sqrt{3}} - 1 = \frac{2
+    \sqrt{3} - 3}{3}$$
+
+    \item Let $g(x) = u = 1 + 2x$. Then $du = 2 \text{ }dx$ and $\frac{du}{2} 
+    = dx$. And if $u = 1 + 2x$, then $x = \frac{u - 1}{2}$. Additionally, 
+    $g(0) = 1$ and $g(4) = 9$. Substituting and changing the limits of 
+    integration:
+    $$\int_0^4 \frac{x}{\sqrt{1 + 2x}}\,dx = \frac{1}{2} \int_1^9 \frac{
+    \frac{u-1}{2}}{\sqrt{u}}\,du = \frac{1}{4} \int_1^9 \frac{u - 1}{\sqrt{u}}
+    \,du$$
+    $$= \frac{1}{4} \int_1^9 \sqrt{u} - \frac{1}{\sqrt{u}}\,du = \frac{1}{4} 
+    \left[ \frac{2}{3}u^{3/2} - 2u^{1/2} \right]_1^9$$
+    $$= \frac{1}{4} \left[ \frac{2}{3} \left( 9^{3/2} - 1^{3/2} \right) - 2 
+    \left( \sqrt{9} - \sqrt{1} \right) \right] = \frac{1}{4} \left[ \frac{2}{3} 
+    \left( 26 \right) - 2 \left( 2 \right) \right]$$
+    $$= \frac{1}{4} \left[ \frac{52}{3} - 4 \right] = \frac{1}{4} \left[ 
+    \frac{52 - 12}{3} \right] = \frac{1}{4} \left[ \frac{40}{3} \right] = 
+    \frac{10}{3}$$
+\end{enumerate}
+\end{Answer}
+
