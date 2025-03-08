@@ -7,10 +7,10 @@ If we let $a = 1$ and $r = x$, then we see that $\sum_{n=1}^\infty x^{n-1} =
 $$\frac{1}{1-x} = \sum_{n=0}^\infty x^n$$
 
 This is a \textbf{power series}. \index{power series}We use power series in place of functions for many 
-applications: integrals where an explicit antiderivative don't exist, solving 
+applications, such as integrals where an explicit antiderivative don't exist, solving 
 differential equations, and computer scientists representing functions on 
-computers are a few examples. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
-f(x)\,dx$? We can't directly use u-substitution, and this isn't a derivative of 
+computers. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
+f(x)\,dx$? We can't directly use u-substitution, and this is not a derivative of 
 any inverse trigonometric function. [You may have realized we could integrate 
 this explicitly by using partial fractions, but this is not true for other 
 functions, and we are using this as a demonstration anyway.] One way to 
@@ -47,13 +47,13 @@ process is left as an exercise for the student.) We find that:
 $$\frac{2x - 4}{x^2 - 4x + 3} = \frac{1}{x - 1} + \frac{1}{x-3}$$
 Noting that $\frac{1}{x-1} = (-1) \cdot\frac{1}{1-x}$, we can say that:
 $$\frac{1}{x-1} = (-1) \cdot \sum_{n=0}^\infty x^n$$
-Now let's look at $\frac{1}{x-3}$. We can show that:
+Now, let's look at $\frac{1}{x-3}$. We can show that:
 $$\frac{1}{x-3} = \frac{\frac{1}{3}}{\frac{x}{3}-1} = \frac{1}{3} \frac{1}{
 \frac{x}{3}-1} = \frac{-1}{3} \frac{1}{1-\frac{x}{3}}$$
 Substituting $\frac{x}{3}$ for $x$ into $\frac{1}{1-x} = \sum_{n=0}^\infty 
 x^n$ we see that:
 $$\frac{1}{1-\frac{x}{3}} = \sum_{n=0}^\infty \left(\frac{x}{3} \right)^n$$
-And therefore
+Therefore:
 $$\frac{1}{x-3} = \left( \frac{-1}{3} \right) \sum_{n=0}^\infty \left( 
 \frac{x}{3} \right)^n$$
 Adding the terms, we see that:
@@ -61,8 +61,8 @@ $$\frac{1}{x-1} + \frac{1}{x-3} = (-1) \sum_{n=0}^\infty x^n + \left(
 \frac{-1}{3} \right) \sum_{n=0}^\infty \left( \frac{x}{3} \right)^n$$
 
 \section{Power Series Convergence}
-Sometimes, you'll be asked to find the value(s) of $x$ 
-for which a power series converges. To do this, choose a test to apply and 
+Sometimes, you will be asked to find one or more values of $x$ 
+for which a power series converges. To do this, choose a test to apply, 
 then find $x$ such that the test is passed. 
 
 \textbf{Example}: For what values of $x$ is the series $\sum_{n=0}^\infty n!x^n$ 
@@ -75,7 +75,7 @@ $$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = \lim_{n \to
 \infty} \left| \frac{(n+1)!x^{n+1}}{n!x^n} \right|$$
 $$= \lim_{n \to \infty} \frac{(n+1) n! x \cdot x^n}{n!x^n} = \lim_{n \to 
 \infty} \frac{(n+1) \cdot x}{1}$$
-Which converges to $0$ when $x=0$ and diverges for all other values of $x$. 
+which converges to $0$ when $x=0$ and diverges for all other values of $x$. 
 Therefore, $\sum_{n=0}^\infty n!x^n$ converges if $x=0$. 
 
 \textbf{Example}: For what values of $x$ does the series $\sum_{n=1}^\infty 
@@ -99,7 +99,7 @@ Which is true when
 $$-\frac{1}{2} < x-4 < \frac{1}{2}$$
 $$3.5 < x < 4.5$$
 
-We aren't done yet, though! We know the series converges for $3.5 < x < 4.5$ 
+We are not done yet, though! We know the series converges for $3.5 < x < 4.5$ 
 and diverges for $x < 3.5$ and $x > 4.5$. What about when $x = 3.5$ and $x = 
 4.5$? (These are the cases where the Ratio Test is indeterminate, because 
 $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = 1$.) We need to test 
@@ -110,18 +110,18 @@ $$= \sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$$
 This is an alternating series, so we apply the alternating series test. First, 
 we check that $|a_{n+1}| < |a_n|$:
 $$\frac{1}{(n+1) \cdot 2^{n+2}}  < \frac{1}{n \cdot 2^{n+1}}$$
-Which is true for all $n > 0$. Now we check if $\lim_{n \to \infty} |a_n| = 0$:
+Which is true for all $n > 0$. Next, we check if $\lim_{n \to \infty} |a_n| = 0$:
 $$\lim_{n \to \infty} \frac{1}{n \cdot 2^{n+1}} = \frac{1}{\infty} = 0$$
 Therefore, $\sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$ is convergent 
-and $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ is convergent for $x = 3.5$. Now we 
+and $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ is convergent for $x = 3.5$. Next, we 
 test $x=4.5$ for convergence:
 $$\sum_{n=1}^\infty \frac{(4.5-4)^n}{2n} = \sum_{n=1}^\infty \left( 
 \frac{1}{2} \right)^n \cdot \frac{1}{2n} = \sum_{n=1}^\infty \left( 
 \frac{1}{2} \right)^{n+1} \frac{1}{n}$$
 This series is less than the harmonic series $\sum_{n=1}^\infty \frac{1}{n}$ 
-for all $n$. We know the harmonic series diverges, therefore by the direct 
+for all $n$. We know the harmonic series diverges, therefore, by the direct 
 comparison test, $\sum_{n=1}^\infty \left( \frac{1}{2} \right)^{n+1} 
-\frac{1}{n}$ must also diverge. So our final answer to the original question 
+\frac{1}{n}$ must also diverge. So, our final answer to the original question 
 is that the series is convergent fort $3.5 \leq x < 4.5$. 
 
 \subsection{Radius of Convergence}
@@ -177,7 +177,7 @@ of convergence:
 \end{enumerate}
 
 In the example of $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ (shown above), 
-$a = 4$ and $R = 0.5$ and we found that the power series is convergent for 
+$a = 4$ and $R = 0.5$, and we found that the power series is convergent for 
 $x \in [3.5, 4.5)$. 
 
 \textbf{Example}: For what values of $x$ is the Bessel function $J_0 (x) = 
@@ -193,7 +193,7 @@ $$\lim_{n \to \infty} \frac{x^2 n! n!}{2^2 (n + 1)n! (n + 1)n!} < 1$$
 $$\lim_{n \to \infty} \frac{x^2}{4(n + 1)^2} = 0 < 1$$
 Because $lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = 0$ for all 
 $x$, the Bessel function $J_0 (x) = \sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{2^{
-2n}(n!)^2}$ is convergent for all real values of $x$ and the interval of 
+2n}(n!)^2}$ is convergent for all real values of $x$, and the interval of 
 convergence is $(-\infty, \infty)$. 
 
 \textbf{Example}: Find the radius and interval of convergence for the series 
@@ -212,17 +212,17 @@ $$3|x| < 1$$
 $$|x| < \frac{1}{3}$$
 
 Therefore, the radius of convergence is $\frac{1}{3}$. We need to test the 
-endpoints, $x = \frac{-1}{3}$ and $x = \frac{1}{3}$ to determine the interval 
+endpoints, $x = \frac{-1}{3}$ and $x = \frac{1}{3}$, to determine the interval 
 of convergence. First, we will test if $\sum_{n=0}^\infty \frac{(-3)^n x^n}{
 \sqrt{n + 1}}$ when $x = \frac{-1}{3}$:
 $$\sum_{n=0}^\infty \frac{(-3)^n \left( \frac{-1}{3} \right)^n}{\sqrt{n + 1}} 
 = \sum_{n = 0}^\infty \frac{1^n}{\sqrt{n + 1}} = \sum_{n = 0}^\infty \frac{1}{
 \sqrt{n + 1}}$$
-This is a $p$-series such that $ p < 1$, so it is divergent and our original 
-series does not converge for $x = \frac{-1}{3}$. Next we test $x = \frac{1}{3}$:
+This is a $p$-series such that $ p < 1$, so it is divergent, and our original 
+series does not converge for $x = \frac{-1}{3}$. Next, we test $x = \frac{1}{3}$:
 $$\sum_{n=0}^\infty \frac{(-3)^n \left( \frac{1}{3} \right)^n}{\sqrt{n + 1}} = 
 \sum_{n = 0}^\infty \frac{(-1)^n}{\sqrt{n + 1}}$$
-Which is an alternating series that converges by the alternating series test. 
+which is an alternating series that converges by the alternating series test. 
 Therefore, the interval of convergence for $\sum_{n=0}^\infty \frac{(-3)^n x^n}
 {\sqrt{n + 1}}$ is $x \in \left( \frac{-1}{3}, \frac{1}{3} \right]$. 
 
@@ -265,7 +265,7 @@ $$\lim_{n \to \infty} \left| \frac{x^{2n+3}}{2n+5} \frac{2n+3}{x^{2n+1}}
 $$\left| x^2 \right| \lim_{n \to \infty} \frac{2n+3}{2n+5} < 1$$
 $$\left| x^2 \right| < 1$$
 $$\left| x \right| < 1$$
-So we know that the series is convergent on the open interval $x \in (-1, 1)$. 
+So, we know that the series is convergent on the open interval $x \in (-1, 1)$. 
 We check the endpoints, $x = -1, 1$ for convergence. 
 $$\sum_{n=0}^\infty \frac{(-1)^n (-1)^{2n+1}}{2n+3} = \sum_{n=0}^\infty \frac{
 (-1)^{3n+1}}{2n+3}$$
@@ -283,15 +283,15 @@ which can also be written as $-1 \leq x \leq 1$.
 \section{Calculus with Power Series}
 You can integrate and differentiate power series. Let $f(x) = \sum_{n=0}^\infty 
 c_n (x-a)^n$. Recall that $f(x)$ is just a very long polynomial and that the 
-derivative of a polynomial $x^n$ is $n \cdot x^{n-1}$. Then we can state that:
+derivative of a polynomial $x^n$ is $n \cdot x^{n-1}$. We can then state that:
 $$\frac{d}{dx}f(x) = \frac{d}{dx} \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots 
 + c_n(x-a)^n \right]$$
 $$f'(x) = 0 + c_1 + 2c_2(x-a)^1 + \cdots + n c_n(x-a)^{n-1}$$
 $$f'(x) = \sum_{n=1}^\infty c_n(x-a)^{n-1}$$
 
-Which is true when $x$ is in the interval of convergence for the series. 
+which is true when $x$ is in the interval of convergence for the series. 
 
-Similarly, we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1}$. Then we can say that:
+Similarly, we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1}$. We can then say that:
 $$\int f(x) \,dx = \int \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots + c_n(x-a)
 ^n\right],dx$$
 $$\int f(x)\,dx = C + c_0(x-a) + \frac{c_1}{2}(x-a)^2 + \frac{c_2}{3}(x-a)^3 + 
@@ -345,17 +345,17 @@ partials sums for $n = 3, 5, and 7$ with the original function (see figure
 \textbf{Example}: Find a power series representing $\ln{(1+x)}$. 
 
 \textbf{Solution}: We know that $\frac{d}{dx} \frac{1}{1-x} = \ln{(1-x)}$. 
-Replacing $x$ with $-x$ we see that:
+Replacing $x$ with $-x$, we see that:
 $$\frac{1}{1-(-x)} = \frac{1}{1+x} = \sum_{n=0}^\infty (-x)^n$$
-Which converges for $|x| < 1$. Then we can integrate both sides:
+which converges for $|x| < 1$. We can then integrate both sides:
 $$\int \frac{1}{1+x}\,dx = \int \left[ \sum_{n=0}^\infty (-x)^n \right] \,dx$$
 $$\ln{(1 + x)} = \int \left( 1 - x + x^2 - x^3 + \cdots \right)\,dx $$
 $$\ln{(1 + x)} = C + x - \frac{x^2}{2} + \frac{x^3}{3} + \cdots + (-1)^{n-1} \frac{x^n}{n}$$
 $$\ln{(1 + x)} = \sum_{n=1}^\infty (-1)^{n-1} \frac{x^n}{n} + C$$
-When $|x|<1$. To find $C$, substitute $x = 0$ and solve:
+when $|x|<1$. To find $C$, substitute $x = 0$ and solve:
 $$\ln{(1 + 0)} = C + \sum_{n=1}^\infty (-1)^{n-1} \frac{0^n}{n} = C + 0$$
 $$C = \ln{1} = 0$$
-So our final answer is $\ln{(1 + x)} = \sum_{n=1}^\infty (-1)^{n-1} \frac{x^n}{
+So, our final answer is $\ln{(1 + x)} = \sum_{n=1}^\infty (-1)^{n-1} \frac{x^n}{
 n}$. 
 
 \begin{Exercise}[label = seriescalc1]
