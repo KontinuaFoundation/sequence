@@ -3,8 +3,8 @@
 Edsger W. Dijkstra was a great Dutch computer scientist. He came up
 with an algorithm for finding the cheapest path through a graph with
 weighted edges. Today it is known as \newterm{Dijkstra's
-  Algorithm}. It is used in a wide variety of common problems.  It is
-also really pretty simple and elegant.\index{Dijkstra, Edsger} \index{Dijkstra's Algorithm}
+  Algorithm}. It is used in a wide variety of common problems, and is
+also both simple and elegant.\index{Dijkstra, Edsger} \index{Dijkstra's Algorithm}
 
 \section{Algorithm Description}
 
@@ -13,13 +13,12 @@ there from some origin node.  For example, if you are shipping a
 container from Long Beach, you will mark each city with the cost of
 getting the container to that city.
 
-You start by marking the price for Long Beach to zero.  (The container
-is already there.)  Then, you mark each adjacent city with the cost on
-the edge. Now you declare Long Beach to be ``visited''.
+You start by marking the price for Long Beach to zero (the container is already there). You then mark each adjacent city with the cost on
+the edge. Next, you declare Long Beach to be ``visited''.
 
 \includegraphics[width=0.9\textwidth]{step1.png}
 
-Now, you find the cheapest of the unvisited nodes.  In this case, Los
+After that, you find the cheapest of the unvisited nodes.  In this case, Los
 Angeles is cheaper than San Diego, so that is the node you will visit
 next.
 
@@ -30,8 +29,8 @@ marked with \$22.
 
 \includegraphics[width=0.9\textwidth]{step2.png}
 
-Now the cheapest unvisited node is San Diego.  So you mark its
-neighbors with the cost to ship to San Diego plus the price to ship
+Now, the cheapest unvisited node is San Diego, so you mark its
+neighbors with the cost to ship to San Diego, plus the price to ship
 from San Diego to the neighbor.
 
 Notice that Bakersfield is already labeled with \$22 from a route
@@ -42,27 +41,27 @@ change the price to the lower value.
 (What does it mean that a node is ``visited''?  If a node is marked
 visited, it is marked with a price that won't get any smaller.)
 
-And you continue visiting the cheapest unvisited node until all the
+You continue visiting the cheapest unvisited node until all the
 nodes have been visited.  Then you know every node has been marked
 with its lowest price.
 
 In a big graph, each node may be marked several times in this process
--- each time with a lower price from a cheaper router.
+--- each time with a lower price from a cheaper router.
 
-Of course, once you have the price, you will ask ``What is the route
-that gets me that price?''  So we will also mark each node with the
-neighbor from which it would receive the shipment -- the previous
+Of course, once you have the price, you will ask, ``What is the route
+that gets me that price?''  So, we will also mark each node with the
+neighbor from which it would receive the shipment --- the previous
 node.  This is easy to do as we execute the algorithm.
 
 \includegraphics[width=0.4\textwidth]{prev.png}
 
 Now, to figure out the cheapest route from San Diego to Bakersfield,
 we start at the destination and follow the \pyvar{prev} pointer back
-through San Diego and then to Long Beach.
+through San Diego, then to Long Beach.
 
 \section{Implementation}
 
-We don't actually want to sully our graph objects with the three additional pieces of information we need:
+We do not actually want to sully our graph objects with the three additional pieces of information we need:
 \begin{itemize}
 \item The current minimal cost from the origin node. This is usually
   called the \pyvar{dist}, from ``distance''.
@@ -70,10 +69,10 @@ We don't actually want to sully our graph objects with the three additional piec
   usually called \pyvar{prev}, from ``previous''.
 \item Whether the city is visited or now.
 \end{itemize}
-So we will keep them in collections external to the graph.
+So, we will keep them in collections external to the graph.
 
 For example, to keep track of the \pyvar{dist}, we will have a
-\pyvar{dist} dictionary: Each node will be a key, the current minimal
+\pyvar{dist} dictionary. Each node will be a key, the current minimal
 cost will be the value.  If the node hasn't received even a first
 cost, we will put in infinity as the cost.
 
@@ -139,7 +138,7 @@ Add a method to the \pytype{Graph} class that implements Dijkstra's algorithm:
         return (dist, prev)
 \end{verbatim}
 
-Append some code to your \filename{cities.py} that test this method:
+Append some code to your \filename{cities.py} that tests this method:
 
 \begin{verbatim}
 (cost_from_long_beach, prev) = network.cost_from_node(long_beach)
@@ -177,7 +176,7 @@ Last city before = {(node:Los Angeles, edges:3):(node:Long Beach, edges:1),
 (node:Boston, edges:2): (node:Cleveland, edges:4)}
 \end{verbatim}
 
-Your users won't want to read this; Give them the shortest path as a list.  Add a function to
+Your users will not want to read this; give them the shortest path as a list.  Add a function to
 \filename{graph.py} that turns the \pyvar{prev} table into a path of
 nodes that lead from the origin to the destination:
 
@@ -223,12 +222,12 @@ This should look like this:
 \section{Making it faster}
 
 On really big networks, doing a full Dijkstra's algorithm would take
-too long. So there are a lot of methods for getting similar results
-quickly.  When you ask for directions from Google Maps, it doesn't do
-a full Dijkstra's Algorithm for every possible route -- it would just
+too long; luckily, there are many methods for getting similar results
+quickly.  When you ask for directions from Google Maps, it does not do
+a full Dijkstra's Algorithm for every possible route --- it would just
 take too long.
 
-But there is a way to speed up this implementation. Look at this snippet:
+However, there is a way to speed up this implementation. Look at this snippet:
 
 \begin{verbatim}
             # Find unvisited node with lowest cost
@@ -239,7 +238,7 @@ But there is a way to speed up this implementation. Look at this snippet:
                     min_cost = dist[u]
 \end{verbatim}
 
-We are scanning through the list of all unvisited nodes, one-by-one,
+We are scanning through the list of all unvisited nodes, one by one,
 looking for the one with the lowest cost.  If we kept this list sorted
 by cost, then the next one to visit would always be the first one in
 the list. This is done with a \newterm{priority queue} -- a list that

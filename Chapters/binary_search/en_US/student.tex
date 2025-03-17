@@ -13,7 +13,7 @@ myqueue.add(los_angeles,12) # Inserts LA between Long Beach and San Diego
 current_city = myqueue.pop() # Returns first city (Long Beach) and removes it
 \end{verbatim}
 
-Now if an item gets a new priority, we need to remove it and reinsert it in the new spot.
+Now, if an item gets a new priority, we need to remove it and reinsert it in the new spot.
 \begin{verbatim}
 myqueue.add(city_a, 16) # Puts it last in the queue
 myqueue.update(city_a, 16, 13) # Moves it to between LA and San Diego
@@ -24,7 +24,7 @@ myqueue.update(city_a, 16, 13) # Moves it to between LA and San Diego
 Create a file called \filename{kpqueue.py}. Let's do a simple
 implementation that stores the priority and the data as tuple. And we
 will keep it sorted by the priority.  If two tuples have the same
-priority, we'll sort by the data.
+priority, we will sort by the data.
 
 Type this in to \filename{kpqueue.py}:
 \begin{verbatim}
@@ -61,24 +61,24 @@ This will work fine, but it could be much more efficient:
 \item The function \pyfunction{remove} is searching the list sequentially for the item to delete.
 \end{itemize}
 
-In a minute, we will revisit these inefficiencies and make the better.
+In a minute, we will revisit these inefficiencies and make them better.
 
 \section{Using the Priority Queue}
 
 We are going to change \filename{graph.py} to use the priority
-queue. While we are doing, why don't we also shrink the memory
+queue. While we are doing so, why don't we also shrink the memory
 footprint of our program a bit.
 
 Notice that as the algorithm is running, each node is in one of three states:
 \begin{itemize}
 \item Unseen: In the earlier implementation, these were the nodes with \pyvar{math.inf} as their cost.
-\item Seen, but not finalized: These are ``unvisited'' but don't have \pyvar{math.inf} as their cost.
-\item Finalized: These are the ``visited'' nodes -- we know that their cost won't decrease any more.
+\item Seen, but not finalized: These are ``unvisited'', but don't have \pyvar{math.inf} as their cost.
+\item Finalized: These are the ``visited'' nodes --- we know that their cost won't decrease any more.
 \end{itemize}
 
 We can shrink the memory foot print by not putting the unseen into the
 dist dictionary at all. And instead of a separate set for
-``unvisited'' what if we moved finalized nodes and their distances
+``unvisited'', what if we moved finalized nodes and their distances
 into a separate dictionary?
 
 Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
@@ -110,10 +110,10 @@ Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
         return (finalized_dist, prev)
 \end{verbatim}
 
-This should be have exactly the same except for the unreachable nodes.
+This should be have exactly the same result, except for the unreachable nodes.
 If you have a graph that is not connected, there will be nodes that
-can't be reached from the origin.  In the old version, these had a
-cost of \pyvar{math.inf}.  Now they just won't be in the dictionary at all.  So, change \filename{cities.py} to deal with this:
+cannot be reached from the origin.  In the old version, these had a
+cost of \pyvar{math.inf}.  Now, they will just not be in the dictionary at all.  So, change \filename{cities.py} to deal with this:
 
 \begin{verbatim}
 if nyc in cost_from_long_beach:
@@ -128,7 +128,7 @@ else:
 
 If you run \filename{cities.py} now, it should behave exactly like the old version.
 
-But there is a bug. It will rear its head if two cities with the same
+However, there is a bug. It will rear its head if two cities with the same
 cost are in the priority queue together.  Change \filename{cities.py}
 so that Denver and Pheonix have the same cost:
 
@@ -150,7 +150,7 @@ tuples made up of a \pytype{float} and a \pytype{Node}.  The
 first. However, if the two tuples have the same priority, it then
 compares nodes.
 
-The error statement say ``Nodes don't have a less-than method; I don't
+The error statement says, ``Nodes don't have a less-than method; I don't
 know how to compare them.''
 
 Each \pytype{Node} lives at an address in memory. You can get that
@@ -167,7 +167,7 @@ your \pytype{Node} class:
 
 Fixed.
 
-Now let's make the priority queue more efficient.
+Now, let's make the priority queue more efficient.
 
 \section{Binary Search}
 
@@ -175,18 +175,18 @@ The phone company in every town used to print a thing called a phone
 book. The names and phone numbers were arranged alphabetically.  As
 you might imagine, these books often had more than a thousand pages.
 
-If you were looking for ``John Jeffers'', you wouldn't start at the
+If you were looking for ``John Jeffers'', you would not start at the
 first page and read sequentially until you reached his name.  You
 would open the book in the middle, and see a name like ``Mac Miller'',
-and then think ``Jeffers comes before Miller''.  Then you would split
+then think ``Jeffers comes before Miller''. You would then split
 the pages in your left hand in half and see a name like ``Hester
-Hamburg'' and think ``Jeffers comes after Hamburg''.  Then you would
-split the pages in your right hand, and so on until you found the page
+Hamburg'' and think ``Jeffers comes after Hamburg''. You would then
+split the pages in your right hand, and continue on like this until you found the page
 with ``John Jeffers'' on it.
 
 That is binary search.\index{Binary Search}
 
-Binary Search is a search algorithm that finds the position of a target value within a sorted array. The binary search algorithm works by repeatedly dividing the search interval in half. If the target value is equal to the middle element of the array, the position is returned. If the target value is less or greater than the middle element, the search continues in the lower or upper half of the array respectively.
+Binary Search is a search algorithm that finds the position of a target value within a sorted array. The binary search algorithm works by repeatedly dividing the search interval in half. If the target value is equal to the middle element of the array, the position is returned. If the target value is less than or greater than the middle element, the search continues in the lower or upper half of the array, respectively.
 
 \section{Algorithm}
 
@@ -248,5 +248,5 @@ class PriorityQueue:
 
 If you try running it now, it should work perfectly.
 
-Now you have a graph class that would find the cheapest path quickly
-even if it had thousands of nodes with thousands of edges.
+You now have a graph class that will find the cheapest path quickly,
+even if it has thousands of nodes with thousands of edges.
