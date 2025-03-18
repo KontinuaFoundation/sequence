@@ -15,7 +15,7 @@ Colors
 	Green: 4b9751
 	Brown: 90582f
 
-	Note: When necessary I adjust the brightness values
+	Note: When necessary, I adjust the brightness values
 
 
 Arrows
@@ -42,7 +42,7 @@ Isometric
 	Example: Fabrication Chapter (3D printer, CNC, laser cutter)
 
 	Shortcuts:
-		I used shortcut actions in Illustrator that do the following
+		I used shortcut actions in Illustrator that do the following:
 			Top: 
 				- Scale vertical 86.06%
 				- Shear 30°
@@ -59,9 +59,9 @@ Isometric
 
 
 Organization
-	Illustrator file - contains all of the illustrations for the chapter as artboards. Also contains some of the excess
+	Illustrator file - Contains all of the illustrations for the chapter as artboards. Also contains some of the excess
 
-	PNGs - exported illustrations
+	PNGs - Exported illustrations
 
 	Student.tex - LaTex file where you insert all the filenames. Ensure there is a line break before/after.
 
