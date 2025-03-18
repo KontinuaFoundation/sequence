@@ -3,13 +3,13 @@ Digital Resources
 =================
 
 You can think of each chapter as made up of several learning
-objectives.  The sequence, then, is a directed graph -- each chapter
+objectives.  The sequence, then, is a directed graph — each chapter
 covers some objectives and relies upon some prerequisite objectives.
 
-Each of these objectives gets a short unique ID like "atmos" might represent
+Each of these objectives gets a short unique ID. For example, "atmos" might represent
 the objective of having the student understand the idea of atmospheric pressure.
 
-Besides an ID, each objective gets:
+In addition to an ID, each objective gets:
 
 * A description: "Atmospheric pressure and altitude" (required)
 * Some online video links (optional)
@@ -17,13 +17,13 @@ Besides an ID, each objective gets:
 
 Besides a list of objectives that a chapter supplies and the list of objectives that
 are prerequisites,  the chapter can have some files the student can use.  For example, maybe
-a python program that the student can download and run.
+a Python program that the student can download and run.
 
 ===================
 gather_resources.py
 ===================
 
-In the Build directory, there is a python program called ``gather_resources.py``
+In the Build directory, there is a Python program called ``gather_resources.py``.
 
 This program walks the chapter directories, parsing each ``digital_resources.json`` and
 creating a web page for each book. Here, for example, is the section for "The Physics of Gases":
@@ -101,7 +101,7 @@ Here is an example of ``digital_resources.json`` file for a chapter::
     }
 
 The structure makes sense, right?  Yes, but it is a real hassle to try to type it, and
-every chapter needs one. So...
+every chapter needs one. So:
 
 ==================
 KontinuaResourceEditor
