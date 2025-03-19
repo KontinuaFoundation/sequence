@@ -11,7 +11,7 @@ Writing
 You can look through the book and find something missing, interesting, and useful.  If you
 suggest it and volunteer to write it, we will probably OK it.
 
-That said, here are some topics that definitely need to be attacked:
+That said, here are some topics that definitely need to be tackled:
 
 * Magnetism and Induction
 * Angular momentum and gyroscopic forces
@@ -35,7 +35,7 @@ More info: `Digital Resources
 Problems and Solutions
 ======================
 
-Every chapter needs at least 6 practice problems and 6 test problems.
+Every chapter needs at least six practice problems and six test problems.
 
 The practice problems and solutions go into the appropriate ``student.tex``.
 
@@ -55,7 +55,7 @@ or ``\index{butters!peanut}``
 Editing
 =======
 
-Everything written so far is first draft quality.  I need an editor to read it and make it better.
+Everything written so far is first draft quality.  I need an editor to read it and make it better. (Editor's note: He's working on it!)
 
 ============
 Fund-raising
