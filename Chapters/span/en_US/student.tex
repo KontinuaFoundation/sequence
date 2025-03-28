@@ -38,7 +38,12 @@ vector guide/.style={dashed,black}]
 \label{fig:3d_vectors}
 \end{figure}
 
-Notice that these two vectors are colinear (that is, they are on the same line), therefore they are linearly dependent and any combination of \textbf{u} and \textbf{v} will lie on the same line as \textbf{u} and \textbf{v}. Therefore, we say the \textit{the span of} \textbf{u} \textit{and} \textit{v} \textit{is a line}. In fact, for any size list of linearly dependent vectors (whether it's one vector or one hundred), the span of that list is a line. 
+Notice that these two vectors are colinear (that is, they are on the same 
+line), therefore they are linearly dependent and any combination of \textbf{u} 
+and \textbf{v} will lie on the same line as \textbf{u} and \textbf{v}. 
+Therefore, we say the \textit{the span of} \textbf{u} \textit{and} \textit{v} 
+\textit{is a line}. In fact, for any size list of linearly dependent vectors 
+(whether it's one vector or one hundred), the span of that list is a line. 
 
 Now that you have a sense of what a span is, it is time for the formal 
 mathematical definition. A vector span is the collection of vectors obtained 
@@ -56,9 +61,15 @@ This means that any vector in the Span$(S)$ can be written as a linear
 combination of the vectors in $S$.
 
 \subsection{Spans of Independent Vectors}
-What if our list of vectors aren't all linearly dependent on each other? We've seen in 2 dimensions that any two independent vectors can be linearly combined to create any vector in $\mathbb{R}^2$. So, the span is described as a \textit{plane} (in fact, it is the entire $xy$-plane, which we also call $\mathbb{R}^2$). How does this expand to 3-dimensional vectors? 
+What if our list of vectors aren't all linearly dependent on each other? We've 
+seen in 2 dimensions that any two independent vectors can be linearly combined 
+to create any vector in $\mathbb{R}^2$. So, the span is described as a 
+\textit{plane} (in fact, it is the entire $xy$-plane, which we also call 
+$\mathbb{R}^2$). How does this expand to 3-dimensional vectors? 
 
-Let's again consider two 3-dimensional vectors: $\mathbf{u} = \left[2, 4, 3 \right]$ and $\mathbf{v} = \left[ 2, 1, 0 \right]$, as shown in figure \ref{fig:3d_ind}.
+Let's again consider two 3-dimensional vectors: $\mathbf{u} = \left[2, 4, 3 
+\right]$ and $\mathbf{v} = \left[ 2, 1, 0 \right]$, as shown in figure 
+\ref{fig:3d_ind}.
 
 \begin{figure}[htbp]
 \centering
@@ -89,12 +100,115 @@ vector guide/.style={dashed,black}]
 \label{fig:3d_ind}
 \end{figure}
 
+Just like in two dimensions, any two independent vectors in $\mathbb{R}^3$ 
+define a plane (see figure \ref{fig:plane}). This also applies to higher 
+dimensions: the span of any two linearly independent vectors is a plane. fixme make this figures proportions like the previous figure
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture} 
+\begin{axis}[axis lines = center, x={(-0.3cm, -0.3cm)}, y={(.5cm, -0.1cm)}, 
+z = {(0cm, 0.5cm)}, xmin = 0, ymin = 0, zmin = 0, xmax = 5, ymax = 5, 
+zmax = 5, ticks=none, xlabel = {$x$}, ylabel = {$y$}, zlabel = {$z$}]
+    \draw[blue!30, fill = blue!30, opacity = 0.4] (0,0,0) -- (5, 0, -2.5) -- 
+    (5, 5, 2.5) -- (0, 5, 5) -- cycle;
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 4, 3) node[above] {\textbf{u}};
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 1, 0) node[below] {\textbf{v}};
+    \draw[black, dashed] (2.5, 0, -1.25) -- (2.5, 5, 3.75);
+    \draw[black, dashed] (0, 2.5, 2.5) -- (5, 2.5, 0);
+\end{axis}
+\end{tikzpicture}
+\caption{Linearly independent 3-dimensional vectors, \textbf{u} and \textbf{v}, 
+define a plane.}
+\label{fig:plane}
+\end{figure}
+
+If we have 3 independent vectors, then we can define a \textit{space}. If the 
+vectors are 3-dimensional, then the span of those three independent vectors is 
+all of real space, called $\mathbb{R}^3$. In review, 1 vector or set of 
+dependent vectors span a \textit{line}, 2 vectors or sets of dependent vectors 
+span a \textit{plane}, and 3 vectors or set of dependent vectors span a 
+\textit{space}. 
+
+\textbf{Example}: Do the vectors $\mathbf{r} = \left[ 5, 4, -6 \right]$, 
+$\mathbf{s} = \left[ 0, -5, -10 \right]$, and $\mathbf{t} = \left[ 0, 2, 4, 
+\right]$ span a line, plane, or space?
+
+\textbf{Solution}: We need to determine the number of \textit{independent 
+vectors}. First, we'll check if \textbf{r} and \textbf{s} are independent. 
+They are independent if the only solution to the equation below is $a_1 = a_2 
+= 0$:
+$$a_1 \left[5, 4, -6 \right] + a_2 \left[ 0, -5, -10 \right] = \left[ 0, 0, 0 
+\right]$$
+
+Which we can write as a system of equations:
+$$5a_1 + 0a_2 = 0$$
+$$4a_1 - 5a_2 = 0$$
+$$-6a_2 -10a_2 = 0$$
+
+From the first equation, we see that $5a_1 = 0$ which implies that $a_1 = 0$. 
+Substituting that into the second equation:
+$$4(0) - 5a_2 = 0$$
+$$-5a_2 = 0$$
+$$a_2 = 0$$
+
+Therefore, vectors \textbf{r} and \textbf{s} are independent. Now let's check 
+\textbf{r} and \textbf{t}:
+$$a_1 \left[5, 4, -6 \right] + a_2 \left[ 0, 2, 4, \right] = \left[ 0, 0, 0 
+\right]$$
+
+Which we can re-write as a system of equations:
+$$5a_1 + 0a_2 = 0$$
+$$4a_1 + 2a_2 = 0$$
+$$-6a_1 + 4a_2 = 0$$
+
+Again, from the first equation, we see that $a_1 = 0$. Substituting into the 
+second:
+$$4(0) + 2a_2 = 0$$
+$$2a_2 = 0$$
+$$a_2 = 0$$
+
+Therefore, \textbf{r} and \textbf{t} are also independent. Last, we'll check 
+\textbf{s} and \textbf{t} for independence:
+$$a_1 \left[0, -5, -10 \right] + a_2 \left[ 0, 1, 2, \right] = \left[ 0, 0, 0 
+\right]$$
+
+The system of equations:
+$$0a_1 + 0a_2 = 0$$
+$$-5a_1 + a_2 = 0$$
+$$-10a_1 + 2a_2 = 0$$
+
+The first equation doesn't tell us anything, since it would be true no matter 
+what $a_1$ and $a_2$ are. We can solve the second equation for $a_2$ and 
+substitute into the third equation:
+$$a_2 = 5a_1$$
+$$-10a_1 + 2 \left(5a_1 \right) = 0$$
+$$-10a_1 + 10a_1 = 0$$
+
+Which is also true for all $a_1$. In fact, there are many solutions to $a_1 
+\left[0, -5, -10 \right] + a_2 \left[ 0, 1, 2, \right] = \left[ 0, 0, 0 
+\right]$, $a_1 = 1$ and $a_2 = 5$ is an example. Therefore, \textbf{s} and 
+\textbf{t} are \textit{dependent}. So, we really have 2 independent vectors in 
+the list, and therefore $\text{span}(\mathbf{r}, \mathbf{s}, \mathbf{t})$ is a 
+plane. 
+
+\begin{Exercise}[title = {Determining Span}, label = span1]
+fixme put practice
+\end{Exercise}
+
+\begin{Answer}[ref = span1]
+
+\end{Answer}
 \section{Determinants}
-The determinant of a matrix is a scalar value that indicates whether the 
-columns of a matrix are linearly independent. For a 2D matrix, the determinant 
-is the area of the parallelogram defined by the column vectors. For a 3D 
-matrix, the determinant is the volume of the parallelepiped (a six-dimensional 
-figure formed by six parallelograms, such as a cube). 
+Checking all these vectors by hand takes a long time. What if you had a list 
+of 5, 10, or even 100 vectors? The determinant of a matrix is a scalar value 
+that indicates whether the columns of a matrix are linearly independent. So, 
+if you put all your vectors together in a matrix and take the determinant of 
+that matrix, the result will tell you if all the vectors are independent or 
+not. For a 2D matrix, the determinant is the area of the parallelogram defined 
+by the column vectors. For a 3D matrix, the determinant is the volume of the 
+parallelepiped (a six-dimensional figure formed by six parallelograms, such as 
+a cube). 
 
 Let's plot the parallelogram for this matrix:
 $$
