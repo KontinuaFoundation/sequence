@@ -111,7 +111,59 @@ $$v =
 \end{Exercise}
 
 \begin{Answer}[ref=vector-matrix-multiply01]
-$$Av = (11 37 -43)$$
+$$Av = (11 \text{ }37 \text{ } -43)$$
+\end{Answer}
+
+\begin{Exercise}[title = {Using Vector Matrix Multiplication}, label = vmm02]
+A college professor offers three different methods of determining a student's final grade. In method A, the student's grade is 20\% based on attendance, 50\% homework, 15\% midterm, and 15\% final. This professor knows many students can learn the material without attending every class, so with method B the student's grade is 50\% homework, 20\% midterm, and 30\% final. Last, the professor knows some students don't do the homework but still show they understand the material by doing well on the tests. With method C, a student's grade is 40\% midterm and 60\% final. The professor uses whatever method results in the highest grade to determine each student's final grade. 
+
+Suppose Suzy has attended 65\% of classes, has an average homework grade of 30\%, earned a 80\% on the midterm, and earned a 75\% on the final. What final grade will her professor post?
+\end{Exercise}
+
+\begin{Answer}[ref = vmm02]
+The different methods can be represented in a matrix:
+$$\begin{bmatrix}
+0.20 & 0.50 & 0.15 & 0.15\\
+0 & 0.50 & 0.20 & 0.30\\
+0 & 0 & 0.4 & 0.6
+\end{bmatrix}$$
+
+And Suzy's individual grades can be represented by a vector:
+$$\begin{bmatrix}
+65\\
+30\\
+80\\
+75
+\end{bmatrix}
+$$
+
+To see the results of the three different methods, we can multiply the matrix and the vector:
+$$\begin{bmatrix}
+0.20 & 0.50 & 0.15 & 0.15\\
+0 & 0.50 & 0.20 & 0.30\\
+0 & 0 & 0.4 & 0.6
+\end{bmatrix}
+\cdot 
+\begin{bmatrix}
+65\\
+30\\
+80\\
+75
+\end{bmatrix} = 
+\begin{bmatrix}
+0.2(65)+0.5(30)+0.15(80) + 0.15(75)\\
+0(65) + 0.5(30) + 0.2(80) + 0.3(75)\\
+0(65) + 0(30) + 0.4(80) + 0.6(75)
+\end{bmatrix}$$
+
+Which yields:
+$$\begin{bmatrix}
+51.25\\
+53.5\\
+77
+\end{bmatrix}$$
+
+Since method C yields the highest grade, the professor will post a final grade of 77. 
 \end{Answer}
 
 \subsection{Vector-Matrix Multiplication in Python}
