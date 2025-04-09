@@ -251,9 +251,11 @@ It is possible to compute $\mathbf{a} \cdot \mathbf{d}$, $\mathbf{b} \cdot
 \end{enumerate}
 \end{Answer}
 
-To multiply two matrices, it is helpful to think of the rows of the first matrix and the columns of the second matrix as vectors. Let's see how this shakes out for two $2 \times 2$ matrices:
+To multiply two matrices, it is helpful to think of the rows of the first 
+matrix and the columns of the second matrix as vectors. Let's see how this 
+shakes out for two $2 \times 2$ matrices:
 
-\begin{figure}[h!]
+\begin{figure}
     \centering
     \begin{tikzpicture}
         \node[] at (0,0) {$\begin{bmatrix}
@@ -263,25 +265,136 @@ To multiply two matrices, it is helpful to think of the rows of the first matrix
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
-             & & & & & & & & \\
-             & & & & & & & & 
+             & & & & & & & \\
+             & & & & & & & 
         \end{bmatrix}$};
         \node[] at (-2.75, -1) {\textbf{\textit{A}}};
         \node[] at (-2, -1) {$\cdot$};
         \node[] at (-1, -1) {\textbf{\textit{B}}};
+        \node[text = red] at (-3.8, 0.25) {$\mathbf{a}_1 \to$};
+        \node[text = red] at (-3.8, -0.25) {$\mathbf{a}_2 \to$};
+        \node[text = blue] at (-1.3, 0.7) {$\downarrow$};
+        \node[text = blue] at (-1.3, 1) {$\mathbf{b}_1$};
+        \node[text = blue] at (-0.55, 0.7) {$\downarrow$};
+        \node[text = blue] at (-0.55, 1) {$\mathbf{b}_2$};
+        \node[text = red] at (0.95, 0.15) {$\mathbf{a}_1$};
+        \node[] at (1.2, 0.15) {$\cdot$};
+        \node[text = blue] at (1.5, 0.15) {$\mathbf{b}_1$};
+        \node[text = red] at (0.95, -0.25) {$\mathbf{a}_2$};
+        \node[] at (1.2, -0.25) {$\cdot$};
+        \node[text = blue] at (1.5, -0.25) {$\mathbf{b}_1$};
+        \node[text = red] at (2.15, 0.15) {$\mathbf{a}_1$};
+        \node[] at (2.4, 0.15) {$\cdot$};
+        \node[text = blue] at (2.7, 0.15) {$\mathbf{b}_2$};
+        \node[text = red] at (2.15, -0.25) {$\mathbf{a}_2$};
+        \node[] at (2.4, -0.25) {$\cdot$};
+        \node[text = blue] at (2.7, -0.25) {$\mathbf{b}_2$};
     \end{tikzpicture}
-    \caption{Each entry in \textbf{\textit{C}}, $c_{ij}$, is the dot product of the $i^{th}$ row of \textbf{\textit{A}}, $a_i$, and the $j^{th}$ column of \textbf{\textit{B}}, $b_j$.}
+    \caption{Each entry in \textbf{\textit{C}}, $c_{ij}$, is the dot product 
+    of the $i^{th}$ row of \textbf{\textit{A}}, $a_i$, and the $j^{th}$ column 
+    of \textbf{\textit{B}}, $b_j$.}
     \label{fig:mat_mult}
 \end{figure}
 
- Let's look at this more concretely. For two-dimensional matrices, it can be helpful to move your left index finger across the row and right index finger down the column, as shown below:
+ Let's look at this more concretely. For two-dimensional matrices, it can be 
+ helpful to move your left index finger across the row and right index finger 
+ down the column, as shown in figure \ref{fig:fingers}.
+ 
+ \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \node[] at (0,3) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 3.25) -- (-2, 3.25);
+        \draw[thick, -latex, blue] (-1.25, 3.4) -- (-1.25, 2.6);
+        \node[font = \tiny] at (1.25, 3.25) {
+        \textcolor{red}{5}$\times$\textcolor{blue}{-1}$+$\textcolor{red}{4}$\times$\textcolor{blue}{-4}};
 
-explanation
-	non-commutative
-	in 2 dimensions, inner dimensions must match
-	visual of arrow method for tracking
-	dimensions of resulting matrix
-	expand to higher dimensions
+        \node[] at (0,2) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 2.25) -- (-2, 2.25);
+        \draw[thick, -latex, blue] (-.35, 2.4) -- (-.35, 1.6);
+        \node[font = \normalsize] at (1.25, 2.25) {-21};
+        \node[font = \tiny] at (2.25, 2.25) {
+        \textcolor{red}{5}$\times$\textcolor{blue}{-2}$+$\textcolor{red}{4}$\times$\textcolor{blue}{-4}};
+        
+        \node[] at (0, 1) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 0.75) -- (-2, 0.75);
+        \draw[thick, -latex, blue] (-1.25, 1.4) -- (-1.25, 0.6);
+        \node[font = \normalsize] at (1.25, 1.25) {-21};
+        \node[font = \normalsize] at (2.25, 1.25) {-26};
+        \node[font = \tiny] at (1.25, 0.8) {
+        \textcolor{red}{-5}$\times$\textcolor{blue}{-1}$+$\textcolor{red}{1}$\times$\textcolor{blue}{-5}};
+
+        \node[] at (0,0) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, -0.25) -- (-2, -0.25);
+        \draw[thick, -latex, blue] (-.35, 0.4) -- (-.35, -0.4);
+        \node[font = \normalsize] at (1.25, 0.25) {-21};
+        \node[font = \normalsize] at (2.25, 0.25) {-26};
+        \node[font = \normalsize] at (1.25, -0.25) {0};
+        \node[font = \tiny] at (2.25, -0.25) {
+        \textcolor{red}{-5}$\times$\textcolor{blue}{-2}$+$\textcolor{red}{1}$\times$\textcolor{blue}{-4}};
+        \node[] at (0,-1) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \node[font = \normalsize] at (1.25, -0.75) {-21};
+        \node[font = \normalsize] at (2.25, -0.75) {-26};
+        \node[font = \normalsize] at (1.25, -1.25) {0};
+        \node[font = \normalsize] at (2.25, -1.25) {6};
+    \end{tikzpicture}
+    \caption{You can use your fingers to trace across matrix \textbf{\textit{A}} 
+    and down matrix \textbf{\textit{B}} to find $\textbf{\textit{A}} \cdot 
+    \textbf{\textit{B}}$.}
+    \label{fig:fingers}
+\end{figure}
+
+Since each entry in the product matrix is the dot product between a row of the first matrix and a column of the second matrix, the first matrix must have the same number of elements in each row as the second has in each column. Another way to say this is that the number of columns of the first matrix must match the number of rows in the second matrix. 
+
+\begin{mdframed}[style = important, frametitle = {Matrix Multiplication}]
+For two-dimensional matrices, the inner dimensions must match in order to carry out matrix multiplication. That is, if we want to find \textbf{\textit{A}}$\cdot$\textbf{\textit{B}}, and \textbf{\textit{A}} has dimensions $m \times n$, then \textbf{\textit{B}} must have dimensions $n \times p$, where $m$, $n$, and $p$ are integers. The resulting matrix will have dimensions $m \times p$ ($m$ and $p$ may be equal or unequal).
+\end{mdframed}
+
 example
 	can these matrices be multiplied? if so in what order(s)?
 	multiply these matrices
