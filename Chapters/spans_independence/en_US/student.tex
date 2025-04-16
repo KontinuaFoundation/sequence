@@ -1,4 +1,4 @@
-\chapter{Vector Spans and Independence}
+\chapter{Vector Independence}
 Think back to a time when you played with blocks. If you had two blocks, you 
 couldn't make many shapes out of them. With three, you had a few more options. 
 With a dozen, you were able to make many more shapes. In the world of blocks, 
@@ -13,7 +13,10 @@ is limited. The span will be a line. However, when you are given two or more
 vectors to "play" with, you will be able to create much more. The span will be 
 larger than in the case of having only one vector. The size of the span 
 (sometimes referred to as a subspace) will depend on whether the vectors are 
-linearly independent or dependent. 
+linearly independent or dependent. In this chapter, we will examine what 
+independence and dependence mean for vectors. In the next chapter, we will 
+apply what we've learned about independence and dependence to determine the 
+span of a set of vectors. 
 
 \section{Overview: Independence and Dependence}
 You saw some linearly dependent vectors in the previous chapter. Now, we will 
@@ -282,173 +285,3 @@ You should get this answer:
 [2.20833333, -2.58333333, -0.18333333]
 \end{Verbatim}
 
-\section{Spans of Vectors}
-Knowing whether two vectors are linearly dependent or independent allows us to 
-accurately describe the span of those two vectors (this expands to include any 
-number of vectors). In the previous chapter, we saw that linear combinations of 
-two linearly dependent vectors can only make vectors that lie on the same line 
-as the two starting vectors. We saw this in 2D, but it also applies to 3D 
-vectors. Consider the two vectors $\mathbf{u} = \left[ -1, 3, 2 \right]$ and 
-$\mathbf{v} = \left[ -2, 6, 4 \right]$, shown in figure ...
-
-Now that you have a sense of what a span is, it is time for the formal 
-mathematical definition. A vector span is the collection of vectors obtained 
-by scaling and combining the original set of vectors in all possible 
-proportions. Formally, if the set $S = \{\mathbf{v_1}, \mathbf{v_2}, \dots, 
-\mathbf{v_n}\}$ contains vectors from a vector space $V$, then the span of $S$ 
-is given by:
-
-\begin{equation}
-\text{Span}(S) = \{a_1 \mathbf{v_1} + a_2 \mathbf{v_2} + \dots + a_n 
-\mathbf{v_n} : a_1, a_2, ..., a_n \in \mathbb{R}\}
-\end{equation}
-
-This means that any vector in the Span$(S)$ can be written as a linear 
-combination of the vectors in $S$.
-
-\section{Determinants}
-The determinant of a matrix is a scalar value that indicates whether the 
-columns of a matrix are linearly independent. For a 2D matrix, the determinant 
-is the area of the parallelogram defined by the column vectors. For a 3D 
-matrix, the determinant is the volume of the parallelepiped (a six-dimensional 
-figure formed by six parallelograms, such as a cube). 
-
-Let's plot the parallelogram for this matrix:
-$$
-\begin{bmatrix}
-2 & 0  \\
-0 & 2 
-\end{bmatrix}
-$$
-
-\begin{tikzpicture}
-\draw[gray,->] (0,0)-- (4.0,0) node[anchor=north west] {x axis};
-\draw[gray,->] (0,0)-- (0, 4.0) node[anchor=south east] {y axis};
-
-\foreach \x in {0,1,2,3,4}
-    \draw(\x cm, 1pt) -- (\x cm, -1pt) node[anchor=north] {$\x$};
-\foreach \y in {0,1,2,3,4}
-    \draw(1 pt,\y cm) -- (-1pt, \y cm) node[anchor=east] {$\y$};  
-
-\draw[red, ultra thick] (0,0) -- (2,0);
-\draw[red, ultra thick] (0,0) -- (0,2);
-\fill[red] (0,0) rectangle(2,2);
-\end{tikzpicture}
- 
-The formal definition for calculating the determinant of a 2 by 2 matrix is:
-$$det(A) = (a*d)-(b*c)$$
-where
-$$A = 
-\begin{bmatrix}
-a & b  \\
-c & d 
-\end{bmatrix}
-$$
-
-For the matrix plotted above, the determinant is $(2*2)+(0*0)$. You can also 
-see that 4.0 is the area, base (2) times height (2).
-
-You can use the determinant to see what happens to a shape when it goes 
-through a linear transformation. Let's scale the 2 by 2 matrix by 4:
-$$
-\begin{bmatrix}
-8 & 0  \\
-0 & 8 
-\end{bmatrix}
-$$
-Plot it:
-
-\begin{tikzpicture}
-\draw[gray,->] (0,0)-- (8.5,0) node[anchor=north west] {x axis};
-\draw[gray,->] (0,0)-- (0, 8.5) node[anchor=south east] {y axis};
-
-\foreach \x in {0,1,2,3,4,5,6,7,8}
-    \draw(\x cm, 1pt) -- (\x cm, -1pt) node[anchor=north] {$\x$};
-\foreach \y in {0,1,2,3,4,5,6,7,8}
-    \draw(1 pt,\y cm) -- (-1pt, \y cm) node[anchor=east] {$\y$};  
-
-\draw[blue] (0,0) -- (8,0);
-\draw[blue] (0,0) -- (0,8);
-\fill[blue] (0,0) rectangle(8,8);
-
-
-\end{tikzpicture}
-
-Find the determinant. 
-
-$$(8*8)+(0*0) = 64$$
-
-You can see that scaling the matrix cubed the area.
-
-\begin{tikzpicture}
-\draw[gray,->] (0,0)-- (8.5,0) node[anchor=north west] {x axis};
-\draw[gray,->] (0,0)-- (0, 8.5) node[anchor=south east] {y axis};
-
-\foreach \x in {0,1,2,3,4,5,6,7,8}
-    \draw(\x cm, 1pt) -- (\x cm, -1pt) node[anchor=north] {$\x$};
-\foreach \y in {0,1,2,3,4,5,6,7,8}
-    \draw(1 pt,\y cm) -- (-1pt, \y cm) node[anchor=east] {$\y$};  
-
-\draw[blue] (0,0) -- (8,0);
-\draw[blue] (0,0) -- (0,8);
-\fill[blue] (0,0) rectangle(8,8);
-
-\draw[red, ultra thick] (0,0) -- (2,0);
-\draw[red, ultra thick] (0,0) -- (0,2);
-\fill[red] (0,0) rectangle(2,2);
-
-\end{tikzpicture}
- 
-Let's plot this matrix
-$$
-\begin{bmatrix}
-2 & 1  \\
-4 & 2 
-\end{bmatrix}
-$$
-
-\begin{tikzpicture}
-\draw[gray,->] (0,0)-- (4.5,0) node[anchor=north west] {x axis};
-\draw[gray,->] (0,0)-- (0, 4.5) node[anchor=south east] {y axis};
-
-\foreach \x in {0,1,2,3,4}
-    \draw(\x cm, 1pt) -- (\x cm, -1pt) node[anchor=north] {$\x$};
-\foreach \y in {0,1,2,3,4}
-    \draw(1 pt,\y cm) -- (-1pt, \y cm) node[anchor=east] {$\y$};  
-
-\draw[red, ultra thick] (0,0) -- (4,2);
-\draw[blue, ultra thick] (0,0) -- (2,1);
-
-\end{tikzpicture}
-
-One line overwrites the other. As you can see, the area is 0. The columns are 
-linearly dependent.
-
-Calculating the determinant for a 2 by 2 matrix is easy. For a larger matrix, 
-finding the determinant is more complex and requires breaking down the matrix 
-into smaller matrices until you reach the 2x2 form. The process is called 
-expansion by minors. For our purposes, we simply want to first check to see if 
-a matrix contains linearly independent rows and columns before using our 
-Python code to solve. 
-
-Modify your code so that is uses the $np.linalg.det()$ function. If the 
-determinant is not zero, then you can call the $np.linalg.solve()$ function. 
-Your code should look like this:
-\begin{Verbatim}
-if (np.linalg.det(D) != 0):
-    j = np.linalg.solve(D,e)
-    print(j)
-else:
-     print("Rows and columns are not independent.")
-\end{Verbatim}
-
-\section{Where to Learn More}
-Watch this video on \emph {Linear Combinations and Vector Spans from Khan 
-Academy}: \url{http://rb.gy/g1snk}
-
-The Wolfram Demonstrations website has a fun, interactive demo where you can 
-enter values for 2D and 3D matrices and see how the area or volume changes. 
-\url{https://demonstrations.wolfram.com/DeterminantsSeenGeometrically/#more}
-
-If you are curious about the \emph {Expansion of Minors}, see:
-\url {https://mathworld.wolfram.com/DeterminantExpansionbyMinors.html}
