@@ -4,7 +4,7 @@ import requests
 import getpass
 import json
 
-API_URL = "http://18.189.208.93/api/"
+API_URL = "https://readers.kontinua.org/api/"
 NUMBER_OF_WORKBOOKS = 36
 
 
