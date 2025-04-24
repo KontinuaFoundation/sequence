@@ -14,11 +14,11 @@ and building the book. You can find these in the
 `README.rst <https://github.com/KontinuaFoundation/sequence/blob/master/README.rst>`_.
 Be sure to use the URL for *your* fork when you do the clone.
 
-Then, create a new branch::
+Next, create a new branch::
 
   git checkout myawesomebranch
 
-Make all the edits you want (More on that below). Double-check that the book still
+Make all the edits you want (more on that below). Double-check that the book still
 builds. (If editing takes more than a day or two, you may want to re-sync
 your fork so that you aren't too far out of sync with everyone
 else. You can do this through the web interface on github.)
@@ -36,7 +36,7 @@ your branch in your fork.  Make a pull request from it.
 Editing
 =======
 
-The source is in the ``Chapters`` directory.  For each workbook there is a
+The source is in the ``Chapters`` directory.  For each workbook, there is a
 text file with the names of the directories that go into that
 workbook. For example, there is a ``book_01.txt`` which lists several
 directories::
@@ -58,7 +58,7 @@ The first line should just be::
 
   \chapter{Matter and Energy}
 
-All the normal preable stuff is in the ``Build/Support`` directory.
+All the normal preamble stuff is in the ``Build/Support`` directory.
 
 Most of the libraries you would want are included.  Take a look at
 other chapters to get a good feel for how we do it.
@@ -101,7 +101,7 @@ Code
 ======
 
 Code should be in Python (Although I think I"m going to do some data structures
-code in C++.  The student should see pointers and understand the stack and heap, right?)
+code in C++.  The student should see pointers and understand the stack and heap, right?).
 
 Include it in the directory for the chapter that uses it.
 

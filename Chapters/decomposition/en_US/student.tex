@@ -1,8 +1,8 @@
 \chapter{Singular Value Decomposition}
 
-In the previous chapter you learned how to calculate eigenvalues and eigenvectors. But not every matrix has them. For those matrices, singular values and singular vectors are analogous features. 
+In the previous chapter, you learned how to calculate eigenvalues and eigenvectors. However, not every matrix has them. For those matrices, singular values and singular vectors are analogous features. 
 
-Singular Value Decomposition (SVD) is a matrix factorization technique that breaks down a matrix into three matrices that represent the structure and properties of the original matrix.The decomposed matrices make calculations easier and provide insight into the original matrix. Basically, SVD can transform a high dimension, highly variable set of data into a set of uncorrelated data points that reveal subgroupings that you might not have noticed in the original data. SVD tells us that a linear transformation can be thought of as a rotation, scaling, and another rotation.
+Singular Value Decomposition (SVD) is a matrix factorization technique that breaks down a matrix into three matrices that represent the structure and properties of the original matrix. The decomposed matrices make calculations easier and provide insight into the original matrix. Essentially, SVD can transform a high dimension, highly variable set of data into a set of uncorrelated data points that reveal subgroupings that you might not have noticed in the original data. SVD tells us that a linear transformation can be thought of as a rotation, scaling, and another rotation.
 \index{singular value decomposition} \index{svd}
 
 \section{Definition}
@@ -13,7 +13,7 @@ A = U \Sigma V^T
 \end{equation}
 
 \begin{itemize}
-\item $U$ is an orthogonal matrix whose size is $m \times m$. Its columns are the eigenvectors of $AA^T$. These are the left singular vectors of $A$. Because $U$ is orthogonal,$U^TU = I$
+\item $U$ is an orthogonal matrix whose size is $m \times m$. Its columns are the eigenvectors of $AA^T$. These are the left singular vectors of $A$. Because $U$ is orthogonal, $U^TU = I$.
 \item $V$ is an orthogonal matrix whose size is $n \times n$ matrix. Its columns are the eigenvectors of $A^TA$. These are the right singular vectors of $A$. Because $V$ is orthogonal, $V^TV = I$.
 \item  $\Sigma$ is a diagonal matrix that is the same size as $A$. Its diagonal contains the singular values of $A$, arranged in descending order. These values are the square roots of the eigenvalues of both $A^TA$ and $AA^T$. 
 \end{itemize}
@@ -22,19 +22,19 @@ A = U \Sigma V^T
 
 SVD has numerous applications:
 \begin{itemize}
-\item It's used in machine learning and data science to perform
+\item It is used in machine learning and data science to perform
   dimensionality reduction, particularly through a technique known as
   Principal Component Analysis (PCA).
 \item In numerical linear algebra, SVD is used to solve linear
   equations and compute matrix inverses in a more numerically stable
   way.
-\item It's used in image compression, where low-rank approximations of an image matrix provide a compressed version of the original image. 
+\item It is used in image compression, where low-rank approximations of an image matrix provide a compressed version of the original image. 
 \end{itemize}
 
 \section{Calculating SVD Manually}
 You might be inclined to skip this example because the computations are lengthy. Why would anyone do this when they can use a computing language, like Python, to calculate the SVD with essentially one command? We show this so you can understand what goes on "under the hood" when you compute SVD programmatically. 
 
-After you read through this example, you'll see how to use Python to compute SVD. Then you'll see an example of using SVD for image compression. Finally, you'll have an exercise to compute the SVD. For this, you'll need to write your own Python script.
+After you read through this example, you will see how to use Python to compute SVD. Next, you will see an example of using SVD for image compression. Finally, you will be given an exercise to compute the SVD. For this, you will need to write your own Python script.
 
 Let's find the SVD for matrix $A$. Recall that we want to find $U$. $\Sigma$, and $V^T$ such that:
 
@@ -69,7 +69,7 @@ $$AA^T = \begin{bmatrix}
  1 & 11 
 \end{bmatrix}
 $$
-Next we will find the eigenvalues and eigenvectors of $A^T$. This is a chance to apply what you learned in the previous chapter. We know that:
+Next, we will find the eigenvalues and eigenvectors of $A^T$. This is a chance to apply what you learned in the previous chapter. We know that:
 \begin{equation}
 Av = \lambda v
 \end{equation}
@@ -110,12 +110,12 @@ $$\lambda = 12$$
 When substituted into the original equations, you get the eigenvectors. For $$ \lambda = 10$$:
 $$(11−10)x_1 +x_2 =0 $$
 $$x_1 = -x_2$$
-We'll set $$x_1$$ to 1 and get this eigenvector:
+We will set $$x_1$$ to 1 and get this eigenvector:
 $$\left[ 1,-1 \right]$$
 For $$ \lambda = 10$$:
 $$(11−12)x_1 +x_2 =0  $$
 $$x_1 = x_2 $$
-We'll set $$x_1$$ to 1 and get this eigenvector:
+We will set $$x_1$$ to 1 and get this eigenvector:
 $$\left[ 1,1 \right]$$
 The matrix is:
 $$
@@ -124,7 +124,7 @@ $$
 1 & -1 
 \end{bmatrix}
 $$
-Next you need to apply the Gram-Schmidt process to the column vectors. Then you'll have $U$, the $m \times m$ matrix whose columns are eigenvectors of $AA^T$. These are the left singular vectors of $A$. After you apply Gram-Schmidt, you should end up with:
+Next, you need to apply the Gram-Schmidt process to the column vectors. After that, you will have $U$, the $m \times m$ matrix whose columns are eigenvectors of $AA^T$. These are the left singular vectors of $A$. After you apply Gram-Schmidt, you should end up with:
 $$
 U = \begin{bmatrix}
 1/\sqrt{2} & 1/\sqrt{2} \\
@@ -167,7 +167,7 @@ V_T =
 1/\sqrt{30} & 2/\sqrt{30} & -5/\sqrt{30}
 \end{bmatrix}
 $$
-You have only to calculate $\Sigma$, a diagonal matrix that is the same size as $A$. The diagonal contains the singular values of $A$, arranged in descending order. They are the square roots of the eigenvalues of both $A^TA$ and $AA^T$.
+You have only to calculate $\Sigma$, a diagonal matrix that is the same size as $A$. The diagonal contains the singular values of $A$, arranged in descending order. These are the square roots of the eigenvalues of both $A^TA$ and $AA^T$.
 
 Because the non-zero eigenvalues of U are the same as V, let's use the eigenvalues we calculate for U, 10 and 12. Note that $\Sigma$ will not be of the correct dimension to reconstruct the orignal matrix unless we add a column. By adding a zero column you'll be able to multiply between $U$ and $V$:
 $$
@@ -253,14 +253,14 @@ print(A_Rebuilt)
 \end{Verbatim}
 
 \section{Sign Ambiguity}
-You might notice that at times the absolute values in the $U$ and $V^T$ matrices are correct but that the signs vary from what you see as the answer. For example, when you compare a manually calculated SVD with one done in Python the signs might not agree. Both decompositions of $A$ are valid. Both decompositions will satisfy:
+You might notice that at times, the absolute values in the $U$ and $V^T$ matrices are correct, but that the signs vary from what you see as the answer. For example, when you compare a manually calculated SVD with one done in Python the signs might not agree. Both decompositions of $A$ are valid. Both decompositions will satisfy:
 $$A = U \Sigma V^T$$
 Note that the $S$ diagonal values will always be positive. 
 
-The sign ambiguity has implications. For example, when using SVD to compress data, if some of the signs are flipped, the data can have artifacts. At this point in your education, you don't need to concern yourself with it except when you are comparing SVD results for the same matrix.
+The sign ambiguity has implications. For example, when using SVD to compress data, if some of the signs are flipped, the data can have artifacts. At this point in your education, you don't need to concern yourself with it, except when you are comparing SVD results for the same matrix.
 
 \begin{Exercise}[title={Single Value Decomposition}, label=svd]
-Modify your Python code to calculate SVD for the matrix in the worked out example. Did you arrive at the same answer? Keep in mind that Python will compute square roots and present fractions as decimal. Take a look at the signs for the values in the $U$ and $V^T$ matrices. Are they the same or is this an example of sign ambiguity? 
+Modify your Python code to calculate SVD for the matrix in the worked out example. Did you arrive at the same answer? Keep in mind that Python will compute square roots and present fractions as decimal. Take a look at the signs for the values in the $U$ and $V^T$ matrices. Are they the same, or is this an example of sign ambiguity? 
 \end{Exercise}
 \begin{Answer}[ref=svd]
 $$U = 
@@ -285,7 +285,7 @@ This image consists of a grid of 20 by 10 pixels, each of which is either black 
 
 \includegraphics[width=0.4\textwidth]{imagecompress.png}
 
-It's a simple image that has only two types of columns--ideal for data compression. A row is either the first pattern or the second.
+It is a simple image that has only two types of columns--ideal for data compression. A row is either the first pattern or the second.
 
 \includegraphics[width=0.4\textwidth]{rows.png}
 
@@ -304,17 +304,17 @@ $$
 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0
 \end{bmatrix}
 $$
-When you perform an SVD on this matrix, there are only two non-zero singular values, 6.79 and 3.72. (You are welcome perform the calculation in Python.) Thus you can represent the matrix as:
+When you perform an SVD on this matrix, there are only two non-zero singular values, 6.79 and 3.72. (You are welcome perform the calculation in Python.) Thus, you can represent the matrix as:
 $$
 A = U_1 S_1 V_1 + U_2 S_2 V_2
 $$
-This means there are two $u$ vectors each with 20 entries and two $v$ vectors each with 10 entries, and two singular values. Add those up: 2*20 + 2*10 + 2 = 62. This implies that the image can be represented by 62 values instead of 200. If you look back at the image, you can see that there are many dependent columns and very few independent ones. 
+This means there are two $u$ vectors, each with 20 entries, two $v$ vectors each with 10 entries, and two singular values. Add those up: 2*20 + 2*10 + 2 = 62. This implies that the image can be represented by 62 values instead of 200. If you look back at the image, you can see that there are many dependent columns and very few independent ones. 
 
-This is a simple image and a small pixel matrix. But it should give you a sense of how SVD can decompose an image in a way that identifies how much of the image is redundant, and therefor can be compressed.
+This is a simple image and a small pixel matrix, but it should give you a sense of how SVD can decompose an image in a way that identifies how much of the image is redundant, and therefor can be compressed.
 
 \section{Where to Learn More}
-\emph {We Recommend a Singular Value Decomposition}. This American Mathematical Society publication focuses the geometry of SVD. What I like about the article is that it  shows both graphically and numerically how SVD can be used for data compression on images and for noise reduction. The data compression example in your workbook is based on this article. \url{https://www.ams.org/publicoutreach/feature-column/fcarc-svd}
+\emph {We Recommend a Singular Value Decomposition}. This American Mathematical Society publication focuses the geometry of SVD. What we like about the article is that it shows both graphically and numerically how SVD can be used for data compression on images and for noise reduction. The data compression example in your workbook is based on this article. \url{https://www.ams.org/publicoutreach/feature-column/fcarc-svd}
 
 \emph {Sign Ambiguity in Singular Value Decomposition (SVD)}. This is a good article for those who want a deeper understanding of sign ambiguity. \url{https://www.educative.io/blog/sign-ambiguity-in-singular-value-decomposition}
 
-\emph {Singular Value Decomposition Tutorial}. This PDF starts by defining points, space, and vectors and works through all the concepts you need to tackle SVD. It is one of the few resources that has a completely worked out example of manually calculating SVD. The example in this chapter is from that tutorial. If you read the entire paper, you'll find it is a good review of the concepts you've studied in previous chapters. \url{https://rb.gy/j6s0w}
+\emph {Singular Value Decomposition Tutorial}. This PDF starts by defining points, space, and vectors and works through all the concepts you need to tackle SVD. It is one of the few resources that has a completely worked out example of manually calculating SVD. The example in this chapter is from that tutorial. If you read the entire paper, you will find that it is a good review of the concepts you have studied in previous chapters. \url{https://rb.gy/j6s0w}

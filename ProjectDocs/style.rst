@@ -53,7 +53,7 @@ produce.
 
 For people making small batches, they will be printed on a laser
 printer. Keep in mind how much toner your diagrams are consuming. Some
-of the printers will be Black and White – make sure your diagram looks
+of the printers will be Black and White — make sure your diagram looks
 good in grayscale.
 
 For companies making large batches, we want to keep the printing down to
@@ -77,7 +77,7 @@ Generally, index tags are not capitalized unless they are proper nouns.
 Internationalization
 --------------------
 
-The build system is designed to allow the text be customized for
+The build system is designed to allow the text to be customized for
 different langauges and locales. For example, when you are editing
 ``Chapters/vectors/en_US/student.tex``, you are editing the US English
 version of the Vectors chapter of the student guide.

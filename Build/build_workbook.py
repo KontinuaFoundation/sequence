@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import json
+import util
 
 # Paths are from Intermediate
 mod_dir = "../../Chapters"
@@ -41,22 +42,16 @@ def build_book(book_id, config, draft, final_dir):
     output_tex.write(header)
 
     # Which modules go into the book?
-    modlist_filename = "book_{}.txt".format(book)
-    modlist_path = os.path.join(mod_dir, modlist_filename)
-    if not os.path.exists(modlist_path):
-        print(f"Chapter file {modlist_path} doesn't exist")
-        return None
-    modlist = open(modlist_path, "r")
-    chapters = [x.strip() for x in modlist.readlines()]
-    modlist.close()
+    (chapter_ids, chapter_paths) =  util.dir_list_for_book(mod_dir, book_id, locale_list)
 
-    for chapter in chapters:
+    for i in range(len(chapter_ids)):
+        chapter = chapter_ids[i]
+        chapter_path = f"{chapter_paths[i]}/student.tex"
         if len(chapter) > 0:
             # Look for the graphics in the module directory
             gpath_string =f"\\graphicspath{{{{../../Chapters/{chapter}/{locale_list[0]}}}}}\n"
             output_tex.write(gpath_string)
 
-            chapter_path = path_for_chapter_locale_list(chapter, locale_list)
             include_string = "\\input{{{}}}\n".format(chapter_path)
             output_tex.write(include_string)
 

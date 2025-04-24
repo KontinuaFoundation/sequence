@@ -1,14 +1,14 @@
 \chapter{Tackling Difficult Problems: Positive Semidefinite Matrices}
 
-With all the computing power available today, you’d think no problem would be too difficult to tackle. But that’s not so. There is a category of problems called NP (nondeterministic polynomial time) whose solution is easy to verify but whose computation is difficult to perform because there is no straightforward algorithm and any brute-force method would take too much time. For these problems, all we can do is to develop an efficient algorithm that can find a solution in a reasonable amount of time. While the solution might not be the most optimal, the goal is to find the best solution possible in a short time. 
+With all the computing power available today, you would think no problem would be too difficult to tackle. However, this is not the case. There is a category of problems called NP (nondeterministic polynomial time) whose solution is easy to verify, but whose computation is difficult to perform. This is because there is no straightforward algorithm and any brute-force method would take too much time. For these problems, all we can do is to develop an efficient algorithm that can find a solution in a reasonable amount of time. While the solution might not be the most optimal, the goal is to find the best solution possible in a short time. 
 
-As you learn more about optimization techniques, you’ll come across many efficiency algorithms that have been used throughout the years. In the 1990’s, the field of optimization changed with the discovery that algorithms based on  semidefinite positive matrices can achieve a higher efficiency than seen in the past. Today, there is an entire field of programming—Semidefinite Programming—based on the use of semidefinite positive matrices.
+As you learn more about optimization techniques, you will come across many efficiency algorithms that have been used throughout the years. In the 1990s, the field of optimization changed with the discovery that algorithms based on  semidefinite positive matrices can achieve a higher efficiency than seen in the past. Today, there is an entire field of programming called Semidefinite Programming that is based on the use of semidefinite positive matrices.
 
-First we’ll take a look at what some of the NP problems are. Then we’ll describe the intuition behind semidefinite positive matrices. We’ll take a look at one NP problem and then introduce the python module to use for solving these problems. 
+First we will take a look at what some of the NP problems are. Next, we will describe the intuition behind semidefinite positive matrices. We will take a look at one NP problem, then introduce the Python module to use for solving these problems. 
 
 \section{NP Problems}
 
-In the world of mathematics, easy problems are referred to as P, or polynomial time, problems. In simple terms, this means the problem can be solved quickly and it’s easy to verify that the solution is correct. Addition, subtraction, division, multiplication, square roots, matrix-vector multiplication, are just a few examples. But NP problems, as stated in the introduction, can’t be computed in any reasonable amount of time but solutions are usually easy to verify. The game of Sudoku is one such example. It’s easy to verify a correct solution, but writing a generalized algorithm to solve any Sudoku game is an NP problem. 
+In the world of mathematics, easy problems are referred to as P, or polynomial time, problems. In simple terms, this means the problem can be solved quickly, and it is easy to verify that the solution is correct. Addition, subtraction, division, multiplication, square roots, and matrix-vector multiplication are just a few examples. NP problems, as stated in the introduction, can’t be computed in a reasonable amount of time, but solutions are usually easy to verify. The game of Sudoku is one such example. It is easy to verify a correct solution, but writing a generalized algorithm to solve any Sudoku game is an NP problem. 
 
 NP problems show up in many other situations, such as:
 \begin{itemize}
@@ -20,17 +20,17 @@ NP problems show up in many other situations, such as:
 \item Predicting the structure of proteins
 \end{itemize}
 
-For each of these situations think of large scale problems for which there are many variables. A cloud computing company that provides AI services to thousands of clients must be able to schedule tasks efficiently and in a timely manner as well as manage the power needed for the computers and cooling the data center. Supply chain management is crucial to figuring out how to pick up, transport, and distribute goods to help provide disaster relief. Understanding protein structure is important for designing drugs that can tackle specific conditions. All we can do for each of these situations is to find an optimal solution, but not the definitive solution.
+For each of these , think of large scale problems for which there are many variables. A cloud computing company that provides AI services to thousands of clients must be able to schedule tasks efficiently and in a timely manner, as well as manage the power needed for the computers and cooling the data center. Supply chain management is crucial to figuring out how to pick up, transport, and distribute goods to help provide disaster relief. Understanding protein structure is important for designing drugs that can tackle specific conditions. All we can do for each of these situations is to find an optimal solution, but we cannot find the definitive solution.
 
 \section{A Past Approach: Minimizing Errors in Neural Networks}
 
-When neural networks were first being developed to recognize things (faces, letters, music, and so on), the goal was to calculate weights between network nodes that would minimize the recognition error. The error space could be visualized as a surface of valleys and hills. The lowest point would have the least error. The idea behind the iterative weight calculations for training the network was to descend down the gradient until reaching the low point. Without getting into the mathematics, you can see by looking at this figure that there are two valleys. Some neural network training resulted in ending at a low point, but not the lowest point. Wouldn’t it be great if you could formulate an optimization problem so that you’d be guaranteed to land at the lowest point? That's where semidefinite programming can help.
+When neural networks were first being developed to recognize things (faces, letters, music, and so on), the goal was to calculate weights between network nodes that would minimize the recognition error. The error space could be visualized as a surface of valleys and hills. The lowest point would have the least error. The idea behind the iterative weight calculations for training the network was to descend down the gradient until reaching the low point. Without getting into the mathematics, you can see by looking at this figure that there are two valleys. Some neural network training resulted in ending at a low point, but not the lowest point. Wouldn’t it be great if you could formulate an optimization problem so that you would be guaranteed to land at the lowest point? That is where semidefinite programming can help.
 
 \includegraphics[width=0.5\textwidth]{neuralnet-error-function.png}
 
 \section{Positive Definite and Semidefinite Matrices}
 
-Unlike matrices that are defined by their content (such as identity matrix, zero matrix, and diagonal matrix) positive definite and semidefinite matrices are characterized by the result they produce. They have an analog in the scalar world, so let's first look at that. Let's take the scalars $a$ and $b$ and treat them as vectors. $ab$ is then the dot product. If $a >0$, then $ab$ will take on the sign of $b$. If $a < 0$, then $ab$ will have the opposite sign of $b$. If you look at this graphically, you can see that in the first case $ab$ stays on the same side of the origin, but in the second case, $ab$ flips
+Unlike matrices that are defined by their content (such as identity matrix, zero matrix, and diagonal matrix), positive definite and semidefinite matrices are characterized by the result they produce. They have an analog in the scalar world, so let's first look at that. Let's take the scalars $a$ and $b$ and treat them as vectors. $ab$ is then the dot product. If $a >0$, then $ab$ will take on the sign of $b$. If $a < 0$, then $ab$ will have the opposite sign of $b$. If you look at this in a graph, you can see that in the first case, $ab$ stays on the same side of the origin, but in the second case, $ab$ flips
 
 For $a = [2], b = [4]$ 
 
@@ -71,7 +71,7 @@ $$
 \end{bmatrix}
 \geq 0
 $$
-For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c and then compute the eigenvalues for each matrix, you'll find that some (like $0,0,0$) result in a postive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you'll see an elliptope. It's this shape that guarantees an optimal solution.
+For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a postive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an elliptope. This shape guarantees an optimal solution.
 
 \includegraphics[width=0.5\textwidth]{elliptope.jpg}
 
@@ -92,11 +92,11 @@ $$
 \end{Exercise}
 
 \begin{Answer}[ref=pos-matrix-01]
-Yes. It's eigenvalues are $$2,2$$
+Yes. Its eigenvalues are $$2,2$$
 \end{Answer}
   
 \begin{Exercise}[title={Creating a positive semidefinite matrix}, label=pos-matrix-02]
-Using any 3 by 3 matrix, create a positive semidefinite matrix.Then show it is positive semidefinite by calculating its eigenvalues.  You can either compute this by hand or using python.  In either case, show your work.
+Using any 3 by 3 matrix, create a positive semidefinite matrix.Then show it is positive semidefinite by calculating its eigenvalues.  You can either compute this by hand or using Python.  In either case, show your work.
 \end{Exercise}
 
 \begin{Answer}[ref=pos-matrix-02]
@@ -104,13 +104,13 @@ The answer depends on the 3 by 3 matrix you chose.
 \end{Answer}
 
 \section{The Max Cut Problem}
-A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. If you could find one, you'd be eligible to win a huge prize from the Clay Mathematics Institute. Instead, you'll see how to approximate a solution to this  problem using a positive semidefinite matrix and a technique developed by mathematicians Michel Goemans and David Williamson. 
+A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. (If you could find one, you would be eligible to win a huge prize from the Clay Mathematics Institute!) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a technique developed by mathematicians Michel Goemans and David Williamson. 
 
-You won't see all the complete details here as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
+You won't see all the complete details here, as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
 
-Take this simple graph of five nodes and six edges. Each node in the graph will take on one of two values (1 or -1)to show which set they fall into after a cut is made. For any two connected nodes, $x_i*x_j = 1$ if $x_i = x_j$ and $-1$ otherwise.
+Take this simple graph of five nodes and six edges. Each node in the graph will take on one of two values (1 or -1) to show which set they fall into after a cut is made. For any two connected nodes, $x_i*x_j = 1$ if $x_i = x_j$ and $-1$ otherwise.
 
-If you randomly assign $1$ and $-1$ to the nodes, the chance of making the max cut is $0.5$. By using semidefinite programming you can achieve an algorithmic efficiency of $0.87$. 
+If you randomly assign $1$ and $-1$ to the nodes, the chance of making the max cut is $0.5$. By using semidefinite programming, you can achieve an algorithmic efficiency of $0.87$. 
 
 The Goemans-Williamson technique can be used for any optimization problem where the variables take on the values of $1$ and $-1$.
 
@@ -145,7 +145,7 @@ $$
  x_{i}\in \{ -1,1 \}
 $$
 
-BUT instead of allowing $x_{i}$ to be scalar, Goemans-Williamson defines $x_{i}$ as unit vectors.
+However, instead of allowing $x_{i}$ to be scalar, Goemans-Williamson defines $x_{i}$ as unit vectors.
 
 $$
  x_{i}\in R^n, x_{i}=1 
@@ -155,15 +155,15 @@ and that makes the optimization equation:
 $$
 Max\sum_{edges(i,j)}{}\frac{1 - x_{i}^{T}x_{j}}{2}
 $$
-It's this "relaxation" that gets us to a semidefinite matrix, because we can now rewrite the problem as a positive semidefinite matrix:
+It is this "relaxation" that gets us to a semidefinite matrix, because we can now rewrite the problem as a positive semidefinite matrix:
 $$
 X = \left[ x_{i}^{T}x_{j} \right]_{i,j}
 $$
-Python has a module for solving optimization problems. Using this, you'll get an optimum matrix, but to get the unit vectors, you'll need to take the square root of the matrix. 
+Python has a module for solving optimization problems. Using this, you will get an optimum matrix, but to get the unit vectors, you will need to take the square root of the matrix. 
 $$
 X = \left[ x_{1}...x_{1n} \right]\left[ x_{1}...x_{1n} \right]^{T}
 $$
-Next we need to go from unit vectors to scalars, a process called rounding.
+Next we need to go from unit vectors to scalars, using a process called rounding.
 $$
 x^{i}\in R^n \to x^{i}\in \{ -1,1 \}
 $$
@@ -209,7 +209,7 @@ prob = cp.Problem(cp.Maximize(objective), constraints)
 # Returns a positive semidefinite matrix
 print(prob.solve())
 
-# To get the vectors take square root of the matrix
+# To get the vectors, take square root of the matrix
 x = sqrtm(X.value)
 
 # Generate a random hyperplane

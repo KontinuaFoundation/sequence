@@ -3,9 +3,9 @@ Current Outline
 ===== 
 
 This is the current outline. It is not written in stone. As we work,
-we keep finding things that should be included.  We also find things
+we continue to find things that should be included.  We also find things
 that need to be reordered.  However, it will give you an idea of where
-we think we are going.
+we intend to go.
 
 The student should already know algebra well and be able to type.  At
 the end, the student should be ready to do an internship at a tech
@@ -15,7 +15,7 @@ The course emphasizes breadth over depth. We believe that most people
 learn difficult ideas twice: The first time they are baffled and have
 no intuition in the area.  The second time, usually when they must
 leverage it in the real world or have to teach it to someone else, the
-student has the intuition and is able to fully grasp and appreciate
+student has the requisite intuition and is able to fully grasp and appreciate
 the details.
 
 There are two questions that determine where any topic goes in the order:
@@ -26,7 +26,7 @@ There are two questions that determine where any topic goes in the order:
    always easy to do. For example, the idea of light is important and
    familiar to the student. Can we talk about light before we talk
    about Maxwell's equations? Sure! We gesture in the direction of
-   electromagnetic waves and keep moving.  Later, when the student is
+   electromagnetic waves and keep moving.  Later, when the student's understanding is
    a little more sophisticated, we can double-back and talk about how
    electromagnetic waves work.
 

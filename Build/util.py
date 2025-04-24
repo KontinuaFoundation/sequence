@@ -38,10 +38,13 @@ def dir_list_for_book(mod_dir, book_str, langlist):
     result_ids = []
     for chapter in chapters:
         trimmed_chapter = chapter.strip()
-        if len(trimmed_chapter) > 0:
+        if trimmed_chapter[0] != "#" and len(trimmed_chapter) > 0:
+            print(f"Processing {trimmed_chapter}")
             result_ids.append(trimmed_chapter)
             fullpath = dir_for_id(mod_dir,trimmed_chapter,langlist)
             result_paths.append(fullpath)
+        else:
+            print(f"Skipping {trimmed_chapter}")
     return (result_ids, result_paths)
 
 def title_for_dir(dir):

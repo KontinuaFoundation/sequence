@@ -1,7 +1,7 @@
 The Build Directory
 ===================
 
-This folder contains the scripts and supporting resources for those scripts. After you run the scripts, the products will appear in this directory too.
+This folder contains the scripts and supporting resources for those scripts. After you run the scripts, the products will appear in this directory as well.
 
 
 Before You Build
@@ -9,12 +9,12 @@ Before You Build
 
 You will need to have installed git, Python 3, and LaTeX.
 
-(On a Mac, you should install Xcode (from the app store and it includes git) and `brew <https://brew.sh>`_. Then::
+(On a Mac, you should install Xcode (from the app store, which should include Git) and `brew <https://brew.sh>`_. Next:
 
   brew install python
   brew install mactex-no-gui
 
-Clone the github repository::
+Clone the github repository:
 
   git clone https://github.com/TheKontinua/sequence.git
 
@@ -26,7 +26,7 @@ You will also need some fonts from the `Google Font Collection <https://fonts.go
 * OpenSans Bold Italic
 * OpenSans Semi Bold
 
-To build the web resources, you will need some python libraries:
+To build the web resources, you will need some Python libraries:
 
   pip3 install jinja2
   pip3 install bs4
@@ -36,14 +36,14 @@ Windows
 
 Mac is preferred, but if you only have access to a Windows device, the following steps must be taken in addition to downloading fonts and libraries:
 
-* Download `MiKTex <https://miktex.org/download>`_.
-* Download `Git Bash <https://git-scm.com/downloads>`_.
-* Download `Python <https://www.python.org/downloads/>`_.
+* Download and install `MiKTex <https://miktex.org/download>`_.
+* Download and install `Git Bash <https://git-scm.com/downloads>`_.
+* Download and install `Python <https://www.python.org/downloads/>`_.
 * Clone the github repository::
 
   git clone https://github.com/TheKontinua/sequence.git
 
-* Open ``sequence\Build\Support\default.cfg``. Replace ``/Library/TeX/texbin/lualatex`` with ``lualatex``.
+* Go to your clone location and open ``sequence\Build\Support\default.cfg``. Replace ``/Library/TeX/texbin/lualatex`` with ``lualatex``.
 
 Contributing
 ------------
@@ -84,7 +84,7 @@ Scripts
     | Example: ``python3 check_urls.py 1``
 
 -  | ``make_chapter_pdfs.py``: Used to build pdfs of each chapter.
-    Takes a while to run.
+    This takes a while to run.
     | Example: ``python3 make_chapter_pdfs.py en_US``
 
 -  | ``gather_resources.py``: Builds an HTML document for each workbook.
@@ -118,4 +118,4 @@ Committing
 ----------
 
 Overall, most authors shouldn’t be committing anything in the ``Build``
-directory. Authors should work under the ``Chapters`` directory.
+directory; they should work under the ``Chapters`` directory.

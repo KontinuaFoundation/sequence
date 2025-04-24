@@ -3,24 +3,25 @@
 We have talked a some about forces, but in the calculations that we
 have done, we have only talked about the magnitude of a force. It is
 equally important to talk about its direction. To do the math on
-things with a magnitude and a direction (like forces), we need vectors.\index{vectors}
+things with a magnitude and a direction (like forces), we need vectors.
+\index{vectors}
 
 For example, if you jump out of a plane (hopefully with a parachute), 
 several forces with different magnitudes and directions will be acting upon 
-you. Gravity will push you straight down. That force will be proportional to your weight.
-If there were a wind from the west, it would push you toward the east. That force
-will be proportional to the square of the speed of the wind and approximately proportional to 
-your size. Once you are falling, there will be resistance from the air 
-that you are pushing through --- that force will point in the opposite direction
-from the direction you are moving and will be proportional to the square of your
-speed.
+you. Gravity will push you straight down. That force will be proportional to 
+your weight. If there were a wind from the west, it would push you toward the 
+east. That force will be proportional to the square of the speed of the wind 
+and approximately proportional to your size. Once you are falling, there will 
+be resistance from the air that you are pushing through --- that force will 
+point in the opposite direction from the direction you are moving and will be 
+proportional to the square of your speed.
 % Image added
 
 \includegraphics[width=1\textwidth]{skydiver.png}
 
-
-To figure out the net force (which will tell us how we will accelerate), we will 
-need to add these forces together. To do this, we need to learn to do math with vectors.
+To figure out the net force (which will tell us how we will accelerate), we 
+will need to add these forces together. To do this, we need to learn to do 
+math with vectors.
 
 \section{Adding Vectors}
 
@@ -30,12 +31,31 @@ creating a 3-dimensional vector representing a force, it will have
 three numbers representing the amount of force in each of the three
 axes. For example, if a force of one newton is in the direction of the
 $x$-axis, you might represent the vector as $v = [1, 0, 0]$. 
-Another vector might be $u = [0.5, 0.9, 0.7]$ \index{vectors!adding}.
+Another vector might be $u = [0.5, 0.9, 0.7]$ \index{vectors!adding}. You can 
+see examples of 2-dimensional and 3-dimensional vectors in figures 
+\ref{fig:2d_vectors} and \ref{fig:3d_vectors}. 
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[xmin = -0.5, ymin = -0.5, xmax = 6, ymax = 6, 
+        axis lines = center, xlabel = $x$, ylabel = $y$]
+            \draw[blue, thick, -latex](0, 0) -- (2, 3) node[right, black, 
+            font = \scriptsize] {$\textbf{u} = \left[ 2, 3 \right]$};
+            \draw[blue, thick, -latex] (0, 0) -- (4, 1) node[above, black, 
+            font = \scriptsize] {$\textbf{v} = \left[ 4, 1 \right]$};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{2-dimensional vectors, \textbf{u} and \textbf{v}}
+    \label{fig:2d_vectors}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
 \tdplotsetmaincoords{80}{130} 
-\begin{tikzpicture} [scale=4, tdplot_main_coords, axis/.style={->,sdkblue}, 
-vector/.style={-stealth,black,very thick}, 
-vector guide/.style={dashed,sdkblue}]
+\begin{tikzpicture} [scale=4, tdplot_main_coords, axis/.style={->,black}, 
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
 
 %standard tikz coordinate definition using x, y, z coords
 \coordinate (O) at (0,0,0);
@@ -55,16 +75,44 @@ vector guide/.style={dashed,sdkblue}]
 \draw[vector guide] (0.0,0.9,0) -- (0.5,0.9,0);
 \draw[vector guide] (0.5,0.9,0) -- (0.5,0.9,0.7);
 \end{tikzpicture}
+\caption{3-dimensional vectors, \textbf{u} and \textbf{v}}
+\label{fig:3d_vectors}
+\end{figure}
 
-Thinking visually, when we add to vectors, we put the starting point 
-second vector at the ending point of the first vector.
 
+Thinking visually, when we add to vectors, we put the starting point second 
+vector at the ending point of the first vector. This is illustrated for 
+2-dimensional vectors in figure \ref{fig:2d_add} and for 3-dimensional vectors 
+in figure \ref{fig:3d_add}. 
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[xmin = -0.5, ymin = -0.5, xmax = 6, ymax = 6, 
+        axis lines = center, xlabel = $x$, ylabel = $y$, clip = false]
+           \draw[blue, thick, -latex, dashed](0, 0) -- (2, 3) node[above, 
+           xshift = -1.25cm, yshift = -0.75cm, black, font = \scriptsize] {
+           $\textbf{u} = \left[ 2, 3 \right]$}; 
+           \draw[blue, thick, -latex, dashed] (2, 3) -- (6, 4) node[above, 
+           xshift = -1.5cm, yshift = -0.25 cm, black, font = \scriptsize] {
+           $\textbf{v} = \left[ 4, 1 \right]$};
+           \draw[black, thick, -latex] (0, 0) -- (6, 4) node[below, black, 
+           xshift = -2cm, yshift = -1.25cm, font = \scriptsize] {\textbf{u} + 
+           \textbf{v}};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{A visual representation of adding 2-dimensional vectors, 
+    \textbf{u} and \textbf{v}}
+    \label{fig:2d_add}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
 \tdplotsetmaincoords{80}{130} 
-\begin{tikzpicture} [scale=4, tdplot_main_coords, axis/.style={->,sdkblue}, 
-light vector/.style={-stealth,dashed,very thick, black}, 
+\begin{tikzpicture} [scale=4, tdplot_main_coords, axis/.style={->,black}, 
+light vector/.style={-stealth,dashed,very thick, blue}, 
 vector/.style={-stealth,black,very thick}, 
-vector guide/.style={dashed,sdkblue}]
+vector guide/.style={dashed,black}]
 
 %standard tikz coordinate definition using x, y, z coords
 \coordinate (O) at (0,0,0);
@@ -89,6 +137,10 @@ vector guide/.style={dashed,sdkblue}]
 \draw[vector guide] (1.5,0.0,0.0) -- (1.5,0.9,0.0);
 
 \end{tikzpicture}
+\caption{A visual representation of adding 3-dimensional vectors, \textbf{u} 
+and \textbf{v}}
+\label{fig:3d_add}
+\end{figure}
 
 If you know the vectors, you will just add them element-wise:
 
@@ -138,7 +190,8 @@ Add the following vectors:
         \begin{Answer}[ref=adding_forces]
             To get the net force, you add the two forces:
 
-            $$F = [4.2, 5.6, 9.0] + [-100.2, 30.2, -9.0] = [-96, 35.8, 0.0] \text{ newtons}$$
+            $$F = [4.2, 5.6, 9.0] + [-100.2, 30.2, -9.0] = [-96, 35.8, 0.0] 
+            \text{ newtons}$$
    
 \end{Answer}
 
@@ -149,12 +202,16 @@ might have a force vector $v$. If you fire 9 engines in the exact same direction
 the resulting force vector would be $9v$.\index{vectors!multipying by a scalar}
 
 Visually, when we multiply a vector $u$ by a scalar $a$, we get a new vector that
-goes in the same direction as $u$ but has a magnitude $a$ times as long as $u$.
+goes in the same direction as $u$ but has a magnitude $a$ times as long as 
+$u$. A visual is presented in figure \ref{fig:multiply}.
 
+
+\begin{figure}
+\centering
 \tdplotsetmaincoords{80}{130} 
-\begin{tikzpicture} [scale=3, tdplot_main_coords, axis/.style={->,sdkblue}, 
-vector/.style={-stealth,black,very thick}, 
-vector guide/.style={dashed,sdkblue}]
+\begin{tikzpicture} [scale=3, tdplot_main_coords, axis/.style={->,black}, 
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
 
 %standard tikz coordinate definition using x, y, z coords
 \coordinate (O) at (0,0,0);
@@ -179,8 +236,13 @@ vector guide/.style={dashed,sdkblue}]
 \draw[vector guide] (0.0,2.7,0) -- (1.5,2.7,0);
 \draw[vector guide] (1.5,2.7,0) -- (1.5,2.7,2.1);
 \end{tikzpicture}
+\caption{To subtract vectors, you reverse the vector that is being subtracted}
+\label{fig:multiply}
+\end{figure}
 
-When you multiply a vector by a scalar, you simply multiply each of the components by the scalar:
+
+When you multiply a vector by a scalar, you simply multiply each of the 
+components by the scalar:
 
 $$ 3 \times [0.5, 0.9, 0.7] = [1.5, 2.7, 3.6] $$
 
@@ -200,13 +262,15 @@ $$ 3 \times [0.5, 0.9, 0.7] = [1.5, 2.7, 3.6] $$
         \end{itemize}
     \end{Answer}
 
-Note that when you multiply a vector times a negative number, the new vector points 
-in the opposite direction.
+Note that when you multiply a vector times a negative number, the new vector 
+points in the opposite direction (see figure \ref{fig:negative}).
 
+\begin{figure}[htbp]
+\centering
 \tdplotsetmaincoords{80}{130} 
-\begin{tikzpicture} [scale=5, tdplot_main_coords, axis/.style={->,sdkblue}, 
-vector/.style={-stealth,black,very thick}, 
-vector guide/.style={dashed,sdkblue}]
+\begin{tikzpicture} [scale=5, tdplot_main_coords, axis/.style={->,black}, 
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
 
 %standard tikz coordinate definition using x, y, z coords
 \coordinate (O) at (0,0,0);
@@ -233,6 +297,10 @@ vector guide/.style={dashed,sdkblue}]
 
 \draw[vector guide] (-.25,-0.45,0) -- (-0.25,-0.45,-0.35);
 \end{tikzpicture}
+\caption{Multiplying a vector by a negative number reverses the direction of 
+the vector.}
+\label{fig:negative}
+\end{figure}
 
 \section{Vector Subtraction}
 
@@ -243,14 +311,16 @@ $$[4,2,0] - [3,-2, 9] = [1, 4, -9]$$
 
 So, $u - v = u + (-1v)$.
 
-Visually, you reverse the one that is being subtracted:
+Visually, you reverse the one that is being subtracted (see figure 
+\ref{fig:subtract}):
 
-
+\begin{figure}[htbp]
+\centering
 \tdplotsetmaincoords{80}{130} 
-\begin{tikzpicture} [scale=5, tdplot_main_coords, axis/.style={->,sdkblue}, 
+\begin{tikzpicture} [scale=5, tdplot_main_coords, axis/.style={->,black}, 
 light vector/.style={-stealth,dashed,very thick, black}, 
-vector/.style={-stealth,black,very thick}, 
-vector guide/.style={dashed,sdkblue}]
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
 
 %standard tikz coordinate definition using x, y, z coords
 \coordinate (O) at (0,0,0);
@@ -276,6 +346,9 @@ vector guide/.style={dashed,sdkblue}]
 \draw[vector guide] (0,0.0,0.0) -- (-0.5,0.0,0.0);
 
 \end{tikzpicture}
+\caption{To subtract a vector, you reverse it, then add the reversed vector.}
+\label{fig:subtract}
+\end{figure}
 
 \section{Magnitude of a Vector}
 
@@ -289,20 +362,83 @@ then
     |v| = \sqrt{3^2 + 4^2 + 5^2} = \sqrt{50} \approx 7.07
 \end{equation*}
 
-(You might notice that the notation for the magnitude is exactly like the notation for absolute value.
-If you think of a scalar as a 1-dimensional vector, the absolute value and the magnitude are the same. 
-For example, the absolute value of -5 is 5.  If you take the magnitude of the one-dimenional vector $[-5]$,
-you get $\sqrt{25} = 5$.)
+(You might notice that the notation for the magnitude is exactly like the 
+notation for absolute value. If you think of a scalar as a 1-dimensional 
+vector, the absolute value and the magnitude are the same. For example, the 
+absolute value of -5 is 5.  If you take the magnitude of the one-dimensional 
+vector $[-5]$,you get $\sqrt{25} = 5$.)
 
-Notice that if you scale up a vector, its magnitude scales by the same amount. For example:
+Where does this equation come from? Consider a 2-dimensional vector, 
+$\textbf{v} = \left[ 3, 4 \right]$. This means the the vector represents 3 
+units in the $x$-direction, and 4 units in the $y$-direction. We can then 
+visualize a right triangle, with the vector being the hypotenuse and the legs 
+being the $x$- and $y$-components of the vector (see figure 
+\ref{fig:triangle}). As you recall, the length of the hypotenuse of a right 
+triangle is the square root of the sum of the squares of the legs. That is:
+$$c = \sqrt{a^2 + b^2}$$
+
+Where $c$ is the length of the hypotenuse and $a$ and $b$ are the lengths of 
+the legs. 
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = -0.5, ymin = -0.5, xmax = 5, 
+        ymax = 5, clip = false]
+            \draw[blue, thick, -latex] (0, 0) -- (3, 4);
+            \draw[red, dashed, thick] (0, 4) -- (3, 4);
+            \draw[red, dashed, thick] (3, 0) -- (3, 4);
+            \draw[decorate, decoration = {brace, amplitude = 5pt}] (0, 4) -- 
+            (3, 4) node[midway, font = \scriptsize, yshift = 0.5cm] 
+            {x-component};
+            \draw[decorate, decoration = {brace, amplitude = 5pt, mirror}] 
+            (3, 0) -- (3, 4) node[midway, font = \scriptsize, rotate = -90, 
+            yshift = 0.5cm] {y-component};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The magnitude of a vector can be thought of as the length of a 
+    hypotenuse of a right triangle.}
+    \label{fig:triangle}
+\end{figure}
+
+We won't prove it here, but this method holds for higher-dimension vectors as well. 
+
+\begin{mdframed}[style = important, frametitle = {Magnitude of Vectors}]
+For an $n$-dimensional vector, $\textbf{v} = \left[ x_1, x_2, x_3, \cdots, x_n 
+\right]$, the magnitude of the vector is given by:
+$$\left| \textbf{v} \right| = \sqrt{x_1^2 + x_2^2 + x_3^2 + \cdots + x_n^2}$$
+\end{mdframed}
+
+Notice that if you scale up a vector, its magnitude scales by the same amount. 
+For example:
 
 \begin{equation*}
 |7[3,4,5]| = 7 \sqrt{50} \approx 7 \times 7.07    
 \end{equation*}
 
-The rule then is: If you have any vector $v$ and any scalar $a$:
+Here is why that is true. Suppose we have a vector, $\textbf{u} = \left[a, b, 
+c \right]$. Then the magnitude of $\textbf{u}$ is given by:
+$$\left| \textbf{u} \right| = \sqrt{a^2 + b^2 + c^2}$$
+
+If we scale \textbf{u} to create \textbf{v} such that $\textbf{v} = k 
+\textbf{u} = \left[ ka, kb, kc \right]$, where $k$ is some constant. Then the 
+magnitude of \textbf{v} is given by:
+$$\left| \textbf{v} \right| = \sqrt{\left( ka \right)^2 + \left( kb \right)^2 
++ \left( kc \right)^2}$$
+
+We can expand and simplify this equation:
+$$\left| \textbf{v} \right| = \sqrt{k^2 a^2 + k^2 b^2 + k^2 c^2}$$
+$$\left| \textbf{v} \right| = \sqrt{k^2 \left( a^2 + b^2 + c^2 \right)}$$
+$$\left| \textbf{v} \right| = \left( \sqrt{k^2} \right) \sqrt{a^2 + b^2 + 
+c^2}$$
+$$\left| \textbf{v} \right| = \left| k \right| \sqrt{a^2 + b^2 + c^2} = 
+\left| k \right| \left| \textbf{u} \right|$$
+
+So, if you scale a vector, the magnitude of the resulting vector is the absolute value of the scale factor times the magnitude of the original vector. 
+
+The rule then is: If you have any vector $v$ and any scalar $k$:
 \begin{equation*}
-    |a v| = |a| |v|
+    |k v| = |k| |v|
 \end{equation*}
 
 
@@ -317,27 +453,30 @@ The rule then is: If you have any vector $v$ and any scalar $a$:
     \begin{Answer}[ref=vector_mag]
         \begin{itemize}
             \item $|[1, 1, 1]| = \sqrt{3} \approx 1.73 $
-            \item $|[-5, -5, -5]| = |-5 \times [1,1,1]| = 5 \sqrt{3} \approx 8.66$
-            \item $|[3, 4, 5] + [-2, -3, -4]| = | [1,1,1] | = \sqrt{3} \approx 1.73$ 
+            \item $|[-5, -5, -5]| = |-5 \times [1,1,1]| = 5 \sqrt{3} \approx 
+            8.66$
+            \item $|[3, 4, 5] + [-2, -3, -4]| = | [1,1,1] | = \sqrt{3} 
+            \approx 1.73$ 
         \end{itemize}
     \end{Answer}
 
 \section{Vectors in Python}
 
-NumPy is a library that allows you to work with vectors in Python.  
-You might need to install it on your computer. This is done with \pyfunction{pip}. 
-\pyfunction{pip3} installs things specifically for Python 3.\index{vectors!in python}
+NumPy is a library that allows you to work with vectors in Python. You might 
+need to install it on your computer. This is done with \pyfunction{pip}. 
+\pyfunction{pip3} installs things specifically for Python 3.
+\index{vectors!in python}
 
 \begin{Verbatim}
 pip3 install NumPy
 \end{Verbatim}
 
 We can think of a vector as a list of numbers.  
-There are also grids of numbers known as \newterm{matrices}. NumPy deals with both in the same way, 
-so it refers to both of them as arrays.\index{NumPy}
+There are also grids of numbers known as \newterm{matrices}. NumPy deals with 
+both in the same way, so it refers to both of them as arrays.\index{NumPy}
 
-The study of vectors and matrices is known as \newterm{Linear Algebra}. Some of the functions we need
-are in a sublibrary of NumPy called \pyfunction{linalg}. \index{linalg}
+The study of vectors and matrices is known as \newterm{Linear Algebra}. Some 
+of the functions we need are in a sublibrary of NumPy called \pyfunction{linalg}. \index{linalg}
 
 As a convention, everyone who uses NumPy, imports it as \textit{np}. \index{np}
 
@@ -378,11 +517,12 @@ v * 3 = [ 6  9 12]
 
 \subsection{Formatting Floats}
 
-The numbers 5.385164807134504 and 3.7416573867739413 are pretty long.  You probably want them 
-rounded off after a couple of decimal places.
+The numbers 5.385164807134504 and 3.7416573867739413 are pretty long. You 
+probably want them rounded off after a couple of decimal places.
 
-Numbers with decimal places are called \newterm{floats}. In the placeholder for your float, you 
-can specify how you want it formatted, including the number of decimal places.
+Numbers with decimal places are called \newterm{floats}. In the placeholder 
+for your float, you can specify how you want it formatted, including the 
+number of decimal places.
 
 Change the last line to look like this:\index{floats!formatting}
 \begin{Verbatim}

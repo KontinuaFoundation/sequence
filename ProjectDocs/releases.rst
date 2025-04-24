@@ -3,8 +3,8 @@ Releases
 
 To coordinate the efforts of the writers, editors, and illustrators
 with the efforts of the digital team (e-readers, mentoris, web
-version), we need to document how releases of the sequence will
-happen. This is that document.
+version), this document will explain how releases of the sequence will
+happen.
 
 Timing
 -----
@@ -18,7 +18,7 @@ The releases will be described by ``year.month[.build]``.  For example,
 if the 2061 April release had a stupid mistake that forced us to
 release it three times, the releases would be ``2061.04``, ``2061.04.1``,
 and ``2061.04.2``.  All three would be assumed to basically the same
-with some bug fixes. We will only make only the last one available for
+with some bug fixes. We will only make the latest version available for
 download.
 
 When it exists in multiple languages, the release will include
@@ -29,9 +29,9 @@ PDFs
 
 Currently, the PDFs of the workbooks will be released:
 
-* in US English
+* In US English
 
-* in Letter-size
+* In Letter-size
 
 (These options will expand over time.)
 
@@ -45,17 +45,17 @@ Associated with each chapter/language is a ``digital_resources.json``
 file with links to resources to supplement the reader's experience.
 These will be part of the release.
 
-Meta Data
+Metadata
 ---------
 
-For each release, some meta data will also be produced for the digital side.
+For each release, some metadata will also be produced for the digital side.
 
 For each language, the reader apps need to know:
 
 * Workbooks: Chapter (title, identifier, start page)
 * Subject index: subject -> workbook/chapter
 
-Mentoris needs to know differences:
+Mentoris needs to know the following differences:
 
 * Inserted new chapters: title in every languange, identifier, location (workbook and order).
 * Deleted old chapters
@@ -63,7 +63,7 @@ Mentoris needs to know differences:
 * Renamed chapters
 
 These diffs will always be in reference to the previous major release.
-That is the diffs for ``2061.04.2`` will be based on ``2060.12`` not
+In other words, the diffs for ``2061.04.2`` will be based on ``2060.12``, not
 ``2061.04.1``
 
 Feedback

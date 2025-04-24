@@ -1,20 +1,20 @@
 \chapter{Change of Variables}
 
-Let's say that I'm making ice spheres, and I tell you that the radius of the ice spheres is normally distributed with a mean
-of 0.7 cm and a standard deviation of 0.08 cm.   Then you can draw the probability distribution and cumulative distribution for that:
+Let's say that we are making ice spheres, and we tell you that the radius of the ice spheres is normally distributed with a mean
+of 0.7 cm and a standard deviation of 0.08 cm. You can then draw the probability distribution and cumulative distribution for that:
 
 \includegraphics[width=0.8\textwidth]{before.png}
 
 This includes lines indicating the mean and two standard deviations on each side.
 
-Now,  let's say I ask you what the cumulative distribution is for the \emph{mass} of the balloons.   A cubic centimeter of ice weighs about gram, so if you know
+Now,  let's say we ask you what the cumulative distribution is for the \emph{mass} of the balloons.   A cubic centimeter of ice weighs about gram, so if you know
 the radius of a particular ice sphere,  it is easy to compute the mass of it:
 
 $$m = \frac{4}{3} \pi r^3$$
 
 So, for example,  if a sphere has a radius of 5cm,  its mass in grams is  $\frac{4 \pi (0.7^3)}{3}  \approx 1.44$ g.
 
-Thinking about the graph of the cumulative distribution: if half the balloons have a radius less than 5 cm,  than half the balloon have a mass less than 523.6 g.   For each point on the cumulative graph,  we can use the radius of that point to compute the corresponding mass -- the CDF gets stretched out:
+Thinking about the graph of the cumulative distribution, if half the balloons have a radius less than 5 cm,  then half of the balloons have a mass less than 523.6 g. For each point on the cumulative graph,  we can use the radius of that point to compute the corresponding mass --- the CDF gets stretched out:
 
 \includegraphics[width=0.8\textwidth]{cdf_after.png}
 
@@ -23,13 +23,13 @@ new cumulative distribution function $H$ is given by
 
 $$H(m) = F(g(m))$$
 
-In this case,   $F$ is the cumulative function for the normal distribution with mean $0.7$ and standard deviation of $0.08$.  $g$ maps the mass to the radius:
+In this case, $F$ is the cumulative function for the normal distribution, with mean $0.7$ and standard deviation of $0.08$.  $g$ maps the mass to the radius:
 
 $$g(m) =\left(\sqrt[3]{\frac{3}{4 \pi}}\right) x^{\frac{1}{3}}$$
 
 \section{Making a Probability Density Function}
 
-Now we know how to calculate a new cumulative distribution function using the new variable.  However,  we usually want a probability density.
+Now, we know how to calculate a new cumulative distribution function using the new variable.  However,  we usually want a probability density.
 
 Here is the CDF and the PDF of the mass of the ice spheres:
 
@@ -43,11 +43,11 @@ By the chain rule:
 
 $$H'(m) = F'(g(m))g'(m)$$
 
-The function $F$ is the cumulative distribution for the normal distribution with mean $0.7$ and standard deviation of $0.08$.  So we know its derivative:
+The function $F$ is the cumulative distribution for the normal distribution with mean $0.7$ and standard deviation of $0.08$.  So, we know its derivative:
 
 $$F'(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}$$
 
-Where  $\mu = 0.7$ and $\sigma = 0.08$.
+where  $\mu = 0.7$ and $\sigma = 0.08$.
 
 We've already said that 
 
@@ -159,8 +159,8 @@ fig.savefig("pdf.png")
 
 \section{Decreasing Conversions}
 
-The last case (mass and radius) is pretty straightforward because the function $g$ is always increasing.  What if we have a change of variables where 
-$g$ is decreasing.   For example,  $V= IR$ so $\frac{V}{R} = I$.
+The last case (mass and radius) is relatively straightforward, because the function $g$ is always increasing.  What if we have a change of variables where 
+$g$ is decreasing? For example,  $V= IR$ so $\frac{V}{R} = I$.
 
 Let's say that you work at a lightbulb factory and you sample the lightbulbs to see what their resistance is.  You find the resistances of the lightbulbs are normally distributed with a mean of 24 ohms and a standard deviation of 3 ohms.  The voltage will be exactly 12 volts.  What is the PDF of the currents that will pass through the lightbulbs?
 

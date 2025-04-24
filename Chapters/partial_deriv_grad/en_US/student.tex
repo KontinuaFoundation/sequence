@@ -11,7 +11,7 @@ depend on multiple variables. Unlike ordinary derivatives that
 consider changes along a single variable, partial derivatives focus on
 how a function changes concerning each individual variable while
 holding the others constant. In essence, partial derivatives measure
-the rate of change of a function with respect to one variable while
+the rate of change of a function with respect to one variable, while
 keeping the other variables fixed.\index{partial derivative}
 
 The notation for a partial derivative of a function $f(x, y, \ldots)$
@@ -46,8 +46,7 @@ related to partial derivatives and gradients:
   and the relationship between partial derivatives and local
   linearity.
 
-\item Gradient vectors and their properties: We will introduce the
-  gradient vector and its properties, such as its connection to the
+\item Gradient vectors and their properties: We will introduce this concept, including it connection to the
   direction of steepest ascent, its relationship with partial
   derivatives, and how it relates to level curves and level surfaces.
 
@@ -120,7 +119,7 @@ Derivatives of $f(x, y)$}]
 \end{enumerate}
 \end{mdframed}
 
-Let's check this by predicting $f_y$ and then using the limit definition to 
+Let's check this by predicting $f_y$, then using the limit definition to 
 confirm our prediction. Applying the polynomial rule, we predict that $f_y$ is:
 $$f_y(x, y) = 3y^2 + 4x$$
 
@@ -503,6 +502,204 @@ e^{-3r} \cos{\theta^2} - 2e^{-3r}\sin{\theta^2}$
 \end{enumerate}
 \end{Answer}
 
+\subsection{The Chain Rule}
+For single-variable functions, where $y = f(x)$ and $x = g(t)$, we have seen 
+that:
+$$\frac{dy}{dt} = \frac{dy}{dx} \frac{dx}{dt}$$
+
+Which is the Chain Rule for single-variable functions. For multi-variable 
+functions, there are several versions of the Chain Rule, depending on how the 
+variables and functions are defined. First, we consider the case where $z = 
+f(x, y)$ and $x = g(t)$ and $y = h(t)$ (i.e. $f$ is a multi-variable function 
+of $x$ and $y$, while $x$ and $y$ are single-variable functions of $t$). This 
+means that $z$ is an indirect function of $t$:
+$$z = f(x, y) = f \left( g(t), h(t) \right)$$
+
+Then the derivative of $z$ with respect to $t$ is given by:
+$$\frac{dz}{dt} = \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{
+\partial f}{\partial y} \frac{dy}{dt}$$
+
+\textbf{Example}: If $z = xy^2 + 3x^4y$, where $x = 2\sin{\left( t \right)}$ 
+and $y = \cos{ \left(3t \right)}$, find $dz/dt$ when $t = \pi/2$. 
+
+\textbf{Solution}: First, we apply the Chain Rule to $z$:
+$$\frac{dz}{dt} = \frac{\partial z}{\partial x} \frac{dx}{dt} + \frac{\partial 
+z}{\partial x} \frac{dy}{dt}$$
+$$= \frac{\partial}{\partial x} \left[ xy^2 + 3x^4y \right] \cdot \frac{d}{dt} 
+\left[ 2\sin{ \left( t \right)} \right] + \frac{\partial}{\partial y} \left[ 
+xy^2 + 3x^4y \right] \cdot \frac{d}{dt} \left[ \cos{ \left( 3t \right)} 
+\right]$$
+$$= \left( y^2 + 12x^3y \right) \cdot \left( 2\cos{ \left( t \right)} \right) 
++ \left( 2xy + 3x^4 \right) \cdot \left( -3\sin{ \left( 3t \right) } \right)$$
+
+When $t = \pi/2$, $\cos{\left( t \right)} = 0$, $\sin{ \left( 3t \right)} = 
+-1$, $x = 2$, and $y = 0$. Substituting:
+$$\frac{dz}{dt} = \left( 0 + 0 \right) \cdot \left( 0 \right) + \left( 0 + 
+3(2)^4 \right) \cdot \left( -3 \cdot -1 \right)$$
+$$= 3(2)^4 \cdot 3 = 144$$
+
+Another case is where $x$ and $y$ are also multi-variable functions. Consider 
+$z = f(x, y)$, $x = g(s, t)$, and $y = h(s, t)$. This means $z$ is an indirect 
+function of $s$ and $t$:
+$$z = f(x, y) = f \left( g(s, t), h(s, t) \right)$$
+
+In this case, there are two partial derivatives of $z$:
+$$\frac{\partial z}{\partial s} = \frac{\partial z}{\partial x} \frac{\partial 
+x}{\partial s} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial s}$$
+$$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial x} \frac{\partial 
+x}{\partial t} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial t}$$
+
+\textbf{Example}: Find $\partial z / \partial s$ and $\partial z / \partial t$ 
+if $z = e^{2x} \cos{y}$, $x = s^2t$, and $y = st^2$. 
+
+\textbf{Solution}: First, let's find $\partial z / \partial s$:
+$$\frac{\partial z}{\partial s} = \frac{\partial z}{\partial x} \frac{\partial 
+x}{\partial s} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial s}$$
+$$= \frac{\partial}{\partial x} \left[ e^{2x} \cos{y} \right] \cdot \frac{
+\partial}{\partial s} \left[ s^2t \right] + \frac{\partial}{\partial y} \left[ 
+e^{2x} \cos{y} \right] \cdot \frac{\partial}{\partial s} \left[ st^2 \right]$$
+$$= \left( 2e^{2x}\cos{y} \right) \cdot \left(2st \right) + \left(-e^{2x}
+\sin{y} \right) \cdot \left( t^2 \right)$$
+
+Substituting for $x$ and $y$:
+$$\frac{\partial z}{\partial s} = 4ste^{2s^2t}\cos{ \left( st^2 \right)} - 
+t^2e^{2s^2t} \sin{ \left( st^2 \right)}$$
+
+And finding $\partial z / \partial t$:
+$$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial x} \frac{\partial 
+x}{\partial t} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial t}$$
+$$= \frac{\partial}{\partial x} \left[ e^{2x} \cos{y} \right] \cdot \frac{
+\partial}{\partial t} \left[ s^2 t \right] + \frac{\partial}{\partial y} 
+\left[ e^{2x} \cos{y} \right] \cdot \frac{\partial}{\partial t} \left[ st^2 
+\right]$$
+$$= \left( 2e^{2x} \cos{y} \right) \cdot \left( s^2 \right) + \left( -e^{2x}
+\sin{y} \right) \cdot \left( 2st \right)$$
+
+Substituting for $x$ and $y$:
+$$\frac{\partial z}{\partial t} = 2s^2e^{2s^2t} \cos{ \left(st^2 \right)} - 
+2ste^{2s^2t}\sin{\left( st^2 \right)}$$
+
+\begin{Exercise}[title = {The Chain Rule for Multivariable Functions}, 
+label = chain]
+Find $dz/dt$ or $\partial z / \partial s$ and $\partial z / \partial t$. 
+\begin{enumerate}
+    \item $z = \sin{x}\cos{y}$, $x = 3\sqrt{t}$, $y = 2/t$
+    \item $z = \sqrt{1 + xy}$, $x = \tan{t}$, $y = \arctan{t}$
+    \item $z = \arctan{\left( x^2 + y^2 \right)}$, $x = t\ln{s}$, $y = se^{t}$
+    \item $z = \sqrt{x}e^{xy}$, $x = 1 + st$, $y = s^2 - t^2$
+\end{enumerate}
+\vspace{75mm}
+\end{Exercise}
+
+\begin{Answer}[ref = chain]
+\begin{enumerate}
+    \item We are looking for $dz / dt$ only:
+    $$\frac{dz}{dt} = \frac{\partial z}{\partial x} \frac{dx}{dt} + \frac{
+    \partial z}{\partial y} \frac{dy}{dt}$$
+    $$= \frac{\partial}{\partial x} \left[ \sin{x}\cos{y} \right] \cdot 
+    \frac{d}{dt} \left[ 3\sqrt{t} \right] + \frac{\partial}{\partial y} \left[ 
+    \sin{x}\cos{y} \right] \cdot \frac{d}{dt} \left[ 2/t \right]$$
+    $$= \left( \cos{x}\cos{y} \right) \cdot \left( \frac{3}{2\sqrt{t}} \right) 
+    + \left( -\sin{x}\sin{y} \right) \cdot \left( -\frac{2}{t^2} \right)$$
+    $$= \frac{3\cos{x}\cos{y}}{2\sqrt{t}} + \frac{2\sin{x}\sin{y}}{t^2}$$
+    Substituting for $x$ and $y$:
+    $$\frac{dz}{dt} = \frac{3\cos{ \left( 3\sqrt{t} \right)}\cos{\left(2/t 
+    \right)}}{2\sqrt{t}} + \frac{2\sin{\left( 3\sqrt{t} \right)}\sin{ \left( 
+    2/t \right)}}{t^2}$$
+
+    \item We are looking for $dz / dt$ only:
+    $$\frac{dz}{dt} = \frac{\partial z}{\partial x} \frac{dx}{dt} + \frac{
+    \partial z}{\partial y} \frac{dy}{dt}$$
+    $$= \frac{\partial}{\partial x} \left[ \sqrt{1 + xy} \right] \cdot 
+    \frac{d}{dt} \left[ \tan{t} \right] + \frac{\partial}{\partial y} \left[ 
+    \sqrt{1 + xy} \right] \cdot \frac{d}{dt} \left[ \arctan{t} \right]$$
+    $$= \left( \frac{y}{2\sqrt{1 + xy}} \right) \cdot \left( \sec^2{t} \right) 
+    + \left( \frac{x}{2\sqrt{1 + xy}} \right) \cdot \left( \frac{1}{t^2 + 1} 
+    \right)$$
+
+    Substituting for $x$ and $y$:
+    $$\frac{dz}{dt} = \frac{\tan{t}\sec^2{t}}{2\sqrt{1 + \tan{t} \arctan{t}}} 
+    + \frac{\tan{t}}{2\sqrt{1 + \tan{t} \arctan{t}} \left( t^2 + 1 \right)}$$
+    $$= \frac{\tan{t}}{2\sqrt{1 + \tan{t}\arctan{t}}} \left( \sec^2{t} + 
+    \frac{1}{t^2 + 1} \right)$$
+
+    \item Finding $\partial z / \partial s$:
+    $$\frac{\partial z}{\partial s} = \frac{\partial z}{\partial x}\frac{
+    \partial x}{\partial s} + \frac{\partial z}{\partial y} \frac{\partial y}{
+    \partial s}$$
+    $$= \frac{\partial}{\partial x} \left[ \arctan{ \left( x^2 + y^2 \right)} 
+    \right] \cdot \frac{\partial}{\partial s} \left[ t\ln{s} \right] + \frac{
+    \partial}{\partial y} \left[ \arctan{ \left( x^2 + y^2 \right)} \right] 
+    \cdot \frac{\partial}{\partial s} \left[ se^t \right]$$
+    $$\left( \frac{2x}{\left( x^2 + y^2 \right)^2 + 1} \right) \cdot \left( 
+    \frac{t}{s} \right) + \left( \frac{2y}{\left( x^2 + y^2 \right)^2 + 1} 
+    \right) \cdot \left( e^t \right)$$
+
+    Substituting for $x$ and $y$: 
+    $$\frac{\partial z}{\partial s} = \left( \frac{2 \left( t \ln{s} \right)}{
+    \left[ \left( t\ln{s} \right)^2 + \left( se^t \right)^2 \right]^2 + 1} 
+    \right) \cdot \left( \frac{t}{s} \right) + \left( \frac{2 \left( se^t 
+    \right)}{\left[ \left( t\ln{s} \right)^2 + \left( t\ln{s} \right)^2 
+    \right]^2 + 1} \right) \cdot \left( e^t \right)$$
+    $$= \left( \frac{2}{\left[ t^2 \left( \ln{s} \right)^2 + se^{2t} \right]^2 
+    + 1} \right) \cdot \left( \frac{t^2 \ln{s}}{s} + se^{2t} \right)$$
+
+    Finding $\partial z / \partial t$:
+    $$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial x} \frac{
+    \partial x}{\partial t} + \frac{\partial z}{\partial y} \frac{\partial y}{
+    \partial t}$$
+    $$= \frac{\partial}{\partial x} \left( \arctan{ \left( x^2 + y^2 \right)} 
+    \right) \cdot \frac{\partial}{\partial t} \left( t \ln{s} \right) + \frac{
+    \partial}{\partial y} \left( \arctan{ \left( x^2 + y^2 \right)} \right) 
+    \cdot \frac{\partial}{\partial t} \left( se^t \right)$$
+    $$= \left( \frac{2x}{\left( x^2 + y^2 \right)^2 + 1} \right) \cdot \left( 
+    \ln{s} \right) + \left( \frac{2y}{\left( x^2 + y^2 \right)^2 + 1} \right) 
+    \cdot \left( se^t \right)$$
+
+    Substituting for $x$ and $y$:
+    $$\frac{\partial z}{\partial t} = \left( \frac{2}{\left[ \left( t\ln{s} 
+    \right)^2 + \left( se^t \right)^2 \right]^2 + 1} \right) \cdot \left[ t 
+    \left( \ln{s} \right)^2 + s^2e^{2t} \right]$$
+
+    \item Finding $\partial z / \partial s$:
+    $$\frac{\partial z}{\partial s} = \frac{\partial z}{\partial x} \frac{
+    \partial x}{\partial s} + \frac{\partial z}{\partial y} \frac{\partial y}{
+    \partial s}$$
+    $$= \frac{\partial}{\partial x} \left( \sqrt{x}e^{xy} \right) \cdot \frac{
+    \partial}{\partial s} \left( 1 + st \right) + \frac{\partial}{\partial y} 
+    \left( \sqrt{x}e^{xy} \right) \cdot \frac{\partial}{\partial s} \left( s^2 
+    - t^2 \right)$$
+    $$= \left[ \frac{e^{xy} \left( 2xy + 1 \right)}{2\sqrt{x}} \right] \cdot 
+    \left( t \right) + \left[ x^{3/2}e^{xy} \right] \cdot \left( 2s \right)$$
+    $$= \left[ \frac{e^{xy}}{\sqrt{x}} \right] \cdot \left( \frac{\left(2xy + 
+    1 \right)t}{2} + x^2 \left( 2s \right) \right)$$
+
+    Substituting for $x$ and $y$:
+    $$\frac{\partial z}{\partial s} = \left[ \frac{e^{(1 + st)(s^2 - t^2)}}{
+    \sqrt{1 + st}} \right] \cdot \left( \frac{\left( 2(1 + st)(s^2 - t^2) + 1 
+    \right)t }{2} + \left( 1 + st \right)^2 \left( 2s \right) \right)$$
+
+    Finding $\partial z / \partial t$:
+    $$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial x} \frac{
+    \partial x}{\partial t} + \frac{\partial z}{\partial y}\frac{\partial y}{
+    \partial t}$$
+    $$= \frac{\partial}{\partial y} \left[ \sqrt{x}e^{xy} \right] \cdot \frac{
+    \partial}{\partial t} \left[ 1 + st \right] + \frac{\partial}{\partial y} 
+    \left[ \sqrt{x}e^{xy} \right] \cdot \frac{\partial}{\partial t} \left[ s^2 
+    - t^2 \right]$$
+    $$= \left[ \frac{e^{xy} \left( 2xy + 1 \right)}{2\sqrt{x}} \right] \cdot 
+    \left( s \right) + \left[ x^{3/2}e^{xy} \right] \cdot \left( -2t \right)$$
+    $$= \left[ \frac{e^{xy}}{\sqrt{x}} \right] \cdot \left[ \frac{\left( 2xy + 
+    1 \right)s}{2} - 2tx^2 \right]$$
+
+    Substituting for $x$ and $y$:
+    $$\frac{\partial z}{\partial t} = \left[ \frac{e^{\left( 1 + st \right) 
+    \left( s^2 - t^2 \right)}}{\sqrt{\left( 1 + st \right)}} \right] \cdot 
+    \left[ \frac{\left( 2\left( 1 + st \right) \left( s^2 - t^2 \right) + 1 
+    \right)s}{2} - 2t \left( 1 + st \right)^2 \right]$$
+\end{enumerate}
+\end{Answer}
+
 \section{Interpreting Partial Derivatives}
 What is the meaning of a partial derivative? Recall that $z = f(x, y)$ plots a 
 surface, $S$. Consider the function $z = \cos{y} - x^2$, shown in figure 
@@ -520,7 +717,7 @@ surface, $S$. Consider the function $z = \cos{y} - x^2$, shown in figure
     \label{fig:surface}
 \end{figure}
 
-We can see that $f(1, \pi/3) = -1/2$, therefore the point $(1, \pi/3, -1/2)$ 
+We can see that $f(1, \pi/3) = -1/2$; therefore, the point $(1, \pi/3, -1/2)$ 
 lies on the surface $z = \cos{y} - x^2$ (the black dot shown in figure \ref{
 fig:surface}). If we fix $y$ such that $y = \pi/3$, we are looking at the 
 intersection between the surface and the plane $y = \pi/3$ (see figure \ref{
@@ -550,7 +747,7 @@ fig:tangent}).
     \label{fig:tangent}
 \end{figure}
 
-We can describe this intersection as $g(x) = f(x, \pi/3)$, and therefore the 
+We can describe this intersection as $g(x) = f(x, \pi/3)$, so the 
 slope of a tangent line to this intersection is given by $g'(x) = f_x(x, 
 \pi/3)$. This means, geometrically, $f_x(1, \pi/3)$ is the slope of the line 
 that lies tangent to $z = f(x, y)$ at the point $(1, \pi/3, -1/2)$ and in the 
@@ -559,8 +756,8 @@ think of $f_x$ as the slope of the tangent line to the surface that is
 parallel to the $x$-axis. 
 
 Similarly, we can fix $x = 1$ and look at the intersection between the surface 
-$z = \cos{y} - x^2$ and the plane $x = 1$ (see figure \ref{fig:ytangent}. And 
-just like before, we can describe this intersection as $h(y) = f(1, y)$, which 
+$z = \cos{y} - x^2$ and the plane $x = 1$ (see figure \ref{fig:ytangent}. 
+Just like before, we can describe this intersection as $h(y) = f(1, y)$, which 
 means the slope of a line tangent to the intersection is given by $h'(y) = 
 f_{y}(1, y)$. Therefore, as with $f_x$, $f_y(a, b)$ gives the slope of a line 
 tangent to the point $\left(a, b, f(a, b) \right)$ and parallel to the $y$-axis. 
@@ -604,11 +801,11 @@ $$D_x = \frac{\partial}{\partial x} \frac{45}{2 + x^2 + y^2} = \frac{-45
 x^2 + y^2 \right)^2}$$
 $$= \frac{-90x}{\left( 2 + x^2 + y^2 \right)^2}$$
 
-And the rate of change in the $x$-direction at $(x, y) = (1, 3)$ is given by:
+The rate of change in the $x$-direction at $(x, y) = (1, 3)$ is given by:
 $$D_x(1, 3) = \frac{-90(1)}{\left( 2 + 1^2 + 3^2 \right)^2} = \frac{-90}{\left(
 12 \right)^2} = \frac{-90}{144} = -\frac{5}{8}$$
 
-This means that at $(1, 3)$ the density of bacteria is decreasing as you move 
+This means that at $(1, 3)$, the density of bacteria is decreasing as you move 
 away $x = 0$ along the line $y = 3$.
 
 Similarly, the rate of change in the $y$-direction is given by the partial 
@@ -618,7 +815,7 @@ $$D_y = \frac{\partial}{\partial y} \frac{45}{2 + x^2 + y^2} = \frac{-45 \left(
 \right)^2}$$
 $$= \frac{-90y}{\left(2 + x^2 + y^2 \right)^2}$$
 
-And the rate of change in the $y$-direction at $(x, y) = (1, 3)$ is given by:
+The rate of change in the $y$-direction at $(x, y) = (1, 3)$ is given by:
 $$D_y(1, 3) = \frac{-90(3)}{\left(2 + 1^2 + 3^2 \right)^2} = \frac{-270}{144} 
 = -\frac{15}{8}$$
 
@@ -647,13 +844,13 @@ In which direction is the function changing the fastest?
     x^2e^{y/x} \left( \frac{\partial}{\partial x} \frac{y}{x} \right) + 2x
     e^{y/x} = x^2 e^{y/x} \left( \frac{-y}{x^2} \right) + 2xe^{y/x} = \left( 
     2x - y \right)e^{y/x}$ and $z_x(1, -1) = \left( 2(1) - (-1) \right) 
-    e^{-1/1} = \left(3 \right)e^{-1} = 3/e$. So the slope of a line tangent to 
+    e^{-1/1} = \left(3 \right)e^{-1} = 3/e$. So, the slope of a line tangent to 
     the surface at $(1, -1, 1/e)$ parallel to the $x$-axis is $3/e$ and an 
     equation for that line is $z = 3/e \left(x - 1 \right) - 1/e$. 
 
     Finding a tangent line parallel to the $y$-axis: $\frac{\partial z}{
     \partial y} = \frac{\partial}{\partial y} \left( x^2e^{y/x} \right) = x
-    e^{y/x}$ and $z_y(1, -1) = (1)e^{-1/1} = 1/e$. So the slope of a line 
+    e^{y/x}$ and $z_y(1, -1) = (1)e^{-1/1} = 1/e$. So, the slope of a line 
     tangent to the surface at $(1, -1, 1/e)$ parallel to the $y$-axis is $1/e$ 
     and an equation for that line is $z = 1/e \left(y + 1 \right) - 1/e$. 
 
@@ -664,7 +861,7 @@ In which direction is the function changing the fastest?
     point $(\pi, \pi/2, \pi/2 - 1)$. Finding a tangent line parallel to the 
     $x$-axis: $\frac{\partial z}{\partial x} = \frac{\partial}{\partial x} 
     \left( \cos{x} + y\sin{y} \right) = -\sin{x}$ and $z_x(\pi, \pi/2) = -\sin{
-    \pi} = 0$. So the slope of a line tangent to the surface at $(\pi, \pi/2, 
+    \pi} = 0$. So, the slope of a line tangent to the surface at $(\pi, \pi/2, 
     \pi/2 - 1)$ parallel to the $x$-axis is $0$ and an equation for that line 
     is $z = \pi/2 - 1$.
 
@@ -673,7 +870,7 @@ In which direction is the function changing the fastest?
     = y \left( \frac{\partial}{\partial y}\sin{y} \right) + \sin{y} \left( 
     \frac{\partial}{\partial y} y \right) = y\cos{y} + \sin{y}$ and $z_y(\pi, 
     \pi/2) = \left( \frac{\pi}{2} \right) \cos{ \left( \frac{\pi}{2} \right) } 
-    + \sin{ \left( \frac{\pi}{2} \right) } = 1$. So the slope of a line tangent
+    + \sin{ \left( \frac{\pi}{2} \right) } = 1$. So, the slope of a line tangent
     to the surface at $( \pi, \pi/2, \pi/2 - 1 )$ parallel to the $y$-axis is 
     $1$ and an equation for that line is $z = \left( y - \pi/2 \right) - \left(
     \pi/2 - 1 \right) = y - \pi + 1$. 
@@ -684,12 +881,12 @@ In which direction is the function changing the fastest?
     looking for tangent lines through the point $(3, 2, -18)$. Finding a 
     tangent line parallel to the $x$-axis: $\frac{\partial z}{\partial x} = 
     \frac{\partial}{\partial x} \left( x^2y - 3xy^2 \right) = 2xy - 3y^2$ and 
-    $z_x(3, 2) = 2(3)(2) - 3(2)^2 = 0$. So the slope of a line tangent to the 
+    $z_x(3, 2) = 2(3)(2) - 3(2)^2 = 0$. So, the slope of a line tangent to the 
     surface at $(3, 2, -18)$ is $0$ and an equation for that line is $z = -18$
 
     Finding a tangent line parallel to the $y$-axis: $\frac{\partial z}{
     \partial y} = \frac{\partial}{\partial y} \left( x^2y - 3xy^2 \right) = 
-    x^2 - 6xy$ and $z_y(3, 2) = 3^2 - 6(3)(2) = 9 - 36 = -27$. So the slope of 
+    x^2 - 6xy$ and $z_y(3, 2) = 3^2 - 6(3)(2) = 9 - 36 = -27$. So, the slope of 
     a line tangent to the surface at $(3, 2, -18)$ is $-27$ and an equation for
     that line is $z = -27(y - 2) + -18 = -27y + 54 - 18 = 36 - 27y$.
 
@@ -728,9 +925,13 @@ other than the $x$- and $y$-directions.
 \end{figure}
 
 \subsection{Directional Derivatives}
-The contour map in figure \ref{fig:mountain} shows the elevation, $H(x, y)$ 
+<<<<<<< HEAD
+The contour map in figure \ref{fig:mountain} shows the elevation, $f(x, y)$ 
+=======
+The contour map in figure \ref{fig:mountain} shows the elevation, $H(x, y)$, 
+>>>>>>> 75c26aca4245f06f19f767709f3697abe6d41eba
 for a mountain. You already know that you can use the partial derivatives, 
-$H_x$ and $H_y$ to find the rate of change in elevation going east-west or 
+$f_x$ and $f_y$ to find the rate of change in elevation going east-west or 
 north-south. But what about other directions? Suppose the hiking path you're 
 on goes north-east. How can you predict the steepness (i.e. the rate of 
 elevation change) along this path? The directional derivative allows us to 
@@ -861,12 +1062,14 @@ find the rate of change in any direction.
         \draw[black, thick] (17.25, 17.7) -- (18.25, 17.7);
         \end{axis}
     \end{tikzpicture}
-    \caption{The contour plot shows the elevation of a mountain. $H_x$ gives 
-    the slope going east, while $H_y$ gives the slope going north}
+    \caption{The contour plot shows the elevation of a mountain. $f_x$ gives 
+    the slope going east, while $f_y$ gives the slope going north}
     \label{fig:mountain}
 \end{figure}
 
-At some point, $(x_o, y_o)$, the partial derivatives $H_x(x_o, y_o)$ and $H_y(x_o, y_o)$ give the rate of change of elevation in the east-west and north-south directions, respectively (see figure \ref{fig:mount_deriv}). To find the rate of change at $(x_o, y_o)$, in the direction of some arbitrary unit vector, $\textbf{u} = \left[ a, b \right] = a\textbf{i} + b\textbf{j}$, we first note that the point $(x_o, y_o, z_o)$, where $z_o = H(x_o, y_o)$, lies on the surface defined by $z = H(x, y)$. There is a vertical plane, $P$, that passes through $(x_o, y_o, z_o)$ and points in the direction of \textbf{u}. This intersection defines curve $C$, which lies on the surface, and the slope of this curve at $(x_o, y_o, z_o)$ is the directional derivative of $H$ in the direction of \textbf{u} (see figure \ref{fig:direct_deriv}). 
+At some point, $(x_o, y_o)$, the partial derivatives $f_x(x_o, y_o)$ and 
+$f_y(x_o, y_o)$ give the rate of change of elevation in the east-west and 
+north-south directions, respectively (see figure \ref{fig:mount_deriv}). 
 
 \begin{figure}[htbp]
     \centering
@@ -974,22 +1177,32 @@ At some point, $(x_o, y_o)$, the partial derivatives $H_x(x_o, y_o)$ and $H_y(x_
         (15, 17.5) (15.5, 17.55) (16, 17.6) (16.5, 17.6) (17, 17.5) 
         (17.5, 17.4) (18, 17.35) (18.5, 17.2) (19, 17) (19.5, 16.9) 
         (20, 16.8)};
-        \draw[black, fill = black] (10, 4) circle (0.5mm);
+        \draw[black, fill = black] (10, 4) circle (0.5mm) node[below, 
+        font = \scriptsize] {$(x_o, y_o)$};
         \draw[black, thick, -latex] (10, 4) -- (10, 6.5) node[above, 
-        font = \scriptsize] {$H_y$}; 
+        font = \scriptsize] {$f_y(x_o, y_o)$}; 
         \draw[black, thick, -latex] (10, 4) -- (12, 4) node[right, 
-        font = \scriptsize] {$H_x$};
+        font = \scriptsize] {$f_x(x_o, y_o)$};
         \draw[black, thick, dashed, -latex] (10, 4) -- (12, 6) node[right, 
-        font = \scriptsize] {$D_u [H(x, y)]$};
+        font = \scriptsize] {$D_{\textbf{u}} [f(x_o, y_o)]$};
         \draw[-latex, black, thick] (17.75, 17) -- (17.75, 19.5);
         \draw[black, thick] (17.25, 17.7) -- (18.25, 17.7);
         \end{axis}
     \end{tikzpicture}
     \caption{If \textbf{u} points north-east, then the directional derivative 
-    of $H(x, y)$, $D_u \left[ H(x, y ) \right]$, tells the rate of change 
-    going north-east}
+    of $f(x, y)$ at $(x_o, y_o)$, $D_{\textbf{u}} \left[ f(x_o, y_o ) 
+    \right]$, tells the rate of change going north-east}
     \label{fig:mount_deriv}
 \end{figure}
+
+To find the rate of change at $(x_o, y_o)$, in the direction of some arbitrary 
+unit vector, $\textbf{u} = \left[ a, b \right] = a\textbf{i} + b\textbf{j}$, 
+we first note that the point $Q = (x_o, y_o, z_o)$, where $z_o = f(x_o, y_o)$, 
+lies on the surface defined by $z = f(x, y)$. There is a vertical plane, $P$, 
+that passes through $Q$ and points in the direction of \textbf{u}. This 
+intersection defines curve $C$, which lies on the surface, and the slope of 
+this curve at $Q = (x_o, y_o, z_o)$ is the directional derivative of $H$ in 
+the direction of \textbf{u} (see figure \ref{fig:direct_deriv}). 
 
 \begin{figure}[htbp]
     \centering
@@ -1016,44 +1229,128 @@ At some point, $(x_o, y_o)$, the partial derivatives $H_x(x_o, y_o)$ and $H_y(x_
         node[left, font = \scriptsize] {$C$};
         \draw[red, dashed] (0.4, 0.8, 0) -- (0.4, 0.8, 2.864);
         \draw[red, fill = red] (0.4, 0.8, 2.864) circle (0.5mm) 
-        node[right, font = \scriptsize] {$(x_o, y_o, z_o)$};
+        node[right, font = \scriptsize] {$Q = (x_o, y_o, z_o)$};
         \draw[red, fill = red] (0.4, 0.8, 0) circle (0.5mm) 
         node[left, font = \scriptsize] {$(x_o, y_o, 0)$};
         \draw[black, dashed] (-0.4, -0.8, 3.11384) -- (1.2, 2.4, 2.6142);
         \draw[latex-] (-0.2, -0.4, 3.0514) -- (1, 0, 3) 
-        node[left, font = \scriptsize] {$D_u$}; 
+        node[left, font = \scriptsize] {$D_{\textbf{u}}$}; 
     \end{tikzpicture}
     \caption{The slope of the curve formed between the plane parallel to 
-    \textbf{u} and the surface $z = H(x, y)$ is the directional derivative, 
-    $D_u$}
+    \textbf{u} and the surface $z = f(x, y)$ is the directional derivative, 
+    $D_{\textbf{u}}$}
     \label{fig:direct_deriv}
 \end{figure}
 
+We can choose another point, $R = (x, y, z)$, the is $h$ units away from $Q$ 
+along \textbf{u} (see \ref{fig:direct_deriv2}). Then the change in $x$ is $x - 
+x_o = ha$ and the change is $y$ is $y - y_o = hb$. And the slope from $Q$ to 
+$R$ is given by:
+$$\frac{\delta z}{h} = \frac{f(x, y) - f(x_o, y_o)}{h}$$
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[x = {(-0.86cm, -0.5cm)}, y = {(0.86cm, -0.5cm)}, 
+    z = {(0cm, 1cm)}]
+        \draw[-latex] (0,0,0) -- (5,0,0) node[left] {$x$};
+        \draw[-latex] (0,0,0) -- (0,5,0) node[right] {$y$};
+        \draw[-latex] (0,0,0) -- (0,0,3) node[above] {$z$};
+        \draw[blue, thick, fill = blue!30, opacity = 0.4] plot[smooth cycle] 
+        coordinates {(3, 0, 0) (2.598, 0, 1.5) (2.121, 0, 2.121) 
+        (1.5, 0, 2.598) (0, 0, 3) (0, 1.5, 2.598) (0, 2.121, 2.121) 
+        (0, 2.598, 1.5) (0, 3, 0) (1.5, 2.598, 0) (2.121, 2.121, 0) 
+        (2.598, 1.5, 0)};
+        \draw[orange, thick, fill = orange!30, opacity = 0.4] (0, 0, 0) -- 
+        (0, 0, 4) -- (2, 4, 4) -- (2, 4, 0);
+        \draw[red, thick, -latex] (0.4, 0.8, 0) -- (0.9, 1.8, 0) 
+        node[right, font = \scriptsize] {\textbf{u}};
+        \draw[black, fill = black] (0.7, 1.4, 0) circle (0.5mm);
+        \draw[decorate, decoration = {brace, amplitude = 5pt}] (0.4, 0.8, 0) 
+        -- (0.7, 1.4, 0) node[midway, xshift = 0.3cm, yshift = 0.1cm, 
+        font = \scriptsize] {$h$};
+        \draw[dashed] (0.7, 1.4, 0) -- (0.7, 1.4, 2.8);
+        \draw[black, fill = black] (0.7, 1.4, 2.8) circle (0.5mm) node[right, 
+        font = \scriptsize] {$R$};
+        \draw[blue, thick] (0,0,3) -- (0.1, 0.2, 2.992) -- (0.2, 0.4, 2.996) 
+        -- (0.3, 0.6, 2.924) -- (0.4, 0.8, 2.864) -- (0.5, 1, 2.784) -- 
+        (0.6, 1.2, 2.683) -- (0.7, 1.4, 2.559) -- (0.8, 1.6, 2.408) -- 
+        (0.9, 1.8, 2.225) -- (1, 2, 2) -- (1.1, 2.2, 1.718) -- 
+        (1.2, 2.4, 1.342) -- (1.3, 2.6, 0.742) -- (1.34, 2.68, 0);
+        \draw[red, dashed] (0.4, 0.8, 0) -- (0.4, 0.8, 2.864);
+        \draw[red, fill = red] (0.4, 0.8, 2.864) circle (0.5mm) 
+        node[right, font = \scriptsize] {$Q = (x_o, y_o, z_o)$};
+        \draw[red, fill = red] (0.4, 0.8, 0) circle (0.5mm) 
+        node[left, font = \scriptsize, yshift = 0.15cm] {$(x_o, y_o, 0)$};
+        \draw[black, dashed] (-0.4, -0.8, 3.11384) -- (1.2, 2.4, 2.6142);
+        \draw[latex-] (-0.2, -0.4, 3.0514) -- (1, 0, 3) 
+        node[left, font = \scriptsize] {$D_{\textbf{u}}$}; 
+        \draw[dashed] (0.4, 0.8, 0) -- (0.7, 0.8, 0);
+        \draw[dashed] (0.7, 0.8, 0) -- (0.7, 1.4, 0);
+        \draw[latex-] (0.7, 1.1, 0) -- (2, 1.5, 0) node[left, font = 
+        \scriptsize] {length = $hb$};
+        \draw[latex-] (0.55, 0.8, 0) -- (1.5, 0, 1.5) node[above, font = 
+        \scriptsize] {length = $ha$};
+    \end{tikzpicture}
+    \caption{A second point, $R$, along \textbf{u} is $h$ units away along 
+    \textbf{u}}
+    \label{fig:direct_deriv2}
+\end{figure}
+
+We find the directional derivative by substituting for $x$ and $y$ and taking 
+the limit as $h$ goes to zero:
+$$D_{\textbf{u}} f(x_0, y_0) = \lim_{h \to 0} \frac{f(x_o + ha, y_o + hb) - 
+f(x_o, y_o)}{h}$$
+
+How is this related to $f_x$ and $f_y$? Let's define $g(h)$ such that $g(h) = 
+f(x_o + ha, y_o + hb)$. Then
+$$g'(0) = \lim_{h \to 0} \frac{g(h) - g(0)}{h}$$
+$$= \lim_{h \to 0} = \frac{f(x_o + ha, y_o + hb) - f(x_o, y_o)}{h} = 
+D_{\textbf{u}} f(x_o, y_o)$$
+
+We can also apply the Chain Rule to $g(h)$:
+$$g'(h) = \frac{\partial f}{\partial x} \frac{dx}{dh} + \frac{\partial f}{
+\partial y} \frac{dy}{dh} = f_x(x, y)a + f_y(x, y)b$$
+
+Substituting $h = 0$, $x = x_o$, and $y = y_o$, we see that:
+$$g'(0) = f_x(x_o, y_o)a + f_y(x_o, y_o)b$$
+
+Which means that:
+$$D_{\textbf{u}} f(x_o, y_o) = f_x(x_o, y_o)a + f_y(x_o, y_o)b$$
+
+So a directional derivative is:
 
 \begin{mdframed}[style = important, frametitle = {The Directional Derivative}]
 Let $f$ be a differentiable function and \textbf{u} be a unit vector, 
-$\textbf{u} = \left[ a, b \right]$. Then the directional derivative in the direction of 
+<<<<<<< HEAD
+$\textbf{u} = \left[ a, b \right]$. Then the directional derivative in the 
+direction of \textbf{u} is:
+$$D_{\textbf{u}} f(x, y) = f_x(x, y)a + f_y(x, y)b = \textbf{u}_x \left[ 
+\frac{\partial}{\partial x} f(x, y) \right] + \textbf{u}_y \left[ \frac{
+\partial}{\partial y} f(x, y) \right]$$
+=======
+$\textbf{u} = \left[ a, b \right]$. This means the directional derivative in the direction of 
 \textbf{u} is:
 $$D_u f(x, y) = f_x(x, y)a + f_y(x, y)b = \textbf{u}_x \left[ \frac{\partial}{
 \partial x} f(x, y) \right] + \textbf{u}_y \left[ \frac{\partial}{\partial y} 
 f(x, y) \right]$$
+>>>>>>> 75c26aca4245f06f19f767709f3697abe6d41eba
 \end{mdframed}
 
 Where $\textbf{u}_x$ and $\textbf{u}_y$ are the $x$- and $y$-components of 
 \textbf{u}, respectively. 
 
-\textbf{Example}: Find the directional derivative $D_u f(x, y)$ if $f(x, y) = 
-y^3 - 3xy + 4x^2$ and \textbf{u} is the unit vector given by the angle $\theta 
-= \pi/3$. What is the rate of change in the direction of \textbf{u} at $(1, 2)$?
+\textbf{Example}: Find the directional derivative $D_{\textbf{u}} f(x, y)$ if 
+$f(x, y) = y^3 - 3xy + 4x^2$ and \textbf{u} is the unit vector given by the 
+angle $\theta = \pi/3$. What is the rate of change in the direction of 
+\textbf{u} at $(1, 2)$?
 
 \textbf{Solution}: We can describe \textbf{u} thusly:
 $$\textbf{u} = \left[ \cos{ \frac{\pi}{3} }, \sin{ \frac{\pi}{3}} \right] = 
 \left[ \frac{1}{2}, \frac{\sqrt{3}}{2} \right]$$
 
 And therefore:
-$$D_u f(x, y) = f_x(x, y) \left( \frac{1}{2} \right) + f_y(x, y) \left( \frac{
-\sqrt{3}}{2} \right) $$
+$$D_{\textbf{u}} f(x, y) = f_x(x, y) \left( \frac{1}{2} \right) + f_y(x, y) 
+\left( \frac{\sqrt{3}}{2} \right) $$
 $$= \frac{\partial}{\partial x} \left( y^3 - 3xy + 4x^2 \right) \left( 
 \frac{1}{2} \right) + \frac{\partial}{\partial y} \left( y^3 - 3xy + 4x^2 
 \right) \left( \frac{\sqrt{3}}{2} \right)$$
@@ -1062,7 +1359,7 @@ $$= \frac{1}{2} \left( -3y + 8x \right) + \frac{\sqrt{3}}{2} \left( 3y^2 - 3x
 $$= \frac{-3}{2}y + 4x + \frac{3\sqrt{3}}{2}y^2 - \frac{3\sqrt{3}}{2}x = \frac{
 3\sqrt{3}}{2}y^2 + \frac{8-3\sqrt{3}}{2}x - \frac{3}{2}y$$
 
-And therefore $D_u f(1, 2)$ is:
+And therefore $D_{\textbf{u}} f(1, 2)$ is:
 $$= \frac{3\sqrt{3}}{2} \left( 2 \right)^2 + \frac{8 - 3\sqrt{3}}{2} \left( 1 
 \right) - \frac{3}{2} \left( 2 \right) = 6\sqrt{3} + 4 - \frac{3\sqrt{3}}{2} - 
 3$$
@@ -1112,7 +1409,7 @@ Therefore, the $x$-component of the unit vector, \textbf{u}, is given by:
 $$\textbf{u}_x = |\textbf{u}| \cos{ \theta} = \cos{ \left( \arctan{ \frac{
 \textbf{v}_y}{\textbf{v}_x}} \right)}$$
 
-And similarly, we know that:
+Similarly, we know that:
 $$\textbf{u}_y = |\textbf{u}| \sin{ \theta} = \sin{ \left( \arctan{ \frac{
 \textbf{v}_y}{\textbf{v}_x}} \right)}$$
 
@@ -1129,41 +1426,74 @@ Therefore, a unit vector in the same direction as \textbf{v} is $\textbf{u} =
 \left[ 2/\sqrt{5}, 1/\sqrt{5} \right]$. 
 
 And we can find the directional derivative:
-$$D_u(x, y) = \textbf{u}_x \left[ \frac{\partial}{\partial x} f(x, y) \right] 
-+ \textbf{u}_y \left[ \frac{\partial}{\partial y} f(x, y) \right]$$
-$$D_u(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left[ \frac{\partial}{
-\partial x} \left( 3x\sqrt{y} \right) \right] + \left( \frac{1}{\sqrt{5}} 
-\right) \left[ \frac{\partial}{\partial y} \left( 3x\sqrt{y} \right) \right]$$
-$$D_u(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left( 3\sqrt{y} \right) + 
-\left( \frac{1}{\sqrt{5}} \right) \left( \frac{3x}{2\sqrt{y}} \right)$$
-$$D_u(x, y) = \frac{12y + 3x}{2\sqrt{5y}}$$
+$$D_{\textbf{u}}(x, y) = \textbf{u}_x \left[ \frac{\partial}{\partial x} f(x, 
+y) \right] + \textbf{u}_y \left[ \frac{\partial}{\partial y} f(x, y) \right]$$
+$$D_{\textbf{u}}(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left[ \frac{
+\partial}{\partial x} \left( 3x\sqrt{y} \right) \right] + \left( \frac{1}{
+\sqrt{5}} \right) \left[ \frac{\partial}{\partial y} \left( 3x\sqrt{y} \right) 
+\right]$$
+$$D_{\textbf{u}}(x, y) = \left( \frac{2}{\sqrt{5}} \right) \left( 3\sqrt{y} 
+\right) + \left( \frac{1}{\sqrt{5}} \right) \left( \frac{3x}{2\sqrt{y}} 
+\right)$$
+$$D_{\textbf{u}}(x, y) = \frac{12y + 3x}{2\sqrt{5y}}$$
 
-And to find the magnitude of the directional derivative at $(1, 4)$, we 
+To find the magnitude of the directional derivative at $(1, 4)$, we 
 substitute for $x$ and $y$:
-$$D_u(1, 4) = \frac{12(4) + 3(1)}{2\sqrt{5(4)}} = \frac{51}{4\sqrt{5}} 
+$$D_{\textbf{u}}(1, 4) = \frac{12(4) + 3(1)}{2\sqrt{5(4)}} = \frac{51}{4\sqrt{5}} 
 \approx 5.702$$
 
 \subsection{Unit Vectors in Higher Dimensions}
-The trigonometric explanation for finding unit vectors is more difficult to visualize in higher dimensions. However, there is another method that works well in 2, 3, and higher dimensions. Recall that the magnitude of a vector, $\textbf{v} = \left[ \textbf{v}_x, \textbf{v}_y \right]$ is given by $| \textbf{v} | = \sqrt{\left( \textbf{v}_x \right)^2 + \left( \textbf{v}_y \right)^2}$. For a vector with $n$ dimensions, $\textbf{v} = \left[ \textbf{v}_1, \textbf{v}_2, \cdots , \textbf{v}_n \right]$, the magnitude is given by $| \textbf{v} | = \sqrt{ \left( \textbf{v}_1 \right)^2 + \left( \textbf{v}_2 \right)^2 + \cdots + \left( \textbf{v}_n \right)^2}$. 
+The trigonometric explanation for finding unit vectors is more difficult to 
+visualize in higher dimensions. However, there is another method that works 
+well in 2, 3, and higher dimensions. Recall that the magnitude of a vector, 
+$\textbf{v} = \left[ \textbf{v}_x, \textbf{v}_y \right]$ is given by $| 
+\textbf{v} | = \sqrt{\left( \textbf{v}_x \right)^2 + \left( \textbf{v}_y 
+\right)^2}$. For a vector with $n$ dimensions, $\textbf{v} = \left[ \textbf{v}_
+1, \textbf{v}_2, \cdots , \textbf{v}_n \right]$, the magnitude is given by $| 
+\textbf{v} | = \sqrt{ \left( \textbf{v}_1 \right)^2 + \left( \textbf{v}_2 
+\right)^2 + \cdots + \left( \textbf{v}_n \right)^2}$. 
 
-To find a unit vector, \textbf{u}, in the same direction as \textbf{v}, we can scale \textbf{v} up or down so that its magnitude is 1. We can do this by dividing by \textbf{v}'s magnitude. Consider the two-dimensional vector used in the last example, $\textbf{v} = \left[ 2, 1 \right]$. Its magnitude is:
+To find a unit vector, \textbf{u}, in the same direction as \textbf{v}, we can 
+scale \textbf{v} up or down so that its magnitude is 1. We can do this by 
+dividing by \textbf{v}'s magnitude. Consider the two-dimensional vector used 
+in the last example, $\textbf{v} = \left[ 2, 1 \right]$. Its magnitude is:
 $$| \textbf{v} | = \sqrt{\left( 2 \right)^2 + \left( 1 \right)^2} = \sqrt{5}$$
 
 Let's check if $\textbf{v} / | \textbf{v} |$ is a unit vector:
-$$ \frac{\textbf{v}}{|\textbf{v}|} = \left( \frac{1}{\sqrt{5}} \right) \left[ 2, 1 \right] = \left[ \frac{2}{\sqrt{5}}, \frac{1}{\sqrt{5}} \right]$$
+$$ \frac{\textbf{v}}{|\textbf{v}|} = \left( \frac{1}{\sqrt{5}} \right) \left[ 
+2, 1 \right] = \left[ \frac{2}{\sqrt{5}}, \frac{1}{\sqrt{5}} \right]$$
 
 And the magnitude of this scaled vector is:
-$$ \left| \frac{\textbf{v}}{| \textbf{v} |} \right| = \sqrt{\left( \frac{2}{\sqrt{5}} \right)^2 + \left( \frac{1}{\sqrt{5}} \right)^2} = \sqrt{\frac{4}{5} + \frac{1}{5}} = \sqrt{1} = 1$$
+$$ \left| \frac{\textbf{v}}{| \textbf{v} |} \right| = \sqrt{\left( \frac{2}{
+\sqrt{5}} \right)^2 + \left( \frac{1}{\sqrt{5}} \right)^2} = \sqrt{\frac{4}{5} 
++ \frac{1}{5}} = \sqrt{1} = 1$$
 
-Notice our unit vector is the same as we found using the trigonometric method above. 
+Notice our unit vector is the same as we found using the trigonometric method 
+above. 
 
-Another way to think of the question is: what factor, $k$, can we multiply \textbf{v} by to yield a vector with a magnitude of 1? Let's see this method for the 3-dimensional vector $\textbf{v} = \left[ 3, 2, 1 \right]$. We are looking for a $k$ such that:
+<<<<<<< HEAD
+Another way to think of the question is: what factor, $k$, can we multiply 
+\textbf{v} by to yield a vector with a magnitude of 1? Let's see this method 
+for the 3-dimensional vector $\textbf{v} = \left[ 3, 2, 1 \right]$. We are 
+looking for a $k$ such that:
+=======
+Another way to think of the question is: What factor, $k$, can we multiply \textbf{v} by to yield a vector with a magnitude of 1? Let's see this method for the 3-dimensional vector $\textbf{v} = \left[ 3, 2, 1 \right]$. We are looking for a $k$ such that:
+>>>>>>> 75c26aca4245f06f19f767709f3697abe6d41eba
 $$|k\textbf{v}| = 1$$
-$$|k \textbf{v}| = \left| \left[ 3k, 2k, 1k \right] \right| = \sqrt{\left( 3k \right)^2 + \left( 2k \right)^2 + \left( 1k \right)^2}$$
+$$|k \textbf{v}| = \left| \left[ 3k, 2k, 1k \right] \right| = \sqrt{\left( 3k 
+\right)^2 + \left( 2k \right)^2 + \left( 1k \right)^2}$$
 $$= \sqrt{9k^2 + 4k^2 + k^2} = k\sqrt{14} = 1$$
 
-Which implies that $k = 1/\sqrt{14}$, which is $1/|\textbf{v}|$. And therefore a unit vector in the same direction as $\textbf{v} = \left[ 3, 2, 1 \right]$ is:
+<<<<<<< HEAD
+Which implies that $k = 1/\sqrt{14}$, which is $1/|\textbf{v}|$. And therefore 
+a unit vector in the same direction as $\textbf{v} = \left[ 3, 2, 1 \right]$ 
+is:
+$$\textbf{u} = \frac{1}{\sqrt{14}} \left[ 3, 2, 1 \right] = \left[ \frac{3}{
+\sqrt{14}}, \frac{2}{\sqrt{14}}, \frac{1}{\sqrt{14}} \right]$$
+=======
+Which implies that $k = 1/\sqrt{14}$, which is $1/|\textbf{v}|$. Therefore, a unit vector in the same direction as $\textbf{v} = \left[ 3, 2, 1 \right]$ is:
 $$\textbf{u} = \frac{1}{\sqrt{14}} \left[ 3, 2, 1 \right] = \left[ \frac{3}{\sqrt{14}}, \frac{2}{\sqrt{14}}, \frac{1}{\sqrt{14}} \right]$$
+>>>>>>> 75c26aca4245f06f19f767709f3697abe6d41eba
 
 
 \begin{Exercise}[title = {Finding Directional Derivatives}, label = direction]
@@ -1273,10 +1603,15 @@ The directional derivative can be written as the dot product of two vectors:
 $$D_u f(x, y) = af_x(x, y) + bf_y(x, y) = \left[ f_x(x, y), f_y(x, y) \right] 
 \cdot \textbf{u}$$
 
+<<<<<<< HEAD
+The first vector, $\left[ f_x(x, y), f_y(x, y) \right]$, is called \textit{the 
+gradient of f}\index{gradient}, and is noted as $\nabla f$. 
+=======
 The first vector, $\left[ f_x(x, y), f_y(x, y) \right]$ is called \textit{the 
 gradient of f}\index{gradient} and is noted as $\nabla f$. The gradient 
 operator, $\nabla$, is the derivative of a scalar function that results in a 
 vector which shows the magnitude and direction of the greatest rate of change. 
+>>>>>>> eabbbcc8b878e818b0fd1aeab6d3a95ed058f052
 
 \begin{mdframed}[style = important, frametitle = {The Gradient}]
 For a two-variable function, $f(x, y)$, the gradient of $f$ is the vector:
@@ -1288,7 +1623,7 @@ $y$-directions, respectively.
 \end{mdframed}
 
 Think back to the elevation example we opened the chapter with. What if we 
-wanted to complete our ascent as quickly as possible? Then we would want to 
+wanted to complete our ascent as quickly as possible? We would want to 
 know the direction in which the elevation is changing the fastest. This occurs 
 when the direction we are going is the same direction as the gradient vector, 
 $\nabla f$. 
@@ -1378,7 +1713,7 @@ positive $y$-direction to be north.
     $$\nabla f(50, 50) = \left[ -0.02(50), -0.04(50) \right] = \left[ -1, -2 
     \right]$$
 
-    Therefore the rate of greatest elevation change is in a south-by-southwest 
+    Therefore, the rate of greatest elevation change is in a south-by-southwest 
     direction indicated by the vector $\left[ -1, -2 \right]$ and the rate of 
     elevation change is $\left| \nabla f(50, 50) \right| = \sqrt{(-1)^2 + (-2)^
     2} = \sqrt{5}$. Notice this is greater than the other two rates of change 
@@ -1389,13 +1724,17 @@ positive $y$-direction to be north.
 \section{Applications of Partial Derivatives and Gradients}
 
 \subsection{Laplace's Equation}
-A partial differential equation that has applications in fluid dynamics and electronics is Laplace's equation\index{Laplace's equation}. Solutions to Laplace's equation are called \textit{harmonic functions}. 
+A partial differential equation that has applications in fluid dynamics and 
+electronics is Laplace's equation\index{Laplace's equation}. Solutions to 
+Laplace's equation are called \textit{harmonic functions}. 
 
 \begin{mdframed}[style = important, frametitle = {Laplace's Equation}]
-Consider a twice-differntiable function, $f$. In two dimensions, Laplace's Equation is given by:
+Consider a twice-differentiable function, $f$. In two dimensions, Laplace's 
+Equation is given by:
 $$ \frac{\partial ^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 0$$
 And in three dimensions, 
-$$\frac{\partial ^2 f}{\partial x^2} + \frac{\partial ^2 f}{\partial y^2} + \frac{\partial ^2 f}{\partial z^2} = 0$$
+$$\frac{\partial ^2 f}{\partial x^2} + \frac{\partial ^2 f}{\partial y^2} + 
+\frac{\partial ^2 f}{\partial z^2} = 0$$
 \end{mdframed}
 
 Another way to represent Laplace's equation is:
@@ -1403,8 +1742,293 @@ $$\delta f = \nabla^2 f = \nabla \cdot \nabla f = 0$$
 
 Where $\nabla ^2 = \delta$ is called the \textit{Laplace operator}. 
 
-\textbf{Example}:
+\textbf{Example}: Determine whether or not $f = x^2 + y^2$ is a solution to 
+Laplace's equation. 
+
+\textbf{Solution}: We are checking to see if $\frac{\partial^2 f}{\partial 
+x^2} + \frac{\partial^2 f}{\partial y^2} = 0$ for $f(x, y) = x^2 + y^2$. 
+Finding $\partial^2 f / \partial x^2$:
+$$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ \frac{
+\partial}{\partial x} \left( x^2 + y^2 \right) \right]$$
+$$= \frac{\partial}{\partial x} \left( 2x \right) = 2$$
+
+And finding $\partial^2 f / \partial y^2$:
+$$\frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y} \left[ \frac{
+\partial}{\partial y} \left( x^2 + y^2 \right) \right]$$
+$$= \frac{\partial}{\partial y} \left( 2x \right) = 2$$
+
+Then $\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 
+2 + 2 = 4 \neq 0$. Therefore, $f(x, y) = x^2 + y^2$ is not a solution to 
+Laplace's equation. 
+
+\begin{Exercise}[title = {Solutions to Laplace's Equation}, label = laplace]
+Determine whether the function is a solution to Laplace's equation. 
+\begin{enumerate}
+    \item $f(x, y) = x^2 - y^2$
+    \item $f(x, y) = \sin{x} \cosh{y} + \cos{x} \sinh{y}$
+    \item $f(x, y) = e^{-x} \cos{y} - e^{-y} \cos{x}$
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = laplace]
+\begin{enumerate}
+    \item $$\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial 
+    y^2} = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} 
+    \left( x^2 - y^2 \right) \right] + \frac{\partial}{\partial y} \left[ 
+    \frac{\partial}{\partial y} \left( x^2 - y^2 \right) \right]$$
+    $$= \frac{\partial}{\partial x} \left[ 2x \right] + \frac{\partial}{
+    \partial y} \left[ -2y \right] = 2 - 2 = 0$$
+
+    Therefore, $f(x, y) = x^2 - y^2$ is a solution to Laplace's equation. 
+
+    \item $$\frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} 
+    = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} \left( 
+    \sin{x} \cosh{y} + \cos{x} \sinh{y} \right) \right] + \frac{\partial}{
+    \partial y} \left[ \frac{\partial}{\partial y} \left( \sin{x} \cosh{y} + 
+    \cos{x} \sinh{y} \right) \right]$$
+    $$= \frac{\partial}{\partial x} \left[ \cos{x} \cosh{y} - \sin{x} \sinh{y} 
+    \right] + \frac{\partial}{\partial y} \left[ \sin{x} \sinh{y} + \cos{x} 
+    \cosh{y} \right]$$
+    $$= -\sin{x}\cosh{y} - \cos{x}\sinh{y} + \sin{x}\cosh{y} + \cos{x} \sinh{
+    y} = 0$$
+
+    Therefore, $f(x, y) = \sin{x}\cosh{y} + \cos{x}\sinh{y}$ is a solution to 
+    Laplace's equation.
+
+    \item $$\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial 
+    y^2} = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} 
+    \left( e^{-x}\cos{y} - e^{-y}\cos{x} \right) \right] + \frac{\partial}{
+    \partial y} \left[ \frac{\partial}{\partial y} \left( e^{-x} \cos{y} - 
+    e^{-y} \cos{x} \right) \right]$$
+    $$= \frac{\partial}{\partial x} \left[ -e^{-x}\cos{y} + e^{-y}\sin{x} 
+    \right] + \frac{\partial}{\partial y} \left[ -e^{-x}\sin{y} + e^{-y} 
+    \cos{x} \right]$$
+    $$= e^{-x} \cos{y} + e^{-y} \cos{x} - e^{-x} \cos{y} - e^{-y} \cos{x} = 0$$
+
+    Therefore, $f(x, y) = e^{-x}\cos{y} - e^{-y}\cos{x}$.
+\end{enumerate}
+\end{Answer}
 
 \subsection{The Wave Equation}
+Another useful equation with partial derivatives is the Wave Equation:
+$$\frac{\partial^2 f}{\partial t^2} = a^2 \frac{\partial^2 f}{\partial x^2}$$
+
+Where $f$ is a function of $x$ and $t$ and $a$ is a constant. This equation 
+describes waves, such as a vibrating string, light waves, or sound waves. 
+
+\textbf{Example}: Show that $f(x, t) = \sin{ \left( x - at \right)}$ satisfies 
+the wave equation. 
+
+\textbf{Solution}: First, we find the second partial derivatives:
+$$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ \frac{
+\partial}{\partial t} \left( \sin{ \left( x - at \right)} \right) \right] = 
+\frac{\partial}{\partial t} \left[ -a\cos{\left(x - at \right)} \right] = -a^2
+\sin{\left(x - at \right)}$$
+
+$$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ \frac{
+\partial}{\partial x} \left( \sin{ \left( x - at \right)} \right) \right] = 
+\frac{\partial}{\partial x} \left[ \cos{\left( x - at \right)}\right] = -\sin{
+\left( x - at \right)}$$
+
+And we see that:
+$$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 \sin{\left(x - at \right)} = 
+\frac{\partial^2 f}{\partial t^2}$$
+
+Therefore, this function satisfies the wave equation. 
+
+\begin{Exercise}[title = {The Wave Equation}, label = wave]
+Show that the following functions satisfy the wave equation:
+\begin{enumerate}
+    \item $f(x, t) = \cos{\left(kx \right)}\cos{\left(akt \right)}$
+    \item $f(x, t) = \sin{\left( x - at \right)} + \ln{ \left( x + at 
+    \right)}$
+    \item $f(x, t) = \frac{t}{a^2t^2 - x^2}$
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = wave]
+\begin{enumerate}
+    \item Finding the partial derivatives:
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
+    \frac{\partial}{\partial t} \left( \cos{ \left( k x \right)} \cos{ \left( 
+    a k t \right)} \right) \right] = \frac{\partial}{\partial t} \left[ -a k 
+    \cos{ \left( k x \right)} \sin{ \left( a k t \right)} \right]$$
+    $$\frac{\partial^2 f}{\partial t^2} = -a^2 k^2 \cos{ \left( k x \right)} 
+    \cos{ \left( a k t \right)}$$
+
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
+    \frac{\partial}{\partial x} \left( \cos{\left( k x \right)}\cos{\left( a k 
+    t \right)} \right) \right] = \frac{\partial}{\partial x} \left[ -k \sin{ 
+    \left( k x \right)} \cos{ \left( a k t \right)} \right]$$
+    $$\frac{\partial^2 f}{\partial x^2} = -k^2 \cos{ \left( k x \right)} \cos{ 
+    \left( a k t \right)}$$
+
+    And we see that:
+    $$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 k^2 \cos{ \left( k x 
+    \right)} \cos{ \left( a k t \right)} = \frac{\partial^2 f}{\partial t^2}$$
+
+    Therefore, $f(x, t) = \cos{\left( k x \right)}\cos{\left( a k t \right)}$ 
+    satisfies the wave equation. 
+
+    \item Finding the partial derivatives:
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
+    \frac{\partial}{\partial t} \left( \sin{\left( x - a t \right)} + \ln{ 
+    \left( x + a t \right)} \right) \right]$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
+    -a \cos{ \left( x - a t \right)} + \frac{a}{x + a t} \right] = -a^2 \sin{ 
+    \left( x - a t \right)} + \frac{-a^2}{\left( x + a t \right)^2}$$
+
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
+    \frac{\partial}{\partial x} \left( \sin{ \left( x - a t \right)} + \ln{ 
+    \left( x + a t \right)} \right) \right]$$
+
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
+    \cos{ \left( x - a t \right)} + \frac{1}{x + a t} \right] = -\sin{ \left( 
+    x - a t \right)} + \frac{-1}{\left( x + a t \right)^2}$$
+
+    And we see that:
+    $$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 \sin{ \left( x - a t 
+    \right)} + \frac{-a^2}{\left( x + a t \right)^2} = \frac{\partial^2 f}{
+    \partial t^2}$$
+
+    Therefore, $f(x, t) = \sin{ \left( x - a t \right)} + \ln{ \left( x + a t 
+    \right)}$ satisfies the wave equation. 
+
+    \item Finding the partial derivatives:
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
+    \frac{\partial}{\partial t} \left( \frac{t}{a^2 t^2 - x^2} \right) \right] 
+    = \frac{\partial}{\partial t} \left[ \frac{\left(a^2 t^2 - x^2 \right) - t 
+    \left(2 a^2 t \right)}{\left( a^2 t^2 - x^2 \right)^2} \right]$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
+    \frac{a^2 t^2 - x^2 - 2 a^2 t^2}{\left( a^2 t^2 - x^2 \right)^2} \right] = 
+    \frac{\partial}{\partial t} \left[ \frac{-a^2 t^2 - x^2}{\left( a^2 t^2 - 
+    x^2 \right)^2} \right]$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\left( a^2 t^2 - x^2 \right)^2 
+    \left(-2 a^2t \right) - \left( -a^2 t^2 - x^2 \right) \left( 2 \left( a^2 
+    t^2 - x^2 \right) \left( 2 a^2 t \right) \right)}{\left( a^2 t^2 - x^2 
+    \right)^4}$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{\left( a^2 t^2 - x^2 \right) 
+    \left( -2 a^2 t \right) - \left( -a^2 t^2 - x^2 \right) \left( 4 a^2 t 
+    \right)}{\left( a^2 t^2 - x^2 \right)^3}$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{ -2 a^4 t^3 + 2 a^2 t x^2 + 4 
+    a^4 t^3 + 4 a^2  t x^2}{\left( a^2 t^2 - x^2 \right)^3}$$
+    $$\frac{\partial^2 f}{\partial t^2} = \frac{ 2 a^4 t^3 + 6 a^2 t x^2}{
+    \left( a^2 t^2 - x^2 \right)^3} = 2 a^2 t \left( \frac{a^2 t^2 + 3 x^2}{
+    \left( a^2 t^2 - x^2 \right)^3} \right)$$
+
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
+    \frac{\partial}{\partial x} \left( \frac{t}{a^2 t^2 - x^2} \right) \right] 
+    = \frac{\partial}{\partial x} \left[ \frac{\left( a^2 t^2 - x^2 \right) 
+    \left( 0 \right) - t \left( -2 x \right)}{\left( a^2  t^2 - x^2 \right)^2} 
+    \right]$$
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
+    \frac{2 t x}{\left( a^2 t^2 - x^2 \right)^2} \right] = \frac{\left( a^2 
+    t^2 - x^2 \right)^2 \left( 2 t \right) - \left( 2 t x \right) \left( 2 
+    \left( a^2 t^2 - x^2 \right) \left( -2 x \right) \right)}{\left( a^2 t^2 - 
+    x^2 \right)^4}$$
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{\left( a^2 t^2 - x^2 \right) 
+    \left( 2 t \right) - \left( 2 t x \right) \left( 2 \right) \left( -2 x 
+    \right)}{\left( a^2 t^2 - x^2 \right)^3}$$
+    $$\frac{\partial^2 f}{\partial x^2} = \frac{2 a^2 t^3 - 2 t x^2 + 8 t x^2}{
+    \left( a^2 t^2 - x^2 \right)^3} = \frac{2 a^2 t^3 + 6 t x^2}{\left( a^2 
+    t^2 - x^2 \right)^3} = 2 t \left( \frac{a^2 t^2 + 3 x^2}{\left( a^2 t^2 - 
+    x^2 \right)^3} \right)$$
+
+    And we see that:
+    $$a^2 \frac{\partial^2 f}{\partial x^2} = 2 a^2 t \left( \frac{a^2 t^2 + 3 
+    x^2}{\left( a^2 t^2 - x^2 \right)^3} \right) = \frac{\partial^2 f}{
+    \partial t^2}$$
+
+    Therefore, $f(x, t) = \frac{t}{a^2t^2 - x^2}$ satisfies the wave equation. 
+\end{enumerate}
+\end{Answer}
 
 \subsection{Cobb-Douglas Production Function}
+The Cobb-Douglas function describes the marginal utility of capital and labor 
+as theorized by the economists Charles Cobb and Paul Douglas. Capital 
+investments are things like new machinery, expanded factories, or raw 
+materials. Labor investments involve hiring more workers or improving 
+working conditions to improve work rates. We can describe total production, 
+$P$, as a function of labor, $L$, and capital, $K$. Cobb and Douglas posit 
+three conditions:
+\begin{enumerate}
+\item Without either labor or capital, production will cease.
+\item The marginal utility of labor is proportional to the amount of production 
+per unit of labor.
+\item The marginal utility of capital is proportional to the amount of 
+production per unit of capital.
+\end{enumerate}
+
+The marginal utility of labor is given by the partial derivative, $\partial P 
+/ \partial L$ and the production per unit of labor is given by $P / L$. 
+Therefore, statement 2 says that:
+$$\frac{\partial P}{\partial L} = \alpha \frac{P}{L}$$
+
+where $\alpha$ is some constant. Keeping $K$ constant at $K = K_0$, we have 
+the differential equation:
+$$ \frac{d P}{d L} = \alpha \frac{P}{L}$$
+
+Solving, we find that:
+$$P(L, K_0) = C_1 \left( K_0 \right) L^{\alpha}$$
+
+We make $C_1$ a function of $K_0$ because it could depend on $K_0$. In a 
+similar manner to above, we can write statement 3 as a mathematical statement:
+$$\frac{\partial P}{\partial K} = \beta \frac{P}{K}$$
+
+where $\beta$ is also a constant. Keeping $L = L_0$ and solving, we see that:
+$$P(L_0, K) = C_2(L_0)K^{\beta}$$
+
+again, we assume $C_2$ is a function of the fixed labor, $L_0$. Combining 
+these equations, we get:
+$$P(L, K) = bL^{\alpha} K^{\beta}$$
+
+where $b$ is a constant independent of capital and labor. Additionally, from 
+statement 1, we know that $\alpha > 0$ and $\beta > 0$. What happens if both 
+labor and capital are increased by a factor of $n$? Let's examine the effect 
+on $P$:
+$$P(nL, nK) = b \left( nL \right)^{\alpha} \left( nK \right)^{\beta}$$
+$$P(nL, nK) = n^{\alpha + \beta} b L^{\alpha} K^{beta} = n^{\alpha + \beta} 
+P(L, K)$$
+
+Cobb and Douglas noted that if $\alpha + \beta = 1$, then $P(nL, nK) = nP(L, 
+K)$, and therefore increasing labor and capital by a factor of $n$ increases 
+production by a factor of $n$ as well. Therefore, the Cobb-Douglas equation 
+assumes $\alpha + \beta = 1$ and can be written as:
+$$P(L, K) = bL^{\alpha}K^{1 - \alpha}$$
+
+\begin{Exercise}[title = {Cobb-Douglas Production Model}, label = cobb]
+Cobb and Douglas modeled production in the US from 1900 to 1922 with the 
+equation $P(L, K) = 1.01L^{0.75} K^{0.75}$. 
+\begin{enumerate}
+\item Express the marginal utility of labor as a function of $L$ and $K$.
+\item Express the marginal utility of capital as a function of $L$ and $K$.
+\item In 1916, $L = 382$ and $K = 126$ (compared to initial values of $100$ in 
+1900). What is the marginal utility of labor in 1916? Of capital?
+\item Based on your answer to the previous question, would you invest in 
+capital or labor if you owned a factory in 1916? Why?
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = cobb]
+\begin{enumerate}
+    \item The marginal utility of labor is given by $\partial P / \partial L$:
+    $$\frac{\partial P}{\partial L} = \frac{\partial}{\partial L} \left[ 1.01 
+    L^{0.75} K^{0.25} \right] = 0.7575 L^{-0.25} K^{0.25}$$
+    \item The marginal utility of capital is given by $\partial P / \partial 
+    K$:
+    $$\frac{\partial P}{\partial K} = \frac{\partial}{\partial K} \left[ 1.01 
+    L^{0.75} K^{0.25} \right] = 0.2525 L^{0.75} K^{-0.75}$$
+    \item Finding the marginal utility of labor in 1916:
+    $$\frac{\partial P}{\partial L} = 0.7575 \left( 382 \right)^{-.25} \left( 
+    126 \right)^{0.25} \approx 0.574$$
+    And finding the marginal utility of capital in 1916:
+    $$\frac{\partial P}{\partial K} = 0.2525 \left( 382 \right)^{0.75} \left( 
+    126 \right)^{-0.75} \approx 0.580$$
+    \item Since the marginal utility of capital is greater, I would invest in 
+    capital. This would yield a greater increase in production than the same 
+    investment in labor. 
+\end{enumerate}
+\end{Answer}

@@ -1,10 +1,10 @@
 \chapter{Conditional Probability}
 
 Let's say there is a virus going around, and there is a vaccine for it
-that requires 2 shots. You are working at a school, and you are
+that requires two shots. You are working at a school, and you are
 wondering how effective the vaccines are. Some students are
 unvaccinated, some have had one shot, and some have had two shots. One
-day you test all 644 students to see who has the virus. You end up
+day, you test all 644 students to see who has the virus. You end up
 with the following table:
 % Diagram, 
 \begin{tabular}{c | c c c}
@@ -14,7 +14,7 @@ with the following table:
   $T_{-}$ & 92 students & 76 students & 256 students \\
 \end{tabular}
 
-Here are what the symbols mean:
+Here is what each symbol means:
 
 \begin{itemize}
 \item $V_0$: student has had zero vaccination shots
@@ -27,7 +27,7 @@ Here are what the symbols mean:
 So, for example, your data indicates that 76 students who
 had only one of the two shots and tested negative for the virus.
 
-Your principal has a few questions. The first is ``If I put five
+Your principal has a few questions. The first is, ``If I put five
 randomly chosen students in a study group together, what is the
 probabiltiy that one of them has the virus?''
 
@@ -43,8 +43,8 @@ students).
   $T_{-}$ & $p(V_0 \text{ AND } T_{-}) = 14.3\%$ & $p(V_1 \text{ AND } T_{-}) = 11.8\%$ & $p(V_2 \text{ AND } T_{-}) = 39.8\%$
 \end{tabular}
 
-(In this table, I expressed the number as a percentage with a decimal
-point -- you had to round off the numbers. If you wanted exact answers, you
+(In this table, we expressed the number as a percentage with a decimal
+point --- you had to round off the numbers. If you wanted exact answers, you
 would have to keep each as a fraction: 36 students represents
 $\frac{9}{161}$ of the student body.)
 
@@ -62,24 +62,24 @@ Now we can sum across the columns and rows.
 \end{tabular}
 
 If a child is chosen randomly from the entire student body, there is
-a 34.2\% that the student has tested positive for the virus. And there is
+a 34.2\% that the student has tested positive for the virus, and there is
 17.4\% chance that the student has one shot of the vaccine.
 
 This summing of the probabilities across one dimension is known as
 \textit{marginalizing}. Marginalization is just summing across all the
-variables that you don't care about. You don't care who has the virus,
+variables that you don't care about. If you don't care who has the virus,
 just the probability that a student has not received even one shot of
-the vaccine? You marginalize all the vaccine statuses.
+the vaccine, you can simply marginalize all the vaccine statuses.
 
 To answer the principal's question, the easy thing to do is find the
-answer of the opposite ``if I put five randomly chosen students in a
+answer of the opposite: ``if I put five randomly chosen students in a
 study group together, what is the probabiltiy that \textit{none} of
 them has tested positive for the virus?''
 
 The chance that a randomly chosen student doesn't have the virus
-($p(T_{-}$) is 54.7\%.  Thus the chance that 5 randomly chosen
+($p(T_{-}$) is 54.7\%.  This means the chance that 5 randomly chosen
 students don't have the virus is $0.547 \times 0.547 \times 0.547
-\times 0.547 \times 0.547 = 0.0489$ Thus the probability of the
+\times 0.547 \times 0.547 = 0.0489$ Thus, the probability of the
 opposite is $1.0 - 0.0489 = 0.951$
 
 The answer, then, is ``If you put 5 kids in a study group together,
@@ -89,12 +89,12 @@ virus.''
 
 \section{Conditional Probability}
 
-Now the principal asks you, ``What if I make a group of 5 kids who
+Now the principal asks you, ``What if I make a group of five kids who
 have had both shots of the vaccine? What are the odds that one of them
 has tested positive for the virus?''
 
 This involves the idea of \textit{Conditional probability}.  You want
-to know the odds that a student doesn't have the virus given that
+to know the odds that a student doesn't have the virus, given that
 the student has had both shots of the vaccine.
 
 There is a mathematical notation for this:
@@ -111,7 +111,7 @@ divide by the total number of students who had both vaccination shots.
 $$p(T_{-} | V_{2}) = \frac{256}{96 + 256} = \frac{8}{11} \approx 72.7\%$$
 
 If we are working from the probabilities, you can get the same result
-this way: Divide the probability that a randomly chosen student had a
+this way. Divide the probability that a randomly chosen student had a
 positive test \textit{and} both vaccination shots by the probabiltiy
 that a student had both vaccination shots:
 
@@ -121,10 +121,10 @@ Notice that this is different from $p( V_{2} | T_{-})$, which is the
 probability that a student has had both vaccinations, given they
 tested negative for the virus.
 
-Back to the principal's question: "If you have 5 students who have had
+Back to the principal's question: ``If you have five students who have had
 both vaccinations, what is the probability that all of them tested
-negative for the virus?" The probability that one student is virus-free
-is $\frac{8}{11}$, so the probability that 5 students are virus-free
+negative for the virus?'' The probability that one student is virus-free
+is $\frac{8}{11}$, so the probability that five students are virus-free
 is $\frac{8}{11}^5 \approx 0.203$.  So, there is a $79.6\%$ chance
 that at least one of the five has the virus.
 % KA: https://www.khanacademy.org/math/statistics-probability/probability-library/conditional-probability-independence/v/calculating-conditional-probability
@@ -140,12 +140,12 @@ This is more commonly written like this:
 $$p(A \text{ AND } B) = \frac{p(A | B)}{p(B)}$$
 
 This is an abstract way of writing the idea, but the idea itself
-is pretty intuitive: The probability that I'm going to buy and ticket
-and win the lottery is equal to the probability that I buy a ticket
-times the probability that I win, given that I have bought a ticket.
+is pretty intuitive. The probability that you are going to buy a ticket
+and win the lottery is equal to the probability that you buy a ticket
+times the probability that you win, given that you have bought a ticket.
 (Here $A$ is ``win the lottery'' and $B$ is ``buy a ticket''.)
 
-This is known as \textit{The Chain Rule of Probability}.  And we can
+This is known as \textit{The Chain Rule of Probability}.  We can
 chain together as many events as we want: The probability that you are
 going to die in the car that you bought with your winnings from the
 lottery ticket you bought is:
@@ -161,7 +161,7 @@ where
 \item $Z =$ Buying a lottery ticket
 \end{itemize}
 
-In English, then, the equation says:
+In English, the equation says:
 
 ``The probability that you will die in a car accident, buy a car with
 lottery winnings, win the lottery, and buy a lottery ticket is equal

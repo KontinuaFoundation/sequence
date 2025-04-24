@@ -1,6 +1,6 @@
 \chapter{Bayesian Classifiers}
   
-You drop a net in several places in a lake.   You measure, weigh, and identify every fish to be one of the following 3: \texttt{trout}, \texttt{bass}, or \texttt{catfish}.  Here is a scatter plot of what you find.
+You drop a net in several places in a lake.   You measure, weigh, and identify every fish to be one of the following: \texttt{trout}, \texttt{bass}, or \texttt{catfish}.  Here is a scatter plot of what you find:
 
 \includegraphics[width=0.7\textwidth]{1_scatter.png}
 
@@ -28,19 +28,19 @@ $$P(\text{fish = trout}) = .403$$
 $$P(\text{fish = bass}) = .513$$
 $$P(\text{fish = trout}) = .083$$
 
-But, now the user makes an observation: The fish is 16 inches long and weighs 2.1 kg.  Can we update our beliefs based on this? Sounds like a job for conditional probability.
+However, now the user makes an observation: The fish is 16 inches long and weighs 2.1 kg.  Can we update our beliefs based on this? Sounds like a job for conditional probability.
 
 By the definition of conditional probability:
 
 $$P(\text{fish = trout} | \text{length = 16}, \text{weight = 2.1}) = \frac{p(\text{fish = trout} , \text{length = 16}, \text{weight = 2.1}) }{p( \text{length = 16}, \text{weight = 2.1}) }$$
 
-I'm going to run out of space,  so I will use $F$ to represent fish, $L$ to represent length, and $W$ to represent weight.
+At this rate, we are going to run out of space,  so we will use $F$ to represent fish, $L$ to represent length, and $W$ to represent weight.
 
-We can calculate the denominator by summing up all the possibilities.   Now the right-hand side is:
+We can calculate the denominator by summing up all the possibilities. Now, the right-hand side is:
 
 $$\frac{p(\text{F=trout} , \text{L=16}, \text{W=2.1}) }{p(\text{F=trout} , \text{L=16}, \text{W=2.1})  + p(\text{F=bass} , \text{L=16}, \text{W=2.1})  + p(\text{F=catfish} , \text{L=16}, \text{W=2.1})  }$$
 
-We can calculate the probability of all three possibilities (and they will add up to 1.0).
+We can calculate the probability of all three possibilities (which will add up to 1.0).
 
 \section{Naive Bayes}
 
@@ -95,7 +95,7 @@ $F$=Bass &  .1418 &.5753 \\
 $F$=Catfish  & .2516 & 0.01 \\
 \end{tabular}
 
-Now, using the naive assumption, we can compute the joint probability for any type of fish: 
+Using the naive assumption, we can now compute the joint probability for any type of fish: 
 
 $$p(F=?, L=16 , W=2.1) = p(W=2.1 | F=?) p(L=16 | F=?)p(F=?)$$
 
@@ -107,13 +107,13 @@ $F$=Bass &  .041886  \\
 $F$=Catfish  &  0.00001\\
 \end{tabular}
 
-The sum of these is $p(L=16, W=2.1)$: $.0586$
+The sum of these is $p(L=16, W=2.1)$: $.0586$.
 
 By the definition of conditional probability:
 
 $$p(F=? | L=16, W=2.1) = \frac{p(F=?, L=16, W=2.1) }{p(L=16, W=2.1)}$$
 
-So
+So,
 
 \begin{tabular}{c | c }
 For & $p(F=? | L=16, W=2.1)$ \\
@@ -127,19 +127,19 @@ If you pull a random fish out of the lake and its length is 16 and its weight is
 
 \section{Using the multivariate Gaussian distribution}
 
-Give the kind of fish, length and width are independent!?  That makes no sense.  Longer fish tend to be heavier, right?
+Given the kind of fish, length and width are independent!?  That makes no sense.  Longer fish tend to be heavier, right?
 
 The multivariate Gaussian distribution is a generalization of the normal distribution::
 \begin{itemize}
 \item It deals with data of any dimension $d$.
-\item It can includes the idea of covariance: For example, length and width are not independent.
+\item It can include the idea of covariance. For example, length and width are not independent.
 \end{itemize}
 
-If we use your naive Bayes,  we can get two dimensional density plots that would look like this:
+If we use your naive Bayes,  we can get two-dimensional density plots that would look like this:
 
 \includegraphics[width=0.55\textwidth]{4_indep_density.png}
 
-With independence,   the ovals are circles,  ovals that go up, or ovals that sideways.  If we use the multivariate Gaussian distribution, we get:
+With independence, there are ovals that are circles,  ovals that go up, or ovals that sideways.  If we use the multivariate Gaussian distribution, we get:
 
 \includegraphics[width=0.55\textwidth]{5_full.png}
 
@@ -147,21 +147,21 @@ When there is covariance,  the ovals can slant in any direction.
 
 If we discard the naive assumption,  we should get slightly more accurate results.
 
-The multivariate Gaussian distribution uses vectors and matrices.  The mean $\vec{\mu}$ is a vector of dimension $d$.    The variance of each variable and its covariance with the other variables is captured in a $d \times d$ matrix called \textit{the covariance matrix} usually called $\boldsymbol\Sigma$.  (Yes, this is also the symbol for summation.  This creates some confusion at times, but you can usually figure out which is intended by the context.)
+The multivariate Gaussian distribution uses vectors and matrices.  The mean $\vec{\mu}$ is a vector of dimension $d$. The variance of each variable and its covariance with the other variables is captured in a $d \times d$ matrix called \textit{the covariance matrix} is usually called $\boldsymbol\Sigma$.  (Yes, this is also the symbol for summation.  This creates some confusion at times, but you can usually figure out which is intended by the context.)
 
 When you know $\vec{\mu}$ and $\boldsymbol\Sigma$,  the probability density for any vector $\vec{x}$ is:
 
 $$p(\vec{x}) = (2\pi)^{-d/2}\det (\boldsymbol\Sigma)^{-1/2} \, \exp \left( -\frac{1}{2} (\vec{x} - \vec\mu)^\mathrm{T} \boldsymbol\Sigma^{-1}(\vec{x} - \vec\mu) \right)$$
 
-If I have a bunch of data points $\vec{x_1}, ..., \vec{x_n}$.   How do I compute the values of $\vec{\mu}$ and $\boldsymbol\Sigma$ for which the observations $\vec{x_1}, ..., \vec{x_n}$ would be most likely?
+If you have several data points $\vec{x_1}, ..., \vec{x_n}$, how do you  compute the values of $\vec{\mu}$ and $\boldsymbol\Sigma$ for which the observations $\vec{x_1}, ..., \vec{x_n}$ would be most likely?
 
 $$\vec{\mu} = \frac{1}{n} \sum_{i = 1}^{d} \vec{x_i}$$
 
-And the covariance matrix?  (Here we think of each $\vec{x_i}$  and $\vec{\mu}$ as  column vectors.)
+And the covariance matrix?  (Here, we think of each $\vec{x_i}$  and $\vec{\mu}$ as  column vectors.)
 
 $$\boldsymbol\Sigma = \frac{1}{n}\sum_{i=1}^n (\vec{x}_i-\vec{\mu})(\vec{x}_i-\vec{\mu})^\mathrm{T}$$
 
-Notice that the diagonal entries of the matrix are the variance of each variable.  Notice also, that this is a symmetric matrix.
+Notice that the diagonal entries of the matrix are the variance of each variable.  Notice also that this is a symmetric matrix.
 
 Applying this to our data we get:
 
@@ -212,7 +212,7 @@ $F$=Bass &  .03969 \\
 $F$=Catfish  &  $\approx 0$
 \end{tabular}
 
-We sum those to get $p(L=16, W=2.1) = .0582$
+We sum those to get $p(L=16, W=2.1) = .0582$.
 
 \begin{tabular}{c | c }
 Given & $p(F=? | L=16, W=2.1)$ \\

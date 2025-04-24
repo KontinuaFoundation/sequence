@@ -1,74 +1,747 @@
 \chapter{Vectors and Matrices}
   
-The last chapter provided an overview of linear algebra, using many image examples. In this chapter, we'll focus primarily on vector-matrix multiplications. First you'll see the general definition,followed by a few examples. You'll have an opportunity to solve a problem manually and then you'll get to use Python again. In this chapter, we will use two-dimensional matrices for simplicity. But a matrix can have any number of dimensions.  
+The last chapter provided an overview of linear algebra, using several image 
+examples. In this chapter, we will focus primarily on vector-matrix 
+multiplications. First, we will show how matrices can be used to represent a 
+set of linear equations. Then, we will provide you with a general definition 
+of vector-matrix multiplication, followed by a few examples. You will have an 
+opportunity to solve a problem manually, then by using Python. In this 
+chapter, we will use two-dimensional matrices for simplicity, but a matrix can 
+have any number of dimensions.  
 
-\section{Vector-Matrix Multiplication}
-Let's take a look at the general form of vector-matrix multiplication. Given a matrix $A$ of size $m \times n$ and a vector $x$ of size $n \times 1$, the product $Ax$ is a new vector of size $m \times 1$. 
-
-You compute the $i$-th component of the product vector $Av$ by taking the dot product of the $i$-th row of $A$ and the vector $v$:
-
-$$(Av)_i = \sum_{j=1}^n a_{i,j}x_j$$
-
-where $a_{i,j}$ is the element in the $i$-th row and $j$-th column of $A$, and $v_j$ is the $j$-th element of $v$.
-
-This is the general form of a matrix and a vector, written to show the specific components of each:
-
- $$A = \begin{bmatrix}
- a_{1,1} & a_{1,2} & a_{1,3} & ... & a_{1,n}  \\
- a_{2,1} & a_{2,2} & a_{2,3} & ... & a_{2,n}  \\
- ... \\
- a_{m,1} & a_{m,2} & a_{m,3} & ... & a_{m,n}  
+\section{Matrices}
+We've been looking at vectors, which are usually represented as a column of 
+numbers. For example, while we may write $\mathbf{v} = \left[ 1, 2, 3 \right]$ 
+in line, the vector is really:
+$$\mathbf{v} = \begin{bmatrix}
+1\\
+2\\
+3
 \end{bmatrix}$$
 
-$$v = \begin{bmatrix}
- v_{1} \\
- v_{2} \\
- v_{3} \\
- ... \\
- v_{m} 
+A matrix can be made of many columns, like the $3 \times 2$ matrix shown below:
+$$\begin{bmatrix}
+1 & 1 & 1\\
+2 & 4 & 8\\
+3 & 9 & 27
 \end{bmatrix}$$
 
- $$Av =\begin{bmatrix}
- v_{1}*a_{1,1} +v_{2}*a_{1,2}  +v_{3}*a_{1,3} +... +v_{m}*a_{1,n}  \\
- v_{1}*a_{2,1} +v_{2}*a_{2,2}  +v_{3}*a_{2,3} +... +v_{m}*a_{2,n}  \\
- ... \\
- v_{1}*a_{m,1} +v_{2}*a_{m,2}  +v_{3}*a_{m,3} +... +v_{m}*a_{m,n}  
+We describe the size and shape of matrices by saying \textit{an }$m \times 
+n$\textit{ matrix}, where $m$ is the number of rows and $n$ is the number of 
+columns. A vector is simply a one-column matrix. For example, the vectors 
+\textbf{v} above is $3 \times 1$. Matrices aren't restricted to 2 dimensions: 
+a matrix can be 3, 4, or any number of dimensions. For example, a $3 \times 2 
+\times 4$ matrix would be made of 4 stacked $3 \times 2$ matrices.
+
+\begin{Exercise}[title = {Matrix Dimensions 1}, label = mat_dim1]
+Write the dimensions of the following matrices:
+\begin{enumerate}
+\item $\begin{bmatrix}
+-3 & 0 & 4 & -2 & -4\\
+-1 & 5 & 3 & 4 & -2\\
+-3 & 2 & 3 & -5 & 1
+\end{bmatrix}$
+\item $\begin{bmatrix}
+-3 & 1
+\end{bmatrix}$
+\item $\begin{bmatrix}
+-3 & 2 & -3\\
+4 & 0 & -3\\
+-5 & -4 & 1\\
+0 & -2 & 2\\
+\end{bmatrix}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = mat_dim1]
+\begin{enumerate}
+\item $3 \times 5$
+\item $1 \times 2$
+\item $4 \times 3$
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title = {Matrix Dimensions 2}, label = mat_dim2]
+Create a matrix with the indicated dimensions.
+\begin{enumerate}
+\item $1 \times 3$
+\item $2 \times 4$
+\item $4 \times 3$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = mat_dim2]
+\begin{enumerate}
+\item The matrix should have 1 row and 3 columns. For example, 
+$$\begin{bmatrix}
+1 & 2 & 3
+\end{bmatrix}$$
+\item The matrix should have 2 rows and 4 columns. For example,
+$$\begin{bmatrix}
+1 & 2 & 3 & 4\\
+5 & 6 & 7 & 8
+\end{bmatrix}$$
+\item The matrix should have 4 rows and 3 columns. For example,
+$$\begin{bmatrix}
+1 & 2 & 3\\
+4 & 5 & 6\\
+7& 8 & 9\\
+10 & 11 & 12
+\end{bmatrix}$$
+\end{enumerate}
+\end{Answer}
+
+\subsection{Zero Matrices}
+Recall that we can represent a generic zero vector as \textbf{0}, which 
+indicates a vector of any number of dimensions filled with zeros. Just like 
+vectors, there are \textit{zero matrices}\index{zero matrix}, which can by of 
+any number of dimensions, all filled with zeros. In two dimensions, zero 
+matrices are denoted as $\mathbf{\mathit{O}}_{m \times n}$, where the 
+subscript is the dimension of the matrix. The subscript can be expanded to 
+denote any number of dimensions. 
+
+\section{Matrix Arithmetic}
+\subsection{Adding and Subtracting Matrices}
+Matrices that are the same dimension can be added and subtracted. Just like 
+vectors, to add matrices you add the elements in the same position:
+$$\begin{bmatrix}
+-2 & -1\\
+2 & 4
+\end{bmatrix}
++ \begin{bmatrix}
+5 & 2\\
+-1 & -4
+\end{bmatrix}
+= \begin{bmatrix}
+-2 + 5 & -1 + 2\\
+2 + -1 & 4 + -4
+\end{bmatrix} = 
+\begin{bmatrix}
+3 & 1\\
+1 & 0
 \end{bmatrix}$$
 
-Let's look at a specific example.
-
-$$A = \begin{bmatrix}
- 2  & 4 & 6  \\
- 3  & 5 & 7  \\
- 1  & 2 & 3  \\
- 8  & 6 & 2 
+And to subtract matrices, you subtract the elements in the same position:
+$$\begin{bmatrix}
+-2 & -1\\
+2 & 4
+\end{bmatrix}
+- \begin{bmatrix}
+5 & 2\\
+-1 & -4
+\end{bmatrix}
+= \begin{bmatrix}
+-2 - 5 & -1 - 2\\
+2 - (-1) & 4 - (-4)
+\end{bmatrix} = 
+\begin{bmatrix}
+-7 & -3\\
+3 & 8
 \end{bmatrix}$$
 
-$$v = \begin{bmatrix}
- -2 \\
- 1 \\
- 3 
+Formally, for 2-dimensional matrices, we can say that:
+\begin{mdframed}[style = important, frametitle={Adding and Subtracting Matrics}]
+For two $m \times n$ matrices, the sum of the matrices is the matrix of the 
+sums of the elements in analogous positions:
+$$\begin{bmatrix}
+x_{11} & x_{12} & x_{13} & \cdots & x_{1n}\\
+x_{21} & x_{22} & x_{23} & \cdots & \vdots\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+x_{m1} & x_{m2} & x_{m3} & \cdots & x_{mn}
+\end{bmatrix}
++ \begin{bmatrix}
+y_{11} & y_{12} & y_{13} & \cdots & y_{1n}\\
+y_{21} & y_{22} & y_{23} & \cdots & \vdots\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+y_{m1} & y_{m2} & y_{m3} & \cdots & y_{mn}
+\end{bmatrix} = $$
+$$\begin{bmatrix}
+x_{11} + y_{11} & x_{12} + y_{12} & x_{13} + y_{13} & \cdots & x_{1n} + y_{1n}\\
+x_{21} + y_{21} & x_{22} + y_{22} & x_{23} + y_{23} & \cdots & \vdots\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+x_{m1} + y_{m1} & x_{m2} + y_{m2} & x_{m3} + y_{m3} & \cdots & x_{mn} + y_{mn}
 \end{bmatrix}$$
 
-Solution:
-$$= \begin{bmatrix}
--2*2+1*4+3*6\\
--2*3+1*5+3*7\\
--2*1+1*2+3*3\\
--2*8+1*6+3*2
+To subtract matrices, simply add the negative of the second matrix (that is, 
+\textbf{\textit{A}} - \textbf{\textit{B}} = \textbf{\textit{A}} + -\textbf{
+\textit{B}}). Additionally, matrix addition is commutative (\textbf{\textit{A}}
++ \textbf{\textit{B}} = \textbf{\textit{B}} + \textbf{\textit{B}}).
+\end{mdframed}
+
+\begin{Exercise}[title = {Adding and Subtracting Matrices}, label = add_mat]
+Find \textbf{\textit{A}} + \textbf{\textit{B}}, \textbf{\textit{A}} - 
+\textbf{\textit{B}}, and \textbf{\textit{B}} - \textbf{\textit{A}}.
+\begin{enumerate}
+\item $\textbf{\textit{A}} = \begin{bmatrix}
+0 & 4 & 0 & 5
+\end{bmatrix}$ and $\textbf{\textit{B}} = \begin{bmatrix}
+-2 & 3 & -2 & 5
+\end{bmatrix}$
+\item $\textbf{\textit{A}} = \begin{bmatrix}
+4 & -4 & -2\\
+1 & -3 & 5\\
+-5 & 3 & 0
+\end{bmatrix}$ and $\textbf{\textit{B}} = \begin{bmatrix}
+5 & 0 & -1\\
+-5 & -3 & -2\\
+-5 & 3 & -4
+\end{bmatrix}$.
+\item $\textbf{\textit{A}} = \begin{bmatrix}
+-2 & -1 & -5 & -1\\
+5 & -4 & 4 & 3
+\end{bmatrix}$ and $\textbf{\textit{B}} = \begin{bmatrix}
+-5 & -2 & 3 & -5\\
+0 & 5 & -4 & -3
+\end{bmatrix}$.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = add_mat]
+\begin{enumerate}
+\item \textbf{\textit{A}} + \textbf{\textit{B}} $= \begin{bmatrix}
+-2 & 7 & -2 & 10
+\end{bmatrix}$. $\textbf{\textit{A}} - \textbf{\textit{B}} = \begin{bmatrix}
+2 & 1 & 2 & 0
+\end{bmatrix}$. $\textbf{\textit{B}} - \textbf{\textit{A}} = \begin{bmatrix}
+-2 & -1 & -2 & 0
+\end{bmatrix}$
+\item $\textbf{\textit{A}} + \textbf{\textit{B}} = \begin{bmatrix}
+9 & -4 & -3\\
+-4 & -6 & 3\\
+-10 & 6 & -4
+\end{bmatrix}$. $\textbf{\textit{A}} - \textbf{\textit{B}} = \begin{bmatrix}
+-1 & -4 & -1\\
+6 & 0 & 7\\
+0 & 0 & 4
+\end{bmatrix}$. $\textbf{\textit{B}} - \textbf{\textit{A}} = \begin{bmatrix}
+1 & 4 & 1\\
+-6 & 0 & -7\\
+0 & 0 & -4
+\end{bmatrix}$.
+\item $\textbf{\textit{A}} + \textbf{\textit{B}} = \begin{bmatrix}
+-7 & -3 & -2 & -6\\
+5 & 1 & 0 & 0
+\end{bmatrix}$. $\textbf{\textit{A}} - \textbf{\textit{B}} = \begin{bmatrix}
+3 & 1 & -8 & 4\\
+5 & -9 & 8 & 6
+\end{bmatrix}$. $\textbf{\textit{B}} - \textbf{\textit{A}} = \begin{bmatrix}
+-3 & -1 & 8 & -4\\
+-5 & 9 & -8 & -6
+\end{bmatrix}$.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Multiplying Matrices}
+Surprisingly (it may be to you), matrix multiplication has dimension limits. 
+We cannot multiply any two matrices: the first matrix must have the same 
+number of columns as the second has number of rows. Let's examine the origin 
+of the dimension limits on matrix multiplication. We begin with a review of 
+the vector dot product. 
+
+Recall that in order to find the dot product of two vectors, they must be the 
+same length (that is, the same number of dimensions). The result is always a 
+scalar: one number. You can review finding the dot product of vectors and 
+practice the dimension limits on the vector dot product in the next exercise.
+
+\begin{Exercise}[title = {Vector Dot Product Review}, label = vect_dot]
+Find all possible pairs of vectors that can be used to find a dot product, 
+then find the dot products. 
+\begin{enumerate}
+\item $\mathbf{a} = \begin{bmatrix}
+1\\
+2
+\end{bmatrix}$
+\item $\mathbf{b} = \begin{bmatrix}
+-3\\
+3\\
+5\\
+-5
+\end{bmatrix}$
+\item $\mathbf{c} = \begin{bmatrix}
+1\\
+2\\
+-1
+\end{bmatrix}$
+\item $\mathbf{d} = \begin{bmatrix}
+-5\\
+-1
+\end{bmatrix}$
+\item $\mathbf{e} = \begin{bmatrix}
+1\\
+-5\\
+3\\
+1
+\end{bmatrix}$
+\item $\mathbf{f} = \begin{bmatrix}
+4\\
+1\\
+-3
+\end{bmatrix}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = vect_dot]
+It is possible to compute $\mathbf{a} \cdot \mathbf{d}$, $\mathbf{b} \cdot 
+\mathbf{e}$, and $\mathbf{c} \cdot \mathbf{f}$:
+\begin{enumerate}
+    \item $\mathbf{a} \cdot \mathbf{d} = 1(-5) + 2(-1) = -5 + (-2) = -7$
+    \item $\mathbf{b} \cdot \mathbf{e} = -3(1) + 3(-5) + 5(3) + -5(1) = -3 + 
+    (-15) + 15 - 5 = -8$
+    \item $\mathbf{c} \cdot \mathbf{f} = 1(4) + 2(1) + -1(-3) = 4 + 2 + 3 = 9$
+\end{enumerate}
+\end{Answer}
+
+To multiply two matrices, it is helpful to think of the rows of the first 
+matrix and the columns of the second matrix as vectors. Let's see how this 
+shakes out for two $2 \times 2$ matrices:
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[] at (0,0) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \node[] at (-2.75, -1) {\textbf{\textit{A}}};
+        \node[] at (-2, -1) {$\cdot$};
+        \node[] at (-1, -1) {\textbf{\textit{B}}};
+        \node[text = red] at (-3.8, 0.25) {$\mathbf{a}_1 \to$};
+        \node[text = red] at (-3.8, -0.25) {$\mathbf{a}_2 \to$};
+        \node[text = blue] at (-1.3, 0.7) {$\downarrow$};
+        \node[text = blue] at (-1.3, 1) {$\mathbf{b}_1$};
+        \node[text = blue] at (-0.55, 0.7) {$\downarrow$};
+        \node[text = blue] at (-0.55, 1) {$\mathbf{b}_2$};
+        \node[text = red] at (0.95, 0.15) {$\mathbf{a}_1$};
+        \node[] at (1.2, 0.15) {$\cdot$};
+        \node[text = blue] at (1.5, 0.15) {$\mathbf{b}_1$};
+        \node[text = red] at (0.95, -0.25) {$\mathbf{a}_2$};
+        \node[] at (1.2, -0.25) {$\cdot$};
+        \node[text = blue] at (1.5, -0.25) {$\mathbf{b}_1$};
+        \node[text = red] at (2.15, 0.15) {$\mathbf{a}_1$};
+        \node[] at (2.4, 0.15) {$\cdot$};
+        \node[text = blue] at (2.7, 0.15) {$\mathbf{b}_2$};
+        \node[text = red] at (2.15, -0.25) {$\mathbf{a}_2$};
+        \node[] at (2.4, -0.25) {$\cdot$};
+        \node[text = blue] at (2.7, -0.25) {$\mathbf{b}_2$};
+    \end{tikzpicture}
+    \caption{Each entry in \textbf{\textit{C}}, $c_{ij}$, is the dot product 
+    of the $i^{th}$ row of \textbf{\textit{A}}, $a_i$, and the $j^{th}$ column 
+    of \textbf{\textit{B}}, $b_j$.}
+    \label{fig:mat_mult}
+\end{figure}
+
+ Let's look at this more concretely. For two-dimensional matrices, it can be 
+ helpful to move your left index finger across the row and right index finger 
+ down the column, as shown in figure \ref{fig:fingers}.
+ 
+ \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \node[] at (0,3) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 3.25) -- (-2, 3.25);
+        \draw[thick, -latex, blue] (-1.25, 3.4) -- (-1.25, 2.6);
+        \node[font = \tiny] at (1.25, 3.25) {
+        \textcolor{red}{5}$\times$\textcolor{blue}{-1}$+$\textcolor{red}{4}$\times$\textcolor{blue}{-4}};
+
+        \node[] at (0,2) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 2.25) -- (-2, 2.25);
+        \draw[thick, -latex, blue] (-.35, 2.4) -- (-.35, 1.6);
+        \node[font = \normalsize] at (1.25, 2.25) {-21};
+        \node[font = \tiny] at (2.25, 2.25) {
+        \textcolor{red}{5}$\times$\textcolor{blue}{-2}$+$\textcolor{red}{4}$\times$\textcolor{blue}{-4}};
+        
+        \node[] at (0, 1) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, 0.75) -- (-2, 0.75);
+        \draw[thick, -latex, blue] (-1.25, 1.4) -- (-1.25, 0.6);
+        \node[font = \normalsize] at (1.25, 1.25) {-21};
+        \node[font = \normalsize] at (2.25, 1.25) {-26};
+        \node[font = \tiny] at (1.25, 0.8) {
+        \textcolor{red}{-5}$\times$\textcolor{blue}{-1}$+$\textcolor{red}{1}$\times$\textcolor{blue}{-5}};
+
+        \node[] at (0,0) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \draw[thick, -latex, red] (-3, -0.25) -- (-2, -0.25);
+        \draw[thick, -latex, blue] (-.35, 0.4) -- (-.35, -0.4);
+        \node[font = \normalsize] at (1.25, 0.25) {-21};
+        \node[font = \normalsize] at (2.25, 0.25) {-26};
+        \node[font = \normalsize] at (1.25, -0.25) {0};
+        \node[font = \tiny] at (2.25, -0.25) {
+        \textcolor{red}{-5}$\times$\textcolor{blue}{-2}$+$\textcolor{red}{1}$\times$\textcolor{blue}{-4}};
+        \node[] at (0,-1) {$\begin{bmatrix}
+            5 & 4\\
+            -5 & 1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            -1 & -2\\
+            -5 & -4
+        \end{bmatrix} = \begin{bmatrix}
+             & & & & & & & \\
+             & & & & & & & 
+        \end{bmatrix}$};
+        \node[font = \normalsize] at (1.25, -0.75) {-21};
+        \node[font = \normalsize] at (2.25, -0.75) {-26};
+        \node[font = \normalsize] at (1.25, -1.25) {0};
+        \node[font = \normalsize] at (2.25, -1.25) {6};
+    \end{tikzpicture}
+    \caption{You can use your fingers to trace across matrix \textbf{\textit{A}} 
+    and down matrix \textbf{\textit{B}} to find $\textbf{\textit{A}} \cdot 
+    \textbf{\textit{B}}$.}
+    \label{fig:fingers}
+\end{figure}
+
+Since each entry in the product matrix is the dot product between a row of the 
+first matrix and a column of the second matrix, the first matrix must have the 
+same number of elements in each row as the second has in each column. Another 
+way to say this is that the number of columns of the first matrix must match 
+the number of rows in the second matrix. 
+
+\begin{mdframed}[style = important, frametitle = {Matrix Multiplication}]
+For two-dimensional matrices, the inner dimensions must match in order to 
+carry out matrix multiplication. That is, if we want to find \textbf{\textit{
+A}}$\cdot$\textbf{\textit{B}}, and \textbf{\textit{A}} has dimensions $m 
+\times n$, then \textbf{\textit{B}} must have dimensions $n \times p$, where 
+$m$, $n$, and $p$ are integers. The resulting matrix will have dimensions $m 
+\times p$ ($m$ and $p$ may be equal or unequal).
+\end{mdframed}
+
+\begin{Exercise}[title = {Multiplying Matrices 1}, label = mult_mat1]
+Multiply the matrices.
+\begin{enumerate}
+\item $\begin{bmatrix}
+-5 & -2 & 2 & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+-3 & -1 & -5\\
+3 & 0 & 3\\
+4 & -1 & -4\\
+-1 & -4 & 2
+\end{bmatrix}$
+\item $\begin{bmatrix}
+1\\
+5\\
+-5\\
+4\\
+1
+\end{bmatrix} \cdot \begin{bmatrix}
+0 & 5 & 1
+\end{bmatrix}$
+\item $\begin{bmatrix}
+-1 & 4 & -4\\
+5 & -3 & 5\\
+-1 & -4 & 4\\
+-4 & 1 & 4
+\end{bmatrix} \cdot \begin{bmatrix}
+-3 & 5 & 1\\
+-3 & 0 & -3\\
+0 & 3 & 0
+\end{bmatrix}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = mult_mat1]
+\begin{enumerate}
+    \item $\begin{bmatrix}
+        -2 & -1 & 5
+    \end{bmatrix}$
+    \item $\begin{bmatrix}
+        0 & 5 & 1\\
+        0 & 25 & 5\\
+        0 & -25 & -5\\
+        0 & 20 & 4\\
+        0 & 5 & 1
+    \end{bmatrix}$
+    \item $\begin{bmatrix}
+        -9 & -17 & 11\\
+        -6 & 40 & -4\\
+        15 & 7 & -13\\
+        9 & -8 & -1
+    \end{bmatrix}$
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title = {Multiplying Matrices 2}, label = mult_mat2]
+Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}}$. 
+\begin{enumerate}
+\item $\mathbf{\mathit{A}} = \begin{bmatrix}
+-2\\
+2\\
+1\\
+-2
+\end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
+-4 & 3 & -5 & -2
+\end{bmatrix}$
+\item $\mathbf{\mathit{A}} = \begin{bmatrix}
+-4 & -2\\
+2 & 5\\
+-3 & -4\\
+\end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
+0 & -2 & -4\\
+1 & -4 & 0
+\end{bmatrix}$
+\item $\mathbf{\mathit{A}} = \begin{bmatrix}
+2 & 0 & 1 & 4\\
+-4 & 0 & -5 & -1
+\end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
+0 & -3\\
+-4 & -1\\
+-2 & 3\\
+-5 & 1
+\end{bmatrix}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = mult_mat2]
+\begin{enumerate}
+\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+8 & -6 & 10 & 4\\
+-8 & 6 & -10 & -4\\
+-4 & 3 & -5 & -2\\
+8 & -6 + 1- & 4
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} = 
+\begin{bmatrix}
+13
+\end{bmatrix}$
+\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+-2 & 16 & 16\\
+5 & -24 & -8\\
+-4 & 22 & 12
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} = 
+\begin{bmatrix}
+8 & 6\\
+-12 & -22
+\end{bmatrix}$
+\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+-22 & 1\\
+15 & -4
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} = 
+\begin{bmatrix}
+12 & 0 & 15 & 3\\
+-4 & 0 & 1 & -15\\
+-16 & - & -17 & -11\\
+-14 & 0 & -10 & -21
+\end{bmatrix}$
+\end{enumerate}
+\end{Answer}
+
+What have you noticed about the results of $\mathbf{\mathit{A}} \cdot 
+\mathbf{\mathit{B}}$ as compared to $\mathbf{\mathit{B}} \cdot \mathbf{
+\mathit{A}}$? You should have noticed that the product matrices are 
+\textit{different dimensions}. This leads us to the next unusual property of 
+matrix multiplication: it is \textit{non-commutative}. That is, the \textit{
+order} in which you multiply matrices affects the result. This is very 
+different from scalar values! 
+
+As you saw in the second matrix multiplication exercise, \textbf{\textit{A}} 
+is a $2 \times 4$ matrix and \textbf{\textit{B}} is a $4 \times 2$ matrix, 
+then \textbf{\textit{A}}\textbf{\textit{B}} is a $2 \times 2$ matrix, while 
+\textbf{\textit{B}}\textbf{\textit{A}} is a $4 \times 4$ matrix. It is obvious, 
+then, that $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} \neq \mathbf{\mathit{
+B}} \cdot \mathbf{\mathit{A}}$. What if \textbf{\textit{A}} and \textbf{\textit{
+B}} are square matrices?
+
+\textbf{Example}: Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and 
+$\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}}$ if $\mathbf{\mathit{A}} = 
+\begin{bmatrix}
+-3 & 5\\
+-1 & 0
+\end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
+-1 & 1\\
+4 & -3
+\end{bmatrix}$.
+
+\textbf{Solution}: $$\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = 
+\begin{bmatrix}
+-3 & 5\\
+-1 & 0
+\end{bmatrix} \cdot \begin{bmatrix}
+-1 & 1\\
+4 & -3
+\end{bmatrix} = \begin{bmatrix}
+-3(-1) + 5(4) & -3(1) + 5(-3)\\
+-1(-1) + 0(4) & -1(1) + 0(-3)
+\end{bmatrix} = \begin{bmatrix}
+23 & -18\\
+1 & -1
 \end{bmatrix}$$
 
-$$= \begin{bmatrix}
-18 \\
-20\\
-9\\
--4 
+$$\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} = \begin{bmatrix}
+-1 & 1\\
+4 & -3
+\end{bmatrix} \cdot \begin{bmatrix}
+-3 & 5\\
+-1 & 0
+\end{bmatrix} = \begin{bmatrix}
+-1(-3) + 1(-1) & -1(5) + 1(0)\\
+4(-3) + -3(-1) & 4(5) + -3(0)
+\end{bmatrix} = \begin{bmatrix}
+2 & -5\\
+-9 & 20
 \end{bmatrix}$$
+
+As you can see, even if \textbf{\textit{A}} and \textbf{\textit{B}} are square, 
+matrix multiplication is still not commutative. 
+
+\begin{mdframed}[style = important, frametitle = {Non-Commutation of Matrix Multiplication}]
+For two matrices \textbf{\textit{A}} and \textbf{\textit{B}}, where neither is 
+an identity matrix or a zero matrix:
+$$\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} \neq \mathbf{\mathit{B}} 
+\cdot \mathbf{\mathit{A}}$$
+\end{mdframed}
+	
+\subsubsection{Properties of the Zero Matrix}
+Just like the number 0, the zero matrix, \textbf{\textit{O}} has unique 
+mathematical properties:
+\begin{mdframed}[style = important, frametitle = {Properties of the Zero Matrix}]
+For a matrix, \textbf{\textit{A}}, and a zero matrix, \textbf{\textit{O}}
+\begin{enumerate}
+\item $\mathbf{\mathit{A}} + \mathbf{\mathit{O}} = \mathbf{\mathit{A}}$
+\item $\mathbf{\mathit{A}} + \mathbf{\mathit{-A}} = \mathbf{\mathit{O}}$
+\item $0 \cdot \mathbf{\mathit{A}} = \mathbf{\mathit{O}}$
+\end{enumerate}
+\end{mdframed}
+
+\subsubsection{The Identity Matrix}
+There is another special matrix, called the \textit{identity matrix}\index{
+identity matrix}, usually denoted with \textbf{\textit{I}}. An identity matrix 
+is all zeroes except for a diagonal line of ones. A $3 \times 3$ identity 
+matrix is shown below:
+
+$$\begin{bmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}$$
+
+All identity matrices are square (that is, they have the same number of rows 
+as they do columns). The identity matrix has the special property that 
+whenever a vector or matrix is multiplied by \textbf{\textit{I}}, it doesn't 
+change. Let's look at some examples:
+
+\textbf{Example}: If $\mathbf{x} = \begin{bmatrix}
+2\\
+-3
+\end{bmatrix}$, what is $\mathbf{\mathit{I}}\mathbf{x}$? (Take \textbf{\textit{
+I}} to be a $2 \times 2$ identity matrix.)
+
+\textbf{Solution}: $$\mathbf{\mathit{I}} \mathbf{x} = \begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+2 \\
+-3
+\end{bmatrix} = \begin{bmatrix}
+1 \cdot (2) + 0 \cdot (-3)\\
+0 \cdot (2) + 1 \cdot (-3)
+\end{bmatrix} = \begin{bmatrix}
+2\\
+-3
+\end{bmatrix}$$
+
+\textbf{Example}: If $\mathbf{\mathit{B}} = \begin{bmatrix}
+-2 & 5\\
+3 & -4
+\end{bmatrix}$, what is $\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}}$?
+
+\textbf{Solution}: $$\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}} = 
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+-2 & 5\\
+3 & -4
+\end{bmatrix} = \begin{bmatrix}
+1 \cdot (-2) + 0 \cdot (5) & 1 \cdot (5) + 0 \cdot (-4)\\
+0 \cdot (-2) + 1 \cdot (5) & 0 \cdot (5) + 1 \cdot (-4)
+\end{bmatrix} = \begin{bmatrix}
+-2 & 5\\
+3 & -4
+\end{bmatrix}$$
+
+\begin{mdframed}[style = important, frametitle = {Properties of the Identity Matrix}]
+An $n \times n$ identity matrix, \textbf{\textit{I}}, does not change any 
+vectors or matrices it multiplies. That is: 
+\begin{enumerate}
+\item $\mathbf{\mathit{I}} \cdot \mathbf{x} = \mathbf{x}$
+\item $\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}} = \mathbf{\mathit{B}}$
+\end{enumerate}
+where \textbf{x} is an $n \times 1$ vector and \textbf{\textit{B}} is an $n 
+\times p$ matrix ($p$ may be, but is not necessarily, equal to $n$). 
+\end{mdframed}
+
+\subsection{Can We Divide Matrices?}
+Matrices cannot be divided. Suppose we have a matrix, \textbf{\textit{A}}, a vector \textbf{x}, and another vector \textbf{b} such that:
+
+$$\textbf{\textit{A}} \cdot \textbf{x} = \textbf{b}$$
+
+Now, if we know \textbf{\textit{A}} and \textbf{x}, it is easy to find \textbf{b}. What if, on the other hand, we know \textbf{\textit{A}} and \textbf{b} and want to find \textbf{x}? We might be tempted to do something like this:
+
+$$\textbf{x} = \frac{\textbf{b}}{\textbf{\textit{A}}}$$
+
+While this would be correct if \textbf{x}, \textbf{b}, and \textbf{\textit{A}} were scalars, but it is not for matrices. However, there is an analogy we can make. Instead of trying to divide by \textbf{\textit{A}}, we can multiply by its \textit{inverse}:
+
+\begin{mdframed}[style = important, frametitle = {Inverse Matrices}]
+Given a matrix \textbf{\textit{A}}, and vectors \textbf{b} and \textbf{x}, if
+
+$$\textbf{\textit{A}} \cdot \textbf{x} = \textbf{b}$$
+
+Then,
+
+$$\textbf{x} = \textbf{\textit{A}}^{-1} \cdot \textbf{b}$$
+\end{mdframed}
+
+
+\section{Systems of Linear Equations}
+matrix-vector multiplication, representing linear combination
+system of linear equations connection
+linear combo example
+system of equations example (trail mix, be more explicit about eqs and representation)
+practice
+	use matrix multiplication to find...
+	grading question moved here
 
 \section{Trail Mix for Mars}
-Let's look at an applied problem. Three astronauts (Pat, Kai, and River) are getting ready for a trip to Mars. NASA food service is preparing trail mix for the voyage, tailored to each astronaut's taste. The chef needs to submit a budget based on the cost of the trail mix for each astronaut. The mix is made up of raisins, almonds, and chocolate.
+Let's look at an applied problem. Three astronauts, Pat, Kai, and River, are getting ready for a trip to Mars. NASA food service is preparing trail mix for the voyage, tailored to each astronaut's taste. The chef needs to submit a budget based on the cost of the trail mix for each astronaut. The mix is made up of raisins, almonds, and chocolate.
 
-Pat prefers a raisins:almonds:chocolate ratio of 6:10:4. Kai likes 2:3:15. River wants 14:1:5. The chef can buy a kg of raisins for \$7.50, a kg of almonds for \$14.75, and a kg of chocolate for \$22.25. Assuming each astronaut will get 20 kg of trail mix, which astronaut will cost more to feed?
+Pat prefers a raisins:almonds:chocolate ratio of 6:10:4, Kai likes 2:3:15, and River wants 14:1:5. The chef can buy a kg of raisins for \$7.50, a kg of almonds for \$14.75, and a kg of chocolate for \$22.25. Assuming each astronaut will get 20 kg of trail mix, which astronaut will cost more to feed?
 
 First, set up a matrix to represent the raisins:almonds:chocolate ratios. (Conveniently, these ratios already add to 20.)
 
@@ -111,11 +784,63 @@ $$v =
 \end{Exercise}
 
 \begin{Answer}[ref=vector-matrix-multiply01]
-$$Av = (11 37 -43)$$
+$$Av = (11 \text{ }37 \text{ } -43)$$
+\end{Answer}
+
+\begin{Exercise}[title = {Using Vector Matrix Multiplication}, label = vmm02]
+A college professor offers three different methods of determining a student's final grade. In method A, the student's grade is 20\% based on attendance, 50\% homework, 15\% midterm, and 15\% final. This professor knows many students can learn the material without attending every class, so with method B the student's grade is 50\% homework, 20\% midterm, and 30\% final. Last, the professor knows some students don't do the homework but still show they understand the material by doing well on the tests. With method C, a student's grade is 40\% midterm and 60\% final. The professor uses whatever method results in the highest grade to determine each student's final grade. 
+
+Suppose Suzy has attended 65\% of classes, has an average homework grade of 30\%, earned a 80\% on the midterm, and earned a 75\% on the final. What final grade will her professor post?
+\end{Exercise}
+
+\begin{Answer}[ref = vmm02]
+The different methods can be represented in a matrix:
+$$\begin{bmatrix}
+0.20 & 0.50 & 0.15 & 0.15\\
+0 & 0.50 & 0.20 & 0.30\\
+0 & 0 & 0.4 & 0.6
+\end{bmatrix}$$
+
+And Suzy's individual grades can be represented by a vector:
+$$\begin{bmatrix}
+65\\
+30\\
+80\\
+75
+\end{bmatrix}
+$$
+
+To see the results of the three different methods, we can multiply the matrix and the vector:
+$$\begin{bmatrix}
+0.20 & 0.50 & 0.15 & 0.15\\
+0 & 0.50 & 0.20 & 0.30\\
+0 & 0 & 0.4 & 0.6
+\end{bmatrix}
+\cdot 
+\begin{bmatrix}
+65\\
+30\\
+80\\
+75
+\end{bmatrix} = 
+\begin{bmatrix}
+0.2(65)+0.5(30)+0.15(80) + 0.15(75)\\
+0(65) + 0.5(30) + 0.2(80) + 0.3(75)\\
+0(65) + 0(30) + 0.4(80) + 0.6(75)
+\end{bmatrix}$$
+
+Which yields:
+$$\begin{bmatrix}
+51.25\\
+53.5\\
+77
+\end{bmatrix}$$
+
+Since method C yields the highest grade, the professor will post a final grade of 77. 
 \end{Answer}
 
 \subsection{Vector-Matrix Multiplication in Python}
-Most real-world problems use very large matrices where it becomes impractical to do calculations by hand. As long as you understand how matrix-vector multiplication is performed, you'll be equipped to use a computing language, like Python, to do the calculations for you. 
+Most real-world problems use very large matrices, where it becomes impractical to do calculations by hand. As long as you understand how matrix-vector multiplication is performed, you will be equipped to use a computing language, like Python, to do the calculations for you. 
 
 Create a file called \filename{vectors\_matrices.py} and enter this code:
 

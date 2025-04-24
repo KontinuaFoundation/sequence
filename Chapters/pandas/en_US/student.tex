@@ -2,9 +2,9 @@
 
 Much of the data that you will encounter in your career will come to
 you as a table.  Some of these tables are spreadsheets, some are in
-relational databases, some will come to you as CSV files.
+relational databases, and some will come to you as CSV files.
 
-Typically each column will represent an attribute (like height or
+Typically, each column will represent an attribute (like height or
 acreage) and each row will represent an entity (like a person or a
 farm). You might get a table like this:
 
@@ -15,9 +15,9 @@ farm). You might get a table like this:
   9329 &  2 & 829.1 & \$ 207,420 \\
 \end{tabular}
 
-Typically, one of the columns is guaranteed to be unique. We call this
+In most casess, one of the columns is guaranteed to be unique. We call this
 the \newterm{primary key}.  In this table, \texttt{property\_id} is
-the primary key: every property has one, and no two properties have
+the primary key; every property has one, and no two properties have
 the same \texttt{property\_id}.
 
 \section{Data types}
@@ -39,7 +39,7 @@ Here are some common datatypes:
 
 Sometimes it is OK to have values missing.  For example, if you had a
 table of data about employees, maybe one of the columns would be
-\texttt{retirement}, a date that tells you when the person retired.  People who
+\texttt{retirement} --- a date that tells you when the person retired.  People who
 had not yet retired would have no value in this column.  We would say
 that they have \newterm{null} for \texttt{retirement}.\index{null}
 
@@ -54,7 +54,7 @@ be allowed.  We often call these columns \newterm{categorical}.
 
 \section{pandas}
 
-The Python community works with tables of data \emph{a lot}, so it
+The Python community works with tables of data \emph{very} often, so it
 created the pandas library for reading, writing, and manipulating
 tables of data.
 
@@ -80,9 +80,9 @@ bike_id,brand,size,purchase_price,purchase_date,status
 3600023,Canyon,57,197.62,2007-02-15,broken
 \end{Verbatim}
 
-The first line is a header and tells you the name of each column.
-Then the values are separated by commas. (Thus the name: CSV stands
-for ``Comma Separated Values''.)
+The first line is a header; it tells you the name of each column.
+Next, the values are separated by commas. (Thus the name: CSV stands
+for ``Comma-Separated Values''.)
 
 \section{Reading a CSV with pandas}
 
@@ -90,7 +90,7 @@ Let's make a program that reads \filename{bikes.csv} into a pandas
 dataframe.  Create a file called \filename{report.py} in the same
 folder as \filename{bikes.csv}.
 
-First, we will read in the csv file. pandas has one Series that acts
+First, we will read in the csv file. pandas has one series that acts
 as the primary key; it calls this one the index. When reading in the
 file, we will tell it to use the \texttt{bike\_id} as the index
 series.
@@ -120,7 +120,7 @@ Bikes: 998
 Columns: 5
 \end{Verbatim}
 
-Note that your table actually had 6 columns. The index series is
+Note that your table actually has six columns. The index series is
 not included in the shape.
 
 \section{Looking at a Series}
@@ -158,7 +158,7 @@ print(f"{series_counts}")
 \end{Verbatim}
 
 Now when you run it, your report will include the number of bikes for
-each brand from most common to least:
+each brand from most to least common:
 
 \begin{Verbatim}
 *** Brands ***
@@ -171,7 +171,7 @@ Giant         147
 Name: brand, dtype: int64
 \end{Verbatim}
 
-\pyfunction{value\_counts} returns a Series.  To format this better we
+\pyfunction{value\_counts} returns a Series.  To format this better, we
 need to learn about accessing individual rows in a series.
 
 \section{Rows and the index}
@@ -212,7 +212,7 @@ brand = df.loc[2969341]['brand']
 print(f"brand = {brand}")
 \end{Verbatim}
 
-Now you will see the information about that bike:
+Now, you will see the information about that bike:
 
 \begin{Verbatim}
 *** Some Bike ***
@@ -229,7 +229,7 @@ brand = df.loc[2969341, 'brand'] # One call with both row and value
 \section{Changing data}
 
 One of your attributes needs cleaning up. Every bike should have a
-status and it should be one of the following strings:''available'',
+status, and it should be one of the following strings:''available'',
 ``rented'', or ``broken''.  Get counts for each unique value in
 status:
 
@@ -255,7 +255,7 @@ This will show you:
 1 bikes are "Available"
 \end{Verbatim}
 
-Right away we can see two easily fixable problems: Someone typed
+Right away, we can see two easily fixable problems: Someone typed
 ``Available'' instead of ``available''.  Right after you read the CSV
 in, fix this in the data frame:
 
@@ -288,7 +288,7 @@ Now those problems are gone:
 297 bikes are "available"
 \end{Verbatim}
 
-What about the rows with no values for status? We were pretty certain
+What about the rows with no values for status? If we were pretty certain
 that the bikes were available, we could just set them to 'available':
 
 \begin{Verbatim}
@@ -304,7 +304,7 @@ missing_ids = list(df[missing_mask].index)
 print(f"These bikes have no status:{missing_ids}")
 \end{Verbatim}
 
-But lets just keep the rows where the status is not null:
+However, let's just keep the rows where the status is not null:
 \begin{Verbatim}
 missing_mask = df['status'].isnull()
 df = df[~missing_mask]
@@ -329,7 +329,7 @@ bike_id,brand,size,purchase_price,purchase_date,status,age_in_days
 \end{Verbatim}
 
 Your first problem is that the \texttt{purchase\_date} column looks
-like a date, but really it is a string. So you need to convert it to a
+like a date, but really it is a string. So, you need to convert it to a
 date.  You can do this by applying a function to every item in the series:
 \begin{Verbatim}
 df['purchase_date'] = df['purchase_date'].apply(lambda s: datetime.date.fromisoformat(s))
@@ -337,7 +337,7 @@ df['purchase_date'] = df['purchase_date'].apply(lambda s: datetime.date.fromisof
 
 (With pandas, there is often more than one way to do things.  pandas
 has a \pyfunction{to\_datetime} function that converts every entry in
-a sequence to a \pytype{datetime} object. So here is another way to
+a sequence to a \pytype{datetime} object. Here is another way to
 convert the string column in to a date column:
 \begin{Verbatim}
 df['purchase_date'] = pd.to_datetime(df['purchase_date']).dt.date
