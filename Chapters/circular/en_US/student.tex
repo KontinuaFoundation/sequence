@@ -95,6 +95,32 @@ The magnitude of the velocity vector is $r\omega$.
     (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718) node[right]{$v(t)=\left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$};
 \end{tikzpicture}
 
+\begin{Exercise}[title = {A Particle in Motion}, label = particle]
+[This question was originally presented as two multiple-choice problems on the 2012 AP Physics C exam.] The $x$ and $y$ coordinates of a particle as it moves in a circle are given by:
+$$x = 5\cos{\left( 3t \right)}\\
+y = 5\sin{\left( 3t \right)}$$
+
+What is the radius of the particle's circular path? What is the particle's \textit{speed}? Based on your answers, how long does it take the particle to complete the circular path?
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = particle]
+The radius is 5 m, because the coefficients of both the $x$ and $y$ functions is 5. 
+
+Recall that the velocity in each direction is given by the derivative of the position functions:
+$$v_x(t) = \frac{d}{dt} \left[ 5 \cos{ \left( 3t \right)} \right] = -15 \sin{ \left( 3t \right)}$$
+$$v_y(t) = \frac{d}{dt} \left[ 5 \sin{ \left( 3t \right)} \right] = 15 \cos{ \left( 3t \right)}$$
+
+The overall \textit{speed} can be found from the $x$ and $y$ components of the velocity:
+$$|v| = \sqrt{v_x^2 + v_y^2} = \sqrt{\left[ -15 \sin{ \left( 3t \right) } \right]^2 + \left[ 15 \cos{ \left( 3t \right)} \right]^2}$$
+$$|v| = \sqrt{15^2 \left[ \sin{ \left(3t \right)}^2 + \cos{ \left( 3t \right)}^2 \right]} = \sqrt{15^2} = 15 \frac{m}{s}$$
+
+Notice that this is the coefficient for both components of the velocity. 
+
+To complete the path, the particle must travel $10\pi \text{ } m$. If the speed is $15 \frac{m}{s}$, then the time it takes is:
+$$t = \frac{d}{v} = \frac{10\pi \text{ } m}{15 \frac{m}{s}} = \frac{2\pi}{3} s \approx 2.09 \text{ } s$$
+\end{Answer}
+
 \section{Acceleration}
 
 We can get the acceleration by differentiating the components of the velocity vector.
@@ -142,6 +168,15 @@ If you know the radius $r$ and the speed $v$ of the object, here is the rule:
 
 $$F = \frac{m v^2}{r}$$
 
+\section{Modeling Circular Motion}
+What causes circular motion is a constant force perpendicular to the motion. Consider a satellite circling the Earth. The only force acting on the satellite is gravity, yet the satellite does not fall to the Earth. Why? Let's look at the relative direction of motion and gravity for some different positions of the satellite (we'll assume this satellite is moving clockwise from our point of view):
+
+\begin{center}
+\includegraphics[width=4in]{satellite.png}
+\end{center}
+
+%fix me: section discussing work and delta KE, perpendicular, dot product, no change in v
+
 \begin{Exercise}[title={Circular Motion}, label=circular]
 Just as your car rolls onto a circular track with a radius of 200 m,
 you realize your 0.4 kg cup of coffee is on the slippery dashboard of your
@@ -155,4 +190,70 @@ the dashboard helps you, but the max is when the friction is zero.)
   $$\frac{120 \text{ km}}{1 hour} = \frac{1000 \text{ m}}{1 \text{ km}}\frac{120 \text{ km}}{1 hour} \frac{1 \text{ hour}}{3600 \text{ seconds}}= 33.3 \text{ m/s}$$
 
   $$F = \frac{m v^2}{r} = \frac {0.4 (33.3)^2}{200} = 2.2 \text{ newtons}$$
+\end{Answer}
+
+\begin{Exercise}[title = {Twirling a Whistle}, label = whistle]
+The lifeguard at a local pool is twirling their whistle horizontally. You wonder if the lifeguard could spin the whistle fast enough to break the string. The string the whistle is attached to can hold a maximum mass of 20 kg before breaking. If the lifeguard's whistle string is 0.35 m long and the average whistle has a mass of 165 grams, what is the maximum tangential speed the lifeguard can spin the whistle? How many rotations per second would the whistle be spinning at? Based on this, do you think the lifeguard is capable of spinning the whistle fast enough to break the string?
+\end{Exercise}
+
+\begin{Answer}[ref = whistle]
+Givens:
+$$T_{max} = \left( 20 kg \right) \cdot \left( 9.8 \frac{m}{s^2} \right) = 196 N$$
+$$r = 0.35 m$$
+$$m_{whistle} = 165 g = 0.165 kg$$
+
+Unknown:
+$$v = ?$$
+$$f = ?$$
+
+Equation(s):
+$$F = ma$$
+$$a = \frac{v^2}{r}$$
+$$v = rf$$
+
+Solution:
+First, we find the tangential speed if the tension in the string is the maximum tension:
+$$T_{max} = m_{whistle}a = m_{whistle} \frac{v^2}{r}$$
+$$v = \sqrt{\frac{T_{max}r}{m_{whistle}}}$$
+$$v = \sqrt{\frac{196 N \left(0.35 m \right)}{0.165 kg}} \approx 0.645 \frac{m}{s}$$
+
+Therefore, the maximum tangential speed of the whistle before the string breaks is $0.645 \frac{m}{s}$. Now finding the equivalent frequency (rotations per second):
+$$f = \frac{v}{r} = \frac{0.645 \frac{m}{s}}{0.35 m} \approx 1.842 Hz$$
+
+So, to break the string, the lifeguard would have to spin it at nearly 2 rotations per second, which is achievable. The lifeguard could possibly break the string. 
+\end{Answer}
+
+\begin{Exercise}[title = {The Gravitron}, label = gravitron]
+The Gravitron is a carnival ride where riders "stick" to the wall of a spinning cylinder as the floor beneath them drops away. A video explanation is given here: \url{https://www.youtube.com/watch?v=ifAY5tbYDmQ}. Draw a free body diagram of a rider. If the coefficient of friction between a rider and the wall is 0.32 and the ride is 10 meters across, what angular velocity must the ride reach before the floor drops away?
+\end{Exercise}
+
+\begin{Answer}[ref = gravitron]
+There are three forces acting on the rider: gravity, friction with the wall, and the normal force with the wall:
+
+\begin{center}
+    \begin{tikzpicture}
+        \draw[thick] (-1, -1) rectangle (1,1);
+        \draw[fill=black] (0,0) circle (0.5mm);
+        \draw[-latex] (0,0) -- (0, 2) node[above] {$F_f$};
+        \draw[-latex] (0,0) -- (3, 0) node[right] {$F_N$};
+        \draw[-latex] (0,0) -- (0, -2) node[below] {$F_g$};
+    \end{tikzpicture}
+\end{center}
+
+The FBD let's us write equations for Newton's Second Law in each dimension:
+$$\left( 1 \right) \text{ }ma_x = F_N$$
+$$\left( 2 \right) \text{ }ma_y = F_f - F_g = \mu F_N - mg$$
+
+Because the rider doesn't fall down, we know that $a_y = 0 \frac{m}{s^2}$ and therefore equation (2) becomes:
+$$\mu F_N - mg = 0 \to F_N = \frac{mg}{\mu}$$
+
+Having solved for $F_N$, we substitute for it into equation (1):
+$$ma_x = \frac{mg}{\mu} \to a_x = \frac{g}{\mu}$$
+
+Since we know $g$ and $\mu$, we can calculate $a_x$:
+$$a_x = \frac{9.8 \frac{m}{s^2}}{0.32} = 30.625 \frac{m}{s^2}$$
+
+This is the minimum acceleration needed to keep the rider from slipping down. We can now use the relationship between centripetal acceleration, tangential velocity, and the radius to find the angular velocity:
+$$a = \frac{v^2}{r} = \frac{\left( \omega r \right)^2}{r} = \omega^2 r$$
+$$\omega = \sqrt{\frac{a}{r}} = \sqrt{\frac{30.625 \frac{m}{s^2}}{10 \text{ } m}} \approx 1.75 \frac{rad}{s}$$
 \end{Answer}
