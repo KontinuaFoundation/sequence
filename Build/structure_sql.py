@@ -11,7 +11,7 @@ if not os.path.exists("user.cfg"):
     # Give them the default
     shutil.copyfile("Support/default.cfg", "user.cfg")
 
-# Read in the config 
+# Read in the config
 with open("user.cfg", "r") as config_fd:
     config = json.load(config_fd)
 
@@ -37,7 +37,7 @@ for x in range(1, vol_count + 1):
             loc_path = f"../Chapters/{id}/{iso_code}"
             if os.path.exists(loc_path):
                 title = util.title_for_dir(loc_path)
-                title = title.replace("'","\\'")
+                title = title.replace("'","''")
                 print(f"INSERT INTO mentapp_chapter_loc (lang_code, dialect_code, title, chapter_id) VALUES ('{lang[0]}', '{lang[1]}', '{title}', '{id}');", file=fout)
 
 fout.close()
