@@ -168,12 +168,81 @@ If you know the radius $r$ and the speed $v$ of the object, here is the rule:
 
 $$F = \frac{m v^2}{r}$$
 
+We didn't introduce centripetal force as a type of force because it isn't its own force, like friction or gravity. Rather, calling a force "centripetal" tells us what the force is doing. A centripetal force is any force that causes circular motion. For a satellite, the centripetal force is gravity. In the opening example with the billiard ball, the centripetal force is the tension in the string. 
+
+\textbf{Example}: A child is sitting on a merry-go-round as it spins. What provides the centripetal force? 
+
+\textbf{Solution}: In this case, the child is rotating horizontally, so the centripetal force must also be horizontal. Therefore, the centripetal force isn't the child's weight or the normal force. It is the \textit{friction} between the child and the merry-go-round that keeps the child turning. Here is a free body diagram:
+
+%FBD child merry-go-round fixme
+
+\textbf{Example}: If the child is 1.2 meters from the center of the merry-go-round and it spins at 0.25 rotations/second, what is the coefficient of friction between the child and the merry-go-round?
+
+\textbf{Solution}: Using our FBD and applying Newton's Second Law, we see that:
+$$F_N - F_g = 0 \to F_N = m_{child}g$$
+$$F_f = m r \omega^2 = \mu F_N = \mu m g$$
+
+Since the child isn't accelerating vertically, we know that the normal force equals the child's weight. The horizontal force, friction, must equal the mass of the child times the acceleration. Additionally, from the vertical component, we know the friction is equal to $\mu m g$, since the normal force is equal to the child's weight. Looking at the second equation, we see that:
+$$m r \omega^2 = \mu m g$$
+
+We were given $\omega$ in rotations per second, but we need radians per second:
+$$\frac{0.25 rotation}{1 second} = \frac{1 rotation}{4 seconds} = \frac{2\pi radians}{4 seconds} = \frac{\pi}{2} \frac{rad}{s}$$
+We can divide $m$ from both sides of $mr\omega^2 = \mu m g$ (notice: we don't need to know the child's mass to determine the coefficient of friction!):
+$$r \omega^2 = \mu g \to \mu = \frac{r \omega^2}{g} = \frac{\left( 1.2 m \right) \left( \frac{\pi}{2 s} \right)^2}{9.8 \frac{m}{s^2}} = 0.302$$
+
+Therefore, the coefficient of friction between the child and the merry-go-round is 0.302. 
+
+\subsection{Banked Turns}
+Have you every been driving on the highway and taken a turn where the road is at an angle? Or maybe you've seen a sign like this on the road:
+
+\begin{wrapfigure}{r}{2.5in}
+\includegraphics[width=2.5in]{traffic.png}
+\end{wrapfigure}
+
+A banked curve is designed so that a car can safely turn without slipping, even in the rain, if the driver does not exceed the indicated speed. Engineers choose an angle such that the bank provides sufficient force to turn the car without friction. Let's look at a free body diagram for a car taking a banked turn (see figure \ref{fig:banked}). 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=4in]{banked.png}
+    \caption{If there is no friction due to rain, then the only two forces acting on the car are gravity and the normal force.}
+    \label{fig:banked}
+\end{figure}
+
+In the past, we've split the vector for the force of gravity into components that are parallel and perpendicular to the ramp. This time, we will split the normal force into $x$ and $y$ components (see figure \ref{fig:banked_component}). 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=4in]{banked_component.png}
+\caption{Geometrically, the $x$ component of the normal force is given by $F_N \cos{\left( \theta \right)}$ and the $y$ component by $F_N \sin{ \left( \theta \right)}$.}
+\label{fig:banked_component}
+\end{figure}
+
+Assuming the radius of the turn is 20 m, at what angle should the engineers build the banked turn? (Let's also assume the maximum speed is 25 mph, like the traffic sign above.) First, let's apply Newton's Second Law in the $x$ and $y$ directions:
+$$\left( 1 \right) F_N \cos{ \left( \theta \right) } - F_g = 0$$
+$$\left( 2 \right) F_N \sin{ \left( \theta \right) } = \frac{mv^2}{r}$$
+
+We know that $F_g = mg$. From this and equation (1) we see that:
+$$F_N = \frac{mg}{\cos{ \left( \theta \right)}}$$
+
+Substituting for $F_N$ into equation (2):
+$$\left( \frac{mg}{\cos{ \left( \theta \right)}} \right) \sin{ \left( \theta \right)} = \frac{mv^2}{r}$$
+
+The mass can be divided from both sides, and $\frac{\sin{ \left( \theta \right)}}{\cos{ \left( \theta \right)}} = \tan{ \left( \theta \right)}$:
+$$g \tan{ \left( \theta \right)} = \frac{v^2}{r}$$
+
+Solving for $\theta$ and substituting for the speed ($25 \text{ }mph \approx 11.18 \frac{m}{s}$) and radius:
+$$\theta = \arctan{ \left( \frac{v^2}{gr} \right)} = \arctan{ \left( \frac{\left( 11.18 \frac{m}{s} \right)^2}{\left( 9.8 \frac{m}{s^2} \right) \left( 20 m \right)} \right)}$$
+$$\theta = \arctan{ \left( 0.6377 \right) } \approx 32.53 ^{\circ}$$
+
+
 \section{Modeling Circular Motion}
 What causes circular motion is a constant force perpendicular to the motion. Consider a satellite circling the Earth. The only force acting on the satellite is gravity, yet the satellite does not fall to the Earth. Why? Let's look at the relative direction of motion and gravity for some different positions of the satellite (we'll assume this satellite is moving clockwise from our point of view):
 
 \begin{center}
 \includegraphics[width=4in]{satellite.png}
 \end{center}
+
+No matter what position the satellite is in, the velocity and gravity vectors are perpendicular. 
 
 %fix me: section discussing work and delta KE, perpendicular, dot product, no change in v
 
@@ -240,7 +309,7 @@ There are three forces acting on the rider: gravity, friction with the wall, and
     \end{tikzpicture}
 \end{center}
 
-The FBD let's us write equations for Newton's Second Law in each dimension:
+The FBD lets us write equations for Newton's Second Law in each dimension:
 $$\left( 1 \right) \text{ }ma_x = F_N$$
 $$\left( 2 \right) \text{ }ma_y = F_f - F_g = \mu F_N - mg$$
 
