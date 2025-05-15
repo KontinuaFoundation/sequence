@@ -21,7 +21,8 @@ def chapter_toc(bookstr):
 def dir_for_id(mod_dir, identifier, langlist):
     # FIXME: should search from fav to least fave
     locale_str = langlist[0]
-    return os.path.join(mod_dir,identifier,locale_str)
+    #return os.path.join(mod_dir,identifier,locale_str)
+    return f"{mod_dir}/{identifier}/{locale_str}"
 
 def dir_list_for_book(mod_dir, book_str, langlist):
     # FIXME: should search from fav to least fave
