@@ -27,6 +27,7 @@ You will also need some fonts from the `Google Font Collection <https://fonts.go
 * OpenSans Semi Bold
 
 To build the web resources, you will need some Python libraries::
+
   pip3 install jinja2
   pip3 install bs4
 
