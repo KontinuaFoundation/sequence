@@ -11,12 +11,16 @@ You will need to have installed git, Python 3, and LaTeX.
 
 (On a Mac, you should install Xcode (from the app store, which should include Git) and `brew <https://brew.sh>`_. Next:
 
+```
   brew install python
   brew install mactex-no-gui
+```
 
 Clone the github repository:
 
+```
   git clone https://github.com/TheKontinua/sequence.git
+```
 
 You will also need some fonts from the `Google Font Collection <https://fonts.google.com/>`_ :
 
@@ -28,8 +32,10 @@ You will also need some fonts from the `Google Font Collection <https://fonts.go
 
 To build the web resources, you will need some Python libraries:
 
+```
   pip3 install jinja2
   pip3 install bs4
+```
 
 Windows
 -------------
