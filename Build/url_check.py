@@ -5,6 +5,7 @@ import util
 import shutil
 import sys
 import urllib.request
+import time
 from bs4 import BeautifulSoup
 
 if len(sys.argv) != 2:
@@ -28,7 +29,11 @@ with open("user.cfg", "r") as config_fd:
     config = json.load(config_fd)
 
 # Linkfile
-linkpath = f"Resources-{config['Languages'][0]}/Links.json"
+dirpath = f"Resources-{config['Languages'][0]}"
+if not os.path.exists(dirpath):
+    os.makedirs(dirpath)
+
+linkpath = f"{dirpath}/Links.json"
 
 # Read the last lookup
 if os.path.exists(linkpath):
@@ -93,16 +98,21 @@ for chap_meta in all_chaps:
                 print(f"Error for {url}: Failed to reach server.")
                 print('Reason: ', e.reason)
                 continue
-            else:
-                if response.status != 200:
-                    print(f"Error for {url}: Status code {status}")
-                    broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': status})
-                    continue
-                soup = BeautifulSoup(response.read(), "html.parser")
-                head = soup.head
-                title = head.title.string
-                print(f"\t\tTitle:\"{title}\"")
-                new_links[url] = {'title':title, 'date':now_str}
+
+            data = None
+            while data is None:
+                try:
+                    data = response.read()
+                except Exception as e:
+                    print("read failed. Waiting 10 seconds and trying again")
+                    time.sleep(10)
+                    response = urllib.request.urlopen(req)
+
+            soup = BeautifulSoup(data, "html.parser")
+            head = soup.head
+            title = head.title.string
+            print(f"\t\tTitle:\"{title}\"")
+            new_links[url] = {'title':title, 'date':now_str}
 
 with open(linkpath,"w") as f:
     json.dump(new_links, f, indent=2)
