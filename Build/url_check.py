@@ -94,7 +94,10 @@ for chap_meta in all_chaps:
                 print('Reason: ', e.reason)
                 continue
             else:
-                info = response.info()
+                if response.status != 200:
+                    print(f"Error for {url}: Status code {status}")
+                    broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': status})
+                    continue
                 soup = BeautifulSoup(response.read(), "html.parser")
                 head = soup.head
                 title = head.title.string
