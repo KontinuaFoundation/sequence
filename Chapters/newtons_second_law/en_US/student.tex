@@ -65,13 +65,13 @@ direction and accelerating.
 \end{enumerate}
 \end{Answer}
 
-It's a common misconception that objects in motion are accelerating. If an object 
-is moving with a constant velocity (same speed, same direction), then it is not 
-accelerating. 
+It's a common misconception that all objects in motion are accelerating. If an 
+object is moving with a constant velocity (same speed, same direction), then it 
+is not accelerating. 
 
 \subsection{Calculating Acceleration}
-As suggested above, acceleration is a change in velocity. It is calculated by
-dividing the change in velocity by the time it takes to make that change.
+When an object is speeding up or slowing down, we can calculate the acceleration 
+by dividing the change in velocity by the time it takes to make that change. 
 
 \begin{mdframed}[style = important, frametitle = {Calculating Acceleration}]
 The acceleration of an object from an initial velocity, $v_i$, to a final
@@ -79,6 +79,9 @@ velocity, $v_f$, over a period of time, $t$, is given by:
 
 $$a = \frac{v_f - v_i}{t}$$
 \end{mdframed}
+
+Notice that if the velocity does not change, then $v_f - v_i = 0$ and the 
+acceleration is also zero.
 
 \textbf{Example}: Your car can go from zero to 60 mph in 3 seconds. What is the
 acceleration in $m / s^2$?
@@ -150,9 +153,13 @@ This means that an object's acceleration is directly proportional to the
 mass. The \textit{net force} is the vector sum of all the forces acting on an 
 object\index{net force}. The vector sum just means we have to take the direction of 
 the force into account. Usually, up and right are positive while down and left are 
-negative. Let's look at some examples:
+negative. You can see some examples in figure \ref{fig:net_forces}.
 
-%fix me 2-4 diagrams with orthogonal forces and net force
+\begin{figure}
+\includegraphics[width=6in]{net_forces.png}
+\caption{The hot air balloon has an upwards net force. The parachuter has a downwards net force. The truck has a rightward net force. The swinger has a leftward net force.}
+\label{fig:net_forces}
+\end{figure}
 
 For now, we'll only look at parallel forces (up/down or left/right). You'll learn 
 to use vector addition to combine orthogonal (at right angles) and skew (at angles
@@ -182,7 +189,7 @@ It is customary to take right as positive, so the horse applies a positive force
 while the donkey applies a negative force to the cart. Therefore, the net force 
 is:
 
-$$F_{net} = F_{horse} + F_{donkey} = 2000N - 1500N = 500N$$
+$$F_{net} = F_{horse} - F_{donkey} = 2000N - 1500N = 500N$$
 
 Since the net force is positive, it points to the right and the cart will 
 accelerate to the right at a rate of:
@@ -275,13 +282,42 @@ between you and the floor.
 What is a \textit{normal force}? First, the word ``normal" doesn't have the 
 colloquial meaning of average or usual. In mathematics, ``normal" means 
 perpendicular. A normal force is perpendicular to the contact surface between 
-two objects. Let's look at a person standing at rest:
+two objects. Let's look at a person standing at rest. We know that gravity is 
+pulling down on the person:
 
-%fix me stick person standing on a floor
+\begin{center}
+    \begin{tikzpicture}
+        %\draw[step=1cm, gray, very thin] (-2, -4) grid (2, 0);
 
-We know that gravity is pulling down on the person:
+        %floor
+        \draw[pattern = north west lines] (-4, 0) rectangle (4, -0.5);
 
-%fix me add gravity vector
+        %arrows and labels
+        \draw[red, fill=red] (0, -2) -- (0.5, -1.5) -- (0.25, -1.5) -- (0.25, 0.5) -- (-0.25, 0.5) -- (-0.25, -1.5) -- (-0.5, -1.5) -- cycle;
+        \node[] at (0, -2.25) {Weight};
+        \node[] at (0, -2.75) {$F_g = mg$};
+    
+        %person fill
+        \draw[gray, fill=gray] (-0.5, 0.5) circle (0.5cm);
+        \draw[gray, fill=gray] (0.5, 0.5) circle (0.5cm);
+        \draw[gray, fill=gray] (-1, 0.5) rectangle (1, 4);
+        \draw[gray, fill=gray] (-1.25, 2.5) circle (0.25cm);
+        \draw[gray, fill=gray] (1.25, 2.5) circle (0.25cm);
+        \draw[gray, fill=gray] (-1.5, 2.5) rectangle (-1, 5);
+        \draw[gray, fill=gray] (1, 2.5) rectangle (1.5, 5);
+        \draw[gray, fill=gray] (0, 6.25) circle (0.75cm);
+        \draw[gray, fill=gray] (-1, 5) circle (0.5cm);
+        \draw[gray, fill=gray] (1, 5) circle (0.5cm);
+        \draw[gray, fill=gray] (-1, 4) rectangle (1, 5.5);
+
+        %person outline
+        \draw[] (-1, 4.5) -- (-1, 0.5) arc (180:360:0.5);
+        \draw[] (0, 0.5) arc (180:360:0.5) -- (1,4.5);
+        \draw[] (0, 0.5) -- (0,2.75);
+        \draw[] (1, 2.5) arc (180:360:0.25) -- (1.5, 5) arc (0:90:.5) -- (-1, 5.5) arc (90:180:0.5) -- (-1.5, 2.5) arc (180:360:0.25);
+        \draw[] (0, 6.25) circle (0.75cm);
+    \end{tikzpicture}
+\end{center}
 
 Since the person is not accelerating, there must be some other force acting on 
 them in the upwards direction that balances out the person's weight (recall that 
@@ -289,7 +325,44 @@ if $a=0 m/s^2$, then it must be true that $F_{net} = 0N$). In this case, the
 balancing force is the \textit{normal force} of the floor pushing up on the 
 person's feet:
 
-%fix me add F_N vector
+\begin{center}
+    \begin{tikzpicture}
+        %\draw[step=1cm, gray, very thin] (-2, -4) grid (2, 0);
+
+        %floor
+        \draw[pattern = north west lines] (-4, 0) rectangle (4, -0.5);
+
+        %down arrows and labels
+        \draw[red, fill=red] (-0.5, -2) -- (0, -1.5) -- (-0.25, -1.5) -- (-0.25, 0.5) -- (-0.75, 0.5) -- (-0.75, -1.5) -- (-1, -1.5) -- cycle;
+        \node[] at (-0.5, -2.25) {Weight};
+        \node[] at (-0.5, -2.75) {$F_g = mg$};
+    
+        %person fill
+        \draw[gray, fill=gray] (-0.5, 0.5) circle (0.5cm);
+        \draw[gray, fill=gray] (0.5, 0.5) circle (0.5cm);
+        \draw[gray, fill=gray] (-1, 0.5) rectangle (1, 4);
+        \draw[gray, fill=gray] (-1.25, 2.5) circle (0.25cm);
+        \draw[gray, fill=gray] (1.25, 2.5) circle (0.25cm);
+        \draw[gray, fill=gray] (-1.5, 2.5) rectangle (-1, 5);
+        \draw[gray, fill=gray] (1, 2.5) rectangle (1.5, 5);
+        \draw[gray, fill=gray] (0, 6.25) circle (0.75cm);
+        \draw[gray, fill=gray] (-1, 5) circle (0.5cm);
+        \draw[gray, fill=gray] (1, 5) circle (0.5cm);
+        \draw[gray, fill=gray] (-1, 4) rectangle (1, 5.5);
+
+        %person outline
+        \draw[] (-1, 4.5) -- (-1, 0.5) arc (180:360:0.5);
+        \draw[] (0, 0.5) arc (180:360:0.5) -- (1,4.5);
+        \draw[] (0, 0.5) -- (0,2.75);
+        \draw[] (1, 2.5) arc (180:360:0.25) -- (1.5, 5) arc (0:90:.5) -- (-1, 5.5) arc (90:180:0.5) -- (-1.5, 2.5) arc (180:360:0.25);
+        \draw[] (0, 6.25) circle (0.75cm);
+
+        %up arrows and labels
+         \draw[blue, fill=blue] (0.25, 0) -- (0.25, 1.5) -- (0, 1.5) -- (0.5, 2) -- (1, 1.5) -- (0.75, 1.5) -- (0.75, 0) -- cycle;
+         \node[] at (0.5, 2.25) {$F_N$};
+         \node[] at (0.5, 2.75) {Normal Force};
+    \end{tikzpicture}
+\end{center}
 
 %fix me explanation of normal force? intuitive explanation of deformation, atoms being pressed together and repelling, rebound of table. There's a demo where you shine a laser at an angle on a mirror flat on a table, then put weight on the table. students can see that the table deforms and helps students to "justify" where the normal force comes from. didn't find a good youtube video but i'll keep looking
 
@@ -352,6 +425,9 @@ is accelerating downwards, the apparent weight decreases. In fact, for scenario
 4, the elevator is in free-fall and the person has no apparent weight. When the 
 elevator is not accelerating, the person's apparent weight is their true weight. 
 \end{Answer}
+
+\subsection{The Normal Force on Slopes}
+%normal force is perpendicular to surface, example, exercise draw direction of normal force vector for various things at angles, or leaning against a wall, etc.
 
 \section{Newtons and Joules}
 You now know the fundamental units for newtons and joules, which hints at the 
