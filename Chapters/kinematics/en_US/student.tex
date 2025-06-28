@@ -62,8 +62,8 @@ Let's go ahead and record this in our table:
 \begin{tabular}{|c|c|c|}
 \hline
 Runner & Terri & Jerry\\\hline
-Leg 1 (s) & 2.7 & \\\hline
-Leg 2 (s) & 2.4 & \\\hline
+Leg 1 (s) & 2.7 & 2.4 \\\hline
+Leg 2 (s) & & \\\hline
 Total (s) & & \\\hline
 \end{tabular}
 \end{center}
@@ -119,10 +119,99 @@ Total (s) & 23.1 & 24.2 \\\hline
 
 \section{Graphing Motion}
 
-
-
 %interpretation of x-t and v-t graphs without explicit calculus
+
+In the example problem above, graphs of each runner's motion would allow us to 
+immediately see who would win. We can describe Terri's and Jerry's runs with 
+piecewise functions:
+$$x_{Terri}(t) = \begin{cases}
+\left( 1.7 \text{ } \frac{m}{s^2} \right)t^2 & \text{if } 0 \leq t < 2.7 
+\text{ }s\\
+12.4 \text{ } m + \left( 9.2 \text{ } \frac{m}{s} \right) \left( t - 2.7 \text{ } 
+s \right) & \text{if } t \geq 2.7 \text{ }s
+\end{cases}$$
+
+$$x_{Jerry}(t) = \begin{cases}
+\left( 1.85 \text{ } \frac{m}{s^2} \right)t^2 & \text{if } 0 \leq t < 2.4 
+\text{ }s\\
+10.2 \text{ }m + \left( 8.7 \text{ }\frac{m}{s} \right) \left(t - 2.4 \text{ }s 
+\right) & \text{if } t \geq 2.4 \text{ }s
+\end{cases}$$
+
+Graphing Terri in red and Jerry in blue:
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[xmin = 0, ymin = 0, xmax = 25, ymax = 205, xlabel = {$t\text{ }
+        \left(s \right)$}, ylabel = {$x \left( t \right)\text{ }\left( m \right)$}]
+            \addplot[red, thick, domain = 0:2.7] {1.7*x^2};
+            \addplot[red, thick, domain = 2.7:25] {12.4 + 9.2*(x-2.7)};
+            \addplot[blue, thick, domain = 0:2.4] {1.85*x^2};
+            \addplot[blue, thick, domain = 2.4:25] {10.2 + 8.7*(x-2.4)};
+            \addplot[dashed, domain = 0:25] {200};
+            \draw[dashed] (23.1, 0) -- (23.1, 200);
+            \draw[dashed] (24.2, 0) -- (24.2, 200);
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Since the red function (Terri) crosses $x(t) = 200 \text{ }m$ first, we see that 
+Terri will win. 
+
+\begin{Exercise}[label = graphs]
+The following graphs show the position of an object from $t = 0\text{ }s$ to $t = 10\text{ }s$. The scales on the $y$-axes are all the same. 
+
+\begin{center}
+ \begin{tikzpicture}
+    \draw[gray!50, step=0.5cm] (0,0) grid (6, 10) ;
+
+    %graph D
+    \draw[thick, latex-latex] (3.5, 5.75) -- (3.5, 3.5) -- (5.75, 3.5);
+    \node[font = \scriptsize] at (4.5, 3.25) {$t$};
+    \node[font = \scriptsize] at (3.25, 4.5) {$x(t)$};
+    \draw[blue, very thick] (3.5, 5) -- (5.5, 3.5);
+    \node[font = \small] at (4.5, 5.5) {D};
+    
+    %graph C
+    \draw[thick, latex-latex] (0.5, 5.75) -- (0.5, 3.5) -- (2.75, 3.5);
+    \node[font = \scriptsize] at (1.5, 3.25) {$t$};
+    \node[font = \scriptsize] at (0.25, 4.5) {$x(t)$};
+    \draw[blue, very thick] (0.5, 3.5) -- (1.5, 5) -- (2.5, 3.5);
+    \node[font = \small] at (1.5, 5.5) {C};
+
+    %graph E
+    \draw[thick, latex-latex] (0.5, 2.75) -- (0.5, 0.5) -- (2.75, 0.5);
+    \node[font = \scriptsize] at (1.5, 0.25) {$t$};
+    \node[font = \scriptsize] at (0.25, 1.5) {$x(t)$};
+    \draw[blue, very thick] (0.5, 0.5) -- (2.5, 2.5);
+    \node[font = \small] at (1.5, 2.5) {E};
+
+    %graph F
+    \draw[thick, latex-latex] (3.5, 2.75) -- (3.5, 0.5) -- (5.75, 0.5);
+    \node[font = \scriptsize] at (4.5, 0.25) {$t$};
+    \node[font = \scriptsize] at (3.25, 1.5) {$x(t)$};
+    \draw[blue, very thick] (3.5, 1) -- (5.5, 1);
+    \node[font = \small] at (4.5, 2.5) {F};
+\end{tikzpicture}   
+\end{center}
+
+
+Rank the objects from least to greatest (all negative values are lower than all positive values) in terms of:
+\begin{enumerate}
+    \item displacement from $t = 0\text{ }s$ to $t = 10\text{ }s$.
+    \item instantaneous velocity at $t = 7.5\text{ }s$.
+    \item average velocity from $t = 0\text{ }s$ to $t = 10\text{ }s$.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = graphs]
+
+\end{Answer}
 
 
 \section{Separation of Components}
-In the current chapter, we have learned how to use kinematics to describe one-dimensional motion. In the next chapter, you will learn to describe two-dimensional motion. It turns out that you can treat the different dimensions (horizontal and vertical motion) separately! %image and video link horizontal launch vs drop from rest hang time equivalence
+In the current chapter, we have learned how to use kinematics to describe 
+one-dimensional motion. In the next chapter, you will learn to describe 
+two-dimensional motion. It turns out that you can treat the different dimensions 
+(horizontal and vertical motion) separately! 
+
+%image and video link horizontal launch vs drop from rest hang time equivalence
