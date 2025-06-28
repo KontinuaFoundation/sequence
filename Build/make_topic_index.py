@@ -33,3 +33,5 @@ for topic, tdict in all_topics.items():
 
 with open("../Chapters/topic_index.json", "w") as f:
     json.dump(out_dict,f, indent=2)
+
+print("made Chapters/topic_index.json")
