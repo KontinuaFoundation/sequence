@@ -119,6 +119,35 @@ Total (s) & 23.1 & 24.2 \\\hline
 
 \section{Graphing Motion}
 
+\subsection{Motion Diagrams}
+%explanation of constnat time interval motion diagrams
+
+\textbf{Example}: Create a motion diagram of a ball rolling with a constant 
+acceleration down an incline (the acceleration is in the same direction as 
+motion). 
+
+\textbf{Solution}: The ball is accelerating down the ramp, so it will cover 
+more distance each second. You could draw your ramp going left or right, as 
+long as the distance covered each time interval increases as time passes. 
+
+\begin{center}
+ \begin{tikzpicture}
+    %left ramp
+    \draw[thick, fill=gray!50] (0.5,0.5) -- (4.5, 0.5) -- (0.5, 2) -- cycle;
+    \foreach \t in {0, 1, 4, 9, 16}
+        \draw[fill=gray!20] (0.74+0.2*\t, 2.16-0.075*\t) circle (0.236cm);
+    \draw[->, thick] (0.5, 2.75) -- (4.5, 1.25) node[right] {+};
+    
+    %right ramp
+    \draw[thick, fill=gray!50] (5.5, 0.5) -- (9.5, 0.5) -- (9.5, 2) -- cycle;
+    \foreach \t in {0, 1, 4, 9, 16}
+        \draw[fill=gray!20] (9.26-0.2*\t, 2.16-0.075*\t) circle (0.236cm);
+    \draw[->, thick] (9.5, 2.75) -- (5.5, 1.25) node[left] {+};  
+\end{tikzpicture}   
+\end{center}
+
+\subsection{Position-Time and Velocity-Time Graphs}
+
 %interpretation of x-t and v-t graphs without explicit calculus
 
 In the example problem above, graphs of each runner's motion would allow us to 
@@ -158,28 +187,46 @@ Since the red function (Terri) crosses $x(t) = 200 \text{ }m$ first, we see that
 Terri will win. 
 
 \begin{Exercise}[label = graphs]
-The following graphs show the position of an object from $t = 0\text{ }s$ to $t = 10\text{ }s$. The scales on the $y$-axes are all the same. 
+The following graphs show the position of an object from $t = 0\text{ }s$ to 
+$t = 10\text{ }s$. The scales on the $y$-axes are all the same. 
 
 \begin{center}
  \begin{tikzpicture}
-    \draw[gray!50, step=0.5cm] (0,0) grid (6, 10) ;
+    %graph A
+    \draw[thick, latex-latex] (0.5, 8.75) -- (0.5, 6.5) -- (2.75, 6.5);
+    \draw[gray!50, step = 0.5cm] (0.5, 6.5) grid (2.5, 8.5);
+    \node[font = \scriptsize] at (1.5, 6.25) {$t$};
+    \node[font = \scriptsize] at (0.25, 7.5) {$x(t)$};
+    \draw[blue, very thick] (0.5, 7) -- (2.5, 7.5);
+    \node[font = \small] at (1.5, 8.5) {A};
 
-    %graph D
-    \draw[thick, latex-latex] (3.5, 5.75) -- (3.5, 3.5) -- (5.75, 3.5);
-    \node[font = \scriptsize] at (4.5, 3.25) {$t$};
-    \node[font = \scriptsize] at (3.25, 4.5) {$x(t)$};
-    \draw[blue, very thick] (3.5, 5) -- (5.5, 3.5);
-    \node[font = \small] at (4.5, 5.5) {D};
+    %graph B
+    \draw[thick, latex-latex] (3.5, 8.75) -- (3.5, 6.5) -- (5.75, 6.5);
+    \draw[gray!50, step = 0.5cm] (3.5, 6.5) grid (5.5, 8.5);
+    \node[font = \scriptsize] at (4.5, 6.25) {$t$};
+    \node[font = \scriptsize] at (3.25, 7.5) {$x(t)$};
+    \draw[blue, very thick] (3.5, 8) -- (5.5, 8);
+    \node[font = \small] at (4.5, 8.5) {B};
     
     %graph C
     \draw[thick, latex-latex] (0.5, 5.75) -- (0.5, 3.5) -- (2.75, 3.5);
+    \draw[gray!50, step = 0.5cm] (0.5, 3.5) grid (2.5, 5.5);
     \node[font = \scriptsize] at (1.5, 3.25) {$t$};
     \node[font = \scriptsize] at (0.25, 4.5) {$x(t)$};
     \draw[blue, very thick] (0.5, 3.5) -- (1.5, 5) -- (2.5, 3.5);
     \node[font = \small] at (1.5, 5.5) {C};
 
+    %graph D
+    \draw[thick, latex-latex] (3.5, 5.75) -- (3.5, 3.5) -- (5.75, 3.5);
+    \draw[gray!50, step = 0.5cm] (3.5, 3.5) grid (5.5, 5.5);
+    \node[font = \scriptsize] at (4.5, 3.25) {$t$};
+    \node[font = \scriptsize] at (3.25, 4.5) {$x(t)$};
+    \draw[blue, very thick] (3.5, 5) -- (5.5, 3.5);
+    \node[font = \small] at (4.5, 5.5) {D};
+
     %graph E
     \draw[thick, latex-latex] (0.5, 2.75) -- (0.5, 0.5) -- (2.75, 0.5);
+    \draw[gray!50, step = 0.5cm] (0.5, 0.5) grid (2.5, 2.5);
     \node[font = \scriptsize] at (1.5, 0.25) {$t$};
     \node[font = \scriptsize] at (0.25, 1.5) {$x(t)$};
     \draw[blue, very thick] (0.5, 0.5) -- (2.5, 2.5);
@@ -187,6 +234,7 @@ The following graphs show the position of an object from $t = 0\text{ }s$ to $t 
 
     %graph F
     \draw[thick, latex-latex] (3.5, 2.75) -- (3.5, 0.5) -- (5.75, 0.5);
+    \draw[gray!50, step = 0.5cm] (3.5, 0.5) grid (5.5, 2.5);
     \node[font = \scriptsize] at (4.5, 0.25) {$t$};
     \node[font = \scriptsize] at (3.25, 1.5) {$x(t)$};
     \draw[blue, very thick] (3.5, 1) -- (5.5, 1);
@@ -195,16 +243,42 @@ The following graphs show the position of an object from $t = 0\text{ }s$ to $t 
 \end{center}
 
 
-Rank the objects from least to greatest (all negative values are lower than all positive values) in terms of:
+Rank the objects from least to greatest (all negative values are lower than 
+all positive values) in terms of:
 \begin{enumerate}
     \item displacement from $t = 0\text{ }s$ to $t = 10\text{ }s$.
     \item instantaneous velocity at $t = 7.5\text{ }s$.
-    \item average velocity from $t = 0\text{ }s$ to $t = 10\text{ }s$.
+    \item distance traveled from $t = 0\text{ }s$ to $t = 10\text{ }s$
 \end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref = graphs]
-
+\begin{enumerate}
+	\item D, B/C/F, A, E; displacement is the difference in position between the 
+	starting and ending points. Object D moves backwards and therefore has a 
+	negative displacement. Objects B, C, and F all end in the same position they 
+	started and therefore have zero displacement. Objects A and E both move 
+	forward and have positive displacement. Object E moves forward 4 units while 
+	Object A only moves forward by 1 unit. Therefore, object E has a greater 
+	positive displacement than object A.  
+	\item C, D, B/F, A, E; instantaneous velocity is given by the slope of a 
+	position-time graph at the indicated time (in this case, $t = 7.5s$). Since 
+	the graphs show 10 seconds of motion and there are 4 tick marks on each 
+	$x$-axis, each unit on the $x$-axis represents 2.5 seconds of time. Therefore, 
+	$t = 7.5s$ is the third tick mark on the $x$-axis. At $t = 7.5s$, the graphs of 
+	objects C and D have negative slopes and therefore negative velocities. Since 
+	the slope for object C is steeper than the slope for object D, object C's 
+	\textit{speed} is greater than object D's, and object C's \textit{velocity} 
+	is more negative than object D's. The graphs of object's B and F are horizontal 
+	at $t=7.5s$ and therefore their velocities are zero. Graphs A and E have 
+	positive slopes, and since E is steeper, object E has a greater speed and 
+	more positive velocity than object A. 
+	\item B/F, A, D, E, C; distance is a scalar and therefore always positive. B 
+	and F do not change position, and therefore travel a distance of 0. A moves 
+	forward 1 unit. D moves backwards 3 units (for a \textit{distance} of 3). E 
+	moves forward 4 units. C moves forwards 3 units, then backwards 3 additional 
+	units, for a total of 6 units of distance. 
+\end{enumerate}
 \end{Answer}
 
 
@@ -212,6 +286,18 @@ Rank the objects from least to greatest (all negative values are lower than all 
 In the current chapter, we have learned how to use kinematics to describe 
 one-dimensional motion. In the next chapter, you will learn to describe 
 two-dimensional motion. It turns out that you can treat the different dimensions 
-(horizontal and vertical motion) separately! 
+(horizontal and vertical motion) separately! Consider this scenario: A cannonball 
+is shot from a cliff and the same instant an identical cannonball is dropped from 
+the same cliff (see...). If the cannon is aimed horizontally, which cannonball 
+will hit the ground first?
 
-%image and video link horizontal launch vs drop from rest hang time equivalence
+%image of cannon example
+
+Go ahead and jot down what you think would happen: would the dropped ball hit 
+first, the launched ball hit first, or would they both reach the ground below at 
+the same time? Then, take a look at this video: 
+\url{https://www.youtube.com/watch?v=zMF4CD7i3hg}. In it, two balls are released 
+from the same height at the same time. One is dropped from rest while the other 
+is launched horizontally (that is, its initial velocity is entirely in the 
+$x$-direction). Based on the video, was your cannonball prediction correct? 
+We'll learn to explain this phenomenon in the next chapter. 
