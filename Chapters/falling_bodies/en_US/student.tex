@@ -16,6 +16,7 @@ the earth. When the hammer is going up, gravity is slowing it down by
 9.8 meters per second, each second it is in the air.  When the hammer is coming down,
 gravity is increasing the speed of its descent by 9.8 meters per second.\index{acceleration}
 % Connect to vectors
+%right now vectors is after falling bodies, suggest we hint at vectors and in vectors recall this to give students something familiar to anchor them when vectors are introduced
 
 
 \includegraphics[width=.8\textwidth]{hammerTime.png}
@@ -144,7 +145,8 @@ diagrams to represent the forces acting on the papers:
         \draw[] (0.62, 1.68) -- (0.6, 1.92) -- (0.79, 2.02) -- (1.02, 1.94) -- 
         (1.23, 1.83) -- (1.1, 1.73) -- (1.35, 1.56);
         \draw[blue, thick, -latex] (1.135, 2.01) -- (1.135, 2.26) 
-        node[above, black, font = \tiny] {$F_{\text{air resistance}} << F_{\text{weight}}$};
+        node[above, black, font = \tiny] {$F_{\text{air resistance}} << 
+        F_{\text{weight}}$};
         \draw[red, thick, -latex] (1.135, 0.27) -- (1.135, -1) 
         node[below, black, font = \tiny] {$F_{\text{weight}}$};
 
@@ -202,9 +204,12 @@ Here is a graph of this function:
         xlabel={$t$},
         ylabel={$p$},
       ]
-      \addplot[no marks,sdkblue,dashed,<-] expression [domain=-0.7:0,samples=100] {(-4.9)*(x^2) + 12 * x + 2};
-      \addplot[no marks,sdkblue] expression [domain=0:2.58,samples=100] {(-4.9)*(x^2) + 12 * x + 2};
-      \addplot[no marks,sdkblue,dashed,->] expression [domain=2.58:3,samples=100] {(-4.9)*(x^2) + 12 * x + 2};
+      \addplot[no marks,sdkblue,dashed,<-] expression [domain=-0.7:0,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
+      \addplot[no marks,sdkblue] expression [domain=0:2.58,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
+      \addplot[no marks,sdkblue,dashed,->] expression [domain=2.58:3,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
     \end{axis}
 \end{tikzpicture}
 
@@ -230,7 +235,9 @@ in:
         xlabel={$t$},
         ylabel={$v$},
       ]
-      \addplot[no marks,sdkblue, name path=f] expression[domain=0:2.25,samples=100]{x * (-9.8) + 12} node[left] {$12 - 9.8t$};
+      \addplot[no marks,sdkblue, name path=f] 
+      	expression[domain=0:2.25,samples=100]
+      	{x * (-9.8) + 12} node[left] {$12 - 9.8t$};
       \path[name path=xaxis] (axis cs:0,0) -- (axis cs:1,0);
       \addplot[
         thick,
@@ -281,7 +288,9 @@ decreasing.)
         xlabel={$t$},
         ylabel={$v$},
       ]
-      \addplot[no marks,sdkblue, name path=f] expression[domain=0:2.25,samples=100]{x * (-9.8) + 12} node[left] {$12 - 9.8t$};
+      \addplot[no marks,sdkblue, name path=f] 
+      expression[domain=0:2.25,samples=100]
+      {x * (-9.8) + 12} node[left] {$12 - 9.8t$};
       \path[name path=xaxis] (axis cs:0,0) -- (axis cs:2.25,0);
       \addplot[
         thick,
@@ -309,7 +318,8 @@ decreasing.)
 
 \section{Quadratic functions}
 
-Functions of the form $f(x) = a x^2 + b x + c$ are called \newterm{quadratic functions}. 
+Functions of the form $f(x) = a x^2 + b x + c$ are called 
+\newterm{quadratic functions}. 
 If $a > 0$, the ends go up.
 If $a < 0$, the ends go down.\index{quadratic functions}
 
@@ -322,7 +332,8 @@ If $a < 0$, the ends go down.\index{quadratic functions}
       axis y line=middle,
       axis line style=<->,
     ]
-    \addplot[no marks,sdkblue] expression [domain=-2:1,samples=100] {(2)*(x^2) + 2 * x - 1};
+    \addplot[no marks,sdkblue] expression [domain=-2:1,samples=100] 
+    	{(2)*(x^2) + 2 * x - 1};
   \end{axis}
   \node[right] at (1,4) {$2x^2 + 2x - 1$};
 \end{tikzpicture}
@@ -335,7 +346,9 @@ If $a < 0$, the ends go down.\index{quadratic functions}
     axis y line=middle,
     axis line style=<->,
   ]
-  \addplot[no marks,sdkblue] expression [domain=-1.5:1.5,samples=100] {(-1.2)*(x^2) + 0.5 * x + 1};
+  \addplot[no marks,sdkblue] 
+  	expression [domain=-1.5:1.5,samples=100] 
+  	{(-1.2)*(x^2) + 0.5 * x + 1};
 \end{axis}
 \node[right] at (0.5,1) {$-1.2 x^2 + 0.5 x + 1$};
 \end{tikzpicture}
@@ -344,7 +357,10 @@ The graph of a quadratic function is a \newterm{parabola}.
 
 \section{Simulating a falling body in Python}
 
-Now you are going to write some Python code that simulates the flying hammer. First, we are just going to print out the position, speed, and acceleration of the hammer for every 1/100th of a second after it leaves your hand. (Later, we will make a graph.)
+Now you are going to write some Python code that simulates the flying hammer. 
+First, we are just going to print out the position, speed, and acceleration of 
+the hammer for every 1/100th of a second after it leaves your hand. (Later, we 
+will make a graph.)
 
 Create a file called \filename{falling.py} and type this into it:
 
@@ -444,10 +460,12 @@ y = x[0]
 Note that the list starts at 0. If you have 32 items in the list,
 the first item is at index 0; the last item is at index 31.
 
-Duplicate the file \filename{falling.py} and name the new copy \filename{falling\_graph.py}
+Duplicate the file \filename{falling.py} and name the new copy 
+\filename{falling\_graph.py}
 
-We are going to make a plot of the height over time. At the start of the program, you will import the
-matplotlib library.  At the end of the program, you will create a plot and show it to the user.
+We are going to make a plot of the height over time. At the start of the 
+program, you will import the matplotlib library.  At the end of the program, 
+you will create a plot and show it to the user.
 
 In \filename{falling\_graph.py}, add the bold code:
 
@@ -503,7 +521,8 @@ When you run the program, you should see a graph of the height over time.
 \includegraphics[width=0.7\linewidth]{heightplot.png}
 
 It is more interesting if we can see all three: acceleration, speed, and height. 
-So, let's make three stacked plots. Change the plotting code in \filename{falling\_graph.py} to:\index{matplotlib!subplots}
+So, let's make three stacked plots. Change the plotting code in 
+\filename{falling\_graph.py} to:\index{matplotlib!subplots}
 
 \begin{Verbatim}
 # Make a plot with three subplots
@@ -529,11 +548,12 @@ You will now get plots of all three variables:
 
 \includegraphics[width=0.8\linewidth]{stackedplot.png}
 
-This is what we expected, right?  The acceleration is a constant negative number.  The speed is a
-straight line with a negative slope.  The height is a parabola.
+This is what we expected, right? The acceleration is a constant negative 
+number. The speed is a straight line with a negative slope. The height is a 
+parabola.
 
 A natural question at this point is ``When exactly will the hammer hit the
-ground?''  In other words, when does $height = 0$? The values of $t$ where a function is zero are
-known as its \textit{roots}. Height is given by a quadratic function. In the next
-chapter, you will get the trick for finding the roots of any quadratic
-function.
+ground?''  In other words, when does $height = 0$? The values of $t$ where a 
+function is zero are known as its \textit{roots}. Height is given by a quadratic 
+function. In the next chapter, you will get the trick for finding the roots of 
+any quadratic function.
