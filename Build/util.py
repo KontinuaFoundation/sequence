@@ -87,6 +87,7 @@ def gather_data(mod_dir, book_str, config):
         md["chap_num"] = i + 1
 
         # Make URLs for the files
+        # FIXME
         if "files" in md:
             filelist = md["files"]
             for j in range(len(filelist)):

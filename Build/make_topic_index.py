@@ -23,9 +23,15 @@ books_metadata = []
 all_topics = {}
 for book in book_nums:
     print(f"Parsing resources for {book}...")
+    # this is the magic line to check prerequisites
     (book_metadatas, topics) = util.gather_data("../Chapters", book, config)
     books_metadata.append(book_metadatas)
     all_topics.update(topics)
+print(books_metadata[0][4]['requires'])
+# chapter prereqs are at books_metadata[0][CHAPTERNUM]['requires']
+#TODO 
+# - check all "covers" ids are unique
+# - check all "requires" ids are previously defined in covers sections
 
 out_dict = {}
 for topic, tdict in all_topics.items():
