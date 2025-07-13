@@ -37,7 +37,7 @@ for book in book_nums:
         # chap_id = chapter.get('id', 'Unknown ID')
         requires = chapter.get('requires', [])
         for req in requires:
-            if req not in all:
+            if req not in all_topics:
                 print(f"🛑🛑🛑 {req} required in chapter {chap_title} but not covered previously")
 
     # duplicate checker (WORKING)
