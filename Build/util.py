@@ -58,7 +58,7 @@ def title_for_dir(dir):
 def metadata_for_dir(dir):
     rpath = os.path.join(dir, "digital_resources.json")
     if not os.path.exists(rpath):
-        print(f"Error: Resources file file {rpath} doesn't exist")
+        print(f"Error: Digital Resources at {rpath} doesn't exist")
         result = {}
     else:
         with open(rpath, 'r') as f:
