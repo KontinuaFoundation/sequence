@@ -20,18 +20,34 @@ with open("user.cfg", "r") as config_fd:
 # Gather all metadatas    
 book_nums = [str(x).zfill(2) for x in range(1, vol_count + 1)]
 books_metadata = []
+
+# EVERY topics with references and videos
 all_topics = {}
 for book in book_nums:
     print(f"Parsing resources for {book}...")
     # this is the magic line to check prerequisites
+
+    # topics = all "covers" from that book
     (book_metadatas, topics) = util.gather_data("../Chapters", book, config)
     books_metadata.append(book_metadatas)
-    all_topics.update(topics)
-print(books_metadata[0][4]['requires'])
-# chapter prereqs are at books_metadata[0][CHAPTERNUM]['requires']
-#TODO 
-# - check all "covers" ids are unique
-# - check all "requires" ids are previously defined in covers sections
+    
+    # check prerequisites before adding new topics (logical order)
+    for chapter in book_metadatas:
+        chap_title = chapter.get('title', 'Unknown Title')
+        # chap_id = chapter.get('id', 'Unknown ID')
+        requires = chapter.get('requires', [])
+        for req in requires:
+            if req not in all_topics:
+                print(f"🛑🛑🛑 {req} required in chapter {chap_title} but not covered previously")
+
+    # duplicate checker (WORKING)
+    # previously was: # all_topics.update(topics)
+    for key in topics:
+        if key in all_topics:
+            print(f"⚠️⚠️⚠️ DUPLICATE TOPIC: {key}")
+        else:
+            all_topics[key] = topics[key]
+
 
 out_dict = {}
 for topic, tdict in all_topics.items():
