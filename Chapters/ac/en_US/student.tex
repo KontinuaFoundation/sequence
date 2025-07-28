@@ -8,29 +8,33 @@ provides between 1.5 and 9 volts.
 The electrical power that comes into your home on wires is
 different. If you plotted the voltage over time, it would look like
 this:
-
-\begin{tikzpicture}[
-tl/.style = {% tick labels fill=white, inner sep=1pt,
-  font=\scriptsize, }, ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
-(6.6,1.85);
-
-% y tick label
-\foreach \y in {-170, -85, 85, 170}{\node[tl,left=1mm] at (0,{\y/100})
-  {$\y$};}
-
-% x tick label
-\foreach \x in {0.004,0.008, 0.012, 0.016}{\node[tl,below=1mm] at
-  ({392.67*\x},0) {$\x$};}
-
-% axes
-\draw[->,thick] (0,0) -- (6.5,0) node[right] {$seconds$};
-\draw[->,thick] (0,-1.8) -- (0, 1.8) node[above] {$volts$};
-% curve
-\draw[<->,thick,draw=black,domain=0:6.5,samples=300,variable=\x] plot
-(\x,{sin(deg(\x)) * 1.7});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+      \begin{tikzpicture}[
+      tl/.style = {% tick labels fill=white, inner sep=1pt,
+        font=\scriptsize, }, ]
+      % grid
+      \draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
+      (6.6,1.85);
+      
+      % y tick label
+      \foreach \y in {-170, -85, 85, 170}{\node[tl,left=1mm] at (0,{\y/100})
+        {$\y$};}
+      
+      % x tick label
+      \foreach \x in {0.004,0.008, 0.012, 0.016}{\node[tl,below=1mm] at
+        ({392.67*\x},0) {$\x$};}
+      
+      % axes
+      \draw[->,thick] (0,0) -- (6.5,0) node[right] {$seconds$};
+      \draw[->,thick] (0,-1.8) -- (0, 1.8) node[above] {$volts$};
+      % curve
+      \draw[<->,thick,draw=black,domain=0:6.5,samples=300,variable=\x] plot
+      (\x,{sin(deg(\x)) * 1.7});
+      \end{tikzpicture}
+    \caption{A graph of AC voltage over time.}
+    \label{fig:acvoltsGraph}
+\end{figure}
 
 The $x$ axis here represents ground. When you insert a two-prong plug
 into an outlet, one is ``hot'' and the other is ``ground''. Ground
@@ -51,27 +55,31 @@ $IV$. So, given a voltage of $V$, the toaster is consuming $V^2/R$
 watts.
 
 However, $V$ is fluctuating. Let's plot the power the toaster is consuming:
-
-\begin{tikzpicture}[
-tl/.style = {% tick labels
-    fill=white, inner sep=1pt, font=\scriptsize,
-            },                        ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.5] (0,0) grid (6.6,2.1);
-
-% y tick label
-\foreach \y in {500, 1000, 1500, 2000}{\node[tl,left=1mm] at (0,{\y/1000}) {$\y$};}
-
-% x tick label
-\foreach \x in {0.004,0.008, 0.012, 0.016}{\node[tl,below=1mm] at ({392.67*\x},0) {$\x$};}
-
-% axes
-\draw[->,thick] (0,0) -- (6.5,0) node[right] {$seconds$};
-\draw[->,thick] (0,0) -- (0, 2.1) node[above] {$watts$};
-% curve
-\draw[<->,thick,draw=black,domain=0:6.5,samples=300,variable=\x]
-      plot (\x,{sin(deg(\x))^2 * 2.007});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels
+        fill=white, inner sep=1pt, font=\scriptsize,
+                },                        ]
+    % grid
+    \draw[sdkblue, very thin, xstep=0.5235, ystep=0.5] (0,0) grid (6.6,2.1);
+    
+    % y tick label
+    \foreach \y in {500, 1000, 1500, 2000}{\node[tl,left=1mm] at (0,{\y/1000}) {$\y$};}
+    
+    % x tick label
+    \foreach \x in {0.004,0.008, 0.012, 0.016}{\node[tl,below=1mm] at ({392.67*\x},0) {$\x$};}
+    
+    % axes
+    \draw[->,thick] (0,0) -- (6.5,0) node[right] {$seconds$};
+    \draw[->,thick] (0,0) -- (0, 2.1) node[above] {$watts$};
+    % curve
+    \draw[<->,thick,draw=black,domain=0:6.5,samples=300,variable=\x]
+          plot (\x,{sin(deg(\x))^2 * 2.007});
+    \end{tikzpicture}
+    \caption{A plot of AC power over time.}
+    \label{fig:acpowerGraph}
+\end{figure}
 
 Another sine wave! Here is a lesser-known trig identity: $\left( \sin(x) \right)^2 = \frac{1}{2} - \frac{1}{2}\cos(2x)$
 
@@ -139,7 +147,7 @@ $1/\sqrt{2} \approx 0.707$.
 
 For current, we do the same thing. If the current is AC, the power
 consumed by a resistor is $I_{RMS}^2 R$, where $I_{RMS}$ is the peak
-current divided by $sqrt{2}$.
+current divided by $\sqrt{2}$.
 
 \section{Power Line Losses}
 
@@ -154,7 +162,7 @@ per km.  Let's also say that your home is consuming 12 kilowatts of power.
 If that power is 120v RMS from the generator to your home, what
 percentage of the power is lost heating the power line? 10 amps RMS
 flow through your home. When that current goes through the wire, $I^2
-R = (100)(20) = 2000 watts$ is lost to heat.
+R = (100)(20) = 2000 \text{ watts}$ is lost to heat.
 
 This means the power company would need to supply 14 kilowatts of power,
 knowing that 2 kilowatts would be lost on the wires.
@@ -178,10 +186,12 @@ details of magnetic fields, flux, and inductance are beyond the scope
 of this chapter, so we are going to give a relatively simple (and admittedly incomplete) explanation for now.
 
 A transformer is a ring with two sets of coils wrapped around it.
-
-\includegraphics[width=0.5\textwidth]{transformer.png}
-
-(Diagram from Wikipedia)
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{transformer.png}
+    \caption{A diagram of a transformer from Wikipedia.}
+    \label{fig:transformer}
+\end{figure}
 
 When alternating current is run through the primary winding, it creates magnetic
 flux in the ring. The magnetic flux induces current in the secondary
@@ -206,64 +216,76 @@ enter your home.
 \section{Phase and 3-phase power}
 
 If two waves are ``in sync'', we say they have the same \newterm{phase}.
-
-\begin{tikzpicture}[
-tl/.style = {% tick labels fill=white, inner sep=1pt,
-  font=\scriptsize, }, ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
-(13,1.85);
-
-% axes
-\draw[->,thick] (0,0) -- (13,0);
-% curve
-\draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x)) * 1.7});
-\draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x)) * 0.9});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels fill=white, inner sep=1pt,
+      font=\scriptsize, }, ]
+    % grid
+    \draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
+    (13,1.85);
+    
+    % axes
+    \draw[->,thick] (0,0) -- (13,0);
+    % curve
+    \draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x)) * 1.7});
+    \draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x)) * 0.9});
+    \end{tikzpicture}
+    \caption{A diagram of two AC signals in sync.}
+    \label{fig:ACsync}
+\end{figure}
 
 If they are the same frequency, but are not in sync, we can talk about
 the difference in their phase.
-
-\begin{tikzpicture}[
-tl/.style = {% tick labels fill=white, inner sep=1pt,
-  font=\scriptsize, }, ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
-(13,1.85);
-
-% axes
-\draw[->,thick] (0,0) -- (13,0);
-% curve
-\draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x)) * 1.7});
-\draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x) - 90) * 0.9});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels fill=white, inner sep=1pt,
+      font=\scriptsize, }, ]
+    % grid
+    \draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
+    (13,1.85);
+    
+    % axes
+    \draw[->,thick] (0,0) -- (13,0);
+    % curve
+    \draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x)) * 1.7});
+    \draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x) - 90) * 0.9});
+    \end{tikzpicture}
+    \caption{A diagram of two AC signals out of phase.}
+    \label{fig:ACoutsync}
+\end{figure}
 
 Here, we see that the smaller wave is lagging by $\pi/2$ or $90^\circ$.
 
 In most power grids, there are usually three wires carrying the power.
 The voltage on each is $2\pi/3$ out of phase with the other two:
-
-\begin{tikzpicture}[
-tl/.style = {% tick labels fill=white, inner sep=1pt,
-  font=\scriptsize, }, ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
-(13,1.85);
-
-% axes
-\draw[->,thick] (0,0) -- (13,0);
-% curve
-\draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x)) * 1.7});
-\draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x) - 120) * 1.7});
-\draw[thick,draw=sdkblue,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x) + 120) * 1.7});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels fill=white, inner sep=1pt,
+      font=\scriptsize, }, ]
+    % grid
+    \draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
+    (13,1.85);
+    
+    % axes
+    \draw[->,thick] (0,0) -- (13,0);
+    % curve
+    \draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x)) * 1.7});
+    \draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x) - 120) * 1.7});
+    \draw[thick,draw=sdkblue,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x) + 120) * 1.7});
+    \end{tikzpicture}
+    \caption{A diagram of three AC signals, each $2\pi/3$ radians out of phase.}
+    \label{fig:ACphase}
+\end{figure}
 
 This is nice in two ways:
 \begin{itemize}
@@ -285,24 +307,29 @@ they get 120V RMS. Large appliances, like air conditioners and
 washing machines, are connected across the two wires, so they get 240V
 RMS.
 
-\begin{tikzpicture}[
-tl/.style = {% tick labels fill=white, inner sep=1pt,
-  font=\scriptsize, }, ]
-% grid
-\draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
-(13,1.85);
-
-% axes
-\draw[->,thick] (0,0) -- (13,0);
-% curve
-\draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x)) * 1.7});
-\draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
-(\x,{sin(deg(\x) + 180) * 1.7});
-\draw[<->, thick, draw=black] (7.85398, 0) -- (7.85398, 1.7) node [midway, right] {120V};
-\draw[<->, thick, draw=black] (4.712, -1.7) -- (4.712, 1.7);
-\draw (4.712, 0.8) node[right] {240V};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels fill=white, inner sep=1pt,
+      font=\scriptsize, }, ]
+    % grid
+    \draw[sdkblue, very thin, xstep=0.5235, ystep=0.425] (0,-1.85) grid
+    (13,1.85);
+    
+    % axes
+    \draw[->,thick] (0,0) -- (13,0);
+    % curve
+    \draw[thick,draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x)) * 1.7});
+    \draw[thick,dashed, draw=black,domain=0:13,samples=500,variable=\x] plot
+    (\x,{sin(deg(\x) + 180) * 1.7});
+    \draw[<->, thick, draw=black] (7.85398, 0) -- (7.85398, 1.7) node [midway, right] {120V};
+    \draw[<->, thick, draw=black] (4.712, -1.7) -- (4.712, 1.7);
+    \draw (4.712, 0.8) node[right] {240V};
+    \end{tikzpicture}
+    \caption{A diagram of AC out of phase in homes.}
+    \label{fig:AChomephase}
+\end{figure}
 
 
 How do you get two circuits, 180 degrees out of phase, from one
