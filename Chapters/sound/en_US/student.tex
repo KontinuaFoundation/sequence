@@ -24,8 +24,12 @@ sphere. As the radius increases, the energy is spread more and more
 thinly around. This is why the firecracker seems louder when you are
 closer to it. (If you set off a firecracker in a sewer pipe, the sound
 will travel much, much farther.)
-
-\includegraphics[width=1\textwidth]{firecracker.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{firecracker.png}
+    \caption{A firecracker exploding causes an initial sound wave and an echo.}
+    \label{fig:firecracker}
+\end{figure}
 
 
 This compression wave will bounce off of hard surfaces. If you set off
@@ -44,7 +48,7 @@ better.
 
 The string on a guitar is very similar to the weighted spring
 example. The farther the string is displaced, the more force it feels
-pushing it back to equilibrium. Thus, it moves back and forth in a
+pushing it back to equilibrium (remember the tension force?). Thus, it moves back and forth in a
 sine wave. (OK, it isn't a pure sine wave, but we will get to that later.)
 
 The string is connected to the center of the boxy part of the guitar,
@@ -59,14 +63,19 @@ inner ear. This is how you hear.
 We sometimes see plots of sound waveforms.  The $x$-axis represents
 time. The $y$-axis represents the amount the air is compressed at the
 microphone that converted the air pressure into an electrical signal.
-
-\includegraphics[width=0.8\linewidth]{soundwave.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{soundwave.png}
+    \caption{A soundwave graph over time.}
+    \label{fig:soundwave}
+\end{figure}
 
 If the guitar string is made tighter (by the tuning pegs) or shorter
 (by the guitarist's fingers on the strings), the string vibrates more
 times per second.  We measure the number of waves per second and we
 call it the \newterm{frequency} of the tone. The unit for frequency is
-\newterm{Hertz}: cycles per second.
+\newterm{Hertz}: cycles per second. The \newterm{period} is opposite of frequency:
+it is the time it takes for one cycle to complete. The unit for period is seconds per cycle.
 
 Musicians have given the different frequencies names. If the guitarist
 plucks the lowest note on his guitar, it will vibrate at 82.4
@@ -86,7 +95,7 @@ Shortening the string one fret always increases the frequency by a factor of 1.0
 
 Because $1.059463^12 = 2$. That is, if you take 12 of these hops, you
 end up an octave higher.
-
+%FIXME diagram of labeled guitar here would be helpful
 This, the smallest hop in western music, is referred to as a \newterm{half step}.
 
 \begin{Exercise}[title={Notes and frequencies}, label=note_to_frequency]
@@ -132,58 +141,62 @@ the centerpoint is going up, while everything to the right is going
 down. This creates \newterm{an overtone} that is twice the frequency
 of the fundamental.
 
-\begin{tikzpicture}[
-tl/.style = {% tick labels
-    fill=white, inner sep=1pt, font=\scriptsize,
-            },                        ]
-
-  \draw[dashed,draw=black,
-      domain=-0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.7 * sin(deg{\x}/2)});
-  \draw[thick,draw=black,
-      domain=0:6.283,samples=300,variable=\x] 
-  plot (\x,{0.7 * sin(deg{-1 * \x}/2)});
-  
-  \draw[dashed,draw=black,
-      domain=-0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.2 * sin(deg{\x})});
-  \draw[thick,draw=black,
-      domain=0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.2 * sin(deg{-1 * \x})});
-
- \filldraw[black] (0, 0)  circle(3pt);
- \filldraw[black] (6.283, 0)  circle(3pt);
-
-\end{tikzpicture}
-
+\begin{center}
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels
+        fill=white, inner sep=1pt, font=\scriptsize,
+                },                        ]
+    
+      \draw[dashed,draw=black,
+          domain=-0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.7 * sin(deg{\x}/2)});
+      \draw[thick,draw=black,
+          domain=0:6.283,samples=300,variable=\x] 
+      plot (\x,{0.7 * sin(deg{-1 * \x}/2)});
+      
+      \draw[dashed,draw=black,
+          domain=-0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.2 * sin(deg{\x})});
+      \draw[thick,draw=black,
+          domain=0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.2 * sin(deg{-1 * \x})});
+    
+     \filldraw[black] (0, 0)  circle(3pt);
+     \filldraw[black] (6.283, 0)  circle(3pt);
+    
+    \end{tikzpicture}
+    
+\end{center}
 The next overtone has two still points --- it divides the string into
 three parts.  The outer parts are up, while the inner part is
 down. Its frequency is three times the fundamental frequency.
 
-\begin{tikzpicture}[
-tl/.style = {% tick labels
-    fill=white, inner sep=1pt, font=\scriptsize,
-            },                        ]
-
-  \draw[dashed,draw=black,
-      domain=-0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.7 * sin(deg{\x}/2)});
-  \draw[thick,draw=black,
-      domain=0:6.283,samples=300,variable=\x] 
-  plot (\x,{0.7 * sin(deg{-1 * \x}/2)});
-  
-  \draw[dashed,draw=black,
-      domain=-0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.2 * sin(1.5 * deg{\x})});
-  \draw[thick,draw=black,
-      domain=0:6.283,samples=300,variable=\x] 
-      plot (\x,{0.2 * sin(1.5 * deg{-1 * \x})});
-
- \filldraw[black] (0, 0)  circle(3pt);
- \filldraw[black] (6.283, 0)  circle(3pt);
-
-\end{tikzpicture}
-
+\begin{center}
+    \begin{tikzpicture}[
+    tl/.style = {% tick labels
+        fill=white, inner sep=1pt, font=\scriptsize,
+                },                        ]
+    
+      \draw[dashed,draw=black,
+          domain=-0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.7 * sin(deg{\x}/2)});
+      \draw[thick,draw=black,
+          domain=0:6.283,samples=300,variable=\x] 
+      plot (\x,{0.7 * sin(deg{-1 * \x}/2)});
+      
+      \draw[dashed,draw=black,
+          domain=-0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.2 * sin(1.5 * deg{\x})});
+      \draw[thick,draw=black,
+          domain=0:6.283,samples=300,variable=\x] 
+          plot (\x,{0.2 * sin(1.5 * deg{-1 * \x})});
+    
+     \filldraw[black] (0, 0)  circle(3pt);
+     \filldraw[black] (6.283, 0)  circle(3pt);
+    
+    \end{tikzpicture}
+    
+\end{center}
 And so on. 4 times the fundamental, 5 times the fundamental, etc.
 
 In general, tones with many overtones tend to sound bright. Tones
@@ -267,8 +280,12 @@ plt.show()
 \end{Verbatim}
 
 When you run it, you should see a plot of all three sine waves and another plot of their sum:
-
-\includegraphics[width=0.9\linewidth]{harmonicspy.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{harmonicspy.png}
+    \caption{The output of haronics.py}
+    \label{fig:harmonicspy}
+\end{figure}
 
 \subsection{Making a sound file}
 
