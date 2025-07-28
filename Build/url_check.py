@@ -70,7 +70,7 @@ for chap_meta in all_chaps:
     # What URLs are videos and references for this chapter?
     urls = util.urls_in_chapter_meta(chap_meta)
     if len(urls) > 0:
-        print(f"Fetching for {chap_meta['id']} ({chap_meta['title']})...")
+        print(f"Chapter: {chap_meta['id']} ({chap_meta['title']})...")
         for url in urls:
             # Maybe I don't need to fetch this?
             if fetch_if_after is not None and url in old_links:
@@ -85,18 +85,18 @@ for chap_meta in all_chaps:
                         # Go on to the next URL
                         continue
 
-            print(f"\tFetching {url}")
+            print(f"\tFetching {url}:", end="", flush=True)
             req = urllib.request.Request(url)
             try:
                 response = urllib.request.urlopen(req)
             except urllib.error.HTTPError as e:
-                print(f"Error for {chap_meta['id']} {url}: The server couldn\'t fulfill the request.")
-                print('Error code: ', e.code)
+                print(f"\n\tError for {chap_meta['id']} {url}: The server couldn\'t fulfill the request.")
+                print('\n\tError code: ', e.code)
                 broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': e.code})
                 continue
             except urllib.error.URLError as e:
-                print(f"Error for {url}: Failed to reach server.")
-                print('Reason: ', e.reason)
+                print(f"\n\tError for {url}: Failed to reach server.")
+                print('\n\tReason: ', e.reason)
                 continue
 
             data = None
@@ -104,14 +104,14 @@ for chap_meta in all_chaps:
                 try:
                     data = response.read()
                 except Exception as e:
-                    print("read failed. Waiting 10 seconds and trying again")
+                    print("\n\tread failed. Waiting 10 seconds and trying again")
                     time.sleep(10)
                     response = urllib.request.urlopen(req)
 
             soup = BeautifulSoup(data, "html.parser")
             head = soup.head
             title = head.title.string
-            print(f"\t\tTitle:\"{title}\"")
+            print(f"\"{title}\"")
             new_links[url] = {'title':title, 'date':now_str}
 
 with open(linkpath,"w") as f:
