@@ -20,6 +20,8 @@ That said, here are some topics that definitely need to be tackled:
 * How a transistor works
 * Weather (why is there wind? What is a high-pressure system? Why does it rain?)
 
+Certain chapters need "splitting-apart" as it covers topics that should come after, and other chapters need merging as there is duplicate information.
+
 =================
 Digital Resources
 =================
@@ -40,16 +42,29 @@ Every chapter needs at least six practice problems and six test problems.
 The practice problems and solutions go into the appropriate ``student.tex``.
 
 The test problems will be entered into the mentoris web application.
-Besides a problem and a solution, the test problems will also need a grading rubric.
+Besides a problem and a solution, the test problems will also need a grading rubric. 
+
+(This is being worked on for supplemental quizzes, but the book problems could use more in-chapter examples!)
 
 ========
-Indexing
+Indexing and Figures
 ========
 
 I have neglected adding index tags in many chapters.  I would love someone to go through and add the tags.
 
 Overall, you just go through the ``student.tex`` files.  Anywhere an idea is introduced at ``\index{peanut butter}``
 or ``\index{butters!peanut}``
+
+Additionally, all figures (TikZ pictures or inserted images or diagrams) should have the format of a LaTeX figure for consistency::
+
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{example.png}
+        \caption{Your descriptive caption here.}
+        \label{fig:example}
+    \end{figure}
+
 
 =======
 Editing
