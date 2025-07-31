@@ -7,8 +7,9 @@ In this chapter, you are going to simulate two moons that, as they wandered thro
 in each other's gravity well.   We will assume there are no other forces acting upon the moons.
 
 \section{Force, Acceleration, Velocity, and Position}
-
+\index{gravitation}
 We talked about the magnitude of a gravitational attraction between two masses:
+%this equation is not introduced before here...
 
 $$F = G\frac{m_1 m_2}{r^2}$$
 
@@ -152,7 +153,7 @@ while current_time <= MAX_TIME:
     current_time += TIME_STEP
 
 print(f"Generated {len(position1_log)} data points.")
-\end{verbatim}\
+\end{verbatim}
 
 When your run the simulation,  you will see the positions of the moons for 100 days:
 \begin{verbatim}
@@ -208,9 +209,14 @@ ax.plot(positions2[:, 0], positions2[:, 1], m2["color"], lw=0.7)
 fig.savefig("plotmoons.png")
 \end{verbatim}
 
-When you run it,   your \filename{plotmoons.png} should look like this:
+When you run it, your \filename{plotmoons.png} should look like this:
 
-\includegraphics[width=0.5\textwidth]{plotmoons_01.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plotmoons_01.png}
+    \caption{Output of moons\_01.py.}
+    \label{fig:plotmoons_01}
+\end{figure}
 
 It is nifty to see the paths,  but we don't know where each moon was at a particular time.  In fact, it is difficult to figure out which end of each curve was the beginning and which was the ending.
 
@@ -243,8 +249,11 @@ while i < len(positions1):
 \end{verbatim}
 
 When you run it,  your plot should look like this:
-
-\includegraphics[width=0.5\textwidth]{plotmoons_02.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plotmoons_02.png}
+    \caption{Plot moons\_02.py.}
+\end{figure}
 
 Now you can get a feel for what happened.  The moons were attracted to each other by gravity and started to circle each other. The heavier moon accelerates less quickly,  so it makes a smaller loop.
 
@@ -255,15 +264,17 @@ MAX_TIME = 400 * SEC_PER_DAY # 100 days
 \end{verbatim}
 
 Now it should look like this:
-
-\includegraphics[width=0.5\textwidth]{plotmoons_03.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plotmoons_03.png}
+    \caption{Output of plot moons\_03.py.}
+\end{figure}
 
 Now you can see the pattern. They are rotating around each other and the pair is gradually migrating
 up and to the right.
 
 \section{Conservation of Momentum}
-
-You are observing an extra important idea: the momentum of a system will be conserved. That is,  absent forces from outside the system,  the velocity of the center of mass will not change.
+Recall the idea of momentum being conserved in a system. In these programs, you are observing an extra important idea: \emph{the momentum of a system will be conserved}. That is, absent forces from outside the system,  the velocity of the center of mass will not change.
 
 We can compute the initial center of mass and its velocity.   In both cases,  we just do a weighted average using the mass of the moon as the weight. 
 
@@ -306,8 +317,12 @@ positions2 = positions2 - cms
 \end{verbatim}
 
 When you run it, you can really see what is happening:
-
-\includegraphics[width=0.5\textwidth]{plotmoons_04.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plotmoons_04.png}
+    \caption{Output of plotmoons\_04.py.}
+    \label{fig:plotmoons_04}
+\end{figure}
 
 The moons are tracing elliptical paths.  The center of mass is the focus point for both of them.
 
@@ -505,11 +520,15 @@ animation.save("moonmovie.mp4")
 When you run this,  it will take longer than the previous versions.  You should have a 
 video file that shows a simulation of the moons tracing their elliptical paths around their
 center of mass:
-
-\includegraphics[width=0.5\textwidth]{movie.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{movie.png}
+    \caption{A still of the animation produced.}
+    \label{fig:movie}
+\end{figure}
 
 \section{Challenge: The Three-Body Problem}
-
+\index{Three-Body Problem}
 It is time to stretch a little as a physicist and programmer:  You are going to make a new version of \filename{moons.py} that handles three moons instead of just two.
 
 This is known as ''The Three-Body Problem'', and people have tried for centuries to come up with 
@@ -521,7 +540,7 @@ cannonball:  If it leaves the muzzle of the cannon a little faster,  it will go 
 For the three-body problem,  the outcome can be radically different even if the initial conditions are very similar.  
 
 (There is a whole field of mathematics studying systems that are very sensitive to initial conditions.  It is known
-as \newterm{dynamical systems} or \newterm{chaos theory}.
+as \newterm{dynamical systems} or \newterm{chaos theory}.)
 
 Copy \filename{moons.py}  to \filename{3moons.py}.  Here is a reasonable initial state for your third moon:
 
@@ -536,11 +555,11 @@ m3 = {
 \end{verbatim}
 
 If we run that simulation for 100 days, we get a plot like this:
-
-\includegraphics[width=0.6\textwidth]{plot3moons_01.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{plot3moons_01.png}
+    \caption{The Three Body Problem.}
+    \label{fig:threebodyproblem}
+\end{figure}
 
 Visibly, you can see this is very different from the two-body problem that just traced ellipses around the center of mass.
-
-
-
-
