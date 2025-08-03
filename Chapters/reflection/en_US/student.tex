@@ -74,6 +74,7 @@ where $\theta_i$ is the angle between the incident light ray and the
 normal to the surface, and $\theta_r$ is the angle between the
 reflected light ray and the normal.
 
+
 \begin{figure}[htbp]
     \centering
     \begin{tikzpicture}[scale=5]
@@ -166,29 +167,38 @@ a few different kinds of curved mirrors.\index{circle!reflections in}
 For example, if you were inside a circular room (a cylinder,
 actually), you could imagine standing in the center and pointing a
 flash light in any horizontal direction. The beam of light would
-bounce right back to you.
+bounce right back to you. See Figure~\ref{fig:circlReflection}
 
-\begin{tikzpicture}[scale=1]
-  \coordinate (a) at (0,0);
-  \coordinate (b) at ({3 * cos(30)}, {3 * sin(30)});
-  \draw [black, thick] (a) circle (3);
-  \filldraw [sdkblue] (a) circle (2pt);
-  \filldraw [sdkblue] (b) circle (2pt);
-  \draw [sdkblue,<->] ({0.2 * cos(30)},{0.2 * sin(30)})--({2.8 * cos(30)},{2.8 * sin(30)});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=1]
+      \coordinate (a) at (0,0);
+      \coordinate (b) at ({3 * cos(30)}, {3 * sin(30)});
+      \draw [black, thick] (a) circle (3);
+      \filldraw [sdkblue] (a) circle (2pt);
+      \filldraw [sdkblue] (b) circle (2pt);
+      \draw [sdkblue,<->] ({0.2 * cos(30)},{0.2 * sin(30)})--({2.8 * cos(30)},{2.8 * sin(30)});
+    \end{tikzpicture}
+    \caption{A circle would reflect back onto itself.}
+    \label{fig:circlReflection}
+\end{figure}
 
 How do you know this?  Because the tangent line is always perpendicular to the radius to the point of tangency:
-
-\begin{tikzpicture}[scale=1.4]
-  \coordinate (a) at (0,0);
-  \coordinate (b) at ({3 * cos(30)}, {3 * sin(30)});
-  \draw [black, thick] (3,0) arc (0:80:3);
-  \filldraw [sdkblue] (a) circle (2pt);
-  \filldraw [sdkblue] (b) circle (2pt);
-  \draw [sdkblue,<->] ({0.2 * cos(30)},{0.2 * sin(30)})--({2.8 * cos(30)},{2.8 * sin(30)});
-  \clip (-.1, -.1) rectangle (4,3);
-  \draw [dashed] (0,{3 / sin(30)}) -- ({3 / cos(30)},0);
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=1.4]
+      \coordinate (a) at (0,0);
+      \coordinate (b) at ({3 * cos(30)}, {3 * sin(30)});
+      \draw [black, thick] (3,0) arc (0:80:3);
+      \filldraw [sdkblue] (a) circle (2pt);
+      \filldraw [sdkblue] (b) circle (2pt);
+      \draw [sdkblue,<->] ({0.2 * cos(30)},{0.2 * sin(30)})--({2.8 * cos(30)},{2.8 * sin(30)});
+      \clip (-.1, -.1) rectangle (4,3);
+      \draw [dashed] (0,{3 / sin(30)}) -- ({3 / cos(30)},0);
+    \end{tikzpicture}
+    \caption{The reflection on a circle uses a radius which hits a tangent line as a perpendicular bisector.}
+    \label{fig:tangentCircle}
+\end{figure}
 
 You could create a spherical room with mirror walls. You would
 create a platform in the center where you could stand, and if you
@@ -216,14 +226,19 @@ $$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$$
 Note that $(a,0), (-a, 0), (0, b), (0,-b)$ are all part of the
 set. The complete set looks like this:
 
-\begin{tikzpicture}[scale=2]
-  \draw [sdkblue, <->] (-2.5, 0)--(2.5, 0); \draw [sdkblue, <->] (0,
-  -1.5)--(0, 1.5); \draw (0,0) ellipse (2 and 1); \filldraw [sdkblue]
-  (-2, 0) circle (1pt) node [anchor=east] {$-a$}; \filldraw [sdkblue]
-  (2, 0) circle (1pt) node [anchor=west] {$a$}; \filldraw [sdkblue]
-  (0, -1) circle (1pt) node [anchor=north] {$-b$}; \filldraw [sdkblue]
-  (0, 1) circle (1pt) node [anchor=south] {$b$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=2]
+      \draw [sdkblue, <->] (-2.5, 0)--(2.5, 0); \draw [sdkblue, <->] (0,
+      -1.5)--(0, 1.5); \draw (0,0) ellipse (2 and 1); \filldraw [sdkblue]
+      (-2, 0) circle (1pt) node [anchor=east] {$-a$}; \filldraw [sdkblue]
+      (2, 0) circle (1pt) node [anchor=west] {$a$}; \filldraw [sdkblue]
+      (0, -1) circle (1pt) node [anchor=north] {$-b$}; \filldraw [sdkblue]
+      (0, 1) circle (1pt) node [anchor=south] {$b$};
+    \end{tikzpicture}
+    \caption{The points on an ellipse.}
+    \label{fig:ellipsePoints}
+\end{figure}
 
 The area contained inside this ellipse is given by
 
@@ -240,24 +255,28 @@ gets confusing if we try to deal with both cases simultaneously.)\index{ellipse!
 
 If $p$ is a point on the ellipse, the distance from $p$ to focal point 1
 plus the distance from $p$ to focal point 2 is always $2a$.
-
-\begin{tikzpicture}[scale=2]
-  \coordinate (p) at (0.7, 0.93674969975976);
-  \coordinate (f1) at (-1.732050807568877, 0);
-  \coordinate (f2) at (1.732050807568877, 0);
-  \draw [sdkblue, <->] (-2.5, 0)--(2.5, 0);
-  \draw [sdkblue, <->] (0, -1.5)--(0, 1.5);
-  \draw (0,0) ellipse (2 and 1);
-  \filldraw [sdkblue] (-2, 0) circle (1pt) node [anchor=east] {$-a$};
-  \filldraw [sdkblue] (2, 0) circle (1pt) node [anchor=west] {$a$};
-  \filldraw [sdkblue] (0, -1) circle (1pt) node [anchor=north] {$-b$};
-  \filldraw [sdkblue] (0, 1) circle (1pt) node [anchor=south] {$b$};
-  \filldraw (p) circle (1pt) node [anchor=south] {$p$};
-  \filldraw (f1) circle (1pt) node [anchor=north] {$f_1$};
-  \filldraw (f2) circle (1pt) node [anchor=north] {$f_2$};
-  \draw [dashed] (f1) -- (p) node [midway, anchor=south] {$d$};
-  \draw [dashed] (f2) -- (p) node [midway, anchor=north] {$2a - d$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=2]
+      \coordinate (p) at (0.7, 0.93674969975976);
+      \coordinate (f1) at (-1.732050807568877, 0);
+      \coordinate (f2) at (1.732050807568877, 0);
+      \draw [sdkblue, <->] (-2.5, 0)--(2.5, 0);
+      \draw [sdkblue, <->] (0, -1.5)--(0, 1.5);
+      \draw (0,0) ellipse (2 and 1);
+      \filldraw [sdkblue] (-2, 0) circle (1pt) node [anchor=east] {$-a$};
+      \filldraw [sdkblue] (2, 0) circle (1pt) node [anchor=west] {$a$};
+      \filldraw [sdkblue] (0, -1) circle (1pt) node [anchor=north] {$-b$};
+      \filldraw [sdkblue] (0, 1) circle (1pt) node [anchor=south] {$b$};
+      \filldraw (p) circle (1pt) node [anchor=south] {$p$};
+      \filldraw (f1) circle (1pt) node [anchor=north] {$f_1$};
+      \filldraw (f2) circle (1pt) node [anchor=north] {$f_2$};
+      \draw [dashed] (f1) -- (p) node [midway, anchor=south] {$d$};
+      \draw [dashed] (f2) -- (p) node [midway, anchor=north] {$2a - d$};
+    \end{tikzpicture}
+    \caption{The both foci and point p forms a triangle with legs $2a-d$ or $d$.}
+    \label{fig:pointPTriangle}
+\end{figure}
 
 How do we find the foci? We know they are on the long axis and that
 they are symmetrical across the short axis. All we need to know is how
@@ -339,29 +358,33 @@ Here is something else that is wonderful about an ellipse: Pick any
 point $p$ on the ellipse. Draw a line from $p$ to each focal point.
 Draw the line tangent to the ellipse at $p$. You will see that the angle between
 the tangent and the line to focal point 1 is equal to the angle between the
-tangent and the line to focal point 2.
-
-\begin{tikzpicture}[scale=2]
-  \coordinate (p) at (0.7, 0.93674969975976);
-  \coordinate (f1) at (-1.732050807568877, 0);
-  \coordinate (f2) at (1.732050807568877, 0);
-  \clip (-2.5, -.4) rectangle (5.5,2);
-  \draw [sdkblue] (-2.1, 0)--(2.1, 0);
-  \draw [sdkblue] (0, -1.1)--(0, 1.1);
-  \draw (0,0) ellipse (2 and 1);
-  \filldraw (p) circle (1pt) node [anchor=south] {$p$};
-  \filldraw (f1) circle (1pt) node [anchor=north] {$f_1$};
-  \filldraw (f2) circle (1pt) node [anchor=north] {$f_2$};
-  \draw [sdkblue] (f1) -- (p);
-  \draw [sdkblue] (f2) -- (p);
-  \coordinate (t1) at (-0.2829937278, 1.120388832);
-  \coordinate (t2) at (1.682993728, 0.7531105671); 
-  \draw [dashed, thick]  (t1)--(t2);
-  \draw [sdkblue, <->] (t1) arc (169.4181988:201.0651201:1)
-     node [midway, anchor=east] {$\theta$};
-  \draw [sdkblue, <->] (t2) arc (-10.5818012:-42.22872252:1)
-     node [midway, anchor=east] {$\theta$};
-\end{tikzpicture}
+tangent and the line to focal point 2. See Figure~\ref{fig:reflectiveEllipse}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=2]
+      \coordinate (p) at (0.7, 0.93674969975976);
+      \coordinate (f1) at (-1.732050807568877, 0);
+      \coordinate (f2) at (1.732050807568877, 0);
+      \clip (-2.5, -.4) rectangle (5.5,2);
+      \draw [sdkblue] (-2.1, 0)--(2.1, 0);
+      \draw [sdkblue] (0, -1.1)--(0, 1.1);
+      \draw (0,0) ellipse (2 and 1);
+      \filldraw (p) circle (1pt) node [anchor=south] {$p$};
+      \filldraw (f1) circle (1pt) node [anchor=north] {$f_1$};
+      \filldraw (f2) circle (1pt) node [anchor=north] {$f_2$};
+      \draw [sdkblue] (f1) -- (p);
+      \draw [sdkblue] (f2) -- (p);
+      \coordinate (t1) at (-0.2829937278, 1.120388832);
+      \coordinate (t2) at (1.682993728, 0.7531105671); 
+      \draw [dashed, thick]  (t1)--(t2);
+      \draw [sdkblue, <->] (t1) arc (169.4181988:201.0651201:1)
+         node [midway, anchor=east] {$\theta$};
+      \draw [sdkblue, <->] (t2) arc (-10.5818012:-42.22872252:1)
+         node [midway, anchor=east] {$\theta$};
+    \end{tikzpicture}
+    \caption{Reflective Property of Ellipses.}
+    \label{fig:reflectiveEllipse}
+\end{figure}
 
 This is known as ``The Reflective Property of Ellipses''.
 \index{ellipse!reflective property of}
@@ -373,37 +396,41 @@ Fred.
 
 If Fred ducks out of the way, the beam will bounce again and
 head back to you.
-
-\begin{tikzpicture}[scale=4]
-  \coordinate (p) at (0.7, 0.93674969975976);
-  \coordinate (p2) at (1.95763,-0.204758);
-  \coordinate (f1) at (-1.732050807568877, 0);
-  \coordinate (f2) at (1.732050807568877, 0);
-  \draw (0,0) ellipse (2 and 1);
-  \filldraw [sdkblue] (p) circle (0.5pt);
-  \filldraw [sdkblue] (p2) circle (0.5pt);
-  \filldraw (f1) circle (1pt) node [anchor=north] {You};
-  \filldraw (f2) circle (1pt) node [anchor=north] {Fred};
-  \draw [sdkblue, ->] (f1) -- (p);
-  \draw [sdkblue, ->] (p) -- (p2);
-  \draw [sdkblue, ->] (p2) -- (f1);
-  \coordinate (b1) at (0.6081804337,0.4452528358);
-  \coordinate (b2) at (1.219613217,0.1039995564);
-  \draw [dashed] (p)--(b1);
-  \draw [dashed] (p2)--(b2);
-  \coordinate (t1) at (0.1102037633, 1.046933179);
-  \coordinate (t2) at (1.289796237, 0.8265662202); 
-  \draw [dashed, thick]  (t1)--(t2);
-  \draw [dashed, thick] (1.764656527,-0.6660184891) -- (2.150603473,0.2565024891);
-  \draw [sdkblue, <->] (b1) arc (-100.5818012:-42.22872252:0.5)
-     node [midway, anchor=south] {$\theta_1$};
-  \draw [sdkblue, <->] (b1) arc (-100.5818012:-158.9348799:0.5)
-     node [midway, anchor=south] {$\theta_1$};
-  \draw [sdkblue, <->] (b2) arc (157.2974596:137.7712775:0.8)
-     node [midway, anchor=west] {$\theta_2$};
-  \draw [sdkblue, <->] (b2) arc (157.2974596:176.8236417:0.8)
-     node [midway, anchor=west] {$\theta_2$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=4]
+      \coordinate (p) at (0.7, 0.93674969975976);
+      \coordinate (p2) at (1.95763,-0.204758);
+      \coordinate (f1) at (-1.732050807568877, 0);
+      \coordinate (f2) at (1.732050807568877, 0);
+      \draw (0,0) ellipse (2 and 1);
+      \filldraw [sdkblue] (p) circle (0.5pt);
+      \filldraw [sdkblue] (p2) circle (0.5pt);
+      \filldraw (f1) circle (1pt) node [anchor=north] {You};
+      \filldraw (f2) circle (1pt) node [anchor=north] {Fred};
+      \draw [sdkblue, ->] (f1) -- (p);
+      \draw [sdkblue, ->] (p) -- (p2);
+      \draw [sdkblue, ->] (p2) -- (f1);
+      \coordinate (b1) at (0.6081804337,0.4452528358);
+      \coordinate (b2) at (1.219613217,0.1039995564);
+      \draw [dashed] (p)--(b1);
+      \draw [dashed] (p2)--(b2);
+      \coordinate (t1) at (0.1102037633, 1.046933179);
+      \coordinate (t2) at (1.289796237, 0.8265662202); 
+      \draw [dashed, thick]  (t1)--(t2);
+      \draw [dashed, thick] (1.764656527,-0.6660184891) -- (2.150603473,0.2565024891);
+      \draw [sdkblue, <->] (b1) arc (-100.5818012:-42.22872252:0.5)
+         node [midway, anchor=south] {$\theta_1$};
+      \draw [sdkblue, <->] (b1) arc (-100.5818012:-158.9348799:0.5)
+         node [midway, anchor=south] {$\theta_1$};
+      \draw [sdkblue, <->] (b2) arc (157.2974596:137.7712775:0.8)
+         node [midway, anchor=west] {$\theta_2$};
+      \draw [sdkblue, <->] (b2) arc (157.2974596:176.8236417:0.8)
+         node [midway, anchor=west] {$\theta_2$};
+    \end{tikzpicture}
+    \caption{Your laser intersects Fred.}
+    \label{fig:laserFred}
+\end{figure}
 
 This will work for sound as well. If you whisper while on the focal point, Fred
 (at the other focal point) will hear you surprisingly well, because all
@@ -443,6 +470,7 @@ $$\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2}= 1$$
 
 Note that $(a,0,0), (0, b,0), (0,0,c)$ are all part of the
 set. The complete set looks like this:
+%FIXME figure
 \begin{figure}[htbp]
     \centering
     \begin{tikzpicture}[scale=2.0]
@@ -550,6 +578,7 @@ $$y = a x^2 + b x + c$$
 
 If $a$ is not zero, the graph of a quadratic is a curved line called a
 \newterm{parabola}. The first parabola that most mathematicians think of is the graph of $y = x^2$:
+% FIXME make into figure
 
 \begin{tikzpicture}
     \draw[sdkblue,<->] (-2.0, 0) -- (2.0, 0) node[right] {$x$};
@@ -557,7 +586,6 @@ If $a$ is not zero, the graph of a quadratic is a curved line called a
     \draw[domain=-1.9:1.9,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
     \draw (1.1, 1) node [anchor=west] {$y = x^2$};
 \end{tikzpicture}
-% FIXME make into figure
 Every parabola has a \newterm{focus} and a \newterm{directix}. The
 focus is a point on the parabola's axis of symmetry. The directrix is
 a line perpendicular to the axis of symmetry. Every point on the
@@ -699,6 +727,7 @@ apart and pointed at each other. One person speaks with their mouth
 at the focus of one. The other person listens with their ear at the
 focus of the other. Even though you are very far apart, it sounds like
 they are really, really close.
+%FIXME figure
 \begin{figure}[htbp]
     \centering
     \begin{tikzpicture}
