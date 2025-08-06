@@ -10,7 +10,7 @@ In other words, you have three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$.
 Can you find $a,b,c$ such that the graph of $at^2 + bt + c = t$ passes
 through all three points?
 
-The answer is yes.  In fact, given any $n$ points, there is exactly
+The answer is yes.  In fact, given any $n$ points\footnote{$n=2$ will result in a line in slope intercept point, and $n=1$ is a single point}, there is exactly
 one $n-1$ degree polynomial that passes through all the points.
 
 There are a lot of variables floating around. Let's make it concrete:
@@ -18,9 +18,13 @@ The photos are taken at $t = 2$ seconds, $t = 3$ seconds, and $t = 4$
 seconds. In those photos, the height of the hammer is $5m$, $7m$, and
 $6m$. So, we want our polynomial to pass through these points: (2, 5),
 (3, 7), (4,6).
-
-\includegraphics[width=0.5\textwidth]{interpolation.png} 
-\includegraphics[width=0.5\textwidth]{hammer_1.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.45\textwidth]{interpolation.png} 
+    \includegraphics[width=0.45\textwidth]{hammer_1.png}
+    \caption{Left: the graph of the hammer going through the given points. Right: the three hammer frames.}
+    \label{fig:hammer_interpolation}
+\end{figure}
 
 
 How can you find that polynomial? Let's do it in small steps. Can you
@@ -113,7 +117,7 @@ The general solution is, given $n$ points, the $n-1$ degree polynomial that goes
 
 That would be tedious for a person to compute, but computers are perfect for this
 stuff. Let's create a method that creates instances of Polynomial
-using interpolation.
+using interpolation.\footnote{Note that other textbooks or resources may refer to this as \textit{Lagrange Polynomial Interpolation}.}
 
 \section{Interpolating polynomials in python}
 
@@ -174,4 +178,10 @@ You should get a polynomial that passes through all five points:
 11.21x^5 - 171.05x^4 + 1019.44x^3 - 2957.53x^2 + 4161.78x - 2258.75  
 \end{equation*}
 It should look like this:
-\includegraphics[width=0.7\textwidth]{fiveinterp.png}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fiveinterp.png}
+    \caption{5 point interpolation of points.}
+    \label{fig:fiveinterp}
+\end{figure}
