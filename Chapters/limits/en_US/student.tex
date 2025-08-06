@@ -1,4 +1,5 @@
 \chapter{Limits}
+FIXME define asymptotic and end behavior, not discussed before here
 
 The asymptotic behavior we see in rational functions suggests that we need to 
 expand our vocabulary of function characteristics. We examined vertical 
@@ -72,42 +73,36 @@ function takes on values near $\frac{1}{2}$. This is more apparent numerically:
 \end{tabular}
 \end{center}
 
-We can also see this by zooming in on the graph (see figure \ref{holezoom}):
+We can also see this by zooming in on the graph (see Figure~\ref{holezoom}):
 
 \begin{figure}[htbp]
-\begin{subfigure}{0.5\textwidth}
-\centering
-    \begin{tikzpicture}
-	\begin{axis}[width = 1\textwidth, xmin = 0.5, xmax = 1.5, axis lines = 
-	center, xlabel = $x$, x label style = {anchor = north}, ylabel = $f(x)$, 
-	y label style = {at={(axis description cs:-0.1,1.2)}, anchor = north}]
-        \addplot[blue, thick, domain = 0.5:0.999]{(x^2 - 3*x + 2)/(x^2 - 4*x 
-        + 3)};
-        \addplot[blue, thick, domain = 1.001:1.5]{(x^2 - 3*x + 2)/(x^2 - 4*x 
-        + 3)};
-        \addplot[mark = o, blue]coordinates{(1, 0.5)};
-        \end{axis}
-    \end{tikzpicture}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[width = 1\textwidth, xmin = 0.5, xmax = 1.5, axis lines = center, xlabel = $x$, ylabel = $f(x)$]
+                \addplot[blue, thick, domain = 0.5:0.999]{(x^2 - 3*x + 2)/(x^2 - 4*x + 3)};
+                \addplot[blue, thick, domain = 1.001:1.5]{(x^2 - 3*x + 2)/(x^2 - 4*x + 3)};
+                \addplot[mark = o, blue]coordinates{(1, 0.5)};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Zoomed out near $x=1$}
     \end{subfigure}
-    \begin{subfigure}{0.5\textwidth}
-\centering
-    \begin{tikzpicture}
-	\begin{axis}[width = 1\textwidth, xmin = 0.9, xmax = 1.1, axis lines = 
-	center, xlabel = $x$, x label style = {at={(axis description cs:1.1,0)}, 
-	anchor = north}, ylabel = $f(x)$, y label style = {at={(axis description 
-	cs:-0.1,1.2)}, anchor = north}]
-        \addplot[blue, thick, domain = 0.9:0.9999]{(x^2 - 3*x + 2)/(x^2 - 4*x 
-        + 3)};
-        \addplot[blue, thick, domain = 1.0001:1.1]{(x^2 - 3*x + 2)/(x^2 - 4*x 
-        + 3)};
-        \addplot[mark = o, blue]coordinates{(1, 0.5)};
-        \end{axis}
-    \end{tikzpicture}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[width = 1\textwidth, xmin = 0.9, xmax = 1.1, axis lines = center, xlabel = $x$, ylabel = $f(x)$]
+                \addplot[blue, thick, domain = 0.9:0.9999]{(x^2 - 3*x + 2)/(x^2 - 4*x + 3)};
+                \addplot[blue, thick, domain = 1.0001:1.1]{(x^2 - 3*x + 2)/(x^2 - 4*x + 3)};
+                \addplot[mark = o, blue]coordinates{(1, 0.5)};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Zoomed in closer to $x=1$}
     \end{subfigure}
+    \caption{Two graphs of $f(x) = \frac{x^2 - 3x + 2}{x^2 - 4x + 3}$ zoomed in about $x = 1$}
     \label{holezoom}
-    \caption{Two graphs of $f(x) = \frac{x^2 - 3x + 2}{x^2 - 4x + 3}$ zoomed 
-    in about $x = 1$}
-    \end{figure}
+\end{figure}
 
 The left-hand and right-hand limits of $ f $ at $ 1 $ are both $\frac{1}{2}$. Since 
 they are equal, we can also say that the limit of $ f $ at $ 1 $ is $\frac{1}{2}$. 
