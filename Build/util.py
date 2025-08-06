@@ -58,7 +58,7 @@ def title_for_dir(dir):
 def metadata_for_dir(dir):
     rpath = os.path.join(dir, "digital_resources.json")
     if not os.path.exists(rpath):
-        print(f"Error: Resources file file {rpath} doesn't exist")
+        print(f"Error: Digital Resources at {rpath} doesn't exist")
         result = {}
     else:
         with open(rpath, 'r') as f:
@@ -87,6 +87,7 @@ def gather_data(mod_dir, book_str, config):
         md["chap_num"] = i + 1
 
         # Make URLs for the files
+        # FIXME
         if "files" in md:
             filelist = md["files"]
             for j in range(len(filelist)):

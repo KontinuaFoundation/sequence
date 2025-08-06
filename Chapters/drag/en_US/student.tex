@@ -8,9 +8,14 @@ hammer, with two important differences:
 \item They were interested in two dimensions: the height and the distance across the ground.
 \item However, artillery flies a lot faster than a hammer, so they also had to worry about drag from the air.
 \end{itemize}
-\includegraphics[width=1\textwidth]{cannon.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{cannon.png}
+    \caption{A cannonball shot has a parabolic trajectory.}
+    \label{fig:cannon}
+\end{figure}
 \section{Wind resistance}
-
+\index{wind resistance}
 The first thing they did was put one of the shells in a wind tunnel.
 They measured how much force was created when they pushed 1 m/s of
 wind over the shell. Let's say it was 0.1 newtons.
@@ -27,14 +32,20 @@ shell and each molecule is hitting it three times harder.)
 So, if a shell is moving with the velocity vector $v$, the force
 vector of the drag points in the exact opposite direction. If $\mu$ is
 the force of wind resistance of the shell at 1 m/s, then the magnitude
-of the drag vector is $\mu |v|^2$.
+of the drag vector is $\mu |v|^2$ with $\mu$ being the wind resistance force.
 
 \section{Initial velocity and acceleration due to gravity}
 
 Let's say a shell is shot out of a tube at $s$ m/s, and the tube
 is tilted $\theta$ radians above level. The initial velocity
 will be given by the vector $[s \cos(\theta), s \sin(\theta)]$
-\includegraphics[width=.5\textwidth]{cannonvi.png}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.5\textwidth]{cannonvi.png}
+    \caption{The initial velocity vector of the shell.}
+    \label{fig:cannonvi}
+\end{figure}
 
 
 
@@ -57,7 +68,7 @@ downward direction, with a magnitude of $9.8 b$ newtons.
 
 To get the net force, we will need to add the force due to gravity
 with the force due to wind resistance.
-
+%FIXME is this finished? seems like an odd stopping point
 \section{Simulating artillery in Python}
 
 Create a file called \filename{artillery.py}.
@@ -125,12 +136,14 @@ You should also see a plot of the shell's path:
 \includegraphics[width=0.8\textwidth]{artillery.png}
 
 \section{Terminal velocity}
-
+\index{terminal velocity}
 If you shot the shell very, very high in the sky, it would keep accelerating 
 toward the ground until the force of gravity and the force of the wind resistance were equal.
 The speed at which this happens is called the \newterm{terminal velocity}.  The terminal velocity of a
 falling human is about 53 m/s.
+%FIXME expand 
 
+Note that kinematic equations do not apply to terminal velocity, because the acceleration is not constant. Instead, we can use the fact that at terminal velocity, the force of wind resistance equals the force of gravity.
 \begin{Exercise}[title={Terminal velocity}, label=terminal_velocity]
     What is the terminal velocity of the shell described in our example?
 \end{Exercise}

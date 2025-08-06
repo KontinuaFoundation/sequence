@@ -3,7 +3,7 @@
 Functions are a major part of science, engineering, and math. You can think of a function as a machine: you put something into the
 machine, it processes it, and out comes something else: a product. Just as we
 often use the variable $x$ to stand in for a number, we often use the
-variable $f$ to stand in for a function.
+variable $f$ to stand in for a function. $f(x)$ is said as ``f of x``.
 % One of my teachers told me half of understanding math is understanding mathmaticions are just lazy, maybe a good add in somewhere
 
 For example, we might ask, ``Let the function $f$ be defined like this:
@@ -12,7 +12,7 @@ For example, we might ask, ``Let the function $f$ be defined like this:
 f(x) = -5x^2 + 12x + 2
 \end{equation*}
 
-What is the value of $f(3)$?''
+What is the value of $f(3)$, said as ``f of 3``?
 
 You would run the number 3 through ``the machine'': $-5(3^2) + 12(3) + 2 = -7$. The answer would be ``$f(3)$ is $7$''.
 
@@ -22,7 +22,10 @@ However, some functions are not defined for every possible input. For example:
   f(x) = \frac{1}{x}
 \end{equation*}
 
-  This is defined for any $x$ except 0, because you can't divide 1 by 0. The set of values that a function can process is called its \textit{domain}.
+  This is defined for any $x$ except 0, because you can't divide 1 by 0. The set of values that a function can process is called its \textit{domain}, and resulting output values are called the range.
+  It is important to note that functions have only one \emph{output} for each \emph{input}. However, multiple inputs can have the same output. 
+  A relationship where one input can result in the more than one output is not a function, but a relation. This can be proven by the \hyperref[sec:vertical]{vertical line test}.
+% some good images could be found here: https://www.ck12.org/book/ck-12-algebra-i-honors/section/3.1/ 
 
 \begin{Exercise}[title={Domain of a function}, label=function_domain]
 
@@ -76,7 +79,9 @@ Here is the graph of the function $f(x) = \frac{1}{x}$:
         \addplot[no marks,sdkblue,<->] expression[domain=0.15:6.5,samples=100]{1/x}; 
     \end{axis}
 \end{tikzpicture}
-
+To draw a graph, take each x value (usually in increments of 1) and determine its corresponding y value. 
+Then, plot those points on a graph, using the origin as the starting point. 
+% do we assume students know how to graph?
 \begin{Exercise}[title={Draw a graph}, label=draw_graph]
 
   Let the function $f$ be given by $f(x) = -3x + 3$. Sketch its graph.
@@ -107,6 +112,7 @@ Here is the graph of the function $f(x) = \frac{1}{x}$:
 
 
 \section{Can this be expressed as a function?}
+\label{sec:vertical}
 
 Note that not all sets can be expressed as graphs of functions.  For
 example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
@@ -130,29 +136,30 @@ example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
 This cannot be the graph of a function, because what would $f(0)$ be? 3
 or -3?  This set fails what we call ``the vertical line test'': If any
 vertical line contains more than one point from the set, it isn't the graph
-of a function.  For example, the vertical line $x = 2$ would cross
-the graph twice:
-% index vertical line test
-\begin{tikzpicture}
+of a function.  For example, the vertical line $x = 2$ would cross the graph twice:
+\begin{center}
+  
+  \begin{tikzpicture}
     \begin{axis}[
-        xmin=-3.5,xmax=3.5,
-        ymin=-3.5,ymax=3.5,
-        ytick={-3,-2,-1,0,1,2,3},
-        axis x line=middle,
-        axis y line=middle,
-        axis line style=<->,
-        xlabel={$x$},
-        ylabel={$y$},
-        ]
-        \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)}; 
-        \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)};
-        \addplot [thick, dashed] coordinates {(2,-2.5)(2,2.5)};
-
+      xmin=-3.5,xmax=3.5,
+      ymin=-3.5,ymax=3.5,
+      ytick={-3,-2,-1,0,1,2,3},
+      axis x line=middle,
+      axis y line=middle,
+      axis line style=<->,
+      xlabel={$x$},
+      ylabel={$y$},
+      ]
+      \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)}; 
+      \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)};
+      \addplot [thick, dashed] coordinates {(2,-2.5)(2,2.5)};
+      
     \end{axis}
-
-\end{tikzpicture}
-% include linked exercise: https://youtu.be/xSQFPbhT4Yc
-
+    
+  \end{tikzpicture}
+\end{center}
+%might be a good place to talk about even vs odd functions
+\index{vertical line test}
 
 \section{Inverses}
 
@@ -184,13 +191,14 @@ Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =
 \end{tikzpicture}
 
 The inverse is the same as the function, just with its axes swapped.
+The inverse function is \emph{reflected} across the line $y=x$. \index{reflections}
 This tells us how to solve for an inverse: We swap $x$ and $y$ and
 solve for $y$.
 
 For example, if you are given the function $f(x) = 5x + 1$, its graph
 is all $(x,y)$ such that $y = 5x + 1$.  The graph of its inverse is
-all $(x, y)$, such that $x = 5y + 1$. This menas you solve for $y$: $y = (x -
-1)/5$.
+all $(x, y)$, such that $x = 5y + 1$. Solving for $y$ gives you $y = (x -
+1)/5$. So we can say that $f^{-1}(x) = (x - 1)/5$, QED.
 
 Not every function has an inverse.  For example, $f(x) = x^2$.  Note
 that $f(2) = f(-2) = 4$.  What would $f^{-1}(4)$ be? 2 or -2?  This
@@ -198,22 +206,24 @@ implies the ``horizontal line test'': If any horizontal line contains
 more than one point of a function's graph, that function has no
 inverse. If a function passes the horizontal line test, it is called 
 "one-to-one", meaning there is exactly one $x$ that gives each $y$. \\
-% index horizontal line test
-\begin{tikzpicture}
+\index{horizontal line test}
+\begin{center}
+  \begin{tikzpicture}
     \begin{axis}[
-        xmin=-3.5,xmax=3.5,
-        ymin=-1, ymax=6,
-        ytick={-1,0,1,2,3,4,5,6},
-        axis x line=middle,
-        axis y line=middle,
-        axis line style=<->,
-        xlabel={$x$},
-        ylabel={$y$},
-        ]
+      xmin=-3.5,xmax=3.5,
+      ymin=-1, ymax=6,
+      ytick={-1,0,1,2,3,4,5,6},
+      axis x line=middle,
+      axis y line=middle,
+      axis line style=<->,
+      xlabel={$x$},
+      ylabel={$y$},
+      ]
       \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{x^2};
       \addplot [thick, dashed] coordinates {(-3,4)(3,4)};
     \end{axis}
-\end{tikzpicture}
+  \end{tikzpicture}
+\end{center}
 
 In some problems, you need an inverse, but you don't need the
 whole domain, so you trim the domain to a set you can define an
@@ -234,9 +244,11 @@ numbers greater than or equal to -5. We write this:
   \{ x \in {\rm I\!R} | x \geq -5 \}
   \end{equation*}
 
-Now we can say: \textbf{The image of the function is the domain
+Now we can say: \textbf{The range (or image) of the function is the domain
   of the inverse function.}
 
+In inverse functions, the domain and range get swapped: 
+the domain of the function is the range of the inverse function, and visa versa.
 In our example, we can use any number greater
 than or equal to -5 as input into the inverse function.
 
@@ -378,6 +390,66 @@ calculator. Desmos is a great, free online graphing calculator.
 In a web browser, go to Desmos: \url{https://www.desmos.com/calculator}
 
 In the field on the left, enter the function $y = x^2 - x - 6$. (For
-the exponent, just prefix it with a caret symbol: ``x\^2''.)
+the exponent, just prefix it with a caret symbol: ``x\^{}2''.)
 
 \includegraphics[width=0.85\textwidth]{Desmos.png}
+
+\section{Even and Odd Functions}
+
+
+\subsection{Even Functions}
+
+An even function is symmetric about the y-axis. That means if you fold the graph along the y-axis, both sides will match perfectly. Note that the input value yields the same output regardless of whether the input value is positive or negative. 
+
+
+\begin{mdframed}[style=important, frametitle={Even Functions}]
+
+A function \( f(x) \) is even if  
+\[
+f(-x) = f(x)
+\]  
+for all \( x \) in its domain.
+\end{mdframed}
+Examples:
+\begin{itemize}
+  \item \( f(x) = x^2 \)  
+  \item \( f(x) = \cos(x) \)  
+  \item any \( f(x) = x^n \) where \( n \) is an even number
+  \item \( f(x) = |x| \)
+\end{itemize}
+
+On a graph, a function will be a mirror image across the y-axis.
+
+\subsection{Odd Functions}
+
+An odd function is symmetric about the origin. That means if you rotate the graph $180^\circ$ about the origin, it lands on itself. Algebraically, when you input a value $k$, you get some output $n$; if you negate that input as $-k$, the output is also negated resulting in $-n$.
+
+
+\begin{mdframed}[style=important, frametitle={Odd Functions}]
+
+A function \( f(x) \) is odd if  
+\[
+f(-x) = -f(x)
+\]
+for all \( x \) in its domain.
+
+Equivallently, 
+
+\[ f(x) + f(-x) = 0 \]
+for all \( x \) in its domain.
+\end{mdframed}
+
+\begin{itemize}
+
+  \item \( f(x) = x^3 \)  
+  \item \( f(x) = \sin(x) \)  
+  \item \( f(x) = \tan(x) \)  
+  \item any \( f(x) = x^n \) where \( n \) is an odd number
+\end{itemize} 
+
+On a graph, rotating the graph $180^\circ$ about the origin will yield the same graph.
+\subsection{Neither Even Nor Odd}
+Some functions are neither even nor odd. 
+
+For example, \( f(x) = x^3 + 1 \) does not satisfy either condition.
+% FIXME do we need to talk about end behavior, limits, symetry, etc

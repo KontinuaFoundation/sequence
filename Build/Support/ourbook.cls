@@ -793,6 +793,7 @@
 %% Graphics
 
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{tikz}
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}

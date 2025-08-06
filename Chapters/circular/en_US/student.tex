@@ -1,9 +1,9 @@
 \chapter{Circular Motion}
-
+\index{circular motion}
 Let's say you tie a 0.16 kg billard ball to a long string and begin to swing
 it around in a circle above your head. The string is 3
 meters long, and the ball returns to where it started every 4
-seconds. If you start your stopwatch as the ball crosses the
+seconds. We will assume the ball moves at a constant speed. If you start your stopwatch as the ball crosses the
 $x$-axis, the position of the ball at any time $t$ given by:
 
 $$p(t) = [3 \cos{\left( \frac{2 \pi} {4}t\right)}, 3 \sin{ \left( \frac{2 \pi}{4}t\right) }, 2]$$
@@ -17,24 +17,32 @@ first two components.  Here is what it would look like from above:
 
 % 3sin = 1.267854785222098
 % 3cos = 2.71892336110995
-\begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-    sep=1pt,fill,draw,circle,solid}, scale=1.7]
-    % Axis
-    \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
-    \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
-    % Rest
-    \draw [dashed, sdkblue] (0,0) circle (3);
-    \draw[thick] (0,0) -- (angle:3.0) node [midway, above] {3};
-    \draw[sdkblue] (1.05, 0.2) node[right] {$\theta = \frac{2\pi t}{4}\text{ radians}$};
-    \draw[-stealth,sdkblue] (1,0) arc (0:angle:1);
-    \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (2.71892336110995, 0)
-    node[below] {$3 \cos(\theta)$}; % vertical
-    \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (0, 1.267854785222098)
-    node[left] {$3 \sin(\theta)$}; % horizontal
-    \filldraw[black] (angle:3.0) circle(4pt);
-    \draw[->, thick] (2.71892336110995, 1.267854785222098) --
-    (2.71892336110995 - 3 * 0.1267, 1.267854785222098 + 3 * 0.2718);
-\end{tikzpicture}
+
+\begin{figure}[htbp]
+    \begin{center}
+        
+        \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
+            sep=1pt,fill,draw,circle,solid}, scale=1.7]
+            % Axis
+            \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
+            \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
+            % Rest
+            \draw [dashed, sdkblue] (0,0) circle (3);
+            \draw[thick] (0,0) -- (angle:3.0) node [midway, above] {3};
+            \draw[sdkblue] (1.05, 0.2) node[right] {$\theta = \frac{2\pi t}{4}\text{ radians}$};
+            \draw[-stealth,sdkblue] (1,0) arc (0:angle:1);
+            \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (2.71892336110995, 0)
+            node[below] {$3 \cos(\theta)$}; % vertical
+            \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (0, 1.267854785222098)
+            node[left] {$3 \sin(\theta)$}; % horizontal
+            \filldraw[black] (angle:3.0) circle(4pt);
+            \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+            (2.71892336110995 - 3 * 0.1267, 1.267854785222098 + 3 * 0.2718);
+        \end{tikzpicture}
+    \end{center}
+        \caption{A diagram of our ball and string scenario.}
+    \label{fig:billiardBall}
+\end{figure}
 
 In this case, the radius, $r$, is 3 meters.  The period, $T$, is 4
 seconds.  In general, we say that circular motion is given by:
@@ -46,15 +54,17 @@ divide the $2\pi$ radians of a circle by the 4 seconds it takes, you
 get the answer ``About 1.57 radians per second.''  This is known as
 \newterm{angular velocity} and we typically represent it with the
 lowercase Omega: $\omega$. (Yes, it looks a lot like a ``w''.)  To be
-precise, in our example, the angular velocity is $\omega = \frac{\pi}{2}$.
+precise, in our example, the angular velocity is $\omega = \frac{\pi}{2}$. Note that in this scenario, the angular velocity and linear \emph{speed} are constant. However, the \emph{velocity} vector is not constant; as we will see in the next section, the direction of the velocity vector is always changing.
 
 Notice that this is different from the question ``How fast is it
-going?''  This ball is traveling the circumference of $6\pi \approx
+going? (referring to \newterm{linear velocity})''  This ball is traveling the circumference of $6\pi \approx
 18.85$ meters every 4 seconds.  This means the speed of the ball is about
 4.71 meters per second.
 
-\section{Velocity}
+It is very important to distinguish between angular velocity and linear velocity. Angular velocity is how fast the angle is changing and is referred to by $\omega$, while linear velocity, $v$, is how fast the object is moving along its path. While linear velocity has a constant speed, it has always changing direction. The angular velocity is constant, but the linear velocity is not.
 
+\section{Velocity}
+\index{circular motion ! velocity}
 The velocity of the ball is a vector, and we can find that vector by
 differentiating each component of the position vector.
 
@@ -77,23 +87,29 @@ In general, an object traveling in a circle at a constant speed has the velocity
 
 $$v(t) = \left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$$
 
-where $t = 0$ is the time that it crosses the $x$ axis.  If \omega is
+where $t = 0$ is the time that it crosses the $x$ axis.  If $\omega$ is
 negative, that means the motion would be clockwise when viewed from
 above.
 
 The magnitude of the velocity vector is $r\omega$. 
-
-\begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-    sep=1pt,fill,draw,circle,solid}, scale=1.7]
-    % Axis
-    \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
-    \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
-    % Rest
-    \draw [dashed, sdkblue] (0,0) circle (3);
-    \filldraw[black] (angle:3.0) circle(4pt);
-    \draw[->, thick] (2.71892336110995, 1.267854785222098) --
-    (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718) node[right]{$v(t)=\left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+\begin{center}
+    
+        \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
+            sep=1pt,fill,draw,circle,solid}, scale=1.7]
+            % Axis
+            \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
+            \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
+            % Rest
+            \draw [dashed, sdkblue] (0,0) circle (3);
+            \filldraw[black] (angle:3.0) circle(4pt);
+            \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+            (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718) node[right]{$v(t)=\left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$};
+        \end{tikzpicture}
+    
+\end{center}    \caption{Velocity vector of the ball in circular motion.}
+    \label{fig:billardBallVelocity}
+\end{figure}
 
 \begin{Exercise}[title = {A Particle in Motion}, label = particle]
 [This question was originally presented as two multiple-choice problems on the 2012 AP Physics C exam.] The $x$ and $y$ coordinates of a particle as it moves in a circle are given by:
@@ -123,35 +139,40 @@ $$t = \frac{d}{v} = \frac{10\pi \text{ } m}{15 \frac{m}{s}} = \frac{2\pi}{3} s \
 
 \section{Acceleration}
 
-We can get the acceleration by differentiating the components of the velocity vector.
+We can get the (linear) acceleration by differentiating the components of the velocity vector.
 
 $$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right]$$
 
-Notice that the acceleration vector points toward the center of the
-circle it is traveling on.  That is, when an object is traveling on a
-circle at a constant speed, its only acceleration is toward the center
-of the circle.
+Notice that the acceleration vector points \textbf{toward the center} of the
+circle it is traveling on. That is, when an object is traveling on a
+circle at a constant speed (notice that the coefficients in $a(t)$ are constant values, so acceleration is constant), its only acceleration is toward the center of the circle. This is known as \newterm{centripetal acceleration}. \index{centripetal ! acceleration}
 
-\begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-    sep=1pt,fill,draw,circle,solid}, scale=1.7]
-    % Axis
-    \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
-    \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
-    % Rest
-    \draw [dashed, sdkblue] (0,0) circle (3);
-    \filldraw[black] (angle:3.0) circle(4pt);
-    \draw[->, thick] (2.71892336110995, 1.267854785222098) --
-    (2.71892336110995 * 0.2 , 1.267854785222098 * 0.2) node[midway, right]{$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right]$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \begin{center}
+        
+        \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
+            sep=1pt,fill,draw,circle,solid}, scale=1.7]
+            % Axis
+            \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
+            \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
+            % Rest
+            \draw [dashed, sdkblue] (0,0) circle (3);
+            \filldraw[black] (angle:3.0) circle(4pt);
+            \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+            (2.71892336110995 * 0.2 , 1.267854785222098 * 0.2) node[midway, right]{$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right]$};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Acceleration vector of the particle in circular motion.}
+    \label{fig:billardBallAcceleration}
+\end{figure}
 
 The magnitude of the acceleration vector is $r \omega^2$.
 
 \section{Centripetal force}
 
-How hard is the ball pulling against your hand?  That is, if you let
-go, the ball would fly in a straight line.  The force you are exerting
-on the string is what causes it to accelerate toward the center of the
-circle. We call this the \newterm{centripetal force}.
+How hard is the ball pulling against your hand? That is, if you let go, the ball would fly in a straight line.  
+The force you are exerting on the string is what causes it to accelerate toward the center of the
+circle. We call this the \newterm{centripetal force}. It makes sense that the centripetal force and centripetal acceleration are in the same direction. \index{centripetal ! force}
 
 Recall that $F = m a$.  The magnitude of the acceleration is $r
 \omega^2 = 3 \left(\frac{2 pi}{4}\right)^2 \approx 7.4$ m/s/s.  The mass
@@ -200,7 +221,7 @@ Have you every been driving on the highway and taken a turn where the road is at
 \end{wrapfigure}
 
 A banked curve is designed so that a car can safely turn without slipping, even in the rain, if the driver does not exceed the indicated speed. Engineers choose an angle such that the bank provides sufficient force to turn the car without friction. Let's look at a free body diagram for a car taking a banked turn (see figure \ref{fig:banked}). 
-
+\vspace{4cm} %FIXME formatting
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=4in]{banked.png}
@@ -326,3 +347,53 @@ This is the minimum acceleration needed to keep the rider from slipping down. We
 $$a = \frac{v^2}{r} = \frac{\left( \omega r \right)^2}{r} = \omega^2 r$$
 $$\omega = \sqrt{\frac{a}{r}} = \sqrt{\frac{30.625 \frac{m}{s^2}}{10 \text{ } m}} \approx 1.75 \frac{rad}{s}$$
 \end{Answer}
+
+\section{Equations of Circular Motion}
+\index{circular motion ! equations}
+The same kinematic formulas can be used for circular motion, provided you use the correct variables. The angular displacement, $\theta$, is the angle in \emph{radians} that the object has traveled. The angular velocity, $\omega$, is the rate of change of the angular displacement, and the angular acceleration, $\alpha$, is the rate of change of the angular velocity.
+
+\begin{center}
+    \begin{align}
+      v &= v_0 + a t 
+      &\qquad\qquad&
+      \omega \;=\; \omega_0 + \alpha t \\[4pt]
+      x &= x_0 + v_0 t + \tfrac12 a t^{2} 
+      &&
+      \theta \;=\; \theta_0 + \omega_0 t + \tfrac12 \alpha t^{2} \\[4pt]
+      v^{2} &= v_0^{2} + 2a\!\left(x - x_0\right) 
+      &&
+      \omega^{2} \;=\; \omega_0^{2} + 2\alpha\!\left(\theta - \theta_0\right)
+    \end{align}
+\end{center}
+
+Linear velocity, $v$, is related to angular velocity by the equation:
+$$v = r \omega$$    
+
+Linear acceleration (aka centripetal acceleration), $a$, is related to angular acceleration by the equation:
+$$a_{\text{c}} = \frac{v^{2}}{r} = r\,\omega^{2}$$
+
+
+Period, $T$, is the time it takes to complete one full rotation. The frequency, $f$, is the number of rotations per second. The two are related by:
+$$T = \frac{2\pi}{\omega} = \frac{2\pi r}{v}$$
+$$f = \frac{1}{T}$$
+
+The centripetal force, usually labelled differently (such as tension or gravity), is given by the equation:
+$$F = m r \omega^2 = \frac{m v^2}{r}$$
+
+
+The angular velocity, $\omega$ is rotations with respect to time. It can be defined in the following ways:
+\[
+  {\omega_{\text{inst}} = \frac{d\theta}{dt}}
+  \qquad
+  {\omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}}
+\]
+
+\[
+  {\omega = 2\pi f = \frac{2\pi}{T} = \omega = \frac{v}{r}}
+\]
+
+Angular acceleration:
+\[
+\alpha = \frac{d\omega}{dt}, \qquad
+\alpha_{\text{avg}} = \frac{\Delta\omega}{\Delta t}
+\]
