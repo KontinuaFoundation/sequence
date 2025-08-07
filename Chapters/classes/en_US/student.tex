@@ -1,4 +1,57 @@
 \chapter{Python Classes}
+FIXME integrate this better with polynomials, but we need to cover the following
+\section{Object-Oriented Programming Introduction}
+Imagine you want to implement multiple dogs in python. It gets a bit complicated to do the following:
+
+\begin{verbatim}
+    dog1name = "Teddy"
+    dog1age = 6
+    dog1sound = "woof"
+
+    dog2name = "Fluffers"
+    dog2age = 2
+    dog2sound = "bark"
+
+    dog3name = "Bella"
+    dog3age = 3
+    dog3sound = "grr"
+
+    print(f"{dog1name} is {dog1age} and says {dog1sound}!")
+    print(f"{dog2name} is {dog2age} and says {dog2sound}!")
+    print(f"{dog3name} is {dog3age} and says {dog3sound}!")
+    
+
+\end{verbatim}
+
+Instead, we can use classes, which are a way to create your own datatype.\index{classes}
+Classes can contain custom methods that either return, print, or calculate different values for you, 
+and they con contain custom variables referred to as attributes.\index{attributes}
+
+\begin{verbatim}
+class Dog:
+    """A simple model of a dog."""
+    # constructor - which creates a new model of a dog. 
+    def __init__(self, name: str, age: int, sound: str):
+        self.name = name
+        self.age = age
+        self.sound = sound
+    # method speak 
+    def speak(self) -> None:
+        """Print a sentence describing the dog."""
+        print(f"{self.name} is {self.age} and says {self.sound}!")
+
+# create dog objects called “instances” with the given variables
+dog1 = Dog("Teddy", 6, "woof")
+dog2 = Dog("Fluffers", 2, "bark")
+dog3 = Dog("Bella", 3, "grr")
+
+# call the behavior on each object
+dog1.speak()
+dog2.speak()
+dog3.speak()
+
+\end{verbatim}
+
 
 The built-in types, such as strings, have functions associated with
 them. So, for example, if you needed a string converted to uppercase,
@@ -10,8 +63,7 @@ louder_string = my_string.upper()
 \end{Verbatim}
 This would set \pyvar{louder\_string} to "HOUSTON, WE HAVE A PROBLEM!"
 When a function is associated with a datatype like this, it called a
-\emph{method}. A datatype with methods is known as a \emph{class}. The
-data of that type is known as the \emph{instance} of that class. For
+\emph{method}. A datatype with methods is known as a \emph{class}. Creating a new version of a class in a variable is called an \emph{instance}.\index{instance} For
 example, in the example, we would say ``\pyvar{my\_string} is an instance of
 the class \pytype{str}. \pytype{str} has a method called \pyfunction{upper}''
 
@@ -30,6 +82,52 @@ redefined by \pytype{str} to concatenate strings together:
 long_string = "I saw " + "15 people"
 \end{Verbatim}
 
+\section{Parent classes}
+\index{classes!parent}
+\index{classes!child}
+\index{subclass}
+Classes can have classes they inherit from (called ``parent classes'') or classes that 
+inherit from them (called ``child classes''). 
+Parent classes (ie `Animal') give a subclass (or child) different attributes or methods. Lets check out an example:
+
+\begin{verbatim}
+class Animal:
+    """Generic animal base-class."""
+
+    def __init__(self, name: str, age: int) -> None:
+        self.name = name
+        self.age = age
+
+    def describe(self) -> None:
+        """Print a basic description common to all animals."""
+        print(f"{self.name} is {self.age} years old.")
+
+class Dog(Animal):
+    """Dog inherits name and age from Animal, adds its own sound."""
+
+    def __init__(self, name: str, age: int, sound: str) -> None:
+        super().__init__(name, age)     # initialize the Animal part
+        self.sound = sound
+
+    def speak(self) -> None:
+        """Dog-specific implementation of speak()."""
+        print(f"{self.name} is {self.age} and says {self.sound}!")
+
+
+# demonstration
+dogs = [
+    Dog("Teddy", 6, "woof"),
+    Dog("Fluffers", 2, "bark"),
+    Dog("Bella", 3, "grr")
+]
+
+for dog in dogs:
+    dog.describe()   # common behavior from Animal
+    dog.speak()      # overridden behavior in Dog
+
+\end{verbatim}
+
+Here, we have made a parent class for `dog' called `animal'. 
 \section{Making a Polynomial class}
 
 You have created a bunch of useful python functions for dealing with
@@ -207,3 +305,5 @@ Run the test code:
 \begin{Verbatim}
 python3 test_polynomial.py
 \end{Verbatim}
+
+
