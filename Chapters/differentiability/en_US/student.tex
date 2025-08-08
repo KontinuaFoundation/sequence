@@ -8,87 +8,111 @@ $a$ and $b$ like this:
 
 $$m = \frac{f(b) - f(a)}{b - a}$$
 
-\begin{tikzpicture} [scale=2]
-\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
-\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
-% curve
-\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
-plot (\x,{\x * \x * 0.25});
-\draw [sdkblue] (1, 0.25) -- (3, 2.251);
-\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
-\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$b$};
-\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
-\draw (3,2.251) node[right] {$f(b)$};
-\draw (1,0.25) circle (0.05);
-\draw (3, 2.251) circle (0.05);
-\draw (2, 0.25) node[above]{$b - a$};
-\draw (3, 1.25) node[right] {$f(b) - f(a)$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (1, 0.25) -- (3, 2.251);
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$b$};
+	\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
+	\draw (3,2.251) node[right] {$f(b)$};
+	\draw (1,0.25) circle (0.05);
+	\draw (3, 2.251) circle (0.05);
+	\draw (2, 0.25) node[above]{$b - a$};
+	\draw (3, 1.25) node[right] {$f(b) - f(a)$};
+	\end{tikzpicture}
+    \caption{The slope of point $a$ using points $a$ and $b$.}
+    \label{fig:btoaslope}
+\end{figure}
 
 If we want to find the slope at $a$, we take the limit of this as the 
 $b$ goes to $a$:
 
-$$f'(a) = \lim_{b \rightarrow b}\frac{f(b) - f(a)}{b - a}$$
+$$f'(a) = \lim_{b \to b}\frac{f(b) - f(a)}{b - a}$$
 
 This idea is usually expressed using $h$ as the difference 
 between $b$ and $a$:
 
-\begin{tikzpicture} [scale=2]
-\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
-\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
-% curve
-\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
-plot (\x,{\x * \x * 0.25});
-\draw [sdkblue] (1, 0.25) -- (3, 2.251);
-\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
-\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$a + h$};
-\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
-\draw (3,2.251) node[right] {$f(a + h)$};
-\draw (1,0.25) circle (0.05);
-\draw (3, 2.251) circle (0.05);
-\draw (2, 0.25) node[above]{$h$};
-\draw (3, 1.25) node[right] {$f(a + h) - f(a)$};
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (1, 0.25) -- (3, 2.251);
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$a + h$};
+	\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
+	\draw (3,2.251) node[right] {$f(a + h)$};
+	\draw (1,0.25) circle (0.05);
+	\draw (3, 2.251) circle (0.05);
+	\draw (2, 0.25) node[above]{$h$};
+	\draw (3, 1.25) node[right] {$f(a + h) - f(a)$};
+	\end{tikzpicture}
+    \caption{Limit of a point using $h$ difference.}
+    \label{fig:limitSlopeH}
+\end{figure}
 
 The formula then becomes:
 
 $$f'(a) = \lim_{h \rightarrow 0}\frac{f(a + h) - f(a)}{h}$$
 
-Now, at any point $a$, we can compute the slope of the line tangent to 
-the function at $a$:
-
-\begin{tikzpicture} [scale=2]
-\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
-\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
-% curve
-\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
-plot (\x,{\x * \x * 0.25});
-\draw [sdkblue] (0, -0.25) -- (3, 1.25) node[midway, right]{slope = $f'(a)$};;
-\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
-\draw (1,0.25) circle (0.05);
-\end{tikzpicture}
+As $h$ decreases to very close to zero, almost infinitesimal, what we are finding is the sloe of the tangent line to point $a$. 
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (0, -0.25) -- (3, 1.25) node[midway, right]{slope = $f'(a)$};;
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw (1,0.25) circle (0.05);
+	\end{tikzpicture}
+    \caption{Slope at $a$ as $h$ approaches 0.}
+    \label{fig:tangentSlope}
+\end{figure}
 
 \section{Differentiability}
 
 Warning: Not every function is differentiable everywhere.  For
 example, if $f(x) = |x|$, you get a corner at zero.
 
-\begin{tikzpicture} [scale=1]
-\draw[->,thick,sdkblue] (-4,0) -- (4,0) node[right] {$x$};
-\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
-% curve
-\draw[->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
-plot (\x,\x);
-\draw[<-,thick,draw=black, domain=-3.7:0,samples=300,variable=\x]  
-plot (\x,{-1 * \x});
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture} [scale=1]
+	\draw[->,thick,sdkblue] (-4,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,\x);
+	\draw[<-,thick,draw=black, domain=-3.7:0,samples=300,variable=\x]  
+	plot (\x,{-1 * \x});
+	\end{tikzpicture}    
+	\caption{Absolute value function.}
+    \label{fig:absGraph}
+\end{figure}
+
 
 To the left of zero, the slope is -1. To the right of zero, the slope
-is 1.  At zero?  The derivative is not defined.
+is 1.  At zero?  The derivative is not defined because the slopes are two different numbers. 
 
 If a function has a derivative everywhere, it is said to be
 \newterm{differentiable}. Generally, you can think of differentiable
-functions as smooth --- their graphs have no corners.
+functions as smooth --- their graphs have no corners or sharp turns. Another place where a function
+is not differentiable is at a vertical tangent, as the slope reaches $\pm \infty$. 
+
+It is important to note: if $f$ is differentiable at $a$, it \emph{must} also be continuous at $a$. 
+
+Likewise, if $f$ is not continuous at $a$ it is not differentiable. An example of this is a jump discontinuity. FIXME diagram here of jump discontinuity. 
 
 \begin{Exercise}[label=diff1]
 	[This problem was originally presented as a no-calculator, 
