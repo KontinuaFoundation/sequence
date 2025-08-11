@@ -3,47 +3,48 @@
 Welcome to the world of linear algebra, a branch of mathematics that relies on 
 vectors, matrices, and linear transformations. You are familiar with most of 
 these concepts, so in this workbook you will see how you can use them together 
-to solve problems.  
+to solve problems.  \index{linear algebra}
 
-Let’s review what you know.
+Let's review what you know.
 
 \begin{itemize}
-\item \textbf{Vectors}. In workbook 5, you saw how vectors can represent 
+\item \textbf{Vectors}. In workbook 7, you saw how vectors can represent 
 forces, as well as how to add and multiply them to figure out such things as 
 rocket engine force and direction. 
-\item \textbf{Matrices}. In workbook 8, you learned to use spreadsheets to 
+\item \textbf{Matrices}. In workbook 3, you learned to use spreadsheets to 
 solve problems numerically, such as how to figure out the number of barrels a 
 cooper has to produce to achieve a certain take-home pay. Spreadsheets are 
 essentially matrices --- a row by column structure that contains values. 
 \item \textbf{Linear transformations}. When you studied congruence in workbook 
-4, you were introduced to a few linear transformations, such as translation 
+5, you were introduced to a few linear transformations, such as translation 
 and reflection. 
 \end{itemize}
 
 \section{What's With the Linear?}
 
-You might be thinking, “Hey, haven’t I been doing algebra already?” 
+You might be thinking, “Hey, haven't I been doing algebra already?” 
 
 You have! You have come a long way in your problem solving journey. You have 
 used algebra to solve simple equations like $7x + 10 = 24$ and quadratic 
 equations like $4x^{2} + 9x + 31 = 0$. What distinguishes linear algebra is 
 the focus on linear combinations. Any equation with a power greater than 1, 
 such as a quadratic, is nonlinear.
-
+\index{nonlinear operations}
 We will first take a look at linear combinations
 
 \section{Linear Combinations}
 
-You won’t see any \textbf{sin}, \textbf{cos}, or \textbf{tan} operations in 
+You won't see any \textbf{sin}, \textbf{cos}, or \textbf{tan} operations in 
 this section. Linear operations do not use trigonometric functions; those 
-operations are all nonlinear. A linear combination  preserves addition and 
+operations are all nonlinear. A linear combination consists solely of addition and 
 scalar multiplication. You will see that linear combinations allow you to 
 solve many types of problems in science and engineering. Before we get deep 
-into the numbers, let’s take a look at a few linear operations you can perform 
+into the numbers, let's take a look at a few linear operations you can perform 
 on images. This will give you an intuition for the underlying math. After 
-that, we’ll take a look at some numbers.
+that, we'll take a look at some numbers.
 
 \section{Image Operations}
+\index{linear image operations}
 The simplest image, a bitmap, can be represented by a two-dimensional matrix 
 of values --- either 0 for black, or 1 for white. Grayscale images are also 
 represented by a two-dimensional matrix of values, but the values typically 
@@ -58,12 +59,20 @@ red values (R), another for green values (G), and the third for blue values
 Working with images means working with millions of pixels. Fortunately, 
 modern techniques make this a snap. Let's look at some common operations on an 
 image of a rocket.
-
-\includegraphics[width=0.25\textwidth]{flying-rocket.png}
-
 Flipping is a linear operation.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{flying-rocket.png}
+    \caption{Rocket image.}
+    \label{fig:flying-rocket}
+\end{figure}
 
-\includegraphics[width=0.25\textwidth]{rocket-flipped.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{rocket-flipped.png}
+    \caption{The rocket being flipped involves a binary linear equation.}
+    \label{fig:rocket_flipped}
+\end{figure}
 
 Next, the image is rotated 90 degrees. This rotation is linear, but if you 
 want to rotate it at an angle that isn't a multiple of 90, you would need 
@@ -71,14 +80,24 @@ trigonometry. This would be treading into nonlinear territory, but that happens
 in the field of linear algebra. You will learn about nonlinear extensions 
 later, which use trigonometric functions and imaginary numbers.
 
-\includegraphics[width=0.25\textwidth]{rocket-rotated-90.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{rocket-rotated-90.png}
+    \caption{Rotating the rocket by $90^\circ$}
+    \label{fig:rocket-rotated}
+\end{figure}
 
 Inversion is an interesting linear operation that involves redefining the red, 
 green, and blue values, such that the new value is 1.0 minus the old value. 
 The resulting black background gives the impression the rocket is in deep 
 space, don't you think?
 
-\includegraphics[width=0.25\textwidth]{rocket-inverted.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{rocket-inverted.png}
+    \caption{Inverting the rocket replaces each pixel with a "opposite" color.}
+    \label{fig:rocket-inverted}
+\end{figure}
 
 It is possible to redefine the red, green, and blue values in many ways. Visit 
 the NASA website and search for false color images. NASA and other scientists 
@@ -92,28 +111,37 @@ example, the matrix representing red might be swapped with the matrix
 representing blue. The image on the right shows the image after swapping color 
 values. All these swapping operations are linear.
 
-\includegraphics[width=1.0\textwidth]{infrared.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{infrared.png}
+    \caption{Left: image with infrared camera. Right: image shown post swapping color values}
+    \label{fig:infrared}
+\end{figure}
 
 \section{The Numbers Behind Some Image Operations}
-
-You will see a few matrices in this section. Let's first look at how a 
+\index{matrices}
+You will see a few \newterm{matrices} in this section. Let's first look at how a 
 spreadsheet can be represented as a matrix. Recall the barrel-making shop 
 example. This is part of that spreadsheet. 
-
-\includegraphics[width=1.0\textwidth]{spreadsheet.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{spreadsheet.png}
+    \caption{Spreadsheet of the barrel example.}
+    \label{fig:barrel-img}
+\end{figure}
 
 Represented as a matrix, it looks like the following. Note the differences. A 
 matrix contains only values, no labels. This matrix uses floating point values, 
 hence the inclusion of decimal points. 
 
 $$\begin{bmatrix}
-115. & 120. & 125.\\
+115.0 & 120.0 & 125.0\\
 45.0 & 45.0 & 45.0\\
 100.0 & 100.0 & 100.0\\
-2000. & 2000. & 2000.\\
-4325. & 4600. & 4875.\\
-865. & 920. & 975.\\
-3460. & 3680. & 3900.
+2000.0 & 2000.0 & 2000.0\\
+4325.0 & 4600.0 & 4875.0\\
+865.0 & 920.0 & 975.0\\
+3460.0 & 3680.0 & 3900.0
 \end{bmatrix}$$
  
 A matrix that represents an image contains only pixel values, whereas the 
@@ -145,7 +173,12 @@ $$\begin{bmatrix}
 When converted to an image, it is very tiny. This is an enlarged version, so 
 you can see the pattern.
 
-\includegraphics[width=0.25\textwidth]{normal.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{normal.png}
+    \caption{Resulting bitmap vectors as a black and white image.}
+    \label{fig:normal}
+\end{figure}
 
 We can create an inverse of this image by changing all the values in the matrix 
 so that 0 becomes 1 and 1 becomes 0. (Technically this is not the way you would 
@@ -168,7 +201,12 @@ $$\begin{bmatrix}
 
 When converted to an image and enlarged, it looks like this:
 
-\includegraphics[width=0.25\textwidth]{inverse.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{inverse.png}
+    \caption{Inversion of the linearr matrix.}
+    \label{fig:example}
+\end{figure}
 
 Rotating the original matrix by 90 degrees gives this:
 
@@ -187,7 +225,12 @@ $$\begin{bmatrix}
 
 This is the resulting enlarged image:
 
-\includegraphics[width=0.25\textwidth]{rotate90.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{rotate90.png}
+    \caption{Rotating the image by 90deg.}
+    \label{fig:rotate90matrix}
+\end{figure}
 
 You'll transpose many matrices in the upcoming pages. It requires swapping 
 rows for columns. 
@@ -206,8 +249,12 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 
 The resulting image looks like this:
-
-\includegraphics[width=0.25\textwidth]{transpose.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{transpose.png}
+    \caption{Transposed image reversing rows and columns.}
+    \label{fig:transposedMatrix}
+\end{figure}
 
 What about adding images? That fits the definition of a linear combination. 
 Recall that grayscale images have values from 0 to 255. To make things simple, 
@@ -223,8 +270,12 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 
 When multiplied by 255 and converted to a grayscale image:
-
-\includegraphics[width=0.25\textwidth]{fBitmap.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{fBitmap.png}
+    \caption{Bitmap of matrix f.}
+    \label{fig:fBitmap}
+\end{figure}
 
 Let's call this matrix g:
 
@@ -235,8 +286,12 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 
 When multiplied by 255 and converted to a grayscale image:
-
-\includegraphics[width=0.25\textwidth]{gBitmap.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{gBitmap.png}
+    \caption{Bitmap of matrix g.}
+    \label{fig:gBitmap}
+\end{figure}
 
 When we add f and g we get k:
 
@@ -247,8 +302,8 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 
 However, the values in k exceed the range of 0.0 to 1.0, so we normalize by 
-dividing the matrix by 1.0
-
+dividing the matrix by 2.0:
+\index{matrices!normalization}
 $$\begin{bmatrix}
 0.75 & 0.25 & 0.00\\
 1.00 & 0.75 & 1.00\\
@@ -256,10 +311,14 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 
 When multiplied by 255 and converted to grayscale, we get:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{fgBitmapAdded.png}
+    \caption{Adding f+g represented as a bitmap.}
+    \label{fig:fgBitmapAdded}
+\end{figure}
 
-\includegraphics[width=0.25\textwidth]{fgBitmapAdded.png}
-
-Let's go back to the first small grayscale image:
+Let's go back to the first small grayscale image (from Figure~\ref{fig:fBitmap}):
 
 \includegraphics[width=0.25\textwidth]{fBitmap.png}
 
@@ -267,8 +326,12 @@ If you want to keep the pattern in the first column, you could multiply the
 matrix by a vector, [1.0 0.0 0.0]. The 1.0 will keep the values in the first 
 column, but the 0.0 will knock out the other values because 0.0 times anything 
 equals 0.0.
-
-\includegraphics[width=0.25\textwidth]{onechannel.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.25\textwidth]{onechannel.png}
+    \caption{Multiplying channels by 0 results in them being represented as black bitmaps, while 1 keeps them the same.}
+    \label{fig:onechannel}
+\end{figure}
 
 What do you think will happen if you use the vector [0.0 1.0 0.0] or 
 [0.0 0.0 1.0]? You'll get a chance later to use Python to perform image 
@@ -285,29 +348,29 @@ So far you've seen how linear operations on matrices can process images by:
 \item multipling a matrix using a scalar (e.g., normalize, change the range)
 \item adding one matrix to another to get a composite image 
 \item multipling two matrices to perform a transform (e.g., flipping)
-\item mulitpliing a matrix with a vector (isolating a channel)
+\item mulitpling a matrix with a vector (isolating a channel)
 \end{itemize}
 
 Many areas in engineering and science rely on the matrix operations defines by 
 linear algebra. Besides image processing, linear algebra is used for: 
 \begin{itemize}
-\item Computer Graphics. When you play a video game or watch the latest CG 
+\item \textbf{Computer Graphics}. When you play a video game or watch the latest CG 
 animation, matrix operations transform objects in the scene to make them appear 
 as if moving, getting closer, and so on. You can represent the vertices of 
 objects as vectors, and then apply a transformation matrix.
-\item Data Analysis. We live in an era in which it's easy to collect so much 
+\item \textbf{Data Analysis}. We live in an era in which it's easy to collect so much 
 data that it's difficult to make sense of the data by just looking at it. You 
 can represent the data in matrix form and then find a solution vector. For 
 example, scientists use this technique to figure out the effectiveness of drug 
 treatments on disease.
-\item Economics. Take a look at financial section of any news organization and 
+\item \textbf{Economics}. Take a look at financial section of any news organization and 
 you'll see headlines such as "Economic Data Points to Faster Growth" or "Is 
 the Inflation Battle Won?" Economists can use systems of linear equations to 
 represent economic indicators, such as consumer consumption, government 
 spending, investment rate, and gross national product. By using various methods 
 that you'll learn about later, they can get a good idea of the state of the 
 economy.
-\item Engineering. Engineers couldn't do without linear algebra. For example, 
+\item \textbf{Engineering}. Engineers couldn't do without linear algebra. For example, 
 the orbital dynamics of space travel relies on it. Engineers must predict and 
 calculate the the motion of planetary bodies, satellites, and spacecraft. By 
 solving systems of linear equations engineers can make sure that a spacecraft 
@@ -328,7 +391,12 @@ doesn’t require much energy to maintain. That’s called a Halo orbit. Because
 that there are no fueling stations in space, a Halo orbit will allow Aditya to 
 maintain position for about 5 years. Pretty good mileage!
 
-\includegraphics[width=0.5\textwidth]{adityaOrbit.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{adityaOrbit.png}
+    \caption{The Aditya Orbit.}
+    \label{fig:adityaOrbit}
+\end{figure}
 
 Aditya’s engineers had to calculate a looping maneuver that would precisely 
 inject the Aditya spacecraft into the Halo orbit. They determined the angles 
@@ -337,7 +405,12 @@ spacecraft would fly off to the sun. The other direction would send the
 spacecraft back in the direction of Earth. Their success is due to a solid 
 understanding of vectors and linear algebra.
 
-\includegraphics[width=0.5\textwidth]{gimbalEngine.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gimbalEngine.png}
+    \caption{The gimbal of the rocket engine.}
+    \label{fig:gimbalEngine}
+\end{figure}
 
 \section{Images in Python}
 One of the wonderful things about python is the availability of libraries for 
