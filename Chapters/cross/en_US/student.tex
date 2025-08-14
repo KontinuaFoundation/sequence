@@ -1,0 +1,73 @@
+\chapter{Cross Product}
+\section{The Cross Product}
+Similar to the dot product, we can also take the \newterm{cross product} of two vectors. 
+While the dot product measures how closely the two vectors \emph{align} and creates a \emph{scalar}, the cross product measures how much two vectors \emph{differ in direction}, producing a \emph{vector} that is perpendicular to both vectors. The resulting vector's magnitude is equal to the area of the parallelogram spanned by the two input vectors.
+\index{cross product}
+Before defining the cross product, recall the determinant of a $3\times3$ matrix. The determinant measures the \emph{signed} volume scaling factor of the linear transformation represented by the matrix. If the sign is negative, orientation is reversed, as if flipping over a piece of paper. 
+
+The cross product formula often uses the notation of a $3\times3$ determinant as a compact way to organize its components. However, these were harder to solve without using the expansion by minors. It is important to understand that, in the case of the cross product, the ``determinant'' we write includes \emph{unit vectors} in the first row; this is a memory device, not an actual determinant in the strict algebraic sense. However, understanding determinants is important before approaching the cross product. 
+\begin{mdframed}[style=important]
+Given two vectors in $\mathbb{R}^3$,
+\[
+\vec{\mathbf{a}} = \langle a_x, a_y, a_z \rangle, \quad
+\vec{\mathbf{b}} = \langle b_x, b_y, b_z \rangle,
+\]
+their \emph{cross product} is defined as
+\[
+\vec{\mathbf{a}} \times \vec{\mathbf{b}} =
+\begin{vmatrix}
+\mathbf{i} & \mathbf{j} & \mathbf{k} \\
+a_x & a_y & a_z \\
+b_x & b_y & b_z
+\end{vmatrix}
+\]
+Expanding this yields:
+\[
+\vec{\mathbf{a}} \times \vec{\mathbf{b}} =
+(a_y b_z - a_z b_y)\,\mathbf{i}
+- (a_x b_z - a_z b_x)\,\mathbf{j}
++ (a_x b_y - a_y b_x)\,\mathbf{k}.
+\]
+where $\mathbf{i},\,\mathbf{j},\ \text{and}\ \mathbf{k}$ are unit vectors.
+\end{mdframed}
+
+
+\subsection{Geometric Interpretation}
+The cross product $\vec{\mathbf{a}} \times \vec{\mathbf{b}}$ has the following properties:
+\begin{enumerate}
+    \item It is perpendicular to both $\vec{\mathbf{a}}$ and $\vec{\mathbf{b}}$, making it \emph{orthogonal} as well (orthogonality can be thought of as 3D perpendicularity).
+    \item Orthogonality implies $\vec{\mathbf{a}} \times \vec{\mathbf{b}} = \vec{\mathbf{c}}$, $\vec{\mathbf{a}} \cdot \vec{\mathbf{c}} = 0$ and $\vec{\mathbf{b}} \cdot \vec{\mathbf{c}} = 0$. 
+    \item Its magnitude is
+    \[
+    \|\vec{\mathbf{a}} \times \vec{\mathbf{b}}\| = \|\vec{\mathbf{a}}\|\,\|\vec{\mathbf{b}}\| \sin\theta,
+    \]
+    where $\theta$ is the angle between $\vec{\mathbf{a}}$ and $\vec{\mathbf{b}}$.
+    \item The magnitude equals the area of the parallelogram spanned by $\vec{\mathbf{a}}$ and $\vec{\mathbf{b}}$.
+    \item Two parallel vectors $\vec{\mathbf{a}}$ and $\vec{\mathbf{b}}$ result in the zero vector, $\vec{\mathbf{0}}$. 
+\end{enumerate}
+
+FIXME diagram here
+
+\begin{Exercise}[title = {Using the cross product}, label = cross1]
+Find the cross product of the vectors $\vec{v_1} = \langle4, 5, 6\rangle$ and $\vec{v_2} = \langle3, 7, -8\rangle$ 
+\end{Exercise}
+
+\begin{Answer}[ref = cross1]
+Setting up the matrix, we get:
+\[\begin{bmatrix}
+
+    \vec{\mathbf{i}} & \vec{\mathbf{j}} & \vec{\mathbf{k}} \\ 
+    4 & 5 & 6 \\ 
+    3 & 7 & -8 
+    
+\end{bmatrix}
+\]
+\[\left(5(-8) - (7)(6)\right)\vec{\mathbf{i}} - ((4)(-8) - (6)(3))\vec{\mathbf{j}} + ((4)(7)-(5)(3))\vec{\mathbf{k}}
+\]
+\[
+(-40 - 46 ) \vec{\mathbf{i}} - (-32 - 18)\vec{\mathbf{j}} + (28 - 15) \vec{\mathbf{k}}
+\]
+\[
+-86 \vec{\mathbf{i}} +50\vec{\mathbf{j}} + 13 \vec{\mathbf{k}} \implies \langle-82, 50, 13\rangle
+\]
+\end{Answer}
