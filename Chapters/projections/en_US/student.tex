@@ -9,46 +9,68 @@ Projections are used in many fields, such as science, math, engineering, and fin
 \item Robotics engineers use projections to prevent robots from running into obstacles by projecting the robot’s position onto the optimal path.
 \end{itemize}
 
-Mathematically, a projection describes the relationship of one vector to another in terms of direction and orthogonality. Given two vectors, $\mathbf{u}$ and $\mathbf{v}$, the projection of $\mathbf{u}$ onto $\mathbf{v}$ separates $\mathbf{u}$ into two components. The first component signifies how much $\mathbf{u}$ lies in the direction of $\mathbf{v}$. The second signifies the component of $\mathbf{u}$ that is orthogonal (perpendicular) to $\mathbf{v}$. \index{projection} 
+Mathematically, a projection describes the relationship of one vector to another in terms of direction and orthogonality. Given two vectors, $\mathbf{u}$ and $\mathbf{v}$, the projection of $\mathbf{u}$ onto $\mathbf{v}$ separates $\mathbf{u}$ into two components. The first component signifies how much $\mathbf{u}$ lies in the direction of $\mathbf{v}$. The second signifies the component of $\mathbf{u}$ that is orthogonal (perpendicular) to $\mathbf{v}$. \index{projections} 
 
-The figure depicts a projection. The perpendicular line dropped from the end of $\mathbf{u}$ is the orthogonal component. The portion of $\mathbf{u}$ that lies in the direction of $\mathbf{v}$ is the blue segment. 
+The figure~\ref{fig:projection} depicts a projection. The perpendicular line dropped from the end of $\mathbf{u}$ is the \newterm{orthogonal} component. The portion of $\mathbf{u}$ that lies in the direction of $\mathbf{v}$ is the blue segment. 
+\index{projections!visualization of}
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture}
+	\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
+	\draw[black, ultra thick, ->] (-1,0) -- (3,4.5) node[midway,above left] {u};
+	\draw[black, ultra thick, ->] (-1,0) -- (5,0) node[above left] {v};
+	\draw[black, thick, dashed] (3,4.5) -- (3,0) node[midway, right] {orthogonal component};
+	\draw[red, ultra thick, ->] (-1,0) -- (3,0) node[midway, below] {u in v component};
+	\end{tikzpicture}
+    \caption{The projection of $u$ onto $v$}
+    \label{fig:projection}
+\end{figure}
 
-\begin{tikzpicture}
-\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
-\draw[black, ultra thick, ->] (-1,0) -- (3,4.5) node[midway,above left] {u};
-\draw[black, ultra thick, ->] (-1,0) -- (5,0) node[midway,above left] {v};
-\draw[black, thick, dashed] (3,4.5) -- (3,0);
-\draw[red, ultra thick, ->] (-1,0) -- (3,0);
-\end{tikzpicture}
+You can also think of a projection as the shadow cast by one vector onto the other by an overhead light. See Figure~\ref{fig:projection2}
 
-You can also think of a projection as the shadow cast by one vector onto the other by an overhead light.
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture}[fatnode/.style={circle, fill=blue!20, minimum size=15mm}]
+	\node[fatnode] (A) at (1, 5) {Light};
+	\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
+	\draw[black, ultra thick, ->] (-1,0) -- (3,4.5) node[midway,above left] {u};
+	\draw[black, ultra thick, ->] (-1,0) -- (5,0) node[above left] {v};
+	\draw[black, thick, dashed] (3,4.5) -- (3,0) node[midway, right] {orthogonal component};
+	\draw[red, ultra thick, ->] (-1,0) -- (3,0) node[midway, below] {u in v component};
+	\end{tikzpicture}
+    \caption{Projection of $u$ onto $v$ with a light included to simulate a shadow.}
+    \label{fig:projection2}
+\end{figure}
 
-\begin{tikzpicture}[fatnode/.style={circle, fill=blue!20, minimum size=15mm}]
-\node[fatnode] (A) at (1, 5) {Light};
-\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
-\draw[black, ultra thick, ->] (-1,0) -- (3,4.5) node[midway,above left] {u};
-\draw[black, ultra thick, ->] (-1,0) -- (5,0) node[midway,above left] {v};
-\draw[black, thick, dashed] (3,4.5) -- (3,0);
-\draw[red, ultra thick, ->] (-1,0) -- (3,0);
-\end{tikzpicture}
+The projected vector can be in any direction and its length can extend beyond the vector onto which it is projecting. See Figure~\ref{fig:projection3}. 
 
-The projected vector can be in any direction and its length can extend beyond the vector onto which it is projecting.
-
-\begin{tikzpicture}  
-\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
-\draw[black, ultra thick, ->] (-1,0) -- (4,2.5)node[midway,above left] {u};
-\draw[red, ultra thick, ->] (-1,0) -- (4,0);
-\draw[black, ultra thick, ->] (-1,0) -- (2,0)node[midway,above left] {v};
-\draw[black, thick, dashed] (4,2.5) -- (4,0);
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+	\begin{tikzpicture}  
+	\draw[step=1cm, gray, very thin](-1.9, -1.9) grid (5.9,5.9);
+	\draw[black, ultra thick, ->] (-1,0) -- (4,2.5)node[midway,above left] {u};
+	\draw[red, ultra thick, ->] (-1,0) -- (4,0);
+	\draw[black, ultra thick, ->] (-1,0) -- (2,0)node[midway,above left] {v};
+	\draw[black, thick, dashed] (4,2.5) -- (4,0);
+	\end{tikzpicture}
+    \caption{Projection vector extended beyond $v$.}
+    \label{fig:projection3}
+\end{figure}
 
 To calculate the projection of 
 $\mathbf{v}$ onto $\mathbf{u}$, use this formula:
+\index{projections!formula for}
+\begin{mdframed}[style=important]
 
-$$\mathbf{proj}_\mathbf{v}(\mathbf{u}) = \frac{u\cdot v}{\parallel{v}\parallel ^2}v$$
-
+$$
+\text{Projection of }\mathbf u\text{ onto }\mathbf v:\quad 
+\operatorname{proj}_{\mathbf v}(\mathbf u)=\frac{\mathbf u\cdot \mathbf v}{\lVert \mathbf v\rVert^2}\,\mathbf v = \frac{\mathbf u\cdot \mathbf v}{\mathbf{v} \cdot \mathbf{v}}\,\mathbf v
+$$
+where $\mathbf u\cdot \mathbf v$ is the dot product of $\vec{\mathbf{u}}$ and $\vec{\mathbf{v}}$. Note that either form of the equation works, and the $\mathbf v$ being multiplied by the dot product quotient cannot be cancelled because it is a vector, not a scalar. 
+\end{mdframed}
 Note that the denominator is the magnitude squared of vector $\mathbf{v}$.
-$$(\sqrt{a_1^2 + a_2^2 + ... + a_n^2} )^2$$
+$$\left(\sqrt{a_1^2 + a_2^2 + ... + a_n^2} \right)^{2}$$
+
 You learned previously that this is the same as the dot product of a vector with itself.
 $${v\cdot v}$$
 In the examples that follow, we will simplify to the dot product notation.
@@ -79,7 +101,7 @@ As you work your way through this course, you will have a chance to apply the ca
  
 \section{Projections in Python}
 
-Create a file called \filename{vectors\_projections.py} and enter this code:
+Create a file called \filename{projections.py} and enter this code:
 \begin{Verbatim}
 import numpy as np
 
@@ -95,6 +117,6 @@ print("The projection of vector a on vector b is:", projection_a_on_b)
  
 \section{Where to Learn More}
 
-Watch this Introduction to Projections from Khan Academy 
+Watch this Introduction to Projections from Khan Academy from your digital resources:
 \url{https://rb.gy/yf0i3}
 
