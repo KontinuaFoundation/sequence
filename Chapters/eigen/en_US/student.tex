@@ -7,19 +7,28 @@ Eigenvalues and eigenvectors are a way to break down matrices, which can simplif
 
 Let’s look at a visual example.
 
-\includegraphics[width=0.8\textwidth]{eigensquirrel.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{eigensquirrel.png}
+    \caption{Standardized and skewed squirrel image.}
+    \label{fig:eigensquirrel}
+\end{figure}
 
 You can see that the  image on the right is a skewed version of the image on the left. Look closely at the vectors and you will notice that one of the vectors is pointing in the same direction in both images, while the direction of the other two vectors has changed. The eigenvector is the one at the bottom that points to 0 degrees (which you can think of due east) in both images. So, the characteristic attribute of both images is their horizontal direction.
 
 When you overlay the vectors from one image over the other, you will notice that the horizontal vector, while the same direction in both images, is a bit longer in the skewed version. The scale of the stretch is described by an eigenvalue.
-
-\includegraphics[width=0.4\textwidth]{overlaysquirrel.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{overlaysquirrel.png}
+    \caption{Standardized and skewed squirrel image overlayed on eachother.}
+    \label{fig:overlaysquirrel}
+\end{figure}
 
 
 \section{Definition}
 
 Given a square matrix $A$, a non-zero vector $v$ is an eigenvector of
-$A$ if multiplying $A$ by $v$ results in a scalar multiple of $v$. In other words:
+$A$ if multiplying $A$ by $v$ results in a scalar multiple of $v$. In other words, the \newterm{eigenequation} is:
 
 \begin{equation}
 Av = \lambda v
@@ -28,19 +37,19 @@ Av = \lambda v
 where $\lambda$ is a scalar known as the eigenvalue corresponding to the eigenvector $v$.
 
 \section{Finding Eigenvalues and Eigenvectors}
-
+\index{eigenvalue!calculating}
 You find the eigenvalues of a matrix $A$  by solving the characteristic equation:
 
 \begin{equation}
 \text{det}(A - \lambda I) = 0
 \end{equation}
 
-where $\text{det}(.)$ denotes the determinant, $I$ is the identity
-matrix of the same size as $A$, and $\lambda$ is a scalar.
+where $\text{det}(.)$ denotes the determinant, $I$ is the \emph{identity
+matrix} of the same size as $A$, and $\lambda$ is a scalar.
 
 Once your find the eigenvalues, you can find the corresponding eigenvectors by substituting each eigenvalue into the equation $Av = \lambda
 v$, and solving for $v$.
-
+FIXME visual representation graphically?
 \section{Example}
 
 For a $2 \times 2$ matrix $A = \begin{pmatrix} a & b \\ c &
@@ -243,6 +252,19 @@ print('Eigenvalues:', eigenvalue)
 print('Eigenvectors:', eigenvector)
 
 \end{Verbatim}
+
+\section{Summary}
+Lets sum this up in a short way:
+
+You have a transformation — something that stretches, squishes, flips, or rotates space.
+This transformation could be represented by a matrix.
+
+Most vectors in space will get changed in both direction and length when you apply the transformation.
+
+But some special vectors don't change direction at all — they only get stretched or shrunk (and maybe flipped).
+
+These special “unchanging-direction” vectors are called eigenvectors.
+The amount they get stretched (or shrunk) is their eigenvalue.
 
 \section{Where to Learn More}
 Watch this video from Khan Academy, \emph{Introduction to Eigenvectors}: \url{https://rb.gy/mse7i}
