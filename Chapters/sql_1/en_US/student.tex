@@ -1,17 +1,17 @@
 \chapter{Data tables in SQL}
 
 Most organizations keep their data as tables inside a relational
-database management system. Developers talk to those systems using a
+database management system (compared to pandas, CSV, or spreadsheets). Developers talk to those systems using a
 language called SQL (``Structured Query Language'').
-
+\index{SQL}
 Some relational database managers are pricey products you may have
 heard of before, such as Oracle or Microsoft SQL Server. Some are free, such as
-PostgreSQL or MySQL.  These are server software that client programs
-talk to over the companies network.
-
+PostgreSQL or MySQL. These are server software that client programs
+talk to over the companies network.\footnote{It should be noted that many notetaking and file storage applications allow you to run SQL-like queries to search your files to meet certain criteria. For example, Obsidian, the Markdown notetaking app has a plugin called Dataview, which allows you to run searches for notes matching certain \emph{metadata} attribute criteria. See more about this here: FIXME obsidian dv link}
+\index{SQLite}
 There is a library, called \texttt{sqlite}, that lets us create files that hold
 tables. We can use SQL to create, edit, and browse those tables.
-sqlite is free, fast, and very easy to install.  We will use sqlite
+sqlite is free, fast, and very easy to install. We will use sqlite
 instead of a networked database management system.
 
 If you look in your digital resources, you will find a file called
@@ -30,13 +30,13 @@ Please follow along: type each command shown here into the terminal
 and see what happens.
 
 We mostly run SQL commands in this tool, but there are a few non-SQL
- commands that all start with a period.  To see the tables and their
+ commands that all start with a period. To see the tables and their
  columns, you can run \texttt{.schema}:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 sqlite> \textbf{.schema}
 CREATE TABLE bike (bike_id int PRIMARY KEY, brand text, size int,
-                   purchase_price real, purchase_date date, status text);
+          purchase_price real, purchase_date date, status text);
 \end{Verbatim}
 
 That is the SQL command that we used to create the \texttt{bike}
@@ -58,16 +58,16 @@ You will see 1000 rows of data!
 
 The SQL language is not case-sensitive, so you can also write it like this:
 \begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT * FROM BIKE;}    
+sqlite> \textbf{SELECT * FROM BIKE;}  
 \end{Verbatim}
 
 Often, you will see SQL with just the SQL keywords in all caps:
 \begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT * FROM bike;}    
+sqlite> \textbf{SELECT * FROM bike;}  
 \end{Verbatim}
 The semicolon is not part of SQL, but it tells sqlite that you are done writing a command and that it should be executed.
 
-SQL lets you choose which columns you would like to see:
+SQL lets you choose which columns you would like to see. The asterisk (FIXME) used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the dataframe:
 \begin{Verbatim}[commandchars=\\\{\}]
 sqlite> \textbf{SELECT bike_id, brand FROM bike;}
 4997391|GT
@@ -77,7 +77,7 @@ sqlite> \textbf{SELECT bike_id, brand FROM bike;}
 ...
 \end{Verbatim}
 
-Using WHERE, SQL lets you choose which rows you would like to see:
+Using WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
 \begin{Verbatim}[commandchars=\\\{\}]
 sqlite> \textbf{SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';}
 4997391|GT|57|269.61|2009-05-03|rented
@@ -86,7 +86,7 @@ sqlite> \textbf{SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand 
 5931243|GT|55|173.56|2009-11-26|rented
 4819848|GT|51|221.71|2009-12-11|rented
 9347713|GT|52|232.32|2009-06-13|available
-3019205|GT|58|262.94|2009-08-22|available    
+3019205|GT|58|262.94|2009-08-22|available  
 \end{Verbatim}
 
 Using DISTINCT, SQL lets you get just one copy of each value:
@@ -103,8 +103,8 @@ out
 Rented
 \end{Verbatim}
 
-You can also edit these rows.  For example, if you wanted every status
-that is \texttt{Busted} to be changed to \texttt{broken}, you can use an UPDATE statement:
+You can also edit these rows. For example, if you wanted every status
+that is \texttt{Busted} to be changed to \texttt{broken}, you can use an \verb|UPDATE| statement with a \verb|SET|:
 
 \begin{Verbatim}[commandchars=\\\{\}]
 sqlite> \textbf{UPDATE bike SET status='broken' WHERE status='Busted';}
@@ -112,7 +112,6 @@ sqlite> \textbf{SELECT DISTINCT status FROM bike;}
 rented
 broken
 available
-
 Flat tire
 good
 out
@@ -122,10 +121,11 @@ Rented
 You can insert new rows:
 \begin{Verbatim}[commandchars=\\\{\}]
 sqlite> \textbf{INSERT INTO bike (bike_id, brand, size, purchase_price, purchase_date, status)}
-   ...> \textbf{VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');}
+  ...> \textbf{VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');}
 sqlite> \textbf{SELECT * FROM bike WHERE bike_id = 1;}
 1|GT|53|123.45|2020-11-13|available
 \end{Verbatim}
+Note that the bike\_id here must be \emph{unique}. 
 
 You can delete rows:
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -136,12 +136,12 @@ sqlite> \textbf{SELECT * FROM bike WHERE bike_id = 1;}
 To get out of sqlite, type \texttt{.exit}.
 
 \begin{Exercise}[title={SQL Query}, label=sql_where]
-  Execute an SQL query that returns the \texttt{bike\_id} (no other
-  columns) of every Trek bike that cost more than \$300.
+ Execute an SQL query that returns the \texttt{bike\_id} (no other
+ columns) of every Trek bike that cost more than \$300.
 \end{Exercise}
 \begin{Answer}[ref=sql_where]
 \begin{Verbatim}
-  SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
+ SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
 \end{Verbatim}
 \end{Answer}
 
@@ -165,7 +165,7 @@ rows = cur.fetchall()
 
 today = datetime.date.today()
 for row in rows:
-    print(f"Bike {row[0]}, purchased {row[1]}")
+  print(f"Bike {row[0]}, purchased {row[1]}")
 
 con.close()
 \end{Verbatim}

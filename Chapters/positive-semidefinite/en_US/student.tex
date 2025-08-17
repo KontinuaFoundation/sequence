@@ -26,7 +26,12 @@ For each of these , think of large scale problems for which there are many varia
 
 When neural networks were first being developed to recognize things (faces, letters, music, and so on), the goal was to calculate weights between network nodes that would minimize the recognition error. The error space could be visualized as a surface of valleys and hills. The lowest point would have the least error. The idea behind the iterative weight calculations for training the network was to descend down the gradient until reaching the low point. Without getting into the mathematics, you can see by looking at this figure that there are two valleys. Some neural network training resulted in ending at a low point, but not the lowest point. Wouldn’t it be great if you could formulate an optimization problem so that you would be guaranteed to land at the lowest point? That is where semidefinite programming can help.
 
-\includegraphics[width=0.5\textwidth]{neuralnet-error-function.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neuralnet-error-function.png}
+    \caption{FIXME.}
+    \label{fig:neuralnet-error}
+\end{figure}
 
 \section{Positive Definite and Semidefinite Matrices}
 
@@ -73,7 +78,12 @@ $$
 $$
 For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a postive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an elliptope. This shape guarantees an optimal solution.
 
-\includegraphics[width=0.5\textwidth]{elliptope.jpg}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elliptope.jpg}
+    \caption{Elliptope visualized.}
+    \label{fig:elliptope}
+\end{figure}
 
 \section{Identifying and Constructing a Positive Semidefinite Matrix}
 In the last section, you saw that being symmetric does not guarantee a positive semidefinite matrix. You also saw that a matrix of positive values does not guarantee a positive semidefinite matrix. The only way to check for positive semidefinite is to calculate the eigenvalues, which you learned in a previous workbook.
@@ -104,29 +114,35 @@ The answer depends on the 3 by 3 matrix you chose.
 \end{Answer}
 
 \section{The Max Cut Problem}
+\index{Max Cut}
 A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. (If you could find one, you would be eligible to win a huge prize from the Clay Mathematics Institute!) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a technique developed by mathematicians Michel Goemans and David Williamson. 
 
 You won't see all the complete details here, as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
 
-Take this simple graph of five nodes and six edges. Each node in the graph will take on one of two values (1 or -1) to show which set they fall into after a cut is made. For any two connected nodes, $x_i*x_j = 1$ if $x_i = x_j$ and $-1$ otherwise.
+Take this simple graph of five nodes and six edges. Each node in the graph will take on one of two values (1 or -1) to show which set they fall into after a cut is made. For any two connected nodes, $x_i\cdot x_j = 1$ if $x_i = x_j$ and $-1$ otherwise.
 
 If you randomly assign $1$ and $-1$ to the nodes, the chance of making the max cut is $0.5$. By using semidefinite programming, you can achieve an algorithmic efficiency of $0.87$. 
 
 The Goemans-Williamson technique can be used for any optimization problem where the variables take on the values of $1$ and $-1$.
 
-\begin{tikzpicture}
-     \node[circle, draw= black] (node 0) {0};
-     \node[circle, draw=black, xshift=2cm, at=(node 0)] (node 1) {1};
-     \node[circle, draw=black, yshift= -2cm, at=(node 0)] (node 2) {2};
-     \node[circle, draw=black, xshift=2cm, yshift= -2cm, at=(node 0)] (node 3) {3};
-     \node[circle, draw=black, xshift=4cm, yshift= -1cm, at=(node 0)] (node 4) {4};
-     \draw (0,0) node {0} -- (2,0) node {1};
-     \draw (0,0) node {0} -- (0,-2) node {2};
-     \draw (0,-2) node {2} -- (2,-2) node {3};
-     \draw (2,0) node {1} -- (2,-2) node {3};
-     \draw (2,0) node {1} -- (4,-1) node {4};
-     \draw (2,-2) node {3} -- (4,-1) node {4};   
-\end{tikzpicture}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+         \node[circle, draw= black] (node 0) {0};
+         \node[circle, draw=black, xshift=2cm, at=(node 0)] (node 1) {1};
+         \node[circle, draw=black, yshift= -2cm, at=(node 0)] (node 2) {2};
+         \node[circle, draw=black, xshift=2cm, yshift= -2cm, at=(node 0)] (node 3) {3};
+         \node[circle, draw=black, xshift=4cm, yshift= -1cm, at=(node 0)] (node 4) {4};
+         \draw (0,0) node {0} -- (2,0) node {1};
+         \draw (0,0) node {0} -- (0,-2) node {2};
+         \draw (0,-2) node {2} -- (2,-2) node {3};
+         \draw (2,0) node {1} -- (2,-2) node {3};
+         \draw (2,0) node {1} -- (4,-1) node {4};
+         \draw (2,-2) node {3} -- (4,-1) node {4};   
+    \end{tikzpicture}
+    \caption{MaxCut algorithm visualized.}
+    \label{fig:MaxCut}
+\end{figure}
 
 As a list of edges the graph is:
 
@@ -171,9 +187,15 @@ Goemans-Williamson leveraged the fact that the end point of a unit vector is on 
 
 You can then assign the scalar values to the nodes and make the cut accordingly. This particular cut will be 5, as shown.
 
-\includegraphics[width=0.5\textwidth]{max-cut.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{max-cut.png}
+    \caption{The result of the MaxCut.}
+    \label{fig:MaxCut-result}
+\end{figure}
 
 \section{The Max Cut Problem Solved in Python}
+\index{Max Cut!python script for }
 \begin{Verbatim}       
 # MaxCut Problem
 import numpy as np

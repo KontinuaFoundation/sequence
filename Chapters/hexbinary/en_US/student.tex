@@ -1,25 +1,27 @@
 \chapter{Representing Natural Numbers}
 
-Natural numbers are positive whole numbers, such as 1, 2, 3, and so on.  -5 is not a natural
-number.  $\pi$ is not a natural number. $\frac{1}{2}$ is not a natural
+Natural numbers are positive whole numbers, such as 1, 2, 3, and so on. -5 is not a natural
+number. $\pi$ is not a natural number. $\frac{1}{2}$ is not a natural
 number.
 
-You are used to seeing the natural numbers represented in a base-10
-\newterm{Hindu-Arabic} numeral system.  That is, when you see 2531 you
-think ``2 thousands, 5 hundreds, 3 tens, and 1 one.''  Rewritten, this is:
+\section{Base-10 (Decimal)}
+You are used to seeing the natural numbers represented in a \textbf{base-10}
+\newterm{Hindu-Arabic} or the \newterm{Decimal} numeral system. That is, when you see 2531 you
+think ``2 thousands, 5 hundreds, 3 tens, and 1 one.'' Rewritten, this is:
 
 $$2 \times 10^3 + 5 \times 10^2 + 3 \times 10^1 + 1 \times 10^0$$
 
 In any Hindu-Arabic system, the location of the digits is meaningful:
-101 is different from 110.  Here are those numbers in Roman numerals:
-CI and CX.  Roman numerals didn't have a symbol for zero at all.
+101 is different from 110; the position of a number indicates it's magnitude. Here are those numbers in Roman numerals:
+CI and CX. Roman numerals didn't have a symbol for zero at all.
+%should we expand on roman numerals..? could be interesting but not needed?
 
 The Hindu-Arabic system gave us really straightforward algorithms for
-addition and multiplication.  For addition, you memorized the following table:
+addition and multiplication. For addition, you memorized the following table:
 
 \begin{tabular}{ c || c | c | c | c | c | c| c| c| c| c }
-  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
-  \hline
+ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+ \hline
 0 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
 1 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
 2 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
@@ -33,36 +35,39 @@ addition and multiplication.  For addition, you memorized the following table:
 \end{tabular}
 
 When you multiplied two number together, you simply multiplied each
-pair of digits. $254 \times 26$  might look like this:
+pair of digits. $254 \times 26$ might look like this:
 
 \begin{tabular} {r c c c c | c}
  & & 2 & 5 & 4 & \\
- & & $\times$  & 2 & 6 & \\
-  \hline
-&  &   & 2 & 4 & $6 \times 4$\\
-&  & 3 & 0 & & $6 \times 5$  \\
-&  1 & 2 & & & $6 \times 2$  \\
-&  &  &  8 & & $2 \times 4$ \\
+ & & $\times$ & 2 & 6 & \\
+ \hline
+& &  & 2 & 4 & $6 \times 4$\\
+& & 3 & 0 & & $6 \times 5$ \\
+& 1 & 2 & & & $6 \times 2$ \\
+& & & 8 & & $2 \times 4$ \\
 & 1 & 0 & & & $2 \times 5$\\
-+ & 4 &  & & & $2 \times 2$\\
++ & 4 & & & & $2 \times 2$\\
  \hline
  6 & 6 & 0 & 4
  \end{tabular}
-  
+ 
 
 For multiplication, you memorized this table:
 
 \begin{tabular}{ c || c | c | c | c | c | c| c| c| c| c}
-  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
-  \hline
-  0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0  &  0 \\
-  1  & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  &  9 \\
-  2  & 0  & 2  & 4  & 6  & 8  & 10 & 12 & 14 & 16 & 18 \\
-  3  & 0  & 3  & 6  & 9  & 12 & 15 & 18 & 21 & 24 & 27 \\
-  4  & 0  & 4  & 8  & 12 & 16 & 20 & 24 & 28 & 32 & 36 \\
-  5  & 0  & 5  & 10 & 15 & 20 & 25 & 30 & 35 & 40 & 45 \\
-  6  & 0  & 6  & 12 & 18 & 24 & 30 & 36 & 42 & 48 & 54 \\
-  7  & 0  & 7  & 14 & 21 & 28 & 35 & 42 & 49 & 56 & 63 \\
-  9  & 0  & 9  & 18 & 27 & 36 & 45 & 54 & 63 & 72 & 81 
-  \end{tabular}
+ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+ \hline
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+ 1 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+ 2 & 0 & 2 & 4 & 6 & 8 & 10 & 12 & 14 & 16 & 18 \\
+ 3 & 0 & 3 & 6 & 9 & 12 & 15 & 18 & 21 & 24 & 27 \\
+ 4 & 0 & 4 & 8 & 12 & 16 & 20 & 24 & 28 & 32 & 36 \\
+ 5 & 0 & 5 & 10 & 15 & 20 & 25 & 30 & 35 & 40 & 45 \\
+ 6 & 0 & 6 & 12 & 18 & 24 & 30 & 36 & 42 & 48 & 54 \\
+ 7 & 0 & 7 & 14 & 21 & 28 & 35 & 42 & 49 & 56 & 63 \\
+ 9 & 0 & 9 & 18 & 27 & 36 & 45 & 54 & 63 & 72 & 81 
+ \end{tabular}
 
+\section{Base-2 (Binary)}
+
+\section{Base-16}
