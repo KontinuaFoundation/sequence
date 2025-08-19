@@ -128,12 +128,23 @@ We won't go into the depths of it here, but here are the basics of computer arch
 \index{computer architecture}
 There are codes of 4-bit sequences that form up the \newterm{memory}. \index{memory}
 This can form the sections of it into different data types:
-FIXME make this into a table
-\begin{itemize}
-  \item \textbf{Character}: 1 byte, 8 bits, used for ASCII (Hexadecimal numbers)
-  \item \textbf{Integer}: 4 bytes, 32 bits, allows for only positive values up to $2^{32}$ signed numbers from [$-2^{31}, \; 2^{31}-1$]
-  \item \textbf{Double}: 8 bytes, 64 bits, decimal values
-\end{itemize}
+\textbf{Common Data Types in Memory}
+
+\begin{center}
+  
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  \textbf{Data Type} & \textbf{Size} & \textbf{Bit Length} & \textbf{Typical Use} \\
+  \hline
+  Character & 1 byte & 8 bits & ASCII characters, small integers \\
+  \hline
+  Integer & 4 bytes & 32 bits & Whole numbers, range $[-2^{31}, 2^{31}-1]$ \\
+  \hline
+  Double & 8 bytes & 64 bits & Decimal (floating-point) values \\
+  \hline
+  \end{tabular}
+\end{center}
+
 
 Strings are formed by listing characters in consecutive memory addresses such that they are marked by a starting memory address and ending memory address. 
 
@@ -175,18 +186,35 @@ For example,
 
 
 \subsection{Hex Color Codes}
+Hex colors are represented by 6 hexadecimal digits, grouped as two each for red, green, and blue (RGB). Each pair ranges from \$00\$ (0 in decimal) to \$FF\$ (255 in decimal), allowing \$256\$ shades per color channel. For example:
 
-Hex colors are represented by 6 hexadecimal digits: 2 red, 2 blue, and 2 green. FIXME finish this
+$$
+\#\text{FF}0000 = \text{Red}, \quad\#00\text{FF}00 = \text{Green}, \quad \#0000\text{FF} = \text{Blue}
+$$
 
+By mixing values, you can create millions of unique colors, e.g.:
+
+$$
+\#\text{FFA}500 = \text{Orange}, \quad \#800080 = \text{Purple}, \quad \#\text{FFFFFF} = \text{White}, \quad \#000000 = \text{Black}
+$$
+There are $256^3 = 16{,}777{,}216$ possible color combinations in the RGB hex system. The higher the red, green, or blue values are (closer to 255), the brighter the component becomes and the overall color shifts closer to white. Conversely, the lower the values are (closer to 0), the darker the component becomes and the overall color shifts closer to black.
 
 \section{Base-8 (Octal)}
 \index{Octal}
-Octal is another representation of radix 8. Digits go from 0 to 7, and the number of digits increase when that threshold is passed. 
+Octal is another representation of radix 8. Digits range from 0 to 7, and the number of digits increase the threshold is passed.
 
-Just as in the above systems, hexadecimal increases by the radix --- powers of 8. For example,
-\[
-135 = 2 \times 8^2 + 0\times 8^1 + 6\times 8^0 = 206
-\]
+Just as in the above systems, octal increases by the radix —-- powers of 8. For example,
 
+$$
+135_{8} = (1 \times 8^2) + (3\times 8^1) + (5\times 8^0) = 64 + 24 + 5 = 93_{10}
+$$
 
-FIXME this needs to be written. Why does Octal representation matter for students?
+\subsection{Why Octal Matters}
+Octal was historically important in computing because early computers often worked with word sizes that were multiples of 3 bits (such as 12, 24, or 36). Since each octal digit corresponds exactly to 3 binary digits, it was a convenient shorthand for binary values before hexadecimal became more widespread. For example:
+
+$$
+110101_2 = 65_8
+$$
+
+Even though modern systems mostly use hexadecimal, octal is still used in some contexts, such as Unix file permissions (e.g., \texttt{chmod 755}).
+
