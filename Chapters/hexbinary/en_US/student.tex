@@ -75,10 +75,20 @@ For multiplication, you memorized this table:
 \section{Base-2 (Binary)}
 \index{binary}\index{base-2}
 Binary, on the other hand, has only 2 digits it can have: $0$ or $1$. 
-This kind of number system is often used for electrical and computer systems because the values can only be \textbf{\emph{on}} or \textbf{\emph{off}}.
+This kind of number system is often used for electrical and computer systems because the values can only be \textbf{on} or \textbf{off}.
+
+Each digit in a binary number represents a power of $2$, starting from the rightmost digit (the least significant bit, or LSB). For example:
+
+\[
+  \dots + 2^3 + 2^2 + 2^1 + 2^0
+\]
+For example,
+\[
+1011_2 = (1 \cdot 2^3) + (0 \cdot 2^2) + (1 \cdot 2^1) + (1 \cdot 2^0) = 8 + 0 + 2 + 1 = 11_{10}
+\]\footnote{The subscripts represent the radix or base.}
 
 Because the radix is 2, the numbers increase differently:
-
+\index{binary!counting in}
 \begin{align*}
   0&: 0 \\
   1&: 1 \\
@@ -91,6 +101,92 @@ Because the radix is 2, the numbers increase differently:
   8&: 1000 \\
   \cdots& \\
   15&: 1111
+  \cdots& \\
 \end{align*}
 
-\section{Base-16}
+\subsection*{Conversion from Decimal to Binary}
+To convert $13_{10}$ to binary, repeatedly divide by $2$ and record the remainders until the divisor reaches 0 or 1:
+\[
+13 \div 2 = 6 \text{ remainder } 1 \\
+6 \div 2 = 3 \text{ remainder } 0 \\
+3 \div 2 = 1 \text{ remainder } 1 \\
+1 \div 2 = 0 \text{ remainder } 1
+\]
+Reading from bottom to top, $13_{10} = 1101_2$.
+
+\subsection{Bits and Bytes}
+A singular binary digit (0 or 1) is called a \newterm{bit}. \index{bit}\index{byte}
+A lightbulb, switch, or any sort of \newterm{Boolean} value (true or false) can be represented as a bit.
+A single binary digit is called a \emph{bit}. 
+Eight bits form a \emph{byte}, which is a common unit of storage in computer systems:
+\[
+1\ \text{byte} = 8\ \text{bits}
+\]
+For example, the binary sequence $01001000$ represents one byte of data.
+
+We won't go into the depths of it here, but here are the basics of computer architecture. 
+\index{computer architecture}
+There are codes of 4-bit sequences that form up the \newterm{memory}. \index{memory}
+This can form the sections of it into different data types:
+FIXME make this into a table
+\begin{itemize}
+  \item \textbf{Character}: 1 byte, 8 bits, used for ASCII (Hexadecimal numbers)
+  \item \textbf{Integer}: 4 bytes, 32 bits, allows for only positive values up to $2^{32}$ signed numbers from [$-2^{31}, \; 2^{31}-1$]
+  \item \textbf{Double}: 8 bytes, 64 bits, decimal values
+\end{itemize}
+
+Strings are formed by listing characters in consecutive memory addresses such that they are marked by a starting memory address and ending memory address. 
+
+8-bit binary numbers can be used to signify positive or negative numbers.  \index{signed bits}
+The most significant bit (MSB) will alter sign, causing the range to be $[-2^{7}, \; 2^{7}-1]$. If the byte is negative (in terms of bits), invert each bit and add 1 to the inverted result. The other way is to multiply the MSB by negative one, and add until the value is reached, as seen below. 
+
+\[
+-85_{10} = -1 \times 2^7 + 0 \times 2^6 + 1 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 1010 1011
+\]
+
+Binary can be easy converted to \newterm{Hexadecimal}. 
+
+\section{Base-16 (Hexadecimal)}
+\index{hexadecimal}
+Hexadecimal (from the latin \emph{hexa} and \emph{deca} for 16) is a representation of number with a radix of 16. Digits are represented through numeric numbers 0-9 and \newterm{A-F}. 
+
+Counting to 16 in hex goes as follows:
+\begin{align*}
+  &1 \\
+  &2 \\
+  &3 \\
+  &\dots \\
+  &9 \\
+  &\text{A} \; (\text{decimal value} \;  10) \\
+  &\text{B} \; (\text{decimal value} \; 11) \\
+  &\text{C} \; (\text{decimal value} \; 12) \\
+  &\text{D} \; (\text{decimal value} \; 13) \\
+  &\text{E} \; (\text{decimal value} \; 14) \\
+  &\text{F} \; (\text{decimal value} \; 15)
+\end{align*}
+
+Converting between binary and hexadecimal is easier because the hex radix ($16 = 2^4$) is a power of the binary radix ($2^1$). 
+
+It takes 4 binary digits to represent 1 hex digit: $15 =$ F
+
+For example,
+\[0\text{x}47 = 0100 \; 0111_{2}\]
+\[0\text{x}\text{BD} = 1011 \; 1101_{2}\]
+
+
+\subsection{Hex Color Codes}
+
+Hex colors are represented by 6 hexadecimal digits: 2 red, 2 blue, and 2 green. FIXME finish this
+
+
+\section{Base-8 (Octal)}
+\index{Octal}
+Octal is another representation of radix 8. Digits go from 0 to 7, and the number of digits increase when that threshold is passed. 
+
+Just as in the above systems, hexadecimal increases by the radix --- powers of 8. For example,
+\[
+135 = 2 \times 8^2 + 0\times 8^1 + 6\times 8^0 = 206
+\]
+
+
+FIXME this needs to be written. Why does Octal representation matter for students?
