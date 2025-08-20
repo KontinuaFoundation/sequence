@@ -16,12 +16,13 @@ on location.\index{geocoding}
 Here is an example of using Google's Geocoding service to get the
 longitude and latitude of the Dallas County Administration Building:
 
-\begin{lstlisting}[language=Python]
+\begin{verbatim}
+
 import requests
 import json
 
 # Encode the parameters
-parameters = {"address": "411 Elm St, Dallas, TX 75202"  , "key": "YOUR_API_KEY"}
+parameters = {"address": "411 Elm St, Dallas, TX 75202", "key": "YOUR_API_KEY"}
 base_url = "https://maps.googleapis.com/maps/api/geocode/json?"
 
 # Send the GET request
@@ -34,9 +35,11 @@ data = response.json()
 if len(data["results"]) > 0:
     latitude = data["results"][0]["geometry"]["location"]["lat"]
     longitude = data["results"][0]["geometry"]["location"]["lng"]
+    print(latitude, longitude)
 else:
     print(f"Could not find the latitude and longitude .")
-\end{lstlisting}
+    
+\end{verbatim}
 
 \section{Reverse Geocoding}
 
@@ -46,10 +49,11 @@ human-readable address. This can be useful in applications where you
 need to display an actual address to a user instead of latitude and
 longitude coordinates.\index{reverse geocoding}
 
-Here is an example of using Google's reverse geocoding API to find the
-address for
+Here is an example of using Google's reverse geocoding API\footnote{Note that the API key is something you obtain on your own, people do not share API keys for privacy and security reasons.} to find the
+address at latitude = 33.9474096, longitude = -118.1179069
 
-\begin{lstlisting}[language=Python]
+
+\begin{verbatim}
 import requests
 import json
 
@@ -57,7 +61,7 @@ api_key = "YOUR_API_KEY"
 latitude = 33.9474096
 longitude = -118.1179069
 
- # Encode the parameters
+    # Encode the parameters
 parameters = {"latlng": f"{latitude},{longitude}", "key": api_key}
 base_url = "https://maps.googleapis.com/maps/api/geocode/json?"
 
@@ -70,6 +74,8 @@ data = response.json()
 # Extract the address
 if len(data["results"]) > 0:
     address = data["results"][0]["formatted_address"]
+    print(address)
 else:
     print(f"Could not find the address")
-\end{lstlisting}
+
+\end{verbatim}
