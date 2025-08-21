@@ -3,7 +3,7 @@
 Before we begin talking about discrete probably, let's address the word \emph{discrete} vs \emph{discreet}.
 They sound exactly the same, but ``discrete'' means ``individually
 separate and distinct'' and ``discreet'' means ``careful about what
-other people know''.  So, you might say, ``You can think of light as a
+other people know''. So, you might say, ``You can think of light as a
 continuous wave or as a blast of discrete particles.'' And you might
 say, ``Please go get the box of doughnuts from the kitchen. Oh, and
 there are a lot of hungry people in the house, so be
@@ -30,7 +30,7 @@ probability that you will pull out a white marble.''
 In probability, we often talk about the probability of certain
 events. ``Pulling out a white marble'' is an event, and we can give it
 a symbol like $W$. In equations, we use $p$ to mean ``the
-probability of''.  Thus, we can say ``There is a 0.01 probability that
+probability of''. Thus, we can say ``There is a 0.01 probability that
 you will pull out a white marble,'' which becomes the equation
 \begin{equation*}
   p(W) = 0.01
@@ -58,16 +58,16 @@ chance. Do the probabilities still sum to 1?
 \item Red and Tails = $0.99 \times 0.5 = 0.495$
 % ADD: add up the values at the end for clarity
 \end{itemize}
-Yes, the probabilitites of all the possibilities still add to 1.
-
-\section{Independence}
+$0.005 + 0.005 + 0.495 + 0.495 = 1.000$
+Yes, the probabilitites of all the possibilities still add to 1. This is only true because \emph{the events do not effect each other}; the events are \textbf{\textit{independent}}. 
+\section{Independence and Dependence}
 
 In the last section, you learned that the probability of two events
 (``Pulling a red marble from the bag'' and ``Getting tails in a coin
 toss'') is the product of the probability of each event: $0.99 \times 0.5 = 0.495$.
 
 This is true if the two events are \textit{independent}; that is, the
-outcome of one doesn't change the probability of the other.  The
+outcome of one doesn't change the probability of the other. The
 example we gave is independent: It doesn't matter what ball you pull
 from the bag, the outcome of the coin toss will always be 50-50.\index{independent}
 
@@ -77,7 +77,29 @@ someone wears a shoe that is size 13 or larger is \textit{not}
 independent. After all, height is an advantage in basketball, and most
 tall people also have large feet. So, if you know someone is a
 basketball player, they likely wear large shoes.
+
+\section{Correlation does not Imply Causation}
+It is often said that ``Correlation does not imply causation''. What does this mean? 
+
+Breaking it down:
+\begin{itemize}
+  \item Correlation is a state in which two things increase or decrease together; two variables are \emph{linearly} related
+  \item Imply means suggests in this sense, as in \textit{there is evidence for}
+  \item Causation means there is a cause and effect relationship in place between the two variables. 
+\end{itemize}
+
+So saying correlation does not imply causation simply means just because two variables are linearly connected; it connect be said one variable causes the other. 
+
+Here are some examples:
+\begin{itemize}
+  \item Ice Cream Sales, Mosquito bites, and Sunburn cases all increase during the summertime. However, none of these are causally connected 
+  \item Dinosaurs were not able to read books. However, this does not mean that the inability to read caused dinosaur extinction. 
+  \item There was a large increase in toilet paper sales and people working from home in the years 2020-2021. Does this mean that one causes the other? Not necessarily, in this case a third factor $C$, the pandemic, cause a large global quarantine, leading to increased toilet paper usage and inability to work in an office. 
+\end{itemize}
+
 % ADD: Correlation for Causeation 
+    % added a draft form Arjan 20Aug25
+    % both links added to DR. 
 % Weird Correlations Website: https://www.tylervigen.com/spurious-correlations
 % KA: https://youtu.be/R-NeYKSEqns
 
@@ -111,7 +133,7 @@ When you roll the first die, there are six possibilities with equal
 probability. When you roll the second die, there are six possibilities
 with equal probability. So, there are a total of 36 possible events
 with equal probabilities: 1 then 1, 1 then 2, 2 then 1, 1 then 3, 3
-then 1, and so on. Only one of these (1 then 1) adds to 2.  However, six of these
+then 1, and so on. Only one of these (1 then 1) adds to 2. However, six of these
 sum to 7: 1 then 6, 6 then 1, 2 then 5, 5 then 2, 3 then 4, and 4 then
 3. So, a 7 is six times more likely than a 2.
 
@@ -138,15 +160,20 @@ roll a pair of dice hundreds of times and make a histogram. However, it would be
 tedious and time-consuming task --- just the sort of thing that we make
 computers do for us.
 % ADD: Define Histogram
+% histogram is defined before this in the stats chapter - Arjan Aug25
 
-
-\includegraphics[width=1\textwidth]{dice_histogram.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{dice_histogram.png}
+    \caption{A histogram of probabilities of dice sums. This is referred to as a bell curve.}
+    \label{fig:dice_histogram}
+\end{figure}
 \section{Random Numbers and Python}
 
 You are going to write a simulation of rolling dice in Python. To do
 this, you will need to generate a random sequence of numbers. The
 numbers will need to be in the range 1 to 6, and they will need to
-appear in the sequence with the same frequency.  We say the sequence
+appear in the sequence with the same frequency. We say the sequence
 will follow \textit{the uniform distribution}. In other words, the
 probability is uniformly distributed among the 6 possibilities.\index{random number generation}
 
@@ -305,10 +332,14 @@ predictions are pretty close.
 
 
 
-A bar graph is a nice way to look at quantities like this.  Let's make a bar graph that shows the actual count and the expected count:\index{bar graph!in python}
+A bar graph is a nice way to look at quantities like this. Let's make a bar graph that shows the actual count and the expected count:\index{bar graph!in python}
 
-
-\includegraphics[width= 0.85\textwidth]{dice1.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width= 0.85\textwidth]{dice1.png}
+    \caption{Dice roll histogram.}
+    \label{fig:dice1}
+\end{figure}
 
 We need to describe the set of rectangles, to do this we will loop through each possible roll (2 - 12) and put data in four lists for each:
 % ADD: Define lists
