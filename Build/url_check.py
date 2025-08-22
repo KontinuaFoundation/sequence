@@ -84,11 +84,17 @@ for chap_meta in all_chaps:
                         print(f"\tSkipping {url}: Cached {link_data['date']}")
                         # Go on to the next URL
                         continue
+            
 
             print(f"\tFetching {url}:", end="", flush=True)
-            req = urllib.request.Request(url)
+            # added user agent to support select broken urls
+            req = urllib.request.Request(url, headers={        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/115.0 Safari/537.36"
+    })
             try:
                 response = urllib.request.urlopen(req)
+                # any invalid response will result in storing a broken link
             except urllib.error.HTTPError as e:
                 print(f"\n\tError for {chap_meta['id']} {url}: The server couldn\'t fulfill the request.")
                 print('\n\tError code: ', e.code)
@@ -99,6 +105,7 @@ for chap_meta in all_chaps:
                 print('\n\tReason: ', e.reason)
                 continue
 
+            # attempt to read data. if doesnt work, retry until some data is provided
             data = None
             while data is None:
                 try:
@@ -107,7 +114,12 @@ for chap_meta in all_chaps:
                     print("\n\tread failed. Waiting 10 seconds and trying again")
                     time.sleep(10)
                     response = urllib.request.urlopen(req)
-
+            
+            # pdf exists but does not have html md
+            if ".pdf" in url:
+                # title is saved as the file's name instead of md title
+                new_links[url] = {'title':os.path.basename(url), 'date':now_str}
+                break
             soup = BeautifulSoup(data, "html.parser")
             head = soup.head
             title = head.title.string
