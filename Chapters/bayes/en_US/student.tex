@@ -35,9 +35,14 @@ or
 
 $$p(C \text{ AND } D) = p(C | D) p(D)$$
 
-(The probabilitiy the person has a cough multiplied by the probabilitiy they are at the doctor if they have a cough.)
+(The probability the person has a cough multiplied by the probability they are at the doctor if they have a cough.) See Figure\ref{fig:bayes1}
 % ADD: This needs a little more explanation
-\includegraphics[width=0.8\textwidth]{Probability.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Probability.png}
+    \caption{A labelled figure of Bayes's Theorem Equation.}
+    \label{fig:bayes1}
+\end{figure}
 
 Thus:
 
@@ -123,3 +128,43 @@ In a trial, a jury is asked to determine if the accused person is
 guilty of a crime. Few jurors are ever 100\% certain. In some trials, Bayes'
 Theorem is an exceptionally important tool.
 
+%FIXME 
+\section{The Monty Hall Problem}
+
+The Monty Hall Problem is a popular example in discrete probability and probability theory that highlights an application of Bayes' theorem. 
+
+Here's the scenario\footnote{A few videos and a movie excerpt on this subject are linked in your digital resources.}
+\begin{itemize}
+    \item A contestant is presented with three doors. Behind one door is a brand new car; behind the other two doors are goats.
+    \item The contestant selects one of the three doors, say Door A.
+    \item The host, Monty Hall, who knows what is behind each door, then opens one of the remaining two doors, say Door B, revealing a goat.
+    \item The contestant is then offered the choice to either stick with Door A or switch to the other remaining unopened Door B.
+\end{itemize}
+
+At first glance, many people assume that after Monty opens a door, there are two
+doors left and hence the probability of winning the car is $1/2$ regardless of
+whether one switches or stays. However, conditional probability and Bayes' Theorem reveal a different result.
+
+Originally, the probability that you picked the right door, Door A, is $P(\text{A has the car}) = \frac{1}{3}$. 
+
+Then, Monty Hall reveals Door B to contain a goat behind it. This changes things, as Door A remains a probability of $\frac{1}{3}$, while Door C, the unopened door, now contains the summed probability of the other two doors, $\frac{2}{3}$.
+
+Proving this with Bayes' Theorem:
+
+%FIXME simplify this
+\begin{align*}
+P(\text{Car behind C} \mid \text{Monty opens B}) 
+&= \frac{P(\text{Monty opens B} \mid \text{Car behind C}) \, P(\text{Car behind C})}
+         {P(\text{Monty opens B})} \\[6pt]
+&= \frac{1 \cdot \tfrac{1}{3}}
+         {\;P(\text{Monty opens B} \mid \text{Car behind A})P(\text{Car behind A}) 
+         + P(\text{Monty opens B} \mid \text{Car behind B})P(\text{Car behind B}) 
+         + P(\text{Monty opens B} \mid \text{Car behind C})P(\text{Car behind C})} \\[6pt]
+&= \frac{\tfrac{1}{3}}
+         {\;(\tfrac{1}{2})(\tfrac{1}{3}) + 0\cdot(\tfrac{1}{3}) + 1\cdot(\tfrac{1}{3})} \\[6pt]
+&= \frac{\tfrac{1}{3}}{\tfrac{1}{6} + \tfrac{1}{3}} \\[6pt]
+&= \frac{\tfrac{1}{3}}{\tfrac{1}{2}} \\[6pt]
+&= \tfrac{2}{3}
+\end{align*}
+
+Thus, it is always in your interest to switch. If you ever have the luxury to be on a game show, make sure to use Bayes' Theorem before making your guesses. 
