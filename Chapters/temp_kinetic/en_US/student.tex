@@ -264,8 +264,12 @@ Iterative:733.499 K, 0.500 m3, 977.999 kPa
 \end{Verbatim}
 
 And a good plot of the intermediate values:
-
-\includegraphics[width=\textwidth]{chunkplot1.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{chunkplot1.png}
+    \caption{Chunk plots of temperatures every 40 steps.}
+    \label{fig:chunkplot1}
+\end{figure}
 
 However, we will get better estimates if we break it up into 400 steps instead of 40. Change the line that defines the number of steps:
 
@@ -276,14 +280,19 @@ step_count = 400 # steps
 Now the predicted temperature and pressure should be something like $753.603^\circ$ K and 1004.803 kPa.  (This is much closer to the correct result: :$755.953^\circ$ K and 1007.937 kPa.)
 
 What if you break it into 400,000 steps? Now, the result should be really, really close to correct. And the plot is quite accurate:
-
-\includegraphics[width=\textwidth]{chunkplot2.png}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{chunkplot2.png}
+    \caption{Chunk plots of temperatures every 400 steps.}
+    \label{fig:chunkplot2}
+\end{figure}
 
 (You can comment out the lines that make the red dots on the graphs. No
 one wants to see 400,000 red dots.)
 
 It is inefficient to have to do long simulations to guess the final temperature and pressure. Fortunately, there are two handy rules you can use to skip this:
-
+\index{adiabatic compression}
+\index{adiabatic decompression}
 \begin{mdframed}[style=important, frametitle={Adiabatic Compression and Decompression}]
 
 Let 
