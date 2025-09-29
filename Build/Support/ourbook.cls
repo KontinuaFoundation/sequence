@@ -1304,7 +1304,26 @@ final=true]
 \let\@listI\@listi
 \@listi
 
-
+%% ADDED NEW PYCODE LOOK 
+%% all verbatim environments should be incrementally changed to this if possible (as done in questionbank)
+\lstdefinestyle{pycode}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  columns=fixed,
+  keepspaces=true,              
+  showstringspaces=false,
+  tabsize=4,                    
+  breaklines=true, breakatwhitespace=true,
+  upquote=true,                 
+  % cosmetics
+  frame=single, rulesepcolor=\color{black},
+  numbers=left, numbersep=8pt,
+  xleftmargin=2em, framexleftmargin=1.5em,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{gray!70},
+  stringstyle=\itshape,
+  literate={"}{{\texttt{"}}}1
+}
 
 
 %% space above and below equations
