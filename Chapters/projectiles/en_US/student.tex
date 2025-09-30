@@ -99,22 +99,194 @@ Substituting in the values for $v_{0x}$ and $t$:
 \Delta x = (20 \frac{\text{m}}{\text{s}}) (5 \text{s}) = 100 \text{m}
 \]
 
-%FIXME
-exercise
+\begin{Exercise}[title=Horizontally-launched Projectile, label=projectiles_horiz1]
+A rock is thrown horizontally off of the edge of a cliff with an initial velocity of $8$ m/s. If the rock falls for $3$ seconds before hitting the ground, (a) how far from the base of the cliff does the rock land? (b) How high is the cliff? 
+
+Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity.
+\end{Exercise}
+
+\begin{Answer}[ref=projectiles_horiz1]
+(a) To find how far from the base of the cliff the rock lands, we can use the horizontal motion equation:
+\begin{align*}
+    \Delta x &= v_{0x} t\\
+    \Delta x &= (8 \tfrac{\text{m}}{\text{s}})(3 \text{s}) = 24 \text{m}
+\end{align*}
+(b) To find the height of the cliff, we can use the vertical motion equation. Since $v_{0y} = 0$, and the initial vertical position is at the top of the cliff (we can call this $y_0 = 0$), we have:
+
+\begin{align*}
+    y_f &= v_{0y} t + \frac{1}{2} (-g) t^2 \\
+    y_f &= 0 + \frac{1}{2} (-10) (3)^{2} \\
+    y_f &= -45 m
+\end{align*}
+
+We get a negative value for $y_f$ because the rock is falling downward from its initial position, the top of the cliff which we selected as the origin. Therefore, the height of the cliff is $45$ meters.
+
+So the rock lands $24$ meters from the base of the cliff, and the cliff is $45$ meters high.
+
+\end{Answer}
+
+
+
 % FIXME 
+https://www.youtube.com/watch?v=ALRdYPMpqQs
+
 exercise - Newton's cannon % https://en.wikipedia.org/wiki/Newton's_cannonball 
 
 \section{Projectiles launched at an Angle}
 \subsection{From the Ground}
 
-separating vertical and horizontal components of initial motion with trigonometry
-example
+Now, let's imagine a ball is launched from the ground at at angle. The angle of launch will provide both horizontal and vertical components of the initial velocity. We can use trigonometry to separate the initial velocity into its horizontal and vertical components.
 
-exercise - how far does the object travel?
+\begin{align*}
+v_{0x} &= v_0 \cos(\theta) \\
+v_{0y} &= v_0 \sin(\theta)
+\end{align*}
 
-exercise - at what angle should you launch for an object to go the furthest given a maximum launch velocity?
+In the previous section, when an object is thrown directly horizontally, $\theta = 0 ^\circ$, so $v_{0x} = v_0$. However, we now have $v_{0}$ being seperated into two components, so the $v_{0x}$ will be less than $v_0$, as $\cos(\theta)$ and $\sin(\theta)$ are always less than or equal to 1.
 
-exercise - I have a target x-meters away, I must launch at v-miles per hour, what angle will allow me to hit my target, if any?
+The vertical component of $v_0$ is the initial velocity, $v_{0y}$. This component, unlike $v_{0x}$, is constantly changing due to gravity, at a rate of $-9.8 \frac{m}{s^2}$. The peak of an object being launched at some angle is when $v_{0y}$ is equal to 0. 
+
+
+\begin{center}
+    \begin{tikzpicture}
+        \coordinate (origin) at (0, 0);
+        \coordinate (end) at (4, 3);
+        \coordinate (horiz) at (4,0);
+    
+        % changed coords for vector visibility
+        \draw[very thick, ->] (origin) -- (3.95, 2.95) node[midway, left] {$v_0$};
+        \draw[very thick, ->] (origin) -- (horiz) node[midway, below] {$v_{0x} = v_{0} \cos(\theta)$};
+        \draw[very thick, ->] (horiz) -- (end) node[midway, right] {$v_{0y} = v_{0} \sin(\theta)$};
+    
+    
+        \path
+            pic[draw=black, thick, angle eccentricity=1.2, angle radius=.5cm]{right angle=end--horiz--origin};
+    
+        \node at ($(origin)+(0.7,0.2)$) {$\mathbf{\theta}$};
+        
+    \end{tikzpicture}
+\end{center}
+
+For example, take a watermelon launched at $20 \frac{m}{s}$ at an angle of $30^\circ$ above the horizontal. What would the horizontal and vertical components of the initial velocity be?
+
+Well, we can use the equations above to find out:
+$$
+v_{0x} = (20) \cos(30^\circ) \approx 17.32 \text{ m/s}, \qquad v_{0y} = (20) \sin(30^\circ) = 10 \text{ m/s}
+$$
+
+It is important to note that the upwards velocity and downwards velocity are equal in magnitude at any given height, but opposite in direction, due to the symmetric nature of projectile motion.
+
+\begin{tikzpicture}[scale=3]
+    \coordinate (origin) at (0, 0);
+    \draw[domain=0:1.6, dashed, variable=\t]
+        plot ({\t},{8*\t - 5*\t*\t});
+    
+    \coordinate (v1) at (0.2, 1.4);
+
+    % TODO FIXME the tangent line vector
+    \draw[very thick, ->, blue] ($(v1) + (-.1, .1)$) -- (v1) -- ($(v1) + (.1, .1)$) node[midway, above left] {$v_{0}$};
+    
+\end{tikzpicture}
+%FIXME diagram here
+
+\begin{Exercise}[title=Projectile Motion at an angle, label=projectiles_angle1]
+A pumpkin is launched at $25$ m/s at an angle of $40^\circ$ above the horizontal. Find (a) the peak height of the pumpkin, and (b) the horizontal distance the pumpkin travels before hitting the ground. Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity. You may assume the ground is level the entire time. 
+\end{Exercise}
+\begin{Answer}[ref=projectiles_angle1]
+Let's first find the horizontal and vertical components of the initial velocity:
+\begin{align*}
+v_{0x} &= (25) \cos(40^\circ) \approx 19.15 \text{ m/s}, \\
+v_{0y} &= (25) \sin(40^\circ) \approx 16.07 \text{ m/s}.
+\end{align*}
+
+(a) To find the peak height, we can use the vertical motion equations. Taking it in two steps, let's first find the time to reach the peak height, where the vertical velocity $v_y = 0$:
+\begin{align*}
+    v_y = v_{0y} + (-g) t \\
+    0 = 16.07 - 10t \\
+    t_{peak} = \frac{16.07}{10} \approx 1.607 \text{ s}
+\end{align*}
+Now, we can use this time to find the peak height using the vertical displacement equation:
+\begin{align*}
+    \Delta y &= v_{0y} t + \frac{1}{2} (-g) t^2 \\
+    \Delta y &= (16.07)(1.607) + \frac{1}{2} (-10) (1.607)^2 \\
+    \Delta y &\approx 12.91 \text{ m}
+\end{align*}
+
+(b) To find the total horizontal distance traveled, we first need the total time of flight. Since the motion is symmetric, the total time will be twice the time to reach the peak height:
+\[
+t_{total} = 2t_{peak} \approx 2(1.607) \approx 3.214 \text{ s} = 3.21 \text{ s}
+\]
+Since there is no horizontal acceleration, we can use the horizontal motion equation to find the horizontal distance:
+\[
+\Delta x = v_{0x} t_{total} \approx (19.15)(3.21) \approx 61.5 \text{ m}
+\]
+
+So, the peak height of the pumpkin is approximately \(12.91\) m, and the horizontal distance it travels before hitting the ground is approximately \(61.5\) m.
+\end{Answer}
+
+\begin{Exercise}[title=Launch Angle for Maximum Range, label=projectiles_angle2]
+(a) At what angle should you launch for an object to go the furthest given a maximum launch velocity? 
+(b) How can you get the same horizontal distance with two different launch angles?
+\end{Exercise}
+\begin{Answer}[ref=projectiles_angle2]
+To maximize the horizontal distance of a projectile being launched, the vertical and horizontal components must be proportionally equal. This is only possible at a launch angle of $45^\circ$. Let's prove this mathematically.
+
+Let the initial launch speed be $v$ and the launch angle be $\theta$. The horizontal and vertical velocity components are
+\[
+v_x = v \cos\theta, \qquad v_y = v \sin\theta.
+\]
+
+The vertical motion kinematics equation can be solved for: 
+\[
+0 = t\Big(v \sin\theta - \tfrac{1}{2} g t\Big)
+\]
+
+This has two solutions: $t = 0$ (the time at launch) and
+\[
+t = \frac{2 v \sin\theta}{g}.
+\]
+
+Thus, the horizontal range is
+\[
+R_x = v_x \cdot t = v \cos\theta \cdot \frac{2 v \sin\theta}{g}
+    = \frac{v^2}{g} \sin(2\theta).
+\]
+
+The function $\sin(2\theta)$ reaches its maximum value of 1 when $2\theta = 90^\circ$, or $\theta = 45^\circ$. Therefore, the optimal launch angle for maximum horizontal distance is $45^\circ$.
+
+The range equation above can result can result in two different values: $\theta$ and $90^\circ-\theta$. There are two ways to get a certain horizontal launch distance, one at an angle less than $45^\circ$ and one at an angle greater than $45^\circ$. For example, a projectile launched at $30^\circ$ will travel the same horizontal distance as one launched at $60^\circ$, assuming the same initial velocity. However, the projectile launched at $30^\circ$ will spend less time in the air and have a lower peak height than the one launched at $60^\circ$.
+\end{Answer}
+
+\begin{Exercise}[title=Projectile Motion at an angle, label=projectiles_angle3]
+There is a target 100 meters away. I must shoot a bow at 14 meters per second. At what angle will I be able to hit my target? If I cannot hit the target, calculate the velocity neeeded to reach the target. Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity. You may assume the ground is level the entire time.
+\end{Exercise}
+
+\begin{Answer}[ref=projectiles_angle3]
+
+Using the horizontal distance equation, $R$, with $v_0 = 14$ m/s and $R = 100$ m, we have:
+\begin{align*}
+R&=\frac{v^2\sin(2\theta)}{g} \\ 
+\sin(2\theta) &= \frac{Rg}{v^2} \\
+\sin(2\theta) &= \frac{(100)(10)}{14^2} \approx 5.10
+\end{align*}
+Since the sine of an angle cannot be greater than 1, it is impossible to hit the target with a launch speed of 14 m/s.
+
+Instead, we can calculate the minimum launch speed needed to hit the target at a $45^\circ$ angle, while satisfying the $100$ m requirement. Assuming the $\sin(2\theta) = 1$ for a $45^\circ$ launch angle, we can rearrange the range equation to solve for $v$:
+\begin{align*}
+v &= \sqrt{\frac{Rg}{\sin(2\theta)}} \\
+v &= \sqrt{\frac{(100)(10)}{1}} = \sqrt{1000} \approx 31.62 \text{ m/s}
+\end{align*}
+
+So at an assumed launch angle of $45^\circ$, a minimum launch speed of approximately $31.62$ m/s is needed to hit the target 100 meters away.
+\end{Answer}
+
+
+% %FIXME question for finding accel - questionbank??
+\subsection{From a Height Above the Ground}
+
+
+
 
 \section{Simulating Projectile Motion}
 % python script?
+
