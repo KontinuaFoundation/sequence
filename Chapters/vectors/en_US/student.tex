@@ -83,7 +83,7 @@ vector guide/.style={dashed,black}]
 Thinking visually, when we add to vectors, we put the starting point second 
 vector at the ending point of the first vector. This is illustrated for 
 2-dimensional vectors in figure \ref{fig:2d_add} and for 3-dimensional vectors 
-in figure \ref{fig:3d_add}. 
+in figure \ref{fig:3d_add}. %FIXME
 
 \begin{figure}[htbp]
     \centering
@@ -444,7 +444,7 @@ The rule then is: If you have any vector $v$ and any scalar $k$:
 \subsection{Unit Vectors}
 
 A \emph{unit vector} is a vector whose magnitude is \(1\).\index{unit vector}
-For any non-zero vector \(\mathbf v\), the unit vector pointing in the
+For any non-zero vector \(\vec{\mathbf v}\), the unit vector \(\vec{\mathbf{u}}\) pointing in the
 same direction is
 \[
 \vec{\mathbf u}\;=\;\frac{\mathbf v}{\lvert \mathbf v\rvert}.
@@ -470,8 +470,54 @@ so
 \widehat{\mathbf u}=\frac{\mathbf v}{\lvert\mathbf v\rvert}},\qquad
 \lvert\vec{\mathbf u}\rvert=1.
 \]
+\begin{figure}[htbp]
+\centering
+\tdplotsetmaincoords{80}{130} 
+\begin{tikzpicture} [scale=0.5, tdplot_main_coords, axis/.style={->,black}, 
+light vector/.style={-stealth,dashed,very thick, black}, 
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
+
+%standard tikz coordinate definition using x, y, z coords
+\coordinate (O) at (0,0,0);
+
+%draw axes
+\draw[axis] (0,0,0) -- (6,0,0) node[anchor=north east]{$x$};
+\draw[axis] (0,0,0) -- (0,6,0) node[anchor=north west]{$y$};
+\draw[axis] (0,0,0) -- (0,0,6) node[anchor=south]{$z$};
+
+% precompute
+\pgfmathsetmacro{\ux}{3/sqrt(50)}
+\pgfmathsetmacro{\uy}{4/sqrt(50)}
+\pgfmathsetmacro{\uz}{5/sqrt(50)}
 
 
+\draw[color=blue!80, ->] (0,0,0) -- (3,4,5) node[]{$\vec{\mathbf{v}}$};
+\draw[color=red, very thick, ->] (0,0,0) -- (\ux,\uy,\uz) node[right]{$\vec{\mathbf{u}}$};
+\end{tikzpicture}
+\end{figure}
+
+Unit vectors are often represented by placing a hat over the vector. In standard vector calculus, the variables $\hat{\mathbf{i}}$, $\hat{\mathbf{j}}$, and $\hat{\mathbf{i}}$ for the x, y, and z variables respectively. 
+\begin{center}
+    \begin{tikzpicture}
+        \draw[] (-2, 0) -- (2, 0);
+        \draw[] (0, -2) -- (0, 2);
+        \draw[color=blue, very thick, ->] (0,0)--(0,1) node[midway, left]{$\hat{\mathbf{i}}$};
+        \draw[color=blue, very thick, ->] (0,0)--(1,0) node[midway, below]{$\hat{\mathbf{j}}$};
+    \end{tikzpicture}
+\end{center}
+
+You may see vectors provided to you in the form $\mathbf{v} = 5\hat{\mathbf{i}} - 3\hat{\mathbf{j}}$. You may say this as `5 times the unit vector in the x-direction plus the -3 times the unit vector in the y-direction'. The same may apply for 3D vectors as well. 
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.5]
+        \draw[] (-6, 0) -- (6, 0);
+        \draw[] (0, -6) -- (0, 6);
+        \draw[color=blue, very thick, ->] (0,0)--(5,0) node[midway, left]{$\hat{\mathbf{i}}$};
+        \draw[color=blue, very thick, ->] (0,0)--(0, -3) node[midway, left]{$\hat{\mathbf{j}}$};
+        \draw[color=red, very thick, ->] (0,0)--(5, -3) node[midway, below]{$\hat{\mathbf{v}}$};
+    \end{tikzpicture}
+\end{center}
 
 \begin{Exercise}[title={Magnitude of a Vector}, label=vector_mag]
     Find the magnitude of the following vectors:
