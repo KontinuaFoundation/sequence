@@ -34,39 +34,143 @@ In the horizontal direction, if we ignore air resistance (a common practice for 
 Because the horizontal and vertical motions are independent of each other, we can use different equations to describe the motion in each direction.
 
 \index{projectile motion!equations of}
+
+%FIXME center
 \begin{center}
     \begin{table}[]
-    \begin{tabular}{|c| c|}
+    \begin{tabular}{|c|c|}
         \underline{Horizontal Motion}       & \underline{Vertical Motion}  \\
         \hline
-    
-    $\Delta x = v_{0x} t$      & $\Delta y = v_{0y} t + \frac{1}{2} (-g) t^2$  \\
-    $v_x = v_{0x}$ (constant!) & $v_y = v_{0y} + (-g) t$   \\
-    $a_x = 0$                & $a_y = -g$ 
-    
+        $\Delta x = v_{0x} t$      & $\Delta y = v_{0y} t + \frac{1}{2} (-g) t^2$  \\
+        $v_x = v_{0x}$ (constant!) & $v_y = v_{0y} + (-g) t$   \\
+        $a_x = 0$                & $a_y = -g$ 
     \end{tabular}
     \end{table}
-    
 \end{center}
 
 Note that the velocity in the horizontal direction is \emph{\textbf{constant}}, while the velocity in the vertical direction is \emph{\textbf{not constant}} due to the acceleration of gravity ($9.8 \frac{m}{s^2}$ downward).
 
-Let's take a look at some simple graphs comparing x motions and y motions.
+Let's take a look at some simple graphs comparing x motions and y motions, shown in Figures~\ref{fig:indep_motion_x} and \ref{fig:indep_motion_y}. Note that these are a general representation of projectile motion, and the scales or values may not be accurate.
 
-\begin{tikzpicture}
-    
+\begin{figure}[htbp]
+\centering
+% --- First graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$x$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+\draw[thick, blue] (0,0) -- (5,5);
+
 \end{tikzpicture}
+\caption*{x-position vs. time}
+\end{minipage}
+\hfill
+% --- Second graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$v_x$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+  \draw[thick, blue] (0,2.5) -- (5,2.5);
+\end{tikzpicture}
+\caption*{x-velocity vs. time}
+\end{minipage}
+\hfill
+% --- Third graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$a_x$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+  \draw[thick, blue] (0,0) -- (5,0);
 
-% FIXME
-graphs comparing x motions and y motions
+\end{tikzpicture}
+\caption*{x-acceleration vs. time}
+\end{minipage}
+\label{fig:indep_motion_x}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+% --- First graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$y$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+  \draw[thick, domain=0:5, samples=200, smooth, blue]
+    plot (\x, {-0.8*(\x-2.5)*(\x-2.5) + 5});
+\end{tikzpicture}
+\caption*{y-position vs. time}
+\end{minipage}
+\hfill
+% --- Second graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$v_y$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+  \draw[thick, blue] (0,5) -- (5,0);
+\end{tikzpicture}
+\caption*{y-velocity vs. time}
+\end{minipage}
+\hfill
+% --- Third graph ---
+\begin{minipage}{0.3\textwidth}
+\centering
+\begin{tikzpicture}[>=stealth, scale=0.8]
+  \draw[help lines, step=1] (0,0) grid (5,5);
+  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+  \draw[->] (0,0) -- (0,5.5) node[above] {$a_y$};
+  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+  \draw[thick, blue] (0,2.5) -- (5,2.5);
+
+\end{tikzpicture}
+\caption*{y-acceleration vs. time}
+\end{minipage}
+\label{fig:indep_motion_y}
+\end{figure}
+
 
 \index{horizontally launched projectiles}
 \section{Horizontally-launched Projectiles}
-Imagine a ball is thrown horizontally off of a cliff. The ball has an initial horizontal velocity of $20$ m/s, but no initial vertical velocity. The ball will continue to move horizontally at a constant velocity, while simultaneously accelerating downward due to gravity. The ball falls for 5 seconds before hitting the ground. We will use $-10 \frac{m}{s^2}$ for the acceleration due to gravity to make calculations easier.
-
-\begin{tikzpicture}
-    %FIXME
-\end{tikzpicture}
+Imagine a ball is thrown horizontally off of a cliff. The ball has an initial horizontal velocity of $20$ m/s, but no initial vertical velocity. The ball will continue to move horizontally at a constant velocity, while simultaneously accelerating downward due to gravity. The ball falls for 5 seconds before hitting the ground. We will use $-10 \frac{m}{s^2}$ for the acceleration due to gravity to make calculations easier. See figure \ref{fig:horiz_launch}.
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        %FIXME
+        \coordinate (launchpt) at (0,5.5);
+        \coordinate (cliffpt) at (0, 5);
+        \coordinate (corner) at (0, 0);
+        \coordinate (groundpt) at (10, 0);
+    
+        \filldraw (launchpt) circle [radius=.1, red] node[below] {Launch Point};
+        \draw[thin] (-5, 5) --(cliffpt) -- (corner) -- (groundpt);
+        \draw[->] (launchpt) -- ++(1,0) node[midway, above] {$v_{0x} = 20 \frac{m}{s}$};
+    
+        \draw[dashed, blue, domain=0:4.7, samples=50, thick]
+            plot (\x, {5.5 - 0.25*(\x)^2});
+    \end{tikzpicture}
+    \caption{Diagram of a ball being thrown horizontally off of a cliff. Note: figure is not to scale.}
+    \label{fig:horiz_launch}
+\end{figure}
 
 Let's calculate the change in $y$. 
 
@@ -149,8 +253,6 @@ At anywhere below $7000$ m/s, the cannonball falls back to Earth. In a range of 
 For any given planet, the escape velocity can be calculated using the formula:
 $${\displaystyle v_{\text{e}}={\sqrt {\frac {2GM}{d}}}}$$
 where $G$ is the gravitational constant, $M$ is the mass of the planet, and $d$ is the distance from the center of the planet to the object. We will cover this in more detail in the orbits chapter.
-
-%exercise?
 
 \section{Projectiles launched at an Angle}
 \index{projectile motion!at an angle}
@@ -329,10 +431,53 @@ So at an assumed launch angle of $45^\circ$, a minimum launch speed of approxima
 
 % %FIXME question for finding accel on a planet - questionbank??
 \subsection{From a Height Above the Ground}
+Now we can imagine a ball being launched at some angle from a height above the ground. This is similar to the horizontally launched projectile, except now we have an initial vertical velocity component.
+
+Let's say a ball is launched from a height of $50$ m at an angle of $30^\circ$ above the horizontal with an initial velocity of $20$ m/s. We can find the horizontal and vertical components of the initial velocity as follows:
+%FIXME diagram
 
 
+$$v_{0x} = (20) \cos(30^\circ) \approx 17.32 \text{ m/s}, \qquad v_{0y} = (20) \sin(30^\circ) = 10 \text{ m/s}.$$
+The vertical motion can be described by the equation:
+\[\Delta y = y_0 + v_{0y} t + \frac{1}{2} (-g) t^2 = 50+ 10t - 5t^2\]
 
+Likewise, the horizontal motion of the projectile can be described by the equation:
+\[\Delta x = v_{0x} t = 17.32t\]
+
+To find the peak of the projectile, we can set $v_y = 0$ and solve for $t$:
+\begin{align*}
+    v_y &= v_{0y} + (-g) t \\
+    0 &= 10 - 5t^2 \\
+    t_{peak} &= \sqrt{2} \text{ s} \approx 1.414 \text{ s}
+\end{align*}
+
+Substituting this time into the vertical and horizontal equations, we can find the peak height and horizontal distance at the peak:
+\[
+\Delta y = 50 + 10(\sqrt{2}) - 5(\sqrt{2})^2 = 50 + 10\sqrt{2} - 10 = 40 + 10\sqrt{2} \approx 54.14 \text{ m}
+\]
+\[
+\Delta x = 17.32(\sqrt{2}) \approx 24.49 \text{ m}
+\]
+
+And to find the total time of flight, we can set $\Delta y = 0$ and solve for $t$:
+\begin{align*}
+    0 &= 50 + 10t - 5t^2 \\
+    0 &= -5t^2 + 10t + 50 \\
+    0 &= t^2 - 2t - 10
+\end{align*}
+
+Using the quadratic formula, we find:
+\begin{align*}
+    t &= \frac{- \left(\right. - 2 \left.\right) \pm \sqrt{\left(\right. - 2 \left.\right)^{2} - 4 \left(\right. 1 \left.\right) \left(\right. - 10 \left.\right)}}{2 \left(\right. 1 \left.\right)} \\ 
+    &= \frac{2 \pm \sqrt{4 + 40}}{2} \\
+    &= \frac{2 \pm \sqrt{44}}{2} \\
+    &= 1 \pm \sqrt{11} \approx 4.32 \text{ s (taking the positive root)}
+\end{align*}
 
 \section{Simulating Projectile Motion}
 % python script?
 
+
+
+% issue number 5 in questionbank
+% add projectile motion questions to questionbank
