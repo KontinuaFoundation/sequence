@@ -29,28 +29,26 @@ In projectile motion, such as a ball being thrown off of a cliff, the horizontal
 
 If you recall the falling bodies chapter, you know that the vertical motion of an object in free fall is described by the equations of unformly accelerated motion, with a constant acceleration of $9.8 \frac{m}{s^2}$ downward (this may simplified to $10 \frac{m}{s^2}$ for simplicity in many calculations).
 
-In the horizontal direction, if we ignore air resistance (a common practice for elementary physics), there are no forces acting on the object. This means that the object will continue to move at a constant velocity in the horizontal direction.
+In the horizontal direction, if we ignore air resistance (a common practice for elementary physics), there are no forces acting on the object. This means that the object will continue to move at a constant velocity in the horizontal direction. Note that from launch to landing, the time must be the same for both components. Take a minute to think about why this is if you are unsure.
 
-Because the horizontal and vertical motions are independent of each other, we can use different equations to describe the motion in each direction.
-
-\index{projectile motion!equations of}
-
-%FIXME center
-\begin{center}
-    \begin{table}[]
+Because the horizontal and vertical motions are independent of each other, we can use different equations to describe the motion in each direction (See Figure~\ref{independenceOfMotionEqs}). % FIXME double check this figure
+\begin{figure}
+    \centering
     \begin{tabular}{|c|c|}
-        \underline{Horizontal Motion}       & \underline{Vertical Motion}  \\
         \hline
-        $\Delta x = v_{0x} t$      & $\Delta y = v_{0y} t + \frac{1}{2} (-g) t^2$  \\
-        $v_x = v_{0x}$ (constant!) & $v_y = v_{0y} + (-g) t$   \\
-        $a_x = 0$                & $a_y = -g$ 
+        \underline{Horizontal Motion} & \underline{Vertical Motion} \\
+        \hline
+        $\Delta x = v_{0x} t$ & $\Delta y = v_{0y} t + \dfrac{1}{2}(-g)t^2$ \\
+        $v_x = v_{0x}$ (constant!) & $v_y = v_{0y} + (-g)t$ \\
+        $a_x = 0$ & $a_y = -g$ \\
+        \hline
     \end{tabular}
-    \end{table}
-\end{center}
-
+    \caption{Projectile motion equations from kinematics equations. }\label{independenceOfMotionEqs}
+\end{figure}
+\index{projectile motion!equations of}
 Note that the velocity in the horizontal direction is \emph{\textbf{constant}}, while the velocity in the vertical direction is \emph{\textbf{not constant}} due to the acceleration of gravity ($9.8 \frac{m}{s^2}$ downward).
 
-Let's take a look at some simple graphs comparing x motions and y motions, shown in Figures~\ref{fig:indep_motion_x} and \ref{fig:indep_motion_y}. Note that these are a general representation of projectile motion, and the scales or values may not be accurate.
+Let's take a look at some simple graphs comparing x motions and y motions, shown in Figures~\ref{fig:indep_motion_x} and \ref{fig:indep_motion_y}. Note that these are a general representation of projectile motion, and the scales or values may not be accurate. % FIXME figures may not be linked
 
 \begin{figure}[htbp]
 \centering
@@ -97,6 +95,7 @@ Let's take a look at some simple graphs comparing x motions and y motions, shown
 \end{tikzpicture}
 \caption*{x-acceleration vs. time}
 \end{minipage}
+\caption{Vertical motion graphs}
 \label{fig:indep_motion_x}
 \end{figure}
 
@@ -106,13 +105,13 @@ Let's take a look at some simple graphs comparing x motions and y motions, shown
 \begin{minipage}{0.3\textwidth}
 \centering
 \begin{tikzpicture}[>=stealth, scale=0.8]
-  \draw[help lines, step=1] (0,0) grid (5,5);
-  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
-  \draw[->] (0,0) -- (0,5.5) node[above] {$y$};
-  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
-  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
-  \draw[thick, domain=0:5, samples=200, smooth, blue]
-    plot (\x, {-0.8*(\x-2.5)*(\x-2.5) + 5});
+    \draw[help lines, step=1] (0,0) grid (5,5);
+    \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+    \draw[->] (0,0) -- (0,5.5) node[above] {$y$};
+    \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+    \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+    \draw[thick, domain=0:5, samples=200, smooth, blue]
+        plot (\x, {-0.8*(\x-2.5)*(\x-2.5) + 5});
 \end{tikzpicture}
 \caption*{y-position vs. time}
 \end{minipage}
@@ -121,12 +120,12 @@ Let's take a look at some simple graphs comparing x motions and y motions, shown
 \begin{minipage}{0.3\textwidth}
 \centering
 \begin{tikzpicture}[>=stealth, scale=0.8]
-  \draw[help lines, step=1] (0,0) grid (5,5);
-  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
-  \draw[->] (0,0) -- (0,5.5) node[above] {$v_y$};
-  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
-  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
-  \draw[thick, blue] (0,5) -- (5,0);
+    \draw[help lines, step=1] (0,0) grid (5,5);
+    \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+    \draw[->] (0,0) -- (0,5.5) node[above] {$v_y$};
+    \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+    \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+    \draw[thick, blue] (0,5) -- (5,0);
 \end{tikzpicture}
 \caption*{y-velocity vs. time}
 \end{minipage}
@@ -135,16 +134,18 @@ Let's take a look at some simple graphs comparing x motions and y motions, shown
 \begin{minipage}{0.3\textwidth}
 \centering
 \begin{tikzpicture}[>=stealth, scale=0.8]
-  \draw[help lines, step=1] (0,0) grid (5,5);
-  \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
-  \draw[->] (0,0) -- (0,5.5) node[above] {$a_y$};
-  \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
-  \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
-  \draw[thick, blue] (0,2.5) -- (5,2.5);
+    \draw[help lines, step=1] (0,0) grid (5,5);
+    \draw[->] (0,0) -- (5.5,0) node[right] {$t$};
+    \draw[->] (0,0) -- (0,5.5) node[above] {$a_y$};
+    \foreach \x in {1,2,3,4,5} \draw (\x,0) --++ (0,0.1);
+    \foreach \y in {1,2,3,4,5} \draw (0,\y) --++ (0.1,0);
+    \draw[thick, blue] (0,2.5) -- (5,2.5);
 
 \end{tikzpicture}
 \caption*{y-acceleration vs. time}
 \end{minipage}
+
+\caption{Vertical motion graphs}
 \label{fig:indep_motion_y}
 \end{figure}
 
@@ -253,7 +254,7 @@ At anywhere below $7000$ m/s, the cannonball falls back to Earth. In a range of 
 For any given planet, the escape velocity can be calculated using the formula:
 $${\displaystyle v_{\text{e}}={\sqrt {\frac {2GM}{d}}}}$$
 where $G$ is the gravitational constant, $M$ is the mass of the planet, and $d$ is the distance from the center of the planet to the object. We will cover this in more detail in the orbits chapter.
-
+\index{Escape Velocity}
 \section{Projectiles launched at an Angle}
 \index{projectile motion!at an angle}
 \subsection{From the Ground}
@@ -487,9 +488,5 @@ Using the quadratic formula, we find:
 \end{align*}
 
 \section{Simulating Projectile Motion}
-% python script?
+% python script? -- not sure what to put here
 
-
-
-% issue number 5 in questionbank
-% add projectile motion questions to questionbank
