@@ -1,0 +1,141 @@
+\chapter{Inclined planes}
+Take a look at this box resting on an incline plane due to static friction and gravity.
+
+\begin{figure}[htbp] \centering \caption{A box on an inclined plane with $a=0$ due to static friction and gravity.} \begin{tikzpicture}[scale=1, line cap=round, line join=round]  
+    \coordinate (A) at (0,0); 
+    \coordinate (B) at (5,0); 
+    \coordinate (C) at (5,2); 
+    % sets the approximate slope of the hypotenuse 
+    % triangle 
+    \draw (A)--(B)--(C)--cycle; 
+    \draw[->] (0,0) -- (0,2) node[left] {$y$}; 
+    \draw[->] (0,0) -- (5,0) node[below] {$x$}; 
+    \draw (A) ++(0:0.8) arc (0:22:0.8); 
+    \node at ($(A)+(1.05,0.25)$) {$\theta$};
+    \path (A) -- (C) coordinate[pos=0.5] (M); 
+    \draw[shift={(M)},rotate=22, yshift=0.31cm] (-0.3,-0.3) rectangle (0.3,0.3); 
+    \coordinate (O) at (6,2); \draw[->, thick] (O) -- ++(1,0) node[below right] {$x$}; 
+    \draw[->, thick] (O) -- ++(0,1) node[left] {$y$}; 
+\end{tikzpicture}
+ \label{fig:example} 
+\end{figure} 
+
+Now for objects on an incline, such as a box on a ramp, we will want to tip our coordinate system. Why you ask? Because we are not restricted to having our y-axis 90$^\circ$ vertically and our x-axis flat horizontally. In this case we can tip our axes so that the x-axis is parallel to the incline and the y-axis is perpendicular to the incline, aligning with the normal force. This will make our calculations much easier.
+\begin{figure}[htbp]
+    \centering
+
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.55]
+            \draw[->, thick] (0,0) -- (0,-5) node[below] {$F_g$};        
+            \draw[->, thick] (0,0) -- (3, 2) node[above right] {$F_F$};        
+            \draw[->, thick] (0,0) -- (-2, 4) node[left] {$F_N$};    
+            \draw[->, dashed, thin] (0,0) -- (5, 0) node[right] {$x$};
+
+            \draw (0,0) ++(0:2) arc (0:33:2); 
+            \node at ($(0,0)+(1.05,0.3)$) {$\theta$};
+
+            \draw[->, thick] (4,4) -- ++(2,0) node[below right] {$x$};
+            \draw[->, thick] (4,4) -- ++(0,2) node[left] {$y$};
+            \filldraw[fill=red, draw=red] (0,0) circle [radius=0.25cm];
+        \end{tikzpicture}
+        \caption{Free body diagram in standard orientation.}
+        \label{fig:fbd-standard}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.55]
+            \begin{scope}[rotate=-22]
+                \draw[->, thick] (0,0) -- (0,-5.2) node[below left] {$F_g$};        
+            \end{scope}
+            \begin{scope}[rotate around={-22:(4,4)}]
+                \draw[->, thick] (4,4) -- ++(2,0) node[below right] {$x$};
+                \draw[->, thick] (4,4) -- ++(0,2) node[left] {$y$};
+            \end{scope}
+            \draw[->, thick] (0,0) -- (3, 0) node[above right] {$F_F$};        
+            \draw[->, thick] (0,0) -- (0, 4) node[left] {$F_N$};    
+            \draw[thin, dashed] (0,0) -- (0, -5) node[right] {$F_{gy}$};    
+
+            % \def\theta{22}
+            % Draw small angle θ between F_g (tilted) and vertical F_gy, on correct side
+            \draw[thin] (0,-2) arc (-90:-90-22:2);
+            \node at ({-0.8*sin(22/2)},{-0.8*cos(22/2)}) [below] {$\theta$};
+
+            \draw[->, thin, dashed] (0,-5) -- (-{5*sin(22)},-5) node[below right] {$F_{gx}$};
+            \filldraw[fill=red, draw=red] (0,0) circle [radius=0.25cm];
+
+        \end{tikzpicture}
+        \caption{Axes rotated by $\theta$.}
+        \label{fig:fbd-rotated}
+    \end{subfigure}
+    \caption{Free body diagrams on an incline.}
+    \label{fig:fbd-both}
+\end{figure}
+
+From this new perspective, we can see that the gravitational force $F_g$ can be broken down into two components: one parallel to the incline ($F_{gx}$)\footnote{Note that some professors will use down the incline as positive. This book will consistently use up the incline as positive as rotating coordinate plane aligns well with this.} and one perpendicular to the incline ($F_{gy}$). The normal force $F_N$ acts perpendicular to the surface of the incline, while the frictional force $F_F$ acts parallel to the surface, opposing motion. The coordinate planes in the corner are included to show the original coordinate system relative to our rotated FBD.\footnote{Note also that the dashed line components are not actual forces, they are drawn in for illustration of how forces at angles effect the standard forces.}
+  
+We can set up the following equations based on Newton's second law:
+
+$$\sum F_x = F_{gx} - F_F = m a_x = 0,\qquad \sum F_y = F_N - F_{gy} = m a_y = 0$$
+
+Using the trigonometric components, we can express the forces in terms of the angle $\theta$:
+
+$$\sum F_x = mg\sin(\theta) - F_F = m a_x = 0,\qquad \sum F_y = F_N - mg\cos(\theta) = m a_y = 0$$
+
+Solving for the normal force and frictional force, we find:
+$$F_N = mg\cos(\theta),\qquad F_F = mg\sin(\theta)$$
+
+The following relationships are true for acceleration on an incline:
+$$F_F = \mu F_N, \qquad a_x = g(\sin\theta - \mu \cos\theta)$$
+Where $\mu$ is the coefficient of friction between the box and the incline.
+
+Let's apply all of this to an example problem:
+\begin{Exercise}[title=Box sliding down an incline, label=incline1]
+    A 30 kg block is actively sliding down an incline plane that makes a $30^\circ$ with the horizontal. Given that the coefficient of kinetic friction is 0.3, find the following. Note that up the inclined plane is considered the positive x-direction.
+    \begin{enumerate}[label=(\alph*)]
+        \item The normal force acting on the block.
+        \item The frictional force acting on the block.
+        \item The acceleration of the block down the incline.
+    \end{enumerate}
+    %FIXME diagram?
+\end{Exercise}
+\begin{Answer}[ref=incline1]
+    \begin{enumerate}[label=(\alph*)]
+        \item The normal force must be equal to the perpendicular component of the gravitational force, since there is no acceleration in the y-direction of our rotated y-axis:
+        $$F_N = mg\cos(\theta) = (30\,\text{kg})(9.8\,\text{m/s}^2)\cos(30^\circ) \approx 254.6\,\text{N}$$
+        \item The frictional force can be found using the coefficient of kinetic friction and the normal force:
+        $$F_F = \mu_k F_N = (0.3)(254.6\,\text{N}) \approx 76.4\,\text{N}$$
+        \item The acceleration can be found by setting up the equation for the sum of forces in the x-direction:
+        $$\sum F_x = mg\sin(\theta) - F_F = ma_x$$
+        Solving for $a_x$:
+        \begin{align*}
+            a_x &= \frac{mg\sin(\theta) - F_F}{m} \\
+            &= \frac{(30\,\text{kg})(9.8\,\text{m/s}^2)\sin(30^\circ) - 76.4\,\text{N}}{30\,\text{kg}} \\
+            &= \frac{(30)(9.8)(0.5) - 76.4}{30} \\
+            &\approx \frac{70.6}{30} \\
+            &\approx 2.35\,\text{m/s}^2 
+        \end{align*}
+    \end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title=Solving for angle $\theta$, label=incline2]
+    A 40 kg box is sitting on an inclined plane, held in place by static friction. The coefficient of static friction $\mu_s$ between the box and the incline is found to be 0.464. What is the maximum angle $\theta$ that the incline can be tilted to before the box starts to slide down?
+\end{Exercise}
+\begin{Answer}[ref=incline2]
+For a box to be on the verge of sliding, the frictional force (static) must equal the component of gravitational force parallel to the incline. Thus, we can set up the following equation:
+\begin{align*}
+    \sum F_x &= mg\sin(\theta) - F_F = 0 \\
+    mg\sin(\theta) &= F_F \\
+    mg\sin(\theta) &= \mu_s F_N \\
+    mg\sin(\theta) &= \mu_s mg\cos(\theta) \\
+    \tan(\theta) &= \mu_s \\
+\end{align*}
+
+Solving for $\theta$, we get $\theta = \tan^{-1}(\mu_s)$. 
+Plugging in the value of $\mu_s$, we get $\theta = 24.89^\circ$
+\end{Answer}
+
+%FIXME more exercises
+
+% Do we want another FBD chapter going more in depth on FBD problems?
