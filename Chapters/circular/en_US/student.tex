@@ -1,12 +1,57 @@
 \chapter{Circular Motion}
-\index{circular motion}
-Let's say you tie a 0.16 kg billard ball to a long string and begin to swing
-it around in a circle above your head. The string is 3
-meters long, and the ball returns to where it started every 4
-seconds. We will assume the ball moves at a constant speed. If you start your stopwatch as the ball crosses the
-$x$-axis, the position of the ball at any time $t$ given by:
+%FIXME I feel like this is a very abrupt start to the chapter. I am adding a break intro of varaiables and introducing this bilard example 
+\section{Introduction to Uniform Circular Motion}
+Recall that in linear motion, we have position, velocity, acceleration, and force. But that only works for objects moving in a straight line. What about objects moving in a circle? You may be surprised to know that we can use very similar equations to describe circular motion,\index{circular motion ! equations}, provided you use the correct variables. 
 
-$$p(t) = [3 \cos{\left( \frac{2 \pi} {4}t\right)}, 3 \sin{ \left( \frac{2 \pi}{4}t\right) }, 2]$$
+The angular displacement, $\theta$, is the angle in \emph{radians} that the object has traveled. The angular velocity, $\omega$, is the rate of change of the angular displacement, and the angular acceleration, $\alpha$, is the rate of change of the angular velocity.
+
+\begin{center}
+\begin{tabular}{l l}
+Linear motion & Rotational motion \\ \hline
+$v = v_0 + a t$ & $\omega = \omega_0 + \alpha t$ \\[4pt]
+$x = x_0 + v_0 t + \tfrac{1}{2} a t^2$ & $\theta = \theta_0 + \omega_0 t + \tfrac{1}{2} \alpha t^2$ \\[4pt]
+$v^2 = v_0^2 + 2a(x - x_0)$ & $\omega^2 = \omega_0^2 + 2\alpha(\theta - \theta_0)$
+\end{tabular}
+\end{center}
+
+\newterm{Linear velocity}, $v$, is related to angular velocity by the equation:
+$$v = r \omega$$    
+
+The \newterm{Period}, $T$, is the time it takes to complete one full rotation. The frequency, $f$, is the number of rotations per second. The two are related by:
+$$T = \frac{2\pi}{\omega} = \frac{2\pi r}{v}$$
+$$f = \frac{1}{T}$$
+
+The \newterm{centripetal force}, usually labelled differently (such as tension or gravity), is given by the equation:
+$$F = m r \omega^2 = \frac{m v^2}{r}$$
+
+
+The \newterm{angular velocity,} $\omega$ is rotations with respect to time. It can be defined in the following ways:
+\[
+  {\omega_{\text{inst}} = \frac{d\theta}{dt}}
+  \qquad
+  {\omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}}
+\]
+
+\[
+\omega = 2\pi f = \frac{2\pi}{T} = \frac{v}{r}
+\]
+
+Angular acceleration:
+\[
+\alpha = \frac{d\omega}{dt}, \qquad
+\alpha_{\text{avg}} = \frac{\Delta\omega}{\Delta t}
+\]
+
+Note that all of the kinematic formulas still work as long as you stay in the same relative frame of reference (rotational or linear). You cannot ``mix and match'' the two sets of equations.
+
+You may be asking, ``If the object is moving at a constant speed, why is there acceleration?'' Recall that acceleration is a vector quantity, meaning it has both magnitude and direction. Even though the speed (the magnitude of the velocity) is constant, the direction of the velocity vector is always changing. Since acceleration is the rate of change of velocity, any change in direction means there is acceleration. This acceleration is always directed toward the center of the circle, which is why it is called centripetal (center-seeking) acceleration. %FIXME this is also talked about later, not bring it up here
+
+Now that we've established the basic relationships for circular motion, let's apply them to a practical example.
+\section{The Flying Billard Ball}
+\index{circular motion}
+Let's say you tie a 0.16 kg billard ball to a long string and begin to swing it around in a circle above your head. The string, perpendicular, is 3 meters long, and the ball returns to where it started every 4 seconds. We will assume the ball moves at a constant speed. If you start your stopwatch as the ball crosses the $x$-axis, the coordinates of the position $(x,y,z)$ of the ball at any time $t$ given by:
+
+$$p(t) = \left[3 \cos{\left( \frac{2 \pi} {4}t\right)}, 3 \sin{ \left( \frac{2 \pi}{4}t\right) }, 2\right]$$
 
 (This assumes that the ball would be going counter-clockwise if viewed
 from above. The spot you are standing on is considered the origin $[0, 0, 0]$.)
@@ -166,7 +211,7 @@ circle at a constant speed (notice that the coefficients in $a(t)$ are constant 
     \label{fig:billardBallAcceleration}
 \end{figure}
 
-The magnitude of the acceleration vector is $r \omega^2$.
+The magnitude of the acceleration vector is $a_c =r \omega^2$, or more commonly, $a_c = \frac{v^2}{r}$.
 
 \section{Centripetal force}
 
@@ -216,12 +261,12 @@ Therefore, the coefficient of friction between the child and the merry-go-round 
 \subsection{Banked Turns}
 Have you every been driving on the highway and taken a turn where the road is at an angle? Or maybe you've seen a sign like this on the road:
 
-\begin{wrapfigure}{r}{2.5in}
+\begin{wrapfigure}{r}{2.5in} % FIXME this is huge as well
 \includegraphics[width=2.5in]{traffic.png}
 \end{wrapfigure}
 
 A banked curve is designed so that a car can safely turn without slipping, even in the rain, if the driver does not exceed the indicated speed. Engineers choose an angle such that the bank provides sufficient force to turn the car without friction. Let's look at a free body diagram for a car taking a banked turn (see figure \ref{fig:banked}). 
-\vspace{4cm} %FIXME formatting
+\vspace{4cm} %FIXME formatting -- this is very big
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=4in]{banked.png}
@@ -348,48 +393,8 @@ $$a = \frac{v^2}{r} = \frac{\left( \omega r \right)^2}{r} = \omega^2 r$$
 $$\omega = \sqrt{\frac{a}{r}} = \sqrt{\frac{30.625 \frac{m}{s^2}}{10 \text{ } m}} \approx 1.75 \frac{rad}{s}$$
 \end{Answer}
 
-\section{Equations of Circular Motion}
-\index{circular motion ! equations}
-The same kinematic formulas can be used for circular motion, provided you use the correct variables. The angular displacement, $\theta$, is the angle in \emph{radians} that the object has traveled. The angular velocity, $\omega$, is the rate of change of the angular displacement, and the angular acceleration, $\alpha$, is the rate of change of the angular velocity.
-
-\begin{center}
-    \begin{align}
-      v &= v_0 + a t 
-      &\qquad\qquad&
-      \omega \;=\; \omega_0 + \alpha t \\[4pt]
-      x &= x_0 + v_0 t + \tfrac12 a t^{2} 
-      &&
-      \theta \;=\; \theta_0 + \omega_0 t + \tfrac12 \alpha t^{2} \\[4pt]
-      v^{2} &= v_0^{2} + 2a\!\left(x - x_0\right) 
-      &&
-      \omega^{2} \;=\; \omega_0^{2} + 2\alpha\!\left(\theta - \theta_0\right)
-    \end{align}
-\end{center}
-
-Linear velocity, $v$, is related to angular velocity by the equation:
-$$v = r \omega$$    
-
-Period, $T$, is the time it takes to complete one full rotation. The frequency, $f$, is the number of rotations per second. The two are related by:
-$$T = \frac{2\pi}{\omega} = \frac{2\pi r}{v}$$
-$$f = \frac{1}{T}$$
-
-The centripetal force, usually labelled differently (such as tension or gravity), is given by the equation:
-$$F = m r \omega^2 = \frac{m v^2}{r}$$
-
-
-The angular velocity, $\omega$ is rotations with respect to time. It can be defined in the following ways:
-\[
-  {\omega_{\text{inst}} = \frac{d\theta}{dt}}
-  \qquad
-  {\omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}}
-\]
-
-\[
-  {\omega = 2\pi f = \frac{2\pi}{T} = \omega = \frac{v}{r}}
-\]
-
-Angular acceleration:
-\[
-\alpha = \frac{d\omega}{dt}, \qquad
-\alpha_{\text{avg}} = \frac{\Delta\omega}{\Delta t}
-\]
+% FIXME flying pig / plane
+% FIXME roller coaster loop
+% FIXME non-uniform circular motion section could go here
+% ball in bowl (speeding up)
+% arrows not necessarily pointing to center
