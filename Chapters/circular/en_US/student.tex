@@ -1,7 +1,7 @@
 \chapter{Circular Motion}
 %FIXME I feel like this is a very abrupt start to the chapter. I am adding a break intro of varaiables and introducing this bilard example 
 \section{Introduction to Uniform Circular Motion}
-Recall that in linear motion, we have position, velocity, acceleration, and force. But that only works for objects moving in a straight line. What about objects moving in a circle? You may be surprised to know that we can use very similar equations to describe circular motion,\index{circular motion ! equations}, provided you use the correct variables. 
+Recall that in linear motion, we have position, velocity, acceleration, and force. But that only works for objects moving in a straight line. What about objects moving in a circle? You may be surprised to know that we can use very similar equations to describe circular motion,\index{circular motion ! equations} provided you use the correct variables. 
 
 The angular displacement, $\theta$, is the angle in \emph{radians} that the object has traveled. The angular velocity, $\omega$, is the rate of change of the angular displacement, and the angular acceleration, $\alpha$, is the rate of change of the angular velocity.
 
@@ -27,7 +27,7 @@ $$F = m r \omega^2 = \frac{m v^2}{r}$$
 
 The \newterm{angular velocity,} $\omega$ is rotations with respect to time. It can be defined in the following ways:
 \[
-  {\omega_{\text{inst}} = \frac{d\theta}{dt}}
+  {\omega_{\text{inst}} = \frac{d\theta}{dt}},
   \qquad
   {\omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}}
 \]
@@ -58,16 +58,15 @@ from above. The spot you are standing on is considered the origin $[0, 0, 0]$.)
 
 Notice that the height is a constant --- 2 meters in this
 case. That isn't very interesting, so we will talk just about the
-first two components.  Here is what it would look like from above:
+first two components. Figure \ref{fig:billiardBall} shows a visual of the situation:
 
 % 3sin = 1.267854785222098
 % 3cos = 2.71892336110995
 
 \begin{figure}[htbp]
     \begin{center}
-        
         \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-            sep=1pt,fill,draw,circle,solid}, scale=1.7]
+            sep=1pt,fill,draw,circle,solid}, scale=1.2] % scaled this down as it took up an entire page
             % Axis
             \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
             \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
@@ -85,12 +84,12 @@ first two components.  Here is what it would look like from above:
             (2.71892336110995 - 3 * 0.1267, 1.267854785222098 + 3 * 0.2718);
         \end{tikzpicture}
     \end{center}
-        \caption{A diagram of our ball and string scenario.}
+    \caption{A diagram of our ball and string scenario.}
     \label{fig:billiardBall}
 \end{figure}
 
-In this case, the radius, $r$, is 3 meters.  The period, $T$, is 4
-seconds.  In general, we say that circular motion is given by:
+In this case, the radius, $r$, is 3 meters. The period, $T$, is 4
+seconds. In general, we say that circular motion is given by:
 
 $$p(t) = \left[ r \cos{\frac{2 \pi t}{T}}, r \cos{\frac{2 \pi t}{T}}\right]$$
 
@@ -103,7 +102,7 @@ precise, in our example, the angular velocity is $\omega = \frac{\pi}{2}$. Note 
 
 Notice that this is different from the question ``How fast is it
 going? (referring to \newterm{linear velocity})''  This ball is traveling the circumference of $6\pi \approx
-18.85$ meters every 4 seconds.  This means the speed of the ball is about
+18.85$ meters every 4 seconds. This means the speed of the ball is about
 4.71 meters per second.
 
 It is very important to distinguish between angular velocity and linear velocity. Angular velocity is how fast the angle is changing and is referred to by $\omega$, while linear velocity, $v$, is how fast the object is moving along its path. While linear velocity has a constant speed, it has always changing direction. The angular velocity is constant, but the linear velocity is not.
@@ -116,7 +115,7 @@ differentiating each component of the position vector.
 For any constants $a$ and $b$:
 
 \begin{tabular}{c | c }
-  Expression & Derivative \\
+  Expression $f(x)$ & Derivative $f'(x)$ \\
   \hline
   $a \sin{b t}$ & $ab \cos{b t}$ \\
   $a \cos{b t}$ & $-ab \sin{b t}$  \\
@@ -126,33 +125,32 @@ Thus, in our example, the velocity of the ball at any time $t$ is given by:
 
 $$v(t) = \left[ -\frac{3 (2\pi)}{4} \sin{\frac{2\pi t}{4}}, \frac{3(2\pi)}{4} \cos{\frac{2\pi t}{4}}, 0 \right]$$
 
-Notice that the velocity vector is perpendicular to the position vector.  It has a constant magnitude.
+Notice that the velocity vector is perpendicular to the position vector. It has a constant magnitude.
 
 In general, an object traveling in a circle at a constant speed has the velocity vector:
 
 $$v(t) = \left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$$
 
-where $t = 0$ is the time that it crosses the $x$ axis.  If $\omega$ is
+where $t = 0$ is the time that it crosses the $x$ axis. If $\omega$ is
 negative, that means the motion would be clockwise when viewed from
 above.
 
-The magnitude of the velocity vector is $r\omega$. 
+The magnitude of the velocity vector is $r\omega$. See Figure \ref{fig:billardBallVelocity} for a visual of the velocity vector. Note that the $z$-coordinate is constant, so its derivative is zero, and it is eliminated from our vector for simplification.
 \begin{figure}[htbp]
 \begin{center}
-    
-        \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-            sep=1pt,fill,draw,circle,solid}, scale=1.7]
-            % Axis
-            \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
-            \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
-            % Rest
-            \draw [dashed, sdkblue] (0,0) circle (3);
-            \filldraw[black] (angle:3.0) circle(4pt);
-            \draw[->, thick] (2.71892336110995, 1.267854785222098) --
-            (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718) node[right]{$v(t)=\left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$};
-        \end{tikzpicture}
-    
-\end{center}    \caption{Velocity vector of the ball in circular motion.}
+    \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
+        sep=1pt,fill,draw,circle,solid}, scale=1.2] %scaled down from 1.7 to 1.2 as it took up an entire page
+        % Axis
+        \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
+        \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
+        % Rest
+        \draw [dashed, sdkblue] (0,0) circle (3);
+        \filldraw[black] (angle:3.0) circle(4pt);
+        \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+        (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718) node[right]{$v(t)=\left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$};
+    \end{tikzpicture}
+\end{center}    
+    \caption{Velocity vector of the ball in circular motion.}
     \label{fig:billardBallVelocity}
 \end{figure}
 
@@ -173,8 +171,10 @@ $$v_x(t) = \frac{d}{dt} \left[ 5 \cos{ \left( 3t \right)} \right] = -15 \sin{ \l
 $$v_y(t) = \frac{d}{dt} \left[ 5 \sin{ \left( 3t \right)} \right] = 15 \cos{ \left( 3t \right)}$$
 
 The overall \textit{speed} can be found from the $x$ and $y$ components of the velocity:
-$$|v| = \sqrt{v_x^2 + v_y^2} = \sqrt{\left[ -15 \sin{ \left( 3t \right) } \right]^2 + \left[ 15 \cos{ \left( 3t \right)} \right]^2}$$
-$$|v| = \sqrt{15^2 \left[ \sin{ \left(3t \right)}^2 + \cos{ \left( 3t \right)}^2 \right]} = \sqrt{15^2} = 15 \frac{m}{s}$$
+\begin{align*}
+    |v| &= \sqrt{v_x^2 + v_y^2} \\ &= \sqrt{\left[ -15 \sin{ \left( 3t \right) } \right]^2 + \left[ 15 \cos{ \left( 3t \right)} \right]^2} \\
+    &= \sqrt{15^2 \left[ \sin{ \left(3t \right)}^2 + \cos{ \left( 3t \right)}^2 \right]}\\ &= \sqrt{15^2} = 15 \frac{m}{s}
+\end{align*}
 
 Notice that this is the coefficient for both components of the velocity. 
 
@@ -186,17 +186,18 @@ $$t = \frac{d}{v} = \frac{10\pi \text{ } m}{15 \frac{m}{s}} = \frac{2\pi}{3} s \
 
 We can get the (linear) acceleration by differentiating the components of the velocity vector.
 
-$$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right]$$
+$$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right] = -r\omega^2 \left[\cos{\omega t}, \sin{\omega t}\right]$$
 
 Notice that the acceleration vector points \textbf{toward the center} of the
 circle it is traveling on. That is, when an object is traveling on a
-circle at a constant speed (notice that the coefficients in $a(t)$ are constant values, so acceleration is constant), its only acceleration is toward the center of the circle. This is known as \newterm{centripetal acceleration}. \index{centripetal ! acceleration}
+circle at a constant (uniform) speed (notice that coefficients $r$ and $\omega$ are constant), its only acceleration is toward the center of the circle. The acceleration does not come from the motion itself, it comes from the constantly changing direction. This is known as \newterm{centripetal acceleration}. \index{centripetal ! acceleration}
+
+The magnitude of the acceleration vector is $a_c =r \omega^2$, or more commonly, $a_c = \frac{v^2}{r}$. This gives us the common calculation for whatever force acts as the centripetal force: $F_c = m a_c = \frac{m v^2}{r}$.\footnote{You will see centripetal acceleration noted as $a_c$ or $a_r$, standing for centripetal or radial, respectively. Note that both refer to the same acceleration.}
 
 \begin{figure}[htbp]
     \begin{center}
-        
         \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
-            sep=1pt,fill,draw,circle,solid}, scale=1.7]
+            sep=1pt,fill,draw,circle,solid}, scale=1.2] % change from 1.7 to 1.2
             % Axis
             \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
             \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
@@ -211,18 +212,54 @@ circle at a constant speed (notice that the coefficients in $a(t)$ are constant 
     \label{fig:billardBallAcceleration}
 \end{figure}
 
-The magnitude of the acceleration vector is $a_c =r \omega^2$, or more commonly, $a_c = \frac{v^2}{r}$.
+Let's compare the velocity and acceleration paths from figures \ref{fig:billardBallVelocity} and \ref{fig:billardBallAcceleration}. Notice that the velocity vector is always tangent to the circle, while the acceleration vector is always pointing toward the center of the circle.
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[declare function={angle=25;}, bullet/.style={inner sep=1pt,fill,draw,circle,solid}, scale=1] 
+      % Axes
+      \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$};
+      \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$};
+      % Circle + point
+      \draw [dashed, sdkblue] (0,0) circle (3);
+      \filldraw[black] (angle:3.0) circle(4pt);
+      % Velocity vector
+      \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+        (2.71892336110995 - 0.6 * 1.267, 1.267854785222098 + 0.6 * 2.718);
+        % node[right]{$v(t)=\left[-r\omega \sin(\omega t),\, r\omega \cos(\omega t)\right]$};
+    \end{tikzpicture}
+    \caption{Velocity vector.}
+    \label{fig:billardBallVelocity}
+  \end{subfigure}\hfill
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[declare function={angle=25;}, bullet/.style={inner sep=1pt,fill,draw,circle,solid}, scale=1]
+      % Axes
+      \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$};
+      \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$};
+      % Circle + point
+      \draw [dashed, sdkblue] (0,0) circle (3);
+      \filldraw[black] (angle:3.0) circle(4pt);
+      % Acceleration vector
+      \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+        (2.71892336110995 * 0.2 , 1.267854785222098 * 0.2);
+        % node[midway, right]{$a(t)=\left[-r\omega^2 \cos(\omega t),\, -r\omega^2 \sin(\omega t)\right]$};
+    \end{tikzpicture}
+    \caption{Acceleration vector.}
+    \label{fig:billardBallAcceleration}
+  \end{subfigure}
+  \caption{Uniform circular motion: velocity (tangent) and acceleration (centripetal).}
+  \label{fig:vel_acc_side_by_side}
+\end{figure}
 
 \section{Centripetal force}
+What would happen if there were no force pulling the ball toward the center of the circle? It would fly off in a straight line, according to Newton's First Law.
 
-How hard is the ball pulling against your hand? That is, if you let go, the ball would fly in a straight line.  
-The force you are exerting on the string is what causes it to accelerate toward the center of the
-circle. We call this the \newterm{centripetal force}. It makes sense that the centripetal force and centripetal acceleration are in the same direction. \index{centripetal ! force}
+The force you are exerting on the string is what causes it to accelerate toward the center of the circle. We call this the \newterm{centripetal force}. It makes sense that the centripetal force and centripetal acceleration are in the same direction, as they are proportional. \index{centripetal ! force}
 
-Recall that $F = m a$.  The magnitude of the acceleration is $r
-\omega^2 = 3 \left(\frac{2 pi}{4}\right)^2 \approx 7.4$ m/s/s.  The mass
-of the ball is 0.16 kg.  So, the force pulling against your hand is
-about 1.18 newtons.
+Recall that $F = m a$. The magnitude of the acceleration is $r \omega^2 = 3 \left(\frac{2 \pi}{4}\right)^2 \approx 7.4 \mathrm{ m/s}^2$. The mass
+of the ball is 0.16 kg. So, the force pulling against your hand is about 1.18 newtons.
 
 The general rule is that when something is traveling in a circle at a
 constant speed, the centripetal force needed to keep it traveling in a
@@ -234,7 +271,7 @@ If you know the radius $r$ and the speed $v$ of the object, here is the rule:
 
 $$F = \frac{m v^2}{r}$$
 
-We didn't introduce centripetal force as a type of force because it isn't its own force, like friction or gravity. Rather, calling a force "centripetal" tells us what the force is doing. A centripetal force is any force that causes circular motion. For a satellite, the centripetal force is gravity. In the opening example with the billiard ball, the centripetal force is the tension in the string. 
+We didn't introduce centripetal force as a type of force because it isn't its own force, like friction or gravity. Rather, calling a force ``centripetal'' tells us what the force is doing. A centripetal force is any force that causes circular motion, a force which acts in the \emph{radial} direction. For a satellite, the centripetal force is gravity. In the opening example with the billiard ball, the centripetal force is the tension in the string. 
 
 \textbf{Example}: A child is sitting on a merry-go-round as it spins. What provides the centripetal force? 
 
@@ -259,14 +296,18 @@ $$r \omega^2 = \mu g \to \mu = \frac{r \omega^2}{g} = \frac{\left( 1.2 m \right)
 Therefore, the coefficient of friction between the child and the merry-go-round is 0.302. 
 
 \subsection{Banked Turns}
-Have you every been driving on the highway and taken a turn where the road is at an angle? Or maybe you've seen a sign like this on the road:
+Have you every been driving on the highway and taken a turn where the road is at an angle? Or maybe you've seen a sign like Figure~\ref{fig:traffic} on the road
 
-\begin{wrapfigure}{r}{2.5in} % FIXME this is huge as well
-\includegraphics[width=2.5in]{traffic.png}
+\begin{wrapfigure}{r}{1.25in} % FIXME this is huge as well
+\includegraphics[width=1.25in]{traffic.png}
+\caption{A banked turn sign on the highway.}
+\label{fig:traffic}
 \end{wrapfigure}
 
 A banked curve is designed so that a car can safely turn without slipping, even in the rain, if the driver does not exceed the indicated speed. Engineers choose an angle such that the bank provides sufficient force to turn the car without friction. Let's look at a free body diagram for a car taking a banked turn (see figure \ref{fig:banked}). 
 \vspace{4cm} %FIXME formatting -- this is very big
+%FIXME replace this with tikz
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=4in]{banked.png}
@@ -275,7 +316,7 @@ A banked curve is designed so that a car can safely turn without slipping, even 
 \end{figure}
 
 In the past, we've split the vector for the force of gravity into components that are parallel and perpendicular to the ramp. This time, we will split the normal force into $x$ and $y$ components (see figure \ref{fig:banked_component}). 
-
+%FIXME replace this with tikz
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=4in]{banked_component.png}
@@ -303,7 +344,7 @@ $$\theta = \arctan{ \left( 0.6377 \right) } \approx 32.53 ^{\circ}$$
 
 \section{Modeling Circular Motion}
 What causes circular motion is a constant force perpendicular to the motion. Consider a satellite circling the Earth. The only force acting on the satellite is gravity, yet the satellite does not fall to the Earth. Why? Let's look at the relative direction of motion and gravity for some different positions of the satellite (we'll assume this satellite is moving clockwise from our point of view):
-
+%FIXME can this be tikz as well?
 \begin{center}
 \includegraphics[width=4in]{satellite.png}
 \end{center}
@@ -315,7 +356,7 @@ No matter what position the satellite is in, the velocity and gravity vectors ar
 \begin{Exercise}[title={Circular Motion}, label=circular]
 Just as your car rolls onto a circular track with a radius of 200 m,
 you realize your 0.4 kg cup of coffee is on the slippery dashboard of your
-car.  While driving 120 km/hour, you hold the cup to keep it from sliding.
+car. While driving 120 km/hour, you hold the cup to keep it from sliding.
 
 What is the maximum amount of force you would need to use? (The friction of
 the dashboard helps you, but the max is when the friction is zero.)
@@ -393,8 +434,87 @@ $$a = \frac{v^2}{r} = \frac{\left( \omega r \right)^2}{r} = \omega^2 r$$
 $$\omega = \sqrt{\frac{a}{r}} = \sqrt{\frac{30.625 \frac{m}{s^2}}{10 \text{ } m}} \approx 1.75 \frac{rad}{s}$$
 \end{Answer}
 
-% FIXME flying pig / plane
+\section{Flying Pigs and Roller Coasters}
+Take a look at the following two videos that involve flying pigs!
+\begin{enumerate}
+    \item \url{https://youtu.be/vsSID5irx4o}
+    \item \url{https://www.youtube.com/watch?v=7WO2DZOsYY4}
+\end{enumerate}
+
+This involves a combination of circular motion and tension. Let's say we have a pig at making angle $\theta$ with the vertical and the string of length $L$, causing the pig to move in a circular path with radius $r$. We can draw the following two diagrams for our pig, as shown in Figure~\ref{fig:flyingpig1}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{center}
+      \begin{tikzpicture}[>=Stealth,thick,scale=1]
+        \node[font=\large] at (0,4.2) {Circular Motion at an angle};
+      
+        \draw[dashed, line width=0.8pt] (0,-2.3) -- (0,3.6);
+      
+        % gravity arrow
+        \draw[->] (2,2.2) -- (2,0.8) node[midway,right] {$g$};
+      
+        \draw[dashed] (0,-1) ellipse (3 and 1);
+      
+        \draw[->] (0,-1) ++(180:3 and 1)
+              arc[start angle=180,end angle=150,x radius=3,y radius=1];
+        \draw[->] (0,-1) ++(0:3 and 1)
+              arc[start angle=0,end angle=-30,x radius=3,y radius=1];
+      
+        \coordinate (P) at (0,3.4);
+        \path (0,-1) ++(200:3 and 1) coordinate (M) node[left]{pig}; 
+        \draw (P) -- (M);                            
+        \fill (M) circle (0.12);                     
+      \end{tikzpicture}
+    \end{center}
+    \caption{The uniform motion of a flying pig attached to a string.}
+    \label{fig:flyingpig1}
+\end{figure}
+
+% https://www.physicsclassroom.com/class/waves/lesson-0/pendulum-motion
+If this is confusing, think of a tetherball from your local playground. It follows the same mechanics!
+
+At any point, we can draw a free body diagram for the pig. Figure~\ref{fig:flyingpig2} shows the forces acting on the pig at all points. 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+      \filldraw (0,0) circle (0.12);
+      \begin{scope}[rotate around={-30:(0,0)}]
+        \draw[->] (0,0) -- (0,2) node[midway,right] {$F_T$};
+        % \draw[->] (0,0) -- (0,-1.5) node[midway,right] {$mg$};
+      \end{scope}
+
+      \draw[->] (0,0) -- (0,-2) node[midway,left] {$F_g$};
+    \end{tikzpicture}
+    \caption{The FBD of the flying pig at any point.}
+    \label{fig:flyingpig2}
+\end{figure}
+
+To analyze the net forces, the tension force needs to be split into its $x$ and $y$ components. The $y$ component of the tension force must balance out the weight of the pig (as it is not moving vertically), while the $x$ component of the tension force provides the centripetal force to keep the pig moving in a circle.
+
+\[
+\sum F_y = 0 \to F_{T_y} - F_g = 0 \to F_{T_y} = F_g = F_T \cos{\theta} = mg
+\]
+\[
+F_{T_x} = F_c = F_T \sin{\theta} = ma_r = \frac{mv^2}{r}
+\]
+
+Dividing the second equation by the first equation gives:
+\[
+\frac{F_T \sin(\theta)}{F_T \cos(\theta)} = \frac{\frac{mv^2}{r}}{mg} \to \tan(\theta) = \frac{v^2}{rg}
+\]
+
+Solving for $\theta$ gives us $\theta = \arctan\left(\frac{v^2}{rg}\right)$. We can also solve for $v$:
+$$v = \sqrt{r g \tan\theta} = \sqrt{L g \sin\theta \tan\theta}$$
+
+Since $r$ can be solved for $\theta$.
+
+\section{Roller Coaster Loop}
 % FIXME roller coaster loop
+
+\section{Non-uniform circular motion}
 % FIXME non-uniform circular motion section could go here
-% ball in bowl (speeding up)
 % arrows not necessarily pointing to center
+\subsection{Pendulums}
+%only an intro, AP physics C has an oscillations chapter that explores SHM, pendulums, and probably currents too
+\subsection{Ball in Bowl}
