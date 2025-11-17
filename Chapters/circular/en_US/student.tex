@@ -543,19 +543,77 @@ Now we can talk about a roller coaster. A roller coaster loop is a great example
 Let's analyze the cart on a roller coaster at positions at the top, bottom, and sides of the loop. 
 FIXME add a diagram of each position
 \subsubsection{At the bottom}
-At the very bottom of the loop, the forces acting on the cart are gravity and the normal force from the track. Let's imagine the cart goes around the circular track infinitely without ``exiting'' the loop. There must, then, be a force keeping the cart moving in a circle. This force is the centripetal force, which points toward the center of the loop. The only two forces acting on the cart are gravity (downward) and the normal force from the track (upward). We know that a centripetal force must satisfy the formula $F_{net} = F_N - F_g = \frac{mv^2}{r}$. Therefore, the normal force must be greater than the weight of the cart at the bottom of the loop.
-\[
-F_N = \frac{mv^2}{r} + mg
-\]
-FIXME add FBD
-\subsubsection{At the top}
-At the very top of the loop, the forces acting on the cart are gravity and the normal force from the track. Both forces point \emph{downward} this time, toward the center of the loop. We can say that $F_{net} = F_N + F_g = \frac{mv^2}{r}$. Solving for the normal force gives:
-\[
-F_N = \frac{mv^2}{r} + mg
-\]
-Notice that the normal force is less than the weight of the cart at the top of the loop. 
+At the very bottom of the loop, the forces acting on the cart are gravity and the normal force from the track. Let's imagine the cart goes around the circular track infinitely without ``exiting'' the loop. There must, then, be a force keeping the cart moving in a circle. This force is the centripetal force, which points toward the center of the loop. The only two forces acting on the cart are gravity (downward) and the normal force from the track (upward). We know that a centripetal force must satisfy the formula $F_{net} = F_N - F_g = \frac{mv^2}{r}$. Therefore, the normal force must be greater than the weight of the cart at the bottom of the loop: $F_N = \frac{mv^2}{r} + mg$. This is represented in Figure~\ref{fig:roller_bottom}.
 
-FIXME add FBD
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+      \def\R{3}           % circle radius
+      \def\cartY{-2.4}    % cart vertical position
+      \def\bw{1.4}        % cart body width
+      \def\bh{0.6}        % cart body height
+      \def\wr{0.1}        % wheel radius
+      \def\wheelDrop{0.2} % distance of wheel below body
+      \def\wheelSep{1.0}  % wheel horizontal spacing
+      % Circle centered at (0,0)
+      \draw (0,0) circle (\R);
+      % Cart position (you only need to change this coordinate)
+      \coordinate (car) at (0,\cartY);
+      % Draw cart body and wheels relative to (car)
+      \begin{scope}[shift={(car)}]
+        % Body
+        \draw[fill=gray!20] (-\bw/2,-\bh/2) rectangle (\bw/2,\bh/2);
+        % Wheels
+        \filldraw (-\wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+        \filldraw ( \wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+      \end{scope}
+      
+      \draw[->] (0,\cartY) -- (0, \cartY + 3) node[above] {$F_N$};
+      \draw[->] (0,\cartY) -- (0, \cartY - 2) node[below] {$F_g$};
+      
+      \filldraw[black!80] (car) circle (0.05);
+      
+    \end{tikzpicture}
+    \caption{The FBD of the roller coaster at the bottom.}
+    \label{fig:roller_bottom}
+\end{figure}
+\subsubsection{At the top}
+At the very top of the loop, the forces acting on the cart are gravity and the normal force from the track. Both forces point \emph{downward} this time, toward the center of the loop. We can say that $F_{net} = F_N + F_g = \frac{mv^2}{r}$. Solving for the normal force gives: $F_N = \frac{mv^2}{r} - mg$.
+
+Notice that the normal force is less than the weight of the cart at the top of the loop. This means that the centripetal acceleration would have to be greater than or equal $mg$. This is represented in Figure~\ref{fig:roller_top}.  
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+      \def\R{3}           % circle radius
+      \def\cartY{2.4}    % cart vertical position
+      \def\bw{1.4}        % cart body width
+      \def\bh{0.6}        % cart body height
+      \def\wr{0.1}        % wheel radius
+      \def\wheelDrop{0.2} % distance of wheel below body
+      \def\wheelSep{1.0}  % wheel horizontal spacing
+      % Circle centered at (0,0)
+      \draw (0,0) circle (\R);
+      % Cart position (you only need to change this coordinate)
+      \coordinate (car) at (0,\cartY);
+      % Draw cart body and wheels relative to (car)
+      \begin{scope}[rotate around={180:(car)},shift={(car)}]
+        % Body
+        \draw[fill=gray!20] (-\bw/2,-\bh/2) rectangle (\bw/2,\bh/2);
+        % Wheels
+        \filldraw (-\wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+        \filldraw ( \wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+      \end{scope}
+      
+      \draw[->] (0.1,\cartY) -- (0.1, \cartY - 2) node[above] {$F_N$};
+      \draw[->] (-0.1,\cartY) -- (-0.1, \cartY - 2.5) node[below] {$F_g$};
+      
+      \filldraw[black!80] (car) circle (0.05);
+      
+    \end{tikzpicture}
+    \caption{The FBD of the roller coaster at the top.}
+    \label{fig:roller_top}
+\end{figure}
 
 Note that for both the top and bottom of the loop, the minimum speed required to maintain contact with the track is given by $v = \sqrt{rg}$. If the cart goes any slower such that $v < \sqrt{rg}$, it will lose contact with the track, as there will not be enough normal force to provide the centripetal force needed to keep the cart moving in a circle. Think about where this observation comes from!
 
@@ -566,9 +624,56 @@ At the right side ($\theta = 0$), the normal force points leftward (toward the c
 
 At the left side ($\theta = \pi$), the normal force points rightward (toward the center), and gravity still points downward, so the net force points diagonally down and to the right, toward the lower-left quadrant of the circle.
 
-While the normal force provides the centripetal component of the net force, gravity introduces a tangential component, causing the cart to accelerate (speed up) along the track.
+While the normal force provides the centripetal component of the net force, gravity introduces a tangential component, causing the cart to accelerate (speed up) along the track. Since the centripetal force is not directly towards the center of the circle, the cart must be speeding up. This is modeled in Figure~\ref{fig:roller_sides}. 
 
-FIXME Diagram 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+      \def\R{3}           % circle radius
+      \def\cartY{0}    % cart vertical position
+      \def\bw{1.4}        % cart body width
+      \def\bh{0.6}        % cart body height
+      \def\wr{0.1}        % wheel radius
+      \def\wheelDrop{0.2} % distance of wheel below body
+      \def\wheelSep{1.0}  % wheel horizontal spacing
+      % Circle centered at (0,0)
+      \draw (0,0) circle (\R);
+      % Cart position (you only need to change this coordinate)
+      \coordinate (car) at (2.4,\cartY);
+      % Draw cart body and wheels relative to (car)
+      \begin{scope}[rotate around={90:(car)},shift={(car)}]
+        % Body
+        \draw[fill=gray!20] (-\bw/2,-\bh/2) rectangle (\bw/2,\bh/2);
+        % Wheels
+        \filldraw (-\wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+        \filldraw ( \wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+      \end{scope}
+      
+      \draw[->] (2.4,\cartY) -- (.4, \cartY) node[above] {$F_N$};
+      \draw[->] (2.4,\cartY) -- (2.4, \cartY - 2.5) node[below] {$F_g$};
+      \draw[->, dashed] (2.4,\cartY) -- (1.6, \cartY - 1.5) node[below] {$F_{Net}$};
+      
+      \filldraw[black!80] (car) circle (0.05);
+
+      \begin{scope}[rotate around={-90:(-2.4, \cartY)},shift={(-2.4, \cartY)}]
+        % Body
+        \draw[fill=gray!20] (-\bw/2,-\bh/2) rectangle (\bw/2,\bh/2);
+        % Wheels
+        \filldraw (-\wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+        \filldraw ( \wheelSep/2, -\bh/2 - \wheelDrop) circle (\wr);
+      \end{scope}
+      
+      \draw[->] (-2.4,\cartY) -- (-.4, \cartY) node[above] {$F_N$};
+      \draw[->] (-2.4,\cartY) -- (-2.4, \cartY - 2.5) node[below] {$F_g$};
+      \draw[->, dashed] (-2.4,\cartY) -- (-1.6, \cartY - 1.5) node[below] {$F_{Net}$};
+      
+      \filldraw[black!80] (car) circle (0.05);
+      
+    \end{tikzpicture}
+    \caption{The FBD of the roller coaster at the sides.}
+    \label{fig:roller_sides}
+\end{figure}
+
 FIXME in book problem
 \subsection{Pendulums}
 You may be surprised to know that pendulums act the exact same way as roller coasters, in terms of forces.
@@ -577,11 +682,40 @@ A pendulum has an equilibrium position $\theta=0$ such that it is parallel to it
 
 FIXME diagram of pendulum basics. note bob and rod of fixed length L
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=2]
+      \def\L{4}           % rod length
+      \def\maxAngle{35} 
+      \def\bobRad{0.15}  % mass-ed bob radius
+      
+      \coordinate (pivot) at (0,4);
+      \coordinate (eqPos) at (0,0);
+
+      \draw[very thick, black!60] (pivot) -- (eqPos) node[midway] {Massless Rod};
+
+
+      \begin{scope}[rotate around={35:(pivot)}]
+        \filldraw[black!80] (0,0) circle (\bobRad); 
+        \draw[very thick, black!60] (pivot) -- (0,0);
+      \end{scope}
+
+
+      \filldraw[black!80] (pivot) circle (0.1);
+      \filldraw[black!80] (eqPos) circle (\bobRad);
+
+      \draw[thick, dashed, red!50, <->]
+      (pivot) ++({-90-\maxAngle}:\L)
+      arc[start angle={-90-\maxAngle}, end angle={-90+\maxAngle}, radius=\L];
+
+      
+    \end{tikzpicture}
+    \caption{The anatomy of a pendulum.}
+    \label{fig:roller_sides}
+\end{figure}
+
 FIXME diagram of pendulum FBD
 
 FIXME inbook example
 % arrows not necessarily pointing to center
 %only an intro, AP physics C has an oscillations chapter that explores SHM, pendulums, and probably currents too
-\subsection{Ball in Bowl}
-??
-FIXME inboko example
