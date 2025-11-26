@@ -1,0 +1,226 @@
+\chapter{Oscillations}
+We just finished up a chapter about circular motion, where objects move around in a circle at either constant (uniform/harmonic) or changing (non-uniform) speeds. 
+
+In this chapter, we will study oscillatory motion, which is a type of motion where an object moves back and forth around an equilibrium point. Oscillations are common in many physical systems, such as springs, pendulums, and even electrical circuits.
+
+Here are some definitions to get us started:
+\begin{description}
+    \item[Cycle] A single complete execution of a periodically repeated motion.
+    \item[Period] The time it takes to complete one cycle of motion.
+    \item[Equilibrium] The position at which the ``default'' position of an oscillating object is located. In terms of mechanics, this is the position where all the forces acting on the object are balanced or zero.
+    \item[Restoring Force] The force that acts to bring an oscillating object back to its equilibrium position. It is typically proportional to the displacement from equilibrium and acts in the opposite direction.
+    \item[Angular Speed] The rate at which an object moves around a circle, measured in radians per second. 
+\end{description}
+
+
+%FIXME expand? add more?
+\section{Sine and Cosine Graphs [Review]}
+Let's recall the two pillars of trigonometry and, consequently, simple harmonic motion: Sine and Cosine. Recall that these two functions are periodic, meaning they repeat their values in regular intervals or periods. The sine and cosine functions have a period of \(2\pi\) radians or 360$^\circ$, repeating their values every \(2\pi\) radians.
+
+As discussed in the circular motion chapter, the sine function represents the y-coordinate of a point on the unit circle as it moves around the circle, while the cosine function represents the x-coordinate. This is the fundemental behavior of the unit circle, where a point moves around the circle at a constant angular speed \(\omega\). The position of the point at any time \(t\) can be described using the following parametric equations:
+$$x(t) = \cos(\omega t), \qquad y(t) = \sin(\omega t)$$
+
+The general forms of the sine and cosine functions can be expressed as:
+$$x(t) = A\cos(\omega t + \phi), \qquad y(t) = A\sin(\omega t + \phi)$$
+
+where:
+\begin{itemize}
+    \item \(A\) is the amplitude, representing the maximum displacement from the equilibrium position.
+    \item \(\omega\) is the angular speed, which determines how quickly the oscillations occur.
+    \item \(\phi\) is the phase shift, which determines the initial position of the oscillation at \(t = 0\).
+\end{itemize}
+
+Recall that the derivatives of these functions are also periodic, a key property that is useful for analyzing oscillatory motion:
+$$\frac{d}{dt}\cos(\omega t) = -\omega \sin(\omega t)$$
+$$\frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)$$
+$$\frac{d^2}{dt^2}\cos(\omega t) = -\omega^2 \cos(\omega t)$$
+
+In the motion we will talk about,
+\begin{itemize}
+    \item $x(t)$ will be our position function
+    \item $v(t)$ describes our velocity function, which can be the first derivative of our position
+    \item $a(t)$ is our acceleration function, derived from $v(t)$
+\end{itemize}
+We notice that the second derivative produces a negative multiple of the original function. This can be simplified in terms of acceleration and position functions: $a(t) = -\omega^2 x(t)$.
+
+
+\section{Simple Harmonic Motion}
+So far, we have discussed oscillatory motion in general terms. Now, let's focus on a specific type of oscillatory motion known as Simple Harmonic Motion (SHM). SHM is characterized by the following properties:
+\begin{itemize}
+    \item The motion occurs around an equilibrium position.
+    \item The restoring force is directly proportional to the displacement from the equilibrium position and acts in the opposite direction.
+    \item The motion is sinusoidal in nature, meaning it can be described using sine or cosine functions.
+    \item The period and frequency of the motion are constant, regardless of the amplitude.
+    \item The acceleration always points toward equilibrium and increases in size as the displacement grows.
+
+\end{itemize}
+So the motion continously repeats itself in a regular pattern. It speeds up near equilibrium, and slows down to a stop at maximum displacement.
+Examples of these systems are
+\begin{itemize}
+    \item A mass attached to a spring, either vertically or horizontally
+    \item A simple pendulum (as talked about in the previous chapter)
+    \item Vibrations of a tuning fork or guitar string
+\end{itemize}
+
+We saw in our pendulums chapter how the system has both centripetal acceleration and acceleration due to gravity, causing oscillations back and forth with changing speed.
+
+Like all mechanical systems, an SHM system has both kinetic and potential energy. For general simple harmonic motion systems, we can describe its energy as follows:
+\begin{itemize}
+    \item The total mechanical energy \(E\) of the system is the sum of its kinetic energy \(K\) and potential energy \(U\):
+    $$E = K + U$$
+    \item The kinetic energy \(K\), system dependent, is highest when the object passes through the equilibrium position.
+    \item The potential energy \(U\) depends on the specific system, such as spring potential energy or gravitational potential energy, but is highest at the maximum displacement from equilibrium.
+\end{itemize}
+
+\section{Springs}
+Let's talk about springs! Springs are mechanical devices, usually made out of some rigid metal material,  that store and release energy through deformation. When a spring is stretched or compressed from its equilibrium position, it exerts a restoring force that tries to bring it back to its original shape. The most common type of spring is a coil spring, which consists of a linear wire would into a helical shape. \index{springs}
+
+\subsection{Hooke's Law}
+In 1676, physicist Robert Hooke formulated a principle that describes the behavior of springs, now known as Hooke's Law. Hooke's Law states that the force exerted by an ideal spring is directly proportional to the displacement from its equilibrium position. 
+
+Mathematically, Hooke's Law can be expressed as:\index{hooke's law}
+$$F_s = -kx$$
+where:
+\begin{itemize}
+    \item \(F_s\) is the restoring force exerted by the spring (in newtons, N)
+    \item \(k\) is the spring constant (in newtons per meter, N/m), which measures the stiffness of the spring. It is spring-specific
+    \item \(x\) is the displacement from the equilibrium position (in meters, m)
+    \item The negative sign represents the fact that the force attempts to bring the spring back to its equilibrium position.
+\end{itemize}
+
+FIXME spring diagram
+
+Since we know that force is related to mass and acceleration through Newton's Second Law, we can combine Hooke's Law with Newton's Second Law to analyze the motion of a mass attached to a spring:
+\begin{align}
+F_s &= ma = -kx \\
+ma &= -kx
+\end{align}
+
+But since above we found a relation between acceleration and position, we can write:
+
+\begin{align}
+m \frac{d^2 x}{dt^2} &= -kx \\
+\frac{d^2 x}{dt^2} + \frac{k}{m} x &= 0 \label{eq:linearequation}
+\end{align}
+
+We can see that this equation describes simple harmonic motion, where the acceleration is proportional to the negative of the displacement. 
+% \begin{equation}
+% \frac{d^2 x}{dt^2} + \frac{k}{m} x = 0
+% \end{equation}
+In a later section of this chapter, we will solve this differential equation to find the position function \(x(t)\) of general mass-spring systems.
+
+\subsection{Spring Potential Energy}
+Let's recall that Work from a physics standpoint is defined as the transfer of energy through a certain distance via a force. When we alter the length of a spring through either compression or extenson, we are performing work on the spring. This work is stored as potential energy within the spring, which can be released when the spring returns to its equilibrium position.
+
+Let's find an equation for this change in potential energy, which gets stored up in the spring. Recall the two mathematical definitions for work:
+\begin{itemize}
+    \item Work as the product of force and distance: \(W = F \cdot d\)
+    \item Work as the integral of force over a distance: \(W = \int F \, dx\)
+\end{itemize}
+FIXME Diagram of spring being stretched
+We need to use the integral definition, since, by our definition of Hooke's Law, the force exerted by a spring varies with displacement, so every tiny bit of distance, or $dx$ is different. For any spring starting at equilibrium (0), and moving to some final position $x_f$, we can write:
+\begin{align*}
+W &= \int_{x_i}^{x_f} F_x \, dx \\
+W_s &= \int_{x_i}^{x_f} F_s \, dx \\
+&= \int_{0}^{x_f} -kx \, dx \\
+&= \frac{-kx^2}{2} \bigg|_0^{x_f}\\
+% &= \frac{-k{x_f}^2}{2} - 0 \\
+&= \frac{-k({x_f})^2}{2}  
+\end{align*}
+
+This work done on the spring is stored as potential energy, so we can say that the change in potential energy of the spring is equal to the negative of the work done by the spring force:
+\begin{equation}
+    \Delta U_s = -W_s = \frac{1}{2} k x_f^2
+    \label{springpe}
+\end{equation}
+FIXME diagram showing area under the curve of a -kx graph
+
+Notice that Equation~\eqref{springpe} is similar in structure to the kinetic energy equation, \(K = \frac{1}{2} mv^2\). This is not a coincidence, as both equations describe forms of energy in mechanical systems, and are derived from linear systems. The big idea is:
+
+When the effort (force) needed increases in direct proportion to what you're trying to change, the energy required ends up depending on the square of that change.
+
+For a spring
+\begin{itemize}
+    \item[-] the farther you stretch or compress it, the more force it exerts to return to equilibrium (Hooke's Law)
+    \item[-] the more energy is stored in the spring (spring potential energy)
+\end{itemize}
+
+For kinetic energy
+\begin{itemize}
+    \item[-] the faster you try to move an object, the more force is needed to accelerate it (Newton's Second Law)
+    \item[-] the more energy the object has due to its motion (kinetic energy)
+\end{itemize}
+
+FIXME spring compression problem
+FIXME pinball problem
+
+\section{Mass-Spring Systems and Linear Differential Equations}
+
+We have already seen that the motion of a mass attached to a spring can be modeled using differential equations. Here, we will examine this connection more closely.
+
+\subsection{Undamped Simple Harmonic Motion}
+Starting from Newton's Second Law and Hooke's Law, we derived the differential equation for simple harmonic motion:
+\begin{equation}
+m\frac{d^2 x}{dt^2} + kx = 0.
+\label{eq:basicshm}
+\end{equation}
+
+The term $m\,\frac{d^2 x}{dt^2}$ comes directly from \textit{Newton's Second Law}, representing the net force required to accelerate the mass. The term $kx$ arises from \textit{Hooke's Law}, which states that the spring exerts a restoring force proportional to displacement and directed toward equilibrium.
+
+Equation~\eqref{eq:basicshm} is an example of a \textbf{second-order linear differential equation with constant coefficients without damping}. It describes an ideal mass-spring system with no external influences—one that oscillates forever, undamped and unforced.
+
+The $ma(t)$ term is \textit{Newton's Second Law} part of the equation, while the $kx(t)$ term comes from \textit{Hooke's Law}. This is a second-order linear differential equation with constant coefficients. What if the spring system is being driven by a third force, like friction or damping? We can add an additional force term $F(t)$ to the equation: $F_f(t) = -cv = -cx'$ for forcing function.
+
+\subsection{Introducing Damping}
+Real systems are often influenced by additional forces. One common example is a \textbf{damping force}, such as friction or air resistance, which opposes the motion of the mass.
+
+A typical damping force is proportional to the velocity and can be written as
+\[
+F_d(t) = -c\,\frac{dx}{dt},
+\]
+where $c$ is the damping coefficient.
+
+Including this force in Newton's Second Law modifies our differential equation. Instead of the undamped equation~\eqref{eq:basicshm}, we obtain:
+\begin{align}
+m a(t) &= -c\,v(t) - k\,x(t) \label{eq:forcebalance} \\
+m\frac{d^2 x}{dt^2} + c\frac{dx}{dt} + kx &= 0 \label{eq:dampedmassspring}
+\end{align}
+
+
+This is still a second-order linear differential equation with constant coefficients, but its solutions behave very differently. Depending on the value of $c$, the system may oscillate with decreasing amplitude, fail to oscillate at all, or return to equilibrium as quickly as possible. 
+
+Finding the roots of the characteristic equation associated with Equation~\eqref{eq:dampedmassspring} allows us to classify the system's behavior into three categories. Recall that the quadratic formula gives us the roots using our coefficients:
+$$r = \frac{-c \pm \sqrt{c^2 - 4mk}}{2m}$$
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Characteristic Roots} & \textbf{Homogeneous Solution} & \textbf{Damping Type} \\
+\hline
+$r_1, r_2 \in \mathbb{R}$, both negative 
+& $y_h = C_1 e^{r_1 t} + C_2 e^{r_2 t}$ 
+& Overdamped \\
+\hline
+$r$ real, repeated 
+& $y_h = (C_1 + C_2 t)e^{rt}$ 
+& Critically damped \\
+\hline
+$r = \alpha \pm i\beta$, $\alpha < 0$ 
+& $y_h = e^{\alpha t}\!\left( C_1 \cos(\beta t) + C_2 \sin(\beta t) \right)$ 
+& Underdamped \\
+\hline
+$r = \pm i \beta$ 
+& $y_h = C_1 \cos(\beta t) + C_2 \sin(\beta t)$ 
+& Simple Harmonic Motion \\
+\hline
+\end{tabular}
+\caption{Classification of solutions to the damped harmonic oscillator based on characteristic roots.}
+\end{table}
+
+Without going into too much linear algebra, the function of a mass spring is given by $y(t) = y_h(t) + y_p(t)$, where $y_h$ is the homogeneous solution (the part we solved above), and $y_p$ is the particular solution, which depends on any external forcing functions. In this section, we focused on the homogeneous solution. If the equation~\eqref{eq:dampedmassspring} had a forcing function $F(t)$ on the right side, we would need to find a particular solution $y_p$ to account for that.
+
+FIXME solving differential equations given initial conditions
+FIXME in book problems about oscillations, which type of damping, etc.
+
+\section{Alternating Current}
