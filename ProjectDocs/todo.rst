@@ -65,6 +65,7 @@ Additionally, all figures (TikZ pictures or inserted images or diagrams) should 
         \label{fig:example}
     \end{figure}
 
+I have found a website that greatly helps ease the creation of TikZ pictures, especially with more detailed figures. I'll link it here. https://www.mathcha.io/editor
 
 =======
 Editing
