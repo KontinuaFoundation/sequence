@@ -1,0 +1,190 @@
+\chapter{Introduction to Python}
+In this chapter we will discuss the very basics of Python. No we are not talking about snake anatomy, but the programming language Python. Python is a high-level, interpreted programming language known for its readability and versatility. It is widely used in various fields such as web development, data analysis, artificial intelligence, scientific computing, and more. It can be used for data parsing, visualization, and even machine learning. Python's syntax is designed to be easy to read and write, making it an excellent choice for beginners and experienced programmers alike.
+
+\section{Getting Started with Python}
+To get started with Python, you need to have it installed on your computer. You can download the latest version of Python from the official website: \url{https://www.python.org/downloads/}. Follow the installation instructions for your operating system. %FIXME what else needs to be included here.
+
+Once you have python installed, you can write and run Python code using various methods:
+\begin{itemize}
+    \item \textbf{Interactive Shell:} You can open a terminal or command prompt and type \texttt{python} or \texttt{python3} to start an interactive Python shell where you can type and execute Python commands line by line.
+    \item \textbf{Script Files:} You can write your Python code in a text file with a \texttt{.py} extension and run it using the command \texttt{python filename.py} or \texttt{python3 filename.py} in the terminal.
+    \item \textbf{Integrated Development Environments (IDEs):} There are several IDEs available for Python, such as PyCharm, VSCode, and Jupyter Notebooks, which provide a more user-friendly environment for writing and running Python code.
+\end{itemize}
+
+We are going to install VSCode as our IDE for this course. You can download it from \url{https://code.visualstudio.com/}. After installing VSCode, you will also need to install the Python extension for VSCode, which can be found in the Extensions Marketplace within VSCode.
+%does more need to be said?
+\section{Writing Your First Python Program}
+% All code in here should be within a {lstlisting}[style=pycode] environment
+Let's start by writing a simple Python program that prints ``Hello, World!'' to the console. Open your IDE or text editor, create a new file named \texttt{hello.py}, and
+\begin{lstlisting}[style=pycode]
+    print("Hello, World!")
+\end{lstlisting}
+
+This snippet of code does the following:
+\begin{itemize}
+    \item It takes the argument, a string of characters that make up the word \texttt{Hello, World!}
+    \item It passes that string into the built-in Python function \texttt{print}.
+\end{itemize}
+
+FIXME explanation of console and running the file
+\section{Datatypes and Variables}
+
+There are many different datatypes in Python, and all of them can be passed to \texttt{print} function. Here's the main few: 
+\begin{description}
+    \item[Strings] Strings are just a sequence of characters. Anything closed between quotes gets included in the string, such as "This is the Python Chapter for the Kontinua Sequence!!\%\^\&\*()-+=1234567890~\&"
+    \item[Integers] Integers are any whole number, positive negative or 0. Theoretically, integer values can go on for infinity, but it is important to understand they take up space in computer memory.
+    \item[Floats]  Floats, or floating point values, are numbers that include decimal places. Division can be done between integers and floats but may result in a different value.
+    \item[Booleans] Booleans only two values: \texttt{True} or \texttt{False}. The output of conditional statements (such as if's or while's) are booleans. They only answer Yes and No questions, and are important on deciding between two possible paths in code.
+    \item[Sequence Types] Sequences are consecutive lists or pairs of other data types can be represented in various froms: \texttt{list}, \texttt{set}, \texttt{tuple}, and \text{dict}. 
+\end{description}
+
+Let's create some of these in our code:
+\begin{lstlisting}[style=pycode]
+    x = 5
+    y = 5.6
+    z = True
+    a = [x, y, z]
+\end{lstlisting}
+
+A \emph{variable} is a container for information, usually containing one of the datatypes established above. In Python, variables are assigned using the assignment operator $=$, with the name of the variable on the left side of the operator and the value it is assigned to on the right side. 
+
+In our code above, \texttt{x} is a \emph{variable} containing the number $5$, an Integer. \texttt{y} contains the float $5.6$, while \texttt{z} is a boolean with the value \texttt{True}. We then created a list containing the variables \texttt{x}, \texttt{y}, and \texttt{z}.
+
+A unique feature of Python is that variables can change their datatypes even after assignment. We can see the datatype of an object using the \texttt{type()}
+\begin{lstlisting}[style=pycode]
+x = 10
+print(x)
+print(type(x))
+
+x = "Hello!"
+print(x)
+print(type(x))
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+10
+<class 'int'>
+Hello!
+<class 'str'>
+\end{lstlisting}
+
+Notice that, because of that feature, the datatype of a variable is not defined beforehand. This is a core difference between Python and other programming languages like Java or C++, which we will explore in the future. 
+
+FIXME scientific notation floats
+
+\section{Arithmetic Operations}
+Math operations in Python are very similar to standard math operations. 
+\begin{lstlisting}[style=pycode]
+    a = 100
+    b = 3
+    c = 100.0
+    d = -100
+    print(a + b) # addition
+    print(a - b) # subtraction
+    print(a * b) # multiplication
+    print(a / b) # division (results in a float)
+    print(a % b) # modulus (remainder) operator
+    print(a ** b) # exponentiation
+    print(a // b) # floor division
+    print(c // b) # floor division as a float
+    print(d // b) # negative flooring goes further DOWN
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+    103
+    97
+    300
+    33.333333333333336
+    1
+    1000000
+    33
+    33.0
+    34
+\end{lstlisting}
+
+Note that division by $0$ is not a valid operation, just as in algebra. This will cause an \texttt{ZeroDivisionError}.
+FIXME -= and +=
+FIXME expand, exercises
+\section{Conditionals, Loops, and Match-Case}
+\section{Lists}
+\section{Strings and Casting}
+We talked about creating strings, any set of characters between quotes. These can either be single quotes \texttt{' '} or double quotes \texttt{"   "}. 
+
+Multiline strings must be surrounded by three quotations on each side of the text sequence. 
+\begin{lstlisting}[style=pycode]
+a = """Lorem ipsum dolor sit amet,
+consectetur adipiscing elit,
+sed do eiusmod tempor incididunt
+ut labore et dolore magna aliqua."""
+\end{lstlisting}
+\section{Errors}
+Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
+
+You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}. 
+\begin{itemize}
+    \item Syntax errors occur when your the formatting, or \newterm{syntax}. These errors can usually be found before your code is compiled.
+    \item Runtime Errors, or \emph{Exceptions}, occur when operations in your code cause an invalid calculation, or attempt to do an invalid action. These can range anywhere from basic misnamed variables to imported libraries crashing from incorrect data.
+\end{itemize}
+
+\subsection{Syntax Errors}
+What do you notice is immediately wrong with this code?
+\begin{lstlisting}[style=pycode]
+    x = "Welcome Home"
+    print(type(x)
+\end{lstlisting}
+
+If we run it, we get the output:
+\begin{lstlisting}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.12/py_compile.py", line 150, in compile
+    raise py_exc
+py_compile.PyCompileError:   File "./prog.py", line 2
+    print(type(x)
+         ^
+SyntaxError: '(' was never closed
+\end{lstlisting}
+
+We notice that every opening parentheses, bracket, or brace must have a closing supplement. Without out, we run into Syntax Errors, letting us know our format is off. 
+
+Another type of Syntax Error can be found in incorrect indentation. Take for example the following code:
+\begin{lstlisting}[style=pycode]
+if True:
+print("Hello!")
+\end{lstlisting}
+Output:
+\begin{lstlisting}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.12/py_compile.py", line 150, in compile
+    raise py_exc
+py_compile.PyCompileError: Sorry: IndentationError: expected an indented block after 'if' statement on line 1 (prog.py, line 2)
+\end{lstlisting}
+
+Here, there is no indentation (usually obtained by pressing the \verb|Tab| key on your keyboard) for lines under the conditional statement. This causes a Syntax Error to be raised.
+\subsection{Exceptions}
+Let's say I try to run the following code:
+
+\begin{lstlisting}[style=pycode]
+    print(x)
+    x = "hello"
+\end{lstlisting}
+
+You may see the following output:
+\begin{lstlisting}
+Traceback (most recent call last):
+    File "./program.py", line 1, in <module>
+NameError: name 'x' is not defined
+\end{lstlisting}
+
+You have encounted a \emph{NameError}, because \texttt{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \texttt{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
+
+
+FIXME
+\subsection{Try-Except}
+
+\section{Libraries}
+\section{An Input Calculator}
+\section{Matplotlib}
