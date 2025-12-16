@@ -152,7 +152,7 @@ There are two questions that determine where any topic goes in the order:
 	- Simulating a falling body in Python
 * `solving_quadratics <../Chapters/solving_quadratics/en_US/student.tex>`_: Solving Quadratics
 	- The Traditional Quadratic Formula
-* Complex Numbers
+* `complex_numbers <../Chapters/complex_numbers/en_US/student.tex>`_: Complex Numbers 
 * `drag <../Chapters/drag/en_US/student.tex>`_: Drag
 	- Wind resistance
 	- Initial velocity and acceleration due to gravity
@@ -225,6 +225,10 @@ There are two questions that determine where any topic goes in the order:
 	- Geosynchronous Orbits
 * `emwaves <../Chapters/emwaves/en_US/student.tex>`_: Electromagnetic Waves
 	- The greenhouse effect
+* oscillations
+	- oscillating forces in the form :math:`m x'' - c x' - k x = F(t)`
+	- equilibrium position
+	- intro to linear systems, damping, and linear diff-eqs
 * `camera <../Chapters/camera/en_US/student.tex>`_: How Cameras Work
 	- The Light That Shines On the Cow
 	- Light Hits the Cow
@@ -238,6 +242,8 @@ There are two questions that determine where any topic goes in the order:
 * `py_images <../Chapters/py_images/en_US/student.tex>`_: Images in Python
 	- Adding color
 	- Using an existing image
+* `bitmap <../Chapters/bitmap/en_US/student.tex>`_: Bitmaps in C++
+	- analysis of byte patterns, hex colors, and bitmap padding in C++.
 * Reflections
 * Refraction
 * Lens
@@ -269,9 +275,9 @@ There are two questions that determine where any topic goes in the order:
 * `interpolating_polynomials <../Chapters/interpolating_polynomials/en_US/student.tex>`_: Interpolating with Polynomials
 	- Interpolating polynomials in python
 * Rational function
-* Infinite Series
+* `sequences <../Chapters/sequences/en_US/student.tex>`_: Infinite Sequences
   - Convergence tests
-* Infinite Sums
+* `series <../Chapters/series/en_US/student.tex>`_: Infinite Series
   - Convergence tests
 * Vectors and Matrices
 * Linear combinations, spans, and independence
