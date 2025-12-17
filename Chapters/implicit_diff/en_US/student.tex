@@ -66,12 +66,51 @@ $$\frac{dy}{dx}=\frac{-x}{y}$$ \\, which is the same result as we found
 without implicit differentiation. 
 
 \section{Folium of Descartes}
-It was relatively easy to rearrange the equation for a circle to 
-solve for y, but that is not always the case. Consider the equation 
-for the folium of Descartes (yes, that Descartes!): $$x^3+y^3=3xy$$ 
-It is much more difficult to isolate $y$ in this equation. In fact, 
-were we to do so, we would need three separate equations to completely 
-describe the original equation. 
+
+It was relatively easy to rearrange the equation for a circle to solve for $y$, but that is not always the case. To help you understand this better, we will consider a famous curve known as the \emph{Folium of Descartes}, given by the equation,
+\[
+x^3 + y^3 = 3xy.
+\]
+
+The word \emph{folium} comes from the Latin word for “leaf,” describing the curve’s distinctive looped shape. The curve is named after René Descartes, a French mathematician who originally presented the curve as a challenge  to fellow mathematician Pierre de Fermat, asking him to find the tangent line to the curve. Fermat was able to solve the problem with ease!
+
+The Folium of Descartes (seen in Figure~\ref{fig:folium_descartes}) is historically significant because unlike simpler curves such as circles or parabolas, it exhibits more complex behavior, including a self-intersection at the origin (the curve crosses itself!). This complexity makes it difficult to describe the curve using a single equation of the form $y = f(x)$.
+
+To explicitly solve the equation $x^3 + y^3 = 3xy$ for $y$ requires multiple expressions to fully capture the entire curve. As a result, the familiar techniques used for functions defined explicitly in terms of $x$ are no longer sufficient. Instead, to find the slope of the tangent line at a point on the folium, we must use \emph{implicit differentiation}.
+
+%Graph showing Folium of Descartes
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[
+    xmin = -6, xmax = 6,
+    ymin = -6, ymax = 6,
+    axis lines = center,
+    axis equal,
+    ticks = none
+  ]
+
+    \def\a{1}
+
+    % Folium (split domain)
+    \addplot[black, thick, domain = -8:-1.001, samples = 1000]
+      ({ (3*\a*x) / (1 + x^3) }, { (3*\a*x^2) / (1 + x^3) });
+
+    \addplot[black, thick, domain = -0.999:8, samples = 1000]
+      ({ (3*\a*x) / (1 + x^3) }, { (3*\a*x^2) / (1 + x^3) });
+
+    % FORCE the connection at the origin
+    \addplot[only marks, mark=*, mark size=1.5pt] coordinates {(0,0)};
+
+    % Asymptote
+    \addplot[dashed, domain = -6:6] {-x-\a};
+
+  \end{axis}
+\end{tikzpicture}
+\caption{The Folium of Descartes $x^3+y^3=3xy$ with asymptote $x+y+1=0$.}
+\label{fig:folium_descartes}
+\end{figure}
 
 \subsection{Example: Tangent to Folium of Descartes}
 
