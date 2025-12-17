@@ -19,7 +19,7 @@ $$\mathbf{v} = \begin{bmatrix}
 3
 \end{bmatrix}$$
 
-A matrix can be made of many columns, like the $3 \times 2$ matrix shown below:
+A matrix can be made of many columns, like the $3 \times 3$ matrix shown below:
 $$\begin{bmatrix}
 1 & 1 & 1\\
 2 & 4 & 8\\
@@ -28,10 +28,12 @@ $$\begin{bmatrix}
 \index{matrices!vector in form of}
 We describe the size and shape of matrices by saying \textit{an }$m \times
 n$\textit{ matrix}, where $m$ is the number of \emph{rows} and $n$ is the number of
-\emph{columns}. A vector is simply a one-column matrix. For example, the vectors
-\textbf{v} above is $3 \times 1$. Matrices aren't restricted to 2 dimensions:
+\emph{columns}. A \newterm{vector} is simply a one-column matrix. For example, the vectors
+\textbf{v} above is of size$3 \times 1$. Matrices aren't restricted to 2 dimensions:
 a matrix can be 3, 4, or any number of dimensions. For example, a $3 \times 2
-\times 4$ matrix would be made of 4 stacked $3 \times 2$ matrices.
+\times 4$ matrix would be made of 4 stacked $3 \times 2$ matrices. Visually, however, that is hard to represent, and even worse to compute.
+
+A matrix is considered \emph{square} when it has the same number of rows and columns. Most matrix operations have the restriction that the matrix must be square in order to perform operations, such as determinant calculation, finding an inverse, or eigenvector/eigenvalues, all of which you will learn in future chapters.3
 
 \begin{Exercise}[title = {Matrix Dimensions 1}, label = mat_dim1]
 Write the dimensions of the following matrices:
@@ -233,8 +235,8 @@ Find \textbf{\textit{A}} + \textbf{\textit{B}}, \textbf{\textit{A}} -
 \end{Answer}
 
 \subsection{Multiplying Matrices}
-Surprisingly (it may be to you), matrix multiplication has dimension limits.
-We cannot multiply any two matrices: the first matrix must have the same
+Matrix multiplication has dimensional limits.
+We cannot multiply any two matrices; the first matrix must have the same
 number of columns as the second has number of rows. Let's examine the origin
 of the dimension limits on matrix multiplication. We begin with a review of
 the vector dot product.
@@ -294,15 +296,20 @@ It is possible to compute $\mathbf{a} \cdot \mathbf{d}$, $\mathbf{b} \cdot
 
 To multiply two matrices, it is helpful to think of the rows of the first
 matrix and the columns of the second matrix as vectors. Let's see how this
-shakes out for two $2 \times 2$ matrices:
+shakes out for two $2 \times 2$ matrices in Figure~\ref{fig:mat_mult}:
 
-\begin{figure}
+
+% end paragraph
+\medskip
+
+
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \node[] at (0,0) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -310,7 +317,7 @@ shakes out for two $2 \times 2$ matrices:
              & & & & & & &
         \end{bmatrix}$};
         \node[] at (-2.75, -1) {\textbf{\textit{A}}};
-        \node[] at (-2, -1) {$\cdot$};
+        \node[] at (-2, -1) {$\times$};
         \node[] at (-1, -1) {\textbf{\textit{B}}};
         \node[text = red] at (-3.8, 0.25) {$\mathbf{a}_1 \to$};
         \node[text = red] at (-3.8, -0.25) {$\mathbf{a}_2 \to$};
@@ -337,9 +344,11 @@ shakes out for two $2 \times 2$ matrices:
     \label{fig:mat_mult}
 \end{figure}
 
+
+
  Let's look at this more concretely. For two-dimensional matrices, it can be
  helpful to move your left index finger across the row and right index finger
- down the column, as shown in figure \ref{fig:fingers}.
+ down the column, as shown in Figure~\ref{fig:fingers}.
 
  \begin{figure}[htbp]
     \centering
@@ -347,7 +356,7 @@ shakes out for two $2 \times 2$ matrices:
         \node[] at (0,3) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -362,7 +371,7 @@ shakes out for two $2 \times 2$ matrices:
         \node[] at (0,2) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -378,7 +387,7 @@ shakes out for two $2 \times 2$ matrices:
         \node[] at (0, 1) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -395,7 +404,7 @@ shakes out for two $2 \times 2$ matrices:
         \node[] at (0,0) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -412,7 +421,7 @@ shakes out for two $2 \times 2$ matrices:
         \node[] at (0,-1) {$\begin{bmatrix}
             5 & 4\\
             -5 & 1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \times \begin{bmatrix}
             -1 & -2\\
             -5 & -4
         \end{bmatrix} = \begin{bmatrix}
@@ -438,11 +447,12 @@ the number of rows in the second matrix.
 
 \begin{mdframed}[style = important, frametitle = {Matrix Multiplication}]
 For two-dimensional matrices, the inner dimensions must match in order to
-carry out matrix multiplication. That is, if we want to find \textbf{\textit{
-A}}$\cdot$\textbf{\textit{B}}, and \textbf{\textit{A}} has dimensions $m
+carry out matrix multiplication. 
+That is, if we want to find \textbf{\textit{
+A}}$\times$\textbf{\textit{B}}, and \textbf{\textit{A}} has dimensions $m
 \times n$, then \textbf{\textit{B}} must have dimensions $n \times p$, where
 $m$, $n$, and $p$ are integers. The resulting matrix will have dimensions $m
-\times p$ ($m$ and $p$ may be equal or unequal).
+\times p$ ($m$ and $p$ may be equal or unequal). Note that we use $\times$ to differentiate from the dot product, represented by $\cdot$. 
 \end{mdframed}
 
 \begin{Exercise}[title = {Multiplying Matrices 1}, label = mult_mat1]
@@ -450,7 +460,7 @@ Multiply the matrices.
 \begin{enumerate}
 \item $\begin{bmatrix}
 -5 & -2 & 2 & 1
-\end{bmatrix} \cdot \begin{bmatrix}
+\end{bmatrix} \times \begin{bmatrix}
 -3 & -1 & -5\\
 3 & 0 & 3\\
 4 & -1 & -4\\
@@ -462,7 +472,7 @@ Multiply the matrices.
 -5\\
 4\\
 1
-\end{bmatrix} \cdot \begin{bmatrix}
+\end{bmatrix} \times \begin{bmatrix}
 0 & 5 & 1
 \end{bmatrix}$
 \item $\begin{bmatrix}
@@ -470,7 +480,7 @@ Multiply the matrices.
 5 & -3 & 5\\
 -1 & -4 & 4\\
 -4 & 1 & 4
-\end{bmatrix} \cdot \begin{bmatrix}
+\end{bmatrix} \times \begin{bmatrix}
 -3 & 5 & 1\\
 -3 & 0 & -3\\
 0 & 3 & 0
@@ -500,7 +510,7 @@ Multiply the matrices.
 \end{Answer}
 
 \begin{Exercise}[title = {Multiplying Matrices 2}, label = mult_mat2]
-Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}}$.
+Find $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \times \mathbf{\mathit{A}}$.
 \begin{enumerate}
 \item $\mathbf{\mathit{A}} = \begin{bmatrix}
 -2\\
@@ -532,28 +542,28 @@ Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \c
 
 \begin{Answer}[ref = mult_mat2]
 \begin{enumerate}
-\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+\item $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} = \begin{bmatrix}
 8 & -6 & 10 & 4\\
 -8 & 6 & -10 & -4\\
 -4 & 3 & -5 & -2\\
 8 & -6 + 1- & 4
-\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} =
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \times \mathbf{\mathit{A}} =
 \begin{bmatrix}
 13
 \end{bmatrix}$
-\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+\item $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} = \begin{bmatrix}
 -2 & 16 & 16\\
 5 & -24 & -8\\
 -4 & 22 & 12
-\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} =
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \times \mathbf{\mathit{A}} =
 \begin{bmatrix}
 8 & 6\\
 -12 & -22
 \end{bmatrix}$
-\item $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} = \begin{bmatrix}
+\item $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} = \begin{bmatrix}
 -22 & 1\\
 15 & -4
-\end{bmatrix}$ and $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} =
+\end{bmatrix}$ and $\mathbf{\mathit{B}} \times \mathbf{\mathit{A}} =
 \begin{bmatrix}
 12 & 0 & 15 & 3\\
 -4 & 0 & 1 & -15\\
@@ -563,8 +573,8 @@ Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \c
 \end{enumerate}
 \end{Answer}
 
-What have you noticed about the results of $\mathbf{\mathit{A}} \cdot
-\mathbf{\mathit{B}}$ as compared to $\mathbf{\mathit{B}} \cdot \mathbf{
+What have you noticed about the results of $\mathbf{\mathit{A}} \times
+\mathbf{\mathit{B}}$ as compared to $\mathbf{\mathit{B}} \times \mathbf{
 \mathit{A}}$? You should have noticed that the product matrices are
 \textit{different dimensions}. This leads us to the next unusual property of
 matrix multiplication: it is \textit{non-commutative}. That is, the \textit{
@@ -579,44 +589,47 @@ then, that $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} \neq \mathbf{\mathit{
 B}} \cdot \mathbf{\mathit{A}}$. What if \textbf{\textit{A}} and \textbf{\textit{
 B}} are square matrices?
 
-\textbf{Example}: Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and
-$\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}}$ if $\mathbf{\mathit{A}} =
-\begin{bmatrix}
--3 & 5\\
--1 & 0
-\end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
--1 & 1\\
-4 & -3
-\end{bmatrix}$.
+\begin{Exercise}[title=Are Matrices Commutative?,label=mult_mat3]
+    Find $\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}}$ and
+    $\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}}$ if $\mathbf{\mathit{A}} =
+    \begin{bmatrix}
+    -3 & 5\\
+    -1 & 0
+    \end{bmatrix}$ and $\mathbf{\mathit{B}} = \begin{bmatrix}
+    -1 & 1\\
+    4 & -3
+    \end{bmatrix}$.
+\end{Exercise}
+\begin{Answer}[ref=mult_mat3]
+    $$\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} =
+    \begin{bmatrix}
+    -3 & 5\\
+    -1 & 0
+    \end{bmatrix} \cdot \begin{bmatrix}
+    -1 & 1\\
+    4 & -3
+    \end{bmatrix} = \begin{bmatrix}
+    -3(-1) + 5(4) & -3(1) + 5(-3)\\
+    -1(-1) + 0(4) & -1(1) + 0(-3)
+    \end{bmatrix} = \begin{bmatrix}
+    23 & -18\\
+    1 & -1
+    \end{bmatrix}$$
+    $$\mathbf{\mathit{B}} \times \mathbf{\mathit{A}} = \begin{bmatrix}
+    -1 & 1\\
+    4 & -3
+    \end{bmatrix} \cdot \begin{bmatrix}
+    -3 & 5\\
+    -1 & 0
+    \end{bmatrix} = \begin{bmatrix}
+    -1(-3) + 1(-1) & -1(5) + 1(0)\\
+    4(-3) + -3(-1) & 4(5) + -3(0)
+    \end{bmatrix} = \begin{bmatrix}
+    2 & -5\\
+    -9 & 20
+    \end{bmatrix}$$
+\end{Answer}
 
-\textbf{Solution}: $$\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} =
-\begin{bmatrix}
--3 & 5\\
--1 & 0
-\end{bmatrix} \cdot \begin{bmatrix}
--1 & 1\\
-4 & -3
-\end{bmatrix} = \begin{bmatrix}
--3(-1) + 5(4) & -3(1) + 5(-3)\\
--1(-1) + 0(4) & -1(1) + 0(-3)
-\end{bmatrix} = \begin{bmatrix}
-23 & -18\\
-1 & -1
-\end{bmatrix}$$
-
-$$\mathbf{\mathit{B}} \cdot \mathbf{\mathit{A}} = \begin{bmatrix}
--1 & 1\\
-4 & -3
-\end{bmatrix} \cdot \begin{bmatrix}
--3 & 5\\
--1 & 0
-\end{bmatrix} = \begin{bmatrix}
--1(-3) + 1(-1) & -1(5) + 1(0)\\
-4(-3) + -3(-1) & 4(5) + -3(0)
-\end{bmatrix} = \begin{bmatrix}
-2 & -5\\
--9 & 20
-\end{bmatrix}$$
 
 As you can see, even if \textbf{\textit{A}} and \textbf{\textit{B}} are square,
 matrix multiplication is still not commutative.
@@ -624,19 +637,19 @@ matrix multiplication is still not commutative.
 \begin{mdframed}[style = important, frametitle = {Non-Commutation of Matrix Multiplication}]
 For two matrices \textbf{\textit{A}} and \textbf{\textit{B}}, where neither is
 an identity matrix or a zero matrix:
-$$\mathbf{\mathit{A}} \cdot \mathbf{\mathit{B}} \neq \mathbf{\mathit{B}}
-\cdot \mathbf{\mathit{A}}$$
+$$\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} \neq \mathbf{\mathit{B}}
+\times \mathbf{\mathit{A}}$$
 \end{mdframed}
 
 \subsubsection{Properties of the Zero Matrix}
-Just like the number 0, the zero matrix, \textbf{\textit{O}} has unique
+Just like the number 0, the zero matrix, \textbf{\textit{0}} has unique
 mathematical properties:
 \begin{mdframed}[style = important, frametitle = {Properties of the Zero Matrix}]
-For a matrix, \textbf{\textit{A}}, and a zero matrix, \textbf{\textit{O}}
+For a matrix, \textbf{\textit{A}}, and a zero matrix, \textbf{\textit{0}}
 \begin{enumerate}
-\item $\mathbf{\mathit{A}} + \mathbf{\mathit{O}} = \mathbf{\mathit{A}}$
-\item $\mathbf{\mathit{A}} + \mathbf{\mathit{-A}} = \mathbf{\mathit{O}}$
-\item $0 \cdot \mathbf{\mathit{A}} = \mathbf{\mathit{O}}$
+\item $\mathbf{\mathit{A}} + \mathbf{\mathit{0e}} = \mathbf{\mathit{A}}$
+\item $\mathbf{\mathit{A}} + \mathbf{\mathit{-A}} = \mathbf{\mathit{0e}}$
+\item $0 \cdot \mathbf{\mathit{A}} = \mathbf{\mathit{0e}}$
 \end{enumerate}
 \end{mdframed}
 
@@ -680,9 +693,9 @@ I}} to be a $2 \times 2$ identity matrix.)
 \textbf{Example}: If $\mathbf{\mathit{B}} = \begin{bmatrix}
 -2 & 5\\
 3 & -4
-\end{bmatrix}$, what is $\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}}$?
+\end{bmatrix}$, what is $\mathbf{\mathit{I}} \times \mathbf{\mathit{B}}$?
 
-\textbf{Solution}: $$\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}} =
+\textbf{Solution}: $$\mathbf{\mathit{I}} \times \mathbf{\mathit{B}} =
 \begin{bmatrix}
 1 & 0 \\
 0 & 1
@@ -701,8 +714,8 @@ I}} to be a $2 \times 2$ identity matrix.)
 An $n \times n$ identity matrix, \textbf{\textit{I}}, does not change any
 vectors or matrices it multiplies. That is:
 \begin{enumerate}
-\item $\mathbf{\mathit{I}} \cdot \mathbf{x} = \mathbf{x}$
-\item $\mathbf{\mathit{I}} \cdot \mathbf{\mathit{B}} = \mathbf{\mathit{B}}$
+\item $\mathbf{\mathit{I}} \times \mathbf{x} = \mathbf{x}$
+\item $\mathbf{\mathit{I}} \times \mathbf{\mathit{B}} = \mathbf{\mathit{B}}$
 \end{enumerate}
 where \textbf{x} is an $n \times 1$ vector and \textbf{\textit{B}} is an $n
 \times p$ matrix ($p$ may be, but is not necessarily, equal to $n$).
@@ -722,11 +735,11 @@ While this would be correct if \textbf{x}, \textbf{b}, and \textbf{\textit{A}} w
 \begin{mdframed}[style = important, frametitle = {Inverse Matrices}]
 Given a matrix \textbf{\textit{A}}, and vectors \textbf{b} and \textbf{x}, if
 
-$$\textbf{\textit{A}} \cdot \textbf{x} = \textbf{b}$$
+$$\textbf{\textit{A}} \times \textbf{x} = \textbf{b}$$
 
 Then,
 
-$$\textbf{x} = \textbf{\textit{A}}^{-1} \cdot \textbf{b}$$
+$$\textbf{x} = \textbf{\textit{A}}^{-1} \times \textbf{b}$$
 \end{mdframed}
 
-$\textbf{\textit{A}}^{-1}$ is called the \textit{inverse matrix}. We will explore inverse matrices and how to find them in the next chapter.
+$\textbf{\textit{A}}^{-1}$ is called the \textit{inverse matrix}. \emph{But}, the inverse \emph{does not always exist}! We will explore inverse matrices and how to find them in the next chapter.\index{inverse matrix}
