@@ -20,23 +20,49 @@ a_{2,1} & a_{2,2} & a_{2,3}
 $$
 
 \section{Types of Matrices}
-\index{matrices!properties of}
+\index{matrices!shapes of}
+
 Matrices can be described by their shape:
-\begin{itemize}
-	\item \textbf{Row Matrix:} Has only one row.
-	\item \textbf{Column Matrix:} Has only one column.
-	\item \textbf{Square Matrix:} Has the same number of rows and columns.
-	\item \textbf{Rectangular Matrix:} Has an unequal number of rows and columns.
-\end{itemize}
+\begin{description}
+    \item[\textbf{Row Matrix}] A matrix of size $1\times n$ with $1$ row and $n$ columns.
+    \item[\textbf{Column Matrix}] A matrix of size $n\times 1$ with $n$ rows and $1$ column, typically used to represent vectors. 
+    \item[\textbf{Square Matrix}] A matrix of size $n\times n$, containing the same number of rows and columns
+    \item[\textbf{Rectangular Matrix}] A matrix of size $m \times n$, that has an unequal number of rows and columns.
+    
+\end{description}
 \index{matrices!properties of}
 They can also be described by their unique numerical properties. Special matrices that come in handy for certains types of computations. These are a few of the most common special matrices:
-\begin{itemize}
-	\item \textbf{Zero Matrix:} Only contains entries that are zero.
-	\item \textbf{Identity Matrix:} Sometimes called the unit matrix, it is a square matrix whose diagonal entries are 1 and all other entries are 0.
-	\item \textbf{Symmetric Matrix:} A square matrix that equals its transpose. The next section shows how to create the transpose of a matrix,
-	\item \textbf{Diagonal Matrix:} Has nonzero elements on the main diagonal, but all other elements are zero
-	\item \textbf{Triangular Matrix:} This is a special square matrix that can be upper triangular or lower triangular. If upper, the main diagonal and all entries above it are nonzero while the lower entries are all zero. If lower, the main diagonal and all the entries below it are nonzero, while the upper entries are all zero. 
-\end{itemize}
+\begin{description}
+	\item[\textbf{Zero Matrix}] A matrix that only contains entries that are zero. $$\vecb{0 & 0 \\ 0 & 0}$$ The matrix above could also be $$0_{2\times 2}$$
+       \item[\textbf{Diagonal Matrix}] A square matrix with nonzero entries along the diagonal, and zeroes everywhere else. $$\vecb{2 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 6}$$
+	\item[\textbf{Identity Matrix}] A diagonal matrix with entries of 1 along the diagonal. $$\vecb{1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1}$$
+	\item[\textbf{Symmetric Matrix}] A Symmetric matrix is a matrix, when transposed, becomes itself.
+	$$
+       A = \begin{bmatrix}
+       20 & 40 & 60 \\
+       40 & 50 & 80 \\
+       60 & 80 & 100
+       \end{bmatrix}
+       $$
+	\item[\textbf{Triangular Matrix}] This is a special square matrix that can be upper triangular or lower triangular. If upper, the main diagonal and all entries above it are nonzero while the lower entries are all zero. If lower, the main diagonal and all the entries below it are nonzero, while the upper entries are all zero. A matrix that is both upper and lower triangular becomes a diagonal matrix.
+	
+       Upper Triangular Matrix
+       $$
+       \begin{bmatrix}
+       2 & 3 & 1 \\
+       0 & 5 & 4 \\
+       0 & 0 & 6
+       \end{bmatrix}
+       $$
+       Lower Triangular matrix
+       $$
+       \begin{bmatrix}
+       7 & 0 & 0 \\
+       2 & 5 & 0 \\
+       4 & 3 & 9
+       \end{bmatrix}
+       $$
+\end{description}
 
 \subsection{Symmetric Matrices}
 \index{symmetric matrices}
@@ -113,8 +139,27 @@ $$A =  A^t =
  		4 & 2 & 3 
 	\end{bmatrix}$$
 \end{Answer}
+\section{Systems of Equations}
 
-\subsection{Creating Matrices in Python}
+We have talked a lot about matrices and vectors. Now we can use matrices and vectors to solve systems of equations. A system of linear equations can be written compactly using matrices and vectors. This matrix representation allows us to use algebraic tools such as row operations and matrix multiplication to analyze and solve the system more efficiently. Let's look at a very simple example from a previous section.
+
+\[\begin{cases}
+1x_1 + 2x_2 = -1 \\
+2x_1 + 0x_2 = 4
+\end{cases}\]
+
+We can write this in the form of a matrix! This may come as a surprise to some of you. How can we do this? Let's rewrite the the coefficients as a matrix and the $x_n$'s as column vector, and the equivalences as a vector called $\vec{b}$. 
+
+\section{Row-Echelon Form}
+\section{Reduced Row Echelon Form}
+
+
+
+
+
+
+
+\section{Creating Matrices in Python}
 Create a file called \filename{matrices\_creation.py} and enter this code:
 \begin{Verbatim}
 # import the python module that supports matrices

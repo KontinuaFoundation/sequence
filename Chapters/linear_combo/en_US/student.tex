@@ -9,9 +9,16 @@ offer mathematical and visual explanations later in the chapter. First, let's
 examine linear combinations. 
 
 A \emph{linear combination}\index{linear combination} is simply the addition of vectors with leading scalar 
-multipliers. For example, $3 \left[ 2, -1 \right] + 2 \left[ 3, 5 \right]$ is 
-a linear combination of the vectors $\left[ 2, -1 \right]$ and $\left[ 3, 5 
-\right]$. Another way to say this is:
+multipliers. In algebra, we can express polynomials similar to the form $5x + -4y$. In linear algebra, we do this with a vectors: $3 \begin{bmatrix}
+    2 \\ -1
+\end{bmatrix} + 2 \begin{bmatrix}
+    3 \\ 5
+\end{bmatrix}$ is 
+a linear combination of the vectors $\begin{bmatrix}
+    2 \\ -1
+\end{bmatrix}$ and $\begin{bmatrix}
+    3 \\ 5
+\end{bmatrix}$. Another way to say this is:
 \index{linear combination of vectors}
 \index{linear combinations}
 \begin{mdframed}[style = important, frametitle = {Linear Combination of 
@@ -22,12 +29,20 @@ $$a_1 \mathbf{v_1} + a_2 \mathbf{v_2} + \dots + a_n \mathbf{v_n}$$
 where $a_1, a_2, \cdots, a_n \in \mathbb{R}$. You may see the list of vectors as $\mathbf{x_1}, \mathbf{x_2}, \dots \mathbf{x_n}$, both are acceptable variables.
 \end{mdframed}
 
-\textbf{Example}: Find a linear combination of $\left[ 2, 1, -3 \right]$ and 
-$\left[ 1, -2, 4 \right]$ that gives the vector $\left[ 17, -4, 2 \right]$.
+\textbf{Example}: Find a linear combination of 
+$\begin{bmatrix} 2 \\ 1 \\ -3 \end{bmatrix}$ and 
+$\begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix}$ 
+that gives the vector 
+$\begin{bmatrix} 17 \\ -4 \\ 2 \end{bmatrix}$.
 
 \textbf{Solution}: We are looking for $a_1$ and $a_2$ such that:
-$$a_1 \left[ 2, 1, -3 \right] + a_2 \left[ 1, -2, 4 \right] = \left[17, -4, 2 
-\right]$$
+$$
+a_1 \begin{bmatrix} 2 \\ 1 \\ -3 \end{bmatrix}
++ 
+a_2 \begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix}
+=
+\begin{bmatrix} 17 \\ -4 \\ 2 \end{bmatrix}
+$$
 
 Looking at each dimension separately, we get the system of equations:
 $$2 a_1 + 1 a_2 = 17$$
@@ -36,16 +51,21 @@ $$-3 a_1 + 4 a_2 = 2$$
 
 If we can solve this system of equations, we will find $a_1$ and $a_2$. Let's 
 multiply the first equation by 2 and add it to the second equation:
-$$2 \left[ 2 a_1 + a_2 \right] + \left[ a_1 - 2 a_2 \right] = 2 \left( 17 
-\right) + -4$$
+$$
+2 \left( 2 a_1 + a_2 \right)
++
+\left( a_1 - 2 a_2 \right)
+=
+2(17) + (-4)
+$$
 $$4 a_1 + 2 a_2 + a_1 - 2 a_2 = 34 - 4$$
 $$5 a_1 = 30$$
 $$a_1 = 6$$
 
 Now we can take $a_1$ and substitute it back into any equation in our system 
 to find $a_2$. Let's use the third equation:
-$$-3 \left( 6 \right) + 4 a_2 = 2$$
-$$ -18 + 4 a_2 = 2$$
+$$-3(6) + 4 a_2 = 2$$
+$$-18 + 4 a_2 = 2$$
 $$4 a_2 = 20$$
 $$a_2 = 5$$
 
@@ -54,16 +74,21 @@ to all 3 equations. If we had only used the first two equations to find $a_1$
 and $a_2$, we would want to substitute our values back into the third equation 
 to make sure our solution holds for that equation also. 
 
-Therefore, $6 \left[ 2, 1, -3 \right] + 5 \left[ 1, -2, 4 \right] = \left[ 17, 
--4, 2 \right]$.
-
+Therefore,
+$$
+6 \begin{bmatrix} 2 \\ 1 \\ -3 \end{bmatrix}
++
+5 \begin{bmatrix} 1 \\ -2 \\ 4 \end{bmatrix}
+=
+\begin{bmatrix} 17 \\ -4 \\ 2 \end{bmatrix}.
+$$
 \begin{Exercise}[title = {Linear Combinations}, label = combo]
 Find a linear combination of the first two vectors that yields the third 
 vector. 
 \begin{enumerate}
-\item $\left[1, 2 \right]$, $\left[ -3, 1 \right]$, $\left[ 4, 5 \right]$
-\item $\left[ 9, 4 \right]$, $\left[ 0, 1 \right]$, $\left[ -5, 3 \right]$
-\item $\left[ 7, -2 \right]$, $\left[ -8, 4 \right]$, $\left[ 6, -2 \right]$
+\item $\vecb{1 \\ 2}$, $\vecb{-3 \\ 1}$, $\vecb{4 \\ 5}$
+\item $\vecb{9 \\ 4}$, $\vecb{0 \\ 1}$, $\vecb{-5 \\ 3}$
+\item $\vecb{7 \\ -2}$, $\vecb{-8 \\ 4}$, $\vecb{6 \\ -2}$
 \end{enumerate}
 \vspace{50mm}
 \end{Exercise}
@@ -71,8 +96,9 @@ vector.
 \begin{Answer}[ref = combo]
 \begin{enumerate}
     \item We are looking for $a_1$ and $a_2$ such that:
-    $$a_1 \left[ 1, 2 \right] + a_2 \left[ -3, 1 \right] = \left[ 4, 5 
-    \right]$$
+    $$
+    a_1 \vecb{1 \\ 2} + a_2 \vecb{-3 \\ 1} = \vecb{4 \\ 5}
+    $$
     Which creates the system of equations:
     $$a_1 - 3 a_2 = 4$$
     $$2 a_1 + a_2 = 5$$
@@ -89,11 +115,12 @@ vector.
     $$a_1 + \frac{9}{7} = 4$$
     $$a_1 = \frac{19}{7}$$
 
-    Therefore, $\frac{19}{7} \left[ 1, 2 \right] - \frac{3}{7} \left[ -3, 1 
-    \right] = \left[ 4, 5 \right]$.
+    Therefore, $\frac{19}{7} \vecb{1 \\ 2} - \frac{3}{7} \vecb{-3 \\ 1} = \vecb{4 \\ 5}$.
 
     \item We are looking for $a_1$ and $a_2$ such that:
-    $$a_1 \left[ 9, 4 \right] + a_2 \left[ 0, 1 \right] = \left[ -5, 3 \right]$$
+    $$
+    a_1 \vecb{9 \\ 4} + a_2 \vecb{0 \\ 1} = \vecb{-5 \\ 3}
+    $$
     Which creates the system of equations:
     $$9 a_1 = -5$$
     $$4 a_1 + a_2 = 3$$
@@ -106,12 +133,12 @@ vector.
     $$a_2 - \frac{20}{9} = 3$$
     $$a_2 = \frac{47}{9}$$
 
-    Therefore, $-\frac{5}{9} \left[ 9, 4 \right] + \frac{47}{9} \left[ 0, 1 
-    \right] = \left[ -5, 3 \right]$.
+    Therefore, $-\frac{5}{9} \vecb{9 \\ 4} + \frac{47}{9} \vecb{0 \\ 1} = \vecb{-5 \\ 3}$.
 
     \item We are looking for $a_1$ and $a_2$ such that:
-    $$a_1 \left[ 7, -2 \right] + a_2 \left[ -8, 4 \right] = \left[ 6, -2 
-    \right]$$
+    $$
+    a_1 \vecb{7 \\ -2} + a_2 \vecb{-8 \\ 4} = \vecb{6 \\ -2}
+    $$
 
     Which yields the system of equations:
     $$7 a_1 - 8 a_2 = 6$$
@@ -130,17 +157,13 @@ vector.
     $$4 a_2 = -\frac{2}{3}$$
     $$a_2 = -\frac{1}{6}$$
 
-    Therefore, $\frac{2}{3} \left[ 7, -2 \right] - \frac{1}{6} \left[ -8, 4 
-    \right] = \left[ 6, -2 \right]$
+    Therefore, $\frac{2}{3} \vecb{7 \\ -2} - \frac{1}{6} \vecb{-8 \\ 4} = \vecb{6 \\ -2}$.
 \end{enumerate}
-\end{Answer} 
-
+\end{Answer}
 Sometimes, a set of vectors cannot be combined to make a specific vector. Take 
-the pair of vectors we have looked at before: $\left[ 2, 1, -3 \right]$ and 
-$\left[ 1, -2, 4 \right]$. Can we find a combination to make vector $\left[ 
-17, -4, 5 \right]$? Let's try. We define $a_1$ and $a_2$ such that:
-$$a_1 \left[ 2, 1, -3 \right] + a_2 \left[ 1, -2, 4 \right] = \left[ 17, -4, 5 
-\right]$$
+the pair of vectors we have looked at before: $\vecb{2 \\ 1 \\ -3}$ and 
+$\vecb{1 \\ -2 \\ 4}$. Can we find a combination to make vector $\vecb{17 \\ -4 \\ 5}$? Let's try. We define $a_1$ and $a_2$ such that:
+$$a_1 \vecb{2 \\ 1 \\ -3} + a_2 \vecb{1 \\ -2 \\ 4} = \vecb{17 \\ -4 \\ 5}$$
 
 Which creates the system of equations:
 $$2 a_1 + a_2 = 17$$
@@ -166,8 +189,7 @@ Now, let's check if $a_1 = 6$, $a_2 = 5$ is a solution to the third equation:
 $$-3 \left( 6 \right) + 4 \left( 5 \right) = 5$$
 $$-18 + 20 = 2 \neq 5$$
 
-Therefore, there is no linear combination of the vectors $\left[ 2, 1, -3 
-\right]$ and $\left[ 1, -2, 4 \right]$ that yields $\left[ 17, -4, 5 \right]$.
+Therefore, there is no linear combination of the vectors $\vecb{2 \\ 1 \\ -3}$ and $\vecb{1 \\ -2 \\ 4}$ that yields $\vecb{17 \\ -4 \\ 5}$.
 
 \begin{mdframed}[style = important, frametitle = {Linear Combinations as systems.}]
 We are aiming to know if $a_1 \mathbf{v}_1 + a_2 \mathbf{v}_2 = \mathbf{w}$. We can rewrite this as a matrix multiplication:
@@ -179,18 +201,16 @@ We will talk more about systems of equations in Chapter~\ref{chap:syseqma}.
 \section{Visualizing Linear Combinations}
 \index{linear combinations!graphing vectors of}
 First, let's look at what vectors can be made from linear combinations of the 
-2-dimensional unit vectors $\textbf{i} = \left[ 1, 0 \right]$ and $\textbf{j} 
-= \left[ 0, 1 \right]$. Suppose we are looking for a linear combination of 
-\textbf{i} and \textbf{j} to create the vector $\left[ 3, -4 \right]$. We can 
+2-dimensional unit vectors $\textbf{i} = \vecb{1 \\ 0}$ and $\textbf{j} 
+= \vecb{0 \\ 1}$. Suppose we are looking for a linear combination of 
+\textbf{i} and \textbf{j} to create the vector $\vecb{3 \\ -4}$. We can 
 find such a linear combination:
-$$3\textbf{i} + \left( -4 \right) \textbf{j} = 3 \left[1, 0 \right] - 4 \left[ 
-0, 1 \right] = \left[ 3, -4 \right]$$
+$$3\textbf{i} + \left( -4 \right) \textbf{j} = 3 \vecb{1 \\ 0} - 4 \vecb{0 \\ 1} = \vecb{3 \\ -4}$$
 
 In fact, with \textbf{i} and \textbf{j}, we can create any 2-dimensional 
-vector. To prove this, consider a generic vector, $\textbf{z} = \left[ a, b 
-\right]$, where $a, b \in \mathbb{R}$. We are looking for a linear combination 
+vector. To prove this, consider a generic vector, $\textbf{z} = \vecb{a \\ b}$, where $a, b \in \mathbb{R}$. We are looking for a linear combination 
 of \textbf{i} and \textbf{j} such that:
-$$c_1 \textbf{i} + c_2 \textbf{j} = \left[ a, b \right]$$
+$$c_1 \textbf{i} + c_2 \textbf{j} = \vecb{a \\ b}$$
 
 The above equation yields the system of equations:
 $$c_1 \left( 1 \right) + c_2 \left( 0 \right) = a$$
@@ -204,11 +224,10 @@ Therefore, using \textbf{i} and \textbf{j}, we can construct any vector in
 $\mathbb{R}^2$ (that is, any vector in the $xy$-plane). What about combinations 
 of other vectors?
 
-Let's consider linear combinations of two vectors: $\textbf{u} = \left[ 1, 2 
-\right]$ and $\textbf{v} = \left[2, 0 \right]$. The vectors are shown in 
+Let's consider linear combinations of two vectors: $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = \vecb{2 \\ 0}$. The vectors are shown in 
 figure \ref{fig:u_and_v}. 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 3, ymin = -3, ymax = 3, axis lines = 
@@ -219,17 +238,19 @@ figure \ref{fig:u_and_v}.
             font = \scriptsize] {\textbf{v}};
         \end{axis}
     \end{tikzpicture}
-    \caption{The vectors $\textbf{u} = \left[ 1, 2 \right]$ and $\textbf{v} = 
-    \left[ 2, 0 \right]$.}
+    \caption{The vectors $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = 
+    \vecb{2 \\ 0}$.}
     \label{fig:u_and_v}
 \end{figure}
 
-Suppose we want to construct the vector $\left[ -1, 4 \right]$. Since only 
+Suppose we want to construct the vector $\vecb{-1 \\ 4}$. Since only 
 \textbf{u} has value in the $y$-dimension, we can start by adding \textbf{u} 
 vectors to reach $y = 4$ (see figure \ref{fig:just_u}). Next, we can use 
-\textbf{v} vectors to reach $\left[ -1, 4 \right]$ (see figure \ref{fig:reach}). 
-
+\textbf{v} vectors to reach $\vecb{-1 \\ 4}$ (see figure \ref{fig:reach}). 
 \begin{figure}[htbp]
+\centering
+
+\begin{minipage}{0.48\textwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 3, ymin = -3, ymax = 5, axis lines = 
@@ -240,17 +261,16 @@ vectors to reach $y = 4$ (see figure \ref{fig:just_u}). Next, we can use
             font = \scriptsize, xshift = -0.5cm, yshift = -0.5cm] {\textbf{u}};
             \draw[red, fill = red] (-1, 4) circle (0.5mm);
             \draw[thin, black, latex-] (-1.1, 3.9) -- (-1.5, 3.5) node[below, 
-            font = \scriptsize] {$\left[-1, 4 \right]$};
+            font = \scriptsize] {$\vecb{-1 \\ 4}$};
             \draw[red, dashed, -latex] (0,0) -- (-1, 4);
         \end{axis}
     \end{tikzpicture}
-    \caption{To create vector $\left[ 4, -2 \right]$ with $\textbf{u} = \left[
-    1, 2 \right]$ and $\textbf{v} = \left[2, 0 \right]$, we begin by adding two 
+    \subcaption{To create vector $\vecb{4 \\ -2}$ with $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = \vecb{2 \\ 0}$, we begin by adding two 
     \textbf{u} vectors to reach a $y$-value of 4.}
     \label{fig:just_u}
-\end{figure}
-
-\begin{figure}[htbp]
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 3, ymin = -3, ymax = 5, axis lines = 
@@ -265,27 +285,32 @@ vectors to reach $y = 4$ (see figure \ref{fig:just_u}). Next, we can use
             font = \scriptsize, xshift = 0.5cm] {-0.5\textbf{v}};
             \draw[red, fill = red] (-1, 4) circle (0.5mm);
             \draw[thin, black, latex-] (-1.1, 3.9) -- (-1.5, 3.5) node[below, 
-            font = \scriptsize] {$\left[-1, 4 \right]$};
+            font = \scriptsize] {$\vecb{-1 \\ 4}$};
             \draw[red, dashed, -latex] (0,0) -- (-1, 4);
         \end{axis}
     \end{tikzpicture}
-    \caption{If $\textbf{u} = \left[1, 2 \right]$ and $\textbf{v} = \left[2, 0 
-    \right]$, then $2\textbf{u} - 1.5 \textbf{v} = \left[-1, 4 \right]$.}
+    \subcaption{If $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = \vecb{2 \\ 0}$, then $2\textbf{u} - 1.5 \textbf{v} = \vecb{-1 \\ 4}$.}
     \label{fig:reach}
+\end{minipage}
+
+\caption{Using linear combinations of $\textbf{u}$ and $\textbf{v}$ to construct $\vecb{-1 \\ 4}$.}
+\label{fig:u_v_twopanel}
 \end{figure}
+
 
 Using this method, we can imagine reaching any point in $\mathbb{R}^2$: we add 
 or subtract as many \textbf{u} vectors as needed to reach the appropriate 
 $y$-value, then add or subtract as many \textbf{v} vectors to reach the 
-appropriate $x$-value.
+appropriate $x$-value. The vectors are \emph{not multiples} of each other, so we can say that they span all of $\mathbb{R}^2$. 
 
-Let's look at another pair of vectors: $\textbf{p} = \left[2, 2 \right]$ and 
-$\textbf{q} = \left[ -1, -1 \right]$ (see figure \ref{fig:p_and_q}). Again, 
-let's try to use \textbf{p} and \textbf{q} to construct the vector $\left[ -1, 
-4 \right]$. We begin by using \textbf{p} to reach the $y$-value of 4 (see 
+Let's look at another pair of vectors: $\textbf{p} = \vecb{2 \\ 2}$ and 
+$\textbf{q} = \vecb{-1 \\ -1}$ (see figure \ref{fig:p_and_q}). Again, 
+let's try to use \textbf{p} and \textbf{q} to construct the vector $\vecb{-1 \\ 4}$. We begin by using \textbf{p} to reach the $y$-value of 4 (see 
 figure \ref{fig:just_p}).
-
 \begin{figure}[htbp]
+\centering
+
+\begin{minipage}{0.48\textwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 3, ymin = -3, ymax = 5, axis lines = 
@@ -297,12 +322,12 @@ figure \ref{fig:just_p}).
             \draw[black, fill = black] (0,0) circle (0.5mm);
         \end{axis}
     \end{tikzpicture}
-    \caption{The vectors $\textbf{p} = \left[ 2, 2 \right]$ and $\textbf{q} = 
-    \left[ -1, -1\right]$.}
+    \subcaption{The vectors $\textbf{p} = \vecb{2 \\ 2}$ and $\textbf{q} = 
+    \vecb{-1 \\ -1}$.}
     \label{fig:p_and_q}
-\end{figure}
-
-\begin{figure}[htbp]
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 4, ymin = -3, ymax = 5, axis lines = 
@@ -315,22 +340,25 @@ figure \ref{fig:just_p}).
             \draw[black, fill = black] (0,0) circle (0.5mm);
             \draw[red, dashed, -latex] (0,0) -- (-1, 4);
             \draw[black, latex-] (-1.1, 3.9) -- (-1.6, 3.4) node[below, 
-            font = \scriptsize] {$\left[ -1, 4 \right]$};
+            font = \scriptsize] {$\vecb{-1 \\ 4}$};
         \end{axis}
     \end{tikzpicture}
-    \caption{Adding 2 \textbf{p} vectors gets us to the appropriate $y$-value 
-    of 4.}
+    \subcaption{Adding two $\textbf{p}$ vectors to reach $y = 4$.}
     \label{fig:just_p}
+\end{minipage}
+
+\caption{Visualizing combinations of $\textbf{p}$ and $\textbf{q}$.}
+\label{fig:split_pq}
 \end{figure}
 
 But now we run into a problem: no matter how many multiples of \textbf{q} vectors we add or 
 subtract, we just move along the \textbf{p} vector and never reach our goal of 
-$\left[-1, 4 \right]$ (see figure \ref{fig:fail}). Notice that \textbf{p} and 
-\textbf{q} lie on the same line (for a better visualization, refer back to 
-\ref{fig:p_and_q}). When two vectors lie on the same line, we call them 
+$\vecb{-1 \\ 4}$ (see figure \ref{fig:fail}). Notice that \textbf{p} and 
+\textbf{q} lie on the same line, (for a better visualization, refer back to 
+\ref{fig:p_and_q}). In other words, the vectors are \emph{scalar multiples} of each other: $\vecb{2 \\ 2} = -2\cdot \vecb{-1 \\ -1}$. When two vectors lie on the same line or a scalar multiples of each other, we call them 
 \textit{linearly dependent}\index{linearly dependent}. 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -3, xmax = 4, ymin = -3, ymax = 5, axis lines = 
@@ -343,7 +371,7 @@ $\left[-1, 4 \right]$ (see figure \ref{fig:fail}). Notice that \textbf{p} and
             \draw[black, fill = black] (0,0) circle (0.5mm);
             \draw[red, dashed, -latex] (0,0) -- (-1, 4);
             \draw[black, latex-] (-1.1, 3.9) -- (-1.6, 3.4) node[below, 
-            font = \scriptsize] {$\left[ -1, 4 \right]$};
+            font = \scriptsize] {$\vecb{-1 \\ 4}$};
             \draw[thick, orange, -latex] (4, 3.9) -- (3, 2.9) node[below, 
             black, font = \scriptsize, xshift = 0.5cm, yshift = 0.4cm] {
             \textbf{q}};
@@ -361,9 +389,8 @@ $\left[-1, 4 \right]$ (see figure \ref{fig:fail}). Notice that \textbf{p} and
             \textbf{q}};
         \end{axis}
     \end{tikzpicture}
-    \caption{There is no linear combination of $\textbf{p} = \left[2, 2 
-    \right]$ and $\textbf{q} = \left[ -1, -1 \right]$ that yields the vector 
-    $\left[ -1, 4 \right]$.}
+    \caption{There is no linear combination of $\textbf{p} = \vecb{2 \\ 2}$ and $\textbf{q} = \vecb{-1 \\ -1}$ that yields the vector 
+    $\vecb{-1 \\ 4}$.}
     \label{fig:fail}
 \end{figure}
 
@@ -372,40 +399,40 @@ $\left[-1, 4 \right]$ (see figure \ref{fig:fail}). Notice that \textbf{p} and
 Two vectors are linearly dependent if one is a multiple of the other. 
 Mathematically, 
 
-\begin{mdframed}[style = important, frametitle = {Linearly dependent vectors}]
-Vectors $\textbf{u} = \left[ u_1, u_2, \dots, u_n \right]$ and $\textbf{v} = 
-\left[ v_1, v_2, \dots, v_n \right]$ are linearly dependent if
+\begin{mdframed}[style = important, frametitle = {Linearly dependent vectors in $\mathbb{R}^2$}]
+Two vectors $\mathbf{u} = \vecb{u_1 \\ u_2}$ and 
+$\mathbf{v} = \vecb{v_1 \\ v_2}$ in $\mathbb{R}^2$ are linearly dependent if 
+there exists a scalar $a \in \mathbb{R}$ such that
 
-$$\textbf{v} = a \textbf{u}$$
-
-Where $a \in \mathbb{R}$ is a constant.
+$$\mathbf{v} = a\,\mathbf{u}.$$
 \end{mdframed}
 
-Graphically, these vectors lie on the same line (or plane in 3D). 
+Graphically, two linearly dependent vectors in $\mathbb{R}^2$ lie on the same 
+line through the origin (or one of them is the zero vector).
 
-If two vectors are linearly dependent, then linear combinations of those 
-vectors can only create vectors that lie on the same line as the vectors. If 
-two vectors are \textit{not} linearly dependent, they are referred to as linearly \emph{independent} and linear combinations of 
-those vectors can create any vector in $\mathbb{R}^2$ (for two dimensions, we 
-will discuss higher dimensions in the next chapter). 
+If two vectors are linearly dependent, then linear combinations of them can 
+only produce vectors lying on that same line. If they are \textit{not} linearly 
+dependent, they are called linearly \emph{independent}, and their linear 
+combinations can produce every vector in $\mathbb{R}^2$.
+
 
 \textbf{Example}: Which of the following 3 vectors are linearly dependent, if 
 any? 
-$\textbf{u} = \left[1, 2, 3 \right]$, $\textbf{v} = \left[ -3, 4, -1 \right]$, 
-$\textbf{w} = \left[ 6, -8, 2 \right]$.
+$\textbf{u} = \vecb{1 \\ 2 \\ 3}$, $\textbf{v} = \vecb{-3 \\ 4 \\ -1}$, 
+$\textbf{w} = \vecb{6 \\ -8 \\ 2}$.
 
 \textbf{Solution}: Two vectors are linearly dependent if one is a scalar 
 multiple of the other. Let's compare \textbf{u} and \textbf{v}. Since the 
 first component of \textbf{u} is 1 and the first component of \textbf{v} is 
 -3, let's multiply \textbf{u} by -3 to see if we get \textbf{v}:
-$$-3 \textbf{u} = -3 \left[ 1, 2, 3, \right] = \left[ -3, -6, -9 \right] \neq 
+$$-3 \textbf{u} = -3 \vecb{1 \\ 2 \\ 3} = \vecb{-3 \\ -6 \\ -9} \neq 
 \textbf{v}$$
 
 Therefore, \textbf{u} and \textbf{v} are \textit{not} linearly dependent. Now 
 let's examine \textbf{v} and \textbf{w}. Again, we will use the first 
 components: the first component of \textbf{w} is 6, so let's see if multiplying 
 \textbf{v} by -2 yields \textbf{w}:
-$$-2\textbf{v} = -2 \left[ -3, 4, -1 \right] = \left[ 6, -8, 2 \right] = 
+$$-2\textbf{v} = -2 \vecb{-3 \\ 4 \\ -1} = \vecb{6 \\ -8 \\ 2} = 
 \textbf{w}$$
 
 Therefore, \textbf{v} and \textbf{w} are linearly dependent. Since we already 
@@ -415,24 +442,26 @@ that \textbf{u} and \textbf{w} are also not linearly dependent.
 \begin{Exercise}[title = Linear Dependence, label = colinear]
 Identify which, if any, of the following vectors are linearly dependent:
 \begin{enumerate}
-\item $\textbf{a} = \left[ -4, 1, 4 \right]$
-\item $\textbf{b} = \left[ -4, 5, -3 \right]$
-\item $\textbf{c} = \left[ 2, -4, 6 \right]$
-\item $\textbf{d} = \left[ 1, -\frac{1}{4}, -1 \right]$
-\item $\textbf{e} = \left[1, -2, 3 \right]$
-\item $\textbf{f} = \left[ -6, \frac{3}{2}, 6 \right]$
+\item $\textbf{a} = \vecb{-4 \\ 1 \\ 4}$
+\item $\textbf{b} = \vecb{-4 \\ 5 \\ -3}$
+\item $\textbf{c} = \vecb{2 \\ -4 \\ 6}$
+\item $\textbf{d} = \vecb{1 \\ -\frac{1}{4} \\ -1}$
+\item $\textbf{e} = \vecb{1 \\ -2 \\ 3}$
+\item $\textbf{f} = \vecb{-6 \\ \frac{3}{2} \\ 6}$
 \end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref = colinear]
-We see that $\frac{\textbf{a}}{-4} = -\frac{1}{4} \left[ -4, 1, 4 \right] = 
-\left[ 1, -\frac{1}{4}, -1 \right] = \textbf{d}$. Additionally, $\frac{3}{2} 
-\textbf{a} = \frac{3}{2} \left[ -4, 1, 4 \right] = \left[ -6, \frac{3}{2}, 6 
-\right] = \textbf{f}$. Therefore, vectors \textbf{a}, \textbf{d}, and \textbf{f} 
+We see that $\frac{\textbf{a}}{-4} = -\frac{1}{4} \vecb{-4 \\ 1 \\ 4} = 
+\vecb{1 \\ -\frac{1}{4} \\ -1} = \textbf{d}$. Additionally, $\frac{3}{2} 
+\textbf{a} = \frac{3}{2} \vecb{-4 \\ 1 \\ 4} = \vecb{-6 \\ \frac{3}{2} \\ 6} 
+= \textbf{f}$. Therefore, vectors \textbf{a}, \textbf{d}, and \textbf{f} 
 are linearly dependent. 
 
-We also see that $\frac{1}{2} \textbf{c} = \frac{1}{2} \left[ 2, -4, 6 \right] 
-= \left[ 1, -2, 3 \right] = \textbf{e}$. Therefore, vectors \textbf{c} and 
+We also see that $\frac{1}{2} \textbf{c} = \frac{1}{2} \vecb{2 \\ -4 \\ 6} 
+= \vecb{1 \\ -2 \\ 3} = \textbf{e}$. Therefore, vectors \textbf{c} and 
 \textbf{e} are linearly dependent. Vector \textbf{b} is not linearly dependent 
 to any of the other vectors. 
 \end{Answer}
+
+In the next chapter, we will be looking more at linear combinations, span, and independence in the form of systems of equations. 

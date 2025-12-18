@@ -1325,6 +1325,7 @@ final=true]
   literate={"}{{\texttt{"}}}1
 }
 
+\newcommand{\vecb}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 
 %% space above and below equations
 \abovedisplayskip=11pt
