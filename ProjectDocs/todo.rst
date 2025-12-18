@@ -58,7 +58,7 @@ or ``\index{butters!peanut}``
 Additionally, all figures (TikZ pictures or inserted images or diagrams) should have the format of a LaTeX figure for consistency::
 
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\textwidth]{example.png}
         \caption{Your descriptive caption here.}

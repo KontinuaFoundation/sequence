@@ -26,7 +26,7 @@ For each of these , think of large scale problems for which there are many varia
 
 When neural networks were first being developed to recognize things (faces, letters, music, and so on), the goal was to calculate weights between network nodes that would minimize the recognition error. The error space could be visualized as a surface of valleys and hills. The lowest point would have the least error. The idea behind the iterative weight calculations for training the network was to descend down the gradient until reaching the low point. Without getting into the mathematics, you can see by looking at this figure that there are two valleys. Some neural network training resulted in ending at a low point, but not the lowest point. Wouldn’t it be great if you could formulate an optimization problem so that you would be guaranteed to land at the lowest point? That is where semidefinite programming can help.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{neuralnet-error-function.png}
     \caption{FIXME.}
@@ -78,7 +78,7 @@ $$
 $$
 For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a postive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an elliptope. This shape guarantees an optimal solution.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{elliptope.jpg}
     \caption{Elliptope visualized.}
@@ -125,7 +125,7 @@ If you randomly assign $1$ and $-1$ to the nodes, the chance of making the max c
 
 The Goemans-Williamson technique can be used for any optimization problem where the variables take on the values of $1$ and $-1$.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
          \node[circle, draw= black] (node 0) {0};
@@ -187,7 +187,7 @@ Goemans-Williamson leveraged the fact that the end point of a unit vector is on 
 
 You can then assign the scalar values to the nodes and make the cut accordingly. This particular cut will be 5, as shown.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{max-cut.png}
     \caption{The result of the MaxCut.}
