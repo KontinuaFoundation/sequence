@@ -127,7 +127,7 @@ A geosynchronous satellite travels at a speed of 3,070 m/s.
 Geosynchronous satellites are used for the Global Positioning
 Satellite system, weather monitoring system, and communications
 system.
-FIXME: Add text for escape velocity
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\textwidth]{escape.png}
@@ -138,9 +138,143 @@ FIXME: Add text for escape velocity
 % required by AP standards
 There are three laws that describe the motion of planets and their ellipical properties.
 \begin{enumerate}
-  \item Every planet moves along an ellipse with the sun at one focus. FIXME diagram here
-  \item As a planet moves around its orbit, it sweeps out equal areas in equal times. This means that a planet moves faster when it is closer to the sun and slower when it is farther from the sun. FIXME diagram here
-  \item If $T$ is the period of a planet's orbit, and $a$ is the length of the semi-major axis of the ellipse, then $\frac{T^2}{a^3}$ is the same for all planets orbiting the same star. 
+  \item Every planet moves along an ellipse with the sun at one focus.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \def\a{3}
+  \def\b{1.5}
+  \pgfmathsetmacro{\c}{sqrt(\a*\a-\b*\b)} % focus distance
+      % Ellipse
+        \draw[
+        thick,
+        postaction={
+          decorate,
+          decoration={
+            markings,
+            mark=at position 0.25 with {\arrow{Latex}},
+            mark=at position 0.75 with {\arrow{Latex}}
+          }
+        }
+      ] (0,0) ellipse (\a cm and \b cm);
+
+
+      % Axes
+      \draw[dashed, gray] (-\a,0) -- (\a,0);
+      \draw[dashed, gray] (0,-\b) -- (0,\b);
+
+      \filldraw[
+        fill=yellow!90!orange,
+        draw=orange!80!black,
+        line width=0.8pt
+      ] (-\c, 0) circle (0.25cm) node[above right=2pt]{Sun};
+
+
+
+
+
+      % Planet (point on the ellipse)
+      \fill[blue]
+        (30:\a cm and \b cm) circle (0.1cm) node[above, right]{Planet};
+      \draw (0,-2) node[]{Orbital path};
+
+
+    \end{tikzpicture}    
+    \caption{A diagram of Kepler's First Law.}
+    \label{fig:keplerLaw1}
+\end{figure}
+
+  \item As a planet moves around its orbit, it sweeps out equal areas in equal times. This means that a planet moves faster when it is closer to the sun and slower when it is farther from the sun. Note that this directly comes from the \emph{Conservation of Angular Momentum}.
+
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}
+  % ellipse parameters
+  \def\a{3}
+  \def\b{1.5}
+  \pgfmathsetmacro{\c}{sqrt(\a*\a-\b*\b)} % focus distance
+
+  % focus (Sun)
+  \coordinate (S) at (-\c,0);
+
+  % choose two planet positions on the ellipse (angles)
+  \def\tA{15}
+  \def\tB{80}
+  \coordinate (P1) at (\tA:\a cm and \b cm);
+  \coordinate (P2) at (\tB:\a cm and \b cm);
+  \def\tC{160}
+  \def\tD{210}
+  \coordinate (P3) at (\tC:\a cm and \b cm);
+  \coordinate (P4) at (\tD:\a cm and \b cm);
+
+  % ellipse with arrows
+  \draw[
+    thick,
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=at position 0.25 with {\arrow{Latex}},
+        mark=at position 0.75 with {\arrow{Latex}}
+      }
+    }
+  ] (0,0) ellipse (\a cm and \b cm);
+
+  \def\arcraise{2mm} % for vectors 
+
+  % radius vectors
+  \draw[thin] (S) -- (P1);
+  \draw[thin] (S) -- (P2);
+  
+  \fill[blue!20, opacity=0.6]
+  (S) -- (P1)
+  arc[start angle=\tA, end angle=\tB, x radius=\a cm, y radius=\b cm]
+  -- cycle;
+  \fill[blue] (P1) circle (0.08cm);
+  \fill[blue] (P2) circle (0.08cm);
+
+\draw[thick, ->]
+  (\tA:{\a cm+\arcraise} and {\b cm+\arcraise})
+  arc[
+    start angle=\tA,
+    end angle=\tB,
+    x radius={\a cm+\arcraise},
+    y radius={\b cm+\arcraise}
+  ]
+  node[pos=0.55, above=3pt, sloped=false]{$\Delta t$};
+
+
+  
+  \draw[thin] (S) -- (P3);
+  \draw[thin] (S) -- (P4);
+  
+  \fill[blue!20, opacity=0.6]
+  (S) -- (P3)
+  arc[start angle=\tC, end angle=\tD, x radius=\a cm, y radius=\b cm]
+  -- cycle;
+  \fill[blue] (P3) circle (0.08cm);
+  \fill[blue] (P4) circle (0.08cm);
+  \draw[thick, ->]
+    (\tC:{\a cm+\arcraise} and {\b cm+\arcraise})
+    arc[
+      start angle=\tC,
+      end angle=\tD,
+      x radius={\a cm+\arcraise},
+      y radius={\b cm+\arcraise}
+    ]node[midway, left]{$\Delta t$};
+  %Sun
+   \filldraw[
+  fill=yellow!90!orange,
+  draw=orange!80!black,
+  line width=0.8pt
+] (S) circle (0.25cm);
+
+  
+\end{tikzpicture}
+\caption{A diagram of Kepler's Second Law.}
+\label{fig:keplerLaw2}
+\end{figure}
+\item If $T$ is the period of a planet's orbit, and $a$ is the length of the semi-major axis of the ellipse, then $\tfrac{T^2}{a^3}$ is the same for all planets orbiting the same star. 
 \end{enumerate}
 
 %FIXME this could be expanded with exercises
@@ -155,11 +289,11 @@ We can derive its initial energy as: $E = K + U = \frac{1}{2}mv^2 - \frac{GMm}{R
 
 After its escape, the object will be infinitely far away from the planet, and its potential energy will be zero. If we assume it just barely escapes, its kinetic energy will also be zero. Therefore, we set the initial energy equal to zero:
 \begin{align}
-  \frac{1}{2}mv^2 - \frac{GMm}{R} = 0 \\
-  v_{\text{esc}} = \sqrt{\frac{2GM}{R}}
-  \label{eq:escveleq}
+  \frac{1}{2}mv^2 - \frac{GMm}{R} &= 0 \\
+  \frac{1}{2}mv^2 &= \frac{GMm}{R} \\
+  v^2 &= \frac{2GM}{R} \\
+  v_{\text{esc}} &= \sqrt{\frac{2GM}{R}}
 \end{align}
-
 
 Notice that the mass of the object $m$ cancels out, meaning that the escape velocity is independent of the mass of the escaping object. It only depends on the mass of the planet and the distance from its center.
 
