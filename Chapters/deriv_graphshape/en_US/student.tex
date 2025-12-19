@@ -5,7 +5,7 @@
 Let's re-examine our graph showing the height of a hammer tossed in the air:
 \index{critical values}
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
     \begin{axis}[ymin=0,ymax=1.4, xmin=0, xmax=1.2, axis lines=left]
@@ -22,7 +22,7 @@ figure \ref{ref:hammerh}). Let's add tangent lines just before and after the
 peak of the hammer's path, so we can more easily examine how the slope of the 
 graph changes:
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
     \begin{axis}[ymin=0,ymax=1.4, xmin=0, xmax=1.2, axis lines=left]
@@ -50,9 +50,9 @@ to negative. In fact, at the highest point of the hammer's flight, the slope
 \end{enumerate}
 
 \index{increasing}\index{decreasing}
-Example 1: Find where the function $f(x) = 3x^4-4x^3-12x^2+5$ is increasing. 
+\textbf{Example 1}: Find where the function $f(x) = 3x^4-4x^3-12x^2+5$ is increasing. 
 
-Solution: We want to find the intervals where $f'(x)>0$. First, we take the 
+\textbf{Solution}: We want to find the intervals where $f'(x)>0$. First, we take the 
 derivative to find $f'(x)$:
 $$f'(x) = 12x^3-12x^2-24x$$
 
@@ -66,7 +66,8 @@ critical values}, and we will use them to divide $f'(x)$ into intervals.
 this text.) On each of these intervals, $f'(x)$ must be always positive or 
 always negative. This is shown in the graph below:
 
-\begin{figure}
+\begin{figure}[H]
+	\centering
 	\begin{tikzpicture}
 		\begin{axis}[xmin=-2, xmax=3, axis lines=center]
 		\addplot[blue, samples=100, domain=-2:3]{12*x*(x-2)*(x+1)};
@@ -140,28 +141,43 @@ this to estimate the value of the derivative at that point.
 \index{local extrema}
 \index{local minimum}
 \index{local maximum}
-%FIXME format graphs side-by-side horizontally
+\begin{figure}[H]
+\centering
+
+\begin{minipage}{0.32\textwidth}
+\centering
 \begin{tikzpicture}
 	\begin{axis}[width=4cm, xmin=0, xmax=6.28, axis lines=center]
 	\addplot[blue, samples=50, domain=0:6.28]{sin(deg(x))};
-	\addplot[red, mark=*]coordinates {(1.57, 1)};
-	\addplot[red, mark=*]coordinates{(4.71, -1)};
+	\addplot[red, mark=*] coordinates {(1.57, 1)};
+	\addplot[red, mark=*] coordinates {(4.71, -1)};
 	\end{axis}
 \end{tikzpicture}
-
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
 \begin{tikzpicture}
 	\begin{axis}[width=4cm, xmin=-2, xmax=2, axis lines=center]
 	\addplot[blue, samples=50, domain=-2:2]{x^2};
-	\addplot[red, mark=*]coordinates{(0, 0)};
+	\addplot[red, mark=*] coordinates {(0, 0)};
 	\end{axis}
 \end{tikzpicture}
-
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
 \begin{tikzpicture}
 	\begin{axis}[width=4cm, xmin=-2, xmax=2, axis lines=center]
 	\addplot[blue, samples=50, domain=-2:2]{sqrt(4-x^2)};
-	\addplot[red, mark=*]coordinates{(0, 2)};
+	\addplot[red, mark=*] coordinates {(0, 2)};
 	\end{axis}
 \end{tikzpicture}
+\end{minipage}
+
+\caption{Three functions with highlighted points.}
+\end{figure}
+
 
 You should notice that all of the tangent lines are horizontal. Since the 
 tangent lines at these local extrema have a slope of $0$, that tells us $f'(x) 
@@ -171,7 +187,7 @@ statement is not necessarily true; just because the derivative is zero at
 some $x = c$, it does not mean there is a local extrema at $f(c)$. Consider 
 $f(x) = x^3+3$, shown in figure  \ref{fig:nonextrema}:
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[axis lines=center]
@@ -191,7 +207,7 @@ versa. Look closely at figure \ref{fig:nonextrema}: the function is increasing
 for $x<0$ and $x>0$. Another way of saying this is to note that the graph of 
 $f'(x)$ touches but does not cross the x-axis in this case:
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[axis lines = left]
@@ -209,18 +225,18 @@ $f(x) = \sin{x}$, $f'(x)=\cos{x}$, presented in figure \ref{fig:fprimecos}.
 The x-values where local extrema exist on $f(x)$ are marked in red (recall 
 $\sin{x} = \pm 1$ when $x=\frac{n\pi}{2}$):
 
-\begin{figure}
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[width=4cm, xmin=0, xmax=6.28, axis lines=center]
-		\addplot[blue, samples=50, domain=0:6.28]{cos(deg(x))};
-		\addplot[red, mark=*]coordinates {(1.57, 0)};
-		\addplot[red, mark=*]coordinates{(4.71, 0)};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{$f'(x) = \cos{x}$}
-	\label{fig:fprimecos}
-\end{figure}
+\begin{wrapfigure}{r}{5cm}  % r = right side, width = 5cm
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[width=4cm, xmin=0, xmax=6.28, axis lines=center]
+            \addplot[blue, samples=50, domain=0:6.28]{cos(deg(x))};
+            \addplot[red, mark=*] coordinates {(1.57, 0)};
+            \addplot[red, mark=*] coordinates {(4.71, 0)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{$f'(x) = \cos x$}
+    \label{fig:fprimecos}
+\end{wrapfigure}
 
 
 As you can see, local extrema are indicated when $f'(x)$ crosses the x-axis. 
@@ -421,16 +437,123 @@ Find the global minimum and maximum values on the stated interval.
 \begin{Answer}[ref=gloext2]
 \begin{enumerate}
 	\item $f'(x) = 4-2x$ and to find the critical numbers, we set $f'(x)=0$:
-$$4-2x=0$$
-$$x=2$$
-We evaluate $f(x)$ at $x=0, 2, 5$:
-$$f(0) = 12+4(0)-0^2=12$$
-$$f(2) = 12+4(2)-2^2=12+8-4=16$$
-$$f(5) = 12+4(5)-5^2=12+20-25=7$$
-Therefore, the global maximum is $f(2) = 16$ and the global minimum is $f(5) = 7$.
-\item %fixme complete answer key for gloext2
+	$$4-2x=0$$
+	$$x=2$$
+	We evaluate $f(x)$ at $x=0, 2, 5$:
+	$$f(0) = 12+4(0)-0^2=12$$
+	$$f(2) = 12+4(2)-2^2=12+8-4=16$$
+	$$f(5) = 12+4(5)-5^2=12+20-25=7$$
+	Therefore, the global maximum is $f(2) = 16$ and the global minimum is $f(5) = 7$.
+
+	\item $f(t) = \dfrac{\sqrt{t}}{1+t^2}$, $[0,2]$.
+
+	We write $f(t) = t^{1/2}(1+t^2)^{-1}$ and differentiate:
+	\[
+	f'(t) = \frac{1-3t^2}{2\sqrt{t}(1+t^2)^2}.
+	\]
+	Critical points occur when the numerator is zero (and $t$ is in the interval):
+	\[
+	1-3t^2 = 0 \quad \Rightarrow \quad t = \frac{1}{\sqrt{3}}.
+	\]
+	We evaluate $f(t)$ at $t=0, \frac{1}{\sqrt{3}}, 2$:
+	\[
+	f(0) = 0, \qquad
+	f\!\left(\frac{1}{\sqrt{3}}\right) = \frac{3^{3/4}}{4}, \qquad
+	f(2) = \frac{\sqrt{2}}{5}.
+	\]
+	Since $\dfrac{3^{3/4}}{4}$ is the largest of these and $0$ is the smallest, the global maximum is
+	\[
+	f\!\left(\frac{1}{\sqrt{3}}\right) = \frac{3^{3/4}}{4},
+	\]
+	and the global minimum is
+	\[
+	f(0) = 0.
+	\]
+
+	\item $f(t) = 2\cos t + \sin(2t)$, $\left[0,\frac{\pi}{2}\right]$.
+
+	We differentiate:
+	\[
+	f'(t) = -2\sin t + 2\cos(2t).
+	\]
+	Set $f'(t) = 0$:
+	\[
+	-2\sin t + 2\cos(2t) = 0
+	\quad \Rightarrow \quad
+	\cos(2t) = \sin t.
+	\]
+	Use $\cos(2t) = 1 - 2\sin^2 t$:
+	\[
+	1 - 2\sin^2 t = \sin t
+	\quad \Rightarrow \quad
+	2\sin^2 t + \sin t - 1 = 0.
+	\]
+	Let $u = \sin t$:
+	\[
+	2u^2 + u - 1 = 0
+	\quad \Rightarrow \quad
+	u = \frac{1}{2} \text{ or } u = -1.
+	\]
+	On $\left[0,\frac{\pi}{2}\right]$, $\sin t = \frac{1}{2}$ gives $t = \frac{\pi}{6}$ (and $\sin t = -1$ is not in this interval).
+
+	Evaluate $f(t)$ at $t=0, \frac{\pi}{6}, \frac{\pi}{2}$:
+	\[
+	f(0) = 2\cos 0 + \sin 0 = 2,
+	\]
+	\[
+	f\!\left(\frac{\pi}{6}\right) = 2\cos\!\left(\frac{\pi}{6}\right) 
+	+ \sin\!\left(\frac{\pi}{3}\right)
+	= 2\cdot\frac{\sqrt{3}}{2} + \frac{\sqrt{3}}{2}
+	= \frac{3\sqrt{3}}{2},
+	\]
+	\[
+	f\!\left(\frac{\pi}{2}\right)
+	= 2\cos\!\left(\frac{\pi}{2}\right) + \sin(\pi)
+	= 0 + 0 = 0.
+	\]
+	Hence the global maximum is
+	\[
+	f\!\left(\frac{\pi}{6}\right) = \frac{3\sqrt{3}}{2},
+	\]
+	and the global minimum is
+	\[
+	f\!\left(\frac{\pi}{2}\right) = 0.
+	\]
+
+	\item $f(x) = \ln(x^2 + x + 1)$, $[-1,1]$.
+
+	Differentiate:
+	\[
+	f'(x) = \frac{2x+1}{x^2 + x + 1}.
+	\]
+	To find critical points, set the numerator equal to $0$:
+	\[
+	2x + 1 = 0 \quad \Rightarrow \quad x = -\frac{1}{2}.
+	\]
+	Evaluate $f(x)$ at $x = -1, -\frac{1}{2}, 1$:
+	\[
+	f(-1) = \ln(1 - 1 + 1) = \ln 1 = 0,
+	\]
+	\[
+	f\!\left(-\frac{1}{2}\right) 
+	= \ln\!\left(\left(-\frac{1}{2}\right)^2 - \frac{1}{2} + 1\right)
+	= \ln\!\left(\frac{1}{4} - \frac{1}{2} + 1\right)
+	= \ln\!\left(\frac{3}{4}\right),
+	\]
+	\[
+	f(1) = \ln(1 + 1 + 1) = \ln 3.
+	\]
+	Since $\ln\!\left(\frac{3}{4}\right) < 0 < \ln 3$, the global minimum is
+	\[
+	f\!\left(-\frac{1}{2}\right) = \ln\!\left(\frac{3}{4}\right),
+	\]
+	and the global maximum is
+	\[
+	f(1) = \ln 3.
+	\]
 \end{enumerate}
 \end{Answer}
+
 
 \section{Sketching f from f'}
 Now that we know how the shape of $f$ is related to the value of $f'$, we can 

@@ -15,8 +15,12 @@ getting the container to that city.
 
 You start by marking the price for Long Beach to zero (the container is already there). You then mark each adjacent city with the cost on
 the edge. Next, you declare Long Beach to be ``visited''.
-
-\includegraphics[width=0.9\textwidth]{step1.png}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{step1.png}
+    \caption{A map of weighted cities.}
+    \label{fig:step1}
+\end{figure}
 
 After that, you find the cheapest of the unvisited nodes.  In this case, Los
 Angeles is cheaper than San Diego, so that is the node you will visit
@@ -26,8 +30,13 @@ You mark all of the unvisited nodes adjacent to Los Angeles, with the
 price to ship it to Los Angeles plus the cost of shipping the
 container from Los Angeles to that city. Note that Bakersfield is
 marked with \$22.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{step2.png}
+    \caption{Marking each node with the cost to get to that city from the origin.}
+    \label{fig:step2}
+\end{figure}
 %FIXME these could be changed to latex
-\includegraphics[width=0.9\textwidth]{step2.png}
 
 Now, the cheapest unvisited node is San Diego, so you mark its
 neighbors with the cost to ship to San Diego, plus the price to ship
@@ -53,7 +62,12 @@ that gets me that price?''  So, we will also mark each node with the
 neighbor from which it would receive the shipment --- the previous
 node.  This is easy to do as we execute the algorithm.
 
-\includegraphics[width=0.4\textwidth]{prev.png}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{prev.png}
+    \caption{Marking each previous node.}
+    \label{fig:example}
+\end{figure}
 
 Now, to figure out the cheapest route from San Diego to Bakersfield,
 we start at the destination and follow the \pyvar{prev} pointer back

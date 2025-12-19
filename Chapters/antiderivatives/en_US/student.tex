@@ -264,47 +264,52 @@ decreasing. Similarly, for $x>0$, the slope of $\ln{|x|}$ is positive
 and decreasing (becoming less positive) and the value of $\frac{1}{x}$ 
 is also positive and decreasing. 
 
-\begin{figure}[htpb]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[axis lines = center, legend pos = north west,
-			xmin = -5, xmax = 5, xlabel = $x$,
-			ymin = -5, ymax = 5, ylabel = $y$]
-            \addplot[red, thick, samples=50, domain= 0.1:5]{1/x};
-			\addlegendentry{$f(x) = \frac{1}{x}$}
-			\addplot[blue, thick, samples=100, domain = 0.00001:5]{ln(x)};
-			\addlegendentry{$\int \frac{1}{x}\,dx = \ln{|x|}$}
-            \addplot[red, thick, samples=50, domain=-5:-0.001]{1/x};
-            \addplot[blue, thick, samples=50, domain = -5:-0.001]{ln(-1*x)};
-		\end{axis}
-	\end{tikzpicture}
- \caption{$\frac{1}{x}$ and its antiderivative, $\ln{|x|}$}
- \label{fig:naturallog}
-\end{figure}
-
 Since the derivative of $e^{x}$ is $e^{x}$, it follows that the general 
 antiderivative of $e^{x}$ is $e^{x} + C$. What if there is a 
 multiplying factor in the exponent, such as $e^{kx}$? Recall that 
 $\frac{d}{dx} e^{kx} = k e^{kx}$. It follows that $\frac{d}{dx} 
 \frac{1}{k} e^{kx} = e^{kx}$. Therefore, the general antiderivative of 
 $e^{kx}$ is $\frac{1}{k} e^{kx} + C$. (See figure \ref{fig:antiexp} 
-for an example where $k = 2$.)
-
-\begin{figure}[H]
+for an example where $k = 2$.)\begin{figure}[H]
 \centering
-	\begin{tikzpicture}
-		\begin{axis}
-			[xmin = -2, xmax = 2, xlabel = $x$, ylabel = $y$, ymax = 25,
-			axis lines = center, legend pos = north west]
-			\addplot[blue, thick, samples = 100, domain = -2:2]{e^(2*x)};
-			\addlegendentry{$e^{2x}$}
-			\addplot[red, thick, samples = 100, domain = -2:2]{0.5*e^(2*x)};
-			\addlegendentry{$\frac{1}{2} e^{2x}$}
-		\end{axis}	
-	\end{tikzpicture}
-	\caption{$e^{2x}$ and its antiderivative $\frac{1}{2}e^{2x}$}
-	\label{fig:antiexp}
+
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[xscale=0.7, yscale=0.7]
+	\begin{axis}[axis lines = center, legend pos = north west,
+		xmin = -5, xmax = 5, xlabel = $x$,
+		ymin = -5, ymax = 5, ylabel = $y$]
+		\addplot[red, thick, samples=50, domain= 0.1:5]{1/x};
+		\addlegendentry{$f(x) = \frac{1}{x}$}
+		\addplot[blue, thick, samples=100, domain = 0.00001:5]{ln(x)};
+		\addlegendentry{$\int \frac{1}{x}\,dx = \ln{|x|}$}
+		\addplot[red, thick, samples=50, domain=-5:-0.001]{1/x};
+		\addplot[blue, thick, samples=50, domain = -5:-0.001]{ln(-1*x)};
+	\end{axis}
+\end{tikzpicture}
+\caption{$\frac{1}{x}$ and its antiderivative $\ln|x|$}
+\label{fig:naturallog_sub}
+\end{subfigure}\hfill% <-- no blank line here
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[xscale=0.7, yscale=0.7]
+	\begin{axis}
+		[xmin = -2, xmax = 2, xlabel = $x$, ylabel = $y$, ymax = 25,
+		axis lines = center, legend pos = north west]
+		\addplot[blue, thick, samples = 100, domain = -2:2]{e^(2*x)};
+		\addlegendentry{$e^{2x}$}
+		\addplot[red, thick, samples = 100, domain = -2:2]{0.5*e^(2*x)};
+		\addlegendentry{$\frac{1}{2} e^{2x}$}
+	\end{axis}	
+\end{tikzpicture}
+\caption{$e^{2x}$ and its antiderivative $\frac{1}{2}e^{2x}$}
+\label{fig:antiexp_sub}
+\end{subfigure}
+
+\caption{Two examples of functions and their antiderivatives.}
+\label{fig:anti_combined}
 \end{figure}
+
 
 Often, the base of an exponential function is not $e$. We can also find 
 the general antiderivative of $b^{x}$, where $b \neq e$. Recall that 

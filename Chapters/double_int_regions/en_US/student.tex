@@ -180,71 +180,88 @@ $$\textit{D} = \{(x, y) \text{ } | \text{ } c \leq y \leq d, h_1(y0 \leq x
 In a similar manner to above, we can show that:
 $$\iint_{\textit{D}} f(x, y)\,dA = \int_c^d \int_{h_1(y)}^{h_2(y)} f(x, y)
 \,dx\,dy$$
-
 \begin{figure}[H]
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
-                
-                \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) -- 
-                (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) -- 
-                (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) -- 
-                (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) -- 
-                (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) -- 
-                (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) -- 
-                (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) 
-                -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) 
-                -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) -- 
-                (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) 
-                -- (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) -- 
-                (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) 
-                -- (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- 
-                (1.073, 0.95) -- (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) 
-                -- (1.099, 0.75) -- (1.093, 0.7) -- (1.083, 0.65) -- 
-                (1.021, 0.5) -- (0.922, 0.35) -- (0.795, 0.2) -- cycle;
-                \addplot[name path = A, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*sin(deg(2*x)) + 0.6, x) ;
-                \addplot[name path = B, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*cos(deg(3*x)) + 2, x);
-                \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
-                \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
-                \draw[dashed] (0.795, 0.2) -- (0, 0.2) node[left] {$a$};
-                \draw[dashed] (0.365, 2.9) -- (0, 2.9) node[left] {$b$};
-                \node[] at (2.5, 1.5) {$x = h_2 (x)$};
-                \node[] at (0.6, 1.0) {$x = h_1 (x)$};
-                \node[] at (1.3, 2) {\textit{D}};
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
-                \draw[orange, fill = orange!30] (0.865, 2.9) -- (2.475, 2.9) 
-                -- (2.396, 2.6) -- (2.317, 2.3) -- (2.232, 2) -- (2.143, 1.7) 
-                -- (2.049, 1.4) -- (1.949, 1.1) -- (1.842, 0.8) -- (1.725, 0.5) 
-                -- (1.638, 0.295) -- (1.529, 0.5) -- (1.404, 0.8) -- 
-                (1.301, 1.1) -- (1.211, 1.4) -- (1.131, 1.7) -- (1.057, 2) -- 
-                (0.989, 2.3) -- (0.925, 2.6) -- cycle;
-                \addplot[name path = A, domain = 0.295:2.9, orange, thick, 
-                samples = 150] (sqrt(x + 1) + 0.5, x);
-                \addplot[name path = B, domain = 0.295:2.9, orange, thick, 
-                samples = 150] (-2*sqrt(x)/3 + 2, x);
-                \draw[orange, thick] (0.865, 2.9) -- (2.475, 2.9);
-                \draw[dashed] (1.638, 0.295) -- (0, 0.295) node[left] {$a$};
-                \draw[dashed] (0.865, 2.9) -- (0, 2.9) node[left] {$b$};
-                \node[] at (2.6, 1.7) {$x = h_2 (x)$};
-                \node[] at (0.8, 1.25) {$x = h_1 (x)$};
-                \node[] at (1.5, 1.5) {\textit{D}};
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    \caption{Two examples of type II domains}
-    \label{fig:type2}
+\centering
+
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+    \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+    axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+        
+        \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) --
+        (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) --
+        (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) --
+        (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) --
+        (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) --
+        (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) --
+        (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) --
+        (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) --
+        (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) --
+        (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) --
+        (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) --
+        (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) --
+        (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- (1.073, 0.95) --
+        (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) -- (1.099, 0.75) --
+        (1.093, 0.7) -- (1.083, 0.65) -- (1.021, 0.5) --
+        (0.922, 0.35) -- (0.795, 0.2) -- cycle;
+
+        \addplot[name path=A, domain=0.2:2.9, orange, thick, samples=100]
+            (0.5*sin(deg(2*x)) + 0.6, x);
+        \addplot[name path=B, domain=0.2:2.9, orange, thick, samples=100]
+            (0.5*cos(deg(3*x)) + 2, x);
+
+        \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
+        \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
+
+        \draw[dashed] (0.795, 0.2) -- (0, 0.2) node[left] {$a$};
+        \draw[dashed] (0.365, 2.9) -- (0, 2.9) node[left] {$b$};
+
+        \node at (2.5, 1.5) {$x = h_2(x)$};
+        \node at (0.6, 1.0) {$x = h_1(x)$};
+        \node at (1.3, 2) {\textit{D}};
+    \end{axis}
+\end{tikzpicture}
+
+\caption{Example 1}
+\end{subfigure}\hfill%
+\begin{subfigure}{0.48\textwidth}
+\centering
+
+\begin{tikzpicture}
+    \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+    axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+        
+        \draw[orange, fill=orange!30] (0.865, 2.9) -- (2.475, 2.9) --
+        (2.396, 2.6) -- (2.317, 2.3) -- (2.232, 2) -- (2.143, 1.7) --
+        (2.049, 1.4) -- (1.949, 1.1) -- (1.842, 0.8) -- (1.725, 0.5) --
+        (1.638, 0.295) -- (1.529, 0.5) -- (1.404, 0.8) --
+        (1.301, 1.1) -- (1.211, 1.4) -- (1.131, 1.7) -- (1.057, 2) --
+        (0.989, 2.3) -- (0.925, 2.6) -- cycle;
+
+        \addplot[name path=A, domain=0.295:2.9, orange, thick, samples=150]
+            (sqrt(x + 1) + 0.5, x);
+        \addplot[name path=B, domain=0.295:2.9, orange, thick, samples=150]
+            (-2*sqrt(x)/3 + 2, x);
+
+        \draw[orange, thick] (0.865, 2.9) -- (2.475, 2.9);
+
+        \draw[dashed] (1.638, 0.295) -- (0, 0.295) node[left] {$a$};
+        \draw[dashed] (0.865, 2.9) -- (0, 2.9) node[left] {$b$};
+
+        \node at (2.6, 1.7) {$x = h_2(x)$};
+        \node at (0.8, 1.25) {$x = h_1(x)$};
+        \node at (1.5, 1.5) {\textit{D}};
+    \end{axis}
+\end{tikzpicture}
+
+\caption{Example 2}
+\end{subfigure}
+
+\caption{Two examples of type II domains}
+\label{fig:type2}
 \end{figure}
+
 
 You can annotate type II regions with horizontal lines to show that, for a 
 given $y$ values, all $x$ values in the region are contained in $h_1(y) \leq x 
@@ -339,66 +356,90 @@ between the curves $y = \frac{3}{2}(x - 1)$ and $y = \frac{1}{2} (x - 1)^2$
     \label{fig:example1}
 \end{figure}
 
-We could classify this as a type I (see figure \ref{fig:example_typeI}) or a 
-type II domain (see figure \ref{fig:example_typeII}). 
-
+We could classify this as a type I (see figure \ref{fig:typeI_sub}) or a 
+type II domain (see figure \ref{fig:typeII_sub}). 
 \begin{figure}[H]
-    \centering
-        \begin{tikzpicture}
-    \begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
-    xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
-        \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
-        \addplot[blue, thick, samples = 100, name path = B, domain = 1:4] 
+\centering
+
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
+xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
+
+    \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
+    \addplot[blue, thick, samples = 100, name path = B, domain = 1:4]
         {(x-1)^2/2};
-        \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
-        \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
-        \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
-        \node[] at (4, 2.5) {$y = \frac{(x - 1)^2}{2}$};
-        \node[] at (1.5, 2) {$y = \frac{3(x-1)}{2}$};
-        \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
-        \node[] at (4.5, 4.5) {$(4, 4.5)$};
-        \node[] at (1.25, -0.3) {$(1, 0)$};
-        \draw[-latex, blue, thin] (1.5, 0.125) -- (1.5, 0.5);
-        \draw[blue, thin](1.5, 0.5) -- (1.5, 0.75);
-        \draw[-latex, blue, thin] (2.5, 1.125) -- (2.5, 1.75);
-        \draw[blue, thin] (2.5, 1.75) -- (2.5, 2.25);
-        \draw[-latex, blue, thin] (3.5, 3.125) -- (3.5, 3.45);
-        \draw[blue, thin] (3.5, 3.45) -- (3.5, 3.75);
-    \end{axis}
+
+    \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+
+    \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
+    \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
+
+    \node[] at (4, 2.5) {$y = \frac{(x - 1)^2}{2}$};
+    \node[] at (1.5, 2) {$y = \frac{3(x-1)}{2}$};
+
+    \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
+    \node[] at (4.5, 4.5) {$(4, 4.5)$};
+    \node[] at (1.25, -0.3) {$(1, 0)$};
+
+    \draw[-latex, blue, thin] (1.5, 0.125) -- (1.5, 0.5);
+    \draw[blue, thin] (1.5, 0.5) -- (1.5, 0.75);
+
+    \draw[-latex, blue, thin] (2.5, 1.125) -- (2.5, 1.75);
+    \draw[blue, thin] (2.5, 1.75) -- (2.5, 2.25);
+
+    \draw[-latex, blue, thin] (3.5, 3.125) -- (3.5, 3.45);
+    \draw[blue, thin] (3.5, 3.45) -- (3.5, 3.75);
+
+\end{axis}
 \end{tikzpicture}
-    \caption{The region could be classified as type I, with $\frac{\left( x - 
-    1 \right)^2}{2} \leq y \leq \frac{3 \left( x - 1 \right)}{2}$}
-    \label{fig:example_typeI}
+
+\caption{Type I region: $\frac{(x-1)^2}{2} \le y \le \frac{3(x-1)}{2}$}
+\label{fig:typeI_sub}
+\end{subfigure}\hfill%
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
+xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
+
+    \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
+    \addplot[blue, thick, samples = 100, name path = B, domain = 1:4]
+        {(x-1)^2/2};
+
+    \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+
+    \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
+    \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
+
+    \node[] at (4, 2.5) {$x = \sqrt{2y} + 1$};
+    \node[] at (1.5, 2) {$x = \frac{2y}{3} + 1$};
+
+    \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
+    \node[] at (4.5, 4.5) {$(4, 4.5)$};
+    \node[] at (1.25, -0.3) {$(1, 0)$};
+
+    \draw[-latex, blue, thin] (1.6667, 1) -- (2.04, 1);
+    \draw[blue, thin] (2.04, 1) -- (2.41421, 1);
+
+    \draw[-latex, blue, thin] (2.3333, 2) -- (2.6667, 2);
+    \draw[blue, thin] (2.6667, 2) -- (3, 2);
+
+    \draw[-latex, blue, thin] (3, 3) -- (3.3, 3);
+    \draw[blue, thin] (3.3, 3) -- (3.44949, 3);
+
+\end{axis}
+\end{tikzpicture}
+
+\caption{Type II region: $\frac{2y}{3} + 1 \le x \le \sqrt{2y} + 1$}
+\label{fig:typeII_sub}
+\end{subfigure}
+
+\caption{Comparison of Type I and Type II descriptions of the same region.}
+\label{fig:typeI_typeII_combined}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-        \begin{tikzpicture}
-    \begin{axis}[xlabel = $x$, ylabel = $y$, axis lines = center, ticks = none,
-    xmin = -0.2, xmax = 5, ymin = -0.2, ymax = 5, clip = false]
-        \addplot[blue, thick, name path = A, domain = 1:4] {(3/2)*(x-1)};
-        \addplot[blue, thick, samples = 100, name path = B, domain = 1:4] 
-        {(x-1)^2/2};
-        \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
-        \addplot[blue, thick, domain = 0.867:4.33] {(3/2)*(x-1)};
-        \addplot[blue, thick, samples = 100, domain = -0.2:4.16] {(x-1)^2/2};
-        \node[] at (4, 2.5) {$x = \sqrt{2y} + 1$};
-        \node[] at (1.5, 2) {$x= \frac{2y}{3} + 1$};
-        \addplot[blue, mark = *, only marks] coordinates {(4, 4.5) (1, 0)};
-        \node[] at (4.5, 4.5) {$(4, 4.5)$};
-        \node[] at (1.25, -0.3) {$(1, 0)$};
-        \draw[-latex, blue, thin] (1.6667, 1) -- (2.04, 1);
-        \draw[blue, thin] (2.04, 1) -- (2.41421, 1);
-        \draw[-latex, blue, thin] (2.3333, 2) -- (2.6667, 2);
-        \draw[blue, thin] (2.6667, 2) -- (3, 2);
-        \draw[-latex, blue, thin] (3, 3) -- (3.3, 3);
-        \draw[blue, thin] (3.3, 3) -- (3.44949, 3);
-    \end{axis}
-\end{tikzpicture}
-    \caption{The region could be classified as type II, with $\frac{2y}{3} + 1 
-    \leq x \leq \sqrt{2y} + 1$}
-    \label{fig:example_typeII}
-\end{figure}
 
 However, not all domains can be classified as both type I or type II. A region 
 can be classified as type I if you can take a vertical line ($x = c$, where 
@@ -408,145 +449,198 @@ without any gaps. Consider the two regions shown in figure
 line traverses the entire region without leaving it. On the other hand, the 
 lower region is not type I. There are vertical lines where the line exits the 
 lower region before traversing the entire region.
-
 \begin{figure}[H]
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
-                \addplot[name path = A, domain = 0.5:2.5, orange, thick] {
-                (0.5*x - 0.75)^2 + 0.5};
-                \addplot[name path = B, domain = 0.5:2.5, orange, thick] {
-                (x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
-                \addplot[fill = orange!30] fill between [of = A and B];
-                \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
-                \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
-                \node[] at (1.25, 1.5) {\textit{D}};
-                \draw[-latex, blue, thin] (0.75, 0.64) -- (0.75, 1.53);
-                \draw[blue, thin] (0.75, 1.53) -- (0.75, 2.42);
-                \draw[-latex, blue, thin] (1.5, 0.5) -- (1.5, 1.44);
-                \draw[blue, thin] (1.5, 1.44) -- (1.5, 2.38);
-                \draw[-latex, blue, thin] (2.25, 0.64) -- (2.25, 1.77);
-                \draw[blue, thin] (2.25, 1.77) -- (2.25, 2.89);
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$, 
-            clip = false]                 
-                \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) -- 
-                (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) -- 
-                (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) -- 
-                (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) -- 
-                (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) -- 
-                (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) -- 
-                (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) 
-                -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) 
-                -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) -- 
-                (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) 
-                -- (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) -- 
-                (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) 
-                -- (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- 
-                (1.073, 0.95) -- (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) 
-                -- (1.099, 0.75) -- (1.093, 0.7) -- (1.083, 0.65) -- 
-                (1.021, 0.5) -- (0.922, 0.35) -- (0.795, 0.2) -- cycle;
-                \addplot[name path = A, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*sin(deg(2*x)) + 0.6, x) ;
-                \addplot[name path = B, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*cos(deg(3*x)) + 2, x);
-                \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
-                \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
-                \node[] at (1.15, 2) {\textit{D}};
-                \draw[-latex, blue, thin] (0.7, 1.47) -- (0.7, 2.25);
-                \draw[blue, thin] (0.7, 2.25) -- (0.7, 2.9);
-                \draw[-latex, blue, thin] (1.3, 0.2) -- (1.3, 1.6);
-                \draw[blue, thin] (1.3, 1.6) -- (1.3, 2.9);
-                \draw[-latex, blue, thin] (1.9, 0.2) -- (1.9, 1.7);
-                \draw[blue, thin] (1.9, 1.7) -- (1.9, 2.68);
-                \draw[latex-] (1.9, 1) -- (2.2, 1.3) node[above, font = 
-                \scriptsize, xshift = 0.5cm] {the vertical line leaves the 
-                domain};
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    \caption{The top domain can be classified as type I; the bottom cannot.}
-    \label{fig:vertical_line}
+\centering
+
+%--------------- SUBFIGURE 1 (LEFT) ----------------%
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+
+    \addplot[name path = A, domain = 0.5:2.5, orange, thick]
+        {(0.5*x - 0.75)^2 + 0.5};
+
+    \addplot[name path = B, domain = 0.5:2.5, orange, thick]
+        {(x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
+
+    \addplot[fill = orange!30] fill between [of = A and B];
+
+    \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
+    \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
+
+    \node[] at (1.25, 1.5) {\textit{D}};
+
+    \draw[-latex, blue, thin] (0.75, 0.64) -- (0.75, 1.53);
+    \draw[blue, thin] (0.75, 1.53) -- (0.75, 2.42);
+
+    \draw[-latex, blue, thin] (1.5, 0.5) -- (1.5, 1.44);
+    \draw[blue, thin] (1.5, 1.44) -- (1.5, 2.38);
+
+    \draw[-latex, blue, thin] (2.25, 0.64) -- (2.25, 1.77);
+    \draw[blue, thin] (2.25, 1.77) -- (2.25, 2.89);
+
+\end{axis}
+\end{tikzpicture}
+\caption{A domain that \emph{is} Type I}
+\label{fig:vertical_line_typeI}
+\end{subfigure}
+\hfill
+%--------------- SUBFIGURE 2 (RIGHT) ----------------%
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$, clip = false] 
+
+    \draw[orange, fill = orange!30] 
+        (0.8, 0.2) -- (2.41, 0.2) --
+        (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) --
+        (1.63, 0.8) -- (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) --
+        (1.506, 1.1) -- (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) --
+        (1.75, 1.4) -- (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) --
+        (2.417, 1.9) -- (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) --
+        (2.5, 2.1) -- (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) --
+        (2.41, 2.3) -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) --
+        (1.63, 2.9) -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) --
+        (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) --
+        (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) --
+        (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) --
+        (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- (1.073, 0.95) --
+        (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) -- (1.099, 0.75) --
+        (1.093, 0.7) -- (1.083, 0.65) -- (1.021, 0.5) --
+        (0.922, 0.35) -- (0.795, 0.2) -- cycle;
+
+    \addplot[name path=A, domain=0.2:2.9, orange, thick, samples=100]
+        (0.5*sin(deg(2*x)) + 0.6, x);
+    \addplot[name path=B, domain=0.2:2.9, orange, thick, samples=100]
+        (0.5*cos(deg(3*x)) + 2, x);
+
+    \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
+    \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
+
+    \node[] at (1.15, 2) {\textit{D}};
+
+    \draw[-latex, blue, thin] (0.7, 1.47) -- (0.7, 2.25);
+    \draw[blue, thin] (0.7, 2.25) -- (0.7, 2.9);
+
+    \draw[-latex, blue, thin] (1.3, 0.2) -- (1.3, 1.6);
+    \draw[blue, thin] (1.3, 1.6) -- (1.3, 2.9);
+
+    \draw[-latex, blue, thin] (1.9, 0.2) -- (1.9, 1.7);
+    \draw[blue, thin] (1.9, 1.7) -- (1.9, 2.68);
+
+    \draw[latex-] (1.9, 1) -- (2.2, 1.3)
+        node[above, font=\scriptsize, xshift=0.5cm]
+        {the vertical line leaves the domain};
+
+\end{axis}
+\end{tikzpicture}
+\caption{A domain that is \emph{not} Type I}
+\label{fig:vertical_line_not_typeI}
+\end{subfigure}
+
+\caption{Comparing two regions: one that satisfies the Type I condition and one that does not.}
+\label{fig:vertical_line_subfig}
 \end{figure}
- 
+
 To determine if a region can be classified as type II, you can use a 
 horizontal line. If you can move a horizontal line ($y = c$, where $c$ is in 
 the domain of the region) across the region and the line always traverses the 
 entire region without leaving and re-entering it, then the region is type II 
 (see figure \ref{fig:horizontal_line}). 
-
 \begin{figure}[H]
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
-                \addplot[name path = A, domain = 0.5:2.5, orange, thick] {
-                (0.5*x - 0.75)^2 + 0.5};
-                \addplot[name path = B, domain = 0.5:2.5, orange, thick] {
-                (x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
-                \addplot[fill = orange!30] fill between [of = A and B];
-                \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
-                \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
-                \node[] at (1.25, 1.5) {\textit{D}};
-                \draw[-latex, blue, thin] (0.5, 1.1) -- (1.5, 1.1);
-                \draw[blue, thin] (1.5, 1.1) -- (2.5, 1.1);
-                \draw[-latex, blue, thin] (0.72, 2.4) -- (1.5, 2.4);
-                \draw[blue, thin] (1.5, 2.4) -- (2.5, 2.4);
-                \draw[latex-] (1.6667, 2.43) -- (1.25, 3) node[above, font = 
-                \scriptsize] {the horizontal line leaves the domain};
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    
-    \begin{minipage}{0.5\textwidth}
-        \begin{tikzpicture}
-            \begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
-            axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
-                
-                \draw[orange, fill = orange!30] (0.8, 0.2) -- (2.41, 0.2) -- 
-                (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) -- (1.63, 0.8) -- 
-                (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) -- (1.506, 1.1) -- 
-                (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) -- (1.75, 1.4) -- 
-                (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) -- (2.417, 1.9) -- 
-                (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) -- (2.5, 2.1) -- 
-                (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) -- (2.41, 2.3) 
-                -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) -- (1.63, 2.9) 
-                -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) -- 
-                (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) 
-                -- (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) -- 
-                (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) 
-                -- (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- 
-                (1.073, 0.95) -- (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) 
-                -- (1.099, 0.75) -- (1.093, 0.7) -- (1.083, 0.65) -- 
-                (1.021, 0.5) -- (0.922, 0.35) -- (0.795, 0.2) -- cycle;
-                \addplot[name path = A, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*sin(deg(2*x)) + 0.6, x) ;
-                \addplot[name path = B, domain = 0.2:2.9, orange, thick, 
-                samples = 100] (0.5*cos(deg(3*x)) + 2, x);
-                \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
-                \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
-                \node[] at (1.15, 1.9) {\textit{D}};
-                \draw[-latex, blue, thin] (1.09, 0.7) -- (1.42, 0.7);
-                \draw[blue, thin] (1.42, 0.7) -- (1.75, 0.7);
-                \draw[-latex, blue, thin] (0.77, 1.4) -- (1.26, 1.4);
-                \draw[blue, thin] (1.26, 1.4) -- (1.75, 1.4);
-                \draw[-latex, blue, thin] (0.16, 2.1) -- (1.28, 2.1);
-                \draw[blue, thin] (1.28, 2.1) -- (2.5, 2.1);
-            \end{axis}
-        \end{tikzpicture}
-    \end{minipage}
-    \caption{The bottom domain can be classified as type II; the top cannot.}
-    \label{fig:horizontal_line}
+\centering
+
+%-------------- SUBFIGURE 1 (LEFT) ----------------%
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+
+    \addplot[name path = A, domain = 0.5:2.5, orange, thick]
+        {(0.5*x - 0.75)^2 + 0.5};
+    \addplot[name path = B, domain = 0.5:2.5, orange, thick]
+        {(x-2)^3 + 2*(x-2)^2 + x -1 + 1.5};
+    \addplot[fill = orange!30] fill between [of = A and B];
+
+    \draw[orange, thick] (0.5, 0.75) -- (0.5, 2.12);
+    \draw[orange, thick] (2.5, 0.75) -- (2.5, 3.65);
+
+    \node[] at (1.25, 1.5) {\textit{D}};
+
+    \draw[-latex, blue, thin] (0.5, 1.1) -- (1.5, 1.1);
+    \draw[blue, thin] (1.5, 1.1) -- (2.5, 1.1);
+
+    \draw[-latex, blue, thin] (0.72, 2.4) -- (1.5, 2.4);
+    \draw[blue, thin] (1.5, 2.4) -- (2.5, 2.4);
+
+    \draw[latex-] (1.6667, 2.43) -- (1.25, 3)
+        node[above, font=\scriptsize]
+        {the horizontal line leaves the domain};
+
+\end{axis}
+\end{tikzpicture}
+\caption{A domain that is \emph{not} Type II}
+\label{fig:horizontal_line_not_typeII}
+\end{subfigure}\hfill
+%-------------- SUBFIGURE 2 (RIGHT) ---------------%
+\begin{subfigure}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[ymin = -0.3, ymax = 4, xmin = -0.3, xmax = 3, 
+axis lines = center, ticks = none, xlabel = $x$, ylabel = $y$] 
+
+    \draw[orange, fill = orange!30]
+        (0.8, 0.2) -- (2.41, 0.2) --
+        (2.25, 0.35) -- (2.04, 0.5) -- (1.81, 0.65) --
+        (1.63, 0.8) -- (1.52, 0.95) -- (1.505, 1) -- (1.5, 1.05) --
+        (1.506, 1.1) -- (1.524, 1.15) -- (1.552, 1.2) -- (1.59, 1.25) --
+        (1.75, 1.4) -- (1.97, 1.55) -- (2.19, 1.7) -- (2.37, 1.85) --
+        (2.417, 1.9) -- (2.454, 1.95) -- (2.48, 2) -- (2.496, 2.05) --
+        (2.5, 2.1) -- (2.493, 2.15) -- (2.475, 2.2) -- (2.447, 2.25) --
+        (2.41, 2.3) -- (2.24, 2.45) -- (2.03, 2.6) -- (1.81, 2.75) --
+        (1.63, 2.9) -- (0.365, 2.9) -- (0.247, 2.75) -- (0.158, 2.6) --
+        (0.109, 2.45) -- (0.102, 2.4) -- (0.1, 2.35) -- (0.103, 2.3) --
+        (0.111, 2.25) -- (0.124, 2.2) -- (0.142, 2.15) --
+        (0.222, 2) -- (0.335, 1.85) -- (0.472, 1.7) -- (0.621, 1.55) --
+        (0.767, 1.4) -- (0.899, 1.25) -- (1.004, 1.1) -- (1.073, 0.95) --
+        (1.087, 0.9) -- (1.096, 0.85) -- (1.1, 0.8) -- (1.099, 0.75) --
+        (1.093, 0.7) -- (1.083, 0.65) -- (1.021, 0.5) --
+        (0.922, 0.35) -- (0.795, 0.2) -- cycle;
+
+    \addplot[name path = A, domain = 0.2:2.9, orange, thick, samples = 100]
+        (0.5*sin(deg(2*x)) + 0.6, x);
+    \addplot[name path = B, domain = 0.2:2.9, orange, thick, samples = 100]
+        (0.5*cos(deg(3*x)) + 2, x);
+
+    \draw[orange, thick] (0.8, 0.2) -- (2.41, 0.2);
+    \draw[orange, thick] (0.365, 2.9) -- (1.63, 2.9);
+
+    \node[] at (1.15, 1.9) {\textit{D}};
+
+    \draw[-latex, blue, thin] (1.09, 0.7) -- (1.42, 0.7);
+    \draw[blue, thin] (1.42, 0.7) -- (1.75, 0.7);
+
+    \draw[-latex, blue, thin] (0.77, 1.4) -- (1.26, 1.4);
+    \draw[blue, thin] (1.26, 1.4) -- (1.75, 1.4);
+
+    \draw[-latex, blue, thin] (0.16, 2.1) -- (1.28, 2.1);
+    \draw[blue, thin] (1.28, 2.1) -- (2.5, 2.1);
+
+\end{axis}
+\end{tikzpicture}
+\caption{A domain that \emph{is} Type II}
+\label{fig:horizontal_line_typeII}
+\end{subfigure}
+
+%-------------- MAIN CAPTION ----------------%
+\caption{Comparing two regions: one that fails the Type II condition and one that satisfies it.}
+\label{fig:horizontal_line_subfig}
 \end{figure}
+
 
 
 \textbf{Example}: Evaluate $\iint_{\textit{D}} (2x + y)\,dA$, where \textit{D} 
