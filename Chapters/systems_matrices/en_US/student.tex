@@ -191,7 +191,45 @@ This is a very important equation for linear algebra as a whole. Notice that the
 \end{Answer}
 
 \section{Row-Echelon Form}
-This brings up the question, how can we solve for the $\vec{x}$? There are multiple ways.
+This brings up the question, how can we solve for the $\vec{x}$? There are multiple ways, but most commonly we form an augmented matrix and solve for Row-Echelon Form. 
+\subsection{The Augmented Matrix}
+What is the augmented matrix? It is a way of represented the $A$ matrix and $\vec{b}$ vector. We write the $A$ matrix, seperated by a vertical line, and then writing the $\vec{b}$ vector:
+$$\begin{array}{c} [A \mid \vec{b}] =
+\begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} & \vert & b_1 \\
+a_{21} & a_{22} & \cdots & a_{2n} & \vert & b_2 \\
+\vdots & \vdots &        & \vdots & \vert & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn} & \vert & b_m
+\end{bmatrix} \end{array}$$
+
+The left block contains all the coefficients of the system of equations, and the right block contains only the solutions. Then, to solve for $\vec{x}$, we perform \textit{Elementary Row Operations} to find the \textit{Row-Echelon Form}, mathematically stated as $\text{rref}(A\vert \vec{b})$. Let's continue with the matrix vector set we were experimenting with:
+$$A\vec{x} = \vecb{1 & 2 \\ 2 & 0}\vecb{x_1 \\ x_2} = \vecb{1x_1 + 2x_2 \\ 2x_1 + 0x_2}$$
+This can be written as an augmented matrix:
+
+$$\vecb{A\vert \vec{b}} = \vecb{1 & 2 &\vert & -1 \\ 2 & 0 & \vert & 4}$$
+
+
+\subsection{Elementary Row Operations}
+The Row-Echelon Form of a matrix is an \emph{equivalent} form of a matrix obtained through Gaussian and Gauss-Jordan elimination. There are lots of videos on this process online, so multiple videos included in your digital resources to walk you through the process. The rules of Gaussian Elimination are simple, only 3 different elementary row operations, or ERO's can be performed:
+
+\begin{itemize}
+       \item Swapping two rows
+       \item multiply a row by a non-zero scalar
+       \item dd a multiple of one row to another row
+\end{itemize}
+Why do these operations preserve the given linear system? Swapping two rows only changes the order in which the equations are written and therefore has no effect on the solution set. Multiplying a row by a nonzero scalar corresponds to multiplying both sides of an equation by the same scalar, which does not alter its solutions. Finally, if two equations are satisfied by the same solution, then any linear combination of those equations is also satisfied by that solution; in particular, adding a multiple of one equation to another preserves the solution set. Before and after each operation, the augmented matrix contains exactly the same information as the system of equations and therefore represents the same solution set.
+
+With these ERO's, we are trying to achieve a matrix with the following properties:
+\begin{itemize}
+\item Leading entries move to the right as you go down
+\item Rows of zeros, if exist, are at the bottom
+\item Entries below each leading entry are zero
+\end{itemize}
+
+Lets walk through the steps to simplify $\text{ref}(A\vert \vec{b})$:
+
+
+
 
 \section{Reduced Row Echelon Form}
 
