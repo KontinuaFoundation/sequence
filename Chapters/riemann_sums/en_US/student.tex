@@ -194,57 +194,72 @@ $$\frac{\pi}{4} \times f(0) + \frac{\pi}{4} \times f(\frac{\pi}{4}) + \frac{\pi}
 $$\approx \frac{\pi}{4} \times (0 + 1.4925 + 2.5708 + 3.0633)=5.5972$$
 
 This is an underestimate. Therefore, the true value of the area under $f(x) = \sin{x} +x$ is between $5.5972$ and $8.0646$. This is an awfully wide window! We can narrow our estimate by increasing the number of intervals. Graphs of $f(x)$ with 10 intervals are shown in figure \ref{fig:tenintervals}.
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\begin{tikzpicture}
-		\begin{axis}
-		[axis lines = center, 
-		xmin=0, xmax=3.15, xlabel=$x$,
-		xtick={0, 0.31416, 0.62832, 0.94248, 1.25664, 1.57080, 1.88496, 2.19911, 2.51327, 2.82743, 3.14159}, 
-		xticklabels={$0$, $\frac{\pi}{10}$, $\frac{\pi}{5}$, $\frac{3\pi}{10}$, $\frac{2\pi}{5}$, $\frac{\pi}{2}$, $\frac{3\pi}{5}$, $\frac{7\pi}{10}$, $\frac{4\pi}{5}$, $\frac{9\pi}{10}$, $\pi$}, 
-		ymin=0, ymax=3.25, ylabel=$y$,
-		ytick={1, 2, 3},
-		yticklabels={$1$, $2$, $3$}]
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0,0) rectangle (0.31416, 0);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.31416, 0) rectangle (0.62832, 0.62318);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.62832, 0) rectangle (0.94248, 1.2161);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.94248, 0) rectangle (1.25664, 1.75149);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.25664, 0) rectangle (1.57080, 2.20769);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.57080, 0) rectangle (1.88496, 2.5708);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.88496, 0) rectangle (2.19911, 2.83601);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.19911, 0) rectangle (2.51327, 3.00813);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.51327, 0) rectangle (2.82743, 3.10106);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.82743, 0) rectangle (3.14159, 3.13645);
-			\addplot[blue, thick, samples=100, domain=0:3.141592]{sin(deg(x))+x};
-		\end{axis}
-	\end{tikzpicture}
-	
-	\begin{tikzpicture}
-	\begin{axis}
-		[axis lines = center, 
-		xmin=0, xmax=3.15, xlabel=$x$,
-		xtick={0, 0.31416, 0.62832, 0.94248, 1.25664, 1.57080, 1.88496, 2.19911, 2.51327, 2.82743, 3.14159}, 
-		xticklabels={$0$, $\frac{\pi}{10}$, $\frac{\pi}{5}$, $\frac{3\pi}{10}$, $\frac{2\pi}{5}$, $\frac{\pi}{2}$, $\frac{3\pi}{5}$, $\frac{7\pi}{10}$, $\frac{4\pi}{5}$, $\frac{9\pi}{10}$, $\pi$}, 
-		ymin=0, ymax=3.25, ylabel=$y$,
-		ytick={1, 2, 3},
-		yticklabels={$1$, $2$, $3$}]
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0,0) rectangle (0.31416, 0.62318);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.31416, 0) rectangle (0.62832, 1.2161);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.62832, 0) rectangle (0.94248, 1.75149);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](0.94248, 0) rectangle (1.25664, 2.20769);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.25664, 0) rectangle (1.57080, 2.5708);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.57080, 0) rectangle (1.88496, 2.83601);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](1.88496, 0) rectangle (2.19911, 3.00813);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.19911, 0) rectangle (2.51327, 3.10106);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.51327, 0) rectangle (2.82743, 3.13645);
-			\filldraw[fill=gray!30, opacity=0.4, draw=black](2.82743, 0) rectangle (3.14159, 3.14159);
-			\addplot[blue, thick, samples=100, domain=0:3.141592]{sin(deg(x))+x};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{$\sin{x}+x$ broken into 10 intervals using either the left or right value to determine the height.}
+
+	\begin{subfigure}{0.48\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}
+			[axis lines = center, 
+			xmin=0, xmax=3.15, xlabel=$x$,
+			xtick={0, 0.31416, 0.62832, 0.94248, 1.25664, 1.57080, 1.88496, 2.19911, 2.51327, 2.82743, 3.14159}, 
+			xticklabels={$0$, $\frac{\pi}{10}$, $\frac{\pi}{5}$, $\frac{3\pi}{10}$, $\frac{2\pi}{5}$, $\frac{\pi}{2}$, $\frac{3\pi}{5}$, $\frac{7\pi}{10}$, $\frac{4\pi}{5}$, $\frac{9\pi}{10}$, $\pi$}, 
+			ymin=0, ymax=3.25, ylabel=$y$,
+			ytick={1, 2, 3},
+			yticklabels={$1$, $2$, $3$},
+			width=\linewidth,
+			height=0.7\linewidth]
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0,0) rectangle (0.31416, 0);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.31416, 0) rectangle (0.62832, 0.62318);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.62832, 0) rectangle (0.94248, 1.2161);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.94248, 0) rectangle (1.25664, 1.75149);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.25664, 0) rectangle (1.57080, 2.20769);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.57080, 0) rectangle (1.88496, 2.5708);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.88496, 0) rectangle (2.19911, 2.83601);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.19911, 0) rectangle (2.51327, 3.00813);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.51327, 0) rectangle (2.82743, 3.10106);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.82743, 0) rectangle (3.14159, 3.13645);
+				\addplot[blue, thick, samples=100, domain=0:3.141592]{sin(deg(x))+x};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Left-endpoint Riemann sum}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}
+			[axis lines = center, 
+			xmin=0, xmax=3.15, xlabel=$x$,
+			xtick={0, 0.31416, 0.62832, 0.94248, 1.25664, 1.57080, 1.88496, 2.19911, 2.51327, 2.82743, 3.14159}, 
+			xticklabels={$0$, $\frac{\pi}{10}$, $\frac{\pi}{5}$, $\frac{3\pi}{10}$, $\frac{2\pi}{5}$, $\frac{\pi}{2}$, $\frac{3\pi}{5}$, $\frac{7\pi}{10}$, $\frac{4\pi}{5}$, $\frac{9\pi}{10}$, $\pi$}, 
+			ymin=0, ymax=3.25, ylabel=$y$,
+			ytick={1, 2, 3},
+			yticklabels={$1$, $2$, $3$},
+			width=\linewidth,
+			height=0.7\linewidth]
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0,0) rectangle (0.31416, 0.62318);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.31416, 0) rectangle (0.62832, 1.2161);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.62832, 0) rectangle (0.94248, 1.75149);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](0.94248, 0) rectangle (1.25664, 2.20769);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.25664, 0) rectangle (1.57080, 2.5708);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.57080, 0) rectangle (1.88496, 2.83601);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](1.88496, 0) rectangle (2.19911, 3.00813);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.19911, 0) rectangle (2.51327, 3.10106);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.51327, 0) rectangle (2.82743, 3.13645);
+				\filldraw[fill=gray!30, opacity=0.4, draw=black](2.82743, 0) rectangle (3.14159, 3.14159);
+				\addplot[blue, thick, samples=100, domain=0:3.141592]{sin(deg(x))+x};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Right-endpoint Riemann sum}
+	\end{subfigure}
+
+	\caption{Riemann sum approximations of $f(x)=\sin x + x$ on $[0,\pi]$ using 10 equal subintervals.}
 	\label{fig:tenintervals}
 \end{figure}
+
+
 
 The total area for the left-determined rectangles is $\approx 6.4248$, and for the right-determined, it is $\approx7.4118$. Therefore, we have narrowed the range for the true area under the curve to $6.4248<A<7.4118$. In general, as you increase the number of intervals, you get closer to the true area. 
 
@@ -296,7 +311,8 @@ $$\ldots \text{ }x_n=a+n\Delta x$$
 
 As above, we can use the value of the function to determine the height of a rectangle whose area approximates the area of the section. (E.g. for the $i^{th}$ strip, the width is $\Delta x$ and the height is $f(x_i)$, see figure \ref{fig:rectangles}). So, the total area approximated by the rectangles is $$R_n = f(x_1)\Delta x + f(x_2)\Delta x + \ldots + f(x_n)\Delta x$$ \\ This is the formal definition of the right Riemann sum. You can also take a left Riemann sum or a midpoint Riemann sum, as discussed below. 
 
-\begin{figure}
+\begin{figure}[H]
+	\centering
 \begin{tikzpicture}[scale=1.5]
 	\begin{axis}
 	[axis lines=center, 
@@ -327,7 +343,8 @@ As above, we can use the value of the function to determine the height of a rect
 \label{fig:strips}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
+	\centering
 \begin{tikzpicture}
 	\begin{axis}
 	[axis lines=center, 
@@ -351,7 +368,7 @@ As above, we can use the value of the function to determine the height of a rect
 \index{right riemann sums}
 As seen above, a right Riemann sum uses the right-most value of $f(x)$ to determine the height of the rectangle (an example is shown in figure \ref{fig:rightriemann}). We will refer to the right Riemann sum as $R_n$, where $n$ is the number of intervals.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[axis lines = center, xmin=0.75, xmax=3, ymin=0, xlabel=$x$, ylabel=$f(x)$]
@@ -392,7 +409,7 @@ When taking a left Riemann sum, the height of the rectangle is determined by the
 \index{midpoint riemann sums}
 A midpoint Riemann sum uses the value of $f(x)$ at the midpoint of the division to determine the height of the rectangle, as shown in figure \ref{fig:midriemann}. We will refer to the midpoint Riemann sum as $M_n$, where $n$ is the number of intervals. So, the total area approximated by the rectangles is $$M_n = f(\frac{x_0+x_1}{2})\Delta x + f(\frac{x_1+x_2}{x})\Delta x + \ldots + f(\frac{x_{n-1}+x_n}{2})\Delta x$$
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[axis lines = center, xmin=0.75, xmax=3, ymin=0, xlabel=$x$, ylabel=$f(x)$]
@@ -482,7 +499,7 @@ Sometimes we are working from real data, and the intervals aren't evenly spaced.
 
 We can use a Riemann sum to estimate how far the space shuttle traveled in the first 62 seconds of flight. First, let's visualize our data (see figure \ref{fig:endeavourscatter}). There are 7 time intervals from the data, but we only need the first 6. We can find a reasonable range for the distance the space shuttle travels by finding the left and right Riemann sums. Remember: Becayse this data is strictly increasing, the left sum will be our lower bound and the right sum will be our upper bound. 
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}
