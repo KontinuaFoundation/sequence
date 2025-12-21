@@ -2,7 +2,7 @@
 In this chapter we will discuss the very basics of Python. No we are not talking about snake anatomy, but the programming language Python. Python is a high-level, interpreted programming language known for its readability and versatility. It is widely used in various fields such as web development, data analysis, artificial intelligence, scientific computing, and more. It can be used for data parsing, visualization, and even machine learning. Python's syntax is designed to be easy to read and write, making it an excellent choice for beginners and experienced programmers alike.
 
 \section{Getting Started with Python}
-To get started with Python, you need to have it installed on your computer. You can download the latest version of Python from the official website: \url{https://www.python.org/downloads/}. Follow the installation instructions for your operating system. %FIXME what else needs to be included here.
+To get started with Python, you need to have it installed on your computer. You can download the latest version of Python from the official website: \url{https://www.python.org/downloads/}. Follow the installation instructions for your operating system. \index{installing python}%FIXME what else needs to be included here.
 
 Once you have python installed, you can write and run Python code using various methods:
 \begin{itemize}
@@ -12,41 +12,141 @@ Once you have python installed, you can write and run Python code using various 
 \end{itemize}
 
 We are going to install VSCode as our IDE for this course. You can download it from \url{https://code.visualstudio.com/}. After installing VSCode, you will also need to install the Python extension for VSCode, which can be found in the Extensions Marketplace within VSCode.
-%does more need to be said?
-\section{Writing Your First Python Program}
-% All code in here should be within a {lstlisting}[style=pycode] environment
-Let's start by writing a simple Python program that prints ``Hello, World!'' to the console. Open your IDE or text editor, create a new file named \texttt{hello.py}, and
-\begin{lstlisting}[style=pycode]
-    print("Hello, World!")
+\subsection{The Console and Running Python Programs}
+
+When working with Python, it is important to understand the difference between
+\emph{writing code} and \emph{executing code}. Writing code simply means typing
+instructions into a file using a text editor or IDE. Executing code means telling
+Python to read those instructions and perform them.
+
+The \emph{console}, also called the \emph{terminal} or \emph{command prompt}, is a
+text-based interface where you can run programs and view their output. Any text
+printed using the \texttt{print()} function will appear in the console.
+
+When you run a Python program, Python reads your file from top to bottom and
+executes each line in order. This is an important idea that will come up often:
+\textbf{Python code is executed sequentially, one line at a time}.
+
+\subsection{Running a Python File}
+
+To run a Python file, you must use the console. In VSCode, you can open the
+integrated terminal by selecting \texttt{Terminal → New Terminal} from the menu.
+Make sure your terminal is open in the same folder as your Python file.
+
+If your file is named \texttt{hello.py}, you can run it by typing:
+
+\begin{lstlisting}
+python hello.py
 \end{lstlisting}
 
-This snippet of code does the following:
+or, on some systems:
+
+\begin{lstlisting}
+python3 hello.py
+\end{lstlisting}
+
+After pressing Enter, Python will execute the file and display any output in the
+console. If there are errors in your code, Python will stop execution and display
+an error message instead. You may also see a green play button at the top of your window, you could also run your program with that!
+
+At this point, it is helpful to remember:
 \begin{itemize}
-    \item It takes the argument, a string of characters that make up the word \texttt{Hello, World!}
-    \item It passes that string into the built-in Python function \texttt{print}.
+    \item Writing code does nothing by itself
+    \item Code only runs when you explicitly execute the file
+    \item Output from \texttt{print()} appears in the console
 \end{itemize}
 
-FIXME explanation of console and running the file
+
+
+\section{Output \texttt{print}}
+Let's talk more about the \texttt{print} statement. It can take a string, multiple variables, or a combination of strings and variables. We are going to introduce the syntax first, and then expand on the definitions later.\index{print}
+
+\begin{lstlisting}[style=pycode]
+x = "This is a variable."
+print("This is a string.", x)
+\end{lstlisting}
+This should output \texttt{This is a string. This is a variable}. You can also do multiple variables:
+\begin{lstlisting}[style=pycode]
+x = "Good"
+y = "Morning,"
+z = "Chicago"
+print(x, y, z)
+\end{lstlisting}
+This will output \texttt{Good Morning, Chicago}. Alternatively, printing can have addition within it:
+\begin{lstlisting}[style=pycode]
+x = "Good"
+y = "Morning,"
+z = "Chicago"
+print(x+y+z)
+\end{lstlisting}
+This will output \texttt{GoodMorning,Chicago}. Notice the difference!
+
+If you want to combine numbers and strings,
+\begin{lstlisting}[style=pycode]
+x = "it is"
+y=78
+z="degrees outside"
+print(x+y+z)
+\end{lstlisting}
+\textbf{\emph{This will not work!}} Instead, we should use commas:
+\begin{lstlisting}[style=pycode]
+x = "it is"
+y=78
+z="degrees outside"
+print(x, y, z)
+\end{lstlisting}
+This will correctly output ``it is 78 degrees outside''
+
+By default, a space is added in between each argument (where the commas would be).
+
+We can change what seperates each variable by the \texttt{sep=} argument. 
+\begin{lstlisting}[style=pycode]
+x = "it is"
+y=78
+z="degrees outside"
+print(x, y, z, sep="..!..")
+\end{lstlisting}
+This will output \texttt{it is..!..78..!..degrees outside}
+
+By default, Python includes a new line at the end of each print statement. We can alter this to anything else by using the \texttt{end=} argument:
+\begin{lstlisting}[style=pycode]
+print("Good Morning, Chicago.", end="!!")
+\end{lstlisting}
+Outputting \texttt{Good Morning, Chicago.!!} to the console, with no new line character inserted. Note that the next print statement will continue on the same line unless it contains a new line character.
+\begin{lstlisting}[style=pycode]
+print("Hello World!", end=" ")
+print("I will print on the same line.")
+\end{lstlisting}
+We have used all this terminology like strings and variables a lot, let's dive a bit deeper into it!
 \section{Datatypes and Variables}
 
 There are many different datatypes in Python, and all of them can be passed to \texttt{print} function. Here's the main few: 
 \begin{description}
-    \item[Strings] Strings are just a sequence of characters. Anything closed between quotes gets included in the string, such as "This is the Python Chapter for the Kontinua Sequence!!\%\^\&\*()-+=1234567890~\&"
-    \item[Integers] Integers are any whole number, positive negative or 0. Theoretically, integer values can go on for infinity, but it is important to understand they take up space in computer memory.
-    \item[Floats]  Floats, or floating point values, are numbers that include decimal places. Division can be done between integers and floats but may result in a different value.
-    \item[Booleans] Booleans only two values: \texttt{True} or \texttt{False}. The output of conditional statements (such as if's or while's) are booleans. They only answer Yes and No questions, and are important on deciding between two possible paths in code.
-    \item[Sequence Types] Sequences are consecutive lists or pairs of other data types can be represented in various froms: \texttt{list}, \texttt{set}, \texttt{tuple}, and \text{dict}. 
+    \item[Strings] Strings are just a sequence of characters. Anything closed between quotes gets included in the string, such as "This is the Python Chapter for the Kontinua Sequence!!\%\^\&\*()-+=1234567890~\&"\index{strings}
+    \item[Integers] Integers are any whole number, positive negative or 0. Theoretically, integer values can go on for infinity, but it is important to understand they take up space in computer memory.\index{integers}
+    \item[Floats]  Floats, or floating point values, are numbers that include decimal places. Division can be done between integers and floats but may result in a different value.\index{floats}
+    \item[Booleans] Booleans only two values: \texttt{True} or \texttt{False}. The output of conditional statements (such as if's or while's) are booleans. They only answer Yes and No questions, and are important on deciding between two possible paths in code.\index{booleans}
+    \item[Sequence Types] Sequences are consecutive lists or pairs of other data types can be represented in various froms: \texttt{list}, \texttt{set}, and \texttt{tuple}. Values are accessed by positions. \index{sequnce types}
+    \item[Mapping Types] The main mapping type is a \texttt{dict}, short for dictionary. Mapping types store values as key–value pairs instead of positions. You access items using a key, not an index.\index{dictionary}
 \end{description}
 
 Let's create some of these in our code:
 \begin{lstlisting}[style=pycode]
-    x = 5
-    y = 5.6
-    z = True
-    a = [x, y, z]
+x = 5
+y = 5.6
+z = True
+a = [x, y, z]
 \end{lstlisting}
 
 A \emph{variable} is a container for information, usually containing one of the datatypes established above. In Python, variables are assigned using the assignment operator $=$, with the name of the variable on the left side of the operator and the value it is assigned to on the right side. 
+
+Python has specific naming rules for variables. The name
+\begin{itemize}
+    \item Must start with a letter or underscore
+    \item Cannot contain spaces
+    \item Are case-sensitive
+\end{itemize}
+
 
 In our code above, \texttt{x} is a \emph{variable} containing the number $5$, an Integer. \texttt{y} contains the float $5.6$, while \texttt{z} is a boolean with the value \texttt{True}. We then created a list containing the variables \texttt{x}, \texttt{y}, and \texttt{z}.
 
@@ -71,10 +171,18 @@ Hello!
 
 Notice that, because of that feature, the datatype of a variable is not defined beforehand. This is a core difference between Python and other programming languages like Java or C++, which we will explore in the future. 
 
-FIXME scientific notation floats
+We can also define our floats using scientific notation.
+\begin{lstlisting}[style=pycode]
+x = 1e3     # 1000.0
+y = 2.5e-4  # 0.00025
+\end{lstlisting}
+\section{Operations}
+FIXME
+\subsection{Arithmetic Operations}
+Math operations in Python are very similar to standard math operations. We need them for any type of data operation or math parsing.
 
-\section{Arithmetic Operations}
-Math operations in Python are very similar to standard math operations. 
+\index{operations}\index{addition}\index{subtraction}\index{multiplication}\index{division}\index{modulus}\index{floor division}
+
 \begin{lstlisting}[style=pycode]
     a = 100
     b = 3
@@ -105,12 +213,282 @@ Output:
 \end{lstlisting}
 
 Note that division by $0$ is not a valid operation, just as in algebra. This will cause an \texttt{ZeroDivisionError}.
-FIXME -= and +=
+\subsection{augmented Assignment Operators}
+We can also combine assigment operators and operations:
+\begin{lstlisting}[style=pycode]
+x = 10
+x += 5   # same as x = x + 5
+x -= 3   $ same as x = x - 3
+x *= 2   $ same as x = 2 * x
+x /= 4   $ same as x = x / 4
+\end{lstlisting}
+Following order of operations, \texttt{x = 6} after all lines are executed. These are called augmented assignment operators\index{augmented assignment operators} and are commonly used in loops and accumulation counters.
+
+\subsection{Summary}
+\begin{itemize}
+    \item Math operations are done with \texttt{+, -, *, and /}
+    \item Augmented Operations \texttt{+=, -=, *=, /=} are common for loops and counting operations. 
+\end{itemize}
 FIXME expand, exercises
+\section{Input and Output}
+So far, we have only displayed information using the \texttt{print()} function.
+While output is useful, most programs also need a way to receive information
+from the user. In Python, this is done using the built-in \texttt{input()} function.\index{input}
+
+\subsection{Getting User Input}
+
+The \texttt{input()} function pauses the program and waits for the user to type
+something into the console. Whatever the user types is then returned and can be
+stored in a variable.
+
+\begin{lstlisting}[style=pycode]
+name = input("Enter your name: ")
+print("Hello,", name)
+\end{lstlisting}
+
+In this example:
+\begin{itemize}
+    \item The text inside \texttt{input()} is displayed as a prompt in the console
+    \item The program waits for the user to type a response and press Enter
+    \item The entered text is stored in the variable \texttt{name}
+    \item The \texttt{print()} function then outputs a greeting using that value
+\end{itemize}
+
+\subsection{Input Always Returns a String}
+
+A very important rule in Python is that \texttt{input()} \textbf{always returns a
+string}, even if the user types a number. This means that mathematical operations
+cannot be performed on input values unless they are converted to a numeric type.
+
+Consider the following incorrect example:
+
+\begin{lstlisting}[style=pycode]
+age = input("Enter your age: ")
+print(age + 1)
+\end{lstlisting}
+
+This code will result in an error, because Python cannot add a number to a string.
+
+To perform calculations, the input must be \emph{cast} to a different datatype.
+
+\subsection{Casting Input Values}
+\index{casting}
+Casting is the process of converting one datatype into another. Python provides
+built-in functions such as \texttt{int()}, \texttt{float()}, and \texttt{str()} for
+this purpose.
+
+\begin{lstlisting}[style=pycode]
+age = int(input("Enter your age: "))
+print(age + 1)
+\end{lstlisting}
+
+Here:
+\begin{itemize}
+    \item \texttt{input()} returns a string
+    \item \texttt{int()} converts that string into an integer
+    \item The program can now perform arithmetic operations
+\end{itemize}
+
+\subsection{Common Input Errors}
+
+If the user enters something that cannot be converted to the requested datatype,
+Python raises a runtime error called a \texttt{ValueError}. For example:
+
+\begin{lstlisting}[style=pycode]
+age = int(input("Enter your age: "))
+\end{lstlisting}
+
+If the user types \texttt{hello} instead of a number, Python will produce an error
+similar to the following:
+
+\begin{lstlisting}
+ValueError: invalid literal for int() with base 10
+\end{lstlisting}
+
+This error occurs because the string \texttt{"hello"} cannot be converted into an
+integer. Handling these types of errors will be discussed later when we introduce
+\texttt{try-except} statements.
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item \texttt{print()} is used to display output to the console
+    \item \texttt{input()} is used to receive text input from the user
+    \item \texttt{input()} always returns a string
+    \item Casting is required to convert input into numeric types
+\end{itemize}
+
+FIXME exercises
 \section{Conditionals, Loops, and Match-Case}
-\section{Lists}
-\section{Strings and Casting}
-We talked about creating strings, any set of characters between quotes. These can either be single quotes \texttt{' '} or double quotes \texttt{"   "}. 
+\index{conditionals}
+\index{loops}
+\index{match-case}
+Most programs need to make decisions and repeat actions. Programmers do not want to write the same code multiple times, as this introduces \textit{redundancy}. In Python, this is done using \emph{conditionals} and \emph{loops}. Conditionals allow the program to
+choose between different paths of execution, while loops allow code to be run
+multiple times.
+
+\subsection{Conditional Statements}
+
+Conditional statements execute code only if a given condition is true. Python
+uses the keywords \texttt{if}, \texttt{elif}, and \texttt{else} to define these
+conditions.
+
+\begin{lstlisting}[style=pycode]
+x = 10
+
+if x > 0:
+    print("x is positive")
+elif x == 0:
+    print("x is zero")
+else:
+    print("x is negative")
+\end{lstlisting}
+
+In this example:
+\begin{itemize}
+    \item The expression after \texttt{if} is evaluated as a boolean
+    \item If the condition is \texttt{True}, the indented block runs
+    \item If it is \texttt{False}, Python checks the next condition. The \texttt{elif} block is the only way to check another branch after one is returned \texttt{False}. The \texttt{else} branch is a last resort, and only runs if all previous statements are false
+    \item Only one branch of the conditional will execute
+\end{itemize}
+
+It is important to note that \textbf{indentation is required} in Python. All
+statements belonging to a conditional block must be indented at the same level.
+
+\subsection{Boolean Expressions}
+
+Conditions are built using comparison and logical operators. These expressions
+always evaluate to either \texttt{True} or \texttt{False}.
+
+\begin{lstlisting}[style=pycode]
+a = 5
+b = 10
+
+print(a < b)   # less than
+print(a == b)  # equal to
+print(a != b)  # not equal to
+\end{lstlisting}
+
+Logical operators can be used to combine conditions. Condtions can be \emph{strung together} using \texttt{and}, \texttt{or}, and \texttt{not}
+
+\begin{lstlisting}[style=pycode]
+x = 7
+
+if x > 0 and x < 10:
+    print("x is between 1 and 9")
+if x > 0 or x < -3:
+    print("x is greater than 0 or less than -3")
+
+y = False
+print(not y)
+
+\end{lstlisting}
+
+\subsection{Loops}
+
+Loops allow code to be repeated multiple times. Python provides two main types of
+loops: \texttt{for} loops and \texttt{while} loops.
+
+\subsection{For Loops}
+\index{for loops}
+A \texttt{for} loop is used to iterate over a sequence, such as a list or a range
+of numbers.
+
+\begin{lstlisting}[style=pycode]
+for i in range(5):
+    print(i)
+\end{lstlisting}
+
+This code will print the numbers 0 through 4. The \texttt{range()} function
+generates a sequence of integers starting at 0 and stopping before the given
+value.
+
+\begin{lstlisting}[style=pycode]
+numbers = [10, 20, 30]
+
+for n in numbers:
+    print(n)
+\end{lstlisting}
+
+\subsection{While Loops}
+\index{while loops}
+A \texttt{while} loop repeats as long as a condition remains true.
+
+\begin{lstlisting}[style=pycode]
+x = 5
+
+while x > 0:
+    print(x)
+    x -= 1
+\end{lstlisting}
+
+In this example:
+\begin{itemize}
+    \item The condition is checked before each iteration
+    \item The loop stops once the condition becomes \texttt{False}
+\end{itemize}
+
+Care must be taken to ensure that the condition eventually becomes false.
+Otherwise, the program will enter an infinite loop, one which never stops and the computer will run forever, risking hardware component issues. 
+
+\subsection{Breaking and Continuing Loops}
+\index{break}
+Python provides keywords to control loop execution.
+
+\begin{lstlisting}[style=pycode]
+for i in range(10):
+    if i == 5:
+        break
+    print(i)
+\end{lstlisting}
+
+The \texttt{break} statement immediately exits the loop.
+
+\begin{lstlisting}[style=pycode]
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)
+\end{lstlisting}
+
+The \texttt{continue} statement skips the current iteration and moves to the next
+one.
+
+\subsection{Match-Case Statements}
+\index{match-case}
+Python also provides the \texttt{match-case} statement, which allows a value to be
+compared against several possible patterns. This is similar to a switch
+statement in other programming languages.
+
+\begin{lstlisting}[style=pycode]
+command = input("Enter a command: ")
+
+match command:
+    case "start":
+        print("Starting program")
+    case "stop":
+        print("Stopping program")
+    case "pause":
+        print("Pausing program")
+    case _:
+        print("Unknown command")
+\end{lstlisting}
+
+The underscore (\texttt{\_}) acts as a default case if no other patterns match.
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item Conditionals allow programs to make decisions
+    \item Boolean expressions evaluate to \texttt{True} or \texttt{False}
+    \item Loops allow code to be repeated efficiently
+    \item \texttt{for} loops iterate over sequences
+    \item \texttt{while} loops repeat based on a condition
+    \item \texttt{match-case} provides a structured way to handle multiple cases
+\end{itemize}
+
+\section{Lists and Strings}
+We talked about creating strings, any set of characters between quotes. These can either be single quotes \texttt{' '} or double quotes \texttt{"   "}. \index{strings}
 
 Multiline strings must be surrounded by three quotations on each side of the text sequence. 
 \begin{lstlisting}[style=pycode]
@@ -119,6 +497,181 @@ consectetur adipiscing elit,
 sed do eiusmod tempor incididunt
 ut labore et dolore magna aliqua."""
 \end{lstlisting}
+
+Strings are an example of a \emph{sequence type}, meaning they store values in a
+specific order and allow individual elements to be accessed using an index.
+
+\subsection{Indexing Strings}
+\index{strings!indexing}
+Each character in a string has a position, called an \emph{index}. Indexing in\index{index}
+Python begins at 0, so the first character is at index 0. Think of it like asking the question for each letter: ``How far from the start is this element?'' The first element is zero positions away from the start, so its index is 0. The last element is always at index $n-1$, where $n$ is the length of string. In memory, all of these characters are stored consecutively. 
+
+\begin{lstlisting}[style=pycode]
+word = "Python"
+
+print(word[0])
+print(word[1])
+print(word[5])
+\end{lstlisting}
+Output:
+\begin{lstlisting}
+P
+y
+n
+\end{lstlisting}
+Attempting to access an index that does not exist will result in a runtime error.
+
+\subsection{Length of a String}
+\index{strings!length}
+The number of characters in a string can be found using the built-in
+\texttt{len()} function.
+
+\begin{lstlisting}[style=pycode]
+word = "Python"
+print(len(word))
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+6
+\end{lstlisting}
+
+\subsection{Iterating Over Strings}
+\index{strings!iterating}
+Strings can be iterated over one character at a time using a \texttt{for} loop.
+
+\begin{lstlisting}[style=pycode]
+for char in "Hello":
+    print(char)
+\end{lstlisting}
+
+This loop runs once for each character in the string.
+
+\subsection{String Methods}
+\index{string methods}
+Strings come with built-in functions, called \emph{methods}, that perform common
+operations. These methods are called using dot notation.
+
+\begin{lstlisting}[style=pycode]
+text = "  Python Programming  "
+
+print(text.upper())
+print(text.lower())
+print(text.strip())
+\end{lstlisting}
+
+Common string methods include:
+\begin{itemize}
+    \item \texttt{upper()} converts all characters to uppercase
+    \item \texttt{lower()} converts all characters to lowercase
+    \item \texttt{strip()} removes leading and trailing whitespace
+\end{itemize}
+
+\subsection{Lists}
+
+A list is another sequence type used to store multiple values in a single
+variable. Lists are created using square brackets, with elements separated by
+commas.
+
+\begin{lstlisting}[style=pycode]
+numbers = [1, 2, 3, 4]
+\end{lstlisting}
+
+Lists can store values of different datatypes, including strings, numbers, and
+booleans.
+
+\begin{lstlisting}[style=pycode]
+data = [10, 3.14, True, "Python"]
+\end{lstlisting}
+
+\subsection{Indexing Lists}
+
+Like strings, lists are indexed starting at 0.
+
+\begin{lstlisting}[style=pycode]
+numbers = [10, 20, 30]
+
+print(numbers[0])
+print(numbers[2])
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+10
+30
+\end{lstlisting}
+
+\subsection{Modifying Lists}
+
+Unlike strings, lists are \emph{mutable}, meaning their contents can be changed
+after creation.
+
+\begin{lstlisting}[style=pycode]
+numbers = [1, 2, 3]
+numbers[1] = 10
+print(numbers)
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+[1, 10, 3]
+\end{lstlisting}
+
+\subsection{List Length and Iteration}
+
+The number of elements in a list can be found using the \texttt{len()} function.
+
+\begin{lstlisting}[style=pycode]
+numbers = [1, 2, 3]
+print(len(numbers))
+\end{lstlisting}
+
+Lists can be iterated over using a \texttt{for} loop.
+
+\begin{lstlisting}[style=pycode]
+numbers = [1, 2, 3]
+
+for n in numbers:
+    print(n)
+\end{lstlisting}
+
+\subsection{Common List Methods}
+
+Lists include built-in methods that allow elements to be added or removed.
+
+\begin{lstlisting}[style=pycode]
+numbers = [1, 2, 3]
+numbers.append(4)
+numbers.remove(2)
+print(numbers)
+\end{lstlisting}
+
+Common list methods include:
+\begin{itemize}
+    \item \texttt{append()} - adds an element to the end of the list
+    \item \texttt{remove()} - removes the first occurrence of a value
+    \item \texttt{pop()} – removes and returns an element by index
+\end{itemize}
+
+\subsection{Strings vs Lists}
+
+Although strings and lists are both sequence types, there is an important
+difference between them.
+
+\begin{itemize}
+    \item Strings are immutable and cannot be modified after creation
+    \item Lists are mutable and can be changed
+\end{itemize}
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item Strings and lists are sequence types
+    \item Indexing starts at 0
+    \item The \texttt{len()} function returns the size of a sequence
+    \item Strings are immutable
+    \item Lists are mutable and support modification
+\end{itemize}
 \section{Errors}
 Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
 
@@ -129,6 +682,7 @@ You will encounter two main types of errors in your code: \textbf{Syntax Errors}
 \end{itemize}
 
 \subsection{Syntax Errors}
+\index{syntax errors}
 What do you notice is immediately wrong with this code?
 \begin{lstlisting}[style=pycode]
     x = "Welcome Home"
@@ -181,10 +735,61 @@ NameError: name 'x' is not defined
 
 You have encounted a \emph{NameError}, because \texttt{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \texttt{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
 
-
-FIXME
 \subsection{Try-Except}
-
+\index{try-except}
+\begin{lstlisting}[style=pycode]
+try:
+    x = int(input("Enter a number: "))
+    print(10 / x)
+except ValueError:
+    print("Please enter a valid integer.")
+except ZeroDivisionError:
+    print("Cannot divide by zero.")
+\end{lstlisting}
+Here, we attempt to divide 10 by some input number $x$. There are two \texttt{Exceptions} that could cause this to fail:
+\begin{itemize}
+    \item The user inputs a string a characters, or anything that isn't an integer
+    \item The user inputs 0, an invalid divisor.
+\end{itemize}
+We use a \texttt{Try-Except} block to check for different errors generated, similar to an if statement. The try block surrounds a block of code that may cause faulty runtime output or errors. 
 \section{Libraries}
+\section{Libraries}
+\index{libraries}
+A \emph{library} is a collection of pre-written code that provides additional
+functionality without requiring you to write everything from scratch. Python
+includes many built-in libraries that can be used to perform common tasks such as
+mathematical calculations, data handling, and visualization. You'll often find that code you are seeking can be found through an open-source library which already exists.
+
+To use a library, it must first be imported.
+
+\subsection{Importing Libraries}
+
+The simplest way to import a library is using the \texttt{import} keyword.
+
+\begin{lstlisting}[style=pycode]
+import math
+print(math.sqrt(16))
+\end{lstlisting}
+
+In this example, the \texttt{math} library provides access to mathematical
+functions such as square roots.
+
+It is also possible to import specific values or functions from a library.
+
+\begin{lstlisting}[style=pycode]
+from math import pi
+print(pi)
+\end{lstlisting}
+
+This allows direct access to \texttt{pi} without referencing the library name.
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item Libraries extend Python’s functionality
+    \item The \texttt{import} keyword is used to load libraries
+    \item Specific components can be imported directly when needed
+\end{itemize}
+FIXME
 \section{An Input Calculator}
 \section{Matplotlib}
