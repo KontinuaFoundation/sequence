@@ -73,21 +73,28 @@ acc_arrow2 = ax.add_artist(
 
 # This function will get called for every frame
 def animate(frame):
-
     # Global variables needed in scope from the model
     global cm_position, cm_velocity, current_time, m1, m2
 
     # Global variables needed in scope from the artists
-    global time_text, varrow1, varrow2, acc_arrow1, acc_arrow2, circle1, circle2, circle_cm
+    global \
+        time_text, \
+        varrow1, \
+        varrow2, \
+        acc_arrow1, \
+        acc_arrow2, \
+        circle1, \
+        circle2, \
+        circle_cm
 
-    print(f"Updating artists for day {current_time/SEC_PER_DAY:.1f}.")
+    print(f"Updating artists for day {current_time / SEC_PER_DAY:.1f}.")
 
     # Update the positions based on the current velocities
     m1["position"] = m1["position"] + m1["velocity"] * TIME_STEP
     m2["position"] = m2["position"] + m2["velocity"] * TIME_STEP
 
     # Update day label
-    time_text.set_text(f"Day {current_time/SEC_PER_DAY:.0f}")
+    time_text.set_text(f"Day {current_time / SEC_PER_DAY:.0f}")
 
     # Update positions of circles
     circle1.set_center(m1["position"])
@@ -166,12 +173,7 @@ def animate(frame):
 
 
 # Make the rendering happen
-animation = FuncAnimation(
-    fig, 
-    animate, 
-    np.arange(FRAMECOUNT), 
-    interval=ANI_INTERVAL
-)
+animation = FuncAnimation(fig, animate, np.arange(FRAMECOUNT), interval=ANI_INTERVAL)
 
 # Save the rendering to a video file
 animation.save("moonmovie.mp4")
