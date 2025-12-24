@@ -804,8 +804,13 @@
 \usepackage{cancel}
 \usepackage{wrapfig}
 \usepackage{listings}
-
 \usepackage{mdframed}
+\usepackage{minted}
+\setminted{
+  fontsize=\small,
+  breaklines,
+  frame=single
+}
 \mdfsetup{skipabove=\topskip,skipbelow=\topskip}
 \global\mdfdefinestyle{important}{%
   linecolor=sdkblue,linewidth=1pt % leftmargin=1cm,rightmargin=1cm
@@ -1306,24 +1311,25 @@ final=true]
 
 %% ADDED NEW PYCODE LOOK 
 %% all verbatim environments should be incrementally changed to this if possible (as done in questionbank)
-\lstdefinestyle{pycode}{
-  language=Python,
-  basicstyle=\ttfamily\small,
-  columns=fixed,
-  keepspaces=true,              
-  showstringspaces=false,
-  tabsize=4,                    
-  breaklines=true, breakatwhitespace=true,
-  upquote=true,                 
-  % cosmetics
-  frame=single, rulesepcolor=\color{black},
-  numbers=left, numbersep=8pt,
-  xleftmargin=2em, framexleftmargin=1.5em,
-  keywordstyle=\bfseries,
-  commentstyle=\itshape\color{gray!70},
-  stringstyle=\itshape,
-  literate={"}{{\texttt{"}}}1
-}
+% \lstdefinestyle{pycode}{
+%   language=Python,
+%   basicstyle=\ttfamily\small,
+%   columns=fixed,
+%   keepspaces=true,              
+%   showstringspaces=false,
+%   tabsize=4,                    
+%   breaklines=true, breakatwhitespace=true,
+%   upquote=true,                 
+%   % cosmetics
+%   frame=single, rulesepcolor=\color{black},
+%   numbers=left, numbersep=8pt,
+%   xleftmargin=2em, framexleftmargin=1.5em,
+%   keywordstyle=\bfseries,
+%   commentstyle=\itshape\color{gray!70},
+%   stringstyle=\itshape,
+%   literate={"}{{\texttt{"}}}1
+% }
+% Update as of 12/23/25 - repalcing this with minted environments
 
 \newcommand{\vecb}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 
