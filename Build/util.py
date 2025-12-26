@@ -1,11 +1,14 @@
+import json
 import os
 import re
-import json
 import shutil
 
 title_pattern = re.compile("chapter\{([^\}]+)\}")
 # chapter_pattern = re.compile("chapter\}\{\\\\numberline \{([^\}]+)\}[^\}]+\{([0-9]+)\}")
-chapter_pattern = re.compile("chapter\}\{\\\\numberline \{([^\}]+)\}[^\}]+\}\{([0-9]+)\}")
+chapter_pattern = re.compile(
+    "chapter\}\{\\\\numberline \{([^\}]+)\}[^\}]+\}\{([0-9]+)\}"
+)
+
 
 def chapter_toc(bookstr):
     toc = {}
@@ -18,16 +21,19 @@ def chapter_toc(bookstr):
                 toc[chapter] = page
     return toc
 
+
 def dir_for_id(mod_dir, identifier, langlist):
     # FIXME: should search from fav to least fave
     locale_str = langlist[0]
-    #return os.path.join(mod_dir,identifier,locale_str)
+    # return os.path.join(mod_dir,identifier,locale_str)
     return f"{mod_dir}/{identifier}/{locale_str}"
+
 
 def dir_list_for_book(mod_dir, book_str, langlist):
     # FIXME: should search from fav to least fave
     modlist_filename = f"book_{book_str}.txt"
-    modlist_path = os.path.join(mod_dir, modlist_filename)
+    # modlist_path = os.path.join(mod_dir, modlist_filename)
+    modlist_path = mod_dir + "/" + modlist_filename
     if not os.path.exists(modlist_path):
         print(f"Error: Chapter file {modlist_path} doesn't exist")
         return []
@@ -42,26 +48,30 @@ def dir_list_for_book(mod_dir, book_str, langlist):
         if trimmed_chapter[0] != "#" and len(trimmed_chapter) > 0:
             print(f"Processing {trimmed_chapter}")
             result_ids.append(trimmed_chapter)
-            fullpath = dir_for_id(mod_dir,trimmed_chapter,langlist)
+            fullpath = dir_for_id(mod_dir, trimmed_chapter, langlist)
             result_paths.append(fullpath)
         else:
             print(f"Skipping {trimmed_chapter}")
     return (result_ids, result_paths)
 
+
 def title_for_dir(dir):
-    fullpath = os.path.join(dir, "student.tex")
+    # fullpath = os.path.join(dir, "student.tex")
+    fullpath = dir + "/student.tex"
     for i, line in enumerate(open(fullpath)):
         for match in re.finditer(title_pattern, line):
             return match.group(1)
     return "UNKNOWN"
 
+
 def metadata_for_dir(dir):
-    rpath = os.path.join(dir, "digital_resources.json")
+    # rpath = os.path.join(dir, "digital_resources.json")
+    rpath = dir + "/digital_resources.json"
     if not os.path.exists(rpath):
         print(f"Error: Digital Resources at {rpath} doesn't exist")
         result = {}
     else:
-        with open(rpath, 'r') as f:
+        with open(rpath, "r") as f:
             data = f.read().strip()
         if len(data) < 2:
             result = {}
@@ -71,11 +81,12 @@ def metadata_for_dir(dir):
     result["title"] = title
     return result
 
+
 def gather_data(mod_dir, book_str, config):
     (ids, dirs) = dir_list_for_book(mod_dir, book_str, config["Languages"])
     metadatas = []
     topics = {}
-    for (i, dir) in enumerate(dirs):
+    for i, dir in enumerate(dirs):
         md = metadata_for_dir(dir)
         # Get the title from the tex file
         title = title_for_dir(dir)
@@ -92,7 +103,9 @@ def gather_data(mod_dir, book_str, config):
             filelist = md["files"]
             for j in range(len(filelist)):
                 filename = filelist[j]["path"]
-                filelist[j]["link"] = f"https://github.com/TheKontinua/sequence/raw/master/Chapters/{ids[i]}/en_US/{filename}"
+                filelist[j]["link"] = (
+                    f"https://github.com/TheKontinua/sequence/raw/master/Chapters/{ids[i]}/en_US/{filename}"
+                )
         # Add it to the array
         metadatas.append(md)
 
@@ -107,6 +120,7 @@ def gather_data(mod_dir, book_str, config):
                 topics[cd["id"]] = cd
 
     return (metadatas, topics)
+
 
 def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
     locale_list = config["Languages"]
@@ -128,14 +142,14 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
     gpath_string = "\\graphicspath{{{{{}/}}}}\n".format(chap_dir)
     output_tex.write(gpath_string)
 
-
     # Include file
-    full_path = os.path.join(chap_dir, chapter_file)
+    # full_path = os.path.join(chap_dir, chapter_file)
+    full_path = chap_dir + "/" + chapter_file
     include_string = "\\input{{{}}}\n".format(full_path)
     output_tex.write(include_string)
 
     # Draft message
-    with open("../Support/draftmsg.tex","r") as draft_file:
+    with open("../Support/draftmsg.tex", "r") as draft_file:
         draftmsg = draft_file.read()
         output_tex.write(draftmsg)
 
@@ -158,18 +172,19 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
         print(f"Build of {final_pdf_path} Failed")
         return False
 
+
 # Not checking "files" attribute
 def urls_in_chapter_meta(chap_meta):
     result = []
-    if 'covers' in chap_meta:
-        cover_list = chap_meta['covers']
+    if "covers" in chap_meta:
+        cover_list = chap_meta["covers"]
         for topic in cover_list:
-            if 'references' in topic:
-                reference_list = topic['references']
+            if "references" in topic:
+                reference_list = topic["references"]
                 for reference in reference_list:
                     result.append(reference)
-            if 'videos' in topic:
-                video_list = topic['videos']
+            if "videos" in topic:
+                video_list = topic["videos"]
                 for video in video_list:
                     result.append(video)
     return result
