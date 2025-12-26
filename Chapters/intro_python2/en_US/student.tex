@@ -1,0 +1,700 @@
+\chapter{A deeper look at Python syntax}
+\section{Where did we leave off?}
+In the previous Introduction to Python chapter, We started by installing Python and setting up VSCode, then practiced using the console (terminal) to execute \mintinline{python}{.py} files. Recall that runs code \textbf{sequentially}, one line at a time, and that output appears in the console.
+
+We can output to the screen with \mintinline{python}{print()}, including how Python formats output by default and how to customize it. Next, we introduced variables and common datatypes such as strings, integers, floats, booleans, lists, and dictionaries.
+
+Mathematical operations, including arithmetic operators were demonstrated. We played with in \mintinline{python}{str()} and the method to get input from the console, \mintinline{python}{input()}. Finally, we worked with conditionals and loops to control program flow, then introduced strings and lists as sequence types, and worked with them. With these tools, you should now be able to write basic Python programs that read input, store data, make decisions, repeat actions, and produce useful output. 
+
+Let's now build on this foundation with some more advanced concepts, such as functions, classes, and libraries. We will also cover error handling, and experiment with basic graphing ability using the Matplotlib library.
+
+\section{Functions}
+\index{functions}
+As our programs get larger, we begin to repeat the same sets of steps again and again.
+Rather than copying and pasting code (which is hard to maintain and easy to break),
+we can group instructions into \emph{functions}. A \newterm{function}\index{functions!definition}
+is a named block of code that performs a task. Once a function is defined, it can be
+\emph{called} (used) as many times as needed.
+
+You have already used functions before, even if you did not know it! For example,
+\mintinline{python}{print()}, \mintinline{python}{input()}, \mintinline{python}{len()}, and \mintinline{python}{type()}
+are built-in Python functions.
+
+\subsection{Defining and Calling a Function}
+\index{functions!def}
+To define a function in Python, we use the \mintinline{python}{def} keyword, followed by:
+\begin{itemize}
+    \item a function name
+    \item parentheses \mintinline{python}{()}
+    \item a colon \mintinline{python}{:}
+    \item an indented block of code
+\end{itemize}
+
+\begin{minted}{python}
+def say_hello():
+    print("Hello!")
+    print("Welcome to Python.")
+\end{minted}
+
+This code \emph{defines} the function, but it does not run the code inside it yet.
+To execute the function, we must \emph{call} it by using its name followed by parentheses:
+
+\begin{minted}{python}
+say_hello()
+\end{minted}
+
+When Python reaches a function call, it temporarily jumps into the function, runs the
+indented code, and then returns to the line after the call. Just like conditionals and loops,
+\textbf{indentation matters}.
+
+\subsection{Parameters and Arguments}
+\index{functions!parameters}
+Most functions are more useful when they can work with different values.
+A \newterm{parameter}\index{functions!parameter} is a variable name listed inside the parentheses of a function definition.
+An \newterm{argument}\index{functions!argument} is the actual value you pass into the function when you call it.
+
+\begin{minted}{python}
+def greet(name):
+    print("Hello", name)
+\end{minted}
+
+Here, \mintinline{python}{name} is a parameter. We can call the function with different arguments:
+
+\begin{minted}{python}
+greet("Alex")
+greet("Chicago")
+\end{minted}
+
+\subsection{Return Values}
+\index{functions!return}
+Some functions \emph{return} a value. Returning a value allows the function to produce a result
+that can be stored in a variable or used in an expression.
+
+\begin{minted}{python}
+def add(a, b):
+    return a + b
+\end{minted}
+
+Now we can use the returned value:
+
+\begin{minted}{python}
+x = add(3, 4)
+print(x)
+\end{minted}
+
+Output:
+\begin{minted}{text}
+7
+\end{minted}
+
+
+We can alter the function to expect a certain parameter type, such as integers, and return a specific type as well:
+\begin{minted}{python}
+def add(a: int, b: int) -> int:
+    return a + b
+\end{minted}
+
+It is important to note that Python won't raise a TypeError if you pass in the wrong type, but this is a helpful way to document your code for other programmers, which you may often work with, and yourself.
+
+We can force the parameters to be a certain type, and raise an error if the wrong type is passed in:
+\begin{minted}{python}
+def add(a: int, b: int) -> int:
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise TypeError("Both arguments must be integers")
+    return a + b
+\end{minted}
+
+
+\textbf{Important:} \mintinline{python}{print()} displays information to the console, but it does not return a useful value.
+\mintinline{python}{return} sends a value back to where the function was called. Functions that do not have a \mintinline{python}{return} statement return \mintinline{python}{None} by default, and are often called \emph{void} functions.
+
+\subsection{Scope}
+\index{scope}
+A variable created inside a function only exists inside that function. This idea is called \newterm{scope}.
+If you define a variable inside a function, you cannot use it outside of the function unless you return it.
+
+\begin{minted}{python}
+def make_number():
+    x = 10
+    return x
+
+y = make_number()
+print(y)
+\end{minted}
+
+The variable \mintinline{python}{x} exists only inside \mintinline{python}{make_number()}, but the value it returns
+is stored in \mintinline{python}{y} outside the function.
+
+\subsection{Summary}
+\begin{itemize}
+    \item Functions group code into reusable blocks
+    \item Functions are defined with \mintinline{python}{def} and called using parentheses
+    \item Parameters receive input values (arguments) when a function is called
+    \item \mintinline{python}{return} sends a value back to the caller
+    \item Variables inside a function have local scope
+\end{itemize}
+
+\begin{Exercise}[label=functions1, title=Tracing a Function Call]
+Consider the following code:
+\begin{minted}{python}
+def double(x):
+    return x * 2
+
+a = 3
+b = double(a)
+print(b)
+\end{minted}
+What is printed? What is the value of \mintinline{python}{a} after the program runs?
+\end{Exercise}
+
+\begin{Answer}[ref=functions1]
+The function returns \mintinline{python}{3 * 2}, which is \mintinline{python}{6}, so the program prints:
+\begin{minted}{text}
+6
+\end{minted}
+The value of \mintinline{python}{a} is still \mintinline{python}{3} because the function does not change \mintinline{python}{a}; it only uses its value to compute a result.
+\end{Answer}
+
+\begin{Exercise}[label=functions2, title=Write a Function]
+Write a function called \mintinline{python}{is_even(n)} that returns \mintinline{python}{True} if \mintinline{python}{n} is even and \mintinline{python}{False} otherwise.
+Then show an example call to your function using \mintinline{python}{n = 7}.
+\end{Exercise}
+
+\begin{Answer}[ref=functions2]
+\begin{minted}{python}
+def is_even(n):
+    return n % 2 == 0
+
+print(is_even(7))
+\end{minted}
+This prints \mintinline{python}{False} because 7 is not divisible by 2.
+\end{Answer}
+
+\section{Classes and More Basic Object-Oriented Programming}
+\index{classes}
+\index{object-oriented programming}
+
+So far, we have worked mostly with individual variables, lists, and functions.
+As programs grow larger, it becomes useful to group related data and behavior
+together. \newterm{Object-Oriented Programming}\index{object-oriented programming}
+(OOP) is a programming style that organizes code around \emph{objects} rather than
+individual functions.
+
+In Python, objects are created from \emph{classes}. A \newterm{class}\index{classes!definition}
+is a blueprint for creating objects that contain both data (variables) and
+behavior (functions).
+
+\subsection{Defining a Class}
+\index{classes!defining}
+A class is defined using the \mintinline{python}{class} keyword, followed by:
+\begin{itemize}
+    \item the class name (by convention, written in \texttt{CamelCase})
+    \item a colon \mintinline{python}{:}
+    \item an indented block of code
+\end{itemize}
+
+\begin{minted}{python}
+class Person:
+    pass
+\end{minted}
+
+This defines an empty class. It does not do anything yet, but it gives Python a
+new type called \mintinline{python}{Person}.
+
+\subsection{Creating Objects}
+\index{objects}
+An \newterm{object}\index{objects!definition} is an instance of a class. Objects are created
+by calling the class name like a function.
+
+\begin{minted}{python}
+p1 = Person()
+p2 = Person()
+\end{minted}
+
+Here, \mintinline{python}{p1} and \mintinline{python}{p2} are two separate objects, both created
+from the same class.
+
+\subsection{The \texttt{\_\_init\_\_} Method}
+\index{init}
+Most classes need to store data. This is done using a special function called
+\mintinline{python}{__init__}. This function runs automatically when a new object is created.
+
+\begin{minted}{python}
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+\end{minted}
+
+The parameter \mintinline{python}{self} refers to the current object being created.
+Each object gets its own copy of the variables defined using \mintinline{python}{self}.
+
+\begin{minted}{python}
+p = Person("Alex", 20)
+\end{minted}
+
+Now the object \mintinline{python}{p} has two attributes:
+\begin{itemize}
+    \item \mintinline{python}{p.name}
+    \item \mintinline{python}{p.age}
+\end{itemize}
+
+\subsection{Accessing Object Attributes}
+\index{attributes}
+Attributes are accessed using dot notation.
+
+\begin{minted}{python}
+print(p.name)
+print(p.age)
+\end{minted}
+
+Output:
+\begin{minted}{text}
+Alex
+20
+\end{minted}
+
+Each object stores its own values. Creating another object does not overwrite
+existing ones.
+
+\subsection{Methods}
+\index{methods}
+Functions defined inside a class are called \newterm{methods}\index{methods!definition}.
+Methods describe behavior that belongs to the object.
+
+\begin{minted}{python}
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        print("Hello, my name is", self.name)
+\end{minted}
+
+Calling a method uses dot notation:
+
+\begin{minted}{python}
+p = Person("Alex", 20)
+p.greet()
+\end{minted}
+
+Output:
+\begin{minted}{text}
+Hello, my name is Alex
+\end{minted}
+
+\subsection{Printing Objects}
+\index{printing objects}
+By default, printing an object produces an unreadable result:
+
+\begin{minted}{python}
+print(p)
+\end{minted}
+
+Output (example):
+\begin{minted}{text}
+<__main__.Person object at 0x7f9c1a3d>
+\end{minted}
+
+This actually is the object's memory address in the computer's memory, but it may be a bit tedious want to print that and manually search ever byte. Instead, to control how an object is printed, we can define the special method
+\mintinline{python}{__str__}.
+
+\begin{minted}{python}
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name} ({self.age} years old)"
+\end{minted}
+
+Now printing the object gives a meaningful result:
+
+\begin{minted}{python}
+p = Person("Alex", 20)
+print(p)
+\end{minted}
+
+Output:
+\begin{minted}{text}
+Alex (20 years old)
+\end{minted}
+
+\subsection{Why Use Classes?}
+Classes allow us to:
+\begin{itemize}
+    \item group related data and behavior together
+    \item create many objects with the same structure
+    \item write code that is easier to understand and maintain
+\end{itemize}
+
+\subsection{Summary}
+\begin{itemize}
+    \item A class is a blueprint for creating objects
+    \item Objects store data using attributes
+    \item \mintinline{python}{__init__} initializes new objects
+    \item Methods define behavior for objects
+    \item \mintinline{python}{__str__} controls how objects are printed
+    \item This was only a foundation of OOP; more advance concepts exist and are stronger in other programming languages such as Java and C++
+\end{itemize}
+
+\begin{Exercise}[label=classes1, title=Tracing an Object]
+Consider the following code:
+\begin{minted}{python}
+class Counter:
+    def __init__(self, value):
+        self.value = value
+
+    def increment(self):
+        self.value += 1
+
+c = Counter(5)
+c.increment()
+c.increment()
+print(c.value)
+\end{minted}
+
+What is printed?
+\end{Exercise}
+
+\begin{Answer}[ref=classes1]
+The initial value is 5. The \mintinline{python}{increment()} method is called twice,
+so the value becomes 7. The program prints:
+\begin{minted}{text}
+7
+\end{minted}
+\end{Answer}
+
+\begin{Exercise}[label=classes2, title=Custom Printing]
+Write a class called \mintinline{python}{Book} that stores a title and an author.
+Add a \mintinline{python}{__str__} method so that printing a book displays:
+\begin{minted}{text}
+Title by Author
+\end{minted}
+\end{Exercise}
+
+\begin{Answer}[ref=classes2]
+\begin{minted}{python}
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+\end{minted}
+\end{Answer}
+
+\section{Libraries}
+\index{libraries}
+A \emph{library} is a collection of pre-written code that provides additional
+functionality without requiring you to write everything from scratch. Python
+includes many built-in libraries that can be used to perform common tasks such as
+mathematical calculations, data handling, and visualization. You'll often find that code you are seeking can be found through an open-source library which already exists.
+
+To use a library, it must first be imported.
+
+\subsection{Importing Libraries}
+
+The simplest way to import a library is using the \mintinline{python}{import} keyword.
+
+\begin{minted}{python}
+import math
+print(math.sqrt(16))
+\end{minted}
+
+In this example, the \mintinline{python}{math} library provides access to mathematical
+functions such as square roots.
+
+It is also possible to import specific values or functions from a library.
+
+\begin{minted}{python}
+from math import pi
+print(pi)
+\end{minted}
+
+This allows direct access to \mintinline{python}{pi} without referencing the library name.
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item Libraries extend Python's functionality
+    \item The \mintinline{python}{import} keyword is used to load libraries
+    \item Specific components can be imported directly when needed
+\end{itemize}
+
+\section{Matplotlib}
+Matplotlib is the most widely used plotting library in Python. It can produce simple charts quickly (line plots, scatter plots, bar charts, histograms) and also supports publication-quality figures with precise control over labels, legends, and layout. We will use it widely throughout this course to visualize data, create simulations for proving formulas, and experiment with datasets. 
+\index{matplotlib}\index{creating charts in python|see{matplotlib}}
+\subsection{Installing and importing}
+If you are working locally, you can install Matplotlib with:
+\begin{minted}{bash}
+pip install matplotlib
+\end{minted}
+
+In most scripts, you will import the plotting interface \texttt{pyplot}:
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+\end{minted}
+
+\subsection{A simple line graph}
+A line plot is ideal for showing how a value changes over time or across an ordered variable. Let's create \texttt{line.py} 
+
+\begin{minted}{python}
+import matplotlib.pyplot as plt # the matplotlib library, which we will call using plt
+
+# two lists containing values
+x = [0, 1, 2, 3, 4, 5]
+y = [0, 1, 4, 9, 16, 25]
+
+# a 2d plot, used for line graphs
+plt.plot(x, y)
+# add a title to our plot
+plt.title("A Simple Line Plot")
+# add axis labels
+plt.xlabel("x")
+plt.ylabel("y = x^2")
+plt.show() # pops up a new window
+\end{minted}
+Running \mintinline{bash}|python3 line.py| will open a new \emph{interactive window} in your computer, with the following image:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{line.png}
+    \caption{The output of line.py.}
+    \label{fig:line}
+\end{figure}
+
+\subsection{Labels, legends, and grids}
+A plot is more useful when it clearly communicates what each element represents. Let's add on to \texttt{line.py} by creating \texttt{lineTwoOutputs.py} and adding labels, a legend, and another set of data. 
+
+
+\begin{minipage}[t]{0.44\textwidth}
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+x = [0, 1, 2, 3, 4, 5]
+y1 = [0, 1, 4, 9, 16, 25]
+y2 = [0, 1, 8, 27, 64, 125]
+
+plt.plot(x, y1, label="x^2")
+plt.plot(x, y2, label="x^3")
+
+plt.title("Two Functions on One Axes")
+plt.xlabel("x")
+plt.ylabel("value")
+plt.grid(True)
+plt.legend()
+plt.show()
+\end{minted}
+\end{minipage}
+\begin{minipage}[t]{0.54\textwidth}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{lineTwoOutputs.png}
+    \caption{$y=x^2$ and $y=x^3$ on the same graphed.}
+    \label{fig:lineTwoOutputs}
+\end{figure}
+\end{minipage}
+\subsection{Visualizing Relationships with scatter plots}
+Scatter plots are excellent for showing how two variables relate (for example, height and weight). 
+
+This very basic scatter plot shows the relationship between studying time and score.
+
+\begin{minipage}[t]{0.44\textwidth}
+    
+    \begin{minted}{python}
+    import matplotlib.pyplot as plt
+
+    hours = [1, 2, 3, 4, 5, 6]
+    scores = [55, 60, 66, 72, 78, 85]
+
+    plt.scatter(hours, scores)
+    plt.title("Study Time vs. Score")
+    plt.xlabel("hours studied")
+    plt.ylabel("score")
+    plt.show()
+    \end{minted}
+\end{minipage}
+\begin{minipage}[t]{0.54\textwidth}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{scatter.png}
+    \caption{A scatterplot generated by matplotlib from the given data.}
+    \label{fig:scatter}
+\end{figure}
+\end{minipage}
+
+
+\subsection{Histograms and Distributions}
+A histogram shows how values are distributed and how common different ranges are.
+
+\begin{minipage}[t]{0.44\textwidth}
+
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+# a set of data, for example maybe these are all test scores
+data = [4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 11, 12]
+
+# creates a histogram plot
+plt.hist(data, bins=5)
+plt.title("Histogram of Values")
+plt.xlabel("value")
+plt.ylabel("frequency")
+plt.show()
+\end{minted}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.54\textwidth}
+    
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{histogram.png}
+    \caption{A histogram of a set of data.}
+    \label{fig:histogram}
+\end{figure}
+        
+\end{minipage}
+
+\subsection{The object-oriented approach (recommended)}
+Matplotlib has two main styles:
+\begin{itemize}
+  \item \textbf{State-based} (using \texttt{plt.plot}, \texttt{plt.title}, \dots): quick and convenient.
+  \item \textbf{Object-oriented} (creating a \texttt{Figure} and \texttt{Axes}): more explicit and easier to scale.
+\end{itemize}
+
+For multi-plot layouts or different analysis of datasets, prefer the object-oriented approach:
+    
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+x = [0, 1, 2, 3, 4, 5]
+y1 = [0, 1, 4, 9, 16, 25]
+y2 = [0, 1, 8, 27, 64, 125]
+
+# two figures, side by side. axes becomes an indexable list
+fig, axes = plt.subplots(nrows=1, ncols=2)
+
+axes[0].plot(x, y1)
+axes[0].set_title("x^2")
+axes[0].set_xlabel("x")
+axes[0].set_ylabel("value")
+
+axes[1].plot(x, y2)
+axes[1].set_title("x^3")
+axes[1].set_xlabel("x")
+axes[1].set_ylabel("value")
+
+fig.suptitle("Two Subplots")
+fig.tight_layout()
+plt.show()
+\end{minted}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{lineOOP.png}
+    \caption{The two plots, generated side by side.}
+    \label{fig:lineOOP}
+\end{figure}
+
+\section{Errors}
+Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
+
+You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}. 
+\begin{itemize}
+    \item Syntax errors occur when your the formatting, or \newterm{syntax}. These errors can usually be found before your code is compiled.
+    \item Runtime Errors, or \emph{Exceptions}, occur when operations in your code cause an invalid calculation, or attempt to do an invalid action. These can range anywhere from basic misnamed variables to imported libraries crashing from incorrect data.
+\end{itemize}
+
+
+
+\subsection{Syntax Errors}
+\index{syntax errors}
+What do you notice is immediately wrong with this code?
+\begin{minted}{python}
+    x = "Welcome Home"
+    print(type(x)
+\end{minted}
+
+If we run it, we get the output:
+\begin{minted}{python}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.12/py_compile.py", line 150, in compile
+    raise py_exc
+py_compile.PyCompileError:   File "./prog.py", line 2
+    print(type(x)
+         ^
+SyntaxError: '(' was never closed
+\end{minted}
+
+We notice that every opening parentheses, bracket, or brace must have a closing supplement. Without out, we run into Syntax Errors, letting us know our format is off. 
+
+Another type of Syntax Error can be found in incorrect indentation. Take for example the following code:
+\begin{minted}{python}
+if True:
+print("Hello!")
+\end{minted}
+Output:
+\begin{minted}{python}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.12/py_compile.py", line 150, in compile
+    raise py_exc
+py_compile.PyCompileError: Sorry: IndentationError: expected an indented block after 'if' statement on line 1 (prog.py, line 2)
+\end{minted}
+
+Here, there is no indentation (usually obtained by pressing the \verb|Tab| key on your keyboard) for lines under the conditional statement. This causes a Syntax Error to be raised.
+\subsection{Exceptions}
+Let's say I try to run the following code:
+
+\begin{minted}{python}
+    print(x)
+    x = "hello"
+\end{minted}
+
+You may see the following output:
+\begin{minted}{python}
+Traceback (most recent call last):
+    File "./program.py", line 1, in <module>
+NameError: name 'x' is not defined
+\end{minted}
+
+You have encounted a \emph{NameError}, because \mintinline{python}{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \mintinline{python}{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
+
+\subsection{Try-Except}
+\index{try-except}
+\begin{minted}{python}
+try:
+    x = int(input("Enter a number: "))
+    print(10 / x)
+except ValueError:
+    print("Please enter a valid integer.")
+except ZeroDivisionError:
+    print("Cannot divide by zero.")
+\end{minted}
+Here, we attempt to divide 10 by some input number $x$. There are two \mintinline{python}{Exceptions} that could cause this to fail:
+\begin{itemize}
+    \item The user inputs a string a characters, or anything that isn't an integer
+    \item The user inputs 0, an invalid divisor.
+\end{itemize}
+We use a \mintinline{python}{Try-Except} block to check for different errors generated, similar to an if statement. The try block surrounds a block of code that may cause faulty runtime output or errors. 
+
+\begin{Exercise}[label=exceptions1, title=Fix the Code]
+\begin{minted}{python}
+items = ["pen", "book", "eraser", "ruler"]
+
+index = input("Enter an index (0 to 3): ")
+print("You chose:", items[index])
+
+items.remove("pencil")
+print("Updated list:", items)
+\end{minted}
+Name two errors that could occur when this code is run. For each error, explain why it occurs and how to fix it.
+\end{Exercise}
+\begin{Answer}[ref=exceptions1]
+\begin{enumerate}
+    \item \textbf{TypeError}: The \mintinline{python}{input()} function returns a string, so when the user inputs an index, it is treated as a string. Attempting to use this string as an index for the list will raise a \mintinline{python}{TypeError}. To fix this, we can cast the input to an integer using \mintinline{python}{int()} and handle the potential \mintinline{python}{ValueError} if the input is not a valid integer.
+    \item Pencil is not in the list, so attempting to remove it will raise a \mintinline{python}{ValueError}. To fix this, we can use a try-except block to catch the \mintinline{python}{ValueError} and print a message indicating that the item was not found in the list.
+\end{enumerate}
+\end{Answer}
