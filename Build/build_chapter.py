@@ -5,6 +5,7 @@ import util
 
 chap_file = "student.tex"
 chap_dir = os.getcwd()
+chap_dir = chap_dir.replace("\\", "/")
 workdir = "../../../Build/Intermediate"
 if not os.path.exists(workdir):
     os.mkdir(workdir)
