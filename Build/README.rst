@@ -9,7 +9,7 @@ Before You Build
 
 You will need to have installed git, Python 3, and LaTeX.
 
-NOTE: We use a package called `minted <https://ctan.org/pkg/minted>`_ for syntax highlighting of code samples. This package is currently incompatible with Python 3.14. If you are using Python 3.14, you will need to downgrade to Python 3.13 or earlier to build the workbooks.
+NOTE: We use a package called `minted <https://ctan.org/pkg/minted>`_ for syntax highlighting of code samples. As of 12/28, this package is currently incompatible with Python 3.14. If you are using Python 3.14, you will need to downgrade to Python 3.13 or earlier to build the workbooks.
 
 (On a Mac, you should install Xcode (from the app store, which should include Git) and `brew <https://brew.sh>`_. Next::
 
