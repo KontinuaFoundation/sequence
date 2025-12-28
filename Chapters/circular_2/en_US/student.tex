@@ -1,9 +1,41 @@
 \chapter{Circular Motion, continued}
 \section{Review of Circular Motion Basics}
-define rigid body
-recall angular kinematics formulas, recall arc length
+We have previously discussed circular motion in Chapter~\ref{chap:circular_1}, so let's do a quick review of the important concepts before we move on to rotational dynamics.
+
+We have rotational kinematics, which describes the motion of objects rotating around a fixed axis. The key variables in rotational kinematics are angular displacement ($\theta$), angular velocity ($\omega$), and angular acceleration ($\alpha$). These variables are analogous to linear displacement, velocity, and acceleration in linear kinematics.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l l}
+Linear motion & Rotational motion \\ \hline
+$v = v_0 + a t$ & $\omega = \omega_0 + \alpha t$ \\[4pt]
+$x = x_0 + v_0 t + \tfrac{1}{2} a t^2$ & $\theta = \theta_0 + \omega_0 t + \tfrac{1}{2} \alpha t^2$ \\[4pt]
+$v^2 = v_0^2 + 2a(x - x_0)$ & $\omega^2 = \omega_0^2 + 2\alpha(\theta - \theta_0)$
+\end{tabular}
+\caption{Kinematic equations for linear and rotational motion.}
+\label{tab:kinematics}
+\end{table}
+
+When an object such as a wheel or a disk rotates about an axis, each point on the object moves along a circular path centered on that axis. The total distance traveled by a point during one complete rotation is the circumference of its circular path, which is given by $ C = 2\pi r $. The rotation of the object is described by an angle $ \theta $, usually measured in radians, where one full rotation corresponds to $ 2\pi $ radians.
+
+\section{Rigid Bodies}\index{rigid body}
+Although all points on a rotating disk pass through the same angular displacement $ \theta $ in the same amount of time, they do not all travel the same distance. Points farther from the axis of rotation move along larger circles and therefore cover more distance during each rotation, even though the angular displacement is the same for all points. As a result, points farther from the axis have greater linear velocity and greater linear (tangential) acceleration than points closer to the center, as described by the relationships $ v = r\omega $ and $ a = r\alpha $. We call this points part of a \emph{rigid body}.
+
+A rigid body is an idealized object in which the distances between all points remain constant, even when forces are applied. All points along a radial line have the same angular displacement, angular velocity, and angular acceleration.
+
+In other words, a rigid body does not deform: it does not stretch, compress, or bend. This assumption allows the object to be treated as a single system in which all parts move in a predictable way relative to one another.
+
+In rotational motion, treating an object as a rigid body means that:
+
+\begin{itemize}
+  \item All points in the object rotate together around a common axis.
+  \item The angular velocity ($\omega$) and angular acceleration ($\alpha$) are the same for all points in the rigid body.
+  \item The linear velocity ($v$) and linear acceleration ($a$) of points in the rigid body depend on their distance ($r$) from the axis of rotation, following the relationships $v = r\omega$ and $a = r\alpha $.
+\end{itemize}
+
+This idea maintains for many of the problems and concepts we will discuss in this chapter.
 \section{Torque}
-Let's think about pushing a box along a frictionless surface. There is a linear relationship between how hard you push and how much the box accelerates. What if, instead, you apply the same force to a merry-go-round fixed at a central pivot? Where can you push the merry-go-round for the most rotation. Obviously you cannot push the merry-go-round linearly, so how far will the merry-go-round rotate? All of these questions can be answered by the concept of \emph{torque}. 
+Let's think about pushing a box along a frictionless surface. There is a linear relationship between how hard you push and how much the box accelerates. What if, instead, you apply the same force to a merry-go-round fixed at a central pivot? Where can you push the merry-go-round for the highest rotation? Obviously you cannot push the merry-go-round linearly (as it is fixed to the ground), so how far will the merry-go-round rotate? All of these questions can be answered by the concept of \emph{torque}. 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
@@ -254,7 +286,7 @@ The \emph{net torque}\index{net torque} is the sum of all torques present, simil
     \tau_{\text{net}} &= \sum \tau \\
     &=+(F_2)(r_2) - (F_1)(r_1)
 \end{align*}
-Because we know $\tau_1 > \tau_2$, the net torque is going to be negative, or \otimes and clockwise.
+Because we know $\tau_1 > \tau_2$, the net torque is going to be negative, characterized with $\otimes$, and clockwise.
 
 
 FIXME exercise 
@@ -283,9 +315,191 @@ From Equations~\ref{eq:momentInertiaSum} and \ref{eq:momentInertiaIntegral}, we 
 By finding the net rotational inertia of an object, we can create an equation for the rotational equivalent of Newton's Second Law:
 \begin{equation}
     \sum \tau = \tau_{net} = I \alpha
+    \label{eq:ialpha}
 \end{equation}
-FIXME Here is a chart of various moments of Inertia and their respective axes of rotation
-FIXME hollow versus solid objects rolling
+
+\subsection{Relating Rotational Newton's Second Law and }
+Since we have already defined angular acceleration, and have just discussed moment of inertia, we can now relate our two torque Equations~\ref{eq:torque_sin} and \ref{eq:ialpha} by equating them, as they both equal net torque.
+\begin{equation}
+  I \alpha = r F \sin\theta
+\end{equation}
+This will be useful for solving rotational dynamics problems, and finding any of the variables $I$, $\alpha$, $r$, $F$, or $\theta$ when the others are known.
+
+FIXME multiple problems 
 FIXME torque and moment of inertua and ang accel eqation 
 
+
+
 \section{Parallel-Axis Theorem}
+
+The \textbf{parallel-axis theorem} allows us to calculate the moment of inertia of a rigid body about any axis that is parallel to an axis passing through the center of mass. The theorem states that \index{parallel-axis theorem}
+\begin{equation}
+I_s = I_{cm} + Md^2
+\end{equation}
+where $I_s$ is the moment of inertia about the axis of interest, $I_{cm}$ is the moment of inertia about a parallel axis through the center of mass, $M$ is the total mass of the object, and $d$ is the perpendicular distance between the two axes.
+
+This theorem is especially useful when the axis of rotation does not pass through the center of mass. In many practical situations, such as a door rotating about its hinges or a rod rotating about one end, the axis of rotation is offset from the center of mass, making direct calculation more difficult.
+
+The parallel-axis theorem shows that the moment of inertia about an offset axis is always greater than the moment of inertia about the center-of-mass axis. The additional term $Md^2$ accounts for the translational motion of the object's center of mass relative to the new axis of rotation. As the distance between the axes increases, the moment of inertia increases accordingly.
+
+If the mass of an object is not evenly distributed, the location of the center of mass shifts, but the parallel-axis theorem remains applicable. Once the center of mass is known, the theorem allows the moment of inertia about any parallel axis to be found by adding the contribution due to the displacement of the center of mass. In this way, the effects of mass distribution are fully captured by the center-of-mass term and the distance between the axes.
+
+
+\section{Rotational Kinetic Energy and Rolling Motion}
+Take a look at this video: \href{https://www.youtube.com/watch?v=CHQOctEvtTY}{Rotational Inertia: The Race Between a Ring and a Disc}.
+
+Let's analyze why the solid cylinder reaches the bottom first.
+
+When two objects roll down an incline without slipping, their acceleration depends not only on gravity, but also on how their mass is distributed. This is because a rolling object must both translate and rotate, so gravitational potential energy is split between translational and rotational kinetic energy. The fraction that goes into rotation depends on the object's moment of inertia.
+
+When an object is rolling, it has both translational kinetic energy and rotational kinetic energy. The total kinetic energy of a rolling object is the sum of these two forms of kinetic energy.
+
+The total rotational kinetic energy of a rolling object comes from all of its individual point masses rotating around the axis. Each point mass has its own rotational kinetic energy $K_i$, and the sum of all these individual kinetic energies gives the total rotational kinetic energy of the object:
+\begin{align*}
+KE_{\text{rotational}}
+&= \sum K_i \\
+&= \sum \tfrac{1}{2} m_i r_i^2 \omega^2 \\
+&= \tfrac{1}{2} \left( \sum m_i r_i^2 \right) \omega^2 \\
+\end{align*}
+
+This gives us the formula for rotational kinetic energy in terms of moment of inertia:
+\begin{mdframed}[frametitle = {Rotational Kinetic Energy}, style = important]
+The rotational kinetic energy of a rigid body rotating about a fixed axis is given by
+\begin{equation}
+  KE_{\text{rotational}} = \tfrac{1}{2} I \omega^2
+\label{eq:rotKE}
+\end{equation}
+where $I$ is the moment of inertia of the object about the axis of rotation, and $\omega$ is the angular velocity. This expression applies to rigid bodies rotating about a fixed axis.
+\end{mdframed}
+
+Going back to our rolling objects, we can now see that the total kinetic energy of a rolling object is the sum of its translational and rotational kinetic energies:
+\begin{mdframed}[frametitle = {Total Kinetic Energy of a Rolling Object}, style = important]
+The total kinetic energy of a rolling object is given by
+\begin{equation}
+  KE_{\text{total}} = KE_{\text{translational}} + KE_{\text{rotational}} = \tfrac{1}{2} mv^2 + \tfrac{1}{2} I \omega^2
+\label{eq:totalKErolling}
+\end{equation}
+where $m$ is the mass of the object, $v$ is its linear velocity, $I$ is its moment of inertia, and $\omega$ is its angular velocity. For rolling without slipping, the translational and rotational motions are linked, but it is still useful to treat their kinetic energies separately.
+\end{mdframed}
+
+The moment of inertia $I$ varies depending on how the mass is distributed in the object, and is a measure of how much the object resists rotational motion. For example, a solid disc has a different moment of inertia than a hollow disc of the same mass and radius. This difference in moment of inertia affects how much of the total kinetic energy is rotational versus translational.
+
+The solid disc has most of its mass concentrated closer to the center, resulting in a lower moment of inertia. This means that less of its total kinetic energy is rotational, allowing more energy to be available for translational motion, which leads to a higher linear velocity down the incline.
+
+\begin{mdframed}[frametitle = {relationship between translational velocity and moment}, style = important]
+For rolling objects of the same mass and radius starting from the same height, translational velocity is inversely related to moment of inertia. This relationship can be expressed as:
+\begin{equation}
+v \propto \frac{1}{I}
+\end{equation}
+Explicitly, translational velocity is inversely related to moment of inertia. Objects with larger moments of inertia require more energy to rotate, leaving less energy available for translational motion.
+\end{mdframed}
+
+Each object has a unique moment of inertia based on its mass distribution, which directly affects its rolling behavior. Here is a reference table with common moments of inertia for various shapes:
+\begin{table}[h]
+  \centering
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Object and Axis of Rotation} & \textbf{Moment of Inertia} \\
+    \hline
+    Solid cylinder or disk (symmetry axis) & $I = \tfrac{1}{2}MR^2$ \\
+    \hline
+    Solid cylinder or disk (central diameter) & $I = \tfrac{1}{4}MR^2 + \tfrac{1}{12}ML^2$ \\
+    \hline
+    Hoop (symmetry axis) & $I = MR^2$ \\
+    \hline
+    Hoop (diameter) & $I = \tfrac{1}{2}MR^2$ \\
+    \hline
+    Solid sphere (about diameter) & $I = \tfrac{2}{5}MR^2$ \\
+    \hline
+    Thin spherical shell (about diameter) & $I = \tfrac{2}{3}MR^2$ \\
+    \hline
+    Rod (about center, perpendicular to length) & $I = \tfrac{1}{12}ML^2$ \\
+    \hline
+    Rod (about one end, perpendicular to length) & $I = \tfrac{1}{3}ML^2$ \\
+    \hline
+  \end{tabular}
+  \caption{Common Moments of Inertia}
+  \label{tab:moments_of_inertia}
+\end{table}
+A visualization of each of these can be found at Georgia State University's HyperPhysics website: \href{http://hyperphysics.phy-astr.gsu.edu/hbase/mi.html#cmi}{HyperPhysics: Moments of Inertia}.
+
+\section{Flywheel Energy Storage, Work, and Angular Momentum}
+\index{flywheels}
+A flywheel is a rigid body designed to store rotational energy. It typically consists of a heavy wheel or disk mounted on an axle, with much of its mass concentrated away from the axis of rotation. This mass distribution gives the flywheel a large moment of inertia, allowing it to resist changes in rotational speed. There is very little friction in the axle, so once the flywheel is spinning, it can maintain its angular velocity for a long time with minimal energy loss. We often eliminate friction in flywheel friction problems or calculations.
+
+Because of its large moment of inertia, a flywheel can smooth out variations in rotational motion. When energy is added, the flywheel stores it as rotational kinetic energy. When energy is removed, the flywheel releases this stored energy gradually, helping maintain a more uniform angular velocity. For this reason, flywheels are commonly used in engines, generators, and mechanical systems that require steady rotation.
+
+This relies on the principle of \emph{Conservation of Angular Momentum}\index{Conservation of Angular Momentum}, which states that in the absence of \emph{external torques}, the total angular momentum of a system remains constant. For a flywheel, this means that if no external torque acts on it, its angular momentum will not change, allowing it to maintain its rotational speed even when external forces try to slow it down.
+\subsection{Angular Momentum}
+The connection between angular momentum and torque is direct: torque is the rate at which angular momentum changes. Applying a torque to a flywheel changes its angular momentum by increasing or decreasing its angular velocity. Because of the flywheel's large moment of inertia, a given torque produces only a gradual change in angular speed, contributing to the flywheel's stabilizing effect.
+\begin{mdframed}[frametitle = {Angular Momentum and the Conservation of Angular Momentum}, style = important]
+The angular momentum \( L \) of a rotating rigid body is given by
+\begin{equation}
+L = I \omega
+\label{eq:angularMomentum1}
+\end{equation}
+where \( I \) is the moment of inertia of the body about the axis of rotation, and \( \omega \) is its angular velocity. Angular momentum is a \emph{vector} quantity, with both magnitude and direction.
+
+Just as linear momentum can be written as $F=\frac{dp}{dt}$, torque can be expressed as the time rate of change of angular momentum:
+\begin{equation}
+\tau = \frac{dL}{dt}
+\label{eq:derivTorque}
+\end{equation}
+
+We can also derive this as a Newtonian cross product between $r$ and $\textbf{p}$, linear momentum. This works because angular momentum is the rotational equivalent of linear momentum, but depends on the choice of origin.
+\begin{equation}
+L = r \times p
+\label{eq:angularMomentum2}
+\end{equation}
+
+Just like linear momentum, angular momentum is conserved in a system with no external torques. This is known as the \emph{Conservation of Angular Momentum}:
+\begin{equation}
+L_{\text{initial}} = L_{\text{final}} \quad (\boldsymbol{\tau}_{\text{net}} = 0)
+\end{equation}
+
+\end{mdframed}
+
+This equation shows that torque is responsible for changing angular momentum. Because a flywheel has a large moment of inertia, a given applied torque produces only a small angular acceleration, allowing the flywheel to respond smoothly to changes in applied forces. 
+
+\subsection{Work done by Torque}
+Recall that work is a change in energy. Torque also does work when it causes rotation. For a constant torque acting on point mass through an angular displacement $\Delta \theta$ the work done is
+\begin{equation}
+W = Fr\theta= \tau \Delta \theta
+\label{eq:work_rot}
+\end{equation}
+
+This comes from the fact that linear work is defined as $W = F \Delta x$, and the arc length of a circle is defined as $s = r \theta$. Thus, we can substitute $r \theta$ for $\Delta x$ in the linear work equation to get the rotational work equation.
+
+\section{Summary}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\caption{Correspondence Between Linear and Rotational Motion}
+\label{tab:linear_rotational_analogy}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Linear Motion} & \textbf{Rotational Motion} \\
+\hline
+Position $x$ & Angle $\theta$ \\
+\hline
+Velocity $v$ & Angular velocity $\omega$ \\
+\hline
+Acceleration $a$ & Angular acceleration $\alpha$ \\
+\hline
+Mass $m$ & Moment of inertia $I$ \\
+\hline
+Force $F$ & Torque $\tau$ \\
+\hline
+Momentum $p = mv$ & Angular momentum $L = I\omega$ \\
+\hline
+$F = \dfrac{dp}{dt}$ & $\tau = \dfrac{dL}{dt}$ \\
+\hline
+Work $W = F \Delta x$ & Work $W = \tau \Delta \theta$ \\
+\hline
+Kinetic Energy $\tfrac{1}{2}mv^2$ & Rotational KE $\tfrac{1}{2}I\omega^2$ \\
+\hline
+Power $P = Fv$ & Power $P = \tau \omega$ \\
+\hline
+\end{tabular}
+\end{table}
