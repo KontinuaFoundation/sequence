@@ -159,11 +159,11 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
     footer_file.close()
     output_tex.write(footer)
     output_tex.close()
-    os.system(f"{tool} --halt-on-error --shell-escape {output_tex_path}")
+    os.system(f"{tool} -halt-on-error -shell-escape {output_tex_path}")
 
     if not draft:
         # Run it a second time to make cross-references
-        os.system(f"{tool} --halt-on-error --shell-escape {output_tex_path}")
+        os.system(f"{tool} -halt-on-error -shell-escape {output_tex_path}")
     if os.path.exists(output_pdf_path):
         shutil.move(output_pdf_path, final_pdf_path)
         print(f"{final_pdf_path} built.")
