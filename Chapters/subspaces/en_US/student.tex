@@ -1,0 +1,143 @@
+\chapter{Subspaces}\label{chap:subspaces}
+Recall that, in Chapter~\ref{chap:syseqma}, we established that all linear systems can be represented in matrix form as $A\vec{x}=\vec{b}$. In this chapter, we will explore the concept of subspaces, which are fundamental to understanding the structure of solutions to linear systems.
+
+Quickly, let's establish some vocabulary. 
+The zero vector, denoted as $\vec{0}$, is the vector where all components are zero. It will be a column vector of appropriate size $n\times 1$.
+
+If $A\vec{x} = \vec{0}$, where $\vec{b} = \vec{0}$, then the system is called \textbf{homogeneous}. If $A\vec{x} = \vec{b}$ where $\vec{b} \neq \vec{0}$, then the system is called \textbf{non-homogeneous}.
+
+\section{What is a Subspace?}
+A subspace $V$ of $\mathbb{R}^n$ is a subset $V$ of $\mathbb{R}^n$ satisfying the following properties:
+\begin{itemize}
+    \item The zero vector $\vec{0}$ is in the subspace.
+    \item If $\vec{u}$ and $\vec{v}$ are in the subspace, then their sum $\vec{u} + \vec{v}$ is also in the subspace.
+    \item If $\vec{u}$ is in the subspace and $c$ is a scalar, then the scalar multiple $c\vec{u}$ is also in the subspace.
+\end{itemize}
+
+In short, a subspace is exactly the set of all linear combinations of some collection of vectors. Additionally, every subpace is a span. 
+\begin{mdframed}[frametitle = {Subspace Span}, style = important]
+If $V$ is a subspace of $\mathbb{R}^n$, then there exists a set of vectors
+$$\{\vec{v}_1,\vec{v}_2,\ldots,\vec{v}_k\} \subseteq \mathbb{R}^n$$
+such that
+$$V = \text{span}\{\vec{v}_1,\vec{v}_2,\ldots,\vec{v}_k\}$$
+That is, every vector in $V$ can be written as a linear combination of vectors in $V$.
+\end{mdframed}
+
+Because $V$ is closed under:
+
+\begin{itemize}
+    \item vector addition, and
+    \item scalar multiplication,
+\end{itemize}
+
+any linear combination of vectors in $V$ must also lie in $V$.
+
+So if $\vec{u},\vec{v} \in V$ and $a,b \in \mathbb{R}$, then
+$$a\vec{u} + b\vec{v} \in V$$
+
+The converse is also true: any span is a subspace.
+$$\text{span}(V) \text{ is a subspace of } \mathbb{R}^n$$
+
+For example, vectors $\vec{v_{1}}= [1, 0]$ and $\vec{v_{2}}= [0, 1]$ span all of $\mathbb{R}^2$, since they can be scaled to fit all of $\mathbb{R}^2$.    
+\begin{itemize}
+    \item the span $v_1$ is a line through $\vec{0}$
+    \item the span $v_{1},v_{2}$ is a line or plane through $\vec{0}$
+    \item the span of $v_{1}, v_{2}, v_{3}$ is a line or plane through $\vec{0}$, or all of $\mathbb{R}^3$
+\end{itemize}
+
+
+% https://textbooks.math.gatech.edu/ila/1553/subspaces.html
+
+FIXME maybe explain basis and dimension here
+\section{Nullspace}
+
+We now examine a fundamental example of a subspace: the \textbf{nullspace} of a matrix. \index{nullspace}
+Recall that a subspace is a subset of $\mathbb{R}^n$ that is closed under vector addition and scalar multiplication and contains the zero vector.
+
+\medskip
+
+The nullspace of a matrix $A$, denoted $\text{Null}(A)$, is the set of all vectors $\vec{x}$ such that
+\[
+A\vec{x} = \vec{0}.
+\]
+That is, the nullspace is precisely the solution set of the homogeneous system $A\vec{x}=\vec{0}$.
+
+\begin{mdframed}[frametitle = {Nullspace}, style = important]
+The nullspace of a matrix $A$ is defined as
+\[
+\text{Null}(A) = \{\vec{x} \in \mathbb{R}^n : A\vec{x} = \vec{0}\}.
+\]
+\end{mdframed}
+
+Because the equation $A\vec{x}=\vec{0}$ is homogeneous, its solution set always contains the zero vector. Moreover, if $\vec{x}_1$ and $\vec{x}_2$ are solutions, then any linear combination of the form
+\[
+a\vec{x}_1 + b\vec{x}_2
+\]
+is also a solution. For this reason, the nullspace of a matrix is always a subspace of $\mathbb{R}^n$.
+
+\subsection{Linear Combinations and Span}
+
+Recall that a \textbf{linear combination} of vectors $\vec{v}_1,\vec{v}_2,\ldots,\vec{v}_n$ is any vector of the form
+\[
+a_1\vec{v}_1 + a_2\vec{v}_2 + \cdots + a_n\vec{v}_n,
+\]
+where $a_1,a_2,\ldots,a_n \in \mathbb{R}$ are scalars.
+
+The set of all possible linear combinations of a collection of vectors is called their \textbf{span}. If a subspace can be written as the span of one or more vectors, those vectors describe all possible directions within the subspace.
+
+\subsubsection*{Example}
+
+Consider the matrix
+\[
+A =
+\begin{bmatrix}
+1 & 2 \\
+2 & 4
+\end{bmatrix}.
+\]
+
+To find the nullspace of $A$, we solve the homogeneous system $A\vec{x}=\vec{0}$:
+\[
+\begin{bmatrix}
+1 & 2 \\
+2 & 4
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0
+\end{bmatrix}.
+\]
+
+This corresponds to the system of equations
+\[
+x_1 + 2x_2 = 0,
+\qquad
+2x_1 + 4x_2 = 0.
+\]
+
+Solving for $x_1$ in terms of $x_2$ gives
+\[
+x_1 = -2x_2.
+\]
+
+Notice that $x_1$ can be written in terms of $x_2$. This implies \emph{linear dependence}, an important idea we will talk about later. Thus, every vector in the nullspace can be written in the form
+\[
+\vec{x} = x_2
+\begin{bmatrix}
+-2 \\ 1
+\end{bmatrix}.
+\]
+
+Therefore, the nullspace of $A$ is
+\[
+\text{Null}(A) = \text{span}\left\{
+\begin{bmatrix}
+-2 \\ 1
+\end{bmatrix}
+\right\}.
+\]
+
+Geometrically, this nullspace is a line through the origin in $\mathbb{R}^2$, which is a one-dimensional subspace of $\mathbb{R}^2$.

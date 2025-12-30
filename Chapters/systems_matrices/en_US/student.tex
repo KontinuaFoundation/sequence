@@ -139,7 +139,7 @@ $$A =  A^t =
  		4 & 2 & 3 
 	\end{bmatrix}$$
 \end{Answer}
-\section{Systems of Equations}
+\section{Systems of Equations, REF, and RREF}
 
 We have talked a lot about matrices and vectors. Now we can use matrices and vectors to solve systems of equations. A system of linear equations can be written compactly using matrices and vectors. This matrix representation allows us to use algebraic tools such as row operations and matrix multiplication to analyze and solve the system more efficiently. Let's look at a very simple example from a previous section.
 
@@ -221,27 +221,297 @@ Why do these operations preserve the given linear system? Swapping two rows only
 
 With these ERO's, we are trying to achieve a matrix with the following properties:
 \begin{itemize}
-\item Leading entries move to the right as you go down
+\item Leading entries (not necessarily 1) move to the right as you go down
 \item Rows of zeros, if exist, are at the bottom
-\item Entries below each leading entry are zero
+\item Each pivot has zeros in all positions below it in the same column.
 \end{itemize}
 
 Lets walk through the steps to simplify $\text{ref}(A\vert \vec{b})$:
 
+\begin{align*}
+\vecb{1 & 2 &\vert & -1 \\ 2 & 0 & \vert & 4} \\
+R_2 \rightarrow R_2 - 2R_1 &\implies \vecb{1 & 2 &\vert & -1 \\ 0 & -4 & \vert & 6} \\
+\end{align*}
 
+As you can see, we set Row 2 to be Row 2 minus 2 times Row 1. This gives us a zero in the first column of Row 2. Technically, this matrix is now in Row-Echelon Form (REF). However, we can continue applying elementary row operations to obtain an even more structured form called the \emph{Reduced Row-Echelon Form}.
 
+\subsection{Reduced Row Echelon Form}
+A matrix is in \emph{Reduced Row-Echelon Form} (RREF) if it satisfies all of the conditions for Row-Echelon Form, and in addition:
 
-\section{Reduced Row Echelon Form}
+\begin{itemize}
+\item Each leading entry is equal to $1$
+\item Each leading entry is the only nonzero entry in its column
+\end{itemize}
 
+In other words, not only do pivots move to the right as we move down the rows, but each pivot column contains zeros both above and below the pivot, and each pivot is normalized to $1$. These additional conditions make RREF especially useful, since the solutions to the system can often be read directly from the matrix.
 
+Continuing our example, we start with the matrix in REF:
+\begin{align*}
+\vecb{1 & 2 &\vert & -1 \\ 0 & -4 & \vert & 6}
+\end{align*}
 
+First, make the leading entry in Row 2 equal to $1$ by dividing the row by $-4$:
+\begin{align*}
+R_2 \rightarrow -\frac{1}{4}R_2 
+&\implies 
+\vecb{1 & 2 &\vert & -1 \\ 0 & 1 & \vert & -\frac{3}{2}}
+\end{align*}
 
+Next, eliminate the entry above the pivot in column 2:
+\begin{align*}
+R_1 \rightarrow R_1 - 2R_2 
+&\implies 
+\vecb{1 & 0 &\vert & 2 \\ 0 & 1 & \vert & -\frac{3}{2}}
+\end{align*}
 
+The matrix is now in Reduced Row-Echelon Form.
 
+\subsection{Writing the Solution Vector}
+
+Recall that the augmented matrix represents a system of linear equations. After reducing the matrix to Reduced Row-Echelon Form, we obtain
+\begin{align*}
+\vecb{1 & 0 &\vert & 2 \\ 0 & 1 & \vert & -\frac{3}{2}}
+\end{align*}
+
+Each row now corresponds directly to an equation in the variables $x_1$ and $x_2$:
+\begin{align*}
+x_1 &= 2 \\
+x_2 &= -\frac{3}{2}
+\end{align*}
+
+Thus, the solution to the system can be written as the vector
+\[
+\vec{x}
+=
+\vecb{2 \\-\frac{3}{2}}
+\]
+
+Since every variable corresponds to a pivot column, the system has a \emph{unique solution}.
+
+We have sucessfully solved the system of equations using matrix methods:
+$$\vecb{1 & 2 \\ 2 & 0}\vecb{2 \\ -\frac{3}{2}} = \vecb{-1 \\ 4}$$
+
+This is a fundamental technique in linear algebra, and you will use it often in this module and beyond!
+
+\section{Larger RREF Example}
+
+Let's solve a larger system by finding $\vec{x}$ in the matrix equation
+\[
+A\vec{x}=\vec{b}.
+\]
+
+\subsection{Write the System and Identify $A$, $\vec{x}$, and $\vec{b}$}
+
+Consider the following system of equations:
+\[
+\begin{cases}
+x_1 + x_2 + x_3 + x_4 = 4 \\
+2x_1 + x_2 + 3x_3 + x_4 = 9 \\
+x_1 + 3x_2 + 2x_3 + 2x_4 = 10 \\
+3x_1 + x_2 + 2x_3 + 4x_4 = 13
+\end{cases}
+\]
+
+The coefficient matrix, variable vector, and constant vector are:
+\[
+A=\vecb{
+1 & 1 & 1 & 1\\
+2 & 1 & 3 & 1\\
+1 & 3 & 2 & 2\\
+3 & 1 & 2 & 4
+},
+\qquad
+\vec{x}=\vecb{x_1\\x_2\\x_3\\x_4},
+\qquad
+\vec{b}=\vecb{4\\9\\10\\13}.
+\]
+
+So the matrix equation is:
+\[
+A\vec{x}=\vec{b}.
+\]
+
+\subsection{Form the Augmented Matrix}
+
+\[
+\vecb{A\vert \vec{b}}
+=
+\vecb{
+1 & 1 & 1 & 1 & \vert & 4\\
+2 & 1 & 3 & 1 & \vert & 9\\
+1 & 3 & 2 & 2 & \vert & 10\\
+3 & 1 & 2 & 4 & \vert & 13
+}.
+\]
+
+\subsection{Row-Reduce to REF}
+
+Use the pivot in Row 1 to clear entries below it in column 1:
+\begin{align*}
+R_2 &\rightarrow R_2 - 2R_1 \\
+R_3 &\rightarrow R_3 - R_1 \\
+R_4 &\rightarrow R_4 - 3R_1
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 1 & 1 & 1 & \vert & 4\\
+0 & -1 & 1 & -1 & \vert & 1\\
+0 & 2 & 1 & 1 & \vert & 6\\
+0 & -2 & -1 & 1 & \vert & 1
+}.
+\end{align*}
+
+Now use the pivot in Row 2 (column 2) to clear entries below it in column 2:
+\begin{align*}
+R_3 &\rightarrow R_3 + 2R_2 \\
+R_4 &\rightarrow R_4 - 2R_2
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 1 & 1 & 1 & \vert & 4\\
+0 & -1 & 1 & -1 & \vert & 1\\
+0 & 0 & 3 & -1 & \vert & 8\\
+0 & 0 & -3 & 3 & \vert & -1
+}.
+\end{align*}
+
+Next use the pivot in Row 3 (column 3) to clear the entry below it in column 3:
+\begin{align*}
+R_4 \rightarrow R_4 + R_3
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 1 & 1 & 1 & \vert & 4\\
+0 & -1 & 1 & -1 & \vert & 1\\
+0 & 0 & 3 & -1 & \vert & 8\\
+0 & 0 & 0 & 2 & \vert & 7
+}.
+\end{align*}
+
+At this point, the matrix is in Row-Echelon Form (REF).
+
+\subsection{Continue to RREF}
+
+Make the pivot in Row 4 equal to $1$:
+\begin{align*}
+R_4 \rightarrow \frac{1}{2}R_4
+\implies
+\vecb{
+1 & 1 & 1 & 1 & \vert & 4\\
+0 & -1 & 1 & -1 & \vert & 1\\
+0 & 0 & 3 & -1 & \vert & 8\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+Clear the entries above the pivot in column 4:
+\begin{align*}
+R_1 &\rightarrow R_1 - R_4\\
+R_2 &\rightarrow R_2 + R_4\\
+R_3 &\rightarrow R_3 + R_4
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 1 & 1 & 0 & \vert & \frac{1}{2}\\
+0 & -1 & 1 & 0 & \vert & \frac{9}{2}\\
+0 & 0 & 3 & 0 & \vert & \frac{23}{2}\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+Make the pivot in Row 3 equal to $1$:
+\begin{align*}
+R_3 \rightarrow \frac{1}{3}R_3
+\implies
+\vecb{
+1 & 1 & 1 & 0 & \vert & \frac{1}{2}\\
+0 & -1 & 1 & 0 & \vert & \frac{9}{2}\\
+0 & 0 & 1 & 0 & \vert & \frac{23}{6}\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+Clear the entries above the pivot in column 3:
+\begin{align*}
+R_1 &\rightarrow R_1 - R_3\\
+R_2 &\rightarrow R_2 - R_3
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 1 & 0 & 0 & \vert & -\frac{10}{3}\\
+0 & -1 & 0 & 0 & \vert & \frac{2}{3}\\
+0 & 0 & 1 & 0 & \vert & \frac{23}{6}\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+Make the pivot in Row 2 equal to $1$:
+\begin{align*}
+R_2 \rightarrow -R_2
+\implies
+\vecb{
+1 & 1 & 0 & 0 & \vert & -\frac{10}{3}\\
+0 & 1 & 0 & 0 & \vert & -\frac{2}{3}\\
+0 & 0 & 1 & 0 & \vert & \frac{23}{6}\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+Clear the entry above the pivot in column 2:
+\begin{align*}
+R_1 \rightarrow R_1 - R_2
+\end{align*}
+
+\begin{align*}
+\implies
+\vecb{
+1 & 0 & 0 & 0 & \vert & -\frac{8}{3}\\
+0 & 1 & 0 & 0 & \vert & -\frac{2}{3}\\
+0 & 0 & 1 & 0 & \vert & \frac{23}{6}\\
+0 & 0 & 0 & 1 & \vert & \frac{7}{2}
+}.
+\end{align*}
+
+This matrix is now in Reduced Row-Echelon Form (RREF).
+
+\subsection{Write the Solution Vector}
+
+Reading each row as an equation gives:
+\begin{align*}
+x_1 &= -\frac{8}{3}\\
+x_2 &= -\frac{2}{3}\\
+x_3 &= \frac{23}{6}\\
+x_4 &= \frac{7}{2}
+\end{align*}
+
+Thus the solution vector is:
+\[
+\vec{x}=\vecb{
+-\frac{8}{3}\\[4pt]
+-\frac{2}{3}\\[4pt]
+\frac{23}{6}\\[4pt]
+\frac{7}{2}
+}.
+\]
+
+You can verify the solution by confirming that $A\vec{x}=\vec{b}$ using matrix multiplication.
+
+FIXME exercises
+FIXME problem with free variable
 
 \section{Creating Matrices in Python}
-Create a file called \filename{matrices\_creation.py} and enter this code:
-\begin{Verbatim}
+Recall that matrices can be represented by 2D arrays in Python. Let's explore this idea further with the module \mintinline{python}|numpy|. Create a file called \filename{matrices\_creation.py} and enter this code:
+\begin{minted}{python}
 # import the python module that supports matrices
 import numpy as np
 # Use the function np.array to define a matrix that 
@@ -251,55 +521,55 @@ A = np.array([[ 5, 1, 3],
               [ 6, 2, 1]])
 # The transpose function returns 
 A.transpose()
-\end{Verbatim}
+\end{minted}
 When you run it, you should see:
-\begin{Verbatim}
+\begin{minted}{python}
 array([[ 5, 1, 6], 
        [ 1, -1, 2], 
        [ 3, 8, 1]])
-\end{Verbatim}
+\end{minted}
 As you can see, $A\neq A^T$, so A is not symmetric.
 Try another: 
-\begin{Verbatim}
+\begin{minted}{python}
 # create a matrix, B
 B = np.array([[ 5, 1, 6], 
               [ 1, -1, 2], 
               [ 6, 2, 1]])
 B.transpose()
-\end{Verbatim}
+\end{minted}
 When you run it, you should see:
-\begin{Verbatim}
+\begin{minted}{python}
 array([[ 5, 1, 6], 
        [ 1, -1, 2], 
        [ 6, 2, 1]])
-\end{Verbatim}
+\end{minted}
 B is symmetric. You can actually transpose any matrix using this function, but a matrix cannot be symmetric unless it is square. 
 
 Try this code to see what happens when you transpose a rectangular matrix. 
-\begin{Verbatim}
+\begin{minted}{python}
 # create a matrix, J
 J = np.array([[ 5, 1, 3, 0], 
               [ 1, -1, 8, 11], 
               [ 6, 2, 1,-7]])
 J.transpose()
-\end{Verbatim}
+\end{minted}
 Note that transposing a rectangular matrix changes its dimension from 3 by 4 to 4 by 3. You should see a transposed matrix, but it's not symmetric.
-\begin{Verbatim}
+\begin{minted}{python}
 array([[ 5,  1,  6],
        [ 1, -1,  2],
        [ 3,  8,  1],
        [ 0, 11, -7]])
-\end{Verbatim}
+\end{minted}
 
 \subsection{Creating Special Matrices in Python}
  Use the same file to add this code for creating a zero matrix.
-\begin{Verbatim}
+\begin{minted}{python}
 # create an 8 by 10 Zero matrix.
  C = np.zeros((8, 10))
  C
-\end{Verbatim}
+\end{minted}
 When you run it, you should see:
-\begin{Verbatim}
+\begin{minted}{python}
 array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
@@ -308,15 +578,15 @@ array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
-\end{Verbatim}
+\end{minted}
 Add the following code to create an 8 by 8 Identity matrix.
-\begin{Verbatim}
+\begin{minted}{python}
 # create an 8 by 8 Identity matrix 
  D = np.eye(8)
  D
-\end{Verbatim}
+\end{minted}
 When you run it, you should see:
-\begin{Verbatim}
+\begin{minted}{python}
 array([[1., 0., 0., 0., 0., 0., 0., 0.],
        [0., 1., 0., 0., 0., 0., 0., 0.],
        [0., 0., 1., 0., 0., 0., 0., 0.],
@@ -325,43 +595,43 @@ array([[1., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 1., 0., 0.],
        [0., 0., 0., 0., 0., 0., 1., 0.],
        [0., 0., 0., 0., 0., 0., 0., 1.]])
-\end{Verbatim}
+\end{minted}
 As you progress in your studies, you will learn the importance of diagonal matrices and of extracting the diagonal of a matrix. Let's see how to extract a diagonal, then create a diagonal matrix.
-\begin{Verbatim}
+\begin{minted}{python}
 # create a  matrix 
 W = np.array([[1, 2, 3, 4], 
               [5, 6, 7, 8], 
               [-8, -7, -6, -5],
               [-4, -3, -2, -1]])
-\end{Verbatim}
+\end{minted}
 Extract the main diagonal using np.diag(<array>,<diagonal to extract>). 
 Passing 0 as the second parameter specifies the main diagonal. A positive value extracts a diagonal from the upper part. A negative value extracts a diagonal from the lower part. Run this code then experiment passing other values to see what you get.
-\begin{Verbatim}
+\begin{minted}{python}
 print(np.diag(W,0))
-\end{Verbatim}
+\end{minted}
 When you run it, you should see:
-\begin{Verbatim}
+\begin{minted}{python}
 array([ 1,  6, -6, -1])
-\end{Verbatim}
+\end{minted}
 You can also use np.diag() to create a diagonal matrix from a 1D array. In this case, do not pass a second paramenter.
-\begin{Verbatim}
+\begin{minted}{python}
 Q = np.array([1, 2, 3])
 DiagArray = np.diag(Q))
 print(DiagArray)
-\end{Verbatim}
+\end{minted}
 When you run it you should see;
-\begin{Verbatim}
+\begin{minted}{python}
 [[1 0 0]
  [0 2 0]
  [0 0 3]]
-\end{Verbatim}
+\end{minted}
 Python has functions for extracting upper and lower triangular matrices. Try these:
-\begin{Verbatim}
+\begin{minted}{python}
 print(np.triu(W))
 print(np.tril(W))
-\end{Verbatim}
+\end{minted}
 You should see:
-\begin{Verbatim}
+\begin{minted}{python}
 [[ 1  2  3  4]
  [ 0  6  7  8]
  [ 0  0 -6 -5]
@@ -371,7 +641,10 @@ You should see:
  [ 5  6  0  0]
  [-8 -7 -6  0]
  [-4 -3 -2 -1]]
-\end{Verbatim}
+\end{minted}
 
 
+\section{Conclusion}
+In this module, we have explored the fundamental concepts of matrices, including their types, properties, and how they can be used to represent and solve systems of linear equations. We have also learned how to perform row operations to convert matrices into Row-Echelon Form (REF) and Reduced Row-Echelon Form (RREF), which are essential techniques in linear algebra. In the next chapter~\ref{chap:subspaces}, we will talk deeper about the concepts of vector spaces and subspaces and how to find RREF, building on our understanding of matrices and their applications.
 
+FIXME digital resources
