@@ -804,6 +804,7 @@
 \usepackage{cancel}
 \usepackage{wrapfig}
 \usepackage{listings}
+\usepackage{colortbl}
 \usepackage{mdframed}
 \usepackage{minted}
 \setminted{
