@@ -805,6 +805,8 @@
 \usepackage{wrapfig}
 \usepackage{listings}
 \usepackage{colortbl}
+\usepackage{subcaption}
+\usepackage{enumitem}
 \usepackage{mdframed}
 \usepackage{minted}
 \setminted{

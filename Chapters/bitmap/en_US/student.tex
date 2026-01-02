@@ -1,2 +1,476 @@
-\chapter{Bitmaps}
-Let's talk about another image format: the Bitmap. The Bitmap, with file type \texttt{.bmp}, is a file format
+\chapter{Bitmaps}\label{chap:bitmaps}
+%OVERALL NOTE: This chapter is an introduction to bitmaps, following the hexbinary chapter. It assumes C++ knowledge, way may cause an issue with the learning curve. 
+Let's talk about another image format: the Bitmap. The Bitmap, denoted with file type \mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
+
+Bitmaps are uncompressed, meaning they can take up a lot of storage space compared to other image formats like JPEG or PNG. However, they are simple to read and write in code, making them useful for certain applications where image quality is more important than file size.
+
+To understand how bitmaps work in practice, it helps to think of an image as nothing more than numbers stored in memory. Each pixel in a bitmap corresponds to a color value, and these values are usually written in hexadecimal (base-16) form. If you need a review, look back at Chapter~\ref{chap:hexbinary}\index{hexadecimal}
+
+In a common $24$-bit bitmap, each pixel is made up of three color components:
+\begin{itemize}
+\item Red
+\item Green
+\item Blue
+\end{itemize}
+
+The intensity of each color component is represented by $8$ bits. In decimal, this means each component can have a value from $0$ to $255$, for a total of $256$ possible values. In hexadecimal, this range is represented from \texttt{00} to \texttt{FF}.
+
+Each pixel's color is then represented by a 6-digit hexadecimal number, where the first two digits represent the red component, the next two represent green, and the last two represent blue.  A total of $16,777,216$ different colors can be represented ($256 \times 256 \times 256$).
+
+
+Together, the intensity of each component determines the final color of the pixel. For example:
+\begin{itemize}
+\item \texttt{0xFF0000} represents pure red
+\item \texttt{0x00FF00} represents pure green
+\item \texttt{0x0000FF} represents pure blue
+\item \texttt{0xFFFFFF} represents white
+\item \texttt{0x000000} represents black
+\end{itemize}
+
+Recall that the prefix \texttt{0x} indicates that the number is in hexadecimal format.
+When creating or manipulating bitmap images in code, you can directly set the color values of individual pixels using their hexadecimal representations. This allows for precise control over the image's appearance.
+
+\section{Bitmap Structure}
+\index{bitmaps!structure of}
+When traversing a bitmap, it's important to understand its structure. A bitmap file typically consists of a header followed by the pixel data. The header contains metadata about the image, such as its width, height, and color depth. The pixel data is stored in a grid format, with each pixel represented by its color value.
+
+In a $24$-bit bitmap, each pixel is represented by $3$ bytes (one byte for each color component). The pixel data is usually stored in a bottom-up order, meaning the first row of pixel data corresponds to the bottom row of the image.
+
+\subsection{Bitmap Headers}
+The bitmap header is typically constructed with a file section and info section. Following those comes the pixel data, represented as bytes.
+\begin{minted}{text}
+| File Header (?) | Info Header (usually 40 bytes) | Pixel Data (rowSize*height) |
+\end{minted}
+
+\begin{minted}{cpp}
+
+struct BITMAPFILEHEADER
+{
+    WORD bfType; //specifies the file type
+    DWORD bfSize; //specifies the size in bytes of the bitmap file
+    WORD bfReserved1; //reserved; must be 0
+    WORD bfReserved2; //reserved; must be 0
+    DWORD bfOffBits; //species the offset in bytes from the bitmapfileheader to the bitmap bits
+};
+struct BITMAPINFOHEADER
+{
+    DWORD biSize; //specifies the number of bytes required by the struct
+    LONG biWidth; //specifies width in pixels
+    LONG biHeight; //species height in pixels
+    WORD biPlanes; //specifies the number of color planes, must be 1
+    WORD biBitCount; //specifies the number of bit per pixel
+    DWORD biCompression;//spcifies the type of compression
+    DWORD biSizeImage; //size of image in bytes
+    LONG biXPelsPerMeter; //number of pixels per meter in x axis
+    LONG biYPelsPerMeter; //number of pixels per meter in y axis
+    DWORD biClrUsed; //number of colors used by th ebitmap
+    DWORD biClrImportant; //number of colors that are important
+};
+\end{minted}
+
+You can refer to \href{https://en.wikipedia.org/wiki/BMP_file_format}{the BMP file format specification} and \href{https://en.wikipedia.org/wiki/Bitmap}{the bitmap article} for more information. Let's create variables to hold important fields:
+\begin{itemize}
+    \item \mintinline{cpp}|int w = bih.biWidth;| - width of the image in pixels
+    \item \mintinline{cpp}|int h = bih.biHeight;| - height of the image in pixels
+    \item \mintinline{cpp}|int size = bih.biSizeImage;| - the total size of the pixel data in bytes
+    \item Note that we create \mintinline{cpp}|bytesPerPixel = 3| - the number of bytes per pixel ($3$ for $24$-bit RGB)
+\end{itemize}
+Let's also preemptively build a pixel structure that can contain the information of an individual value at coordinate $(x,y)$:
+\begin{minted}{cpp}
+struct PIXEL
+{
+    // Each value is in range 0 to 255 represented as a byte
+    BYTE b; // 1 byte
+    BYTE g; // 1 byte
+    BYTE r; // 1 byte
+};
+\end{minted}
+\subsection{Padding}
+Remember that bytes are stored in a contiguous block of memory, as one long string of bytes. The computer does not inherently know where one row ends and the next begins. We need to calculate the starting index of each pixel based on its row and column position. But, there is an issue: each row of pixel data in a bitmap must be aligned to a $4$-byte boundary. 
+
+Padding exists in bitmap images to ensure that each row of pixel data is aligned to a 4-byte boundary in memory, which was a design choice made to improve performance and simplicity on early computer systems. Processors and hardware are more efficient when reading data that begins at predictable, aligned memory addresses, and forcing each row to occupy a size divisible by four bytes guarantees this alignment.
+
+Because bitmap pixels do not always naturally fill a multiple of four bytes—especially in formats like 24-bit images where each pixel uses three bytes—extra, non-image bytes are added to the end of each row to reach the required alignment. These padding bytes do not represent color information and are ignored when displaying the image, but they ensure that each row starts at a consistent location in memory, making bitmap files easier and faster for software and hardware to process.
+
+This means that if the width of the image (in bytes) is not a multiple of $4$, we need to add padding bytes at the end of each row to ensure proper alignment. Padding, then, is extra bytes added to the end of each row of pixels so that the row size is a multiple of 4 bytes.\index{padding}
+
+Let's look at an example. If we create a $4$ pixel bitmap, it takes up
+$$4 \text{ pixels} \times 3 \text{ bytes} = 12 \text{ bytes}$$
+The memory looks something like
+\begin{minted}{text}
+... | ?? | ?? | [B G R] [B G R] [B G R] [B G R] | ?? | ?? | ...
+\end{minted}
+
+Since memory is contiguous, the question marks represent unrelated memory that does not belong to the bitmap's pixel data. Attempting to access memory outside the bounds of the image means the program is reading or writing data it does not own. Modern operating systems protect memory by dividing it into regions assigned to each program. If a program tries to access memory outside of its permitted region, the operating system immediately stops the program and reports an error known as a \texttt{Segmentation Fault}. This mechanism prevents programs from corrupting other data and helps ensure overall system stability.\index{segmentation fault}
+
+$12 \text{ bytes}$ is evenly divisible by $4$, so \emph{no padding is needed}.
+
+However, if we create a 3 pixel bitmap, it would take up:
+$$3 \text{ pixels} \times 3 \text{ bytes} = 9 \text{ bytes}$$
+
+$9$ is not evenly divisible by $4$, so 3 bytes of memory must be added as padding for row-alignment.
+\begin{minted}{text}
+... | ?? | ?? | [B G R] [B G R] [B G R] [ P ] [ P ] [ P ] | ?? | ?? | ...
+\end{minted}
+
+Note that we read the pixels in \texttt{B G R} order in memory, but hex colors are read usually to humans via \texttt{R G B} order. This gets into a concept called \emph{little endian}. Put simply in a \href{https://stackoverflow.com/questions/367449/what-exactly-is-bgr-color-space}{stack overflow post}:
+\begin{quote}
+    RGB is a byte-order. But a deliberate implementation choice of most vanilla Graphics libraries is that they treat colours as unsigned 32-bit integers internally, with the three (or four, as alpha is typically included) components packed into the integer.
+
+    On a little-endian machine (such as x86) the integer \texttt{0x01020304} will actually be stored in memory as \texttt{0x04030201}. And thus \texttt{0x00BBGGRR} will be stored as \texttt{0xRRGGBB00}!
+\end{quote}
+
+So how can we create an equation for finding a pixel at the coordinates $(x,y)$ if memory is in a contiguous line?
+
+The calculation \mintinline{cpp}|rawRowSize = width * bytesPerPixel| provides a raw row estimate, but if padding is included, we need to round up by 4. 
+The multiples of 4 look like $0,\, 4,\, 8,\, 12,\, 16,\, 20,\, 24,\, 28,\, 32 \dots$. 
+\begin{itemize}
+    \item If \mintinline{cpp}|rawRowSize| is already one of these, we want to keep it.
+    \item If not, we want to round upwards to the next multiple.
+\end{itemize}
+
+One way to accomplish this rounding is to take advantage of integer division. By adding a small offset before dividing, we can ensure that any value which is not already divisible by $4$ is pushed into the next group of four bytes. Specifically, adding $3$ to the raw row size guarantees that the result will round upward when divided by $4$ using integer arithmetic.
+
+This gives us the following expression for the true number of bytes in a single row, including padding:
+$$\texttt{rowSize} = \left\lfloor \frac{\texttt{rawRowSize} + 3}{4} \right\rfloor \times 4$$
+
+In C++, this is commonly written as:
+\begin{minted}{cpp}
+int rowSize = ((width * bytesPerPixel + 3) / 4) * 4;
+\end{minted}
+
+This value represents the number of bytes that must be traversed in memory to move from the beginning of one row of pixels to the beginning of the next. Recall that our \texttt{bytesPerPixel} is $3$, but can also be calculated by \mintinline{cpp}|int bytesPerPixel = bih.biBitCount / 8;|.
+
+Once the padded row size is known, we can compute the location of any pixel at coordinates $(x, y)$. Because bitmap pixel data is stored row by row in a contiguous block of memory, the offset to the start of row $y$ is given by
+$$y \times rowSize$$
+
+Within that row, each pixel occupies \texttt{bytesPerPixel} bytes, so the offset to column $x$ is:
+$$x \times \texttt{bytesPerPixel}$$
+
+Together, these two offsets combined yields the final memory index for pixel $(x, y)$:
+$$\texttt{index}(x,y) = y \times \texttt{rowSize} + x \times \texttt{bytesPerPixel}$$
+In code, this calculation appears as:
+\begin{minted}{cpp}
+int offset = y * rowSize + x * bytesPerPixel;
+\end{minted}
+This formula will come in handy later in our code!
+
+Let's write the full code for bitmap analysis. Starting with store the bitmap that our program reads into a memory allocated array, we can load our bitmap into a file, and read all the file information from it. We also can then utilize our equations \texttt{rowSize} and \texttt{idx} to get the individual pixel at $(x,y) \in (w,h)$. 
+\begin{minted}{cpp}
+// program arguments: ./bitmap_reader inputname.bmp outputname.bmp
+if (argc !=3) return 1;
+string inputname = argv[1];
+string outputname = argv[2];
+
+
+FILE *inputfile = fopen(inputname.c_str(), "rb"); // read byte only mode
+
+BITMAPFILEHEADER bfh;
+BITMAPINFOHEADER bih;
+
+fread(&bfh.bfType, 2, 1, inputfile);
+fread(&bfh.bfSize, 4, 1, inputfile);
+fread(&bfh.bfReserved1, 2, 1, inputfile);
+fread(&bfh.bfReserved2, 2, 1, inputfile);
+fread(&bfh.bfOffBits, 4, 1, inputfile);
+fread(&bih, sizeof(BITMAPINFOHEADER), 1, inputfile);
+
+int w = bih.biWidth;
+int h = bih.biHeight;
+int bytesPerPixel = bih.biBitCount / 8; // 3 BYTES, stored in BGR order
+int rowSize = ((w * bytesPerPixel + 3) / 4) * 4;
+int size = rowSize * abs(h);
+bih.biSizeImage = size;
+bfh.bfSize = bfh.bfOffBits + bih.biSizeImage;
+
+fseek(inputfile, bfh.bfOffBits, SEEK_SET); // offset from header
+BYTE* data = (BYTE *)malloc(size);
+fread(data, size, 1, inputfile);
+fclose(inputfile);
+
+// ----- FORCE STANDARD BMP HEADER HERE -----
+bih.biSize = 40;
+bih.biSizeImage = size;
+bfh.bfOffBits = 54;
+bfh.bfSize = 54 + size;
+\end{minted}
+
+From there, we can set up an output file:
+\begin{minted}{cpp}
+FILE *outfile = fopen(outputname.c_str(), "wb"); // creates a new file in write bytes mode
+BYTE* out = (BYTE *) malloc(size);
+
+fwrite(&bfh.bfType,     2, 1, outfile);
+fwrite(&bfh.bfSize,     4, 1, outfile);
+fwrite(&bfh.bfReserved1,2, 1, outfile);
+fwrite(&bfh.bfReserved2,2, 1, outfile);
+fwrite(&bfh.bfOffBits,  4, 1, outfile);
+fwrite(&bih, sizeof(BITMAPINFOHEADER), 1, outfile);
+\end{minted}
+
+And then, we can loop through to the \texttt{w} and \texttt{h} to analyze each individual pixel. What we will do as a first test of pixel alteration is \emph{swap red and blue values} in our output.
+
+\begin{minted}{cpp}
+for (int x = 0; x < w; x++)
+{
+    for (int y = 0; y < h; y++)
+    {
+        int idx = y * rowSize + x * 3;
+
+        PIXEL p;
+        BYTE B = data[idx];
+        BYTE G = data[idx + 1];
+        BYTE R = data[idx + 2];
+        p = { B, G, R };
+
+        PIXEL o;
+        o = { R, G, B }; // Swaps red and blue values
+        out[idx + 0] = o.b; 
+        out[idx + 1] = o.g; 
+        out[idx + 2] = o.r;
+    }
+}
+\end{minted}
+
+Note that we search our data array at \texttt{idx} to locate the blue component, and adding 1 and 2 respectively gets the next two bytes (green and red). This works because
+\begin{itemize}
+\item Memory is a linear array of bytes
+\item Pixels are stored contiguously
+\item The order is fixed by the BMP format
+\end{itemize}
+
+After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp output.bmp| and \mintinline{bash}|./bitmap_reader gradient.bmp output.bmp| produces the following outputs (see Figures~\ref{fig:gradientRedBlueSwap} and \ref{cowRedBlueSwap}):
+
+% Duplicates of each bmp made into pngs for inclusion in chapter
+% done using magick cmdline library
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{gradient.png}
+        \caption{Input bitmap of a gradient.}
+        \label{fig:grad1}
+    \end{subfigure}%
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{gradientRedBlueSwap.png}
+        \caption{Output bitmap.}
+        \label{fig:grad2}
+    \end{subfigure}
+    \caption{Running \texttt{bitmap\_reader.cpp} on a gradient, swapping red and blue channels.}
+    \label{fig:gradient-comparison}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{cow.png}
+        \caption{Input image of a highland cow.}
+        \label{fig:cow1}
+    \end{subfigure}%
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{cowRedBlueSwap.png}
+        \caption{Output bitmap.}
+        \label{fig:cow2}
+    \end{subfigure}
+    \caption{Running \texttt{bitmap\_reader.cpp} on a gradient, swapping red and blue channels.}
+    \label{fig:cow-comparison}
+\end{figure}
+
+The entire base code for swapping the red and blue channels is in your Digital Resources, as well as a basic copy paste input-output bitmap. A lot of this stays the same of other pixel-based modifications, such as the next Exercise.
+
+\begin{Exercise}[title=Eliminate the Green component, label=bitmapsExercise1]
+Now try it yourself:
+
+Alter both \texttt{cow.bmp} and \texttt{gradient.bmp} such that the green channel is eliminated. Keep the red and blue channels the same (don't swap them).
+\end{Exercise}
+\begin{Answer}[ref=bitmapsExercise1]
+The only thing that changes in our for loop is the writing of the output pixel.
+\begin{minted}{cpp}
+// CODE ABOVE STAYS THE SAME
+for (int x = 0; x < w; x++)
+{
+    for (int y = 0; y < h; y++)
+    {
+        int idx = y * rowSize + x * 3;
+
+        PIXEL p;
+        BYTE B = data[idx];
+        BYTE G = data[idx + 1];
+        BYTE R = data[idx + 2];
+        p = { B, G, R };
+
+        out[idx + 0] = p.b; 
+        out[idx + 1] = 0; // NOTE THE CHANGE HERE
+        out[idx + 2] = p.r;
+    }
+}
+\end{minted}
+What is happening here?
+
+In an RGB image, each pixel's final color is the combination of red, green, and blue intensities. If the green value is removed, every pixel changes from (R,G,B) to (R,0,B). Colors that relied heavily on green—such as greens, yellows, and many skin tones—lose a major part of their intensity and appear much darker or shifted in hue. Pure green areas become black, yellow areas (red + green) become red, and cyan areas (green + blue) become blue.
+
+Visually, the image often takes on a magenta or purplish tint (see Figures~\ref{fig:cow_no_green} and \ref{fig:gradient_no_green}), because magenta is the combination of red and blue with no green. Overall brightness decreases, since green contributes significantly to the brightness in human vision. Refer to Figures~\ref{fig:cow1} and \ref{fig:grad1} for the original bitmaps.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{cow_no_green.png}
+        \caption{Output bitmap - cow.}
+        \label{fig:cow_no_green}
+    \end{subfigure}%
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=.95\textwidth]{gradient_no_green.png}
+        \caption{Output bitmap - gradient.}
+        \label{fig:gradient_no_green}
+    \end{subfigure}
+    \caption{Running \texttt{bitmap\_no\_green.cpp} on both provided bitmaps.}
+    \label{fig:no_green}
+\end{figure}
+\end{Answer}
+
+\section{Creating a Bitmap with C++}
+
+What if we aren't given an input file? Can we create a bitmap?
+
+Of course, let's create a simple 3x3 bitmap of the following colors:
+\begin{minted}{text}
+[ Red ] [ White ] [ White ]
+[ Black ] [ Blue ] [ White ]
+[ Black ] [ Black ] [ Green ]
+\end{minted}
+Although the image is conceptually two-dimensional, the bitmap file stores its pixel data as a one-dimensional sequence of bytes.
+
+There are, however, a few constraints:
+\begin{itemize}
+    \item 14-bit file header
+    \item 40-byte info header 
+    \item pixel data with required row padding
+\end{itemize}
+\begin{minted}{text}
+| File Header (14) | Info Header (40) | Pixel Data |
+\end{minted}
+
+\textbf{Calcuations}:
+\begin{itemize}
+    \item Each pixel $= 3 \texttt{ bytes}$
+    \item Row $= 3 \texttt{ pixels} \times 3 \texttt{ bytes per pixel} = 9 \texttt{ pixels}$
+    \item  $3 \texttt{ padding bytes} \implies 12 \texttt{ bytes per row}$
+    \item $12 \texttt{ bytes} \times 3 \texttt{ rows} = 36 \texttt{ bytes}$
+\end{itemize}
+
+Here is the basic bitmap struct with filled in values:
+\begin{minted}{cpp}
+#pragma pack(push, 1)
+struct BITMAPFILEHEADER {
+    uint16_t bfType = 0x4D42; // 'BM'
+    uint32_t bfSize;
+    uint16_t bfReserved1 = 0;
+    uint16_t bfReserved2 = 0;
+    uint32_t bfOffBits = 54; // 14 + 40
+};
+
+struct BITMAPINFOHEADER {
+    uint32_t biSize = 40;
+    int32_t  biWidth = 3;
+    int32_t  biHeight = 3;
+    uint16_t biPlanes = 1;
+    uint16_t biBitCount = 24;
+    uint32_t biCompression = 0; // BI_RGB
+    uint32_t biSizeImage;
+    int32_t  biXPelsPerMeter = 0;
+    int32_t  biYPelsPerMeter = 0;
+    uint32_t biClrUsed = 0;
+    uint32_t biClrImportant = 0;
+};
+#pragma pack(pop)
+\end{minted}
+These structures match the on-disk layout of a bitmap header exactly. The \texttt{\#pragma pack} directive ensures that no padding bytes are inserted by the compiler.
+
+Recall that we can reuse our calculations from the first example to find rowsize and other variables, but this time, we define them instead of fetching them from the input:
+\begin{minted}{cpp}
+const int width = 3;
+const int height = 3;
+const int bytesPerPixel = 3;
+const int rowSize = ((width * bytesPerPixel + 3) / 4) * 4; // 12
+const int imageSize = rowSize * height; // 36
+\end{minted}
+
+Now we can create a new file and write the file headers individually:
+\begin{minted}{cpp}
+FILE* f = fopen("custom_made.bmp", "wb");
+
+BITMAPFILEHEADER bfh;
+BITMAPINFOHEADER bih;
+
+bih.biSizeImage = imageSize;
+bfh.bfSize = bfh.bfOffBits + imageSize;
+
+fwrite(&bfh, sizeof(bfh), 1, f);
+fwrite(&bih, sizeof(bih), 1, f);
+\end{minted}
+At this point, the file contains only metadata. No pixel values have been written yet.
+
+Recall that bitmap pixel data is stored bottom-up, meaning the first row written corresponds to the bottom row of the image.
+\begin{minted}{text}
+Memory order:
+Row 2 (bottom)
+Row 1
+Row 0 (top)
+\end{minted}
+
+Let's write the third row first:
+\begin{minted}{cpp}
+// ROW 3 (bottom)
+// Black      Black         Green 
+row[0] = 0;   row[1] = 0;   row[2] = 0;     // Black
+row[3] = 0;   row[4] = 0;   row[5] = 0;     // Black
+row[6] = 0;   row[7] = 255; row[8] = 0;     // Green
+fwrite(row, rowSize, 1, f);
+\end{minted}
+Each group of three bytes represents one pixel in BGR order. Any remaining bytes in the row serve as padding and are ignored when the image is displayed.
+
+Row 2:
+\begin{minted}{cpp}
+// ROW 2
+// Black     Blue          White 
+row[0] = 0;   row[1] = 0;   row[2] = 0;     // Black
+row[3] = 255; row[4] = 0;   row[5] = 0;     // Blue
+row[6] = 255; row[7] = 255; row[8] = 255;   // White
+fwrite(row, rowSize, 1, f);
+\end{minted}
+
+Row 1:
+\begin{minted}{cpp}
+// ROW 1 (top)
+// Red        White         White
+row[0] = 0;   row[1] = 0;   row[2] = 255;   // Red
+row[3] = 255; row[4] = 255; row[5] = 255;   // White
+row[6] = 255; row[7] = 255; row[8] = 255;   // White
+fwrite(row, rowSize, 1, f);
+\end{minted}
+
+And that's it! The compiler automatically converts the 255s to $\texttt{0xFF}$. Close the file and run the program, and you get an extremely small output. Enlarge the output and you get:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{custom_made.png}
+    \caption{Your custom bitmap!}
+    \label{fig:custom_bitmap}
+\end{figure}
+
+
+\section{Summary}
+In this chapter, we experimented with bitmaps. Specifically,
+\begin{itemize}
+    \item loading a bitmap in C++
+    \item creating and copying bitmap file and info headers 
+    \item creating a pixel structure to work with hexadecimal bytes and hexcodes
+    \item swapping the channels of a bitmap
+    \item creating a bitmap from scratch in C++
+\end{itemize}
