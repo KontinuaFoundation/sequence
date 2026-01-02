@@ -10,7 +10,7 @@ We have talked a lot about matrices and vectors. Now we can use matrices and vec
 \end{cases}\]
 
 We can write this in the form of a matrix! This may come as a surprise to some of you. How can we do this? Let's rewrite the the coefficients as a matrix and the $x_n$'s as column vector, and the constant vector, or right-hand-side vector, called $\vec{b}$. 
-
+\index{system of equations}
 Here is the coefficient matrix which we will call $A$:
 \[A = \vecb{1 & 2 \\ 2 & 0}\]
 
@@ -52,8 +52,9 @@ This is a very important equation for linear algebra as a whole. Notice that the
 \end{Answer}
 
 \section{Row-Echelon Form}
-This brings up the question, how can we solve for the $\vec{x}$? There are multiple ways, but most commonly we form an augmented matrix and solve for Row-Echelon Form. 
+This brings up the question, how can we solve for the $\vec{x}$? There are multiple ways, but most commonly we form an augmented matrix and solve for Row-Echelon Form. \index{row-echelon form}
 \subsection{The Augmented Matrix}
+\index{augmented matrix}
 What is the augmented matrix? It is a way of represented the $A$ matrix and $\vec{b}$ vector. We write the $A$ matrix, seperated by a vertical line, and then writing the $\vec{b}$ vector:
 $$\begin{array}{c} [A \mid \vec{b}] =
 \begin{bmatrix}
@@ -80,7 +81,7 @@ The Row-Echelon Form of a matrix is an \emph{equivalent} form of a matrix obtain
 \end{itemize}
 Why do these operations preserve the given linear system? Swapping two rows only changes the order in which the equations are written and therefore has no effect on the solution set. Multiplying a row by a nonzero scalar corresponds to multiplying both sides of an equation by the same scalar, which does not alter its solutions. Finally, if two equations are satisfied by the same solution, then any linear combination of those equations is also satisfied by that solution; in particular, adding a multiple of one equation to another preserves the solution set. Before and after each operation, the augmented matrix contains exactly the same information as the system of equations and therefore represents the same solution set.
 
-With these ERO's, we are trying to achieve a matrix with the following properties:
+With these ERO's, we are trying to achieve a matrix with the following properties:\index{EROs|see{elementary row operations}}\index{elementary row operations}
 \begin{itemize}
 \item Leading entries (not necessarily 1) move to the right as you go down
 \item Rows of zeros, if exist, are at the bottom
@@ -367,9 +368,336 @@ Thus the solution vector is:
 
 You can verify the solution by confirming that $A\vec{x}=\vec{b}$ using matrix multiplication.
 
-FIXME exercises
-FIXME problem with free variable
+Note that solution sets must be one of the following:
+\begin{itemize}
+       \item No Solution (ie. parallel lines), 
+       \item Exactly One Unique Solution (ie. lines or planes intersecting at one point),
+       \item or Infinitely Many Solutions (ie. same line or plane is redundantly in the set)
+\end{itemize}
+\section{Free Variables}
 
+In the reduced row-echelon form (RREF) of a matrix, pivots determine which variables are constrained by the system.
+
+\subsection{Zero rows and redundant equations}
+A row of all zeros in RREF represents a redundant equation. That row corresponds to the equation
+\[
+0x_1 + 0x_2 + \cdots + 0x_n = 0,
+\]
+which is always true and therefore imposes no restriction on the variables.  
+Such a row arises when one of the original equations is a linear combination of the others.
+
+Every row of zeros is a row without a pivot. Consequently, if a matrix has at least one zero row in RREF:
+\begin{itemize}
+    \item The number of pivots is less than the number of rows,
+    \item The rank of the matrix is less than the number of rows,
+    \item The rows of the matrix are linearly dependent.
+\end{itemize}
+
+\subsection{Free variables}
+Pivots are associated with \emph{columns}, not rows.  
+A variable is called a \newterm{free variable}\index{free variable} if its column does not contain a pivot.
+
+Thus:
+\begin{itemize}
+    \item A \emph{row} without a pivot (a zero row) indicates a redundant equation,
+    \item A \emph{column} without a pivot corresponds to a free variable.
+\end{itemize}
+
+Free variables can take arbitrary values and lead to infinitely many solutions when solving a homogeneous system.
+\subsection{Infinitely Many Solutions}
+\textbf{Example:}
+Consider the augmented matrix in RREF:
+\[
+\vecb{1 & 0 & 0 & 8\\
+      0 & 0 & 1 & -6}
+\]
+
+Labeling the variable columns (and ignoring the constants $c$ column), we write:
+\[
+\vecb{x_1 & x_2 & x_3 & c\\
+      1   & 0   & 0   & 8\\
+      0   & 0   & 1   & -6}
+\]
+
+The pivot positions are in the columns corresponding to \(x_1\) and \(x_3\).  
+Since the column corresponding to \(x_2\) contains no pivot, \(x_2\) is a free variable.
+
+The system of equations represented by this matrix is:
+\[
+\begin{aligned}
+x_1 &= 8,\\
+x_3 &= -6.
+\end{aligned}
+\]
+
+The variable \(x_2\) does not appear in any equation and may take any real value.  
+Since $x_1$ and $x_3$ are bound, we can say the solution is :
+$$x_1 = 8,\qquad x_3 = -6,\qquad x_2 \in \mathbb{R}$$
+
+writen as a vector this is: $\vec{x} = \vecb{8 \\ x_2 \\ -6}$
+or in set builder notation:
+$\begin{array}{c} \left\{
+\begin{pmatrix}
+8\\
+x_2\\
+-6
+\end{pmatrix}
+:\; x_2 \in \mathbb{R}
+\right\} \end{array}$
+
+Thus, the presence of a column without a pivot leads to a free variable and infinitely many solutions.
+
+\subsection{Inconsistent sets}
+Let's look at another example:
+\textbf{Example}
+The augmented matrix
+$$\vecb{
+1&2&4&12\\
+12&24&48&9\\
+3&6&12&-4
+}$$
+simplifies to 
+$$\vecb{
+1&2&4&0\\
+0&0&0&1\\
+0&0&0&0}$$
+we can interperite this As
+$$\begin{aligned}
+x_1 + 2x_2 + 4x_3 &= 0,\\
+0x_1 + 0x_2 + 0x_3 &= 1.
+\end{aligned}$$
+Note that the equation $0=1$ is never true, so the system is \emph{inconsistent}\index{inconsistent set}, and there is \emph{no solution}.\index{no solution}
+
+The presence of an all zero row signifies an inconsistent system.
+
+
+FIXME exercises
+\section{Basis, Dimension, Rank}
+Let's define a few terms. These definitions are very basic, and will come back in the future:
+
+\begin{mdframed}[frametitle = {Rank}, style = important]
+\textbf{Rank} is the number of pivots in the RREF state of a matrix of size $m \times n$.
+In other words, the number of nonzero rows in any row-echelon form of a matrix $A$ is denoted $\operatorname{rank}(A)$.
+This has the constraints of:
+\begin{itemize}
+       \item $\operatorname{rank}(A) \le m$
+       \item $\operatorname{rank}(A) \le n$
+\end{itemize}
+\end{mdframed}\index{rank}
+
+\begin{mdframed}[frametitle = {Dimension}, style = important]
+The \textbf{dimension} of the solution set of a system is the number of free variables. 
+We calculate this with
+$$\texttt{dimension} = \texttt{number of variables}-\texttt{rank}$$
+or equivalently, for matrix of size $m \times n$
+$$\texttt{dimension} = n - \operatorname{rank}(A)$$
+\end{mdframed}\index{dimension}
+
+\begin{mdframed}[frametitle = {Basis}, style = important]
+A \textbf{basis} is a minimal set of direction vectors that describes all solutions.
+Specifically, this consists of $n - \operatorname{rank}(A)$ vectors, one for each free variable
+\end{mdframed}\index{basis}
+
+In summary,
+$$\begin{array}{lcl}
+\text{rank} &=& \text{number of pivots} \\
+\text{number of free variables} &=& n - \text{rank} \\
+\text{dimension of solution set} &=& n - \text{rank} \\
+\text{number of basis vectors} &=& n - \text{rank}
+\end{array}$$
+
+\section*{Exercises} % added this as a seperator, maybe not needed
+\begin{Exercise}[title=Augmented Matrix 1, label=infinitelymany]
+Simplify the matrix:
+$$\vecb{
+1&2&-1&3\\
+2&4&-2&6\\
+1&1&0&2}$$
+to RREF state and determine the type of solution set.
+\end{Exercise}
+\begin{Answer}[ref=infinitelymany]
+Notice immediately that $R_2 = 2R_1$, which automatically means redundancy. 
+$$\begin{bmatrix}
+1&2&-1&3\\
+2&4&-2&6\\
+1&1&0&2
+\end{bmatrix}
+\;\xrightarrow{\substack{R_2\leftarrow R_2-2R_1\\ R_3\leftarrow R_3-R_1}}\;
+\begin{bmatrix}
+1&2&-1&3\\
+0&0&0&0\\
+0&-1&1&-1
+\end{bmatrix}$$
+$$\begin{array}{c} \xrightarrow{R_2\leftrightarrow R_3}\;
+\begin{bmatrix}
+1&2&-1&3\\
+0&-1&1&-1\\
+0&0&0&0
+\end{bmatrix}
+\;\xrightarrow{R_2\leftarrow -R_2}\;
+\begin{bmatrix}
+1&2&-1&3\\
+0&1&-1&1\\
+0&0&0&0
+\end{bmatrix} \end{array}$$
+$$\begin{array}{c} \xrightarrow{R_1\leftarrow R_1-2R_2}\;
+\boxed{
+\begin{bmatrix}
+1&0&1&1\\
+0&1&-1&1\\
+0&0&0&0
+\end{bmatrix}} \end{array}$$
+The RREF is:
+$$\vecb{
+1&0&1&1\\
+0&1&-1&1\\
+0&0&0&0}$$
+This gives us the system:
+$$\begin{aligned}
+x_1 + x_3 &= 1,\\
+x_2 - x_3 &= 1.
+\end{aligned}$$
+So, 
+$$x_1 = 1 - x_3,\qquad x_2 = 1 + x_3$$
+making $x_3$ free.
+We can write this as:
+$\vec{x}
+=
+\vecb{
+1\\1\\0
+}
++
+x_3
+\vecb{
+-1\\1\\1
+},
+\qquad x_3\in\mathbb{R}$
+Equivalently, as a set:
+$$\begin{array}{c} \left\{
+\begin{pmatrix}
+1-x_3\\
+1+x_3\\
+x_3
+\end{pmatrix}
+:\; x_3\in\mathbb{R}
+\right\} \end{array}$$
+Since $x_3$ can be anything, there are infinitely many solutions. Equivalently, noticing that the row of all zeros implies infinitely many solution is a valid step to come to an answer.
+\end{Answer}
+\begin{Exercise}[title=Augmented Matrices 2, label=uniquesol]
+Put the augmented matrix
+$$\begin{bmatrix}
+1&-1&2&0\\
+0&1&-1&3\\
+2&1&0&1
+\end{bmatrix}$$
+into RREF and determine its solution.
+\end{Exercise}
+\begin{Answer}[ref=uniquesol]
+$$\begin{bmatrix}
+1&0&2&-1\\
+1&1&2&-1\\
+0&0&3&1
+\end{bmatrix}
+\;\xrightarrow{\,R_2\leftarrow R_2-R_1\,}\;
+\begin{bmatrix}
+1&0&2&-1\\
+0&1&0&0\\
+0&0&3&1
+\end{bmatrix}$$
+$$\begin{array}{c} \xrightarrow{\,R_3\leftarrow \frac13 R_3\,}\;
+\begin{bmatrix}
+1&0&2&-1\\
+0&1&0&0\\
+0&0&1&\frac13
+\end{bmatrix} \end{array}$$
+$$\begin{array}{c} \xrightarrow{\,R_1\leftarrow R_1-2R_3\,}\;
+\boxed{
+\begin{bmatrix}
+1&0&0&-\frac53\\
+0&1&0&0\\
+0&0&1&\frac13
+\end{bmatrix}} \end{array}$$
+This gives us a unique solution:
+$$x_1=-\frac53,\quad x_2=0,\quad x_3=\frac13$$
+or as a vector
+\(
+\vec{x} = \vecb{-\frac53\\0\\\frac13}
+\)
+\end{Answer}
+
+\begin{Exercise}[title=Augmented Matrices 3, label=nosol]
+Determine the solution for the following set:
+$$\begin{bmatrix}
+1&2&3&4\\
+2&4&6&9\\
+0&0&0&1
+\end{bmatrix}$$
+\end{Exercise}
+\begin{Answer}[ref=nosol]
+Notice that one row of the matrix states $\vecb{0&0&0&1}$, which implies $0x_1 + 0x_2+0x_3=1$, which is not possible. Therefore the matrix represents an inconsistent system and there is no solution.
+\end{Answer}
+\begin{Exercise}[title=Rank 1, label=rank1]
+Find the rank of
+$$\begin{bmatrix}
+1&2&3\\
+2&4&6\\
+3&6&9
+\end{bmatrix}$$
+\end{Exercise}
+\begin{Answer}[ref=rank1]
+The RREF of this matrix is
+$$\begin{bmatrix}
+1&2&3\\
+2&4&6\\
+3&6&9
+\end{bmatrix}
+\xrightarrow{\substack{R_2\leftarrow R_2-2R_1\\ R_3\leftarrow R_3-3R_1}}
+\begin{bmatrix}
+1&2&3\\
+0&0&0\\
+0&0&0
+\end{bmatrix}$$
+Note that there are two rows of zeroes, and the first column has a 1. This implies two dependent rows ($R_2 = 2 R_1 \qquad R_3 = 3 R_1$), and with only 1 pivot column, $\operatorname{rank}(A)=1$. 
+\end{Answer}
+
+\begin{Exercise}[title=Rank 2,label=rank2]
+Let $A$ be a $4\times 6$ matrix with exactly $3$ pivots in $\operatorname{RREF}$.
+\begin{itemize}
+       \item What is $\operatorname{rank}(A)$?
+       \item How many free variables are there?
+\end{itemize}
+\end{Exercise}
+\begin{Answer}[ref=rank2]
+By definition in this chapter:
+$$\operatorname{rank}(A)=\text{number of pivots}=3$$
+
+A $4 \times 6$ matrix has $n=6$ columns, so 
+$$\text{\# free variables} = n-\operatorname{rank}(A)=6-3=3.$$
+So, $\text{free variables} = 3$
+\end{Answer}
+
+\begin{Exercise}[title=Free Variables,label=free1]
+The RREF of a system has the form:
+$$\begin{bmatrix}
+1&0&-2&0&3\\
+0&1&1&0&-1\\
+0&0&0&1&4\\
+0&0&0&0&0
+\end{bmatrix}$$
+\begin{enumerate}
+       \item Identify the pivot variables
+       \item Identify the free variables
+       \item State the dimension of the solution set
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=free1]
+There are $n=4$ variables $(x_1,x_2,x_3,x_4)$. 
+\begin{enumerate}
+       \item Pivot columns are columns $1,2,4$, so the pivot columns are $x_1,\ x_2,\ x_4$. 
+       \item Free variables: the only non-pivot column is column $3$, so the free variable is $x_3$
+       \item The dimension of the solution set is the number of free variables: $1$. Equivalently, $\text{dimension}=n-\text{rank}=4-3=1$
+\end{enumerate}
+\end{Answer}
 \section{Creating Matrices in Python}
 Recall that matrices can be represented by 2D arrays in Python. Let's explore this idea further with the module \mintinline{python}|numpy|. Create a file called \filename{matrices\_creation.py} and enter this code:
 \begin{minted}{python}
@@ -507,5 +835,3 @@ You should see:
 
 \section{Conclusion}
 In this module, we have explored the fundamental concepts of matrices, including their types, properties, and how they can be used to represent and solve systems of linear equations. We have also learned how to perform row operations to convert matrices into Row-Echelon Form (REF) and Reduced Row-Echelon Form (RREF), which are essential techniques in linear algebra. In the next chapter~\ref{chap:subspaces}, we will talk deeper about the concepts of vector spaces and subspaces and how to find RREF, building on our understanding of matrices and their applications.
-
-FIXME digital resources
