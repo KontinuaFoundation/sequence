@@ -1,0 +1,147 @@
+\chapter{Linear Independence and Dependence}\label{chap:dependence}
+We have briefly mentioned the idea of linear independence and dependence in previous chapters. Let's explicitly define them using the concepts we have covered already.
+\section{Linear Independence}
+\begin{mdframed}[frametitle = {Linear Independence}, style = important]
+\textbf{Linear independent} vectors are vectors that cannot be written as linear combinations (scalar multiples) of each other.
+
+Mathematically, this means that 
+$$c_1v_1 + c_2 v_2 \dots c_kv_k = 0$$
+is only satified by
+$$c_1 = c_2 = \dots =c_k = 0$$
+\end{mdframed}
+Vectors in the form of matrices mean that the columns of a matrix cannot be made from each other.
+
+We say that each vector contributes a new \emph{direction} not captured by any previous ones. No vector has redundancy. FIXME expand
+
+Geometrically, in $\mathbb{R}^2$: independent vectors are not collinear. Usually, this means they form a 90$^\circ$ angle and their dot product is zero.
+FIXME diagram
+In $\mathbb{R}^3$, independent vectors do not lie in the same plane. They occupy seperate planes that are all orthogonal to each other.
+FIXME Diagram
+FIXME expand
+\subsection{Connection to Span}
+
+The \emph{span} of a set of vectors is the collection of all vectors that can be written as linear combinations of those vectors. In other words, the span consists of all vectors that are reachable using the given set.
+
+We now use this idea to better understand linear independence.
+
+Consider the vector space $\mathbb{R}^3$. Let
+\[
+V = \left\{
+\vecb{1 \\ 0 \\ 0},
+\vecb{0 \\ 1 \\ 0},
+\vecb{0 \\ 0 \\ 1}
+\right\}.
+\]
+Any vector in $\mathbb{R}^3$ can be written as a linear combination of these three vectors. Therefore,
+\[
+\mathrm{span}(V) = \mathbb{R}^3.
+\]
+
+Moreover, no vector in $V$ can be written as a linear combination of the other two. Each vector contributes a new direction to the span. For this reason, the vectors in $V$ are \emph{linearly independent}.
+
+This example illustrates an important idea: a linearly independent set contains no redundant vectors, and when such a set spans a space, the set is called a basis for the space. \index{basis}
+
+
+% \subsection*{Connection to Span} \begin{itemize} \item How independence ensures a minimal spanning set. \item What happens to the span if a vector is removed. \end{itemize}
+% Connection to Nullspace:
+% Ax=0 has only the solution x=-\vec{0}
+
+% \begin{mdframed}[frametitle = {Linear dependence}, style = important]
+% \textbf{Linear dependent} vectors are vectors that can be written as linear combinations (scalar multiples) of each other. 
+% \end{mdframed}
+% Thre exist nonzero scalrs that satisfy ax=0
+% Linearly independent vectors are 
+
+% \subsection*{Equivalent Interpretation} \begin{itemize} \item At least one vector can be written as a linear combination of the others. \item The set contains redundancy. \end{itemize}
+
+% \subsection*{Geometric Intuition} \begin{itemize} \item Collinear vectors in $\mathbb{R}^2$. \item Coplanar vectors in $\mathbb{R}^3$. \item Placeholder for examples and diagrams. \end{itemize}
+
+
+% % ========================= % Key Takeaways % ========================= \section*{Key Takeaways} \begin{itemize} \item Linear independence means uniqueness of representation. \item Linear dependence means redundancy. \item Independence underlies span, bases, and dimension. \end{itemize}
+
+
+% span intro
+% relation to determinants (we will talk later)
+% implies what area
+%  \section{Area and Volume Interpretation} \begin{itemize} \item How two independent vectors define a nonzero area. \item How three independent vectors define a nonzero volume. \item Dependence implies zero area or volume. \end{itemize}
+
+
+% * The columns (\mathbf v_1,\dots,\mathbf v_k) are **linearly independent**
+%   (\Longleftrightarrow) the only solution is (\mathbf c=\mathbf 0)
+%   (\Longleftrightarrow) (\mathrm{Null}(A)={\mathbf 0}) (the nullspace is trivial).
+% * They are **linearly dependent**
+%   (\Longleftrightarrow) there exists a **nonzero** (\mathbf c\neq \mathbf 0) with (A\mathbf c=\mathbf 0)
+%   (\Longleftrightarrow) (\mathrm{Null}(A)) contains more than just (\mathbf 0) (so it has positive dimension).
+expand concept of basis
+
+SECTION YOINKED FROM LINEAR COMBO Chapter
+\section{Linearly Dependent Vectors}
+
+Two vectors are linearly dependent if one is a multiple of the other. 
+Mathematically, 
+
+\begin{mdframed}[style = important, frametitle = {Linearly dependent vectors in $\mathbb{R}^n$}]
+Two vectors $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$ are linearly dependent if 
+there exists a scalar $a \in \mathbb{R}$ such that
+
+\[
+\mathbf{v} = a\,\mathbf{u}.
+\]
+\end{mdframed}
+
+Graphically, two linearly dependent vectors in $\mathbb{R}^2$ lie on the same 
+line through the origin (or one of them is the zero vector).
+
+If two vectors are linearly dependent, then linear combinations of them can 
+only produce vectors lying on that same line. If they are \textit{not} linearly 
+dependent, they are called linearly \emph{independent}, and their linear 
+combinations can produce every vector in $\mathbb{R}^2$.
+
+
+\textbf{Example}: Which of the following 3 vectors are linearly dependent, if 
+any? 
+$\textbf{u} = \vecb{1 \\ 2 \\ 3}$, $\textbf{v} = \vecb{-3 \\ 4 \\ -1}$, 
+$\textbf{w} = \vecb{6 \\ -8 \\ 2}$.
+
+\textbf{Solution}: Two vectors are linearly dependent if one is a scalar 
+multiple of the other. Let's compare \textbf{u} and \textbf{v}. Since the 
+first component of \textbf{u} is 1 and the first component of \textbf{v} is 
+-3, let's multiply \textbf{u} by -3 to see if we get \textbf{v}:
+$$-3 \textbf{u} = -3 \vecb{1 \\ 2 \\ 3} = \vecb{-3 \\ -6 \\ -9} \neq 
+\textbf{v}$$
+
+Therefore, \textbf{u} and \textbf{v} are \textit{not} linearly dependent. Now 
+let's examine \textbf{v} and \textbf{w}. Again, we will use the first 
+components: the first component of \textbf{w} is 6, so let's see if multiplying 
+\textbf{v} by -2 yields \textbf{w}:
+$$-2\textbf{v} = -2 \vecb{-3 \\ 4 \\ -1} = \vecb{6 \\ -8 \\ 2} = 
+\textbf{w}$$
+
+Therefore, \textbf{v} and \textbf{w} are linearly dependent. Since we already 
+know that \textbf{u} and \textbf{v} are not linearly dependent, we also know 
+that \textbf{u} and \textbf{w} are also not linearly dependent. 
+
+\begin{Exercise}[title = Linear Dependence, label = colinear]
+Identify which, if any, of the following vectors are linearly dependent:
+\begin{enumerate}
+\item $\textbf{a} = \vecb{-4 \\ 1 \\ 4}$
+\item $\textbf{b} = \vecb{-4 \\ 5 \\ -3}$
+\item $\textbf{c} = \vecb{2 \\ -4 \\ 6}$
+\item $\textbf{d} = \vecb{1 \\ -\frac{1}{4} \\ -1}$
+\item $\textbf{e} = \vecb{1 \\ -2 \\ 3}$
+\item $\textbf{f} = \vecb{-6 \\ \frac{3}{2} \\ 6}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = colinear]
+We see that $\frac{\textbf{a}}{-4} = -\frac{1}{4} \vecb{-4 \\ 1 \\ 4} = 
+\vecb{1 \\ -\frac{1}{4} \\ -1} = \textbf{d}$. Additionally, $\frac{3}{2} 
+\textbf{a} = \frac{3}{2} \vecb{-4 \\ 1 \\ 4} = \vecb{-6 \\ \frac{3}{2} \\ 6} 
+= \textbf{f}$. Therefore, vectors \textbf{a}, \textbf{d}, and \textbf{f} 
+are linearly dependent. 
+
+We also see that $\frac{1}{2} \textbf{c} = \frac{1}{2} \vecb{2 \\ -4 \\ 6} 
+= \vecb{1 \\ -2 \\ 3} = \textbf{e}$. Therefore, vectors \textbf{c} and 
+\textbf{e} are linearly dependent. Vector \textbf{b} is not linearly dependent 
+to any of the other vectors. 
+\end{Answer}
