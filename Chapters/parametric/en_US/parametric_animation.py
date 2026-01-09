@@ -29,7 +29,7 @@ ax.set_ylim([y.min() - 1, y.max()+ 1])
 (line,) = ax.plot([], [], "b--")  # path being drawn
 (point,) = ax.plot([], [], "ro")  # moving point
 
-# 5. Animation update function
+# 5. Animation 
 def update(frame):
     # Showing the path
     line.set_data(x[:frame + 1], y[:frame + 1])
@@ -37,7 +37,7 @@ def update(frame):
     # Moving the red dot to the current point
     x_pos = x[frame]
     y_pos = y[frame]
-    point.set_data([x_pos], [y_pos])  # wrap in lists so it's a "sequence"
+    point.set_data([x_pos], [y_pos]) 
 
     return line, point
 
