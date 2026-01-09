@@ -80,9 +80,9 @@ Torque is the concept of \emph{rotational force}. Applying a torque to a surface
 
 Imagine pushing open a door that is bound to a hinge on one side of the door. Pushing open the door at a point close to the hinge will require large amount of Torque, while pushing closer to the door handle and farther away from the hinge is much easier to do, and requires less Torque. 
 
-Alternatively, think of a wrench rotating a large bolt. It will require more force from your arm closer towards the pivot, while pushing at the edge of the wrench will require less force to produce an equivalent torque.
+Alternatively, think of a wrench rotating a large bolt. It will require more force from your arm closer towards the pivot, while pushing at the edge of the wrench will require less force to produce an equivalent torque. Take a look at this in action \href{https://www.youtube.com/watch?v=vQ8etJxpOSw}{here}.
 
-FIXME Door diagram or wrench diagram or both
+% Door diagram or wrench diagram or both - unplanned at least in TikZ
 
 \index{torques}\index{torque}
 \begin{mdframed}[frametitle = {Torque}, style = important]
@@ -297,13 +297,14 @@ What happens when two torques are applied in \emph{opposite}? Let's take a look 
 \caption{Merry-go-round with 2 forces in opposing directions.}
 \end{figure}
 
-Torques applied in opposition act \emph{in opposite directions along the axis of rotation}. As torque is a vector defined by the \emph{cross product equation}~\ref{eq:torque_cross}, so its direction is perpendicular to the plane formed by position vector and force which the plane live on. In problems, you will typically see the terms \emph{out of} ($\odot$), or \emph{into} ($\otimes$), the page, corresponding to the $+z$ or $-z$ directions, respectively. Remember these terms by the following visualiations: the out of symbol (\odot) looks like the tip of a feathered dart coming at you, while the into symbol (\otimes) looks like the feathers of a dart. 
+Torques applied in opposition act \emph{in opposite directions along the axis of rotation}. As torque is a vector defined by the \emph{cross product equation}~\ref{eq:torque_cross}, so its direction is perpendicular to the plane formed by position vector and force which the plane live on. In problems, you will typically see the terms \emph{out of} ($\odot$), or \emph{into} ($\otimes$), the page, corresponding to the $+z$ or $-z$ directions, respectively. Remember these terms by the following visualiations: the out of symbol (\odot) looks like the tip of a feathered dart coming at you, while the into symbol (\otimes) looks like the feathers of a dart. Another way to think about this is using a drill and screw: rotating the screw counterclockwise causes it to advance toward you (out of the page), while rotating it clockwise causes it to retreat away from you (into the page). 
 
 To determine which direction a given torque points, one first identifies the sense of rotation the force would produce if acting alone: a force that tends to rotate the object counterclockwise in the plane produces a torque vector pointing out of the page, while a force that tends to rotate the object clockwise produces a torque vector pointing into the page. When two torques are opposite, one must therefore cause clockwise rotation and the other counterclockwise rotation, leading to torque vectors that are equal in line of action but opposite in direction. 
 
-The \emph{net torque}\index{net torque} is the sum of all torques present, similar to how net force is the sum of all forces. Counterclockwise torques are positive, while clockwise torques are negative. Using our merry go round example, we have $F_2$ is \odot while $F_1$ is \otimes.
+The \emph{net torque}\index{net torque} is the sum of all torques present, similar to how net force is the sum of all forces. Generally, counterclockwise torques are positive, while clockwise torques are negative.\footnote{Note that other videos or professors may do this opposite, using CW - CCW, but as long as you are consistent and clear, both are equally valid.} Using our merry go round example, we have $F_2$ is \odot while $F_1$ is \otimes.
 \begin{align*}
     \tau_{\text{net}} &= \sum \tau \\
+    &= \tau_\text{CCW} - \tau_\text{CW} \\
     &=+(F_2)(r_2) - (F_1)(r_1)
 \end{align*}
 Because we know $\tau_1 > \tau_2$, the net torque is going to be negative, characterized with $\otimes$, and clockwise.
@@ -347,8 +348,7 @@ Complete the following:
 \end{Answer}
 
 \begin{Exercise}[title=More Complicated Opposing Torque,label=opptorque2]
-FIXME assign values to torques, solve 
-
+Create an equation for equilibrium of the following forces. Note that you may pick your own pivot point.
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
 \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
@@ -410,9 +410,16 @@ FIXME assign values to torques, solve
 \end{tikzpicture}
 \end{Exercise}
 \begin{Answer}[ref=opptorque2]
+You can pick your own pivot, so let's choose the point that $\text{A}$ and $\text{B}$ stem from as our pivot. This eliminates those forces, as the $r$ component of the torque would equal zero. Recall that the net torque is $\sum \tau = \tau_\text{CCW} - \tau_\text{CW}$. Analyizing the remaining torques:
+\begin{itemize}
+  \item $\text{C}$ is $1 \text{ m}$ from the pivot, so the torque is $\tau_\text{C} = (1)\text{C}\sin-90^\circ$. It acts downwards, so our torque is clockwise.
+  \item $\text{D}$ acts directly parallel the rotating rod, adding no additional torque on the rod.
+  \item $\text{E}$ is $2 \text{ m}$ from the pivot, and acting at a $-135^\circ$ angle from the horizontal. Our torque can be calculated from $\tau_\text{E} = (2)\text{E}\sin-135^\circ$. Note that usign $-45^\circ$ provides the same answer. This torque is also clockwise.
+\end{itemize}
+
+Our net torque is $\text{C}\sin-90^\circ + (2)\text{E}\sin-135^\circ = 0$
 
 \end{Answer}
-FIXME exercise of 4 torques without a beam
 
 \section{Moment of Inertia and Rotational $F=ma$}
 We know Newton's Second Law by heart now, $F_{net} = ma$. You probably could recite it in your sleep, but what about a rotational equivalent. Recall that from our first circular motion chapter, we have the equation $a = r \alpha$. Let's do some conversions to get this into an angular form:
@@ -463,10 +470,49 @@ Using Equation~\ref{eq:torqueequivs}, we can rearrange to solve for $\alpha$ as 
 
 \end{Answer}
 
-FIXME multiple problems 
-FIXME torque and moment of inertua and ang accel eqation 
 
+\begin{Exercise}[title=Moment of Inertia from Multiple Torques,label=mominert1]
+A rigid wheel is mounted on a frictionless axle. Two forces act on the wheel:
 
+\begin{itemize}
+\item Force $F_1 = 30\ \text{N}$ is applied at radius $r_1 = 0.50\ \text{m}$ at an angle $\theta_1 = 90^\circ$ to the radius, producing a counterclockwise torque.
+\item Force $F_2 = 20\ \text{N}$ is applied at radius $r_2 = 0.30\ \text{m}$ at an angle $\theta_2 = 45^\circ$ to the radius, producing a clockwise torque.
+\end{itemize}
+
+The wheel undergoes an angular acceleration of $\alpha = 8.0\ \text{rad/s}^2$.
+
+Find the moment of inertia $I$ of the wheel.
+\end{Exercise}
+\begin{Answer}[ref=mominert2]
+We choose counterclockwise torques to be positive. The net torque is
+
+\[
+\sum \tau = r_1 F_1 \sin\theta_1 - r_2 F_2 \sin\theta_2
+\]
+
+Using the rotational form of Newton's second law,
+
+\[
+\sum \tau = I \alpha
+\]
+
+Solving for $I$,
+
+\[
+I = \frac{r_1 F_1 \sin\theta_1 - r_2 F_2 \sin\theta_2}{\alpha}
+\]
+
+Substituting values,
+
+\[
+I = \frac{(0.50)(30)\sin90^\circ - (0.30)(20)\sin45^\circ}{8.0}
+\]
+
+\[
+I = \frac{15 - 4.24}{8.0} \approx 1.35\ \text{kg·m}^2
+\]
+
+\end{Answer}
 
 \section{Parallel-Axis Theorem}
 
@@ -624,6 +670,7 @@ W = Fr\theta= \tau \Delta \theta
 This comes from the fact that linear work is defined as $W = F \Delta x$, and the arc length of a circle is defined as $s = r \theta$. Thus, we can substitute $r \theta$ for $\Delta x$ in the linear work equation to get the rotational work equation.
 
 \section{Summary}
+Here is a summary of linear quantities in physics, and their now introduced rotational components. You may need to refer to this often to so keep it handy.
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.5}
