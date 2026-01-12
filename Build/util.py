@@ -161,8 +161,10 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
     output_tex.close()
     os.system(f"{tool} -halt-on-error -shell-escape {output_tex_path}")
 
-    if not draft:
-        # Run it a second time to make cross-references
+    if draft:
+        # Run it a second time to make cross-references 
+        # altered as it was not working correctly changed to if draft
+        # -- Arjan
         os.system(f"{tool} -halt-on-error -shell-escape {output_tex_path}")
     if os.path.exists(output_pdf_path):
         shutil.move(output_pdf_path, final_pdf_path)
