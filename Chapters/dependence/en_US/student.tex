@@ -9,15 +9,129 @@ $$c_1v_1 + c_2 v_2 \dots c_kv_k = 0$$
 is only satified by
 $$c_1 = c_2 = \dots =c_k = 0$$
 \end{mdframed}
-Vectors in the form of matrices mean that the columns of a matrix cannot be made from each other.
 
-We say that each vector contributes a new \emph{direction} not captured by any previous ones. No vector has redundancy. FIXME expand
+\begin{mdframed}[frametitle = {Linear Dependence}, style = important]
+A set of vectors $\{v_1, \dots, v_k\}$ is \textbf{linearly dependent} if there exist
+scalars $c_1, \dots, c_k$, not all zero, such that
+\[
+c_1 v_1 + \cdots + c_k v_k = \mathbf 0.
+\]
 
-Geometrically, in $\mathbb{R}^2$: independent vectors are not collinear. Usually, this means they form a 90$^\circ$ angle and their dot product is zero.
-FIXME diagram
-In $\mathbb{R}^3$, independent vectors do not lie in the same plane. They occupy seperate planes that are all orthogonal to each other.
-FIXME Diagram
-FIXME expand
+For two vectors, this reduces to one being a scalar multiple of the other.
+\end{mdframed}
+
+When vectors are arranged as columns of a matrix, linear independence means that no column can be written as a linear combination of the others.
+
+We say that each vector contributes a new \emph{direction} not captured by any previous ones, meaning that no vector can be written as a linear combination of the others. Each vector adds something genuinely new to the set, so there is no redundancy.
+
+\begin{Exercise}[title = Testing Linear Independence, label = indep1]
+Determine whether each pair of vectors is linearly independent or linearly dependent.
+\begin{enumerate}
+\item $\vecb{2 \\ -1}$ and $\vecb{4 \\ -2}$
+\item $\vecb{3 \\ 1}$ and $\vecb{-6 \\ -2}$
+\item $\vecb{1 \\ 2}$ and $\vecb{2 \\ 5}$
+\item $\vecb{-2 \\ 4 \\ 6}$ and $\vecb{1 \\ -2 \\ -3}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = indep1]
+Two vectors are linearly dependent if one is a scalar multiple of the other.
+\begin{enumerate}
+\item Dependent, since $\vecb{4 \\ -2} = 2\vecb{2 \\ -1}$.
+\item Dependent, since $\vecb{-6 \\ -2} = -2\vecb{3 \\ 1}$.
+\item Independent, since neither vector is a scalar multiple of the other.
+\item Dependent, since $\vecb{1 \\ -2 \\ -3} = -\frac{1}{2}\vecb{-2 \\ 4 \\ 6}$.
+\end{enumerate}
+\end{Answer}
+
+
+Any set of vectors that includes the zero vector is automatically linearly dependent, since
+$$1 \cdot \vec{0} = \vec{0}$$
+gives a nontrivial solution.
+\begin{Exercise}[title = Zero Vector and Dependence, label = indep2]
+Determine whether each set of vectors is linearly independent.
+\begin{enumerate}
+\item $\vecb{1 \\ 2 \\ 3}$ and $\vecb{0 \\ 0 \\ 0}$
+\item $\vecb{0 \\ 0}$ and $\vecb{2 \\ -1}$
+\item $\vecb{0 \\ 0 \\ 0}$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref = indep2]
+Any set containing the zero vector is linearly dependent, since a nontrivial
+linear combination can equal the zero vector.
+\begin{enumerate}
+\item Dependent.
+\item Dependent.
+\item Dependent.
+\end{enumerate}
+\end{Answer}
+
+Geometrically, in $\mathbb{R}^2$: independent vectors are not collinear. In $\mathbb{R}^2$, the vectors are generally perpendicular.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.2]
+      % Axes (optional, very light)
+      \draw[->,gray!40] (-0.2,0) -- (3,0);
+      \draw[->,gray!40] (0,-0.2) -- (0,3);
+    
+      % Vectors
+      \draw[->,thick] (0,0) -- (2,2) node[above right] {$\vec{v}$};
+      \draw[->,thick] (0,0) -- (-2,2) node[above left] {$\vec{w}$};
+    
+      % Right angle marker
+      \draw (0.3,0.3) -- (0,0.6) -- (-0.3,0.3);
+    \end{tikzpicture}
+    \caption{An example of independent vectors in $\mathbb{R}^2$.}
+    \label{fig:example}
+\end{figure}
+
+In $\mathbb{R}^3$, two independent vectors lie in a plane, while three independent vectors do not lie in the same plane.
+\begin{figure}[H]
+    \centering
+
+    \tdplotsetmaincoords{70}{120}
+    
+    \begin{tikzpicture}[tdplot_main_coords, scale=1.2]
+    
+      % Axes
+      \draw[->] (0,0,0) -- (3,0,0) node[below left] {$x$};
+      \draw[->] (0,0,0) -- (0,3,0) node[below right] {$y$};
+      \draw[->] (0,0,0) -- (0,0,3) node[above] {$z$};
+    
+      % Two vectors in the xy-plane
+      \draw[->, thick] (0,0,0) -- (2,0,0) node[below] {$\vec{v}_1$};
+      \draw[->, thick] (0,0,0) -- (1.5,1.5,0) node[below right] {$\vec{v}_2$};
+    
+      % Third vector out of the plane
+      \draw[->, thick] (0,0,0) -- (0.8,0.8,2) node[above right] {$\vec{v}_3$};
+    
+    \end{tikzpicture}
+    \caption{An example of linearly independent vectors in $\mathbb{R}^3$.}
+    \label{fig:example}
+\end{figure}
+
+\begin{Exercise}[title = Values Causing Dependence, label = indep3]
+Find all values of $k$ for which the vectors are linearly dependent.
+\begin{enumerate}
+\item $\vecb{1 \\ k}$ and $\vecb{2 \\ 4}$
+\item $\vecb{k \\ 1 \\ 2}$ and $\vecb{2k \\ 2 \\ 4}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = indep3]
+\begin{enumerate}
+\item The vectors are dependent when $\vecb{1 \\ k}$ is a scalar multiple of $\vecb{2 \\ 4}$.
+This occurs when $k = 2$.
+\item The vectors are dependent for all values of $k$, since
+\[
+\vecb{2k \\ 2 \\ 4} = 2\vecb{k \\ 1 \\ 2}.
+\]
+\end{enumerate}
+\end{Answer}
+
+
+
 \subsection{Connection to Span}
 
 The \emph{span} of a set of vectors is the collection of all vectors that can be written as linear combinations of those vectors. In other words, the span consists of all vectors that are reachable using the given set.
@@ -39,43 +153,16 @@ Any vector in $\mathbb{R}^3$ can be written as a linear combination of these thr
 
 Moreover, no vector in $V$ can be written as a linear combination of the other two. Each vector contributes a new direction to the span. For this reason, the vectors in $V$ are \emph{linearly independent}.
 
+Equivalently, a set of vectors is linearly independent if every vector in their span
+has a \emph{unique} representation as a linear combination of those vectors.
+
 This example illustrates an important idea: a linearly independent set contains no redundant vectors, and when such a set spans a space, the set is called a basis for the space. \index{basis}
 
-
-% \subsection*{Connection to Span} \begin{itemize} \item How independence ensures a minimal spanning set. \item What happens to the span if a vector is removed. \end{itemize}
-% Connection to Nullspace:
-% Ax=0 has only the solution x=-\vec{0}
-
-% \begin{mdframed}[frametitle = {Linear dependence}, style = important]
-% \textbf{Linear dependent} vectors are vectors that can be written as linear combinations (scalar multiples) of each other. 
-% \end{mdframed}
-% Thre exist nonzero scalrs that satisfy ax=0
-% Linearly independent vectors are 
-
-% \subsection*{Equivalent Interpretation} \begin{itemize} \item At least one vector can be written as a linear combination of the others. \item The set contains redundancy. \end{itemize}
-
-% \subsection*{Geometric Intuition} \begin{itemize} \item Collinear vectors in $\mathbb{R}^2$. \item Coplanar vectors in $\mathbb{R}^3$. \item Placeholder for examples and diagrams. \end{itemize}
+A set $B$ is a basis if its elements are linearly independent and every element of $V$ is a linear combination of elements of $B$. In other words, a basis is a linearly independent spanning set. A vector space can have several bases; however all the bases have the same number of elements, called the dimension of the vector space. We will dive into this concept more in the subspaces chapter, so don't worry if this is a bit of a jump! % from wiki
 
 
-% % ========================= % Key Takeaways % ========================= \section*{Key Takeaways} \begin{itemize} \item Linear independence means uniqueness of representation. \item Linear dependence means redundancy. \item Independence underlies span, bases, and dimension. \end{itemize}
-
-
-% span intro
-% relation to determinants (we will talk later)
-% implies what area
-%  \section{Area and Volume Interpretation} \begin{itemize} \item How two independent vectors define a nonzero area. \item How three independent vectors define a nonzero volume. \item Dependence implies zero area or volume. \end{itemize}
-
-
-% * The columns (\mathbf v_1,\dots,\mathbf v_k) are **linearly independent**
-%   (\Longleftrightarrow) the only solution is (\mathbf c=\mathbf 0)
-%   (\Longleftrightarrow) (\mathrm{Null}(A)={\mathbf 0}) (the nullspace is trivial).
-% * They are **linearly dependent**
-%   (\Longleftrightarrow) there exists a **nonzero** (\mathbf c\neq \mathbf 0) with (A\mathbf c=\mathbf 0)
-%   (\Longleftrightarrow) (\mathrm{Null}(A)) contains more than just (\mathbf 0) (so it has positive dimension).
-expand concept of basis
-
-SECTION YOINKED FROM LINEAR COMBO Chapter
-\section{Linearly Dependent Vectors}
+%SECTION YOINKED FROM LINEAR COMBO Chapter
+\section{Linearly Dependent Vectors: Geometrically}
 
 Two vectors are linearly dependent if one is a multiple of the other. 
 Mathematically, 
@@ -145,3 +232,8 @@ We also see that $\frac{1}{2} \textbf{c} = \frac{1}{2} \vecb{2 \\ -4 \\ 6}
 \textbf{e} are linearly dependent. Vector \textbf{b} is not linearly dependent 
 to any of the other vectors. 
 \end{Answer}
+
+\section{What's next?}
+In this chapter, we defined linear independence and linear dependence, which describe whether a set of vectors contains redundancy. Linearly independent vectors introduce new directions, while dependent vectors can be written as linear combinations of others.
+
+These ideas lead naturally to the study of subspaces, which describe collections of vectors that are closed under addition and scalar multiplication. In the next section, we formalize how sets of vectors generate larger structures and how linear independence helps describe them efficiently.
