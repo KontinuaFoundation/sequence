@@ -45,9 +45,6 @@ For example, vectors $\vec{v_{1}}= [1, 0]$ and $\vec{v_{2}}= [0, 1]$ span all of
     \item the span of $v_{1}, v_{2}, v_{3}$ is a line or plane through $\vec{0}$, or all of $\mathbb{R}^3$
 \end{itemize}
 
-
-% https://textbooks.math.gatech.edu/ila/1553/subspaces.html
-
 We need to review and reinforce some vocabulary that will come up often during this section. Let's look at Basis and Dimension. 
 
 \section{Basis and Dimension}
@@ -506,55 +503,128 @@ Thus, a basis for the column space of $A$ is given by the original columns 1, 2,
 
 Thus the subspace spans $\mathbb{R}^4$ and consists of all linear combinations of these three vectors.
 
+\begin{Exercise}[title={Nullspace, Rowspace, and Columnspace}, label={ex:bigprob}]
+
+Consider the matrix
+\[
+A=
+\begin{bmatrix}
+1 & 2 & -1 & 3\\
+2 & 4 & -2 & 6\\
+1 & 1 & 0 & 2\\
+0 & 1 & 1 & 1
+\end{bmatrix}.
+\]
+
+\begin{enumerate}[label=\alph*]
+\item Compute the reduced row echelon form of \(A\).
+\item Identify the pivot columns and free columns of \(A\). What does this tell you about the solutions?
+\item Find a basis for the \textbf{nullspace} \( N(A)\). What is the dimension of \( N(A)\)?
+\item Find a basis for the \textbf{row space} \( R(A)\). What is the dimension of \( R(A)\)?
+\item Find a basis for the \textbf{column space} \( C(A)\). State clearly where the vectors for the basis come from.
+\end{enumerate}
+
+\end{Exercise}
+
+
+\begin{Answer}[ref={ex:bigprob}]
+
+\begin{enumerate}[label=\alph*]
+    \item $$\begin{array}{c} \operatorname{rref}(A)=
+\begin{bmatrix}
+1 & 0 & 0 & 1\\
+0 & 1 & 0 & 1\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0
+\end{bmatrix} \end{array}$$
+\item Columns 1, 2, and 3 are pivot columns (containing a pivot). Column 4 is a non-pivot or free column. This tells you that there are 3 fixed variables, and 1 free one. The nullspace will be 1 dimensional.
+\item We have the system of equations: $$\begin{aligned}
+x_1 + x_4 &= 0,\\
+x_2 + x_4 &= 0,\\
+x_3 &= 0.
+\end{aligned}$$
+Letting $x_4$ be free, $\begin{array}{c} \vec x = x_4\begin{bmatrix}-1\\-1\\0\\1\end{bmatrix}\end{array}$. 
+The $N(A) = \begin{array}{c} {\left\{ \begin{pmatrix}-1\\-1\\0\\1\end{pmatrix} \right\}} \end{array}$ with a dimension of 1. 
+\item 
+The row space is the subspace spanned by the rows of $A$. A convenient basis for the row space is given by the nonzero rows of $\operatorname{rref}(A)$. Thus a basis is
+$${\left\{
+\begin{bmatrix}1 & 0 & 0 & 1\end{bmatrix},
+\begin{bmatrix}0 & 1 & 0 & 1\end{bmatrix},
+\begin{bmatrix}0 & 0 & 1 & 0\end{bmatrix}
+\right\}.}$$
+
+These three rows are linearly independent, and they span the row space because row reduction did not create any new row space, just simplified the set. The rowspace has $\operatorname{rowspace}(A) = 3$. 
+
+\item For the column space, we must take columns from the \emph{original} matrix $A$. The usual rule is: pivot columns of the original $A$ form a basis for $C(A)$. Since the pivot columns are $1,\ 2,\ 3$, a basis is the set of the first three columns of $A$ 
+
+$$\begin{array}{c} \mathbf{c}_1=\begin{bmatrix}1\\2\\1\\0\end{bmatrix},\quad
+\mathbf{c}_2=\begin{bmatrix}2\\4\\1\\1\end{bmatrix},\quad
+\mathbf{c}_3=\begin{bmatrix}-1\\-2\\0\\1\end{bmatrix} \end{array}$$
+and the column space is the span of each original pivot column:
+$$C(A)=\operatorname{span}\{\mathbf{c}_1,\mathbf{c}_2,\mathbf{c}_3\}$$
+\end{enumerate}
+
+\end{Answer}
+
+
 \section{Summary}
 In this chapter, we have established a few different common subspaces: the Nullspace, Rowspace, and Columnspace. Each of these subspaces captures different structural information about a matrix and the system of equations it represents. The nullspace describes all input vectors that are sent to the zero vector, the column space contains all possible outputs of the matrix, and the row space encodes the independent constraints imposed by the system.
 
 We have now set the stage for a new way of viewing matrices. Rather than thinking of a matrix solely as a collection of numbers or equations, we can begin to interpret a matrix as a transformation -- a rule that takes input vectors and maps them to output vectors. In the next few chapters, we will build on our understanding of subspaces to study how matrices act on vectors and reshape space, providing a unifying viewpoint for many of the ideas introduced so far. We will look at the geometric implications of matrices and how they \textit{transform} space. This is the basis of many computer graphic programs, like calculating lengths of shadows in VR games or simulations!
 
-Before ending this chapter, take a look at this graphic. It shows the relationship between the subspaces we talked about, plus a new one: $\operatorname{Null}(A^T)$, the transpose of the nullspace. If matrix $A$ has size $m\times n$, then $A^T$ has size $n \times m$. FIXME here
-%drawing made in mathcha 
-\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+Before ending this chapter, take a look at this graphic. It shows the relationship between the subspaces we talked about, plus a new one: $\operatorname{Null}(A^T)$, the transpose of the nullspace. If matrix $A$ has size $m\times n$, then $A^T$ has size $n \times m$. Note which subspaces live in $\mathbb{R}^n$ and which live in $\mathbb{R}^m$. 
 
-\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+\begin{figure}[H]
+    \centering
+    %drawing made in mathcha 
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
-%Curve Lines [id:da9612466263999061] 
-\draw    (106,59) .. controls (145.6,29.3) and (213.62,28.02) .. (252.82,58.08) ;
-\draw [shift={(254,59)}, rotate = 218.48] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
-%Curve Lines [id:da47200980654646296] 
-\draw    (106.47,82.73) .. controls (139.39,120.02) and (217.54,120.4) .. (253,81) ;
-\draw [shift={(105,81)}, rotate = 50.63] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+    %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
 
-
-% Text Node
-\draw (108.96,68) node  [xscale=0.8,yscale=0.8]  {$\mathbb{R}^{n}$};
-% Text Node
-\draw (255.96,68) node  [xscale=0.8,yscale=0.8]  {$\mathbb{R}^{m}$};
-% Text Node
-\draw (94,59) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$N( A)$};
-% Text Node
-\draw (94,79) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$R( A)$};
-% Text Node
-\draw (271.87,59) node [anchor=west] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$N\left( A^{\top }\right)$};
-% Text Node
-\draw (272.81,79) node [anchor=west] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$C( A)$};
-% Text Node
-\draw (178.9,19.84) node  [xscale=0.8,yscale=0.8]  {$\underset{m\times n}{A}$};
-% Text Node
-\draw (176.9,127.84) node  [xscale=0.8,yscale=0.8]  {$\underset{n\times m}{A^{\top }}$};
-% Text Node
-\draw (139,119) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$ \begin{array}{l}
-N( A) \ \perp \ R( A)\\
-N( A) \ \cdot \ R( A) \ =\ 0
-\end{array}$};
-% Text Node
-\draw (371,122) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$ \begin{array}{l}
-N\left( A^{\top }\right) \ \perp \ C( A)\\
-N\left( A^{\top }\right) \ \cdot \ C( A) \ =\ 0
-\end{array}$};
+    %Curve Lines [id:da9612466263999061] 
+    \draw    (106,59) .. controls (145.6,29.3) and (213.62,28.02) .. (252.82,58.08) ;
+    \draw [shift={(254,59)}, rotate = 218.48] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+    %Curve Lines [id:da47200980654646296] 
+    \draw    (106.47,82.73) .. controls (139.39,120.02) and (217.54,120.4) .. (253,81) ;
+    \draw [shift={(105,81)}, rotate = 50.63] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
 
 
-\end{tikzpicture}
+    % Text Node
+    \draw (108.96,68) node  [xscale=0.8,yscale=0.8]  {$\mathbb{R}^{n}$};
+    % Text Node
+    \draw (255.96,68) node  [xscale=0.8,yscale=0.8]  {$\mathbb{R}^{m}$};
+    % Text Node
+    \draw (94,59) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$N( A)$};
+    % Text Node
+    \draw (94,79) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$R( A)$};
+    % Text Node
+    \draw (271.87,59) node [anchor=west] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$N\left( A^{\top }\right)$};
+    % Text Node
+    \draw (272.81,79) node [anchor=west] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$C( A)$};
+    % Text Node
+    \draw (178.9,19.84) node  [xscale=0.8,yscale=0.8]  {$\underset{m\times n}{A}$};
+    % Text Node
+    \draw (176.9,127.84) node  [xscale=0.8,yscale=0.8]  {$\underset{n\times m}{A^{\top }}$};
+    % Text Node
+    \draw (139,119) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$ \begin{array}{l}
+    N( A) \ \perp \ R( A)\\
+    N( A) \ \cdot \ R( A) \ =\ 0
+    \end{array}$};
+    % Text Node
+    \draw (371,122) node [anchor=east] [inner sep=0.75pt]  [xscale=0.8,yscale=0.8]  {$ \begin{array}{l}
+    N\left( A^{\top }\right) \ \perp \ C( A)\\
+    N\left( A^{\top }\right) \ \cdot \ C( A) \ =\ 0
+    \end{array}$};
 
-% https://en.wikipedia.org/wiki/Row_and_column_spaces
-% https://en.wikipedia.org/wiki/Dimension_(vector_space) 
+
+    \end{tikzpicture}
+    \label{fig:transformationDiagram}
+\end{figure}
+
+Instead of asking what vectors solve $A\vec{x}=\vec{0}$, we will begin asking:
+
+\textit{What does the matrix $A$ do to an arbitrary vector?}
+
+The big take away: A matrix of size $m\times n$ can be viewed as a rule that takes vectors in $\mathbb{R}^n$ as inputs and produces vectors in $\mathbb{R}^m$as outputs.
+
