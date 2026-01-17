@@ -1,10 +1,10 @@
 \chapter{Subspaces}\label{chap:subspaces}
 Recall that, in Chapter~\ref{chap:syseqma}, we established that all linear systems can be represented in matrix form as $A\vec{x}=\vec{b}$. In this chapter, we will explore the concept of subspaces, which are fundamental to understanding the structure of solutions to linear systems.
-FIXME go back and include dependence and independence in the following
-Quickly, let's establish some vocabulary. 
+
+Quickly, let's review some vocabulary. 
 The zero vector, denoted as $\vec{0}$, is the vector where all components are zero. It will be a column vector of appropriate size $n\times 1$.
 
-If $A\vec{x} = \vec{0}$, where $\vec{b} = \vec{0}$, then the system is called \textbf{homogeneous}. If $A\vec{x} = \vec{b}$ where $\vec{b} \neq \vec{0}$, then the system is called \textbf{non-homogeneous}.
+If $A\vec{x} = \vec{0}$, where $\vec{b} = \vec{0}$, then the system is called \textbf{homogeneous}\index{homogeneous}. If $A\vec{x} = \vec{b}$ where $\vec{b} \neq \vec{0}$, then the system is called \textbf{non-homogeneous}.
 
 \section{What is a Subspace?}
 A subspace $V$ of $\mathbb{R}^n$ is a subset $V$ of $\mathbb{R}^n$ satisfying the following properties:
@@ -48,242 +48,7 @@ For example, vectors $\vec{v_{1}}= [1, 0]$ and $\vec{v_{2}}= [0, 1]$ span all of
 
 % https://textbooks.math.gatech.edu/ila/1553/subspaces.html
 
-\section{Nullspace}
-
-We now examine a fundamental example of a subspace: the \textbf{nullspace} of a matrix. \index{nullspace}
-Recall that a subspace is a subset of $\mathbb{R}^n$ that is closed under vector addition and scalar multiplication and contains the zero vector.
-
-The nullspace of a matrix $A$, denoted $\text{Null}(A)$, is the set of all vectors $\vec{x}$ such that
-\[
-A\vec{x} = \vec{0}.
-\]
-That is, the nullspace is precisely the solution set of the homogeneous system $A\vec{x}=\vec{0}$.
-
-\begin{mdframed}[frametitle = {Nullspace}, style = important]
-The nullspace of a matrix $A$ is defined as
-\[
-\text{Null}(A) = \{\vec{x} \in \mathbb{R}^n : A\vec{x} = \vec{0}\}.
-\]
-
-The $\vec{x}$, then represents all vectors that get flattened to origin ($\vec{0}$). 
-\end{mdframed}
-
-Because the equation $A\vec{x}=\vec{0}$ is homogeneous, its solution set always contains the zero vector. Moreover, if $\vec{x}_1$ and $\vec{x}_2$ are solutions, then any linear combination of the form
-\[
-a\vec{x}_1 + b\vec{x}_2
-\]
-is also a solution. For this reason, the nullspace of a matrix is always a subspace of $\mathbb{R}^n$.
-
-\subsection{Linear Combinations and Span}
-
-Recall that a \textbf{linear combination} of vectors $\vec{v}_1,\vec{v}_2,\ldots,\vec{v}_n$ is any vector of the form
-\[
-a_1\vec{v}_1 + a_2\vec{v}_2 + \cdots + a_n\vec{v}_n,
-\]
-where $a_1,a_2,\ldots,a_n \in \mathbb{R}$ are scalars.
-
-The set of all possible linear combinations of a collection of vectors is called their \textbf{span}. If a subspace can be written as the span of one or more vectors, those vectors describe all possible directions within the subspace.
-
-\subsection{Example}
-
-Consider the matrix
-\[
-A =
-\begin{bmatrix}
-1 & 2 \\
-2 & 4
-\end{bmatrix}.
-\]
-
-To find the nullspace of $A$, we solve the homogeneous system $A\vec{x}=\vec{0}$:
-\[
-\begin{bmatrix}
-1 & 2 \\
-2 & 4
-\end{bmatrix}
-\begin{bmatrix}
-x_1 \\ x_2
-\end{bmatrix}
-=
-\begin{bmatrix}
-0 \\ 0
-\end{bmatrix}.
-\]
-
-This corresponds to the system of equations
-\[
-x_1 + 2x_2 = 0,
-\qquad
-2x_1 + 4x_2 = 0.
-\]
-
-Solving for $x_1$ in terms of $x_2$ gives
-\[
-x_1 = -2x_2.
-\]
-
-Notice that $x_1$ can be written in terms of $x_2$. This implies \emph{linear dependence}\index{linear dependence}, the fact that the vectors can be written as combinations of each other. Thus, every vector in the nullspace can be written in the form
-\[
-\vec{x} = x_2
-\begin{bmatrix}
--2 \\ 1
-\end{bmatrix}.
-\]
-
-Therefore, the nullspace of $A$ is
-\[
-\text{Null}(A) = \text{span}\left\{
-\begin{bmatrix}
--2 \\ 1
-\end{bmatrix}
-\right\}.
-\]
-
-Geometrically, this nullspace is a line through the origin in $\mathbb{R}^2$, which is a one-dimensional subspace of $\mathbb{R}^2$. The nullspace contains all scalar multiples of the vector $\begin{bmatrix}-2 \\ 1\end{bmatrix}$. This tells us that the solutions to the homogeneous system $A\vec{x}=\vec{0}$ form a line in $\mathbb{R}^2$. All vectors along this line produce the zero vector when substituted into the equation $A\vec{x}=\vec{0}$.
-
-% we will introduce subspaces as transformations in a future chapter
-
-FIXME Example of a larger nullspace
-FIXME exercise
-FIXME Big emphasis that solving for the nullspace tells you whether a set of vectors of independent or not. 
-% If every column of the RREF has a leading 1 (pivot), then the columns are
-% linearly independent.
-
-% If one or more columns do not contain a pivot, then the columns are
-% linearly dependent.
-\section{Row Space}
-\index{row space}
-The row space of a matrix $A$, denoted $\text{Row}(A)$, is the subspace of $\mathbb{R}^n$ spanned by the row vectors of $A$. Each row vector can be viewed as a vector in $\mathbb{R}^n$, and the row space consists of all linear combinations of these row vectors.
-
-\begin{mdframed}[frametitle = {Row Space}, style = important]
-The row space of a matrix $A$ is defined as
-\[\text{Row}(A) = \text{span}\{\text{row}_1, \text{row}_2, \ldots, \text{row}_m\},\]
-where $\text{row}_i$ represents the $i$-th row of the matrix $A$.
-The row space consists of all directions in $\mathbb{R}^n$ that can be built from the rows of the matrix.
-Note that we are observing the matrix before it is transformed into RREF or altered in any way. 
-\end{mdframed}
-
-Another way to think about it is that the row space represents all possible linear combinations of the equations represented by the rows of the matrix $A$. Each row is "tested" on by $\vec{x}$ to produce a component of the output vector $A\vec{x}$. Equivalently, the row space is the set of all vectors that can be formed by adding and scaling the rows of $A$.
-
-When we compute:
-\[A \vec{x}\]
-each row of $A$ gets dotted with $\vec{x}$ to produce a component of the output vector. 
-
-If each of the rows of $A$ are denoted as $\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_m$, then $A\vec{x}$,
-$$\vecb{\vec{r}_1 \cdot \vec{x} \\\vec{r}_2 \cdot \vec{x} \\\vdots \\\vec{r}_m \cdot \vec{x}}$$
-
-The row space, then, is a subspace of $\mathbb{R}^n$ that captures all possible linear combinations of the rows of $A$. The row space consists of all possible tests on $\vec{x}$ that can be performed by the rows of $A$.
-$$A=\vecb{
-— \vec r_1 — \\
-— \vec r_2 — \\
-\vdots \\
-— \vec r_m —
-}
-\quad \text{with } \vec r_i \in \mathbb{R}^n$$
-
-Why does the row space live in $\mathbb{R}^n$? 
-\begin{itemize}
-    \item $\vec{x}$ has $n$ components and lives in $\mathbb{R}^n$, and
-    \item each row $\vec{r}_i$ has $n$ components and lives in $\mathbb{R}^n$
-\end{itemize}
-
-\subsection{Example}
-Consider the matrix
-\[
-A =
-\begin{bmatrix}
-\color{blue}{1} & \color{blue}{2} & \color{blue}{-1} \\
-\color{red}{0} & \color{red}{1} & \color{red}{3}
-\end{bmatrix}
-\]
-
-The row vectors of $A$ are
-\[
-\color{blue}{\vec r_1} =
-\begin{bmatrix}1 & 2 & -1\end{bmatrix},
-\quad
-\color{red}{\vec r_2} =
-\begin{bmatrix}0 & 1 & 3\end{bmatrix}
-\]
-
-dotting them with an $\vec{x}$ of appropriate size gives
-\[A\vec{x} =
-\begin{bmatrix}
-\color{blue}{\vec r_1 \cdot \vec{x}} \\
-\color{red}{\vec r_2 \cdot \vec{x}}
-\end{bmatrix} 
-\]
-The row space of $A$ is the span of its row vectors:
-\[\text{Row}(A)
-=
-\text{span}\left\{
-\color{blue}\begin{bmatrix}1 & 2 & -1\end{bmatrix},
-\color{red}\begin{bmatrix}0 & 1 & 3\end{bmatrix}
-\color{white}\right\}
-\]
-
-\section{Column Space}
-\index{column space}
-The column space of a matrix $A$, denoted $\text{Col}(A)$, is the subspace of $\mathbb{R}^m$ spanned by the column vectors of $A$. Each column of $A$ can be viewed as a vector in $\mathbb{R}^m$, and the column space consists of all linear combinations of these column vectors.
-
-\begin{mdframed}[frametitle = {Column Space}, style = important]
-The \textbf{column space} of a matrix $A$ is defined as
-\[
-\text{Col}(A) = \text{span}\{\vec c_1, \vec c_2, \ldots, \vec c_n\},
-\]
-where $\vec c_i$ represents the $i$-th column of the matrix $A$.
-The column space consists of all vectors in $\mathbb{R}^m$ that can be formed as linear combinations of the columns of $A$.
-\end{mdframed}
-
-Equivalently, the column space can be described as the set of all possible outputs of the matrix:
-\[
-\text{Col}(A) = \{A\vec{x} : \vec{x} \in \mathbb{R}^n\}.
-\]
-
-The columns of the \emph{original} matrix $A$ that correspond to pivot columns in $\operatorname{RREF}(A)$ span the column space of $A$. We will discuss this idea further in a future chapter, but it corresponds to the fact that the pivot columns are linearly independent and form a basis for the column space.
-
-\subsection{Example}
-
-Consider the matrix
-\[
-A =
-\begin{bmatrix}
-1 & 3 & 1 & 4 \\
-2 & 7 & 3 & 9 \\
-1 & 5 & 3 & 1 \\
-1 & 2 & 0 & 8
-\end{bmatrix}.
-\]
-
-After applying elementary row operations, we find that the RREF of $A$ is
-\[
-\operatorname{RREF}(A) =
-\begin{bmatrix}
-1 & 0 & -2 & 0 \\
-0 & 1 & 1 & 0 \\
-0 & 0 & 0 & 1 \\
-0 & 0 & 0 & 0
-\end{bmatrix}.
-\]
-
-Since there is a free row, there is a \emph{dependent} row in the original matrix.  
-The pivot columns are columns 1, 2, and 4.  
-Thus, a basis for the column space of $A$ is given by the original columns 1, 2, and 4:
-\[
-\begin{bmatrix}
-1 \\ 2 \\ 1 \\ 1
-\end{bmatrix},
-\quad
-\begin{bmatrix}
-3 \\ 7 \\ 5 \\ 2
-\end{bmatrix},
-\quad
-\begin{bmatrix}
-4 \\ 9 \\ 1 \\ 8
-\end{bmatrix}.
-\]
-
-Thus the subspace spans $\mathbb{R}^4$ and consists of all linear combinations of these three vectors.
+We need to review and reinforce some vocabulary that will come up often during this section. Let's look at Basis and Dimension. 
 
 \section{Basis and Dimension}
 A basis of a subspace $V$ is a set of linearly independent vectors that span $V$. 
@@ -360,12 +125,393 @@ $n$ vectors.
     \item The space $\mathbb{R}^n$ has the standard basis $\{e_1, \ldots, e_n\}$, where $e_i$ is the $i$-th column of the corresponding identity matrix. Therefore, $\mathbb{R}^n$ has dimension $n$.
 \end{itemize}
 
-\section{Summary of Subspaces}
-FIXME
+\section{Nullspace}
+
+We now examine a fundamental example of a subspace: the \textbf{nullspace} of a matrix. \index{nullspace}
+Recall that a subspace is a subset of $\mathbb{R}^n$ that is closed under vector addition and scalar multiplication and contains the zero vector.
+
+The nullspace of a matrix $A$, denoted $\operatorname{Null}(A)$, is the set of all vectors $\vec{x}$ such that
+\[
+A\vec{x} = \vec{0}.
+\]
+That is, the nullspace is precisely the solution set of the homogeneous system $A\vec{x}=\vec{0}$.
+
+\begin{mdframed}[frametitle = {Nullspace}, style = important]
+The nullspace of a matrix $A$ is defined as
+\[
+\operatorname{Null}(A) = \{\vec{x} \in \mathbb{R}^n : A\vec{x} = \vec{0}\}.
+\]
+
+The $\vec{x}$, then represents all vectors that get flattened to origin ($\vec{0}$). 
+\end{mdframed}
+
+Because the equation $A\vec{x}=\vec{0}$ is homogeneous, its solution set always contains the zero vector. Moreover, if $\vec{x}_1$ and $\vec{x}_2$ are solutions, then any linear combination of the form
+\[
+a\vec{x}_1 + b\vec{x}_2
+\]
+is also a solution. For this reason, the nullspace of a matrix is always a subspace of $\mathbb{R}^n$.
+
+\subsection{Linear Combinations and Span}
+
+Recall that a \textbf{linear combination} of vectors $\vec{v}_1,\vec{v}_2,\ldots,\vec{v}_n$ is any vector of the form
+\[
+a_1\vec{v}_1 + a_2\vec{v}_2 + \cdots + a_n\vec{v}_n,
+\]
+where $a_1,a_2,\ldots,a_n \in \mathbb{R}$ are scalars.
+
+The set of all possible linear combinations of a collection of vectors is called their \textbf{span}. If a subspace can be written as the span of one or more vectors, those vectors describe all possible directions within the subspace.
+
+\subsection{Example}
+
+Consider the matrix
+\[
+A =
+\begin{bmatrix}
+1 & 2 \\
+2 & 4
+\end{bmatrix}.
+\]
+
+To find the nullspace of $A$, we solve the homogeneous system $A\vec{x}=\vec{0}$:
+\[
+\begin{bmatrix}
+1 & 2 \\
+2 & 4
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0
+\end{bmatrix}.
+\]
+
+This corresponds to the system of equations
+\[
+x_1 + 2x_2 = 0,
+\qquad
+2x_1 + 4x_2 = 0.
+\]
+
+Solving for $x_1$ in terms of $x_2$ gives
+\[
+x_1 = -2x_2.
+\]
+
+Notice that $x_1$ can be written in terms of $x_2$. This implies \emph{linear dependence}\index{linear dependence}, the fact that the vectors can be written as combinations of each other. Thus, every vector in the nullspace can be written in the form
+\[
+\vec{x} = x_2
+\begin{bmatrix}
+-2 \\ 1
+\end{bmatrix}.
+\]
+
+Therefore, the nullspace of $A$ is
+\[
+\operatorname{Null}(A) = \text{span}\left\{
+\begin{bmatrix}
+-2 \\ 1
+\end{bmatrix}
+\right\}.
+\]
+
+Geometrically, this nullspace is a line through the origin in $\mathbb{R}^2$, which is a one-dimensional subspace of $\mathbb{R}^2$. The nullspace contains all scalar multiples of the vector $\begin{bmatrix}-2 \\ 1\end{bmatrix}$. This tells us that the solutions to the homogeneous system $A\vec{x}=\vec{0}$ form a line in $\mathbb{R}^2$. All vectors along this line produce the zero vector when substituted into the equation $A\vec{x}=\vec{0}$.
+
+% we will introduce subspaces as transformations in a future chapter
+\subsection{Example}
+
+Find a basis for the nullspace of the matrix
+\[
+A=\begin{bmatrix}
+1 & 2 & -1 & 0\\
+2 & 4 & -2 & 0\\
+0 & 1 & 1 & 3\\
+0 & 2 & 2 & 6
+\end{bmatrix}.
+\]
+
+First, find the RREF form of A. Notice immediately that $R_2=2R_1$ and $R_4=2R_3$ in $A$, so we will definitely have free rows. We get that
+
+$$\begin{array}{c} \operatorname{rref}(A)=
+\begin{bmatrix}
+1 & 0 & -3 & -6\\
+0 & 1 & 1 & 3\\
+0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0
+\end{bmatrix} \end{array}$$
+
+Our $\vec{x}$ vector has to be the same size as our column, so it must live in $\mathbb{R}^4$. This gives us $\vec{x} = \vecb{x_1 \\ x_2 \\ x_3 \\ x_4}$. 
+
+So finding $A\vec{x} = \vec{0}$ provides the systems of equations:
+$$\begin{cases}
+x_1 - 3x_3 - 6x_4 = 0\\
+x_2 + x_3 + 3x_4 = 0
+\end{cases}$$
+
+We can rewrite this as:
+$$\begin{cases}
+x_1 = 3x_3 + 6x_4\\
+x_2 = -x_3 - 3x_4
+\end{cases}
+\implies
+x_3 \vecb{3 \\ -1 \\ 1 \\ 0} + x_4 \vecb{6 \\ -3 \\ 0 \\ -1}
+$$
+
+So a basis for the nullspace is formed by 
+$$
+\operatorname{Null}(A) = \left\{
+    \vecb{3 \\ -1 \\ 1 \\ 0}, \vecb{6 \\ -3 \\ 0 \\ -1}
+\right\}
+$$
+
+\begin{Exercise}[title={Finding a Basis for a Nullspace}, label={nullspace1}]
+
+Consider the matrix 
+\[A=
+\begin{bmatrix}
+1 & -1 & 1 & 3 & 2\\
+2 & -1 & 1 & 5 & 1\\
+3 & -1 & 1 & 7 & 0\\
+0 & 1 & -1 & -1 & -3 
+\end{bmatrix}
+\]
+When put in reduced row echelon form,
+\[\operatorname{rref(A)}=
+\begin{bmatrix}
+1 & 0 & 0 & 2 & -1\\
+0 & 1 & -1 & -1 & -3 \\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+
+\begin{enumerate}[label=\alph*]
+    \item Find a basis for the nullspace of $A$.
+    \item Find a vector $\vec{x} = \vecb{x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5}$ in the nullspace of $A$ such that $x_1 = -3$, $x_3=1$, and $x_4 = 2$. 
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={nullspace1}]
+
+\begin{enumerate}[label=\alph*]
+    \item Solving $A\vec{x}=\vec{0}$ gives us two equations:
+$$\begin{cases}
+    x_1 + 2x_4 - x_5 =0 \\
+    x_2 -x_3 -x_4 - 3x_5=0 \\
+\end{cases} \implies \begin{cases}
+    x_1 = -2x_4 + x_5 \\
+    x_2 = x_3 + x_4 + 3x_5 \\
+\end{cases}$$
+So we establish $x_3$, $x_4$, and $x_5$ as bound or fixed variables. So, every vector in the nullspace has the form
+$$\begin{array}{c} \vec x=
+\begin{bmatrix}
+-2x_4+x_4\\
+x_3+x_4+3x_4\\
+x_3\\
+x_4\\
+x_4
+\end{bmatrix} \end{array}$$
+or, equivalently
+$$\begin{array}{c} \vec x
+=
+x_3\begin{bmatrix}0\\1\\1\\0\\0\end{bmatrix}
++x_4\begin{bmatrix}-2\\1\\0\\1\\0\end{bmatrix}
++x_4\begin{bmatrix}1\\3\\0\\0\\1\end{bmatrix} \end{array}$$
+
+So a basis can be formed by the set
+$$\begin{array}{c}
+\left\{
+\begin{bmatrix}0\\1\\1\\0\\0\end{bmatrix},
+\begin{bmatrix}-2\\1\\0\\1\\0\end{bmatrix},
+\begin{bmatrix}1\\3\\0\\0\\1\end{bmatrix}
+\right\}
+\end{array}$$
+\item We are given a vector $\vec{x} = \vecb{-3 \\ x_2 \\ 1 \\ 2\\ x_5}$. 
+
+Recall that we have $x_1 = -2x_4+x_5$, so inputting our knowns we can say $-3 = -2(2) + x_5 \implies =x_5 = 1$.
+
+We can then solve $x_2=x_3+x_4+3x_5$ for $x_2$:
+$$x_2 = 1 + 2 + 3(1) = 6$$
+
+These two variables give us the $\vec{x}$
+$$\begin{array}{c}
+\vec x=
+\begin{bmatrix}
+-3\\
+6\\
+1\\
+2\\
+1
+\end{bmatrix} \end{array}$$
+\end{enumerate}
+\end{Answer}
+
+\index{nullspace!and linear independence}
+\begin{mdframed}
+\textbf{Key Idea: Nullspace and Linear Independence}
+
+Solving for the \emph{nullspace} of a matrix tells you whether a set of vectors is
+\textbf{linearly independent or linearly dependent}.
+
+\begin{itemize}
+    \item If the nullspace contains \emph{only} the zero vector, then the vectors are
+    \textbf{linearly independent}.
+    \item If the nullspace contains a \emph{nonzero} vector, then the vectors are
+    \textbf{linearly dependent}.
+\end{itemize}
+
+\medskip
+\textbf{Practical test (via RREF):}
+\begin{itemize}
+    \item If every column has a \emph{pivot}, the columns are linearly independent.
+    \item If one or more columns lack a pivot, the columns are linearly dependent.
+\end{itemize}
+
+Equivalently, the equation \(A\mathbf{x}=\mathbf{0}\) has a nontrivial solution
+if and only if the columns of \(A\) are linearly dependent.
+\end{mdframed}
+
+\section{Row Space}
+\index{row space}
+The row space of a matrix $A$, denoted $\text{Row}(A)$, is the subspace of $\mathbb{R}^n$ spanned by the row vectors of $A$. Each row vector can be viewed as a vector in $\mathbb{R}^n$, and the row space consists of all linear combinations of these row vectors.
+
+\begin{mdframed}[frametitle = {Row Space}, style = important]
+The row space of a matrix $A$ is defined as
+\[\text{Row}(A) = \text{span}\{\text{row}_1, \text{row}_2, \ldots, \text{row}_m\},\]
+where $\text{row}_i$ represents the $i$-th row of the matrix $A$.
+The row space consists of all directions in $\mathbb{R}^n$ that can be built from the rows of the matrix.
+Note that we are observing the matrix before it is transformed into RREF or altered in any way. 
+\end{mdframed}
+
+Another way to think about it is that the row space represents all possible linear combinations of the equations represented by the rows of the matrix $A$. Each row is "tested" on by $\vec{x}$ to produce a component of the output vector $A\vec{x}$. Equivalently, the row space is the set of all vectors that can be formed by adding and scaling the rows of $A$.
+
+When we compute:
+\[A \vec{x}\]
+each row of $A$ gets dotted with $\vec{x}$ to produce a component of the output vector. 
+
+If each of the rows of $A$ are denoted as $\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_m$, then $A\vec{x}$,
+$$\vecb{\vec{r}_1 \cdot \vec{x} \\\vec{r}_2 \cdot \vec{x} \\\vdots \\\vec{r}_m \cdot \vec{x}}$$
+
+The row space, then, is a subspace of $\mathbb{R}^n$ that captures all possible linear combinations of the rows of $A$. The row space consists of all possible tests on $\vec{x}$ that can be performed by the rows of $A$.
+$$A=\vecb{
+— \vec r_1 — \\
+— \vec r_2 — \\
+\vdots \\
+— \vec r_m —
+}
+\quad \text{with } \vec r_i \in \mathbb{R}^n$$
+
+Why does the row space live in $\mathbb{R}^n$? 
+\begin{itemize}
+    \item $\vec{x}$ has $n$ components and lives in $\mathbb{R}^n$, and
+    \item each row $\vec{r}_i$ has $n$ components and lives in $\mathbb{R}^n$
+\end{itemize}
+
+\subsection{Example}
+Consider the matrix
+\[
+A =
+\begin{bmatrix}
+\color{blue}{1} & \color{blue}{2} & \color{blue}{-1} \\
+\color{red}{0} & \color{red}{1} & \color{red}{3}
+\end{bmatrix}
+\]
+
+The row vectors of $A$ are
+\[
+\color{blue}{\vec r_1} =
+\begin{bmatrix}1 & 2 & -1\end{bmatrix},
+\quad
+\color{red}{\vec r_2} =
+\begin{bmatrix}0 & 1 & 3\end{bmatrix}
+\]
+
+dotting them with an $\vec{x}$ of appropriate size gives
+\[A\vec{x} =
+\begin{bmatrix}
+\color{blue}{\vec r_1 \cdot \vec{x}} \\
+\color{red}{\vec r_2 \cdot \vec{x}}
+\end{bmatrix} 
+\]
+The row space of $A$ is the span of its row vectors:
+\[\text{Row}(A)
+=
+\text{span}\left\{
+\color{blue}\begin{bmatrix}1 & 2 & -1\end{bmatrix},
+\color{red}\begin{bmatrix}0 & 1 & 3\end{bmatrix}
+\color{white}\right\}
+\]
 
 
-Important subspace diagram
+\section{Column Space}
+\index{column space}
+The column space of a matrix $A$, denoted $\text{Col}(A)$, is the subspace of $\mathbb{R}^m$ spanned by the column vectors of $A$. Each column of $A$ can be viewed as a vector in $\mathbb{R}^m$, and the column space consists of all linear combinations of these column vectors.
 
+\begin{mdframed}[frametitle = {Column Space}, style = important]
+The \textbf{column space} of a matrix $A$ is defined as
+\[
+\text{Col}(A) = \text{span}\{\vec c_1, \vec c_2, \ldots, \vec c_n\},
+\]
+where $\vec c_i$ represents the $i$-th column of the matrix $A$.
+The column space consists of all vectors in $\mathbb{R}^m$ that can be formed as linear combinations of the columns of $A$.
+\end{mdframed}
+
+Equivalently, the column space can be described as the set of all possible outputs of the matrix:
+\[
+\text{Col}(A) = \{A\vec{x} : \vec{x} \in \mathbb{R}^n\}.
+\]
+
+The columns of the \emph{original} matrix $A$ that correspond to pivot columns in $\operatorname{RREF}(A)$ span the column space of $A$. We will discuss this idea further in a future chapter, but it corresponds to the fact that the pivot columns are linearly independent and form a basis for the column space.
+
+\subsection{Example}
+
+Consider the matrix
+\[
+A =
+\begin{bmatrix}
+1 & 3 & 1 & 4 \\
+2 & 7 & 3 & 9 \\
+1 & 5 & 3 & 1 \\
+1 & 2 & 0 & 8
+\end{bmatrix}.
+\]
+
+After applying elementary row operations, we find that the RREF of $A$ is
+\[
+\operatorname{RREF}(A) =
+\begin{bmatrix}
+1 & 0 & -2 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}.
+\]
+
+Since there is a free row, there is a \emph{dependent} row in the original matrix.  
+The pivot columns are columns 1, 2, and 4.  
+Thus, a basis for the column space of $A$ is given by the original columns 1, 2, and 4:
+\[
+\begin{bmatrix}
+1 \\ 2 \\ 1 \\ 1
+\end{bmatrix},
+\quad
+\begin{bmatrix}
+3 \\ 7 \\ 5 \\ 2
+\end{bmatrix},
+\quad
+\begin{bmatrix}
+4 \\ 9 \\ 1 \\ 8
+\end{bmatrix}.
+\]
+
+Thus the subspace spans $\mathbb{R}^4$ and consists of all linear combinations of these three vectors.
+
+\section{Summary}
+In this chapter, we have established a few different common subspaces: the Nullspace, Rowspace, and Columnspace. Each of these subspaces captures different structural information about a matrix and the system of equations it represents. The nullspace describes all input vectors that are sent to the zero vector, the column space contains all possible outputs of the matrix, and the row space encodes the independent constraints imposed by the system.
+
+We have now set the stage for a new way of viewing matrices. Rather than thinking of a matrix solely as a collection of numbers or equations, we can begin to interpret a matrix as a transformation -- a rule that takes input vectors and maps them to output vectors. In the next few chapters, we will build on our understanding of subspaces to study how matrices act on vectors and reshape space, providing a unifying viewpoint for many of the ideas introduced so far. We will look at the geometric implications of matrices and how they \textit{transform} space. This is the basis of many computer graphic programs, like calculating lengths of shadows in VR games or simulations!
+
+Before ending this chapter, take a look at this graphic. It shows the relationship between the subspaces we talked about, plus a new one: $\operatorname{Null}(A^T)$, the transpose of the nullspace. If matrix $A$ has size $m\times n$, then $A^T$ has size $n \times m$. FIXME here
 %drawing made in mathcha 
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
