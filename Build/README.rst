@@ -47,6 +47,10 @@ Mac is preferred, but if you only have access to a Windows device, the following
 
 * Go to your clone location and open ``sequence\Build\Support\default.cfg``. Replace ``/Library/TeX/texbin/lualatex`` with ``lualatex``.
 
+.. important::
+
+   To build with the `minted` library, you will need a version of Python 3.8-3.13. Python 3.14 is known to have issues with the `minted` library.
+
 Contributing
 ------------
 

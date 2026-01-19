@@ -808,6 +808,12 @@
 \usepackage{subcaption}
 \usepackage{enumitem}
 \usepackage{mdframed}
+% algorithm and algpseudocode added for future use for pseudocode sections - 1/19/26
+% will be useful for sections such as Linked List, Queue, Stack, etc chapters
+% - Arjan Ellingson
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 \usepackage{minted}
 \setminted{
   fontsize=\small,
