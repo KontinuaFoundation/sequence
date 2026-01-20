@@ -113,6 +113,14 @@ Scripts
      contains the titles of every chapter for every book.
    | Example: ``python3 build_chapterlist.py``
 
+-  | ``deploy_to_kontinua.py``: runs all helper scripts to assist in deployment to the online `state of things <https://kontinuafoundation.github.io/>`. Transfers all outputs in ``Build/Resources-en_US`` to the `kontinuafoundation.github.io` repository and commits. This script is contingent on having cloned the `kontinuafoundation.github.io` repository cloned, with a file structure like:
+    # GitHub Folder
+        # sequence repo
+            # Build
+                # this script
+        # kontinuafoundation.github.io repo 
+   | Example: ``python3 deploy_to_kontinua.py``
+
 Status
 ------
 
