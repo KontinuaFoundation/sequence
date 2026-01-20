@@ -58,7 +58,7 @@ for book_str in book_nums:
         outfile = resources_dir + f"/{result_ids[chap]}.pdf"
         print(f"{book_str}:{chap}: Making {outfile}")
         success = util.build_chapter(
-            chap_file, result_paths[chap], config, outfile, draft=False
+            chap_file, result_paths[chap], config, outfile, draft=True, date_check=True
         )
         if not success:
             failures.append(outfile)
