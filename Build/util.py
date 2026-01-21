@@ -141,7 +141,7 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
         if not should_build_chapter(tex_path, final_pdf_path):
             print(f"Skipping {final_pdf_path}: PDF up to date with {tex_path}")
             return True # skipping counts as success
-        
+    # if date check is none continue building
     locale_list = config["Languages"]
     paper_size = config["Paper"]
     tool = config["LatexExecutable"]

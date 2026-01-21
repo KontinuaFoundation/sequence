@@ -10,17 +10,46 @@ from jinja2 import Environment, FileSystemLoader
 import util
 
 
-def usage():
-    print("Usage: python3 make_web.py <iso_code>")
-    sys.exit(1)
+def usage(exit_code=0):
+    # print("Usage: python3 make_chapter_pdfs.py <iso_code> [--force]")
+    print(
+    "Usage:\n"
+    "  python3 make_chapter_pdfs.py <iso_code> [--force]\n\n"
+    "Options:\n"
+    "  <iso_code>   required, the language to build in. en_US for English\n"
+    "  --force    Force rebuild of chapter PDFs (disables date checks)\n"
+    )
+    sys.exit(exit_code)
 
+
+args = sys.argv[1:]
+# not checking for unknown args bc iso_codes can be varied.
+
+# help
+if "-h" in args or "--help" in args:
+    usage(0)
+
+# force
+force = "--force" in args
+if force:
+    args.remove("--force")
+
+# after removing force and indexing from 1 to the end, we should only have one arg: the iso_code
+if len(args) != 1:
+    usage(1)
+
+iso_code = args[0]
+
+
+date_check = None if force else True
 
 # How many volumes are there?
 vol_count = 36
 
 # Check command line
 if len(sys.argv) < 2:
-    usage()
+    usage(1)
+
 
 chap_file = "student.tex"
 workdir = "Intermediate"
@@ -33,7 +62,7 @@ with open("../user.cfg", "r") as config_fd:
     config = json.load(config_fd)
 
 # Change local to just the language being generated
-config["Languages"] = [sys.argv[1]]
+config["Languages"] = [iso_code]
 
 resources_dir = f"../Resources-{config['Languages'][0]}"
 
@@ -58,7 +87,12 @@ for book_str in book_nums:
         outfile = resources_dir + f"/{result_ids[chap]}.pdf"
         print(f"{book_str}:{chap}: Making {outfile}")
         success = util.build_chapter(
-            chap_file, result_paths[chap], config, outfile, draft=True, date_check=True
+            chap_file,
+            result_paths[chap],
+            config,
+            outfile,
+            draft=True, 
+            date_check=date_check
         )
         if not success:
             failures.append(outfile)
