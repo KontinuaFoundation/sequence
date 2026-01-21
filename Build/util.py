@@ -121,8 +121,27 @@ def gather_data(mod_dir, book_str, config):
 
     return (metadatas, topics)
 
+def should_build_chapter(tex_path: str, pdf_path: str) -> bool:
+    # No cached PDF -> must build
+    if not os.path.exists(pdf_path):
+        return True
 
-def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True):
+    # Missing .tex -> let build happen 
+    if not os.path.exists(tex_path):
+        return True
+
+    # if tex modfiied time is newer than pdf time, build. else, do not.
+    return os.path.getmtime(tex_path) > os.path.getmtime(pdf_path)
+
+def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, date_check=None):
+    tex_path = os.path.join(chap_dir, chapter_file)
+
+    # If date check is true (or anything not none)
+    if date_check is not None:
+        if not should_build_chapter(tex_path, final_pdf_path):
+            print(f"Skipping {final_pdf_path}: PDF up to date with {tex_path}")
+            return True # skipping counts as success
+    # if date check is none continue building
     locale_list = config["Languages"]
     paper_size = config["Paper"]
     tool = config["LatexExecutable"]
