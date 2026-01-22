@@ -25,13 +25,13 @@ def recursive_determinant(matrix):
             minor.append(new_row)
     
         sign = (-1) ** col #exponential for alternating sign
-        det += sign * matrix[0][col] + recursive_determinant(minor)
-        return det
+        det += sign * matrix[0][col] * recursive_determinant(minor)
+    return det
             
 A = [
-    [1, 2, 4],
-    [1, 2, 4],
-    [1, 2, 4],
+    [1, 2, 3],
+    [2, 4,6],
+    [3, 6,9]
 ]
 print(recursive_determinant(A))
     

@@ -1,13 +1,8 @@
 \chapter{Determinants and Inverse Matrices}\label{chap:det_inv}
 
 \section{Determinants}
-We have established that matrices can be thought of as transformations.
 
-There is a measurement of how much a matrix, when acting as a transformation, effects the area or volume of a matrix. This measurement is referred to as the \newterm{\textbf{determinant}}.
-
-% this was copied from the span chapter
-FIXME 
-Checking the independence of multitudes of vectors may take an immens amount of time. What if you had a list 
+Checking the independence of multitudes of vectors may take an immense amount of time. What if you had a list 
 of 5, 10, or even 100 vectors? The determinant of a matrix is a scalar value 
 that also indicates whether the columns of a matrix are linearly independent. So, 
 if you put all your vectors together in a matrix and take the determinant of 
@@ -230,7 +225,7 @@ One vector overwrites the other. As you can see, the area is 0 because there
 is no space between the vectors. Therefore, the columns of the matrix are 
 linearly dependent.
 
-\begin{Exercise}[title = {Finding the Determinate}, label = geo_det]
+\begin{Exercise}[title = {Finding the Determinant}, label = geo_det]
 Plot the parallelogram represented by the columns of the matrix. What is the 
 area of this parallelogram?
 \begin{enumerate}
@@ -315,35 +310,77 @@ area of this parallelogram?
     We will discuss this unusual response in a future chapter. 
 \end{enumerate}
 \end{Answer}
-
+\index{determinant!n by n}
+\index{determinant!expansion by minors}
 Calculating the determinant for a 2 by 2 matrix is easy. For a larger matrix, 
 finding the determinant is more complex and requires breaking down the matrix 
 into smaller matrices until you reach the 2x2 form. The process is called 
 expansion by minors. 
 For example, 
-\begin{mdframed}[frametitle = {$3\times 3$ Determinant}, style = important]
+\begin{mdframed}[frametitle = {$3\times 3$ Determinant}, style = important]\label{def:3by3}
 The determinant of a 3 by 3 matrix is found by
 \[
-%FIXME color a b  c red and d-i blue
 \begin{bmatrix}
-a & b & c  \\
-d & e & f \\
-g & h & i
+\color{red}{a} & \color{red}{b} & \color{red}{c} \\
+\color{blue}{d} & \color{blue}{e} & \color{blue}{f} \\
+\color{blue}{g} & \color{blue}{h} & \color{blue}{i}
 \end{bmatrix}
 =
-a \cdot \begin{bmatrix}
-e & f \\
-h & i
+\color{red}{a}
+\begin{bmatrix}
+\color{blue}{e} & \color{blue}{f} \\
+\color{blue}{h} & \color{blue}{i}
 \end{bmatrix}
-- b \cdot \begin{bmatrix}
-d & f \\
-g & i
+-
+\color{red}{b}
+\begin{bmatrix}
+\color{blue}{d} & \color{blue}{f} \\
+\color{blue}{g} & \color{blue}{i}
 \end{bmatrix}
-+ c \cdot \begin{bmatrix}
-d & e \\
-g & h
++
+\color{red}{c}
+\begin{bmatrix}
+\color{blue}{d} & \color{blue}{e} \\
+\color{blue}{g} & \color{blue}{h}
 \end{bmatrix}
 \]
+
+
+A trick for this is rewriting the matrix as a $3 \times 5$ augmented matrix with the first 2 columns after the third column:
+$$B=\begin{bmatrix}
+a & b & c & a & b \\
+d & e & f & d & e \\
+g & h & i & g & h
+\end{bmatrix}$$
+and solving the \emph{down-right diagonals} minus the \emph{down-left diagonals}:
+% Colored Diagram with Arrows using TikZ
+\[
+\begin{tikzpicture}[baseline=(m.center)]
+\node (m) {
+$\begin{bmatrix}
+a & b & c & a & b \\
+d & e & f & d & e \\
+g & h & i & g & h
+\end{bmatrix}$
+};
+% Down-right diagonals (red)
+\draw[red, thick, ->] (m.north west) ++(0.2,-0.4) -- ++(1.8,-1.2);
+\draw[red, thick, ->] (m.north west) ++(0.8,-0.4) -- ++(1.8,-1.2);
+\draw[red, thick, ->] (m.north west) ++(1.4,-0.4) -- ++(1.8,-1.2);
+
+% Down-left diagonals (blue)
+\draw[blue, thick, ->] (m.north east) ++(-0.2,-0.4) -- ++(-1.8,-1.2);
+\draw[blue, thick, ->] (m.north east) ++(-0.8,-0.4) -- ++(-1.8,-1.2);
+\draw[blue, thick, ->] (m.north east) ++(-1.4,-0.4) -- ++(-1.8,-1.2);
+\end{tikzpicture}
+\]
+\begin{center}
+    {\small\color{red}{Down-right diagonals (add)} \qquad
+    \color{blue}{Down-left diagonals (subtract)}}
+\end{center}
+
+$$\operatorname{det}(B) = (a \cdot e \cdot i) + (b \cdot f \cdot g) + (c \cdot d \cdot h) - \left[{(c \cdot e \cdot g) + (a \cdot f \cdot h) + (b \cdot d \cdot i)}\right]$$
+Note that this is the same multiplication as above, just formatted differently.
 \end{mdframed}
 As you can see, this involves a recursive process of breaking a larger matrix into a smaller $2 \times 2$ matrix.
 
@@ -351,16 +388,19 @@ For our purposes, we simply want to first check to see if
 a matrix contains linearly independent rows and columns before using our 
 Python code to solve. 
 
+
 \section{Determinants in Python}
 Modify your code so that is uses the $np.linalg.det()$ function. If the 
 determinant is not zero, then you can call the $np.linalg.solve()$ function. 
 Your code should look like this:
 \begin{minted}{python}
-if (np.linalg.det(D) != 0):
+# Are the rows and columns independent? 
+# Equivallently, is the determinant 0?
+if (np.linalg.det(D) != 0): 
     j = np.linalg.solve(D,e)
     print(j)
 else:
-    print("Rows and columns are not independent.")
+    print("Rows and columns are dependent.")
 \end{minted}
 
 How does this work below the hood? Let's also write a recursive python function that finds our determinant:
@@ -371,5 +411,427 @@ There are two base cases:
     \item The matrix is of size $2 \times 2$
 \end{itemize}
 
-And further sizes can be simplified into one of the base cases:
+And further sizes can be simplified into one of the base cases by \newterm{cofactor expansion}. The idea behind cofactor expansion is to break a big determinant into smaller ones until we reach cases we already know how to solve. Formally, this is written as $$|A|=\sum_{j=1}^{n}(-1)^{(i+j)}a_{(ij)}M_{(ij)}$$
 
+We do this as follows:
+\begin{enumerate}
+    \item Pick the first row of the matrix.
+    
+    \item For each entry in that row:
+    \begin{itemize}
+        \item Remove the row and column containing that entry.
+        \item This creates a smaller matrix, called a \emph{minor}, which are submatrices. Recall what we did above for our $3\times 3$ determinant definition. \index{minor matrix}
+    \end{itemize}
+    \item Compute the determinant of that smaller matrix.
+    \item Multiply the original entry (where the row and column lines originate from), the determinant of its minor, and an alternating sign $+, -, +, \dots$.
+    \item Sum all of these results together.
+\end{enumerate}
+    
+This process repeats recursively: each smaller determinant is computed the same way, until we reach one of the base cases.
+
+If we format our matrices as a nested array, we can use python's indexing to check and reduce the matrices. Take a look at this recursive determinant program:
+\begin{minted}{python}
+def recursive_determinant(matrix):
+    """
+    Compute the determinant of a square matrix recursively.
+    matrix: list of lists, forming a matrix of size n by n
+    """
+    n = len(matrix)
+    
+    # base case 1x1:
+    if n == 1:
+        return matrix[0][0]
+    # base case 2x2
+    if n == 2:
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    
+    det = 0
+    
+    for col in range(n):
+        # build a minor matrix:
+        minor = []
+        # for every row in the matrix
+        for row in matrix[1:]:
+            # remove column col and store as new_row
+            new_row = row[:col]+row[col+1:]
+            # apprend new row to the minor matrix
+            minor.append(new_row)
+    
+        sign = (-1) ** col #exponential for alternating sign
+        det += sign * matrix[0][col] * recursive_determinant(minor)
+    return det
+\end{minted}
+
+We implemented our known base case, and recursively reduce our array until it fits a known base case. This is exactly how numpy's \mintinline{python}|np.linalg.det()| works.
+\section{Inverse Matrices}
+Now that we have talked about determinants, we can talk about Inverse Matrices. \index{inverse matrix}
+The idea of a matrix inverse is a natural generalization of the multiplicative inverse of a real number. 
+For example, since
+\[
+3 \cdot \frac{1}{3} = 1,
+\]
+the number \( \frac{1}{3} \) is called the multiplicative inverse of \( 3 \).
+
+Similarly, for matrices, we define an inverse in terms of matrix multiplication and the identity matrix. 
+If \( A \) is an \( n \times n \) matrix, its inverse (when it exists) is denoted by \( A^{-1} \) and satisfies
+\[
+AA^{-1} = A^{-1}A = I_n,
+\]
+where \( I_n \) is the \( n \times n \) identity matrix.
+\begin{mdframed}[frametitle = {Inverse Matrix}, style = important]
+An inverse matrix is a square matrix that satisfies the following property:
+
+$$\mathbf {AB} =\mathbf {BA} =\mathbf {I} _{n}$$
+
+where $A$ is the original matrix, $B$ is the inverse matrix, and $I_n$ is the identity matrix of size $n \times n$. 
+
+When such a matrix \( B \) exists, it is denoted by \( A^{-1} \), and is said to be \emph{invertible}\index{invertible}. Note that sometimes an inverse matrix may not exist.
+\end{mdframed}
+
+It is important to note that not every matrix has an inverse. 
+In particular, only \emph{square matrices} can be invertible, and even among square matrices, an inverse may fail to exist.
+\subsection{Existence of Square Matrices}
+\subsection*{Existence of the Inverse}
+
+A square matrix \( A \) has an inverse if and only if its determinant is nonzero:
+\[
+A^{-1} \text{ exists if and only if } \det(A) \neq 0.
+\]
+
+If
+\[
+\det(A) = 0,
+\]
+then \( A \) is called a \textbf{singular matrix}, and no inverse exists.
+Equivalently, an inverse matrix does not exist when the rows or columns of \( A \) are \emph{linearly dependent}. 
+As discussed in the chapter on linear dependence, this occurs when one row (or column) is a scalar multiple of another, or when a row (or column) can be written as a linear combination of the others.
+
+Linear dependence implies that the matrix does not contain enough independent information to reverse its action, making an inverse impossible.
+
+\subsection{Finding an Inverse Matrix}
+\subsection*{$2 \times 2$ Inverse}
+There are several methods for finding the inverse of a matrix. 
+For small matrices, especially \(2 \times 2\) matrices, there is a direct formula. 
+For larger matrices, a more systematic method using row operations is required.
+
+\begin{mdframed}[frametitle = {Inverse of a $2 \times 2$ Matrix}, style = important]
+A trick for a $2 \times 2$ Matrix $A = \begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}$ is 
+$$A^{-1} = \frac{1}{ad - bc}\begin{bmatrix}
+d & -b \\
+-c & a
+\end{bmatrix}$$
+
+Note that we multiply by the a new matrix has $a$ and $d$ swapped, and $b$ and $c$ switch signs. Finally, we divide by the determinant of the original $A$. 
+\end{mdframed}
+
+This formula is valid only when the determinant of \(A\) is nonzero. 
+Recall that the determinant of a \(2 \times 2\) matrix is
+\[
+\det(A) = ad - bc.
+\]
+If \(ad - bc = 0\), then \(A\) is singular and has no inverse.
+
+\begin{Exercise}[title={$2 \times 2$ Practice}, label={ex:inverse1}]
+Find the inverse of the matrix of
+\[
+A = \begin{bmatrix}
+1 & 2  \\
+0 & -1 
+\end{bmatrix}
+\]
+\end{Exercise}
+\begin{Answer}[ref={ex:inverse1}]
+First, find the determinant of $A$:
+$$\det(A) = (1)(-1) - (2)(0) = -1$$
+So our inverse is given by:
+$$A^{-1} = -1\begin{bmatrix}
+-1 & -2 \\
+0 & 1
+\end{bmatrix} = \begin{bmatrix}
+1 & 2 \\
+0 & -1
+\end{bmatrix}$$
+
+\end{Answer}
+\subsection*{$n \times n$ Inverse}
+For matrices of size \(3 \times 3\) or greater, we create an augmented matrix.
+
+Recall that we can create an augmented matrix by writing two matrices directly next to each other. 
+
+To find the inverse of a square matrix \(A\):
+\begin{enumerate}
+\item Form the augmented matrix \([A \mid I_n]\), where \(I_n\) is the identity matrix.
+\item Use elementary row operations to transform the left side into \(I_n\).
+\item If this is possible, the right side of the augmented matrix becomes \(A^{-1}\).
+\end{enumerate}
+
+
+Symbolically, this process can be written as
+\[
+[A \mid I_n] \;\longrightarrow\; [I_n \mid A^{-1}].
+\]
+
+If row reduction does not result in the identity matrix on the left side, then \(A\) does not have an inverse.
+In this case, the matrix is singular.
+
+\begin{Exercise}[title={A bigger inverse}, label={ex:inverse2}]
+
+Find the inverse of the matrix
+
+$$A = \begin{bmatrix}
+1 & 2 & -2 \\
+0 & 1 & 1 \\ 
+2 & 4 & -3 \\
+\end{bmatrix}$$
+
+Check your answer using $AA^{-1}=I_3$
+\end{Exercise}
+
+\begin{Answer}[ref={ex:inverse2}]
+
+First, check that $A$ has an inverse:
+$$\begin{array}{c} \det A
+=1\begin{vmatrix}1&1\\[4pt]4&-3\end{vmatrix}
+-2\begin{vmatrix}0&1\\[4pt]2&-3\end{vmatrix}
+-2\begin{vmatrix}0&1\\[4pt]2&4\end{vmatrix}
+=1(-3-4)-2(0-2)-2(0-2)=-7+4+4=1 \end{array}$$
+Since $\det(A) \ne 0$, $A$ must have an inverse. We find it's inverse by the augmented matrix method:
+\begin{align*}
+\left[\begin{array}{ccc|ccc}
+1 & 2 & -2 & 1 & 0 & 0\\
+0 & 1 & 1  & 0 & 1 & 0\\
+2 & 4 & -3 & 0 & 0 & 1
+\end{array}\right]
+&\xrightarrow{R_3 \leftarrow R_3 - 2R_1}
+\left[\begin{array}{ccc|ccc}
+1 & 2 & -2 & 1 & 0 & 0\\
+0 & 1 & 1  & 0 & 1 & 0\\
+0 & 0 & 1  & -2 & 0 & 1
+\end{array}\right] \\[10pt]
+&\xrightarrow{R_2 \leftarrow R_2 - R_3}
+\left[\begin{array}{ccc|ccc}
+1 & 2 & -2 & 1 & 0 & 0\\
+0 & 1 & 0  & 2 & 1 & -1\\
+0 & 0 & 1  & -2 & 0 & 1
+\end{array}\right] \\[10pt]
+&\xrightarrow{R_1 \leftarrow R_1 + 2R_3}
+\left[\begin{array}{ccc|ccc}
+1 & 2 & 0 & -3 & 0 & 2\\
+0 & 1 & 0 & 2 & 1 & -1\\
+0 & 0 & 1 & -2 & 0 & 1
+\end{array}\right] \\[10pt]
+&\xrightarrow{R_1 \leftarrow R_1 - 2R_2}
+\left[\begin{array}{ccc|ccc}
+1 & 0 & 0 & -7 & -2 & 4\\
+0 & 1 & 0 & 2 & 1 & -1\\
+0 & 0 & 1 & -2 & 0 & 1
+\end{array}\right].
+\end{align*}
+This gives us our inverse on the right side, $\begin{array}{c} A^{-1}
+=
+\begin{bmatrix}
+-7 & -2 & 4\\
+2 & 1 & -1\\
+-2 & 0 & 1
+\end{bmatrix} \end{array}$
+
+To check our answer, we can use $AA^{-1} = I_3$:
+\begin{align*}
+A A^{-1}
+&=
+\begin{bmatrix}
+1 & 2 & -2\\[4pt]
+0 & 1 & 1\\[4pt]
+2 & 4 & -3
+\end{bmatrix}
+\begin{bmatrix}
+-7 & -2 & 4\\[4pt]
+2 & 1 & -1\\[4pt]
+-2 & 0 & 1
+\end{bmatrix} \\[8pt]
+&=
+\begin{bmatrix}
+1(-7)+2(2)+(-2)(-2) & 1(-2)+2(1)+(-2)(0) & 1(4)+2(-1)+(-2)(1)\\[6pt]
+0(-7)+1(2)+1(-2)    & 0(-2)+1(1)+1(0)     & 0(4)+1(-1)+1(1)\\[6pt]
+2(-7)+4(2)+(-3)(-2) & 2(-2)+4(1)+(-3)(0) & 2(4)+4(-1)+(-3)(1)
+\end{bmatrix} \\[8pt]
+&=
+\begin{bmatrix}
+-7+4+4 & -2+2+0 & 4-2-2\\[6pt]
+0+2-2  & 0+1+0  & 0-1+1\\[6pt]
+-14+8+6& -4+4+0 & 8-4-3
+\end{bmatrix} \\[8pt]
+&=
+\begin{bmatrix}
+1 & 0 & 0\\[4pt]
+0 & 1 & 0\\[4pt]
+0 & 0 & 1
+\end{bmatrix}
+=I_3.
+\end{align*}
+\end{Answer}
+\begin{Exercise}[title={Does a matrix exist?}, label={ex:inverse3}]
+Given the matrix:
+\[\begin{bmatrix}
+1 & 2 & 4 & 8\\
+2 & 4 & 8 & 16 \\
+4 & 8 & 16 & 32 \\
+8 & 16 & 32 & 64 \\
+\end{bmatrix}\]
+
+Does an inverse matrix exist? Explain why or why not
+\end{Exercise}
+\begin{Answer}[ref={ex:inverse3}]
+No. Each row is a scalar multiple of the first row:
+\begin{itemize}
+    \item Row 2 = 2 $\times$ Row 1
+    \item Row 3 = 4 $\times$ Row 1
+    \item Row 4 = 8 $\times$ Row 1
+\end{itemize}
+So the rows are \emph{linearly dependent}, meaning the matrix has rank $1$, and its determinant is 0. A matrix with determinant 0 is singular, so no inverse exists.
+\end{Answer}
+
+The augmented matrix row-reduction method not only provides a way to compute inverses, but also offers another criterion for invertibility: 
+a matrix is invertible if and only if it can be row-reduced to the identity matrix.
+\subsection{Relation to $A\vec{x} = \vec{b}$}
+An inverse matrix is not only for square matrices, but also for systems of equations and our fundamental linear algebra equation $A\vec{x}=\vec{b}$. Let's look at an example.
+
+Given
+$$\begin{array}{c} A =
+\begin{bmatrix}
+2 & 1 \\
+1 & 1
+\end{bmatrix},
+\quad
+x =
+\begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix},
+\quad
+b =
+\begin{bmatrix}
+5 \\
+3
+\end{bmatrix} \end{array}$$
+solve for $\vec{x}$ by first finding the inverse.
+
+First, we can interpret our givens as a systems of matrices:
+$$\begin{array}{c} A \vec{x} = \vec{b}
+\quad \Longleftrightarrow \quad
+\begin{cases}
+2x_1 + x_2 = 5 \\
+x_1 + x_2 = 3
+\end{cases} \end{array}$$
+
+Checking that an inverse matrix first exists, we have
+$$\det(A) = 2(1) - 1(1) = 1 \neq 0$$
+So we know an inverse matrix exists! To find $A^{-1}$
+$$A^{-1} = 1\begin{bmatrix}d&-b\\-c&a\end{bmatrix}
+=
+\begin{bmatrix}1&-1\\-1&2\end{bmatrix}$$
+
+Here is the fun part! Let's do some computational equivalences:
+\begin{align}
+A\vec{x} &= \vec{b} \notag\\
+A^{-1}(A\vec{x}) &= A^{-1}\vec{b} \notag\\
+I\vec{x} &= A^{-1}\vec{b} \notag\\
+\vec{x} &= A^{-1}\vec{b} \label{eq:inv_fundamental}
+\end{align}
+
+Equation~\eqref{eq:inv_fundamental} show that, by only multiplying by the matrix equivalent of $1$, the identity matrix $I$, we can state that $\vec{x}=A^{-1}\vec{b}$.
+Since we have both $A^{-1}$ and $\vec{b}$, we can find $\vec{x}$:
+$$\begin{array}{c} x =
+\begin{bmatrix}
+1 & -1 \\
+-1 & 2
+\end{bmatrix}
+\begin{bmatrix}
+5 \\
+3
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 \\
+1
+\end{bmatrix} \end{array}$$
+
+Geometrically, this did a very simple operation. We used the fact that $A$ vectors transforms $\vec{x}$ into $\vec{b}$. Then we noted that $A^{-1}$ undoes that transformation, recovering our original $\vec{x}$ by finding $A^{-1} \vec{b}$. 
+This may be hard to visualize, so don't worry if it is hard to grasp immediately. We will review it again in a following chapter.
+\subsection{Matrix Inverse using NumPy}
+We can use our Python library NumPy to find inverses a lot easier using the \mintinline{python3}|np.linalg.inv| function to find the inverse of a given array.
+\begin{minted}{python}
+import numpy as np
+
+A = np.array([[2, 1],
+              [1, 1]])
+
+A_inv = np.linalg.inv(A)
+print(A_inv)
+\end{minted}
+This outputs
+\begin{minted}{text}
+[[ 1. -1.]
+ [-1.  2.]]
+\end{minted}
+
+If given a matrix that is \emph{linearly dependent}, NumPy will raise an exception:
+\begin{minted}{python}
+raise LinAlgError("Singular matrix")
+numpy.linalg.LinAlgError: Singular matrix
+\end{minted}
+letting us know that the inverse does not exist.
+
+To improve our code, we check for the determinant of the matrix beforehand. In this code, we introduce a tolerance as computers handle numbers near zero as very small but non-zero digits.
+\begin{minted}{python}
+import numpy as np
+
+A = np.array([[2, 1],
+              [4, 2]], dtype=float)
+
+# BAD PRACTICE:
+# A_inv = np.linalg.inv(A)
+# print(A_inv)
+
+detA = np.linalg.det(A)
+
+tolerance = 1e-12  
+
+if abs(detA) < tolerance: 
+    print("Matrix is singular or nearly singular. No reliable inverse.")
+else:
+    A_inv = np.linalg.inv(A)
+    print("Determinant:", detA) # you may see a large floating point number
+    print("Inverse:\n", A_inv)
+\end{minted}
+Output:
+\begin{minted}{text}
+Matrix is singular or nearly singular. No reliable inverse.
+\end{minted}
+\section{Summary}
+In this chapter, we established the determinant of a matrix and inverse matrix. 
+
+The determinant of a matrix provides a powerful geometric and algebraic description of how a matrix acts on space. 
+
+In two dimensions, the determinant of a \(2 \times 2\) matrix represents the signed area of the parallelogram formed by the images of the standard basis vectors. 
+In higher dimensions, the determinant represents signed volume.
+
+Further, if a matrix \(A\) multiplies a region in space, then \(|\det(A)|\) describes the factor by which areas or volumes are scaled, noting the sign and absolute value of the determinant as a scalar.
+
+The inverse of a matrix \emph{reverses the effect of the original matrix}.
+If \(A\) is invertible, then multiplying by \(A^{-1}\) restores any vector to its original position:
+\[
+AA^{-1} = A^{-1}A = I.
+\]
+Thus, invertibility, nonzero determinant, linear independence of rows and columns, and reversibility of action are all different ways of describing the same underlying property.
+
+In the next chapter, we will interpret matrices as \emph{functions} that transform vectors.
+
+This idea will allow us to visualize matrix multiplication, understand invertibility deeper, and connect algebraic properties such as determinants to transformations of space.
+
+The existence of an inverse matrix is closely related to whether a matrix represents a reversible transformation.
+
+The next chapter will be very graph and program heavy, as we expand the geometric properties of determinants, inverses, and matrices.
