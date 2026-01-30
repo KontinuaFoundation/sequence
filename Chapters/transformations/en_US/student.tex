@@ -15,6 +15,7 @@ The transformation $T$ is said to map from the reals of $n$ to the reals of $m$,
     \item $\mathbb R^n$ is called the \textbf{domain}
     \item $\mathbb R^m$ is called the \textbf{codomain}
 \end{itemize}
+
 \begin{figure}[H]
     \centering
     %drawing made in mathcha 
@@ -86,25 +87,111 @@ Every vector in the subspace of $\mathbb R^n$ \textbf{stays where it is}.
 
 \textit{Every vector stays where it originally started in this transformation.} In a way, no transformation is truly applied. 
 
+Under the identity transformation, nothing moves. We still get something very important out of this: the vector $\vecb{1 \\ 1}$ can be written as a combination of the basis vectors:
+$$\vecb{1 \\ 1} = 1\vec e_1 + 1\vec e_2$$
+When a linear transformation is applied, the way a vector is built from the basis vectors does not change, but \emph{rather the direction of the basis vectors}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{identity_transform.png}
-    \caption{A matrix that leaves basis vectors where they are.}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{identity_transform_basis.png}
+        \caption{Identity vectors before transformation}
+        \label{fig:identity_transform_a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{identity_transform.png}
+        \caption{Identity vectors after transformation (no change)}
+        \label{fig:identity_transform_b}
+    \end{subfigure}
+    \caption{An identity transformation acting on basis vectors.}
     \label{fig:identity_transform}
 \end{figure}
 
-Under the identity transformation, nothing moves. However, this example reveals something important: the vector $\vecb{1 \\ 1}$ can be written as a combination of the basis vectors:
-$$\vecb{1 \\ 1} = 1\vec e_1 + 1\vec e_2$$
-When a linear transformation is applied, the way a vector is built from the basis vectors does not change, but \emph{rather the direction of the basis vectors}.
 
-Vectors in $\mathbb R^2$ can be written as a linear combination with standard basis vectors:
-$$\vec x = x_1\vec e_1 + x_2\vec e_2$$
 A linear transformation acts on $\vec{x}$ by acting on each basis vector individually:
 $$A\vec x = x_1A\vec e_1 + x_2A\vec e_2$$
-such that any coefficient $x_1$ and $x_2$ are unchanged, while $e_1$ and $e_2$ are transformed. Thus, linear transformations preserve linear combinations while \emph{altering the directions that define the coordinate system}.
 
-In the next example, we will apply a non-identity matrix and observe how transforming the basis vectors reshapes the entire space.
+such that any coefficient $x_1$ and $x_2$ are unchanged, while $e_1$ and $e_2$ are transformed. Thus, linear transformations preserve linear combinations while \emph{altering the directions that define the coordinate system}. This will be better visualized in the next examples.
+
+In the next example, we will apply a non-identity matrix and observe how transforming the basis vectors reshapes the entire space. Each figure will show a grid of points in $\mathbb R^2$ alongside the resulting transformed points after applying the matrix transformation. We encourage you to play with the python script \texttt{transforms.py} to see how different matrices affect the transformation. Also, we will limit our view to a square region from $(-2, -2)$ to $(2, 2)$ and only use $2 \times 2$ matrices for simplicity.
 
 \subsection{Scaling}
 \index{scaling}
-Now, let's try scaling up the basis vector 
+Now, let's try scaling up the basis vectors. Consider the matrix:
+\[A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\]
+
+This matrix will scale the $e_1$ vector by a factor of 1 (no change) and the $e_2$ vector by a factor of 2 (doubling its length).
+
+Applying this transformation to the basis vectors produces this result:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{e2scaled.png}
+    \caption{The effect of the scaling transformation $A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}$ on the standard basis vectors.}
+    \label{fig:e2scaled}
+\end{figure}
+
+\section{Reflections} 
+FIXME content not written just graphs
+across y (doesnt look different but x values change sign, e1 flips)
+\[A = \begin{bmatrix} -1 & 0 \\ 0 & 1 \end{bmatrix}\]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{refl_y_axis.png}
+    \caption{The effect of reflecting across the y-axis. Added is the vector $\vecb{1 \\ 1}$ and its transformation in purple.}
+    \label{fig:refl_y_axis}
+\end{figure}
+
+We can do the same with the x-axis. This gives us the matrix:
+\[A = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{refl_x_axis.png}
+    \caption{The effect of reflecting across the x-axis. Added is the vector $\vecb{1 \\ 1}$ and its transformation in purple.}
+    \label{fig:refl_x_axis}
+\end{figure}
+
+y = x and y = -x
+$(x, y) \;\mapsto\; (y, x)$
+note that e1 and e2 swap places
+\[A = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}\]
+%FIXME this graph is a bit chaotic
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{refl_y_equals_x.png}
+    \caption{The effect of reflecting across the line $y = x$.}
+    \label{fig:refl_y_equals_x}
+\end{figure}
+
+$(x, y) \;\mapsto\; (-y, -x)$
+note that e1 and e2 swap places and flip signs
+\[A = \begin{bmatrix} 0 & -1 \\ -1 & 0 \end{bmatrix}\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{refl_y_equal_neg_x.png}
+    \caption{The effect of reflecting across the line $y = -x$.}
+    \label{fig:refl_y_equal_neg_x}
+\end{figure}
+
+% Note for future writers: I am not doing y=mx reflections as they are more complex and I am already hitting a complexity limit for linear alg.
+\section{Rotations}
+%FIXME content not written just graphs
+% FIXME derived rotation matrices
+Rotation by 90 degrees ccw
+Rotation by 90 degrees cw
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{90degcw.png}
+    \caption{The effect of a 90 degree clockwise rotation.}
+    \label{fig:90degcw}
+\end{figure}
+
+Rotation ccw by theta
+rotation cw by theta
+
+% Writers note: Not talked about is applying multiple transformations in sequence, which would be a good follow up topic. I feel like it is not necessary for our linear algebra foundation, but could be a good extension. Again, this is a high school level text.
+
+% \section{} %FIXME eigenvector prelude
