@@ -7,78 +7,101 @@ costs, maximizing profits, or reducing the time taken to perform a
 task, optimization techniques are employed to make decisions
 effectively and efficiently.\index{optimization}
 
-\section{Optimization Problems}
+In this chapter, the primary goal is to find the maximum or minimum
+value of a function, often referred to as the objective function, by finding the point on the graph where the derivative is equal to zero. 
+This is usually referred to as the critical point! \index{critical point}
 
-An optimization problem consists of maximizing or minimizing a real
-function by systematically choosing the values of real or integer
-variables from within an allowed set. This function is known as the
-objective function.
+At a critical point where the derivative is zero, the graph of the
+function has a horizontal tangent line. At such a point, the function
+may be reaching a peak or a valley.
 
-A standard form of an optimization problem is:
+Not every critical point corresponds to a maximum or minimum. Some
+critical points may instead be points of inflection. This is when the second derivative of the point is also equal to zero! You will see this in a few examples!
 
-\begin{equation*}
-\begin{aligned}
-& \underset{x}{\text{minimize}}
-& & f(x) \
-& \text{subject to}
-& & g_i(x) \leq 0, ; i = 1, \ldots, m \
-&
-& & h_j(x) = 0, ; j = 1, \ldots, p
-\end{aligned}
-\end{equation*}
+%A standard form of an optimization problem is:
+%
+%\begin{equation*}
+%\begin{aligned}
+%& \underset{x}{\text{minimize}}
+%& & f(x) \
+%& \text{subject to}
+%& & g_i(x) \leq 0, ; i = 1, \ldots, m \
+%&
+%& & h_j(x) = 0, ; j = 1, \ldots, p
+%\end{aligned}
+%\end{equation*}
+%
+%where
+%\begin{itemize}
+%\item $f(x)$ is the objective function,
+%\item $g_i(x) \leq 0$ are the inequality constraints,
+%\item $h_j(x) = 0$ are the equality constraints.
+%\end{itemize}
+%
+%\section{Types of Optimization Problems}
+%There are several different types of optimization problems, such as:
+%
+%\begin{itemize}
+%\item \textbf{Linear Programming:} The objective function and the constraints are all linear.
+%\item \textbf{Integer Programming:} The solution space is restricted to integer values.
+%\item \textbf{Nonlinear Programming:} The objective function and/or the constraints are nonlinear.
+%\item \textbf{Stochastic Programming:} The objective function and/or constraints involve random variables.
+%\end{itemize}
+%
+%These problems are solved using different techniques and algorithms,
+%many of which are a subject of active research.
+%
+%\section{Applications}
+%
+%Optimization techniques have a wide variety of applications in many
+%fields, such as economics, engineering, transportation, and scheduling
+%problems.
+%
 
-where
+
+\section{Extrema}
+
+There are two types of extrema: relative extrema and absolute extrema.
+
+A relative maximum or minimum occurs when the function reaches a peak
+or valley compared to nearby values. This does not guarantee that the
+value is the highest or lowest value of the function overall.\index{relative extrema} \index{relative maximum} \index{relative minimum}
+
+An absolute maximum or minimum is the greatest or least value that the
+function takes on a given interval. \index{absolute extrema} \index{absolute maximum} \index{absolute minimum}
+
+An absolute maximum or minimum can occur either at a critical point or
+at an endpoint of the interval.
+
+For this reason, when solving optimization problems on a restricted
+domain, it is important to test both critical points and endpoints.
+
+\section{The Second Derivative Test}
+
+Once a critical point has been found, we often want to determine whether
+it corresponds to a maximum or a minimum. One method for doing this is
+the Second Derivative Test. \index{second derivative test}
+
+If a function has a critical point at $x = c$, then:
 \begin{itemize}
-\item $f(x)$ is the objective function,
-\item $g_i(x) \leq 0$ are the inequality constraints,
-\item $h_j(x) = 0$ are the equality constraints.
+\item if the second derivative is positive at $x = c$, the function is
+concave up and the point is a relative minimum;
+\item if the second derivative is negative at $x = c$, the function is
+concave down and the point is a relative maximum;
+\item if the second derivative is zero at $x = c$, the test is
+inconclusive.
 \end{itemize}
 
-\section{Types of Optimization Problems}
-There are several different types of optimization problems, such as:
+If the second derivative is always positive or always negative on an
+interval, then any critical point in that interval must be an absolute
+minimum or absolute maximum, respectively.
 
-\begin{itemize}
-\item \textbf{Linear Programming:} The objective function and the constraints are all linear.
-\item \textbf{Integer Programming:} The solution space is restricted to integer values.
-\item \textbf{Nonlinear Programming:} The objective function and/or the constraints are nonlinear.
-\item \textbf{Stochastic Programming:} The objective function and/or constraints involve random variables.
-\end{itemize}
+\section{Solving Optimization Problems}
 
-These problems are solved using different techniques and algorithms,
-many of which are a subject of active research.
-
-\section{Applications}
-
-Optimization techniques have a wide variety of applications in many
-fields, such as economics, engineering, transportation, and scheduling
-problems.
-
-FIXME expand this chapter with examples of calculus optimization using min max from previous chapter
-
-\section{Calculus and Optimization}
-
-Calculus plays a key role in optimization because maximum and minimum
-values of a function often occur at critical points. A critical point
-occurs when the derivative of a function is equal to zero or does not
-exist. For a function defined on an interval, the maximum or minimum
-value may occur at a critical point or at an endpoint of the interval.
-This idea provides a systematic method for solving optimization
-problems.
-
-In order to solve optimization problems, two key components are
-important:
-
-\begin{itemize}
-\item \textbf{The objective function}, which is the quantity that we
-want to maximize or minimize. Common objective functions include
-volume, area, and cost.
-\item \textbf{The constraint}, which is the condition that limits the
-possible values of the objective function. Fixed values of volume,
-perimeter, time, or weight are common constraints. When solving
-examples, a constraint may be worded like "The weight must be
-50 kg'' or "We have 30 years to maximize total profit.'' Whatever
-value is fixed in the problem statement is the constraint.
-\end{itemize}
+Optimization problems apply the ideas of derivatives, critical points,
+and extrema to real situations. Although the context of each problem may
+be different, the method used to solve them follows the same general
+pattern.
 
 \section{General Strategy for Solving Optimization Problems}
 
@@ -86,7 +109,7 @@ Most calculus optimization problems follow these steps:
 
 \begin{enumerate}
 \item Identify the quantity to be optimized.
-\item Write an equation for the objective function.
+\item Write an equation for the objective function. Sometimes, you might be given an equation already. In that case, you will skip this step.  For word problems, you will typically be required to write the equations yourself. 
 \item Use the given constraints to rewrite the function using one
 variable.
 \item Determine the appropriate domain.
@@ -98,12 +121,304 @@ variable.
 When solving optimization problems, some common mistakes include
 forgetting to define variables, not using the constraints of the
 problem appropriately, misinterpreting or failing to interpret the
-final answer, and giving answers without appropriate units.
+final answer, and giving answers without appropriate units. For word problems, be very vigilant baout how your answer relates back to the question given! 
+It serves as a small check for accuracy.
+
+\subsection{Example}
+
+Consider the function
+\[
+f(x) = x^2 - 4x + 1.
+\]
+
+We want to find the maximum or minimum value of this function.
+
+First, take the derivative of the function:
+\[
+f'(x) = 2x - 4.
+\]
+
+Next, set the derivative equal to zero to find the critical point:
+\[
+2x - 4 = 0.
+\]
+
+Solving for $x$ gives
+\[
+x = 2.
+\]
+
+Now determine whether this critical point corresponds to a maximum or a
+minimum by using the second derivative.
+
+The second derivative is
+\[
+f''(x) = 2.
+\]
+
+Because the second derivative is positive, the function is concave up,
+and the critical point corresponds to a minimum.
+
+To find the minimum value of the function, substitute $x = 2$ back into
+the original function:
+\[
+f(2) = 2^2 - 4(2) + 1 = -3.
+\]
+
+Therefore, the function has a minimum value of $-3$ at $x = 2$.
+
+\begin{Exercise}[label = optimization1]
+Consider the function
+\[
+f(x) = x^2 - 6x + 5.
+\]
+
+Find the maximum or minimum value of the function using calculus.
+\end{Exercise}
+
+\begin{Answer}[ref=optimization1]
+
+First, take the derivative of the function:
+\[
+f'(x) = 2x - 6.
+\]
+
+Set the derivative equal to zero to find the critical point:
+\[
+2x - 6 = 0.
+\]
+
+Solving this equation gives
+\[
+x = 3.
+\]
+
+Next, take the second derivative:
+\[
+f''(x) = 2.
+\]
+
+Since the second derivative is positive, the function is concave up, and
+the critical point corresponds to a minimum.
+
+Finally, substitute $x = 3$ back into the original function:
+\[
+f(3) = 3^2 - 6(3) + 5 = -4.
+\]
+
+Therefore, the function has a minimum value of $-4$ at $x = 3$.
+\end{Answer}
+
+Now, let's look at a word example:
+\subsection*{Example}
+
+The cost, in dollars, of producing $x$ units of a product is given by the
+function
+\[
+C(x) = 2x^2 - 24x + 100.
+\]
+
+Find the number of units that should be produced in order to minimize
+the cost, and determine the minimum cost.
+
+\medskip
+
+To minimize the cost, take the derivative of the cost function:
+\[
+C'(x) = 4x - 24.
+\]
+
+Set the derivative equal to zero to find the critical point:
+\[
+4x - 24 = 0.
+\]
+
+Solving for $x$ gives
+\[
+x = 6.
+\]
+
+Next, take the second derivative:
+\[
+C''(x) = 4.
+\]
+
+Since the second derivative is positive, the cost function is concave
+up, and the critical point corresponds to a minimum.
+
+Substitute $x = 6$ back into the original cost function:
+\[
+C(6) = 2(6)^2 - 24(6) + 100 = 28.
+\]
+
+Therefore, the cost is minimized when 6 units are produced, and the
+minimum cost is \$28.
+
+\begin{Exercise}[label = optimization2]
+A rectangular enclosure is to be built using 60 units of fencing. Three
+sides of the enclosure require fencing, while the fourth side is along
+a wall and does not require fencing.
+
+Let $x$ represent the length of the side parallel to the wall and $y$
+represent the width of the enclosure.
+
+Find the dimensions of the enclosure that minimize the amount of fencing
+used.
+\end{Exercise}
+
+\begin{Answer}[ref=optimization2]
+
+Because only three sides require fencing, the total amount of fencing is
+given by
+\[
+x + 2y = 60.
+\]
+
+Solving this equation for $x$ gives
+\[
+x = 60 - 2y.
+\]
+
+The area of the enclosure is
+\[
+A = xy.
+\]
+
+Substituting for $x$ yields
+\[
+A(y) = y(60 - 2y) = 60y - 2y^2.
+\]
+
+Take the derivative:
+\[
+A'(y) = 60 - 4y.
+\]
+
+Set the derivative equal to zero:
+\[
+60 - 4y = 0.
+\]
+
+Solving for $y$ gives
+\[
+y = 15.
+\]
+
+The second derivative is
+\[
+A''(y) = -4.
+\]
+
+Since the second derivative is negative, this critical point corresponds
+to a maximum area.
+
+Substituting $y = 15$ into the constraint gives
+\[
+x = 60 - 2(15) = 30.
+\]
+
+Therefore, the enclosure has dimensions 30 units by 15 units.
+\end{Answer}
+
+\section{Helpful Table for Optimization Problems}
+\begin{center}
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|}
+\hline
+\textbf{Condition at a point $x = c$} & \textbf{What it tells you} & \textbf{What kind of point it could be} \\
+\hline
+$f'(c) \neq 0$ &
+The graph has a non-horizontal tangent &
+Not a maximum or minimum \\
+\hline
+$f'(c) = 0$ &
+The graph has a horizontal tangent &
+Possible maximum, minimum, or neither \\
+\hline
+$f'(c)$ does not exist &
+The graph may have a corner, cusp, or vertical tangent &
+Possible maximum or minimum so run second derivative test to check! \\
+\hline
+$f'(c) = 0$ and $f''(c) > 0$ &
+Graph is concave up at $c$ &
+Local minimum \\
+\hline
+$f'(c) = 0$ and $f''(c) < 0$ &
+Graph is concave down at $c$ &
+Local maximum \\
+\hline
+$f'(c) = 0$ and $f''(c) = 0$ &
+Second derivative test fails &
+Could be max, min, or neither \\
+\hline
+\end{tabular}
+\end{center}
+
 
 % FIXME Using python to find absolute extrema, derivative test. Also update these sections. 
 
 \section{Using Python to Visualize Your Optimization Problem}
 You may be familiar with the use of Python to find the derivative of functions. We are going 
 to use Python to supplement your knowledge of Optimization problems! 
-Below is a script that can be used to visualize what you 
-are solving for including maximums, minimums, and 
+Below is a script that can be used to visualize what your world problems may be asking you to do! 
+This script will help you with finding the first derivative, performing the second derivative test, 
+and graphs of your equations showing these points. 
+
+\begin{verbatim}
+import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1) Define the variable
+x = sp.symbols('x')
+
+# 2) Define the objective function (STUDENTS EDIT THIS)
+f = 20*x - x**2
+
+# 3) Derivatives
+f_prime = sp.diff(f, x)
+f_double_prime = sp.diff(f_prime, x)
+
+# 4) Solve f'(x) = 0
+critical_point = sp.solve(f_prime, x)[0]
+
+# 5) Classify using second derivative
+second_derivative_value = f_double_prime.subs(x, critical_point)
+
+if second_derivative_value > 0:
+    classification = "minimum"
+elif second_derivative_value < 0:
+    classification = "maximum"
+else:
+    classification = "inconclusive"
+
+print("f(x) =", f)
+print("f'(x) =", f_prime)
+print("f''(x) =", f_double_prime)
+print("Critical point:", critical_point)
+print("Classification:", classification)
+
+# 6) Plot
+f_num = sp.lambdify(x, f, "numpy")
+
+X = np.linspace(0, 20, 400)
+Y = f_num(X)
+
+xc = float(critical_point)
+yc = float(f_num(xc))
+
+plt.plot(X, Y)
+plt.scatter([xc], [yc])
+plt.title("Optimization")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.grid(True)
+
+plt.annotate(
+    classification,
+    (xc, yc),
+    xytext=(xc + 1, yc),
+    arrowprops=dict(arrowstyle="->")
+)
+
+plt.show()
+\end{verbatim}
