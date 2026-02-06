@@ -35,19 +35,51 @@ def make_house():
 grid  = make_grid(3,3,13) 
 house = make_house()
 # Identity MATRIX
-A = np.array([[1, 0],
-              [0, 1]])
-current_transform = "identity"
-# LINEAR RIGHTWARD SHEAR MATRIX
+# A = np.array([[1, 0],
+#               [0, 1]])
+# current_transform = "identity"
+
+# 2x SCALING MATRIX
+# A = np.array([[2, 0],
+#               [0, 2]])
+# current_transform = "scaling_2x"
+# 1/2 SCALING MATRIX
+# A = np.array([[0.5, 0],
+#               [0, 0.5]])
+# current_transform = "scaling_0.5x"
+# LINEAR RIGHTWARD SHEAR MATRIX (only y component scaled)
 # k=2.0
 # A = np.array([[1, k],
 #               [0, 1]])
 # current_transform = f"shear_k{k}"
-# LINEAR ROTATION (CCW) MATRIX
+
+# REFLECTION ACROSS X-AXIS
+# A = np.array([[1, 0],
+#               [0, -1]])
+# current_transform = "reflection_x_axis"
+# REFLECTION ACROSS Y-AXIS
+# A = np.array([[-1, 0],
+#               [0, 1]])
+# current_transform = "reflection_y_axis"
+# REFLECTION ACROSS y=x
+# A = np.array([[0, 1],
+#               [1, 0]])
+# current_transform = "reflection_y_equals_x_axis"
+# REFLECTION ACROSS y=-x
+# A = np.array([[0, -1],
+#               [-1, 0]])
+# current_transform = "reflection_y_equals_neg_x_axis"
+
+# LINEAR ROTATION (CW) MATRIX
 # theta = np.radians(30) # 30 degrees
-# A = np.array([[np.cos(theta), -np.sin(theta)],
-#               [np.sin(theta),  np.cos(theta)]])
-# current_transform = f"rotation_{int(np.degrees(theta))}deg"
+# A = np.array([[np.cos(theta), np.sin(theta)],
+#               [-np.sin(theta),  np.cos(theta)]])
+# current_transform = f"rotation_cw_{int(np.degrees(theta))}deg"
+# LINEAR ROTATION (CCW) MATRIX
+theta = np.radians(30) # 30 degrees
+A = np.array([[np.cos(theta), -np.sin(theta)],
+              [np.sin(theta),  np.cos(theta)]])
+current_transform = f"rotation_ccw_{int(np.degrees(theta))}deg"
 house_sheared = A @ house
 grid_sheared  = A @ grid
 
@@ -58,8 +90,8 @@ plt.scatter(grid_sheared[0, :], grid_sheared[1, :], s=5)
 plt.plot(house_sheared[0, :], house_sheared[1, :], color='red', linewidth=2)
 
 plt.axis('equal')
-plt.show()
 plt.savefig(f"house_{current_transform}.png")
+plt.show()
 
 
 

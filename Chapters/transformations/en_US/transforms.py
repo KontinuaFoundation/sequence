@@ -9,34 +9,41 @@ from matplotlib.lines import Line2D
 # Identity matrix (no transformation)
 # A = np.array([[1, 0],
 #               [0, 1]])
+# current_transform = "identity"
+# Scaled both basis vectors by factor 2
+A = np.array([[2, 0],
+              [0, 2]])
+current_transform = "scaling_2x"
 
 # Scaled along y-axis by factor 2
 # A = np.array([[1, 0],
 #               [0, 2]])
-
+# current_transform = "scaling_y2x"
 # Reflection about y axis
 # A = np.array([[-1, 0],
 #               [0, 1]])
-
+# current_transform = "reflection_y_axis"
 # Reflection about x axis
 # A = np.array([[1, 0],
 #               [0, -1]])
-
+# current_transform = "reflection_x_axis"
 # Reflection across line y=x
 # A = np.array([[0, 1],
 #               [1, 0]])
+# current_transform = "reflection_y_eq_x"
 # Reflection across line y=-x
 # A = np.array([[0, -1],
 #               [-1, 0]])
+# current_transform = "reflection_y_eq_neg_x"
 # ----------- ROTATIONS --------
 # 90 degree rotation clockwise
-A = np.array([[0, 1],
-              [-1, 0]])
-
+# A = np.array([[0, 1],
+#               [-1, 0]])
+# current_transform = "rotation_90deg_cw"
 # 90 degree rotation ccw
 # A = np.array([[0, -1],
 #               [1, 0]])
-
+# current_transform = "rotation_90deg_ccw"
 # theta definition in degrees
 
 theta = np.deg2rad(30)  # Change 30 to any angle you want in degrees
@@ -117,4 +124,5 @@ legend_elements = [
 ]
 
 plt.legend(handles=legend_elements, loc="upper left", fontsize="small")
+plt.savefig(f"grid_{current_transform}.png")
 plt.show()
