@@ -258,11 +258,31 @@ Not only do the x and y values swap places, but they also flip signs. This means
     \label{fig:house_reflection_y_equals_neg_x_axis}
 \end{figure}
 
+\begin{Exercise}[title={Guess the transformation matrix}, label={ex:guess_transform}]
+    Given the following transformation of the house, find the matrix that represents this transformation. 
 
+    Hint: the grid is $3\times 3$ unit direction with 13 points in each row/column.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{house_problem.png}
+    \end{figure}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:guess_transform}]
+    The matrix that represents this transformation is:
+    \[A = \begin{bmatrix} 1.5 & 0 \\ -2 & -1 \end{bmatrix}\]
+
+    We find this by first noticing that the house and door components are flipped over the x-axis, which means that the y-values of the points are flipped. This gives us a negative one value in the $e_2$ basis of the matrix.
+
+    Next we can see that the house is stretched horizontally in the x-direction. The orange dots end at 4.5, which is 1.5 times the original length of 3, so we know that the x-values are scaled by a factor of 1.5. This gives us the value of 1.5 in the first row of the matrix.
+
+    Finally, the roof is slanted, which means that there is a shearing component to this transformation. Notice that the roof (door corner) is moved up, so the $e_1$ also has a negative value y-component. This gives us the value of -2 in the second row, first column of the matrix. 
+
+\end{Answer}
 % Note for future writers: I am not doing y=mx reflections as they are more complex and I am already hitting a complexity limit for linear alg.
 \section{Rotations}
-%FIXME content not written just graphs
-% FIXME derived rotation matrices from trig functions but bring back y=x y=-x
+
 Those past four transformations (\ref{fig:house_reflection_x_axis}, \ref{fig:house_reflection_y_axis}, \ref{fig:house_reflection_y_equals_x_axis}, \ref{fig:house_reflection_y_equals_neg_x_axis}) all had something similar %fixme
 
 What if we want to rotate our house? We can also do this with a matrix transformation. It may look similar to the reflections, but it is not the same. Let's track our basis vectors to see where they end up:
@@ -340,6 +360,30 @@ A^{-1}_{30^\circ\textrm{cw}} &= \frac{1}{\cos(30^\circ)\cos(30^\circ) - (-\sin(3
 \end{align*}
 Notice that this is the same as the matrix for a $30^\circ$ counterclockwise rotation! This makes sense, since a $30^\circ$ counterclockwise rotation would undo a $30^\circ$ clockwise rotation.
 
+Note that if the determinant is $0$, then the associated linear transformation is not invertible. In this case, the transformation collapses space into a lower dimension (for example, a plane into a line or a line into a point), causing information to be lost. As a result, the transformation cannot be reversed, and therefore no inverse matrix exists.
+
+Common examples of this are:
+
+\[
+\begin{aligned}
+\begin{bmatrix}
+1 & 0\\
+0 & 0
+\end{bmatrix}
+&\quad \text{(projection matrix (covered in a future chapter))} \\
+\begin{bmatrix}
+1 & 2\\
+0 & 0
+\end{bmatrix}
+&\quad \text{(eliminates one direction)} \\
+\begin{bmatrix}
+1 & 2\\
+2 & 4
+\end{bmatrix}
+&\quad \text{(duplicate / linearly dependent rows)}
+\end{aligned}
+\]
+
 \begin{Exercise}[title={Undoing a Shear}, label={ex:undo_shear}]
 
 A shear, by definition, leaves one axis fixed and slides points parallel to it. For example, an x-shear is given by the following relationship:
@@ -360,7 +404,6 @@ $$(x, y) \mapsto (x + ky, y)$$
         (the determinant is 1, and the inverse is found by swapping the diagonal elements and negating the off-diagonal elements, which in this case results in negating $k$).
     \end{enumerate}
 \end{Answer}
-
 
 
 

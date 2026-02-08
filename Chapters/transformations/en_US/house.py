@@ -76,10 +76,15 @@ house = make_house()
 #               [-np.sin(theta),  np.cos(theta)]])
 # current_transform = f"rotation_cw_{int(np.degrees(theta))}deg"
 # LINEAR ROTATION (CCW) MATRIX
-theta = np.radians(30) # 30 degrees
-A = np.array([[np.cos(theta), -np.sin(theta)],
-              [np.sin(theta),  np.cos(theta)]])
-current_transform = f"rotation_ccw_{int(np.degrees(theta))}deg"
+# theta = np.radians(30) # 30 degrees
+# A = np.array([[np.cos(theta), -np.sin(theta)],
+#               [np.sin(theta),  np.cos(theta)]])
+# current_transform = f"rotation_ccw_{int(np.degrees(theta))}deg"
+
+A = np.array([[1.5, 0],
+              [-2,  -1]])
+current_transform = "problem"
+
 house_sheared = A @ house
 grid_sheared  = A @ grid
 
