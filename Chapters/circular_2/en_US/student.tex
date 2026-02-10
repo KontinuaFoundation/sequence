@@ -660,6 +660,56 @@ L_{\text{initial}} = L_{\text{final}} \quad (\boldsymbol{\tau}_{\text{net}} = 0)
 
 This equation shows that torque is responsible for changing angular momentum. Because a flywheel has a large moment of inertia, a given applied torque produces only a small angular acceleration, allowing the flywheel to respond smoothly to changes in applied forces. 
 
+\subsubsection*{Angular Impulse}
+Just like in classical momentum, a change in angular momentum is called \newterm{angular impulse}.\index{angular impulse} Angular Impulse is representative the cumulative effect of torque applied over given a time interval. 
+\begin{mdframed}[frametitle = {Angular Impulse}, style = important]
+  Angular impulse is defined by 
+  \begin{equation}
+  \Delta \mathbf {L} =\int _{t_{1}}^{t_{2}}{\boldsymbol {\tau }}\,\mathrm {dt}
+  \end{equation}
+Graphically, this is area under a \emph{torque vs. time} graph. 
+
+Angular impulse has units Newton-meter-seconds, same as angular momentum:
+$$\text{N}\cdot \text{m} \cdot \text{s}^{-1} = \text{kg} \cdot \text{m}^2\cdot \text{s}^{-1}$$
+\end{mdframed}
+
+Angular impulse explains why sudden twists or torque have effects on rotational objects. A sudden hit to a door, instantaneous wrench forces, or off-center collisions cause a much better impulses. This impulse may be produced either by a large torque applied over a short time or by a smaller torque applied over a longer time. However, in many physical situations, applying a large torque over a near-instantaneous time interval is more effective and practical.
+
+\begin{Exercise}[title={Angular Impulse}, label={ex:ang_imp}]
+
+  A kid rams a blue toy car into a red toy car, which is initially stationary. The collision causes the red toy car to start spinning in place.
+
+  Estimate, by counting the area under the curve, the angular impulse caused by a toy car crash.
+  % writers note: students have not learned integration by this point, but guiding them toward the idea.
+   \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={time},
+      ylabel={Torque},
+      width=8cm,
+      height=6cm,
+      axis equal image,
+      xtick distance=1,
+      ytick distance=1,
+      grid=major,
+      grid style={gray!50},
+      grid=both,
+      xmin=-0.2,
+      xmax=8.2,
+      ymin=-0.2,
+      ymax=8.2
+    ]
+    \addplot[color=orange, smooth, line width=1pt, domain=0:8] {6*exp(-((x-4)^2)/(2*0.5^2))};
+    \addlegendentry{Torque}
+  \end{axis}
+  \end{tikzpicture}
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:ang_imp}]
+As we can see, each unit square is equivalent to $1 \,\ \mathrm{torque}\cdot \mathrm{time}$. Counting the partial and full squares on $t=[2,6]$, we get approximately 8 unit squares. This comes from the (approximately whole) 4 squares under $y=2$, combining all squares from $y=[2,4]$ to form 2 squares, and the additional partial area forming approximately another 2 squares, resulting in an angular impulse of approximately $8 \text{ N}\cdot \text{m} \cdot \text{s}^{-1}$. 
+
+This is a practice in simple integration, which is a method of finding areas under given functions. Integrating the given function from $x=[0,8]$ gives us $7.51988482389 \text{ N}\cdot \text{m} \cdot \text{s}^{-1}$, a value pretty close to our estimate.
+\end{Answer}
 \subsection{Work done by Torque}
 Recall that work is a change in energy. Torque also does work when it causes rotation. For a constant torque acting on point mass through an angular displacement $\Delta \theta$ the work done is
 \begin{equation}
