@@ -71,8 +71,8 @@ worked through all the workbooks, you should be able to pass the
 following tests:
 
 * AP Calculus BC
-* AP Physics C: Mechanics
-* AP Physics C: Electricity and Magnetism
+* AP Physics C: Mechanics - https://apstudents.collegeboard.org/courses/ap-physics-c-mechanics, https://apcentral.collegeboard.org/media/pdf/ap-physics-c-mechanics-course-and-exam-description.pdf
+* AP Physics C: Electricity and Magnetism - https://apstudents.collegeboard.org/courses/ap-physics-c-electricity-and-magnetism, https://apcentral.collegeboard.org/media/pdf/ap-physics-c-electricity-and-magnetism-course-and-exam-description.pdf
 * AP Statistics
 
 Politically, it is hoped that this will also make the sequence easier to
