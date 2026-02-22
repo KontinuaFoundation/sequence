@@ -15,6 +15,7 @@ NOTE: We use a package called `minted <https://ctan.org/pkg/minted>`_ for syntax
 
   brew install python
   brew install mactex-no-gui
+  brew install node
 
 Clone the github repository::
 
@@ -41,6 +42,7 @@ Mac is preferred, but if you only have access to a Windows device, the following
 * Download and install `MiKTex <https://miktex.org/download>`_.
 * Download and install `Git Bash <https://git-scm.com/downloads>`_.
 * Download and install `Python <https://www.python.org/downloads/>`_.
+* Download and install `Node.js <https://nodejs.org/en>`_.
 * Clone the github repository::
 
   git clone https://github.com/TheKontinua/sequence.git
@@ -61,6 +63,8 @@ Once SSH access is configured, you need to clone from the SSH repo::
   git clone git@github.com:KontinuaFoundation/sequence.git
 
 It may ask to trust ``github.com``, say yes.
+
+Prettier has been configured for consistency in formatting. You can align a `.tex` file with prettier settings by running `npx prettier path/to/file.tex --write
 
 Configuration
 -------------
