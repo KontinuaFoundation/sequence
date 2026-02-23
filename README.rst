@@ -75,6 +75,10 @@ following tests:
 * AP Physics C: Electricity and Magnetism - https://apstudents.collegeboard.org/courses/ap-physics-c-electricity-and-magnetism, https://apcentral.collegeboard.org/media/pdf/ap-physics-c-electricity-and-magnetism-course-and-exam-description.pdf
 * AP Statistics
 
+* IB Physics (High Level)
+* IB Math: Analysis and Approaches (High Level)
+* IB Math: Applications and Interpretations (High Level)
+
 Politically, it is hoped that this will also make the sequence easier to
 adopt in schools.
 
