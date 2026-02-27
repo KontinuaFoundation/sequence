@@ -54,3 +54,116 @@ There are several reasons why the Normal distribution is crucial in statistics:
 Given its properties, the Normal distribution serves as a foundation
 for many statistical procedures and concepts, including hypothesis
 testing, confidence intervals, and linear regression analysis.
+
+\subsection{Example}
+
+A set of course grades is modeled by a normal distribution with mean $\mu = 75$
+and standard deviation $\sigma = 8$. Using a 90--80--70--60 grading scale,
+find the percentage of students who earned a B (scores from 80 to less than 90)
+using Excel and Python.
+
+\textbf{Solution}
+
+Let $X$ be a student's grade. Then
+\[
+X \sim N(75,8).
+\]
+
+A B corresponds to the interval $80 \le X < 90$, so we want
+\[
+P(80 \le X < 90).
+\]
+
+Excel computes cumulative probabilities using
+
+\[
+\texttt{NORM.DIST(x, mean, standard\_dev, TRUE)}
+\]
+
+Therefore,
+\[
+P(80 \le X < 90)
+=
+P(X < 90) - P(X < 80).
+\]
+
+In Excel, enter:
+\[
+\texttt{=NORM.DIST(90,75,8,TRUE) - NORM.DIST(80,75,8,TRUE)}
+\]
+
+Excel returns approximately
+\[
+0.2356.
+\]
+
+So about $23.56\%$ of students earned a B.
+
+Now compute the same probability in Python.
+
+\begin{verbatim}
+from scipy.stats import norm
+
+mu = 75
+sigma = 8
+
+probability = norm.cdf(90, mu, sigma) - norm.cdf(80, mu, sigma)
+
+print(probability)
+print(probability * 100)
+\end{verbatim}
+
+Python returns approximately
+
+\[
+0.2356
+\]
+
+which confirms the Excel result.
+
+Both Excel and Python are computing the same cumulative distribution function.
+
+\begin{Exercise}[label = normalt1]
+
+A batch of parts has diameters modeled by a normal distribution with mean
+$\mu = 10$ mm and standard deviation $\sigma = 2$ mm:
+\[
+X \sim N(10,2).
+\]
+A part is considered \emph{acceptable} if its diameter is between $6.72$ mm and
+$12.28$ mm.
+
+\begin{itemize}
+    \item[(a)] Write the probability statement that represents the fraction of acceptable parts.
+    \item[(b)] Use Excel to compute this probability using \texttt{NORM.DIST}.
+    \item[(c)] Convert your probability to a percentage.
+\end{itemize}
+
+\vspace{100mm}
+
+\end{Exercise}
+
+\begin{Answer}[ref = normalt1]
+
+\textbf{(a)} The fraction of acceptable parts is
+\[
+P(6.72 \le X \le 12.28).
+\]
+
+\textbf{(b)} Since \texttt{NORM.DIST(x, mean, sd, TRUE)} returns $P(X \le x)$,
+we compute
+\[
+P(6.72 \le X \le 12.28)=P(X \le 12.28)-P(X \le 6.72).
+\]
+
+In Excel, enter:
+\[
+\texttt{=NORM.DIST(12.28,10,2,TRUE) - NORM.DIST(6.72,10,2,TRUE)}.
+\]
+
+\textbf{(c)} Excel returns approximately $0.8224$, so the percentage acceptable is
+\[
+82.24\%.
+\]
+
+\end{Answer}
