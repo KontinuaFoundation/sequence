@@ -436,16 +436,93 @@ Thus, the slope of the tangent line at the corresponding point on the curve is $
 FIXME Expand on section
 \section{Length of Curve Traced by Parametric Equations}
 
-Speed is the magnitude of the velocity vector:
+In the Python animation, a point moves along the curve as the parameter $t$
+increases. This animation highlights an important idea: parametric equations
+do not only describe the shape of a curve, they describe motion along that
+curve.
+
+At each moment in time, the point is located at $(x(t), y(t))$. As $t$ changes,
+the point moves from one position to the next. Sometimes this movement covers a
+small distance, and sometimes it covers a larger distance, even though the
+point remains on the same curve. This means the point does not necessarily move
+at a constant rate.
+
+Speed measures how fast the point is moving along the curve at a given value of
+$t$. Once the speed is known, we can determine how far the point travels over a
+time interval. The length of the curve traced by the parametric equations is the
+total distance traveled by the moving point.
+
+\subsection*{Speed of a Parametric Curve}
+
+When a point moves along a parametric curve, its velocity is determined by the
+derivatives $x'(t)$ and $y'(t)$. The speed of the point is the magnitude of the
+velocity vector:
 \begin{equation*}
 \text{Speed} = \sqrt{(x'(t))^2 + (y'(t))^2}.
 \end{equation*}
+
+Speed describes how fast the point is moving at a particular moment, but it
+does not tell us the total distance traveled along the curve.
+
+\subsection*{Arc Length Formula}
+
+To find the length of the curve traced by a parametric equation from
+$t = a$ to $t = b$, we integrate the speed over that interval.
+
+If a curve is defined parametrically by $x = x(t)$ and $y = y(t)$, where
+$x'(t)$ and $y'(t)$ are continuous on $[a,b]$, then the length of the curve is
+given by
+\begin{equation*}
+L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\, dt.
+\end{equation*}
+
+\subsection*{Example: Finding Speed}
 
 Given
 \begin{equation*}
 x'(t) = 8t - t^2, \quad y'(t) = -t + \sqrt{t^{1.2} + 20},
 \end{equation*}
-the speed at $t = 2$ seconds is $12.3$ cm/s.
+the speed of the particle at time $t$ is
+\begin{equation*}
+\text{Speed} =
+\sqrt{(8t - t^2)^2 + \left(-t + \sqrt{t^{1.2} + 20}\right)^2}.
+\end{equation*}
+
+Evaluating at $t = 2$ gives a speed of approximately $12.3$ cm/s.
+
+\subsection*{Example: Length of a Curve}
+
+Consider the parametric equations
+\begin{equation*}
+x = \cos t, \quad y = \sin t,
+\end{equation*}
+for $0 \le t \le 2\pi$.
+
+First compute the derivatives:
+\begin{equation*}
+x'(t) = -\sin t, \quad y'(t) = \cos t.
+\end{equation*}
+
+Substitute into the arc length formula:
+\begin{equation*}
+L = \int_0^{2\pi} \sqrt{(-\sin t)^2 + (\cos t)^2}\, dt.
+\end{equation*}
+
+Using the identity $\sin^2 t + \cos^2 t = 1$, this simplifies to
+\begin{equation*}
+L = \int_0^{2\pi} 1 \, dt = 2\pi.
+\end{equation*}
+
+Thus, the length of the curve traced is $2\pi$, which matches the circumference
+of the unit circle.
+
+\subsection*{Note}
+
+Speed describes how fast a point moves along a parametric curve at a given
+moment. Arc length measures the total distance traveled along the curve over an
+interval of time. For parametric curves, arc length is found by integrating the
+speed.
+
 
 \begin{Exercise}[label = parametric5]
 %Could be a word excercise, you  can edit later. 
