@@ -25,6 +25,9 @@ sequencePrereqError = [] # ideally empty
 
 # every topic (only)
 all_topics = {}
+# loop through every individual book
+# pass 1: build the complete global topic index (no prereq checks yet)
+
 for book in book_nums:
     print(f"Parsing resources for {book}...")
     # this is the magic line to check prerequisites
@@ -34,33 +37,76 @@ for book in book_nums:
     books_metadata.append(book_metadatas)
 
     # duplicate checker (WORKING)
-    # previously was: # all_topics.update(topics)
-
     for topic_key, tdict in topics.items():
+        # when indexing topics
+        topic_key = topic_key.strip()
         if topic_key in all_topics:                         # seen before
             first_chap = all_topics[topic_key]['chap_id']   # original
             this_chap  = tdict['chap_id']                   # duplicate
             duplicates.append((topic_key, first_chap, this_chap))
-            # print(f"⚠️ DUPLICATE topicID '{topic_key}': {first_chap} → {this_chap}") PRINTING after
         else:                                               # first sighting
             all_topics[topic_key] = tdict                   # store as-is
 
-    # check prerequisites before adding new topics (logical order)
+# converts chapters into a sequential order
+chap_pos = {}     # chap_id -> position int
+chap_info = {}    # chap_id -> (title, book_num)
+pos = 0
+
+for book_idx, book_metadatas in enumerate(books_metadata, start=1):
     for chapter in book_metadatas:
+        chap_id = chapter.get("id")
+        chap_title = chapter.get("title")
+        if chap_id and chap_id not in chap_pos:
+            chap_pos[chap_id] = pos
+            chap_info[chap_id] = (chap_title, book_idx)
+            pos += 1
+            
+# pass 2: check prerequisites out-of-order using full index
+for book_idx, book_metadatas in enumerate(books_metadata, start=1):
+    for chapter in book_metadatas:
+        #for each chapter, get its title, id, and prereqs
         chap_title = chapter.get('title', 'Unknown Title')
-        # chap_id = chapter.get('id', 'Unknown ID')
-        requires = chapter.get('requires', [])
+        chap_id = chapter.get('id')
+        requires = [r.strip() for r in chapter.get("requires", []) if isinstance(r, str)]
         for req in requires:
+            # missing prereq topic entirely
             if req not in all_topics:
-                sequencePrereqError.append((chap_title, req));
-                # print(f"🛑🛑🛑 {chap_title} requires {req} but not covered previously")
+                sequencePrereqError.append({
+                    "chap_title": chap_title,
+                    "book": book_idx,
+                    "req": req,
+                    "kind": "missing",
+                    "later_chap_id": None,
+                })
+                continue
 
-print("--------------")
-for item in sequencePrereqError:
-    print(f"🛑🛑🛑 {item[0]} requires {item[1]} but not covered previously")
-   
-print("--------------")
+            # prereq exists but appears later than this chapter
+            req_chap_id = all_topics[req].get('chap_id')
+            if chap_id in chap_pos and req_chap_id in chap_pos:
+                if chap_pos[req_chap_id] > chap_pos[chap_id]:
+                    sequencePrereqError.append({
+                        "chap_title": chap_title,
+                        "book": book_idx,
+                        "req": req,
+                        "kind": "out_of_order",
+                        "later_chap_id": req_chap_id,
+                    })
 
+        
+print("--------------")
+for e in sequencePrereqError:
+    chap_title = e["chap_title"]
+    req = e["req"]
+    kind = e["kind"]
+    current_book = e["book"]
+    later_chap_id = e["later_chap_id"]
+
+    if kind == "missing":
+        print(f"🛑 Book {current_book:<2} | {chap_title:<40} | requires {req:<20} | MISSING")
+    else:
+        later_title, later_book = chap_info.get(later_chap_id, (later_chap_id, "?"))
+        print(f"🛑 Book {current_book:<2} | {chap_title:<40} | requires {req:<20} | found later: Book {later_book:<2} | {later_title:<30}")
+print("--------------")
 for d in duplicates:
     print(f"⚠️ DUPLICATE TOPIC {d[0]}: origin: {d[1]} → duplicated in: {d[2]}")
 
