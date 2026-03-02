@@ -32,7 +32,14 @@ You will also need some fonts from the `Google Font Collection <https://fonts.go
 To build the web resources, you will need some Python libraries::
 
   pip3 install jinja2
-  pip3 install bs4
+  pip3 install bs4 (or beautifulsoup4)
+  pip3 install Pygments
+  pip3 install soupsieve
+  pip3 install typing_extensions
+
+or, alternatively, you can install all the dependencies with::
+
+  pip3 install -r Build/requirements.txt
 
 Windows
 -------------
