@@ -612,7 +612,58 @@ int main(int argc, char const *argv[])
 \end{figure}
 \end{Answer}
 
+\section{Connection to transformations}
+What if alter the pixel values in a more complex way? For example, instead of altering the colors themselves, we alter the pixel positions. This is what is called a transfomation, and is a fundamental concept in computer graphics. A transformation is a mathematical operation that changes the position, size, or orientation of an object in a graphical space. In the context of bitmaps, transformations can be applied to the pixel data to achieve various effects, such as rotation, scaling, translation, and shearing.
 
+What if you took a selfie, but then wanted to mirror it horizontally, to get a more representation of your face? This is a common transformation called a horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
+
+Since we are storing our pixel data as $(x,y)$ coordinates, we can easily apply transformations by manipulating these coordinates. For an image with width $w$ and height $h$, the horizontal flip transformation can be expressed mathematically as:
+$$x' = w - 1 - x,\qquad y' = y$$
+
+This operation does not change the pixel values themselves, but instead sets the new position of each pixel according to the transformation rule. The entire image transformation is therefore a systematic coordinate mapping applied across the matrix.
+
+Without having to learn to much linear algebra, we can express this as a simple function: If we have a pixel coordinate expressed as a simple vector $\mathbf{p} = \vecb{x\\y}$, we can define a transformation function $T$ that takes this pixel coordinate and maps it to a new coordinate $\mathbf{p'}$:
+$$\mathbf{p'} = T\mathbf{p}$$
+
+In this case, the transformation function $T$ is a matrix that encodes the horizontal flip operation that obeys matrix multiplication. We have not talked about this yet, and it is a difficult concept to understand without having introduced linear algebra or matrices. So, we will not go into the details of how to construct this matrix, but just know that a horizontal flip can represented as:
+$$T = \begin{bmatrix}-1 & 0 \\ 0 & 1\end{bmatrix}$$
+This matrix, when multiplied with the pixel coordinate vector $\mathbf{p}$, will yield the new coordinate $\mathbf{p'}$ that corresponds to the horizontally flipped position of the original pixel. Specifically, the $-1$ in the first row of the matrix indicates that the x-coordinate is inverted (flipped), while the $1$ in the second row indicates that the y-coordinate remains unchanged.
+
+Let's do this with code! The only thing that changes in our for loop is the calculation of the output pixel's position. Instead of writing to the same index, we write to the flipped index:
+\begin{minted}{cpp}
+for (int y = 0; y < h; y++)
+{
+    for (int x = 0; x < w; x++)
+    {
+        int newX = w - 1 - x; // Calculate the new x-coordinate for the horizontal flip
+        int srcIdx = y * rowSize + x * 3;
+        int dstIdx = y * rowSize + newX * 3;
+
+        // read the pixel values from the source index
+        BYTE B = data[srcIdx];
+        BYTE G = data[srcIdx + 1];
+        BYTE R = data[srcIdx + 2];
+
+        //output the pixel values to the destination index
+        out[dstIdx + 0] = B; 
+        out[dstIdx + 1] = G; 
+        out[dstIdx + 2] = R;
+    }
+}
+\end{minted}
+
+Taking the input bitmap of the cow from \ref{fig:cow1} and running this code produces the horizontally flipped output in \ref{fig:cow_mirrored}.
+
+\begin{wrapfigure}{l}{0.4\textwidth}
+    \begin{center}
+        \includegraphics[width=.35\textwidth]{cow_mirrored.png}
+    \end{center}
+    \caption{Output of a horizontally flipped cow bitmap after applying the new pixel position transformation.}
+    \label{fig:cow_mirrored}
+\end{wrapfigure}
+
+
+Similarly, we can transform the bitmap in other ways, which we will learn more of how to do in the transformations chapter by experimenting with vectors. For now, remember that matrices are a powerful tool for representing transformations, and that by manipulating pixel coordinates, we can achieve a wide variety of effects on bitmap images.
 \section{Summary}
 In this chapter, we experimented with bitmaps. Specifically,
 \begin{itemize}

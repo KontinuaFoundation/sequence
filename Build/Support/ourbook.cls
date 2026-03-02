@@ -818,7 +818,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
-\usepackage{minted}
+\usepackage[cache=true,cachedir=minted-cache]{minted}
 \setminted{
   fontsize=\small,
   breaklines,

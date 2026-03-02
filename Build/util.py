@@ -150,6 +150,8 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
     output_pdf_path = "draft.pdf"
     if os.path.exists(output_pdf_path):
         os.remove(output_pdf_path)
+    texbin = "/Library/TeX/texbin"
+    os.environ["PATH"] = texbin + os.pathsep + os.environ.get("PATH", "")
     output_tex = open(output_tex_path, "w")
 
     # Write the header
