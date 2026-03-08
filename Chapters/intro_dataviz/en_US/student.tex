@@ -1,20 +1,60 @@
 \chapter{Introduction to Data Visualization}
+% (or Graphical Methods for Describing Data)
 
 It is difficult for the human mind to look at a list of numbers and
 identify the patterns in them, so we often use these numbers to make a picture. These pictures are called \textit{graphs},
 \textit{charts}, or \textit{plots}. Often, the right picture can make
-the meaning in the data obvious. \textit{Data visualization} is the
-process of making pictures from numbers.
+the meaning in the data obvious. \textbf{Data visualization} is the process of making pictures from numbers.
 
-\section{Common Types of Data Visualizations}
+\section{Types of Variables}
 
 Depending on the type of data and what you are trying to demonstrate
-about it, you will use different types of data visualizations.  How
-many types of data visualizations are there? Hundreds, but we will
-concentrate on just four: The bar chart, the line graph, the pie
-chart, and the scatter plot.
+about it, you will use different types of data visualizations. Before we get to the more complex types of data visualizations, let's
+look at the two types of variables we are usually looking to visualize: \textit{categorical} and \textit{numerical}.
+
+\textit{Categorical} or qualitative variables are those that can be put into categories. For example, the type of shoes a person wears 
+(sneakers, sandals, etc.) is a categorical variable. The type of shoes sold is a categorical variable. The name of the salesperson (John, Jane, etc.) is also a categorical variable.
+
+\textit{Numerical} or quantitative variables are those that can be measured with numbers. For example, the number of boxes of cookies 
+sold is a quantitative variable. The average temperature on a given day is also a quantitative variable. Quantitative variables can be 
+further divided into \textit{discrete} and \textit{continuous} variables. Discrete variables are those that can only take on specific values, 
+such as the number of pencils sold (you can't sell 3.5 pencils). Continuous variables can take on any value within a range, 
+such as the average height of students in a class (which can be 5.5 feet, 1.65 m, etc.).
+
+Further, we can also classify data into univariate, bivariate, and multivariate data. Univariate data has only one variable, 
+such as the number of boxes of cookies sold. Bivariate data has two variables, such as the average temperature and total sales 
+for a lemonade stand. Multivariate data has more than two variables, such as the average temperature, total sales, and type of 
+ookie sold. We will only look at univariate and bivariate data!
+
+\section{How do we describe data?}
+
+% Insert blurb about this.
+
+There are different descriptive methods for representing data, and they can usually be grouped into three categories: 
+\textit{tabular}, \textit{graphical}, and \textit{numerical}.
+
+\textit{Tabular} methods include tables, which are a way of organizing data into rows and columns. 
+They are useful for displaying raw data and making it easy to look up specific values. However, 
+they can be difficult to interpret when dealing with large datasets or when trying to identify patterns.
+
+\textit{Graphical} methods include bar charts, line graphs, pie charts, and scatter plots.
+They are useful for visualizing data and making it easier to identify patterns and trends.
+
+\textit{Numerical} methods include measures of central tendency (mean, median, mode) and measures of variability (range, variance, standard deviation).
+They are useful for summarizing data and providing a numerical representation of the data's characteristics. 
+
+We will focus on graphical methods in this chapter, but we will also touch on tabular and numerical methods in later chapters.
+
+\section{Univariate Data}
+We will start with univariate data, which has only one variable. 
+For example, the number of boxes of cookies sold by each salesperson is univariate data. Bar charts, line graphs, 
+and pie charts are all good for visualizing univariate, \textit{categorical} data. We will explore these types of graphs in the next sections.
 
 \subsection{Bar Chart}
+
+Bar charts are typically used to show the values of a categorical variable. Each bar represents a category, 
+and the height of the bar represents the value of that category. Bar charts can have vertical or horizontal bars to represent this data. 
+
 
 Here is an example of a bar chart.\index{bar chart}
 
@@ -63,12 +103,32 @@ Sometimes we use colors to explain what contributed to the number.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{TypesCookieBar.png}
-    \caption{A bar chart with different colors showing types of cookes.}
+    \caption{A bar chart with different colors showing types of cookies.}
     \label{fig:coloredBar}
 \end{figure}
 
 This tells us that Becky sold more boxes of chocolate chip cookies
 than boxes of oatmeal cookies.
+
+\textbf{Make Bar Graph} %Thinking about making a similar section for other graphs. 
+% This could be embedded in the respective sections OR as another section addressing each type of graph.
+
+Go back to your compound interest spreadsheet and make a bar graph
+that shows both balances over time:
+%FIXME this diagram is also hard to see
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{InterestGraph.png}
+    \caption{A bar graph made in google sheets showing interest.}
+    \label{fig:spreadsheetBar}
+\end{figure}
+
+The year column should be used as the x-axis. There are two series of
+data that come from C4:C16 and E4:E16.  Tidy up the titles and legend
+as much as you like.
+Looking at the graph, you can see the balances start the same, but
+balance of the account with the larger interest rate quickly pulls
+away from the account with the smaller interest rate.
 
 \subsection{Line Graph}
 
@@ -102,6 +162,455 @@ This is best for comparing percentages of a whole that sum to $100\%$. Here we c
     \caption{A pie chart of the various gases in the air.}
     \label{fig:AirPie}
 \end{figure}
+
+\textbf{When to use a Pie Chart}
+%Add a section for when to use or when not to use a pie chart
+\textbf{Make a Pie Chart in Python}
+
+For \textit{quantitative}, univariate data, we often use dotplots and stemplots to visualize smaller sets of data; and 
+histograms, cumulative frequency plots, and boxplots to visualize larger sets of data. 
+We will explore these types of graphs below. 
+
+\subsection{Dotplot}
+
+A \textit{dotplot} is one of the simplest ways to display single, quantitaive variables.
+Each observation is represented by a dot placed above its value on a number line.
+If a value appears more than once, the dots stack vertically.
+
+Dotplots are most effective for small to moderate data sets. If the data set is too large,
+a dotplot can become cluttered and hard to read. In that case, a histogram or a boxplot may be a better choice.\index{dotplot}
+
+\textbf{When to Use a Dotplot}
+\begin{itemize}
+    \item You have \textbf{1 variable}.
+    \item The variable is \textbf{quantitative}.
+    \item You want to see the \textbf{distribution} and the \textbf{individual data values}.
+    \item The data set is \textbf{not too large}.
+\end{itemize}
+
+\textbf{How to Make a Dotplot}
+\begin{enumerate}
+    \item Draw a horizontal number line (x-axis) that covers the data range.
+    \item Choose a scale that fits the entire range of values.
+    \item Place one dot above the location of each observation.
+    \item If multiple observations have the same value, stack the dots vertically.
+\end{enumerate}
+
+Here is an example of a dotplot.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        height=4cm,
+        width=0.85\textwidth,
+        ytick=\empty,
+        axis x line=middle,
+        axis y line=none,
+        xlabel={Value},
+        xmin=0, xmax=10,
+    ]
+    \addplot+[only marks, mark=*, mark size=2pt] coordinates {
+        (1,0) (2,0) (2,0.25) (3,0) (4,0) (4,0.25) (4,0.5) (6,0) (7,0) (7,0.25) (9,0)
+    };
+    \end{axis}
+    \end{tikzpicture}
+    \caption{A dotplot showing a small sample distribution.}
+    \label{fig:dotplotExample}
+\end{figure}
+
+\textbf{How to Read a Dotplot}
+
+Each dot shows the location of one data value. To find the value of a dot,
+look straight down to the number line.
+
+A dotplot helps you describe the distribution by answering questions like:
+\begin{itemize}
+    \item \textbf{Spread:} How spread out are the values (range and clustering)?
+    \item \textbf{Shape:} Do the dots form a roughly symmetric shape, or is the distribution skewed?
+    \item \textbf{Center:} Where is the distribution “balanced” (a typical value)?
+    \item \textbf{Outliers:} Are there values far away from the rest?\index{outlier}
+\end{itemize}
+
+Sometimes a dotplot shows a distribution with a long tail to one side.
+For example, salary data often has many values in the lower-to-middle range
+and a few extremely high values. This creates a right-skewed distribution.
+
+Outliers can strongly affect numerical summaries, especially the mean.
+
+\textbf{Connecting Outliers and the Mean (Seesaw Idea)}
+A useful way to think about the mean is as a \textbf{balancing point}.
+Imagine the dotplot as a seesaw: points far from the main cluster have more “pull.”
+So a single extreme value can shift the mean noticeably, even if most data values stay the same.
+
+\textbf{Comparative Dotplots}\index{comparative dotplot}
+
+A \textit{comparative dotplot} uses the \textbf{same numerical scale} to compare
+two (or more) groups. This is useful when you want to compare distributions side-by-side.
+
+When comparing groups, focus on differences in:
+\begin{itemize}
+    \item center (typical value),
+    \item spread,
+    \item shape (skew/clusters),
+    \item and outliers.
+\end{itemize}
+
+\textbf{Make a Dotplot in a Spreadsheet} 
+
+You can create a dotplot in Excel or Google Sheets using a scatter plot and a helper column.
+
+\begin{enumerate}
+    \item Put your data values in column A (starting in A2). Sort them (recommended).
+    \item In cell B2, enter:
+    
+    \texttt{=COUNTIF(\$A\$2:A2, A2)}
+    
+    Fill down. This creates stacking heights for repeated x-values.
+    \item Insert a \textbf{Scatter chart} using column A as x-values and column B as y-values.
+    \item Format the chart:
+    \begin{itemize}
+        \item markers only (no lines),
+        \item hide the y-axis labels (y is only for stacking),
+        \item add titles and adjust the x-axis scale.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Stemplot}
+
+A \textit{stemplot} (also called a \textit{stem-and-leaf plot}) is an effective way to summarize
+\textbf{one quantitative variable} when the data set is not too large. Like a dotplot, it helps you see the
+overall distribution, but a stemplot has an extra advantage: it still shows the exact data values.
+
+To make a stemplot, each observation is split into two parts:
+\begin{itemize}
+    \item the \textbf{stem}: the left-most part of the number (leading digit(s))
+    \item the \textbf{leaf}: the remaining part, usually the final digit
+\end{itemize}
+
+For example, $23$ can be written as $2 \mid 3$.
+
+\textbf{How to Make a Stemplot}
+\begin{enumerate}
+    \item \textbf{Choose stems and leaves.} Decide where to split each number into a stem and a leaf.
+    There is no single rule for this. Your goal is to choose a reasonable number of stems.
+    \item \textbf{Draw a vertical divider.} Stems go on the left; leaves go on the right.
+    \item \textbf{List all stems in order.} Make sure the stems cover the full range of your data.
+    \item \textbf{Write leaves for each observation.} Place each leaf next to its correct stem.
+    \item \textbf{Sort leaves.} Put the leaves for each stem in increasing order.
+    \item \textbf{Include a key.} The key shows how to interpret the stems and leaves.
+\end{enumerate}
+
+\textbf{Choosing the Number of Stems (Important!)}
+
+If you use \textbf{too few stems}, you can hide patterns because the data get lumped together.
+If you use \textbf{too many stems}, you can also hide patterns because the plot becomes too spread out.
+
+A common strategy is to start with stems that represent groups of 10 (tens digits as stems),
+and then adjust if needed.
+
+Sometimes a single stem represents too wide of an interval. In that case, you can split stems
+by repeating each stem twice:
+\begin{itemize}
+    \item the first row holds leaves $0$--$4$
+    \item the second row holds leaves $5$--$9$
+\end{itemize}
+
+For example, if your data run from 10 to 49, you can use stems
+\[
+1, 1, 2, 2, 3, 3, 4, 4
+\]
+where the first $1$ represents 10--14 and the second $1$ represents 15--19, and so on.
+
+\textbf{Example}
+
+Suppose these are housing costs (in dollars per month):
+\[
+255, 259, 304, 306, 309, 317, 323, 327, 332, 334, 342, 349, 350, 351, 362, 367, 376, 384, 401, 403
+\]
+
+If we use the hundreds digit as the stem and the last two digits as the leaf, we can split each stem into two rows:
+(top row for leaves 00--49, bottom row for leaves 50--99)
+
+\begin{center}
+\begin{tabular}{c | l}
+Stem & Leaves \\
+\hline
+2 & 55\ 59 \\
+2 &  \\
+3 & 04\ 06\ 09\ 17\ 23\ 27\ 32\ 34\ 42\ 49 \\
+3 & 50\ 51\ 62\ 67\ 76\ 84 \\
+4 & 01\ 03 \\
+4 &  \\
+\end{tabular}
+\end{center}
+
+\textbf{Key:} $3 \mid 04 = 304$ dollars per month
+
+\textbf{How to Read a Stemplot}
+
+A stemplot gives you several kinds of information at once:
+\begin{itemize}
+    \item \textbf{Exact values:} Each leaf represents a single observation.
+    \item \textbf{Frequencies:} The number of leaves in a row tells how many observations fall in that interval.
+    For example, if a stem row has 9 leaves, that means 9 observations are in that range.
+    \item \textbf{Gaps:} If a stem has no leaves, that means there are no observations in that interval.
+    \item \textbf{Shape and spread:} You can see whether the values cluster in certain ranges and whether the distribution is skewed.
+    \item \textbf{Center:} You can estimate a typical value by locating where the leaves cluster most.
+    \item \textbf{Outliers:} Unusually high or low values may stand out because they appear far from the rest.
+\end{itemize}
+
+Just like with dotplots, you can imagine the distribution as something that could ``balance'' on a finger:
+the place it would balance is a rough sense of the center.
+
+%Needs these sections
+\textbf{Make a Stem Plot in a Spreadsheet}
+\textbf{Make a Stem Plot in Python}
+
+\subsection{Histogram}
+
+A \textit{histogram} is one of the most popular ways to display single quantitaive variables.
+It is especially useful for showing patterns in larger data sets, where dotplots or stemplots can become
+overwhelming. A histogram is like a stemplot turned on its side: instead of listing individual values, we group values
+into intervals called classes or bins, and draw a bar for each bin.
+
+Histograms are best when you care about the overall shape of a distribution (clusters, skew, gaps, outliers),
+not the exact value of every data point.
+
+A histogram can be drawn using frequency (counts), relative frequency (proportions), and percent frequency (percentages). These three versions have the same shape if they use the same bins. The difference is only the y-axis scale.
+
+\textbf{How to Make a Histogram}
+\begin{enumerate}
+    \item Create groups from continuous data. This process is called binning.
+    \item Draw the x-axis and y-axis, and scale them to fit the class intervals and the frequencies
+    (or relative frequencies or percentages).
+    \item Draw one bar for each class. The height of each bar equals the frequency (or relative frequency or percent)
+    for that class.
+    \item Draw the bars touching with no gaps (because the data values are continuous and the bins connect).
+\end{enumerate}
+
+\textbf{How to Read a Histogram}
+
+\begin{itemize}
+    \item Each bar represents a single class (bin). There is one bar per class.
+    \item The bins are placed on the x-axis in increasing order, like a number line.
+    \item The height of a bar tells how many observations fall in that class (for a frequency histogram).
+    \item A class with no bar means no observations fall in that interval (a gap).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        height=4cm,
+        width=0.85\textwidth,
+        ymin=0,
+        xlabel={Value (\$)},
+        ylabel={Frequency},
+        xmin=240, xmax=860,
+        xtick={275,325,375,425,475,525,575,625,675,725,775,825},
+        xticklabel style={rotate=45, anchor=east},
+        xticklabels={250--300,300--350,350--400,400--450,450--500,500--550,550--600,600--650,650--700,700--750,750--800,800--850},
+        ymajorgrids=true,
+        axis x line=bottom,
+        axis y line=left,
+        enlarge x limits=false,
+    ]
+    % Use interval bars so bins occupy [250,300), [300,350), ... with no overlap.
+    \addplot+[ybar interval, draw=black, fill=blue!30, mark=none] coordinates {
+        (250,9) (300,14) (350,20) (400,0) (450,0) (500,0) (550,0) (600,0) (650,0) (700,0) (750,1) (800,1) (850,0)
+    };
+    \end{axis}
+    \end{tikzpicture}
+    \caption{A histogram using 50-dollar bins illustrating the example counts (9, 14, 20, ... and 0,1,1 beyond \$700).}
+    \label{fig:histogramExample}
+\end{figure}
+
+
+\textbf{Example of Interpreting Bars}
+
+Suppose a histogram uses the bins \$250--\$300, \$300--\$350, \$350--\$400, and so on.
+\begin{itemize}
+    \item If the first bar (250--300) has height 9, then 9 observations are between \$250 and \$300.
+    \item If the second and third bars (300--350 and 350--400) have heights 14 and 20,
+    then $14 + 20 = 34$ observations are between \$300 and \$400.
+    \item If there is no bar for 700--750, then there are 0 observations between \$700 and \$750.
+    \item If the bars beyond 700 have heights 0, 1, and 1, then $0+1+1=2$ observations are at least \$700.
+\end{itemize}
+
+
+A histogram can help you to describe the distribution by focusing on shape, center, spread, gaps, and outliers.
+\begin{itemize}
+    \item \textbf{shape} (symmetric, skewed, unimodal, bimodal),
+    \item \textbf{center} (where the data cluster),
+    \item \textbf{spread} (overall range),
+    \item \textbf{gaps} (empty intervals),
+    \item \textbf{possible outliers} (bars far from the main cluster).
+\end{itemize}
+
+\textbf{Making a Histogram in a Spreadsheet}
+
+You can make a histogram in Excel or Google Sheets.
+
+\begin{enumerate}
+    \item Put the data in one column.
+    \item Choose bin widths (for example, bins of width 50: 250--300, 300--350, 350--400, etc.).
+    \item Insert a histogram chart (or use a column chart after building a frequency table).
+    \item Check the bin width and the endpoints. Changing the bins can change the appearance of the distribution.
+\end{enumerate}
+
+\textbf{Making a Histogram in Python}
+
+Python can generate a histogram quickly and lets you change the bin width easily.
+
+\begin{verbatim}
+import matplotlib.pyplot as plt
+
+# Replace this list with your data
+data = [250, 275, 310, 320, 350, 365, 410, 415, 430, 500, 525, 610, 720, 840]
+
+# Choose the number of bins (try changing this!)
+plt.hist(data, bins=8)
+
+plt.title("Histogram")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.show()
+\end{verbatim}
+
+Try changing the value of \texttt{bins}. Notice that the overall shape can look different depending on how you group the data.
+
+\textbf{How do we compare dotplots, stemplots, and histograms?}
+
+For small data sets, dotplots and stemplots can be better because they show the \textbf{exact values}.
+In a histogram, you lose that detail because values are grouped into bins. In exchange, histograms make it easier
+to see the overall pattern in large data sets.
+
+\subsection{Cumulative Frequency Plot}
+
+A \textit{cumulative frequency plot} (also called a \textit{cumulative frequency chart})
+shows the running total of how many data values are at or below each value (or at or below each class boundary).
+Instead of showing how many observations fall in each bin like a histogram, a cumulative frequency plot shows
+how the totals add up as you move from left to right.
+
+Cumulative frequency plots are useful when you want to answer questions like:
+\begin{itemize}
+    \item How many observations are less than or equal to a certain value?
+    \item How many observations are greater than or equal to a certain value?
+    \item What percent of the data fall below a certain cutoff?
+\end{itemize}
+
+\textbf{How to Make a Cumulative Frequency Plot}
+\begin{enumerate}
+    \item Draw the x-axis and y-axis.
+    \item Set up bins for the data and identify the upper class boundaries (the right endpoints).
+    \item Compute the cumulative frequency at each upper class boundary.
+    
+    (This means: add the frequency of that class to the total from all previous bins.)
+    \item Plot a point at each upper class boundary with height equal to the cumulative frequency.
+    \item Connect the points with straight line segments.
+\end{enumerate}
+
+\textbf{Interpreting the shape of your plot}
+
+The steepness of the curve tells you where the data values are concentrated.
+\begin{itemize}
+    \item If the curve rises quickly over a certain x-interval, many observations fall in that range.
+    \item If the curve is almost flat, few observations fall in that range.
+\end{itemize}
+
+A cumulative frequency plot can also hint at skewness:
+\begin{itemize}
+    \item \textbf{Right-skewed:} the curve increases quickly at smaller values, then levels off later.
+    \item \textbf{Left-skewed:} the curve increases slowly at first, then rises sharply near the end.
+    \item \textbf{Symmetric:} the curve often looks S-shaped.
+\end{itemize}
+
+\textbf{Example}
+
+Suppose $n=80$ observations were grouped into bins, and the cumulative frequency at $x = 350$ is about 23.
+Then:
+\begin{itemize}
+    \item About 23 observations are $\le 350$.
+    \item About $80 - 23 = 57$ observations are $\ge 350$.
+\end{itemize}
+
+
+The plot below shows a sample cumulative frequency curve.
+(These coordinates are an example format; you can replace them with your own cumulative totals.)
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.75\textwidth,
+    height=5cm,
+    xmin=200, xmax=900,
+    ymin=0, ymax=80,
+    xlabel={Upper class limit (dollars/month)},
+    ylabel={Cumulative frequency},
+    grid=both,
+    axis x line=bottom,
+    axis y line=left,
+]
+\addplot+[mark=square*, thick] coordinates {
+    (250,  0)
+    (300,  9)
+    (350, 23)
+    (400, 43)
+    (450, 57)
+    (500, 64)
+    (550, 71)
+    (600, 76)
+    (650, 77)
+    (700, 78)
+    (750, 78)
+    (800, 79)
+    (850, 80)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{A cumulative frequency plot.}
+\label{fig:cumulativeFrequencyExample}
+\end{figure}
+
+\textbf{Making a Cumulative Frequency Plot in Python}
+
+This example shows the basic idea: build bins, count how many values fall in each bin, then take a cumulative sum.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Replace with your data
+data = np.array([250, 275, 310, 320, 350, 365, 410, 415, 430, 500, 525, 610, 720, 840])
+
+# Choose bin edges (upper class boundaries are the right endpoints)
+bins = np.arange(250, 851, 50)  # 250, 300, ..., 850
+
+# Frequency in each bin
+counts, edges = np.histogram(data, bins=bins)
+
+# Cumulative frequency at each upper boundary
+cumulative_counts = np.cumsum(counts)
+upper_bounds = edges[1:]  # right endpoints
+
+plt.plot(upper_bounds, cumulative_counts, marker='o')
+plt.title("Cumulative Frequency Plot")
+plt.xlabel("Upper class boundary ($)")
+plt.ylabel("Cumulative frequency")
+plt.grid(True)
+plt.show()
+\end{verbatim}
+
+If you change the \texttt{bin} width, the curve may look different, but it will always increase from left to right and end at $n$.
+
+
+\textbf{Boxplot} %A lot of AP stats students have trouble with boxplots, so we may want to spend more time on this one.
+
+\section{Bivariate Data}
+
+% Quantitative Data (Scatter Plots)}
+% INSERT BLURB ABOUT THIS, we will be focusing only on scatter plots for this section, 
 
 \subsection{Scatter Plot}
 
@@ -147,23 +656,19 @@ lemonade as the temperature goes up.
 %FIXME diagram showing line of best fit
 Drawing a \newterm{best-fit} line along the the points will give you a \newterm{correlation coefficient}. A positive correlation coefficient will give you a positively proportional relationship, while a negative coefficient will give you a inversely proportional relationship.
 
-\section{Make Bar Graph}
+\textbf{Making a Scatter Plot in Python}
 
-Go back to your compound interest spreadsheet and make a bar graph
-that shows both balances over time:
-%FIXME this diagram is also hard to see
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{InterestGraph.png}
-    \caption{A bar graph made in google sheets showing interest.}
-    \label{fig:spreadsheetBar}
-\end{figure}
+\begin{verbatim}
+import matplotlib.pyplot as plt
 
-The year column should be used as the x-axis. There are two series of
-data that come from C4:C16 and E4:E16.  Tidy up the titles and legend
-as much as you like.\index{spreadsheet!graphing multiple series}
+# Avg. Temp (°C) and Total Sales ($)
+temps = [2.6, -4.2, 13.3, 26.2, 27.5, 31.3, 33.5, 41.7, 20.7, 17.2, 1.7, 0.2]
+sales = [183.85, 173.56, 195.22, 207.61, 210.88, 214.18, 215.23, 224.07, 198.94, 196.10, 185.10, 188.70]
 
-Looking at the graph, you can see the balances start the same, but
-balance of the account with the larger interest rate quickly pulls
-away from the account with the smaller interest rate.
-
+plt.scatter(temps, sales)
+plt.title("Temperature vs. Lemonade Sales")
+plt.xlabel("Average Temperature (°C)")
+plt.ylabel("Total Sales ($)")
+plt.grid(True)
+plt.show()
+\end{verbatim}
