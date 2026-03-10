@@ -149,11 +149,13 @@ F &= mg
 Equation~\ref{eq:gravity} is the equation we will use a standard for the force of gravity, $F_g$, for most objects on Earth. Objects undering projectile motion, objects at rest, and objects hung by tension all have a force of gravity acting on them, \footnote{You may occasionally use 10 for g to simplify expressions if the problem says to do so, but use 9.8 otherwise.}
 
 \begin{Exercise}[title=May the Force be with You 1, label=grav1]
-A hammer is falling along the side of a building, close to the surface of the Earth. What is it's acceleration?
+A hammer is falling along the side of a building, close to the surface of the Earth. What is it's acceleration? 
+
+We won't ask it yet, but think to yourself: why doesn't the Earth move as much to the hammer as the hammer moves to the Earth?
 \end{Exercise}
 
 \begin{Answer}[ref=grav1]
-The gravitational acceleration is $9.8 \text{ m/s}^2$, no matter the mass of the object.
+The gravitational acceleration is $9.8 \text{ m/s}^2$, no matter the mass of the object. 
 \end{Answer}
 \begin{Exercise}[title=May the Force be with You 2, label=grav2]
   A coin is dropped. It is measured that the force of gravity on the coin is $.0198 \text{ N}$. What is the mass of the coin?
@@ -161,7 +163,39 @@ The gravitational acceleration is $9.8 \text{ m/s}^2$, no matter the mass of the
 \begin{Answer}[ref=grav2]
   The mass of the coin is $\frac{.0198 \text{ N}}{9.8 \text{ m/s}^2}=0.002\text{ grams}$
 \end{Answer}
-\section{Center of Mass}
+\section{Gravitational Field}
+When larger bodies are under consideration for Newton's Universal Law of Gravity (Equation~\ref{eq:univGrav}), the gravitational force on both objects increases linearly. Bigger masses lead to greater forces between them. This is most noticable with planets and moons; moons and planets keep each other in-orbit through the gravitational force between them.
+
+However, despite the force increasing proportionally with mass, the resulting acceleration of each body depends inversely on its mass, so more massive bodies experience much smaller accelerations for the same interaction force. This is why the falling hammer from Exercise~\ref{grav1} doesn't "pull the Earth" towards it in any sense; since the acceleration is $a_\text{hammer} = \frac{F}{m_\text{hammer}}$, and the mass of the hammer is approximately $1 \, \mathrm{kg}$, the hammer accelerates a large amount. Even the force on the earth is the same, the acceleration $a_\text{Earth} = \frac{F}{m_\text{Earth}}$ is significantly less because the mass of the Earth is so great. The hammer and Earth both accelerate toward their common center of mass, the \newterm{center of mass} for the combination of the hammer and Earth system. That center lies almost exactly at Earth's center because Earth's mass dominates. See more about this in Section~\ref{sec:CoM}.
+
+See the following below figure below:
+
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}[scale=1]
+
+  \draw[thick] (0,0) circle (2);
+  \node at (0,0) {$m$};
+
+  \foreach \a in {0,22.5,...,337.5} {
+    \draw[->] ({3*cos(\a)},{3*sin(\a)}) -- ({2.2*cos(\a)},{2.2*sin(\a)});
+  }
+  \foreach \a in {0,22.5,...,337.5} {
+    \draw[->] ({4*cos(\a)},{4*sin(\a)}) -- ({3.2*cos(\a)},{3.2*sin(\a)});
+  }
+
+    \caption{A figure of the direction of force vectors for a graviational field.}
+    \label{fig:grav_field}
+\end{figure}
+
+All vectors in a gravitational field point to the center of mass of that field. The larger the body, as we said, the greater the force, and thus the greater magnitude of vectors. Thus, a gravitional field around a mass $M$ is a \newterm{vector field}, a term you will hear in vector calculus sections, or an assigment of of a vector to every point in space. Every point has a force assigment based on the \textbf{radius} between the two objects.
+
+The gravitational field at a point in space is defined as the force per unit mass experienced by a small test mass placed at that point:
+$$\vec g = \frac{\vec F}{m}$$
+
+You'll notice $\vec g$ is the same as the acceleration! This is true, the gravitational field at a point is the acceleration any small test mass would have there. Therefore, points farther away from the body creating a gravitational field are smaller in magnitude. For symmetric and spherical bodies, this is true for all points revolved around the entire spherical body.
+\end{tikzpicture}
+\section{Center of Mass}\label{sec:CoM}
 \index{Center of Mass}
 The \emph{center of mass} of a body is the point where its mass is evenly balanced in all directions, as if all the mass were concentrated at that single point. When we talk about \emph{Free Body Diagrams} in a future chapter, we will assume the entire body's center of mass is located at a point that we use to analyze forces from. For an object with different densities at different points — for example, a hammer with a dense metal head and a lighter wooden handle — the center of mass is found by averaging the positions of all parts, giving more weight to the heavier regions. You will see the term \emph{center of mass} throughout this sequence; we will assume you understand how center of mass is calculated, but typically will not fully determine it.
 
@@ -283,3 +317,4 @@ In higher dimensions, it is easier to use integration to calculate the coordinat
   \end{align*}
 \end{center}
 \end{mdframed}
+
