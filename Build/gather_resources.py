@@ -17,7 +17,7 @@ if not os.path.exists("user.cfg"):
     # Give them the default
     shutil.copyfile("Support/default.cfg", "user.cfg")
 
-# Read in the config 
+# Read in the config
 with open("user.cfg", "r") as config_fd:
     config = json.load(config_fd)
 
@@ -41,7 +41,7 @@ if not os.path.exists(resources_dir):
 # Copy in the stylesheet
 shutil.copyfile("Support/kontinua.css", f"{resources_dir}/kontinua.css")
 
-# Gather all metadatas    
+# Gather all metadatas
 book_nums = [str(x).zfill(2) for x in range(1, vol_count + 1)]
 books_metadata = []
 all_topics = {}
@@ -64,6 +64,7 @@ for i in book_indices:
     content = template.render( topics=all_topics, chapters=metadatas, book_str=book_str, today_str=today_str, links=links)
     filename = f"Workbook-{book_str}.html"
     path = f"{resources_dir}/{filename}"
+    # print(f"Writing {path}")
     with open(path, mode="w", encoding="utf-8") as message:
         message.write(content)
         print(f"Wrote {path}")
