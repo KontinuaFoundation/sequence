@@ -818,6 +818,10 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+% for charge chapter diagrams 16Mar2026
+\usepackage{pstricks}
+\usepackage{pst-electricfield}
+
 \usepackage[cache=true,cachedir=minted-cache]{minted}
 \setminted{
   fontsize=\small,

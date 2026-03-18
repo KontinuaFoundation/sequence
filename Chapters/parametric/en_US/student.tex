@@ -1,30 +1,52 @@
 \chapter{Parametric Functions}
-% writers note: this chapter is currently located in the middle of the calculus section, but it would be useful to move it to end of precalc section or before physics stuff, since circular_1 and circular_2 reference parametric functions.
 
 Throughout your study of functions, you have seen functions that look like this:
 \begin{equation*}
-y = f(x)
+    y = f(x)
 \end{equation*}
 
 Sometimes, to describe certain shapes or curves on a graph, we must use more than one function to do so. This means a shape, like a circle on the graph, can be represented using
 \begin{equation*}
-y = f(t) \quad \text{and} \quad x = g(t).
+    y = f(t) \quad \text{and} \quad x = g(t).
 \end{equation*}
 
 In this case, there are two functions, $x(t)$ and $y(t)$, that depend on a third variable $t$, and together they help us visualize and define a curve.
 
 The central word you should think about as you go through this chapter is \emph{parameter}\index{parameter}. A parameter is a variable that both $x$ and $y$ depend on. The most common example of a parametric function is the circle. To represent a circle on a graph, we can use the equations
 \begin{equation*}
-x = \cos(\theta) \quad \text{and} \quad y = \sin(\theta).
+    x = \cos(\theta) \quad \text{and} \quad y = \sin(\theta).
 \end{equation*}
 
-FIXME: Insert graph of a circle showing parametric function
+
+% figure yoinked from circular chapter
+\begin{wrapfigure}{l}{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
+                    sep=1pt,fill,draw,circle,solid}, scale=0.8] % scaled this down as it took up an entire page
+        % Axis
+        \draw[thick,-stealth,black] (-3.2,0)--(3.2,0) node[right] {$x$}; % x axis
+        \draw[thick,-stealth,black] (0,-3.2)--(0,3.2) node[left] {$y$}; % y axis
+        % Rest
+        \draw [dashed, sdkblue] (0,0) circle (3);
+
+        \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (2.71892336110995, 0)
+        node[below] {$3 \cos(\theta)$}; % vertical
+        \draw[dashed, black] (2.71892336110995, 1.267854785222098) -- (0, 1.267854785222098)
+        node[left] {$3 \sin(\theta)$}; % horizontal
+        \filldraw[black] (angle:3.0) circle(4pt);
+        \draw[->, thick] (2.71892336110995, 1.267854785222098) --
+        (2.71892336110995 - 3 * 0.1267, 1.267854785222098 + 3 * 0.2718);
+    \end{tikzpicture}
+    \caption{A diagram of a circle formed through a parametric functions.}
+    \label{fig:sin_cos}
+\end{wrapfigure}
+
 
 In this case, the graph of the circle is determined by the value of the angle $\theta$, the parameter.
 
 So, why parametric functions? When you look up the function that describes a circle, you might see something like
 \begin{equation*}
-x^2 + y^2 = r^2.
+    x^2 + y^2 = r^2.
 \end{equation*}
 The equation $x^2 + y^2 = r^2$ does not describe $y$ as a single function of $x$. You would need two functions (one for the top half and one for the bottom half), and many curves cannot be written as a single function at all. Parametric equations solve this problem by allowing us to describe the entire curve with one pair of equations, using a parameter $t$. This parameter can be denoted by other letters, but we will use $t$ in this chapter.
 
@@ -34,9 +56,9 @@ Imagine a ball rolling across graph paper. At each moment, the ball is at a diff
 
 In many cases, we can eliminate the parameter to convert a pair of parametric equations,
 \begin{equation*}
-x = f(t), \quad y = g(t),
+    x = f(t), \quad y = g(t),
 \end{equation*}
-into a single equation relating $x$ and $y$. 
+into a single equation relating $x$ and $y$.
 
 In many cases, a parametric curve can be rewritten as a single equation
 involving only $x$ and $y$. This process is called eliminating the
@@ -44,52 +66,52 @@ parameter, and the resulting equation is known as the rectangular
 form of the curve.
 
 To eliminate the parameter, we solve one of the parametric equations for
-$t$ and substitute into the other equation. 
+$t$ and substitute into the other equation.
 
 \textbf{Example:}
 
 Consider the parametric equations
 \begin{equation*}
-x = 2t + 1, \quad y = 3t - 4.
+    x = 2t + 1, \quad y = 3t - 4.
 \end{equation*}
 
 \textbf{Solution:}
 Solve the equation for $x$ to isolate $t$:
 \begin{equation*}
-t = \frac{x - 1}{2}.
+    t = \frac{x - 1}{2}.
 \end{equation*}
 
 Substitute into the equation for $y$:
 \begin{equation*}
-y = 3\left(\frac{x - 1}{2}\right) - 4.
+    y = 3\left(\frac{x - 1}{2}\right) - 4.
 \end{equation*}
 
 Simplifying,
 \begin{equation*}
-y = \frac{3}{2}x - \frac{11}{2}.
+    y = \frac{3}{2}x - \frac{11}{2}.
 \end{equation*}
 
 \textbf{Example}
 
 Consider the parametric equations
 \begin{equation*}
-x = \cos t, \quad y = \sin t.
+    x = \cos t, \quad y = \sin t.
 \end{equation*}
 
 \textbf{Solution:}
 In this case, solving for $t$ directly is not convenient. Instead, we use
 the trigonometric identity
 \begin{equation*}
-\cos^2 t + \sin^2 t = 1.
+    \cos^2 t + \sin^2 t = 1.
 \end{equation*}
 
 Substituting $x = \cos t$ and $y = \sin t$ gives
 \begin{equation*}
-x^2 + y^2 = 1.
+    x^2 + y^2 = 1.
 \end{equation*}
 
 This rectangular equation describes a circle of radius 1 centered at the
-origin. 
+origin.
 
 \textbf{Note}
 
@@ -112,7 +134,7 @@ To sketch a parametric curve,
     \item compute the corresponding $x$- and $y$-values,
     \item plot the resulting points in the $xy$-plane,
     \item and indicate the direction in which the curve is traced as $t$
-    increases.
+          increases.
 \end{itemize}
 
 Unlike rectangular graphs, parametric sketches also depend on the direction
@@ -133,51 +155,66 @@ FIXME Sketched example
 
 \begin{Exercise}[label = parametric2]
 
-Sketch the parametric equations
-\begin{equation*}
-x = t + 1, \quad y = t^2.
-\end{equation*}
+    Sketch the parametric equations
+    \begin{equation*}
+        x = t + 1, \quad y = t^2.
+    \end{equation*}
 
-In your sketch:
-\begin{itemize}
-    \item create a table of values for $t$, $x$, and $y$,
-    \item plot the corresponding points,
-    \item and indicate the direction of motion as $t$ increases.
-\end{itemize}
+    In your sketch:
+    \begin{itemize}
+        \item create a table of values for $t$, $x$, and $y$,
+        \item plot the corresponding points,
+        \item and indicate the direction of motion as $t$ increases.
+    \end{itemize}
 
-\vspace{80mm}
+    \vspace{80mm}
 
 \end{Exercise}
 
 \begin{Answer}[ref = parametric2]
 
-To sketch the curve, we begin by choosing several values of $t$ and computing
-the corresponding $x$- and $y$-values.
+    To sketch the curve, we begin by choosing several values of $t$ and computing
+    the corresponding $x$- and $y$-values.
 
-\begin{center}
-\begin{tabular}{c|c|c}
-$t$ & $x $ & $y$  \\
-\hline
-$-2$ & $-1$ & $4$ \\
-$-1$ & $0$ & $1$ \\
-$0$ & $1$ & $0$ \\
-$1$ & $2$ & $1$ \\
-$2$ & $3$ & $4$
-\end{tabular}
-\end{center}
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            $t$  & $x $ & $y$ \\
+            \hline
+            $-2$ & $-1$ & $4$ \\
+            $-1$ & $0$  & $1$ \\
+            $0$  & $1$  & $0$ \\
+            $1$  & $2$  & $1$ \\
+            $2$  & $3$  & $4$
+        \end{tabular}
+    \end{center}
 
-Plotting these points produces a parabola opening upward. As $t$ increases,
-the $x$-values increase and the curve is traced from left to right.
+    Plotting these points produces a parabola opening upward. As $t$ increases,
+    the $x$-values increase and the curve is traced from left to right.
 
-Although the rectangular equation of the curve is
-\[
-y = (x - 1)^2,
-\]
-the parametric equations determine the direction in which the curve is drawn,
-which cannot be seen from the rectangular form alone.
+    Although the rectangular equation of the curve is
+    \[
+        y = (x - 1)^2,
+    \]
+    the parametric equations determine the direction in which the curve is drawn,
+    which cannot be seen from the rectangular form alone.
 
 \end{Answer}
 
+%FIXME formatting within page
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.3]
+        \draw[thick,-stealth,black] (-10,0)--(10,0) node[right] {$x$}; % x axis
+        \draw[thick,-stealth,black] (0,-10)--(0,10) node[left] {$y$}; % y axis
+        \draw[red, thick, smooth, samples=200, domain=0:3*pi] 
+            plot ({\x*cos(\x r)}, {\x*sin(\x r)});
+    \end{tikzpicture}
+    \caption{Archimedian spiral.}
+    \label{fig:param_arch_spiral}
+\end{wrapfigure}
+
+Here is an example of an Archimedian Spiral, a spiral where the radius $r$ is proportional to the angle $\theta$. In parametric form, it is represented as
+$$x(t) = t \cos(t), \quad y(t) = t \sin(t)$$
 
 
 %\begin{Answer}[ref = parametric2]
@@ -256,44 +293,44 @@ plt.show()
 
 \begin{Exercise}[label = parametric1]
 
-Consider the parametric equations
-\begin{equation*}
-x = 4 - 2t, \quad y = 3 + 6t - 4t^2,
-\end{equation*}
-for $0 \le t \le 3$.
+    Consider the parametric equations
+    \begin{equation*}
+        x = 4 - 2t, \quad y = 3 + 6t - 4t^2,
+    \end{equation*}
+    for $0 \le t \le 3$.
 
-\begin{itemize}
-    \item[(a)] Sketch the curve by creating a table of values for $t$, $x$, and $y$.
-    \item[(b)] Use the provided Python animation code to visualize the curve.
-    \item[(c)] Describe the direction in which the curve is traced as $t$ increases.
-    \item[(d)] Explain how the Python animation supports or clarifies your hand-drawn sketch.
-\end{itemize}
-\vspace{80mm}
+    \begin{itemize}
+        \item[(a)] Sketch the curve by creating a table of values for $t$, $x$, and $y$.
+        \item[(b)] Use the provided Python animation code to visualize the curve.
+        \item[(c)] Describe the direction in which the curve is traced as $t$ increases.
+        \item[(d)] Explain how the Python animation supports or clarifies your hand-drawn sketch.
+    \end{itemize}
+    \vspace{80mm}
 \end{Exercise}
 
 \begin{Answer}[ref = parametric1]
 
-To sketch the curve, we begin by evaluating the parametric equations at several
-values of $t$.
+    To sketch the curve, we begin by evaluating the parametric equations at several
+    values of $t$.
 
-\begin{center}
-\begin{tabular}{c|c|c}
-$t$ & $x$ & $y$ \\
-\hline
-0 & 4 & 3 \\
-1 & 2 & 5 \\
-2 & 0 & -1 \\
-3 & -2 & -15
-\end{tabular}
-\end{center}
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            $t$ & $x$ & $y$ \\
+            \hline
+            0   & 4   & 3   \\
+            1   & 2   & 5   \\
+            2   & 0   & -1  \\
+            3   & -2  & -15
+        \end{tabular}
+    \end{center}
 
-Plotting these points produces a curve that opens downward. As $t$ increases,
-the $x$-values decrease, indicating that the curve is traced from right to left.
+    Plotting these points produces a curve that opens downward. As $t$ increases,
+    the $x$-values decrease, indicating that the curve is traced from right to left.
 
-The Python animation confirms this behavior by showing the curve being drawn
-progressively as $t$ increases. The moving point illustrates both the direction
-of motion and how the curve is traced over time, reinforcing the hand-drawn
-sketch.
+    The Python animation confirms this behavior by showing the curve being drawn
+    progressively as $t$ increases. The moving point illustrates both the direction
+    of motion and how the curve is traced over time, reinforcing the hand-drawn
+    sketch.
 
 \end{Answer}
 
@@ -304,7 +341,7 @@ Just like any other type of curve, you can be asked to determine the slope of th
 
 The derivative of a parametric curve can be found by dividing $\frac{dy}{dt}$ by $\frac{dx}{dt}$:
 \begin{equation*}
-\frac{dy}{dx} = \frac{dy/dt}{dx/dt}.
+    \frac{dy}{dx} = \frac{dy/dt}{dx/dt}.
 \end{equation*}
 
 Derivatives of parametric functions are used to describe the slope of a curve at
@@ -318,119 +355,119 @@ curve, such as determining where the curve has horizontal or vertical tangents.
 
 Find $\dfrac{dy}{dx}$ for the parametric equations
 \[
-x = t^2 + 1, \quad y = 3t - 2.
+    x = t^2 + 1, \quad y = 3t - 2.
 \]
 
 \textbf{Solution}
 
 First compute the derivatives with respect to $t$:
 \[
-\frac{dx}{dt} = 2t, \quad \frac{dy}{dt} = 3.
+    \frac{dx}{dt} = 2t, \quad \frac{dy}{dt} = 3.
 \]
 
 Now divide:
 \[
-\frac{dy}{dx} = \frac{3}{2t}.
+    \frac{dy}{dx} = \frac{3}{2t}.
 \]
 
 As a check, eliminate the parameter. From $x = t^2 + 1$, we get
 \[
-t = \sqrt{x - 1}.
+    t = \sqrt{x - 1}.
 \]
 Substitute into $y = 3t - 2$:
 \[
-y = 3\sqrt{x - 1} - 2.
+    y = 3\sqrt{x - 1} - 2.
 \]
 Differentiating gives
 \[
-\frac{dy}{dx} = \frac{3}{2\sqrt{x - 1}},
+    \frac{dy}{dx} = \frac{3}{2\sqrt{x - 1}},
 \]
 which matches the parametric result.
 
 
 \begin{Exercise}[label = parametric3]
 
-Consider the parametric equations
-\begin{equation*}
-x = t^3 - 3t, \quad y = t^2.
-\end{equation*}
+    Consider the parametric equations
+    \begin{equation*}
+        x = t^3 - 3t, \quad y = t^2.
+    \end{equation*}
 
-\begin{itemize}
-    \item[(a)] Compute $\dfrac{dx}{dt}$ and $\dfrac{dy}{dt}$.
-    \item[(b)] Find the values of $t$ for which the curve has horizontal tangents.
-    \item[(c)] Find the values of $t$ for which the curve has vertical tangents.
-    \item[(d)] Identify the points on the curve where these tangents occur.
-\end{itemize}
-\vspace{100mm}
+    \begin{itemize}
+        \item[(a)] Compute $\dfrac{dx}{dt}$ and $\dfrac{dy}{dt}$.
+        \item[(b)] Find the values of $t$ for which the curve has horizontal tangents.
+        \item[(c)] Find the values of $t$ for which the curve has vertical tangents.
+        \item[(d)] Identify the points on the curve where these tangents occur.
+    \end{itemize}
+    \vspace{100mm}
 \end{Exercise}
 
 \begin{Answer}[ref=parametric3]
 
-First compute the derivatives:
-\begin{equation*}
-\frac{dx}{dt} = 3t^2 - 3, \quad \frac{dy}{dt} = 2t.
-\end{equation*}
+    First compute the derivatives:
+    \begin{equation*}
+        \frac{dx}{dt} = 3t^2 - 3, \quad \frac{dy}{dt} = 2t.
+    \end{equation*}
 
-Horizontal tangents occur when $\dfrac{dy}{dt} = 0$ and $\dfrac{dx}{dt} \neq 0$.
-\begin{equation*}
-2t = 0 \Rightarrow t = 0.
-\end{equation*}
+    Horizontal tangents occur when $\dfrac{dy}{dt} = 0$ and $\dfrac{dx}{dt} \neq 0$.
+    \begin{equation*}
+        2t = 0 \Rightarrow t = 0.
+    \end{equation*}
 
-At $t = 0$, the point on the curve is
-\begin{equation*}
-x = 0, \quad y = 0.
-\end{equation*}
+    At $t = 0$, the point on the curve is
+    \begin{equation*}
+        x = 0, \quad y = 0.
+    \end{equation*}
 
-Vertical tangents occur when $\dfrac{dx}{dt} = 0$ and $\dfrac{dy}{dt} \neq 0$.
-\begin{equation*}
-3t^2 - 3 = 0 \Rightarrow t = \pm 1.
-\end{equation*}
+    Vertical tangents occur when $\dfrac{dx}{dt} = 0$ and $\dfrac{dy}{dt} \neq 0$.
+    \begin{equation*}
+        3t^2 - 3 = 0 \Rightarrow t = \pm 1.
+    \end{equation*}
 
-At $t = 1$, the point is
-\begin{equation*}
-( -2, 1 ),
-\end{equation*}
-and at $t = -1$, the point is
-\begin{equation*}
-( 2, 1 ).
-\end{equation*}
+    At $t = 1$, the point is
+    \begin{equation*}
+        ( -2, 1 ),
+    \end{equation*}
+    and at $t = -1$, the point is
+    \begin{equation*}
+        ( 2, 1 ).
+    \end{equation*}
 
 \end{Answer}
 
 
 \begin{Exercise}[label = parametric4]
 
-Consider the parametric equations
-\begin{equation*}
-x = 2t + 1, \quad y = t^2.
-\end{equation*}
+    Consider the parametric equations
+    \begin{equation*}
+        x = 2t + 1, \quad y = t^2.
+    \end{equation*}
 
-\begin{itemize}
-    \item[(a)] Find $\dfrac{dy}{dx}$ in terms of $t$.
-    \item[(b)] Evaluate $\dfrac{dy}{dx}$ at $t = 1$.
-    \item[(c)] Interpret your result as the slope of the tangent line at the corresponding point.
-\end{itemize}
-\vspace{100mm}
+    \begin{itemize}
+        \item[(a)] Find $\dfrac{dy}{dx}$ in terms of $t$.
+        \item[(b)] Evaluate $\dfrac{dy}{dx}$ at $t = 1$.
+        \item[(c)] Interpret your result as the slope of the tangent line at the corresponding point.
+    \end{itemize}
+    \vspace{100mm}
 \end{Exercise}
 
 \begin{Answer}[ref=parametric4]
 
-First compute the derivatives with respect to $t$:
-\begin{equation*}
-\frac{dx}{dt} = 2, \quad \frac{dy}{dt} = 2t.
-\end{equation*}
+    First compute the derivatives with respect to $t$:
+    \begin{equation*}
+        \frac{dx}{dt} = 2, \quad \frac{dy}{dt} = 2t.
+    \end{equation*}
 
-The derivative of the curve is
-\begin{equation*}
-\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{2t}{2} = t.
-\end{equation*}
+    The derivative of the curve is
+    \begin{equation*}
+        \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{2t}{2} = t.
+    \end{equation*}
 
-At $t = 1$,
-\begin{equation*}
-\frac{dy}{dx} = 1.
-\end{equation*}
+    At $t = 1$,
+    \begin{equation*}
+        \frac{dy}{dx} = 1.
+    \end{equation*}
 
-Thus, the slope of the tangent line at the corresponding point on the curve is $1$.
+    Thus, the slope of the tangent line at the corresponding point on the curve is $1$.
 
 \end{Answer}
 
@@ -459,7 +496,7 @@ When a point moves along a parametric curve, its velocity is determined by the
 derivatives $x'(t)$ and $y'(t)$. The speed of the point is the magnitude of the
 velocity vector:
 \begin{equation*}
-\text{Speed} = \sqrt{(x'(t))^2 + (y'(t))^2}.
+    \text{Speed} = \sqrt{(x'(t))^2 + (y'(t))^2}.
 \end{equation*}
 
 Speed describes how fast the point is moving at a particular moment, but it
@@ -474,19 +511,19 @@ If a curve is defined parametrically by $x = x(t)$ and $y = y(t)$, where
 $x'(t)$ and $y'(t)$ are continuous on $[a,b]$, then the length of the curve is
 given by
 \begin{equation*}
-L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\, dt.
+    L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\, dt.
 \end{equation*}
 
 \subsection*{Example: Finding Speed}
 
 Given
 \begin{equation*}
-x'(t) = 8t - t^2, \quad y'(t) = -t + \sqrt{t^{1.2} + 20},
+    x'(t) = 8t - t^2, \quad y'(t) = -t + \sqrt{t^{1.2} + 20},
 \end{equation*}
 the speed of the particle at time $t$ is
 \begin{equation*}
-\text{Speed} =
-\sqrt{(8t - t^2)^2 + \left(-t + \sqrt{t^{1.2} + 20}\right)^2}.
+    \text{Speed} =
+    \sqrt{(8t - t^2)^2 + \left(-t + \sqrt{t^{1.2} + 20}\right)^2}.
 \end{equation*}
 
 Evaluating at $t = 2$ gives a speed of approximately $12.3$ cm/s.
@@ -495,23 +532,23 @@ Evaluating at $t = 2$ gives a speed of approximately $12.3$ cm/s.
 
 Consider the parametric equations
 \begin{equation*}
-x = \cos t, \quad y = \sin t,
+    x = \cos t, \quad y = \sin t,
 \end{equation*}
 for $0 \le t \le 2\pi$.
 
 First compute the derivatives:
 \begin{equation*}
-x'(t) = -\sin t, \quad y'(t) = \cos t.
+    x'(t) = -\sin t, \quad y'(t) = \cos t.
 \end{equation*}
 
 Substitute into the arc length formula:
 \begin{equation*}
-L = \int_0^{2\pi} \sqrt{(-\sin t)^2 + (\cos t)^2}\, dt.
+    L = \int_0^{2\pi} \sqrt{(-\sin t)^2 + (\cos t)^2}\, dt.
 \end{equation*}
 
 Using the identity $\sin^2 t + \cos^2 t = 1$, this simplifies to
 \begin{equation*}
-L = \int_0^{2\pi} 1 \, dt = 2\pi.
+    L = \int_0^{2\pi} 1 \, dt = 2\pi.
 \end{equation*}
 
 Thus, the length of the curve traced is $2\pi$, which matches the circumference
@@ -526,24 +563,24 @@ speed.
 
 
 \begin{Exercise}[label = parametric5]
-%Could be a word excercise, you  can edit later. 
-How can two sets of parametric equations represent the same graph, but different curves? 
+    %Could be a word excercise, you  can edit later. 
+    How can two sets of parametric equations represent the same graph, but different curves?
 \end{Exercise}
 
 \begin{Answer}[ref=parametric5]
 
-Two sets of parametric equations can represent the same graph but
-describe different curves because the parameter controls how the graph
-is traced, not just the shape of the graph itself.
+    Two sets of parametric equations can represent the same graph but
+    describe different curves because the parameter controls how the graph
+    is traced, not just the shape of the graph itself.
 
-Different parametric equations may generate the same set of points in the
-plane while differing in one or more of the following ways:
-\begin{itemize}
-    \item the direction of motion along the curve,
-    \item the speed at which the curve is traced,
-    \item the starting point of the curve,
-    \item or the number of times the curve is traced.
-\end{itemize}
+    Different parametric equations may generate the same set of points in the
+    plane while differing in one or more of the following ways:
+    \begin{itemize}
+        \item the direction of motion along the curve,
+        \item the speed at which the curve is traced,
+        \item the starting point of the curve,
+        \item or the number of times the curve is traced.
+    \end{itemize}
 
 \end{Answer}
 
