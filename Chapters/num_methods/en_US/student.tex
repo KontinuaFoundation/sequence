@@ -1,4 +1,5 @@
 \chapter{Numerical Methods of Describing Data}
+% As of 03/16 has not been added to the book yet. 
 %Introduction
 
 \section{Numerical Summaries}
@@ -10,9 +11,6 @@
     \subsection{Skewed Data}
 
 
-\section{Boxplots and Outliers}
-
-
 \section{Z-scores and Percentiles}
 
 
@@ -20,6 +18,248 @@
 
 \section{Applying Numerical Methods to Bivariate Data} %This could a whole chapter on its own. 
     \subsection{Review of Scatter Plots}
-    \subsection{Correlation Coefficient}
+
+\subsection{Correlation Coefficient}
+
+In the previous section, we used scatterplots to visually judge whether
+two variables are related. But how do we move beyond "this looks like a
+strong relationship" to something we can actually calculate and compare?
+That is exactly what the \newterm{correlation coefficient}\index{correlation coefficient} gives us.
+
+A correlation coefficient is a numerical measure used to judge the
+relation between two variables. The one we will use throughout this
+course is \newterm{Pearson's correlation coefficient}\index{Pearson's correlation coefficient},
+also known simply as the correlation coefficient. It measures the
+strength and direction of the linear relation between two quantitative
+variables.
+
+You will encounter two versions of this value depending on whether you
+are working with a full population or a sample drawn from one. When
+computed from a population, the correlation coefficient is written as
+$\rho$ (read as ``rho''). When computed from a sample, it is written
+as $r$. In this course, we will almost always be working with sample
+data, so $r$ is the symbol you will use most.
+
+No matter how strong or weak a relationship is, $r$ always falls within
+a fixed range:
+\[
+-1 \leq r \leq +1
+\]
+
+Think about what those endpoints mean. A value of $r = +1$ or $r = -1$
+means the points in a scatterplot fall perfectly on a straight line.
+A value of $r = 0$ means there is no linear relationship between the
+two variables at all. Every other value of $r$ falls somewhere in
+between, and in the next subsection we will look at exactly how to
+interpret where $r$ lands.
+
+\begin{Exercise}[title={Boundaries of $r$}, label={ex:rbounds}]
+Answer the following questions about the range of the correlation
+coefficient.
+\begin{enumerate}
+    \item A student computes $r = 1.3$ for a dataset. What does this
+    tell you, without looking at the data?
+    \item Two researchers study the same population but one uses the
+    full population and the other uses a random sample. What symbol
+    does each researcher use for their correlation coefficient?
+    \item Can $r$ equal exactly $0.5$? Can it equal exactly $-1$?
+    Explain what each of those values would mean about the data.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:rbounds}]
+\begin{enumerate}
+    \item A value of $r = 1.3$ is impossible. The correlation
+    coefficient must satisfy $-1 \leq r \leq +1$, so the student
+    made a calculation error.
+    \item The researcher using the full population uses $\rho$. The
+    researcher using a sample uses $r$.
+    \item Both are possible. An $r$ of $0.5$ would indicate a moderate
+    positive linear relationship. The points follow an upward
+    trend but with noticeable scatter. An $r$ of $-1$ would indicate
+    a perfect negative linear relationship, meaning all points fall
+    exactly on a downward-sloping line.
+\end{enumerate}
+\end{Answer}
+
+\textbf{Direction}
+
+Now that we know $r$ always falls between $-1$ and $+1$, the first
+thing to read from it is direction. The sign of $r$ tells you
+immediately whether the two variables move together or against each
+other.
+
+A positive value of $r$ indicates that as $x$ increases, $y$ also
+tends to increase. Taller fathers tend to have taller sons, so the
+scatterplot shows an upward trend and $r$ is positive. A negative
+value of $r$ indicates that as $x$ increases, $y$ tends to decrease.
+Heavier cars tend to get worse gas mileage, so the scatterplot shows
+a downward trend and $r$ is negative.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+        \begin{axis}[
+            height=4cm, width=\textwidth,
+            xmin=0, xmax=10, ymin=0, ymax=10,
+            axis x line=bottom, axis y line=left,
+            xlabel={$x$}, ylabel={$y$},
+            tick style={draw=none},
+            xticklabels={}, yticklabels={},
+        ]
+        \addplot[only marks, mark=*, mark size=1.5pt] coordinates {
+            (1,1.5) (1.5,2) (2,3) (3,2.5) (3.5,4)
+            (4,4.5) (5,5) (5.5,5.8) (6,6.2) (7,6.5)
+            (7.5,7.8) (8,8) (9,8.5) (9.5,9.2)
+        };
+        \end{axis}
+        \end{tikzpicture}
+        \caption{Positive relation ($r > 0$)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+        \begin{axis}[
+            height=4cm, width=\textwidth,
+            xmin=0, xmax=10, ymin=0, ymax=10,
+            axis x line=bottom, axis y line=left,
+            xlabel={$x$}, ylabel={$y$},
+            tick style={draw=none},
+            xticklabels={}, yticklabels={},
+        ]
+        \addplot[only marks, mark=*, mark size=1.5pt] coordinates {
+            (1,8.5) (1.5,9) (2,7.8) (3,7.5) (3.5,6.8)
+            (4,6) (5,5.5) (5.5,4.8) (6,4.2) (7,3.5)
+            (7.5,2.8) (8,2) (9,1.8) (9.5,1.2)
+        };
+        \end{axis}
+        \end{tikzpicture}
+        \caption{Negative relation ($r < 0$)}
+    \end{subfigure}
+    \caption{Direction of a linear relation as shown in a scatterplot.}
+    \label{fig:direction}
+\end{figure}
+
+Notice that direction says nothing about strength. Both $r = +0.1$
+and $r = +0.95$ are positive, but they describe very different
+relationships. That is what we look at next.
+
+\begin{Exercise}[title={Reading Direction from $r$}, label={ex:direction}]
+For each pair of variables, predict whether $r$ would be positive,
+negative, or zero.
+
+\begin{tabular}{|c|c|p{4cm}|}
+\hline
+$x$ & $y$ & Sign of $r$ \\
+\hline
+Hours studied & Exam score & \\
+\hline
+Temperature & Hot drinks sold & \\
+\hline
+Shoe size & Intelligence & \\
+\hline
+Age of a car & Resale value & \\
+\hline
+\end{tabular}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:direction}]
+\begin{tabular}{|c|c|p{4cm}|}
+\hline
+$x$ & $y$ & Sign of $r$ \\
+\hline
+Hours studied & Exam score & Positive \\
+\hline
+Temperature & Hot drinks sold & Negative \\
+\hline
+Shoe size & Intelligence & Zero \\
+\hline
+Age of a car & Resale value & Negative \\
+\hline
+\end{tabular}
+\end{Answer}
+
+\textbf{Strength}
+
+Direction tells us which way a relationship goes, but not how strong
+it is. For that, we look at the numeric value of $r$, ignoring its
+sign. The further $r$ is from zero, the stronger the linear
+relationship between the two variables. The closer $r$ is to zero,
+the weaker it is.
+
+At the extremes, $r = +1$ or $r = -1$ indicates a \newterm{perfect
+correlation}\index{perfect correlation}, meaning every point in the
+scatterplot falls exactly on a straight line. In practice, real data
+almost never achieves this. On the other end, $r = 0$ means there is
+no linear relationship at all.
+
+To compare the strength of two correlations, just compare the absolute
+values. If $r = -0.86$ for one pair of variables and $r = 0.75$ for
+another, the first pair has the stronger linear relationship because
+$0.86 > 0.75$.
+
+Since interpreting strength can be subjective, statisticians often use
+cutoff values as a rough guide. The diagram below shows one commonly
+used set of cutoffs. Keep in mind that these are conventions, not
+rules. The key principle is always the same: the further from zero,
+the stronger the correlation.
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{|>{\centering\arraybackslash}p{1.9cm}|>{\centering\arraybackslash}p{1.9cm}|>{\centering\arraybackslash}p{1.9cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{1.9cm}|>{\centering\arraybackslash}p{1.9cm}|>{\centering\arraybackslash}p{1.9cm}|}
+        \hline
+        Very Strong & Strong & Weak & No Correlation & Weak & Strong & Very Strong \\
+        \hline
+        $-1.00$ to $-0.85$ & $-0.85$ to $-0.50$ & $-0.50$ to $-0.10$ & $-0.10$ to $+0.10$ & $+0.10$ to $+0.50$ & $+0.50$ to $+0.85$ & $+0.85$ to $+1.00$ \\
+        \hline
+    \end{tabular}
+    \caption{One commonly used set of cutoff values for interpreting
+    the strength of a correlation coefficient.}
+    \label{fig:strengthcutoffs}
+\end{figure}
+
+\begin{Exercise}[title={Interpreting Strength}, label={ex:strength}]
+The table below shows correlation coefficients computed from four
+different datasets. For each one, describe the direction and
+approximate strength of the relationship.
+
+%Insert table here
+\end{Exercise}
+\textbf{Example}
+
+Let us put direction and strength together using a real dataset.
+Consider a sample of 12 father-son pairs. The heights (in inches)
+are recorded below.
+
+%Insert Table here
+
+Before computing anything, we check whether a correlation coefficient
+is appropriate. Correlation only applies to linear relationships, so
+we first make a scatterplot to confirm the relation between the two
+variables is linear. 
+
+%Insert scatterplot here
+The scatterplot shows a linear trend, so it is appropriate to compute
+$r$. In practice, correlation coefficients are computed using a
+calculator or statistical software rather than by hand. For this
+dataset, the computed value is approximately $r = 0.96$.
+
+What does this tell us? The sign is positive, so taller fathers tend
+to have taller sons. The value is $0.96$, which falls in the very
+strong range of our cutoff table. The points cluster tightly around
+a straight line, and the scatterplot confirms this.
+
+Notice also what $r$ does not tell us. It describes the strength and
+direction of the linear relationship, but not the shape of any
+curve, and not whether one variable causes the other. A strong
+correlation between two variables does not mean one causes the other
+to change.
+
+%\begin{Exercise}[title={Interpreting a Computed $r$}, label={ex:workedex}]
+
+
     \subsection{Linear Regression}
     \subsection{Least Squares Regression Line}
