@@ -15,6 +15,6 @@ for i in range(1, vol_count + 1):
     match = re.search(search_string, aux)
     if match: 
         num1 = int(match.groups()[0])
-        print(f"{book_num} -- {num1}")
+        print(f"workbook {book_num} -- {num1} pages")
     else:
         print("-1")

@@ -1267,6 +1267,8 @@ width 0pt
 \setlength{\parskip}{\baselineskip}
 \setlength{\parindent}{0pt}
 \usepackage{amsmath}
+\usepackage{esint} % Provides \oiint
+
 \usepackage{amsfonts}
 \usepackage{fancyvrb}
 \usepgflibrary{shapes}
