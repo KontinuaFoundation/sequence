@@ -11,7 +11,7 @@ hair now has a positive charge. Note that the differences are equal but opposite
 
 An object with a negative charge and an object with a positive charge will be \emph{attracted}\index{attraction}
 to each other. Two objects with the same charge will be \emph{repelled}\index{repel}
-by each other.
+by each other. This charge originates from a subatomic level, when protons (positively charged) and electrons (negatively charged) are present in an atom at \emph{unequal amounts}.\index{protons}\index{electrons}\index{atoms}
 
 This charge, referred to as \textit{elementary charge}\index{elementary
 charge|seealso{coulombs}} is represented by the base unit $e$ (not to be
@@ -34,7 +34,7 @@ each other. This is a type of force referred to as \emph{electric force}\index{e
 	by
 
 	\begin{equation}
-		F = K\frac{ q_{1}q_{2}}{r^{2}}
+		F = k\frac{ q_{1}q_{2}}{r^{2}}
 		\label{eq:coulomb_law}
 	\end{equation}
 
@@ -458,6 +458,8 @@ The density of the electric force lines at a given point determines the strength
 
 % FIXME diagram, see https://photos.google.com/photo/AF1QipMgF7lDGlGjRQXC6iN8I8b6X-Q8CjT4ZX04dpCz
 
+If you recall the properties of conductors: \textit{there can be no electrostatic field within the body of a conductor}. If an electric field were to exist inside the conductor, it would exert a force $F = qE$ on these free charges, causing them to accelerate. This internal motion continues until the charges redistribute themselves along the conductor's outer surface, creating an induced internal field that perfectly opposes and cancels the original field.
+
 Electric field lines always
 \begin{itemize}
 	\item Start at positive charges and terminate at negative ones. If it is a single charge, this is indicated by the direction of arrows off to infinity.
@@ -512,6 +514,8 @@ In integral form (which we have not covered yet, so do not worry about using it)
 	\label{eq:elec_flux_integral}
 \end{equation}
 where the integral is on a closed area.
+
+If you recall our discussion on resistance, flux and resistance are very similar measurements. In a wire, a larger cross-sectional area ($A$) is like a highway for electrons. It allows more electrons to pass through easily, which decreases the resistance. If you maximize flux by having a huge area, you are essentially creating a path with very low resistance for a current. 
 \subsection{Gauss's law}
 So far, we have imagined the electric field is only 2-dimensional plane (a circle). What if we consider them as a 3-dimensional boundary, similar to gravitation? This introduces the idea of \textit{Gauss's Law for Electric Fields}:
 \begin{mdframed}[style=important, frametitle={Gauss's Law}]\index{Gauss's Law}
@@ -590,11 +594,89 @@ The amount of charge $dQ$ on a small \emph{surface} section of the belt is $dq =
     \end{align*}
 \end{Answer}
 \section{Electric Potential}
-Let's talk about electric potential and electric potential energy. 
+Let's talk about electric potential and electric potential energy. Recall that objects can have \textit{kinetic} and \textit{potential} energy, that potential energy is gradually transported into kinetic energy. 
+
+Electric Potential describes the amount of work, $W_E$, done by an electric force. The change in \textbf{electric potential energy}\index{electric potential energy} is defined as the work done on that force:
+\begin{equation}
+	\Delta U_E = -W_E \label{eq:change_in_epe}
+\end{equation}
+
+Notice how this is similar to an object of mass $m$ undergoing work done by a gravitational field $\Delta U_G = -W_G$.
+
+\begin{Exercise}[title={Change in Electric Potential Energy}, label={eq:electric_potential_energy}]
+
+A positive charge $+q$ moves a distance $r$ from position $X$ to position $Y$ in a \textbf{uniform} electric field $E$.
+
+
+\begin{tikzpicture}[scale=2]
+
+  \foreach \y in {-0.5, 0.0, 0.5} {
+    \draw[->, >=Stealth, thick, densely dashed, gray] (0,\y) -- (3,\y);
+  }
+ 
+  \coordinate (X) at (0.25,0); % Point X is at x=1
+  \coordinate (Y) at (2.25,0); % Point Y is at x=2
+
+  \node[above=2pt of X] {\textbf{X}};
+  \node[above=2pt of Y] {\textbf{Y}};
+
+  \draw[->, >=Triangle, thick] (X) -- node[midway, below=3pt] {\textit{r}} (Y);
+
+  \node[right=2pt] at (3,0) {\textbf{E}};
+
+\end{tikzpicture}
+
+What is its change in electric potential energy? Assume moving in direction $r$ moves in the direction of $E$.
+\end{Exercise}
+
+\begin{Answer}[ref={eq:electric_potential_energy}]
+
+Since the field is uniform, the charge has a constant electric force felt on it: $\vec{\mathbf{F}}_E=q \vec{\mathbf{E}}$. Since $q$ is positive, $\vec{\mathbf{F}}_E$ points in the same direction as $\vec{\mathbf{E}}$. Because the force and the displacement $r$ are in the same direction, the work $W_E$ done by the electric field is positive:
+
+$$W_E = F_E \cdot r = qEr$$
+
+Thus the change in electric potential energy is
+$$\Delta U_E = -qEr$$
+It is \emph{negative} because a doing positive work results in negative change in potential energy.
+\end{Answer}
 
 Electric Potential ($V$) is the amount of work needed to move a test charge $q_t$ from a reference point to a specific point in a static electric field. It describes the potential for a charge to have energy at that location, regardless of whether a charge is actually there. Electric Potential Energy ($U_E$) per unit charge where ($V = U_E/q$).
 
 Just as moving a mass up in height against gravity increases its gravitational potential, moving a positive charge "up" against an electric field increases its electric potential. In both cases, the field \textit{tries} to push the object toward a state of lower potential energy. A positive charge naturally wants to move with the electric field toward lower potential; in this case, its electric potential energy is converted into kinetic energy. Conversely, to move a positive charge against an electric field, work must be done on the charge, causing its electric potential to increase.
+
+Moving from two points not on the same electric field line introduces an angle component $\theta$:
+
+\begin{wrapfigure}{l}{4in}
+	\begin{tikzpicture}[scale=2]
+		% Electric Field lines (E)
+		\foreach \y in {-0.5, 0.0, 0.5} {
+			\draw[->, thick, densely dashed, gray] (0,\y) -- (3,\y);
+			}
+			\node[right=5pt] at (3,0) {\textbf{E}};
+			
+			% Points a and b
+			\coordinate (a) at (0.25,-0.5); 
+			\coordinate (b) at (2.25,0.5); 
+			\coordinate (a_ext) at (1.25, -0.5); % Helper point for angle
+			
+			\node[below left=2pt of a] {\textbf{a}};
+			\node[above right=2pt of b] {\textbf{b}};
+			\fill (a) circle (0.5pt);
+			\fill (b) circle (0.5pt);
+			
+			\draw[->, thick] (a) -- node[midway, above left] {\textit{r}} (b);
+			
+			\pic [draw, "$\theta$", angle eccentricity=1.5, angle radius=0.6cm] {angle = a_ext--a--b};
+			
+			\draw[|<->|, thick] (0.25, -1.0) -- node[below=2pt] {$r \cos \theta$} (2.25, -1.0);
+			\draw[dotted, gray] (a) -- (0.25, -1.0);
+			\draw[dotted, gray] (b) -- (2.25, -1.0);
+			
+		\end{tikzpicture}
+		\caption{A gain of potential energy across an angle.}
+		\label{fig:elec_pe_1}
+	\end{wrapfigure}
+
 % knowledge of line integrals does not exist 
 The electric potential difference between two points $A$ and $B$ is defined by the line integral of the electric field:
 \begin{equation}
@@ -602,7 +684,11 @@ The electric potential difference between two points $A$ and $B$ is defined by t
 \end{equation}
 The negative sign indicates that the potential decreases in the direction of the electric field.
 
-\subsection{Point Charges and Uniform Fields}
+We can easily define two point charges $q_1$ and $q_2$ seperated by distance $r$ to have potential energy
+\begin{equation}
+	U=k\frac{q_1q_2}{r}=\frac{1}{4\pi \epsilon_0}\frac{q_1q_2}{r}
+\end{equation}
+\subsection{Point Charges, Uniform Fields, and Spherical Shells}
 In a \textbf{uniform electric field} (such as the space between two large parallel plates), the field strength $E$ is constant. The potential difference between two points separated by a distance $d$ along the field lines is:
 \begin{equation}
     \Delta V = -Ed
@@ -610,8 +696,16 @@ In a \textbf{uniform electric field} (such as the space between two large parall
 For a \textbf{point charge} $Q$, we typically set the reference point ($V=0$) at infinity. The potential at a distance $r$ from the charge is:
 \begin{equation}
     V = \frac{1}{4\pi\epsilon_0} \frac{Q}{r}
+	\label{eq:point_charge}
 \end{equation}
 Unlike the electric field, which is a vector and follows an $1/r^2$ factor, electric potential is a \textbf{scalar} and follows an $1/r$ factor.
+\subsection*{Surface Spherical Charge}
+For all spherical objects of radius $R$ (surface spheres - assume hollow interior), it has potential inside and outside of the shell. For all points outside the shell, it is the same for any point charge $Q$, as seen in equation~\ref{eq:point_charge}. For all points \emph{inside} the shell, the potential is
+$$V = \frac{1}{4\pi\epsilon_0} \frac{Q}{R}$$
+This means that moving a test charge $q$ from the surface of the shell to the center of the shell, the potential does not change. The potential is constant within the shell.
+
+When the sphere is \emph{not hollow}, the interior charge changes to:
+$$k = \frac{1}{4\pi\epsilon_0}\frac{Q}{2R} \left(3 - \frac{r^2}{R^2}\right)$$
 
 \subsection{Potential due to Configurations of Charge}
 Because potential is a scalar, finding the total potential from multiple charges is often simpler than finding the total electric field. We do not need to worry about components, instead, we simply sum the potentials:

@@ -1269,6 +1269,15 @@ width 0pt
 \usepackage{amsmath}
 \usepackage{esint} % Provides \oiint
 
+% https://tikz.net/electric_circuit_capacitors/
+\colorlet{Icol}{blue!50!black}
+\colorlet{Ccol}{orange!90!black}
+\colorlet{pluscol}{red!60!black}
+\colorlet{minuscol}{blue!60!black}
+
+\tikzstyle{thick C}=[C,thick,color=Ccol,Ccol,l=$C$]
+\tikzstyle{mybattery}=[battery1,l=$\Delta V$,invert]
+
 \usepackage{amsfonts}
 \usepackage{fancyvrb}
 \usepgflibrary{shapes}

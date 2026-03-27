@@ -18,13 +18,18 @@ atoms on their way from the battery to the lightbulb and back again.
 
 
 In some materials, like copper and iron, electrons are loosely bound
-to their nuclei, forming a sea of electrons, which allows energy to flow. These are good \textit{electrical conductors}. In
+to their nuclei, forming a sea of electrons, which allows energy to flow. These are good \textit{electrical conductors}. In the presence of an electric field, which we will talk about in a future chapter, the electrons are free to move about, allowing \emph{charge} to flow free. In
 other materials, like glass and plastic, electrons don't leave their
 nuclei as easily. This makes them are terrible electrical conductors -- we call
 these materials \textit{electrical insulators}. For example, the plastic around a
 wire is used for electrical insulation.
 
-\includegraphics[width=.5\textwidth]{plug.png}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\textwidth]{plug.png}
+    \caption{A cross section of an outlet plug.}
+    \label{fig:plug}
+\end{figure}
 
 % KA: https://www.khanacademy.org/science/physics/electric-charge-electric-force-and-voltage/charge-electric-force/v/conductors-and-insulators
 
@@ -59,6 +64,25 @@ the current -- like a ball of hair, similar how different surfaces apply frictio
  the current to push through the resistance; we call that
 pressure \textit{voltage}. Especially in physics, voltage is often referred to as \textit{electromagnetic potential}.\index{voltage}
 
+\textbf{Superconductor} is an extreme example of a conductor. Here, there is \emph{absolutely no resistance} to the passing of charge. Materials that are conductors can become superconductors by decreasing their temperature to extremely low temperatures, even to absolute zero.
+\section{Capacitors}
+Two conductors separated by a distance that carry equal but opposite charges ($+Q$ and $-Q$) are a system that we refer to as \textbf{capacitors}. Most real-life capacitors (like the cylindrical electrolytic ones) are actually long strips of foil rolled up. We treat them as parallel plates, or metal plates with $d$ between them. \index{capacitors}
+
+Capacitors are similar to batteries, in the way that they store energy, however, capacitors store energy in the form of an electric field. As a result, capacitors store much less energy but can release it at a signficantly higher rate. The measure of how much a capacitor holds is called \textbf{capacitance}, represented with the symbol $C$ and measured in Farads ($F$), where $1\text{ F} = \frac{1\text{ Coulomb}}{1\text{ Volt}}$.\footnote{1 Farad is actually an enormous amount, enough to store power for the stereo system of an SUV! Smartphone circuits are 0.1010 $\mu\text{F}$, measured in microfarads, which are $10^{-6} \, \textrm{F}$}
+
+Capacitance ($C$) is defined as the ratio of the magnitude of the charge ($Q$) on either conductor to the potential difference ($V$) between them:$$C = \frac{Q}{V}$$
+We will explore the underlying nature of charge in greater detail in the Charge chapter. For a parallel-plate capacitor with a vacuum between the plates ($\kappa = 1$), the capacitance is determined by its geometry:$$C = \epsilon_0 \frac{A}{d}$$
+
+Think of an medical defibrillator\index{defibrillator}, a machine that delivers a specific amount of volts within an instantaneous moment of time. The goal of a defibrillator is not just to provide \textit{charge}, but to provide Energy ($U_C$) to \textit{reset} the heart's electrical rhythm. The energy stored is given by:
+$$U_C = \frac{1}{2} C V^2$$
+which comes from the area under a \textbf{Voltage} ($V$) vs \textbf{Charge} $Q$, and the fact that potential charge is $Q = CV$
+% derive this equation better?
+
+%FIXME add adobe illustrator image 
+
+Defibrillators often charge to several thousand volts. Because $V$ is squared in the energy equation, increasing the voltage is the most efficient way to increase the \textit{shock} power.
+To keep the device portable while maintaining high $U_C$ or Electric Potential Energy, manufacturers use advanced dielectrics ($\kappa$) to maximize $C$ without making the internal plates massive. When the paddles touch the chest and the button is pressed, the capacitor discharges through the patient's body. The patient's chest acts as a resistor in an RC circuit. The current $I$ follows $$I(t) = \frac{V_0}{R} e^{-t/RC}$$
+this is a great example of current following an example of exponential decay!
 \section{Circuit Diagrams}
 
 Here is a circuit diagram of your flashlight:
@@ -97,23 +121,30 @@ You can think of a switch as having zero resistance when it is closed and infini
 
 For our purposes, a lamp is just a resistor that gives off light.
 % KA: https://www.khanacademy.org/science/high-school-physics/dc-circuits/electric-power-and-dc-circuits/a/circuit-introduction
-
-\section{Ohm's Law}
+% there is a circuit analysis section on capacitors in dc_circuits
+\section{Ohm's Law and Resistance}
+Current is a measure of how much \textit{charge} per \textit{time} is flowing through an area:
+\begin{equation}
+  I = \frac{\Delta q}{\Delta t}
+  \label{eq:current}
+\end{equation}
+This is a measure of $1 \frac{\text{coulomb}}{\text{second}}$, which we give the SI unit amperes or amps, represented with $A$.
 
 Resistance is measured in \textit{ohms}, and we use a Greek capital omega for that: $\Omega$  
 
-Voltage is measured in
-\textit{volts}.\index{ohms}\index{volts}
-
+\index{ohms}\index{volts}
 \begin{mdframed}[style=important, frametitle={Ohm's Law}]\index{Ohm's law}
-  Whenever a voltage $V$ is pushing a current $I$ through a resistance of $R$, the following is true:
+  Whenever a voltage $V$ is pushing a current $I$ through a resistance of $R$ in given by some$\Omega$, the following is true:
 
   $$V = IR$$
 
   where $V$ is in volts, $I$ is in amps, and $R$ is in ohms.
 \end{mdframed}
+Due to this relationship, we can find current given voltage and resistance using $I = \frac{V}{R}$. \textit{Ohmic} materials maintain a constant resistance no matter how many volts are being put into it.
 % KA: https://www.khanacademy.org/science/physics/circuits-topic/circuits-resistance/v/circuits-part-1
 
+The resistance of a conductor dependes on it's length, cross-sectional area, and resistivity. Due to Ohm's equation, we define resistance, measured in ohm's, as $1 \frac{\text{volt}}{\text{ampere}}$
+%FIXME add resistivity
 \section{Power and Watts}
 
 \begin{mdframed}[style=important, frametitle={Joule's Law}]\index{Joule's law}
@@ -142,7 +173,16 @@ measure of \textit{power}.
 When we talk about how much energy is stored in a battery, we use a
 unit like a kilowatt-hour. A kilowatt-hour is equivalent to 3.6 million
 joules.
+\subsection*{Portable Chargers}
+A portable charger labeled $165\, \textrm{W}$ means that it's \textit{maximum power output} is 165 watts. This is the maximum amount of voltage it can deliver to your device at any given moment.
 
+Often, there is a noted voltage and current label on the back of the device.Power is the product of Voltage ($V$) and Current ($I$), expressed by the formula:
+$$P = V \times I$$
+In the case of a $165\, \textrm{W}$ charger, it might output something like $20 \, \textrm{V}$ at $8.25 \, \textrm{A}$ ($20 \times 8.25 = 165$).
+
+However, the 165 Watt charger will not always deliver 165 Watts to your phone. That is enough to power a gaming PC! Instead, protocols within modern chargers limit how much a device actually gets charged. Most smartphones only need $20 \,\textrm{W}$. Chargers that are labled fairly high in wattage often have multiple ports (this one has 4), and splits the charging load among all of them.
+
+Now, if you see a measurement in mAh (milliampere-hours) or Wh (Watt-hours), that is the maximum \textit{capacity} of the portable charger. This $165\, \textrm{W}$ has a $25,000 \,\textrm{mAh}$ rating, meaning it stores approximately $92.5 \,  \textrm{Wh}$, or watt-hours. This comes from $\text{Wh} = \frac{\text{mAh} \times \text{V}}{1000}$, where most power banks deliver a nominal $3.7 \, \textrm{V}$.\footnote{Airlines often do not let you take anything over $100 \, \textrm{Wh}$. }
 \section{Another great use of RMS}
 
 In many electrical problems, the voltage fluctuates a great deal.  For

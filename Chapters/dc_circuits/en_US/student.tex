@@ -2,8 +2,6 @@
 
 In the most basic circuit, you have only a battery and a resistor:
 
-
-
 \begin{circuitikz}
 \draw (0,0) to[battery1,invert,l=$6V$] ++(0,3)
 to ++(3,0)
@@ -53,15 +51,17 @@ The current flowing through the circuit, then, is $10/5 = 2A$.
 By Ohm's law, the voltage drop across the upper resistor is $I R = 2A \times 3\Omega = 6V$.
 
 The voltage drop across the lower resistor is $I R = 2A \times 2\Omega = 4V$.
-
+\subsection{Kirchhoff's Voltage Law}
 Notice that the battery pumps the voltage up to $10V$, then the two
 resistors drop it by exactly $10V$. This is known as ``Kirchhoff's
 Voltage Law'':
 % KA: https://youtu.be/4rsswT_Rv1M
 
 \begin{mdframed}[style=important, frametitle={Kirchhoff's Voltage Law}]\index{Kirchhoff's voltage law}
-As you make a loop around a circuit, the sum of the voltage increase
-must equal the sum of the voltage decrease.
+As you make a loop around a circuit, the sum of the voltage increase must equal the sum of the voltage decrease. Mathematically, this is
+\begin{equation}
+ \sum _{i=1}^{n}V_{i}=0
+\end{equation}
 \end{mdframed}
 
 The negative end of the battery is connected to ``ground''\index{index} (it has zero voltage). We can then draw a diagram with the
@@ -188,16 +188,124 @@ to [R=$3\Omega$, /tikz/circuitikz/bipoles/length=1.0cm,i={4/3 A}] ++(0,-3) -- (3
   
 \end{Answer}
 
+\section{Capacitors in series and parallel}
+Recall that a capacitor is similar to a battery in that it stores voltage, but it is stored in the form of an electric field.
+\begin{wrapfigure}{l}{0.5\textwidth}
+  \begin{tikzpicture}
+    \draw (0,2) to [short,*-] (0.6,2)
+    to[thick C,l=$C_1$] ++(1.5,0)
+    to[thick C,l=$C_2$] ++(1.5,0)
+    to[thick C,l=$C_3$] ++(1.5,0)
+    %(6,2) to[C,color=Ccol,thick,l=$C_4$]
+    -- ++(1.5,0) node[midway,fill=white,inner sep=5,scale=1.2] {$.\,.\,.$}
+    -- (7,2) -- (7,0) to[short,-*] (0,0);
+    \node at (0,1) {$\Delta V$};
+    \node[below left] at (0,2) {$+$};
+    \node[above left] at (0,0) {$-$};
+  \end{tikzpicture}
+\end{wrapfigure}
+Capacitors are represented with two differently colored lines. Here is an circuit diagram of capactors in \textbf{parallel}\index{capacitors!in parallel}
+Capacitors are said to be in parallel if they share the same potential difference. You may see this represented mathematically:
+\begin{equation}
+  C_p = \sum_{i}C_i
+  \label{eq:capacitor_parallel}
+\end{equation}
+
+% https://tikz.net/electric_circuit_capacitors/
+% CAPACITORS in series
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{tikzpicture}
+    \draw (0,2) to [short,*-] (0.6,2)
+    to[thick C,l=$C_1$] ++(1.5,0)
+    to[thick C,l=$C_2$] ++(1.5,0)
+    to[thick C,l=$C_3$] ++(1.5,0)
+    %(6,2) to[C,color=Ccol,thick,l=$C_4$]
+    -- ++(1.5,0) node[midway,fill=white,inner sep=5,scale=1.2] {$.\,.\,.$}
+    -- (7,2) -- (7,0) to[short,-*] (0,0);
+    \node at (0,1) {$\Delta V$};
+    \node[below left] at (0,2) {$+$};
+    \node[above left] at (0,0) {$-$};
+  \end{tikzpicture}
+\end{wrapfigure}
+Capacitors are \textbf{series} if they all share the same charge magnitude. \index{capacitors!in series}
+This would be mathematically represented as 
+\begin{equation}
+  \frac{1}{C_S} = \sum_{i}\frac{1}{C_i}
+  \label{eq:capacitor_series}
+\end{equation}
+A common mistake in calculating series capacitance is neglecting to take the reciprocal to find the equivalent capacitants after finding the reciprocal of each individual capacitor. If you have $n$ capacitors in series all with value $C$, the total capacitance is $C_{S} = \frac{C}{n}$.
 % FIXME: add Kirchhoff's Current Law diagrams
 % Expand on this section. -basics written by Arjan
 
 
 \section{Kirchhoff's Current Law}
-States that all currents coming into a junction (or node) must equal the currents leaving that junction. 
-Why? Because first of all, energy is always conserved, meaning it cannot be lost or destroyed within the equations in the first place. Secondly, each circuit is conservative, meaning it cannot lose voltage, and thus, cannot lose current. As you go around a loop, the starting point must have the same chargable amount as it did when you began, so any increases and decreases along the loop have to cancel out for a total change of zero. 
+\textbf{Kirchhoff's Current Law} states that all currents coming into a junction (or node) must equal the currents leaving that junction. 
+
+Why? Because first of all, energy is always conserved, meaning it cannot be lost or destroyed within the equations in the first place. 
+
+Secondly, each circuit is conservative, meaning it cannot lose voltage, and thus, cannot lose current. As you go around a loop, the starting point must have the same chargable amount as it did when you began, so any increases and decreases along the loop have to cancel out for a total change of zero. 
 
 \begin{mdframed}[style=important, frametitle={Kirchhoff's Current Law}]\index{Kirchhoff's current law}
 The sum of current into a junction equals the sum of current out of the junction.
+
+Mathematically, this can be expressed as
+\begin{equation}
+\sum _{i=1}^{n}I_{i}=0
+\end{equation}
+where $n$ is the total number of branches with currents flowing towards or away from the node.
+
+
 \end{mdframed}
-%FIXME diagram
-% very helpful short video https://www.youtube.com/watch?v=T68dOmtyar4
+
+\begin{wrapfigure}{l}{0.4\textwidth}
+\begin{tikzpicture}
+  \node at (-1,0) [below] {$I_{source}$};
+  \draw[->] (-1,0) -- (0,0);
+  % \node at (0,0) [below left] {Split};
+  \draw[->] (0,0) -- (1,1);
+  \node at (1,1) [above] {$I_1$};
+  \draw[->] (0,0) -- (1,0);
+  \node at (1,0) [right] {$I_2$};
+  \draw[->] (0,0) -- (1,-1);
+  \node at (1,-1) [below] {$I_3$};
+\end{tikzpicture}
+\end{wrapfigure}
+Kirchhoff's Current Law states that all currents going out of a junction must equal the current going into a junction. This is aligned with the Conservation of energy: \textbf{the total energy of an isolated system remains constant}.\index{conservation of energy} In this case, 
+\begin{equation}
+I_{source} = I_1 + I_2 + I_3  
+\end{equation}
+
+\begin{Exercise}[title={Kirchhoff's Current Law}, label={ex:current_law}]
+At a junction, 5 conductors meet at a single common junction. 
+Given Branch Currents:
+\begin{itemize}
+  \item $i_1 = 5\text{ A}$ (entering the node)
+  \item $i_2 = 3\text{ A}$ (leaving the node)
+  \item $i_3 = 2\text{ A}$ (entering the node)
+  \item $i_4 = 9\text{ A}$ (leaving the node)
+\end{itemize}
+
+Find the direction of the unknown current $i_x$.
+\end{Exercise}
+\begin{Answer}[ref={ex:current_law}]
+Let's set up the equation. Here are the entering conductors: $$i_1, i_3$$ And leaving: $i_2, i_4, i_x$ we are assuming $i_x$ is leaving for the calculation.
+
+$$i_1 + i_3 = i_2 + i_4 + i_x$$
+
+Inputting the values gives us:
+$$5 + 2 = 3 + 9 + i_x$$
+$$7 = 12 + i_x$$
+$$i_x = -5 \, \textrm{A}$$
+The magnitude of the current is $5 \, \textrm{A}$. Because the result is negative, the actual direction is \textit{entering} the node, based on our leaving assumption.
+\end{Answer}
+\section{Summary}
+This chapter introduces the fundamentals of Direct Current (DC) circuits, focusing on the relationship between power sources and resistive elements.
+\begin{itemize}
+  \item \textbf{Basic circuits}: The analysis begins with a minimal circuit configuration consisting of a voltage source (battery) and a load (resistor).
+  \item \textbf{Voltage} ($V$): The electrical potential difference provided by the battery that drives the flow of charge.
+  \item \textbf{Resistance} ($R$): The property of a material or component that opposes or \textit{resists} the flow of electric current.
+  \item \textbf{Direct Current} (DC): A type of electrical flow where the charge moves in a single, constant direction.
+  \item \textbf{Kirchhoff's Laws}: Kirchhoff's Laws tell us that charge cannot be lost or pile up at a junction, and any supplied charged must be dropped to zero before the charge cycles around.
+\end{itemize}
+
+In a few workbooks, we will be doing a deep dive into charge, and how charge creates electric fields, electric flux, dipoles, and spherical electric potential. 
