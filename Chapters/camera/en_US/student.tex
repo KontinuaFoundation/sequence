@@ -1,4 +1,5 @@
 \chapter{How Cameras Work}
+% Issue: https://github.com/KontinuaFoundation/sequence/issues/144 
 
 Let's say it is a sunny day and you are standing in a field a few meters
 from a cow. You use the camera on your phone to take a picture of the
@@ -22,11 +23,10 @@ Gradually, the sun is converting hydrogen into helium through a
 process known as ``nuclear fusion'' (which we will be discussing more in a future chapter). A large amount of heat is created in this
 process. This heat makes the gases glow.
 
-\index{photon}
 How does heat make things glow? The heat pushes the electrons into
 higher orbitals. When they come back down to a lower orbital, they
 release a photon of energy, which travels away from the atom as an
-electromagnetic wave.
+electromagnetic wave. Recall that when we talked about reflections, we established that light is a constant stream of particles we call photons. These photons travel at the speed of light.
 \begin{figure}[H]
     \includegraphics[width=.5\textwidth]{cow2.png}
     \includegraphics[width=.5\textwidth]{cow3.png}
@@ -42,22 +42,8 @@ higher orbital. When they fall back to a lower orbital, light is created.
 What is the frequency of the wave that the photon travels on?
 Depending on what orbital it falls from and how far it falls, the
 photon created has different amounts of energy. The amount of energy
-determines the frequency of the electromagnetic wave.
+determines the frequency of the electromagnetic wave, and ultimately, its color!
 
-\begin{mdframed}[style=important, frametitle={Formula for energy of a photon}]
-
-If you want to know the amount of energy $E$ in a photon, here is the formula:
-
-$$E = \frac{h c}{\lambda}$$
-
-where $c$ is the speed of light, $\lambda$ is the wavelength of the
-electromagnetic wave, and $h$ Planck's constant: $6.63 \times 10^{-34} m^2 kg/s$
-
-For example, a red laser light has a wavelength of about 630 nm. So, the energy in each photon is:
-
-$$\frac{(300 \times 10^6) (6.63 \times 10^{-34})}{630 \times 10^{-9}} = 3.1 \times 10^{-19} \text{ joules}$$
-
-\end{mdframed}
 In the sun, there are several kinds of molecules and each has a few
 different orbitals that the electrons can live in. Thus, the light
 coming from the sun is made up of electromagnetic waves of many
@@ -90,8 +76,8 @@ green photons that hit it. Thus, we say ``That plant is green.''
 
 White things absorb very small percentages of photons of any visible
 wavelength. Black things absorb very \emph{large} percentages of
-photons of any visible wavelength. That is why, on a hot summer day, a black car with black 
-seats and interior will heat up on the inside much hotter than a white car. 
+photons of any visible wavelength. That is why, on a hot summer day, a black car with black
+seats and interior will heat up on the inside much hotter than a white car.
 
 Before we go on, let's review: The sun creates photons that travel as
 electromagnetic waves of assorted wavelengths to the cow. Many of
@@ -120,30 +106,27 @@ on the left is on the right.
 
 
 \begin{Exercise}[title={Height of the image}, label=image_height]
+    Let's say that that the pinhole is exactly the same height as the
+    shoulder of the cow, and that the shoulder is directly above one hoof.
+    This means the pinhole, the shoulder, and the hoof form a right triangle.
 
-FIXME: cow swap
-%FIXME diagram ^
-Let's say that that the pinhole is exactly the same height as the
-shoulder of the cow, and that the shoulder is directly above one hoof.
-This means the pinhole, the shoulder, and the hoof form a right triangle.
+    Now, let's say that the camera is being held perpendicular to the
+    ground. The pinhole, the image of the shoulder, and the image of
+    the hoof on the back wall of the camera now also form a right triangle.
 
-Now, let's say that the camera is being held perpendicular to the
-ground. The pinhole, the image of the shoulder, and the image of
-the hoof on the back wall of the camera now also form a right triangle.
+    These two triangles are similar.
 
-These two triangles are similar.
-
-The shoulder is 2 meters from the hoof. The cow is standing 3 meters
-from the camera. The distance from the pinhole to the back wall of
-the camera is 3 cm. How tall is the image of the cow on the back wall
-of the camera?
+    The shoulder is 2 meters from the hoof. The cow is standing 3 meters
+    from the camera. The distance from the pinhole to the back wall of
+    the camera is 3 cm. How tall is the image of the cow on the back wall
+    of the camera?
 
 \end{Exercise}
 \begin{Answer}[ref=image_height]
 
-The two triangles are similar; one is 2 m and 3m, the other is $x$ cm and 3 cm.
+    The two triangles are similar; one is 2 m and 3m, the other is $x$ cm and 3 cm.
 
-The image of the cow is 2 cm tall.
+    The image of the cow is 2 cm tall.
 
 \end{Answer}
 
@@ -173,7 +156,7 @@ camera --- regardless of which path it took to get to the lens.
 
 
 Note that the image still gets flipped. There is a \newterm{focal
-point} that all the photons pass through.
+    point} that all the photons pass through.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{lensPoints.png}
@@ -197,6 +180,9 @@ pixels. When you say a sensor is 6000 by 4000 pixels (most common ratio for phot
 the sensor is a grid of 24,000,000 pixels: 6000 pixels wide and
 4000 pixels tall.
 
+
+In the sensor, each individual pixel is hit by an incoming photon. If the photon's energy (recall $E = hf$) is less than the Work Function $\Phi$ to dislodge an electron, the light simply passes through or reflects, and the pixel remains \textit{dark}, or what we call \textit{black}. If $hf \geq \Phi$, the photon is absorbed, and its energy is transferred to an electron, which \textit{jumps} into the conduction band, appearing like \textit{white} to us. Camera sensors then convert their pixels into a binary mapping, using voltage measurements.
+
 Each pixel has three types of cavities that take in photos. One of the
 cavities measures the amount of short wavelength light, like blues and
 violets. One of the cavities measures the long wavelength light, like
@@ -204,11 +190,21 @@ reds and oranges. One of the cavities measures the intensity of
 wavelengths in the middle, like greens.
 \index{rgb}
 Thus, if your camera has a \newterm{resolution} of $6000 \times 4000$, the image
-is 24,000,000 pixels yields three 
+is 24,000,000 pixels yields three
 numbers: intensity of long wavelength, mid wavelength, and short
 wavelength light, for a total of 72,000,000 numbers. We call these numbers ``RGB'' for Red, Green, and
-Blue. The RGB values range from $0-255$ for each channel. We will talk more about this when hexadecimal is introduced.  
+Blue. The RGB values range from $0-255$ for each channel. We will talk more about this when hexadecimal is introduced.
 
+\begin{Exercise}[title={Camera Pixels}, label={ex:photon_camera}]
+A digital camera sensor is made of a material with a work function of $\Phi = 1.1\text{ electronvolts}$. If the sensor is exposed to monochromatic light with a wavelength of $\lambda = 1200\text{ n m}$, what does the resulting image look like? Why?
+
+Hint: $E = \frac{1240}{\lambda}$ where $\lambda$ is in nanometers and $E$ is in electronvolts ($\textrm{eV}$).
+\end{Exercise}
+\begin{Answer}[ref={ex:photon_camera}]
+
+The pixels will remain dark, or black, because the energy of the incoming photons is less than the work function of the sensor material. Calculating $E = \frac{1240}{1200} = 1.033 \, \textrm{eV}$, which is less than the work function of $1.1 \, \textrm{eV}$.
+
+\end{Answer}
 \section{Aspect Ratio}
 \index{aspect ratio}
 When you are buying a monitor, TV, or even smartphone, you may hear the term \textbf{aspect ratio}. The aspect ratio is a set of two numbers representing the ratio between the width and the height. Conventionally, the width comes first, separated by a colon, and then the height:
@@ -228,16 +224,16 @@ Some of the most common aspect ratios are:
 
 As we talked about above, the aspect ratio doesn't describe the actual size of the screen or image. Instead, it describes the shape. A movie theatre screen can have the same aspect ratio as your monitor, even if the screen is 360 inches and the monitor is 24 inches.
 
-Aspect ratio describes the proportional relationship between width and height. 
+Aspect ratio describes the proportional relationship between width and height.
 Resolution describes the total number of pixels used to represent an image.
 
 For example, both of the following resolutions have a $16:9$ aspect ratio:
 
 \[
-1280 \times 720
+    1280 \times 720
 \]
 \[
-1920 \times 1080
+    1920 \times 1080
 \]
 
 
@@ -245,7 +241,7 @@ Mathematically, the aspect ratio is a dimensionless quantity. Since both width a
 
 For example:
 \[
-1920 \times 1080 \quad \Rightarrow \quad \frac{1920}{1080} = \frac{16}{9} = 16:9
+    1920 \times 1080 \quad \Rightarrow \quad \frac{1920}{1080} = \frac{16}{9} = 16:9
 \]
 
 Digital cameras and smartphone cameras capture images using a rectangular sensor. The shape of this sensor determines the default aspect ratio of the image. For example:
@@ -261,17 +257,14 @@ Important: when you change the aspect ratio setting on a camera, the device does
 Human vision has a wider horizontal field of view than vertical field of view. Because of this, wider aspect ratios such as $16:9$ often feel more natural and immersive. This is one reason modern TVs and cinema formats favor wider screen shapes. However, with the rise of cellphones, we have switched to consistently using portrait or vertical mode, and video aspect ratios are more consistently becoming $9:16$. This allows for consistency in device quality, and commonly used for vertical videos, like in short-form content, compared to traditional widescreen videos, such as Youtube or traditional horizontal video capturing.
 
 \subsection{Printing}
-You can imagine this may cause a problem for printing out photos. Most printing paper is $8.5 \, \mathrm{ inches} \times 11 \, \mathrm{ inches}$ or $8 \, \mathrm{inches} \times 10 \, \mathrm{inches}$. This causes an issue, as that fits a $8.5 : 11 \iff 17 : 22$  or $4:5$ aspect ratio, respectively. 
+You can imagine this may cause a problem for printing out photos. Most printing paper is $8.5 \, \mathrm{ inches} \times 11 \, \mathrm{ inches}$ or $8 \, \mathrm{inches} \times 10 \, \mathrm{inches}$. This causes an issue, as that fits a $8.5 : 11 \iff 17 : 22$  or $4:5$ aspect ratio, respectively.
 We combat this by using very standardized printing sizes (in inches):
 \begin{itemize}
     \item $6 \times 4 \rightarrow 3:2$,
     \item $7 \times 5 \rightarrow 7:5$,
     \item $10\times8 \rightarrow 5:4$,
-    \item and, rarely, $8.5 \times 11 \rightarrow 1.29:1$ 
-\end{itemize} 
-Going to any framing or printing store will give you a very standardized set of sizes, or some multiple of these. 
+    \item and, rarely, $8.5 \times 11 \rightarrow 1.29:1$
+\end{itemize}
+Going to any framing or printing store will give you a very standardized set of sizes, or some multiple of these.
 
 Most smartphones use $4:3$ or $3:2$, which will work for $4\times6$ inches or $8\times6$ inches, respectively.
-
-% FIXME
-% some quiz questions use this. 
