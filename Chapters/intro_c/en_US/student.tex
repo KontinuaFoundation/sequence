@@ -1,0 +1,808 @@
+\chapter{Introduction to C}
+
+You already know how to write programs in Python.  In the next few
+chapters, you are going to learn C.  Your Python knowledge will make
+this easier, because C has the same fundamental ideas: variables,
+functions, loops, and conditionals.  The syntax looks different, and
+there are a few genuinely new concepts, but you will recognize the shape
+of everything you write.
+
+Why learn C?  Two reasons.  First, C is used wherever performance
+matters: operating systems, game engines, embedded systems, and
+scientific computing.  Second, and more important for this course, C
+forces you to think about memory explicitly.  Python quietly manages
+memory on your behalf; C makes you do it yourself.  Once you understand
+how C uses memory, you will also understand what Python is doing
+underneath, and you will be ready to implement data structures from
+scratch.
+
+\section{Compiled vs.\ Interpreted}
+
+When you run a Python program, the Python interpreter reads your
+\texttt{.py} file and executes it line by line.  There is no separate
+step between writing and running.
+
+C works differently.  Before a C program can run, a
+\emph{compiler}\index{compiler} must translate it into machine code,
+the raw instructions that your CPU executes directly.  The compiler
+reads your \texttt{.c} file, checks it for errors, and produces an
+\emph{executable} file.  You then run that executable.
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ccccc}
+\texttt{hello.c} & $\xrightarrow{\text{compiler}}$ &
+\texttt{hello} (executable) & $\xrightarrow{\text{run}}$ & output
+\end{tabular}
+\caption{The compile-then-run cycle}
+\end{figure}
+
+Because the compiler sees your entire program before anything runs, it
+can catch many mistakes, like using a variable before declaring it or
+passing the wrong type to a function, that Python would only discover
+at runtime.
+
+To compile a C file called \texttt{hello.c}, you run:
+
+\begin{lstlisting}[language=bash]
+gcc hello.c -o hello
+\end{lstlisting}
+
+The \texttt{-o hello} flag names the output executable \texttt{hello}.
+Then you run it:
+
+\begin{lstlisting}[language=bash]
+./hello
+\end{lstlisting}
+
+\section{Your First C Program}
+
+Create a file called \texttt{hello.c} and type the following:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello, world!\n");
+    return 0;
+}
+\end{lstlisting}
+
+Compile and run it.  You should see:
+
+\begin{lstlisting}
+Hello, world!
+\end{lstlisting}
+
+Let's look at each piece.
+
+\texttt{\#include <stdio.h>} tells the compiler to include the standard
+input/output library, which provides \texttt{printf} for printing.
+Think of it like Python's \texttt{import} statement.
+
+\texttt{int main()} is the function where your program starts.  Every
+C program must have exactly one \texttt{main} function.  The \texttt{int}
+means it returns an integer; \texttt{return 0} signals to the operating
+system that the program finished successfully.
+
+\texttt{printf("Hello, world!\textbackslash n");} prints a line of text.
+The \texttt{\textbackslash n} is the newline character.
+
+Notice the semicolons at the end of statements, and the curly braces
+\texttt{\{ \}} around the body of \texttt{main}.  In Python, indentation
+defines blocks; in C, curly braces do.
+
+\section{Types and Variables}
+
+In Python, you write:
+
+\begin{minted}{python}
+x = 5
+y = 3.14
+\end{minted}
+
+Python figures out the type of each variable automatically.
+
+In C, you must declare the type of every variable when you create it:
+
+\begin{lstlisting}[language=C]
+int x = 5;
+double y = 3.14;
+\end{lstlisting}
+
+This is called \emph{static typing}\index{static typing}.  Once you
+declare a variable as \texttt{int}, it can only hold integers.  The
+compiler enforces this and will refuse to compile code that mixes types
+incorrectly.
+
+The common C types are:\index{C types}
+
+\begin{description}
+\item[\texttt{int}] A whole number: \texttt{0}, \texttt{42},
+  \texttt{-7}.  Typically 4 bytes.
+\item[\texttt{double}] A floating-point number: \texttt{3.14},
+  \texttt{-0.001}.  Typically 8 bytes.  (There is also \texttt{float},
+  which uses 4 bytes and has less precision.)
+\item[\texttt{char}] A single character: \texttt{'A'}, \texttt{'z'},
+  \texttt{'7'}.  Use single quotes.
+\item[\texttt{int}] Booleans in C are just integers: \texttt{0} means
+  false, and any non-zero value means true.  You can include
+  \texttt{<stdbool.h>} to get the names \texttt{true} and \texttt{false}.
+\end{description}
+
+You can also declare a variable without immediately giving it a value:
+
+\begin{lstlisting}[language=C]
+int count;      /* declared but not initialized */
+count = 10;     /* now it has a value */
+\end{lstlisting}
+
+Warning: an uninitialized variable in C contains whatever random bytes
+happen to be in that memory location.  Unlike Python, C will not raise
+an error if you read an uninitialized variable; it will just give you
+garbage.  Always initialize your variables.
+
+Note that C uses \texttt{/* ... */} for comments, not \texttt{\#}.
+You can also use \texttt{//} for single-line comments in modern C.
+
+\section{Printing with \texttt{printf}}
+
+\texttt{printf} uses format specifiers to print different types:
+
+\begin{lstlisting}[language=C]
+int age = 17;
+double height = 1.75;
+printf("Age: %d, Height: %f\n", age, height);
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+Age: 17, Height: 1.750000
+\end{lstlisting}
+
+Common format specifiers:
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+\textbf{Specifier} & \textbf{Type} \\
+\hline
+\texttt{\%d}  & \texttt{int} \\
+\texttt{\%f}  & \texttt{double} or \texttt{float} \\
+\texttt{\%c}  & \texttt{char} \\
+\texttt{\%s}  & string (char pointer) \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Conditionals and Loops}
+
+The logic is the same as Python; only the syntax changes.
+
+\subsection{if / else}
+
+\begin{lstlisting}[language=C]
+int score = 85;
+
+if (score >= 90) {
+    printf("A\n");
+} else if (score >= 80) {
+    printf("B\n");
+} else {
+    printf("C or below\n");
+}
+\end{lstlisting}
+
+The condition must be in parentheses \texttt{( )}, and each branch is
+surrounded by curly braces \texttt{\{ \}}.
+
+\subsection{for and while loops}
+
+\begin{lstlisting}[language=C]
+for (int i = 0; i < 5; i++) {
+    printf("%d\n", i);
+}
+\end{lstlisting}
+
+A C \texttt{for} loop has three parts separated by semicolons: the
+initializer (\texttt{int i = 0}), the condition (\texttt{i < 5}), and
+the update (\texttt{i++}).  The \texttt{++} increments by 1, the same
+as \texttt{i = i + 1}.
+
+\begin{lstlisting}[language=C]
+int i = 0;
+while (i < 5) {
+    printf("%d\n", i);
+    i++;
+}
+\end{lstlisting}
+
+\section{Functions}
+
+In C, you must declare the return type and the type of each parameter:
+
+\begin{lstlisting}[language=C]
+double square(double x)
+{
+    return x * x;
+}
+
+int main()
+{
+    printf("%f\n", square(4.0));   /* prints 16.000000 */
+    printf("%f\n", square(2.5));   /* prints 6.250000  */
+    return 0;
+}
+\end{lstlisting}
+
+If a function returns nothing, its return type is \texttt{void}:
+
+\begin{lstlisting}[language=C]
+void printGreeting(char *name)
+{
+    printf("Hello, %s!\n", name);
+}
+\end{lstlisting}
+
+Functions must be defined \emph{before} they are called, or you must
+provide a \emph{forward declaration} (just the signature, ending in a
+semicolon) above \texttt{main}:
+
+\begin{lstlisting}[language=C]
+double square(double x);   /* forward declaration */
+
+int main()
+{
+    printf("%f\n", square(3.0));
+    return 0;
+}
+
+double square(double x)    /* full definition can come later */
+{
+    return x * x;
+}
+\end{lstlisting}
+
+\section{The Stack: Blackboards for Functions}
+\index{stack}\index{stack frame}
+
+Every function, while it is running, needs somewhere to store its
+local variables.  C gives each function a \emph{frame}: a reserved
+chunk of memory that holds all of that function's local variables and
+parameters.
+
+Think of a frame as a \textbf{blackboard}.  When a function starts
+running, it gets a fresh blackboard.  It can write anything it wants
+on that blackboard, create variables, change their values.  When the
+function finishes, the blackboard is \emph{erased and discarded}.
+Local variables do not survive after their function returns.
+
+Where do these frames live?  In a region of memory called the
+\emph{stack}\index{stack}.  The stack works exactly like a physical
+stack of objects: the most recently added item is always on top.  When
+\texttt{main} calls a function, that function's frame is pushed onto
+the top of the stack.  When the function returns, its frame is popped
+off, and \texttt{main}'s frame is on top again.
+
+Here is a concrete example:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+int cookingMinutes(int weightPounds)
+{
+    int minutes = 15 + 15 * weightPounds;
+    return minutes;
+}
+
+int main()
+{
+    int totalWeight = 10;
+    int gibletsWeight = 1;
+    int turkeyWeight = totalWeight - gibletsWeight;
+    int result = cookingMinutes(turkeyWeight);
+    printf("Cook for %d minutes.\n", result);
+    return 0;
+}
+\end{lstlisting}
+
+When \texttt{main} calls \texttt{cookingMinutes(9)}, the stack looks
+like this:
+
+\begin{center}
+\begin{tabular}{r|l|}
+\hline
+\textbf{cookingMinutes()} & \texttt{weightPounds = 9} \\
+                          & \texttt{minutes = 150} \\
+\hline
+\textbf{main()}           & \texttt{totalWeight = 10} \\
+                          & \texttt{gibletsWeight = 1} \\
+                          & \texttt{turkeyWeight = 9} \\
+                          & \texttt{result = ?} \\
+\hline
+\end{tabular}
+\end{center}
+
+\texttt{main}'s blackboard sits below; \texttt{cookingMinutes}'s
+blackboard sits on top of it.  The variable \texttt{minutes} inside
+\texttt{cookingMinutes} is completely separate from anything in
+\texttt{main}.  Each function only sees its own blackboard.
+
+When \texttt{cookingMinutes} returns 150, its frame is discarded.
+\texttt{main}'s frame resumes, and \texttt{result} is filled in with 150.
+
+\subsection{Parameters are copies}
+
+When you call \texttt{cookingMinutes(turkeyWeight)}, C copies the
+value of \texttt{turkeyWeight} into the new parameter
+\texttt{weightPounds} on \texttt{cookingMinutes}'s blackboard.
+Changing \texttt{weightPounds} inside the function would not change
+\texttt{turkeyWeight} in \texttt{main}.  They are separate variables.
+This is called \emph{pass-by-value}\index{pass-by-value}.
+
+\section{Addresses and Pointers}
+\index{pointer}
+
+Every variable in your program lives at some address in memory.  You
+can find out the address of a variable using the \texttt{\&} operator,
+called the \emph{address-of} operator\index{address-of operator}:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+int main()
+{
+    int i = 17;
+    printf("i stores its value at %p\n", (void *)&i);
+    return 0;
+}
+\end{lstlisting}
+
+Run this and you will see something like:
+
+\begin{lstlisting}
+i stores its value at 0x7ffeea3c4738
+\end{lstlisting}
+
+The address is printed in hexadecimal.  Your address will differ, because
+the operating system decides where in memory your variables live.
+
+A \emph{pointer}\index{pointer} is a variable that holds an address.
+If you want to store the address of an \texttt{int}, you declare a
+variable of type \texttt{int *} (``pointer to int''):
+
+\begin{lstlisting}[language=C]
+int i = 17;
+int *addressOfI = &i;
+printf("i is at %p\n", (void *)addressOfI);
+\end{lstlisting}
+
+The \texttt{*} in the declaration is part of the type; it means ``this
+variable holds an address, and the thing at that address is an
+\texttt{int}.''
+
+\subsection{Reading and writing through a pointer}
+
+Once you have a pointer, you can use the \texttt{*} operator to read
+or write the value \emph{at} the address the pointer holds.  This is
+called \emph{dereferencing}\index{dereferencing} the pointer:
+
+\begin{lstlisting}[language=C]
+int i = 17;
+int *p = &i;
+
+printf("%d\n", *p);   /* prints 17 -- reads through p  */
+
+*p = 89;              /* writes 89 to the address p holds */
+printf("%d\n", i);    /* prints 89 -- i was changed!   */
+\end{lstlisting}
+
+To summarize:
+\begin{itemize}
+\item \texttt{\&i} gives you the address of \texttt{i}.
+\item \texttt{int *p} declares a variable that can hold such an address.
+\item \texttt{*p} gives you the value stored at the address \texttt{p} holds.
+\end{itemize}
+
+\subsection{NULL pointers}
+
+Sometimes you want a pointer that does not yet point to anything.  Use
+\texttt{NULL}\index{NULL}:
+
+\begin{lstlisting}[language=C]
+int *p = NULL;   /* p points to nothing */
+
+if (p) {
+    printf("%d\n", *p);     /* only runs if p is non-null */
+} else {
+    printf("p is null\n");
+}
+\end{lstlisting}
+
+A null pointer is simply the address zero.  \textbf{Never dereference
+a null pointer}, your program will crash.  Always check before
+dereferencing a pointer that might be null.
+
+\section{Pass-by-Reference}
+\index{pass-by-reference}
+
+Recall that when you call a function in C, arguments are \emph{copied}
+into the function's frame.  But what if you want a function to modify a
+variable in the calling function?  You pass the \emph{address} of that
+variable instead of its value.  The function can then write to that
+address.
+
+There is a standard C function called \texttt{modf()}\index{modf} that
+splits a floating-point number into its integer part and its fractional
+part, and needs to return \emph{both}.  Since a function can only return
+one value, it returns the fractional part and writes the integer part to
+an address you supply:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+    double pi = 3.14;
+    double integerPart;
+    double fractionPart;
+
+    /* Pass the address of integerPart so modf can write there */
+    fractionPart = modf(pi, &integerPart);
+
+    printf("Integer part:  %f\n", integerPart);
+    printf("Fraction part: %f\n", fractionPart);
+    return 0;
+}
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+Integer part:  3.000000
+Fraction part: 0.140000
+\end{lstlisting}
+
+Here is another way to think about it.  Imagine you need to give a spy
+an assignment.  You say: ``I've left a length of steel pipe at the foot
+of the angel statue in the park.  When you have the information, roll
+it up and leave it in the pipe.  I'll pick it up Tuesday.''  In the spy
+business, this is called a \emph{dead drop}.
+
+Pass-by-reference works the same way.  You are not giving the function
+the data directly, you are giving it a \emph{location} where it can
+leave the result.
+
+Here is our own pass-by-reference function that converts meters to feet
+and inches:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+#include <math.h>
+
+void metersToFeetAndInches(double meters,
+                            int *ftPtr,
+                            double *inPtr)
+{
+    double rawFeet = meters * 3.281;
+    int feet = (int)floor(rawFeet);
+    double inches = (rawFeet - feet) * 12.0;
+
+    if (ftPtr) *ftPtr = feet;
+    if (inPtr) *inPtr = inches;
+}
+
+int main()
+{
+    int feet;
+    double inches;
+    metersToFeetAndInches(1.8, &feet, &inches);
+    printf("%d ft %f in\n", feet, inches);
+    return 0;
+}
+\end{lstlisting}
+
+The caller declares the variables it wants filled in (\texttt{feet},
+\texttt{inches}), passes their addresses to the function, and the
+function writes the results there.
+
+\section{Structs: Grouping Related Data}
+\index{struct}
+
+A \emph{struct} lets you bundle several related values into a single
+named type.  In Python you might use a dictionary for this; in C, a
+struct is the fundamental grouping mechanism.
+
+\begin{lstlisting}[language=C]
+struct Person {
+    double heightInMeters;
+    int weightInKilos;
+};
+\end{lstlisting}
+
+This defines a new type called \texttt{struct Person}.  You can then
+create variables of that type:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+struct Person {
+    double heightInMeters;
+    int weightInKilos;
+};
+
+double bodyMassIndex(struct Person p)
+{
+    return p.weightInKilos / (p.heightInMeters * p.heightInMeters);
+}
+
+int main()
+{
+    struct Person mikey;
+    mikey.heightInMeters = 1.70;
+    mikey.weightInKilos  = 96;
+
+    struct Person aaron;
+    aaron.heightInMeters = 1.97;
+    aaron.weightInKilos  = 84;
+
+    printf("mikey BMI: %f\n", bodyMassIndex(mikey));
+    printf("aaron BMI: %f\n", bodyMassIndex(aaron));
+    return 0;
+}
+\end{lstlisting}
+
+You access the members of a struct using a dot: \texttt{mikey.heightInMeters}.
+
+When \texttt{main} is running, the stack looks like this:
+
+\begin{center}
+\begin{tabular}{r|l|}
+\hline
+\textbf{main()} & \texttt{mikey.heightInMeters = 1.70} \\
+                & \texttt{mikey.weightInKilos = 96} \\
+                & \texttt{aaron.heightInMeters = 1.97} \\
+                & \texttt{aaron.weightInKilos = 84} \\
+\hline
+\end{tabular}
+\end{center}
+
+The two \texttt{Person} structs live right inside \texttt{main}'s
+frame on the stack.
+
+\section{The Heap}
+\index{heap}
+
+The stack is fast and automatic, but it has two constraints: stack frames
+are destroyed when functions return, and the sizes of all stack-allocated
+variables must be known at compile time.
+
+The \emph{heap} is a separate region of memory that has neither
+constraint.  Memory on the heap persists until you explicitly release
+it, and can be any size determined at runtime.
+
+In C, you claim heap memory with \texttt{malloc}\index{malloc} and
+release it with \texttt{free}\index{free}.
+
+\begin{lstlisting}[language=C]
+#include <stdlib.h>
+
+struct Person *mikey = malloc(sizeof(struct Person));
+\end{lstlisting}
+
+\texttt{malloc} asks the system for enough heap memory to hold a
+\texttt{Person} struct and returns the address of that memory.
+The variable \texttt{mikey} is a \emph{pointer} to a \texttt{Person},
+it lives on the stack, but the struct it points to lives on the heap.
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{|c|}
+\hline
+\textbf{The Stack} \\
+\hline
+\texttt{main()} \\
+\texttt{mikey} = \framebox{\strut\quad} \\
+\hline
+\end{tabular}
+\quad $\longrightarrow$ \quad
+\begin{tabular}{|l|}
+\hline
+\textbf{The Heap} \\
+\hline
+\texttt{struct Person} \\
+\texttt{heightInMeters = 1.70} \\
+\texttt{weightInKilos = 96} \\
+\hline
+\end{tabular}
+\caption{A pointer on the stack pointing to a struct on the heap}
+\end{figure}
+
+\subsection{The arrow operator}
+
+When you have a pointer to a struct, you access its members using
+\texttt{->}\index{arrow operator} instead of a dot:
+
+\begin{lstlisting}[language=C]
+mikey->heightInMeters = 1.70;
+mikey->weightInKilos  = 96;
+\end{lstlisting}
+
+The code \texttt{mikey->weightInKilos} means: ``dereference the pointer
+\texttt{mikey} to get the struct, then access its \texttt{weightInKilos}
+member.''  It is shorthand for \texttt{(*mikey).weightInKilos}.
+
+\subsection{Releasing heap memory}
+
+When you are done with heap-allocated memory, you must release it with
+\texttt{free}:
+
+\begin{lstlisting}[language=C]
+free(mikey);
+mikey = NULL;   /* good habit: prevents accidental reuse */
+\end{lstlisting}
+
+After \texttt{free}, the memory is returned to the heap for reuse.
+Setting the pointer to \texttt{NULL} prevents you from accidentally
+using it again.
+
+If you forget to call \texttt{free}, the memory is never returned.
+This is called a \emph{memory leak}\index{memory leak}.  In a
+short-lived program it may not matter, but in a long-running program
+it can consume all available memory.
+
+\subsection{A complete heap example}
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Person {
+    double heightInMeters;
+    int weightInKilos;
+};
+
+double bodyMassIndex(struct Person *p)
+{
+    return p->weightInKilos / (p->heightInMeters * p->heightInMeters);
+}
+
+int main()
+{
+    struct Person *mikey = malloc(sizeof(struct Person));
+    mikey->heightInMeters = 1.70;
+    mikey->weightInKilos  = 96;
+
+    printf("mikey BMI: %f\n", bodyMassIndex(mikey));
+
+    free(mikey);
+    mikey = NULL;
+
+    return 0;
+}
+\end{lstlisting}
+
+\texttt{bodyMassIndex} now takes a \texttt{struct Person *} instead of
+a \texttt{struct Person} by value.  This avoids copying the struct.
+Functions that work on heap-allocated data almost always take pointers.
+
+\subsection{Heap arrays}
+\index{heap!arrays}
+
+You can also allocate a contiguous block of memory for multiple values.
+Use \texttt{malloc} with a count:
+
+\begin{lstlisting}[language=C]
+/* Allocate space for 1000 doubles on the heap */
+double *buffer = malloc(1000 * sizeof(double));
+
+buffer[0] = 3.14;
+buffer[1] = 2.72;
+
+free(buffer);
+buffer = NULL;
+\end{lstlisting}
+
+A pointer to the first element is all you need to work with the whole
+array.  The heap memory is contiguous, so \texttt{buffer[0]},
+\texttt{buffer[1]}, and so on are laid out one after another.
+
+\section{What Python Objects Actually Are}
+
+You now know everything you need to understand what a Python object is,
+under the hood.
+
+When Python creates an object, it:
+\begin{enumerate}
+\item Allocates a struct on the heap large enough to hold the object's
+  data (its instance variables).
+\item Stores in that struct a pointer to the class's method table,
+  so that method calls can find the right code.
+\item Returns a pointer to that struct.
+\end{enumerate}
+
+Your Python variable \texttt{obj} is, at the machine level, a pointer
+to a heap-allocated struct.  When Python's garbage collector determines
+that nothing points to an object anymore, it calls the equivalent of
+\texttt{free} to release that memory.
+
+The next chapter introduces C++ classes, and with this memory model
+in hand, you will implement linked lists, trees, and hash tables from
+scratch.
+
+\section{Exercises}
+
+\begin{enumerate}
+
+\item Write a C function \texttt{celsiusToFahrenheit} that takes a
+  \texttt{double} temperature in Celsius and returns the equivalent in
+  Fahrenheit.  Call it from \texttt{main} for the values 0, 20, 37,
+  and 100, and print each result.
+
+\item Write a function \texttt{swap} that takes two \texttt{int}
+  pointers and swaps the values at the two addresses.  Test it so that
+  after calling \texttt{swap(\&a, \&b)}, the values of \texttt{a} and
+  \texttt{b} have been exchanged.
+
+\item Write a struct \texttt{Point} with \texttt{double} members
+  \texttt{x} and \texttt{y}.  Write a function \texttt{distance} that
+  takes two \texttt{struct Point *} pointers and returns the Euclidean
+  distance between them.  Allocate two points on the heap, fill in
+  their coordinates, print the distance, and then free the memory.
+
+\item \textbf{Memory leak hunt.}  The following program has a memory
+  leak.  Identify and fix it.
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int value;
+};
+
+void printValue(int x)
+{
+    struct Node *n = malloc(sizeof(struct Node));
+    n->value = x;
+    printf("%d\n", n->value);
+}
+
+int main()
+{
+    for (int i = 0; i < 5; i++) {
+        printValue(i);
+    }
+    return 0;
+}
+\end{lstlisting}
+
+\item A \texttt{struct tm} is defined in \texttt{<time.h>} and holds a
+  broken-down calendar time.  The function \texttt{time(NULL)} returns
+  the number of seconds since midnight, January 1, 1970.
+  The function \texttt{localtime\_r(\&seconds, \&now)} fills a
+  \texttt{struct tm} with the corresponding date and time.  Here is a
+  snippet to get you started:
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+#include <time.h>
+
+int main()
+{
+    long secondsSince1970 = time(NULL);
+    struct tm now;
+    localtime_r(&secondsSince1970, &now);
+    printf("The time is %d:%d:%d\n",
+           now.tm_hour, now.tm_min, now.tm_sec);
+    return 0;
+}
+\end{lstlisting}
+
+  Look up the other fields of \texttt{struct tm} and modify the
+  program to print today's full date.  Then modify it to print the
+  date that falls exactly 4,000,000 seconds from now.  (Hint:
+  \texttt{tm\_mon} is 0-indexed, so January is 0.)
+
+\end{enumerate}
