@@ -1267,6 +1267,11 @@ width 0pt
 \setlength{\parskip}{\baselineskip}
 \setlength{\parindent}{0pt}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\newtheorem{case}{Case}
+\newtheorem{subcase}{Case}[case]
+\newtheorem{theorem}{Theorem}
+
 \usepackage{esint} % Provides \oiint
 
 % https://tikz.net/electric_circuit_capacitors/

@@ -1,0 +1,234 @@
+\chapter{Proofs}
+\section{Introduction}
+
+
+Let's talk about \newterm{proofs}. In mathematics, a proof shows that a new statement aligns with all true statements which have come before it. A proof is a sequence of statements that starts with some assumptions and ends with a new, unproven conclusion. If the conclusion is true, then we say the proof is \newterm{valid}.\index{proofs}
+
+In mathematics, a proof shows that a new statement aligns with all true statements which have come before it.
+
+The general structure will follow this pattern:
+We want to prove that $P \implies Q$ (this is said statement $P$ \textit{implies} statement $Q$).
+
+We will assume some statement is true, and work to prove a different statement is true based on our assumptions and the rules of logic.
+
+Here are some definitions to get us started:
+\begin{itemize}
+    \item A \newterm{proposition} is a statement that is either true or false.\index{proposition}
+    \item A \newterm{theorem} is a proposition that has been proven to be true.\index{theorem}
+    \item A \newterm{lemma} is a \textit{helper} proposition that is proven or known to be true and is used in the proof of a theorem.\index{lemma}
+    \item A \newterm{corollary} is a proposition that follows directly from a theorem.\index{corollary}
+    \item An \newterm{implication} is a theorem that relies on one proposition being equivalent to another.
+    \item $P$ is the \newterm{hypothesis} or \newterm{premise}.
+    \item $Q$ is the \newterm{conclusion}.
+    \item The symbol $\forall$ represents the mathematical symbol for ``for all'', often used to iterate through all numbers of a subset.
+    \item The symbol $\exists$ represents the mathematical symbol ``there exists''.
+    \item
+\end{itemize}
+\section{Trivial Proof}
+The easist of proof is a \textbf{Trivial Proof}.  If we know that $Q$ is true always, we trivally know that $P$ is true, and that $P$ implies $Q$. This is most common when $P$ and $Q$ are unrelated statements with no affect on each other.
+
+\begin{theorem}
+    If $Q$ is true, then $P \implies Q$ is true for any proposition $P$.
+\end{theorem}
+
+\begin{proof}
+    Let $P$ be the statement ``The sky is blue'' and $Q$ be the statement ``$2 + 2 = 4$''. Since $Q$ is always 1true, the implication $P \implies Q$ is true regardless of the truth value of $P$.
+
+    This follows directly from the definition of logical implication (or can be verified via a truth table), where an implication is true whenever the consequent is true.
+\end{proof}
+%ADD:exercise
+
+\section{Direct Proof}
+A \textbf{Direct Proof} involves assuming the hypothesis ($P$) is true and then showing that the conclusion ($Q$) must also be true. This is done sequentially using logical deductions, equivallences, and previously established defintions.
+
+To walk tbrough an example, let's first define even and odd numbers.
+\begin{mdframed}[frametitle = {Even and Odd Numbers}, style = important]\index{even}\index{odd}
+    We say an integer $n$ is \newterm{even} if there exists an integer $k$ such that $n = 2k$.
+
+    We say an integer $n$ is \newterm{odd} if there exists an integer $k$ such that $n = 2k + 1$.
+\end{mdframed}
+\begin{theorem}
+    The sum of two even integers is even.
+\end{theorem}
+
+\begin{proof}
+    Let $a$ and $b$ be even integers. Then there exist integers $k$ and $m$ such that
+    \[
+        a = 2k \quad \text{and} \quad b = 2m.
+    \]
+    Consider their sum:
+    \[
+        a + b = 2k + 2m = 2(k + m).
+    \]
+    Since $k + m$ is an integer, it follows that $a + b$ is even.
+\end{proof}
+% ADD: exercise in book
+\section{Proof By cases}
+A \textbf{proof by cases} is a technique where you split a problem into a finite number of distinct scenarios that cover all possibilities, then prove the statement in each scenario.\index{proof by cases}
+
+The structure is generally as follows:
+\begin{enumerate}
+    \item Identify all possible cases (they must be exhaustive (cover all cases) and non-overlapping).
+    \item Prove the statement separately in each case. Usually, a direct proof is used in each case.
+    \item Conclude the statement holds in the general case.
+\end{enumerate}
+
+Let's prove the following statement using a proof by cases:
+\begin{theorem}
+    For any integer $n$, $n^2$ is even or odd.
+\end{theorem}
+
+\begin{proof}
+    Every integer is either even or odd. Therefore there are only two cases to consider:
+    \begin{case}
+        $n$ is even. Then, there exists an integer $k$ such that $n = 2k$. Therefore,
+        \[
+            n^2 = (2k)^2 = 4k^2 = 2(2k^2)
+        \]
+        which is even.
+    \end{case}
+    \begin{case}
+        $n$ is odd. Then, there exists an integer $k$ such that $n = 2k + 1$. Therefore,
+        \[
+            n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2+2k) + 1
+        \]
+        which is odd.
+    \end{case}
+    Since these cases cover all integers, the claim holds for all integers $n$.
+\end{proof}
+
+\begin{Exercise}[title={Absolute Value Proof}, label={ex:abs_val}]
+    Prove the following claim using a proof by cases:
+    \begin{theorem}
+        $$\begin{array}{c} |x| = \begin{cases} x & x \ge 0 \\ -x & x < 0 \end{cases} \end{array}$$
+    \end{theorem}
+\end{Exercise}
+\begin{Answer}[ref={ex:abs_val}]
+    \begin{proof}
+        \begin{case}
+            Suppose $x\ge 0$. By the definition of absolute value, $|x|$ represents the distance of $x$ from $0$ on the real line. Since $x$ is nonnegative, this distance is simply $x$. Hence, $|x| = x$. $0$
+        \end{case}
+        \begin{case}
+            In this case, $x$ is negative, so its distance from $0$ is given by its additive inverse. Thus, $|x| = -x$.
+        \end{case}
+    \end{proof}
+    Notice how explicit we are being with our proof, using words and mathematical syntax.
+\end{Answer}
+\section{Disproof By Counter-example}
+A proof by counterexample,more often called a \textbf{disproof by counterexample} is used to show a statement is false by finding one case or instance (a \newterm{counterexample}) where it fails.\index{counterexample}\index{disproof by counterexample}
+
+\begin{theorem}
+    All even numbers are divisible by $4$.
+\end{theorem}
+\begin{proof}
+    Consider the integer $2$. It, by definition, is even, as $\exists \,  k=1 \text{ s.t } 2\cdot 1 = 2$, which is even.
+
+    However, we must check if $2$ is divisible by $4$. An integer is divisible by $4$ if it can be written in the form $4m$ for some integer $m$. Suppose, for purposes of disproving, that $2 = 4m$ for some integer $m$. Then
+    \[
+        m = \frac{2}{4} = \frac{1}{2},
+    \]
+    which is not an integer. Hence, $2$ is not divisible by $4$.
+
+    Thus, we have found an even integer that is not divisible by $4$, contradicting the claim that \emph{all} even integers have this property. Therefore, the statement is false.
+\end{proof}
+\section{Proof By Contraposition}
+Proof by contraposition is a method used to prove an implication of the form
+\[
+    P \implies Q.
+\]
+Instead of proving this statement directly, we prove its \textbf{contrapositive}:
+\[
+    \neg Q \implies \neg P.
+\]
+The key idea is that an implication and its contrapositive are logically equivalent. We assume $Q$ is false ($\neg Q$ is true), and directly show that $P$ is false ($\neg P$ is true). If the negation of $Q$ is true and the negation of $P$ is true, it is equivalent to $P$ and $Q$ being valid:
+$$\neg Q \implies \neg P \iff P \implies Q$$
+
+This may make more sense with an example:
+\begin{theorem}
+    Let $n$ be an integer. If $3n+2$ is even, then $n$ is even.
+\end{theorem}
+\begin{proof}
+    Using proof by contraposition, we will prove the above theorem. Assume $n$ is odd. Then, $\exists \, k \text{ s.t } n=2k+1$. Then, through mathematical operations,
+    Substitute into $3n+2$:
+    \begin{align*}
+        3n + 2 & = 3(2k+1) + 2   \\
+               & = 6k + 3 + 2    \\
+               & = 6k + 5        \\
+               & = 2(3k + 2) + 1
+    \end{align*}
+    which is odd.
+
+    Therefore, the contrapositive is true, and hence the original statement follows.
+\end{proof}
+\section{Proof By Contradiction}
+Rationality states that you cannot believe two ideas which oppose each other at the same time. This is called a \newterm{contradiction}. For example, the statement ``$P$ is true and $P$ is false'' is a contradiction.
+
+A proof by contradiction is a method of proving a statement by assuming the opposite of what you want to prove and then showing that this assumption leads to a contradiction or impossibility, represented by $\rightarrow \leftarrow$. This method is often used when direct proof is difficult or impossible. To prove the statement $P \implies Q$, we assume $P$ is true and $\neg Q$ is true. We then show this leads to a contradiction ($\rightarrow \leftarrow$), which proves that if $P$ is true, $Q$ must also be true. One of these contradictions looks like:
+\begin{itemize}
+    \item $1 = 0$ (or any similar false integer statement)
+    \item $x \in A \wedge x \notin A$ (for set theory)
+    \item $P \wedge \neg P$ (for logic)
+\end{itemize}
+
+We will use a lot of contradictory statements and proofs when we talk about thought experiments and paradoxes!
+\begin{theorem}
+    Let $n$ be an integer. If $3n+2$ is even, then $n$ is even.
+\end{theorem}
+\begin{proof}
+    Assuming $3n+2$ is even. Further, for contradiction, assume $n$ is odd.
+    Then, $\exists \, k \text{ s.t } n=2k+1$. Then, through mathematical operations,
+    \begin{align*}
+        3n + 2 & = 3(2k+1) + 2   \\
+               & = 6k + 3 + 2    \\
+               & = 6k + 5        \\
+               & = 2(3k + 2) + 1
+    \end{align*}
+    which is odd. This contradicts our assumption that $3n+2$ is even. Therefore our assumption that $n$ is odd must be false, and $n$ is even.
+\end{proof}
+
+%ADD: add proof exercise
+
+\section{Proof By Induction}
+A \newterm{proof by induction} is a methodology of proof that involves a (usually) proving a recursively defined statement. We use what is called the Principle of Mathematical Induction to assist with these proofs. We start with a simple case of the problem. Often, if we can prove the simplest case, we can prove all other cases by showing the each case depends on the previous one.
+
+Recursion is useful in both mathematics and computer science because it provides a way to define a problem as correct by breaking it into smaller, similar subproblems. In mathematics, recursive definitions (such as sequences, factorials, or tree structures) are able to use proof techniques like induction, as their formulas rely on the previous term.
+
+In computer science, recursion simplifies the implementation of algorithms that operate on hierarchical or self-similar data, such as trees (which can be broken into smaller trees), graphs (which can be broken into subgraphs), and divide-and-conquer algorithms.
+
+In general, there are 5 steps to this proof structure:
+\begin{enumerate}
+    \item Define a specific proposition in the form of \textit{$P(n)$ works correctly for all valid inputs of size $n$}. This is often given to you.
+    \item Define a \textit{base case}. Just as in recursive definitions, proofs by induction us a base case as an ``exit condition'', or a start point to build off of. The base case proves that the proposition works for the smallest input size, which is usually $n=0$ or $n=1$. We call this $P(0)$.
+    \item Define an \newterm{inductive hypothesis}. Here, we assume the proposition remains correct for size $k$, some integer $k\ge 0$. We don't actually prove anything yet!
+    \item \newterm{Inductive Step}. Using the inductive hypothesis, prove $P(k+1)$, which states that proposition is correct for size $k+1$. Note here, that most times, the inductive step reduces the problem to a smaller, already proved case size. We say that proving $P(k+1)$ is recursively defined by $P(k)$.
+    \item Conclude the proof by stating \textit{By the Principle of Mathematical Induction, the proposition holds for all $n \ge P(0)$}, where $P(0)$ is the base case size.
+\end{enumerate}
+
+Let's look at an example to clear things up!
+\begin{theorem}
+    For all integers $n \ge 4$, $2^n < n!$. Equivalently, for all integers $n \ge 0$, $2^{n+4} < (n+4)!$.
+\end{theorem}
+\begin{proof}
+
+    We prove the statement by induction on $n$.
+
+    \paragraph{Basis Step.}
+    Let $n=4$. This is our smallest input value within our subset. Then we have $2^4 = 16 \text{ and } 4! = 24$. $16 < 24$, so the proposition holds for the basis step.
+    \paragraph{Inductive Hypothesis.}
+    Suppose for some $k\in \mathbb{Z}_{\ge 4},\, 2^k < k!$.
+    \paragraph{Inductive Step.}
+    We want to show $P(k+1)$, such that $2^{k+1} < (k+1)$. Let $n=k+1$. Then we have $$2^{k+1} = 2 \cdot 2^k$$ By the hypothesis, $$2 \cdot 2^k < 2 \cdot k!$$. Since $k\ge 4$, $k+1 < 2$, making $$2\cdot k! < (k+1)k! = (k+1)!$$. Therefore, by the PMI, the proposition holds for all $n\ge 4$.
+\end{proof}
+% ADD: in book exercise
+% https://en.wikipedia.org/wiki/Mathematical_induction#Sum_of_consecutive_natural_numbers
+
+\section{Summary}
+In this chapter we talked about mathematical proofs. A proof is a logical argument that starts at a proposition and leads to a conclusion $P\implies Q$.
+There are many proof methods, even some we did not talk about in this chapter, so make sure to watch addition videos for your own learning. The most important proofs techniques covered are:
+\begin{itemize}
+    \item Direct Proofs, where we assume the starting statement $P$ is true, and use logical to derive to $Q$
+    \item Contraposition, where we prove $\neg Q \implies \neg P$, which is equivalent to $P \implies Q$
+    \item Contradiction, where we prove by deriving impossibility from an assumption that the proposition could be false. This will come back in our paradoxes chapter!
+    \item Induction, where a base case is used as a starting step to reach all other steps. These will also come back in my computer science chapters!
+\end{itemize}
+Overall, this chapter builds up many of the methodologies needed for proofs used to rigorously verify mathematical claims.
