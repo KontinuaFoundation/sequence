@@ -1,15 +1,15 @@
 \chapter{Functions and Their Graphs}
 
-Functions are a major part of science, engineering, and math. You can think of a function as a machine: you put something into the
+Functions are a major part of science, engineering, and math. You can think of a function as a machine: you put something into the\index{function}
 machine, it processes it, and out comes something else: a product. Just as we
 often use the variable $x$ to stand in for a number, we often use the
-variable $f$ to stand in for a function. $f(x)$ is said as ``f of x``.
+variable $f$ to stand in for a function. $f(x)$ is said as ``f of x``. However, this could be any letter or word that takes an input $x$, maybe even $\mathrm{zebra}(x)$!
 % One of my teachers told me half of understanding math is understanding mathmaticions are just lazy, maybe a good add in somewhere
 
 For example, we might ask, ``Let the function $f$ be defined like this:
 
 \begin{equation*}
-f(x) = -5x^2 + 12x + 2
+  f(x) = -5x^2 + 12x + 2
 \end{equation*}
 
 What is the value of $f(3)$, said as ``f of 3``?
@@ -22,15 +22,21 @@ However, some functions are not defined for every possible input. For example:
   f(x) = \frac{1}{x}
 \end{equation*}
 
-  This is defined for any $x$ except 0, because you can't divide 1 by 0. The set of values that a function can process is called its \textit{domain}, and resulting output values are called the range.
-  It is important to note that functions have only one \emph{output} for each \emph{input}. However, multiple inputs can have the same output. 
-  A relationship where one input can result in the more than one output is not a function, but a relation. This can be proven by the \hyperref[sec:vertical]{vertical line test}.
+This is defined for any $x$ except 0, because you can't divide 1 by 0. The set of values that a function can process is called its \textit{domain}, and resulting output values are called the range.
+It is important to note that functions have only one \emph{output} for each \emph{input}. However, multiple inputs can have the same output.\index{domain}
+A relationship where one input can result in the more than one output is not a function, but a relation. This can be proven by the \hyperref[sec:vertical]{vertical line test}.
 % some good images could be found here: https://www.ck12.org/book/ck-12-algebra-i-honors/section/3.1/ 
 
 \begin{Exercise}[title={Domain of a function}, label=function_domain]
 
-  Let the function $f$ be given by $f(x) = \sqrt{x - 3}$.  What is its domain?
 
+  \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        Let the function $f$ be given by $f(x) = \sqrt{x - 3}$.  What is its domain?
+        \vfil}
+  \end{center}
 \end{Exercise}
 \begin{Answer}[ref=function_domain]
   You can only take the square root of nonnegative numbers, so the
@@ -41,12 +47,13 @@ However, some functions are not defined for every possible input. For example:
 \section{Graphs of Functions}
 
 If you have a function, $f$, its graph is the set of pairs $(x, y)$
-such that $y = f(x)$.  We usually draw a picture of this set, called a \textit{graph}. 
+such that $y = f(x)$.  We usually draw a picture of this set, called a \textit{graph}.
 The graph not only includes the picture, but also the values of x and y used to create it.
 
 Here is the graph of the function $f(x) = -5x^2 + 12x + 2$:
-
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     \begin{axis}[
         xmin=-1,xmax=3.5,
         ymin=-10,ymax=11,
@@ -55,17 +62,23 @@ Here is the graph of the function $f(x) = -5x^2 + 12x + 2$:
         axis line style=<->,
         xlabel={$x$},
         ylabel={$y$},
-        ]
-        \addplot[no marks,sdkblue,<->] expression[domain=-0.7:3.05,samples=100]{(-5)*(x^2) + (12 * x) + 2}; 
+      ]
+      \addplot[thick,no marks,sdkblue,<->] expression[domain=-0.7:3.05,samples=100]{(-5)*(x^2) + (12 * x) + 2};
     \end{axis}
-\end{tikzpicture}
+  \end{tikzpicture}
+  \caption{The function $f(x) = -5x^2 + 12x + 2$ \textit{graphed} on an $xy$-plane from $x=-1$ to $x=3$. The inputs $x$ are graphed along the $x$-axis, and the output of the function $f(x)$ is plotted along the $y$-axis.}
+  \label{fig:graphed1}
+\end{figure}
+
 
 (Note that this is just part of the graph; it goes infinitely in both
 directions. Remember your vectors!)
 
 Here is the graph of the function $f(x) = \frac{1}{x}$:
 
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     \begin{axis}[
         xmin=-7,xmax=7,
         ymin=-7,ymax=7,
@@ -74,40 +87,52 @@ Here is the graph of the function $f(x) = \frac{1}{x}$:
         axis line style=<->,
         xlabel={$x$},
         ylabel={$y$},
-        ]
-        \addplot[no marks,sdkblue,<->] expression[domain=-6.5:-0.15,samples=100]{1/x}; 
-        \addplot[no marks,sdkblue,<->] expression[domain=0.15:6.5,samples=100]{1/x}; 
+      ]
+      \addplot[thick,no marks,sdkblue,<->] expression[domain=-6.5:-0.15,samples=100]{1/x};
+      \addplot[thick,no marks,sdkblue,<->] expression[domain=0.15:6.5,samples=100]{1/x};
     \end{axis}
-\end{tikzpicture}
-To draw a graph, take each x value (usually in increments of 1) and determine its corresponding y value. 
-Then, plot those points on a graph, using the origin as the starting point. 
-% do we assume students know how to graph?
+  \end{tikzpicture}
+  \caption{The function $f(x) = \frac{1}{x}$ graphed on a coordinate plane.}
+  \label{fig:graphed2}
+\end{figure}
+Notice the \newterm{asymptotes} at $y=0$ and $x=0$. Here, the function is undefined at $x=0$ and $y=0$, but is continually approaching it. It never actually reaches these values though! $f(0)$ is not defined as you cannot divide by zero (recall division rules) and as $x$ is increasing, $f(x)$ gets infinitesimally small but never equal to zero.\index{asymptote} We will talk more about these in the rational functions chapter.
+
+To draw a graph, take each x value (usually in increments of 1) and determine its corresponding y value.
+Then, plot those points on a graph, using the origin as the starting point.
 \begin{Exercise}[title={Draw a graph}, label=draw_graph]
 
-  Let the function $f$ be given by $f(x) = -3x + 3$. Sketch its graph.
-% More space needed in exercise box
+  \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        Let the function $f$ be given by $f(x) = -3x + 3$. Sketch its graph.
+        \vfil}
+  \end{center}
 \end{Exercise}
 \begin{Answer}[ref=draw_graph]
 
-  The graph of this function is a line, its slope is -3, and it intersects the y axis at $(0, 3)$.
+  The graph of this function is a line, its slope is $-3$, and it intersects the y axis at $(0, 3)$.
 
-\begin{tikzpicture}
-    \begin{axis}[
-        xmin=-1,xmax=3,
-        ymin=-7,ymax=7,
-        xtick={1},
-        ytick={3},
-        axis x line=middle,
-        axis y line=middle,
-        axis line style=<->,
-        xlabel={$x$},
-        ylabel={$y$},
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+          xmin=-1,xmax=3,
+          ymin=-7,ymax=7,
+          xtick={1},
+          ytick={3},
+          axis x line=middle,
+          axis y line=middle,
+          axis line style=<->,
+          xlabel={$x$},
+          ylabel={$y$},
         ]
-        \addplot[no marks,sdkblue,<->] expression[domain=-0.75:2.74,samples=100]{-3 * x + 3}; 
-    \end{axis}
-\end{tikzpicture}
-  
-  
+        \addplot[thick,no marks,sdkblue,<->] expression[domain=-0.75:2.74,samples=100]{-3 * x + 3};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{The resulting graph of $f(x)-3x+3$.}
+    \label{fig:ex1ans}
+  \end{figure}
 \end{Answer}
 
 
@@ -116,8 +141,9 @@ Then, plot those points on a graph, using the origin as the starting point.
 
 Note that not all sets can be expressed as graphs of functions.  For
 example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
-
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     \begin{axis}[
         xmin=-3.5,xmax=3.5,
         ymin=-3.5,ymax=3.5,
@@ -127,38 +153,44 @@ example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
         axis line style=<->,
         xlabel={$x$},
         ylabel={$y$},
-        ]
-        \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)}; 
-        \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)}; 
+      ]
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)};
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)};
     \end{axis}
-\end{tikzpicture}
+  \end{tikzpicture}
+  \caption{The graph of $x^2 + y^2 = 9$.}
+  \label{fig:not_a_func}
+\end{figure}
 
 This cannot be the graph of a function, because what would $f(0)$ be? 3
 or -3?  This set fails what we call ``the vertical line test'': If any
 vertical line contains more than one point from the set, it isn't the graph
 of a function.  For example, the vertical line $x = 2$ would cross the graph twice:
-\begin{center}
-  
+
+\begin{figure}[H]
+  \centering
   \begin{tikzpicture}
     \begin{axis}[
-      xmin=-3.5,xmax=3.5,
-      ymin=-3.5,ymax=3.5,
-      ytick={-3,-2,-1,0,1,2,3},
-      axis x line=middle,
-      axis y line=middle,
-      axis line style=<->,
-      xlabel={$x$},
-      ylabel={$y$},
+        xmin=-3.5,xmax=3.5,
+        ymin=-3.5,ymax=3.5,
+        ytick={-3,-2,-1,0,1,2,3},
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$x$},
+        ylabel={$y$},
       ]
-      \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)}; 
-      \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)};
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{sqrt(9 - x^2)};
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{-1 * sqrt(9 - x^2)};
       \addplot [thick, dashed] coordinates {(2,-2.5)(2,2.5)};
-      
+
     \end{axis}
-    
+
   \end{tikzpicture}
-\end{center}
-%might be a good place to talk about even vs odd functions
+  \caption{Vertical line test on $x^2 + y^2 = 9$.}
+  \label{fig:vlt_on_circle}
+\end{figure}
+
 \index{vertical line test}
 
 \section{Inverses}
@@ -170,10 +202,11 @@ into $x$.
 For example, let $f(x) = 5x + 1$. Its inverse is
 $f^{-1}(x) = (x - 1)/5$. (Spot check it: $f(3) = 16$ and $f^{-1}(16) = 3$)
 
-Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =
-\sqrt[3]{x}$. Let's plot the function (solid line) and its inverse (dashed):
+Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =  \sqrt[3]{x}$. Let's plot the function (solid line) and its inverse (dashed):
 
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     \begin{axis}[
         xmin=-3.5,xmax=3.5,
         ymin=-3.5,ymax=3.5,
@@ -183,12 +216,16 @@ Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =
         axis line style=<->,
         xlabel={$x$},
         ylabel={$y$},
-        ]
-        \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{x^3}; 
-        \addplot[no marks,sdkblue,dashed] expression[domain=0:3,samples=100]{x^(1/3)}; 
-        \addplot[no marks,sdkblue,dashed] expression[domain=-3:0,samples=100]{-1 * (-1 * x)^(1/3)}; 
+      ]
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{x^3};
+      \addplot[thick,no marks,sdkblue,dashed] expression[domain=0:3,samples=100]{x^(1/3)};
+      \addplot[thick,no marks,sdkblue,dashed] expression[domain=-3:0,samples=100]{-1 * (-1 * x)^(1/3)};
     \end{axis}
-\end{tikzpicture}
+  \end{tikzpicture}
+  \caption{The function $f(x) = x^3$ and it's inverse.}
+  \label{fig:inv1}
+\end{figure}
+
 
 The inverse is the same as the function, just with its axes swapped.
 The inverse function is \emph{reflected} across the line $y=x$. \index{reflections}
@@ -198,32 +235,36 @@ solve for $y$.
 For example, if you are given the function $f(x) = 5x + 1$, its graph
 is all $(x,y)$ such that $y = 5x + 1$.  The graph of its inverse is
 all $(x, y)$, such that $x = 5y + 1$. Solving for $y$ gives you $y = (x -
-1)/5$. So we can say that $f^{-1}(x) = (x - 1)/5$, QED.
+  1)/5$. So we can say that $f^{-1}(x) = (x - 1)/5$, QED.
 
 Not every function has an inverse.  For example, $f(x) = x^2$.  Note
 that $f(2) = f(-2) = 4$.  What would $f^{-1}(4)$ be? 2 or -2?  This
 implies the ``horizontal line test'': If any horizontal line contains
 more than one point of a function's graph, that function has no
-inverse. If a function passes the horizontal line test, it is called 
+inverse. If a function passes the horizontal line test, it is called
 "one-to-one", meaning there is exactly one $x$ that gives each $y$. \\
 \index{horizontal line test}
-\begin{center}
+\begin{figure}[H]
+  \centering
   \begin{tikzpicture}
     \begin{axis}[
-      xmin=-3.5,xmax=3.5,
-      ymin=-1, ymax=6,
-      ytick={-1,0,1,2,3,4,5,6},
-      axis x line=middle,
-      axis y line=middle,
-      axis line style=<->,
-      xlabel={$x$},
-      ylabel={$y$},
+        xmin=-3.5,xmax=3.5,
+        ymin=-1, ymax=6,
+        ytick={-1,0,1,2,3,4,5,6},
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$x$},
+        ylabel={$y$},
       ]
-      \addplot[no marks,sdkblue] expression[domain=-3:3,samples=100]{x^2};
+      \addplot[thick,no marks,sdkblue] expression[domain=-3:3,samples=100]{x^2};
       \addplot [thick, dashed] coordinates {(-3,4)(3,4)};
     \end{axis}
   \end{tikzpicture}
-\end{center}
+  \caption{The horizontal line test run on $f(x)=x^2$.}
+  \label{fig:hlt_func}
+\end{figure}
+
 
 In some problems, you need an inverse, but you don't need the
 whole domain, so you trim the domain to a set you can define an
@@ -235,24 +276,26 @@ This raises the question: What is the domain of the inverse function $f^{-1}$?
 
 If we let $X$ be the domain of $f$, we can run every member of $X$
 through ``the machine'' and gather them in a set on the other
-side. This set would be the \textit{image} of the $f$ "machine". (This is the \textit{range} of $f$.)
+side. This set would be the \textit{image} of the $f$ "machine". (This is the \textit{range} of $f$.)\index{range}
 
 What is the image of $f(x) = x^2 - 5$? It is the set of all real
 numbers greater than or equal to -5. We write this:
 
 \begin{equation*}
   \{ x \in {\rm I\!R} | x \geq -5 \}
-  \end{equation*}
+\end{equation*}
 
 Now we can say: \textbf{The range (or image) of the function is the domain
   of the inverse function.}
 
-In inverse functions, the domain and range get swapped: 
+In inverse functions, the domain and range get swapped:
 the domain of the function is the range of the inverse function, and visa versa.
 In our example, we can use any number greater
 than or equal to -5 as input into the inverse function.
 
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     \begin{axis}[
         xmin=-5.5,xmax=7.5,
         ymin=-6, ymax=5,
@@ -261,14 +304,18 @@ than or equal to -5 as input into the inverse function.
         axis x line=middle,
         axis y line=middle,
         axis line style=<->,
-        ]
-      \addplot[no marks,sdkblue, ->] expression[domain=0:3,samples=100]{x^2 - 5} node[right] {$y = x^2 - 5$};
+      ]
+      \addplot[thick,no marks,sdkblue, ->] expression[domain=0:3,samples=100]{x^2 - 5} node[right] {$y = x^2 - 5$};
       \addplot [thick, dashed, red, ->] coordinates {(-0.05,-5)(-0.05,4.5)}
       node [draw, red, left, align=left, yshift=-0.6cm, xshift=-0.1cm] {image of $f$ \textit{or}\\ domain of $f^{-1}$};
       \addplot [thick, dashed, blue, ->] coordinates {(-0,-5.1)(6.75,-5.1)}
       node [draw, align=left, above, blue, yshift=0.1cm, xshift=-1.3cm] {domain of $f$ \textit{or}\\image of $f^{-1}$};
     \end{axis}
-\end{tikzpicture}
+  \end{tikzpicture}
+
+  \caption{Domain and range of functions and their inverses get swapped.}
+  \label{fig:domain_range}
+\end{figure}
 
 
 \begin{Exercise}[title={Find the inverse}, label=simple_inverse]
@@ -287,105 +334,110 @@ than or equal to -5 as input into the inverse function.
 \begin{Answer}[ref=simple_inverse]
 
   This graph is the graph of $y = x^2$ that has been moved to the right by three units and up two units:
- 
-\begin{tikzpicture}
-    \begin{axis}[
-        xmin=-1,xmax=7,
-        ymin=-1,ymax=7,
-        xtick={3, 6},
-        ytick={2, 4},
-        axis x line=middle,
-        axis y line=middle,
-        axis line style=<->,
-        xlabel={$x$},
-        ylabel={$y$},
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+          xmin=-1,xmax=7,
+          ymin=-1,ymax=7,
+          xtick={3, 6},
+          ytick={2, 4},
+          axis x line=middle,
+          axis y line=middle,
+          axis line style=<->,
+          xlabel={$x$},
+          ylabel={$y$},
         ]
-      \addplot[no marks,sdkblue,<->] expression[domain=-2.5:6.5,samples=100]{(x - 3)^2 + 2};
-      \addplot[dashed] coordinates {(-1, 2)(4,2)};
-      \addplot[dashed] coordinates {(3, -1)(3, 3)};
-    \end{axis}
-\end{tikzpicture}
+        \addplot[thick,no marks,sdkblue,<->] expression[domain=-2.5:6.5,samples=100]{(x - 3)^2 + 2};
+        \addplot[thick,dashed] coordinates {(-1, 2)(4,2)};
+        \addplot[thick,dashed] coordinates {(3, -1)(3, 3)};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{The graph of $f(x) = (x - 3)^2 + 2$.}
+    \label{fig:exer_inv}
+  \end{figure}
 
-To prevent any horizontal line from containing more than one point of
-the graph, you would need to use the left or the right side --- either
-$\{x \in {\rm I\!R}  | x \leq 3\}$ or $\{x {\rm I\!R}| x \geq 3\}$. Most people will choose the
-right side; the rest of the solution will assume that you did too.
 
-To find the inverse we swap $x$ and $y$: $x = (y -3)^2 + 2$
+  To prevent any horizontal line from containing more than one point of
+  the graph, you would need to use the left or the right side --- either
+  $\{x \in {\rm I\!R}  | x \leq 3\}$ or $\{x {\rm I\!R}| x \geq 3\}$. Most people will choose the
+  right side; the rest of the solution will assume that you did too.
 
-Next, we solve for $y$ to get the inverse: $y = \sqrt{x - 2} + 3$
+  To find the inverse we swap $x$ and $y$: $x = (y -3)^2 + 2$
 
-You can take the square root of nonnegative numbers. So the function
-$f^{-1}(x) = \sqrt{x - 2} + 3$ is defined whenever $x$ is greater than
-or equal to 2.
+  Next, we solve for $y$ to get the inverse: $y = \sqrt{x - 2} + 3$
+
+  You can take the square root of nonnegative numbers. So the function
+  $f^{-1}(x) = \sqrt{x - 2} + 3$ is defined whenever $x$ is greater than
+  or equal to 2.
 
 \end{Answer}
 
 \begin{Exercise}[label=invfunc1]
-A function is given by a table of values, a graph, or a written description. 
-Determine whether it is one-to-one. 
-	\begin{enumerate}
-	\item
-	\begin{tabular}{|c|c|c|c|c|c|c|}\hline
-	$x$ & 1 & 2 & 3 & 4 & 5 & 6\\
-	\hline
-	$f(x)$ & 1.5 & 2.0 & 3.6 & 5.3 & 2.8 & 2.0\\
-	\hline	
-	\end{tabular}
-	\item
-	\begin{tabular}{|c|c|c|c|c|c|c|}\hline
-	$x$ & 1 & 2 & 3 & 4 & 5 & 6\\
-	\hline
-	$f(x)$ & 1.0 & 1.9 & 2.8 & 3.5 & 3.1 & 2.9\\
-	\hline	
-	\end{tabular}
-	\item
-	\begin{tikzpicture}[scale=0.5]
-		\begin{axis}
-		[xmin=-2, xmax=2, xlabel=$x$,
-		ymin=-0.5, ymax=4, ylabel=$y$,
-		axis lines = center, ticks=none]
-		\addplot[blue, thick, samples=100]{e^(-1*x^2)+1};
-		\end{axis}
-	\end{tikzpicture}
-	\item
-	\begin{tikzpicture}[scale=0.5]
-		\begin{axis}
-		[xmin=-1, xmax=3, xlabel=$x$,
-		ymin=-2, ymax=2, ylabel=$y$,
-		axis lines = center, ticks=none]
-		\addplot[blue, thick, samples=100]{-ln(x+1)};
-		\end{axis}
-	\end{tikzpicture}
-	\item $f(t)$ is the height of a football $t$ seconds after kickoff
-	\item $v(t)$ is the velocity of a dropped object
-	\end{enumerate}
+  A function is given by a table of values, a graph, or a written description.
+  Determine whether it is one-to-one.
+  \begin{enumerate}
+    \item
+          \begin{tabular}{|c|c|c|c|c|c|c|}\hline
+            $x$    & 1   & 2   & 3   & 4   & 5   & 6   \\
+            \hline
+            $f(x)$ & 1.5 & 2.0 & 3.6 & 5.3 & 2.8 & 2.0 \\
+            \hline
+          \end{tabular}
+    \item
+          \begin{tabular}{|c|c|c|c|c|c|c|}\hline
+            $x$    & 1   & 2   & 3   & 4   & 5   & 6   \\
+            \hline
+            $f(x)$ & 1.0 & 1.9 & 2.8 & 3.5 & 3.1 & 2.9 \\
+            \hline
+          \end{tabular}
+    \item
+          \begin{tikzpicture}[scale=0.5]
+            \begin{axis}
+              [xmin=-2, xmax=2, xlabel=$x$,
+                ymin=-0.5, ymax=4, ylabel=$y$,
+                axis lines = center, ticks=none]
+              \addplot[thick,blue, thick, samples=100]{e^(-1*x^2)+1};
+            \end{axis}
+          \end{tikzpicture}
+    \item
+          \begin{tikzpicture}[scale=0.5]
+            \begin{axis}
+              [xmin=-1, xmax=3, xlabel=$x$,
+                ymin=-2, ymax=2, ylabel=$y$,
+                axis lines = center, ticks=none]
+              \addplot[thick,blue, thick, samples=100]{-ln(x+1)};
+            \end{axis}
+          \end{tikzpicture}
+    \item $f(t)$ is the height of a football $t$ seconds after kickoff
+    \item $v(t)$ is the velocity of a dropped object
+  \end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref=invfunc1]
-	\begin{enumerate}
-	\item This function is not one-to-one. From $x=3$ to $x=4$, the 
-	function increases from 3.6 to 5.3, which means it must pass through 
-	$f(x_1)=4.0$. From $x=4$ to $x=5$, the function decreases from 5.3 to 
-	2.8, which means it must pass through $f(x_2) = 4.0$ again. 
-	\item This function is not one-to-one by a similar argument in the 
-	above solution
-	\item This function is not one-to-one, because it fails the horizontal 
-	line test
-	\item This function is one-to-one, because it passes the horizontal 
-	line test
-	\item $f(t)$ would not be one-to-one because the football must pass 
-	through each height (except the peak height) both on the way up and 
-	on the way back down
-	\item $v(t)$ would be one-to-one because a falling object only speeds 
-	up. Therefore, every time has a unique speed. 
-	\end{enumerate}
+  \begin{enumerate}
+    \item This function is not one-to-one. From $x=3$ to $x=4$, the
+          function increases from 3.6 to 5.3, which means it must pass through
+          $f(x_1)=4.0$. From $x=4$ to $x=5$, the function decreases from 5.3 to
+          2.8, which means it must pass through $f(x_2) = 4.0$ again.
+    \item This function is not one-to-one by a similar argument in the
+          above solution
+    \item This function is not one-to-one, because it fails the horizontal
+          line test
+    \item This function is one-to-one, because it passes the horizontal
+          line test
+    \item $f(t)$ would not be one-to-one because the football must pass
+          through each height (except the peak height) both on the way up and
+          on the way back down
+    \item $v(t)$ would be one-to-one because a falling object only speeds
+          up. Therefore, every time has a unique speed.
+  \end{enumerate}
 \end{Answer}
 
 \section{Graphing Calculators}
 
 One really easy way to understand your function better is to use a graphing
-calculator. Desmos is a great, free online graphing calculator. 
+calculator. Desmos is a great, free online graphing calculator.
 
 In a web browser, go to Desmos: \url{https://www.desmos.com/calculator}
 
@@ -399,21 +451,21 @@ the exponent, just prefix it with a caret symbol: ``x\^{}2''.)
 
 \subsection{Even Functions}
 
-An even function is symmetric about the y-axis. That means if you fold the graph along the y-axis, both sides will match perfectly. Note that the input value yields the same output regardless of whether the input value is positive or negative. 
+An even function is symmetric about the y-axis. That means if you fold the graph along the y-axis, both sides will match perfectly. Note that the input value yields the same output regardless of whether the input value is positive or negative.
 
 
 \begin{mdframed}[style=important, frametitle={Even Functions}]
 
-A function \( f(x) \) is even if  
-\[
-f(-x) = f(x)
-\]  
-for all \( x \) in its domain.
+  A function \( f(x) \) is even if
+  \[
+    f(-x) = f(x)
+  \]
+  for all \( x \) in its domain.
 \end{mdframed}
 Examples:
 \begin{itemize}
-  \item \( f(x) = x^2 \)  
-  \item \( f(x) = \cos(x) \)  
+  \item \( f(x) = x^2 \)
+  \item \( f(x) = \cos(x) \)
   \item any \( f(x) = x^n \) where \( n \) is an even number
   \item \( f(x) = |x| \)
 \end{itemize}
@@ -427,29 +479,353 @@ An odd function is symmetric about the origin. That means if you rotate the grap
 
 \begin{mdframed}[style=important, frametitle={Odd Functions}]
 
-A function \( f(x) \) is odd if  
-\[
-f(-x) = -f(x)
-\]
-for all \( x \) in its domain.
+  A function \( f(x) \) is odd if
+  \[
+    f(-x) = -f(x)
+  \]
+  for all \( x \) in its domain.
 
-Equivallently, 
+  Equivallently,
 
-\[ f(x) + f(-x) = 0 \]
-for all \( x \) in its domain.
+  \[ f(x) + f(-x) = 0 \]
+  for all \( x \) in its domain.
 \end{mdframed}
 
 \begin{itemize}
 
-  \item \( f(x) = x^3 \)  
-  \item \( f(x) = \sin(x) \)  
-  \item \( f(x) = \tan(x) \)  
+  \item \( f(x) = x^3 \)
+  \item \( f(x) = \sin(x) \)
+  \item \( f(x) = \tan(x) \)
   \item any \( f(x) = x^n \) where \( n \) is an odd number
-\end{itemize} 
+\end{itemize}
 
 On a graph, rotating the graph $180^\circ$ about the origin will yield the same graph.
 \subsection{Neither Even Nor Odd}
-Some functions are neither even nor odd. 
+Some functions are neither even nor odd.
 
 For example, \( f(x) = x^3 + 1 \) does not satisfy either condition.
-% FIXME do we need to talk about end behavior, limits, symetry, etc
+\section{Piecewise Functions}
+One other thing to mention is the existence of \newterm{piecewise functions}.\index{piecewise functions} A piecewise function is one defined by two different equations. You chose which function to evaluate dependent on the domain. Let's look at a simple example:
+\begin{equation*}
+  f(x) = \begin{cases}
+    \frac{1}{x} & x < 0   \\
+    x^2         & x \ge 0
+  \end{cases}
+\end{equation*}
+
+This piecewise function has two cases: when $x<0$, we use the equation $\frac{1}{x}$; when $x\ge0$, we use $x^2$. Notice that we don't consider $x=0$ for $\frac{1}{x}$ since it would be undefined, but it is defined under $x^2$. The domain of $f(x)$ is defined for all values of $x$! Let's make a table of values:
+
+\begin{tabular}{|c|c|c|c|c|c|c|}\hline
+  $x$    & $-2$            & $-1$ & $0$ & $0.1$  & $1$ & $2$ \\
+  \hline
+  $f(x)$ & $-\tfrac{1}{2}$ & $-1$ & $0$ & $0.01$ & $1$ & $4$ \\
+  \hline
+\end{tabular}
+
+We can graph this like the following
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xmin=-2.5,xmax=2.5,
+        ymin=-2.5,ymax=4.5,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$x$},
+        ylabel={$y$},
+        samples=200,
+      ]
+      \addplot[thick,no marks,sdkblue,domain=-2:-0.2]{1/x};
+      \addplot[thick,no marks,sdkblue,domain=0:2]{x^2};
+      \addplot[thick,only marks,mark=*,sdkblue] coordinates {(0,0)};
+    \end{axis}
+  \end{tikzpicture}
+
+
+  \caption{The piecewise function $f(x)$ graphed.}
+  \label{fig:pw1}
+\end{figure}
+Notice the \emph{closed circle}. This indicates that the value at the is included at a disjunction. An \emph{open circle} would indicate that the value at that point is not included. Say we have the following function:
+\begin{equation*}
+  g(x) = \begin{cases}
+    x^2 + 1 & x < 0   \\
+    x^2     & x \ge 0
+  \end{cases}
+\end{equation*}
+Graphing this, we obtain an open circle at $(0,1)$ and a closed circle at $(0,0)$.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xmin=-2.5,xmax=2.5,
+        ymin=-2.5,ymax=4.5,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$x$},
+        ylabel={$y$},
+        samples=200,
+      ]
+      \addplot[thick,no marks,sdkblue,domain=-2:0]{x^2 + 1};
+      \addplot[thick,no marks,sdkblue,domain=0:2]{x^2};
+      \addplot[thick,only marks,mark=*,sdkblue] coordinates {(0,0)}; %filled in
+      \addplot[thick,only marks,mark=*,sdkblue, fill=white] coordinates {(0,1)}; % open
+    \end{axis}
+  \end{tikzpicture}
+
+
+  \caption{The piecewise function $g(x)$ graphed.}
+  \label{fig:pw2}
+\end{figure}
+
+\begin{Exercise}[title={Absolute Value}, label={ex:abs_val_pw}]
+  \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        Rewrite the absolute value function $|x|$ as a piecewise function.
+        \vfil}
+  \end{center}
+\end{Exercise}
+\begin{Answer}[ref={ex:abs_val_pw}]
+  From $x \in [0, \infty)$, we say that that $|x| = x$. For $x < 0$, we say $|x| = -x$, since we want to invert the magnitude. So,
+  $$|x| =
+    \begin{cases}
+      x  & x \ge 0 \\
+      -x & x < 0
+    \end{cases}$$
+\end{Answer}
+
+\begin{Exercise}[title={Piecewise 1}, label={ex:pw_3_case}]
+
+  \begin{equation*}
+    f(x) =
+    \begin{cases}
+      x + 2 & \text{if } -5 \le x < -1  \\
+      x^2   & \text{if } -1 \le x \le 2 \\
+      3 - x & \text{if } 2 < x \le 5
+    \end{cases}
+  \end{equation*}
+  For the equation above, create a table for every integer from -5 to 5 (inclusive), and graph.
+
+  Here is a blank coordinate plane for plotting the piecewise function:
+
+  \begin{tikzpicture}
+    \begin{axis}[
+        xmin=-5.5,xmax=5.5,
+        ymin=-6,ymax=6,
+        xtick={-5,-4,-3,-2,-1,0,1,2,3,4,5},
+        ytick={-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6},
+        grid=major,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$x$},
+        ylabel={$y$},
+      ]
+    \end{axis}
+  \end{tikzpicture}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pw_3_case}]
+
+  First, let's create a table of values for each integer from -5 to 5:
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}\hline
+      $x$    & $-5$ & $-4$ & $-3$ & $-2$ & $-1$ & $0$ & $1$ & $2$ & $3$ & $4$  & $5$  \\
+      \hline
+      $f(x)$ & $-3$ & $-2$ & $-1$ & $0$  & $1$  & $0$ & $1$ & $4$ & $0$ & $-1$ & $-2$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \begin{tikzpicture}[scale=1.25]
+      \begin{axis}[
+          xmin=-5.5,xmax=5.5,
+          ymin=-6,ymax=6,
+          xtick={-5,-4,-3,-2,-1,0,1,2,3,4,5},
+          ytick={-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6},
+          grid=major,
+          axis x line=middle,
+          axis y line=middle,
+          axis line style=<->,
+          xlabel={$x$},
+          ylabel={$y$},
+        ]
+        \addplot[thick,no marks,sdkblue,domain=-5:-1]{x+2};
+        \addplot[thick,no marks,red,domain=-1:2]{x^2}; %incusive on both ends
+        \addplot[thick,only marks,mark=*,red!80] coordinates {(-1,1)}; %filled in
+        \addplot[thick,only marks,mark=*,red!80] coordinates {(2,4)}; %filled in
+        \definecolor{funcolor}{RGB}{200,123,55}
+        \addplot[thick,no marks,funcolor,domain=2:5]{3-x}; %incusive on right end
+        \addplot[thick,only marks,mark=*,funcolor, fill=white] coordinates {(2,1)}; % open
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+\end{Answer}
+
+\subsection{Floor and Ceiling Functions}
+Another common piecewise function you may see are the \newterm{floor function} and \newterm{ceiling function}.\index{floor function}\index{ceiling function}
+The floor function, which takes the any real number $x$, is defined as
+\begin{equation*}
+  \lfloor x \rfloor \text{ or } \mathrm{floor}(x)=
+  \begin{cases}
+    n & \text{if } n \le x < n+1,\quad n \in \mathbb{Z}
+  \end{cases}
+  \label{eq:floor}
+\end{equation*}
+
+This means that you take any number $x$ and find the closest integer less than or equal to it.
+For example, $\lfloor 0.7 \rfloor$ would be floored to $0$.
+
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis lines = middle,
+        xmin=-3.5, xmax=3.5,
+        ymin=-4, ymax=4,
+        xtick={-3,-2,-1,0,1,2,3},
+        ytick={-3,-2,-1,0,1,2,3},
+        samples=200,
+        width=10cm,
+        height=7cm,
+        grid=both
+      ]
+      \addplot[thick, sdkblue, domain=-3:-2] {-3};
+      \addplot[thick, sdkblue, domain=-2:-1] {-2};
+      \addplot[thick, sdkblue, domain=-1:0] {-1};
+      \addplot[thick, sdkblue, domain=0:1] {0};
+      \addplot[thick, sdkblue, domain=1:2] {1};
+      \addplot[thick, sdkblue, domain=2:3] {2};
+      \addplot[thick, sdkblue, domain=3:3.5] {3};
+
+      \addplot[sdkblue,only marks, mark=*, samples at={-3,-2,-1,0,1,2,3}]
+      coordinates {(-3,-3) (-2,-2) (-1,-1) (0,0) (1,1) (2,2) (3,3)};
+
+
+      \addplot[sdkblue,only marks, mark=o, samples at={-2,-1,0,1,2,3}]
+      coordinates {(-2,-3) (-1,-2) (0,-1) (1,0) (2,1) (3,2)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The flooring function, $f(x) = \lfloor x \rfloor$sdkblue,}
+  \label{fig:floor_fig}
+\end{figure}
+
+Similarly, the ceiling function is defined as follows:
+\begin{equation*}
+  \lceil x \rceil \text{ or } \mathrm{ceil}(x)=
+  \begin{cases}
+    n & \text{if } n-1 < x \le n,\quad n \in \mathbb{Z}
+  \end{cases}
+  \label{eq:ceil}
+\end{equation*}
+The ceiling function takes in any real numbers and returns the next greatest integer. For example, $\lceil 8.00001 \rceil$ returns $9$, the next greatest integer.
+For any valid integer like $x=7$, the $\lfloor 7 \rfloor$ and $\lceil 7 \rceil$ are both equal to $7$.
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis lines = middle,
+        xmin=-3.5, xmax=3.5,
+        ymin=-4, ymax=4,
+        xtick={-3,-2,-1,0,1,2,3},
+        ytick={-3,-2,-1,0,1,2,3},
+        samples=200,
+        width=10cm,
+        height=7cm,
+        grid=both
+      ]
+
+      \addplot[thick, sdkblue, domain=-3.5:-3] {-3};
+      \addplot[thick, sdkblue, domain=-3:-2] {-2};
+      \addplot[thick, sdkblue, domain=-2:-1] {-1};
+      \addplot[thick, sdkblue, domain=-1:0] {0};
+      \addplot[thick, sdkblue, domain=0:1] {1};
+      \addplot[thick, sdkblue, domain=1:2] {2};
+      \addplot[thick, sdkblue, domain=2:3] {3};
+      \addplot[sdkblue,only marks, mark=o, samples at={-3,-2,-1,0,1,2}]
+      coordinates {(-3,-2) (-2,-1) (-1,0) (0,1) (1,2) (2,3)};
+
+      \addplot[sdkblue,only marks, mark=*, samples at={-3,-2,-1,0,1,2,3}]
+      coordinates {(-3,-3) (-2,-2) (-1,-1) (0,0) (1,1) (2,2) (3,3)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The ceiling function, $f(x) = \lceil x \rceil$.}
+  \label{fig:ceil_fig}
+\end{figure}
+
+\begin{Exercise}[title={More TVs is Better}, label={ex:tvs}]
+
+A store sells televisions with pricing that depends on how many units a customer buys:
+\begin{itemize}
+  \item For the first 5 TVs, the cost per TV is $\mathdollar500$
+  \item For the next 10 TVs, the cost per TV is $\mathdollar350$
+  \item Any additiional TVs cost $\mathdollar 300$
+\end{itemize}
+
+A hotel is buying TVs for each hotel room.
+\begin{enumerate}
+  \item Construct a piecewise function $C(x)$ for the cost of TVs. Assume TVs must be a discrete integer (you cannot buy 8.5 TVs).
+  \item Find the cost of 12 TVs using your function.
+  \item When is average cost < $\mathdollar360$?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:tvs}]
+
+\begin{enumerate}
+  \item $$C(x) =
+\begin{cases}
+400x & 0 < x \le 5 \\
+2000 + 350(x - 5) & 5 < x \le 15 \\
+5500 + 300(x - 15) & x > 15
+\end{cases}$$
+\item $C(12) = 2000 + 350(12 - 5) = \mathdollar4450$
+\item The average cost is $\mathdollar360$ when $\frac{C(x)}{x} < 360$. This will only happen during the 3rd case, when $x\ge15$. 
+$$C(x) = 5500 + 300(x - 15) = 5500 + 300x - 4500 = 1000 + 300x$$ 
+Now, 
+$$\frac{1000 + 300x}{x} < 360$$
+\begin{align*}
+  300 + \frac{1000}{x} &< 360\\
+  \frac{1000}{x} &< 60 \\ 
+  1000 &< 60x\\
+  x &> \frac{1000}{60} \approx 16.67 \rightarrow 17
+\end{align*}
+There must be $17$ TVs sold for the average cost to fall to $\mathdollar360$
+\end{enumerate}
+
+\end{Answer}
+% we do not talk about limits or continuity in this chapter, but may be good to revisit piecewise in limits
+
+\subsection{Invalid Piecewise Functions}
+One thing to note when creating piecewise functions is to make sure your cases do not contradict each other, or in other words, create cases that define two different possibilities for $x$ at a given value. For example,
+\begin{equation*}
+  f(x) = \begin{cases}
+    10.2 & x = 4   \\
+    x^2  & x \ge 0
+  \end{cases}
+\end{equation*}
+
+This creates an impossible and thus invalid piecewise function, as at $x=4$, $f(x)$ is both defined as $10.2$ and $16$. This would be impossible ($\rightarrow \leftarrow$). In this case, either you define the value at $\textrm{DNE}$ or $\textrm{undefined}$, or revise the piecewise function at that point. Most often, it is done as follows:
+\begin{equation*}
+  f(x) =
+  \begin{cases}
+    10.2 & x = 4              \\
+    x^2  & x \ge 0,\; x \ne 4
+  \end{cases}
+\end{equation*}
+Then our value at $x=4$ is equal to $10.2$.
+
+\section{Summary}
+This chapter talked about functions. Functions take in an input and spit out an output, like a magician putting a banana in a hat and releasing a white bunny. However, this is not magic, but math. Each input is given exactly one output. Not all functions have equations that are defined for all real numbers.
+
+We can also graph functions according to their inputs (the $x$ values on the $x$-axis) and outputs (the returns of the function $f(x)$ plotted on the $y$ axis). 
+
+We established that relations must pass the vertical line test to be functions. Some functions have inverse functions, which reverse the action of the original function. A function has an inverse only if it is one-to-one, which can be checked with the horizontal line test. When a function and its inverse are graphed, they are reflections of each other across the line $y=x$ and the domain and range of a function switch roles in its inverse.
+
+Functions can also be classified by symmetry (even or odd). Piecewise functions are by different formulas on different parts of the domain. 
