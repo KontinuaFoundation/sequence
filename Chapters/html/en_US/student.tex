@@ -10,46 +10,632 @@ and layout of web content.\index{HTML}
 An HTML document is composed of a series of elements, which are
 denoted by tags. Elements have an opening tag and a closing tag with
 content in between. Some elements, however, are self-closing and do
-not contain any content. For example, the paragraph tag `<p>` is used
-to denote a paragraph:
+not contain any content.
+
+An element consists of three parts:
+\begin{itemize}
+    \item \textbf{Opening tag}: The opening tag is the start of an element. The format of it is \verb|<tagname>|.
+    \item \textbf{Content}: Content is the data or information between the tags.
+    \item \textbf{Closing tag}: The closing tag indicates the end of an element. The format of it is \verb|</tagname>|.
+\end{itemize}
+
+For example, the paragraph tag \verb|<p>| is used to denote a paragraph:
 
 \begin{verbatim}
 <p>This is a paragraph.</p>
 \end{verbatim}
 
-\section{HTML Document Structure}
-\index{HTML!structure of}
-A typical HTML document has a specific structure, including the following elements:
+This applies to a lot of HTML elements but not every one. There are HTML elements that are self-closing. A self-closing element 
+does not require a closing tag. The image tag \verb|<img>| is an example of a self-closing element.
+
+\begin{verbatim}
+<img src="image.jpg" alt="Description" />
+\end{verbatim}
+
+\section{Attributes}
+\index{HTML!attributes}
+Attributes provide additional information about HTML elements. For some elements like \verb|img|, they are required for the element to function correctly. 
+They are always specified in the opening tag and consist of a name and value pair.
+
+The syntax for attributes is:
+
+\begin{verbatim}
+<tagname attribute="value">Content</tagname>
+\end{verbatim}
+
+There are so many attributes available, we cannot cover them all here. However, some common attributes that work on most elements include:
 
 \begin{itemize}
-    \item \textbf{DOCTYPE declaration}: This informs the browser about
-      the version of HTML. For HTML5, it is `<!DOCTYPE html>`.
-    \item \textbf{html}: This tag encloses the entire HTML document.
-    \item \textbf{head}: This contains meta-information about the
-      document, such as its title, meta tags, and links to scripts and
-      stylesheets.
-    \item \textbf{body}: This contains the content of the web page
-      that is rendered in the browser.
+    \item \textbf{id}: The \verb|id| attribute specifies a unique identifier for an element (should be unique
+      within the entire page)
+    \item \textbf{class}: The \verb|class| attribute specifies one or more class names for styling with CSS
+    \item \textbf{style}: The \verb|style| attribute specifies inline CSS styling
+    \item \textbf{title}: The \verb|title| attribute specifies additional information displayed as a tooltip
 \end{itemize}
 
-Here is a basic example of an HTML document:
+Examples:
+
+\begin{verbatim}
+<p id="intro" class="highlight">
+    Introduction paragraph
+</p>
+
+<div style="color: blue; font-size: 16px;">
+    Styled text
+</div>
+
+<img src="photo.jpg" title="My Photo" alt="Me">
+\end{verbatim}
+
+\section{HTML Document Structure}
+\index{HTML!structure of}
+A typical HTML document has a specific structure. Every HTML5 document begins
+with a DOCTYPE declaration, which tells the browser which version of HTML to expect.
+
+The basic structure of an HTML document is:
 
 \begin{verbatim}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My First HTML Page</title>
+    <title>Page Title</title>
 </head>
 <body>
-    <h1>Welcome to My First HTML Page!</h1>
-    <p>This is a paragraph.</p>
+    <!-- Content goes here -->
 </body>
 </html>
 \end{verbatim}
 
-\section{Web Development}
-\index{Web Development}
-The Web Development trio is formed by the 3 languages \verb|HTML|, \verb|css|, and \verb|js|. 
-FIXME expand on this
-% helpful: https://youtu.be/OEV8gMkCHXQ
-%          https://youtu.be/DHjqpvDnNGE 
+The main components are:
+\begin{itemize}
+    \item \textbf{DOCTYPE declaration}: This informs the browser about the version of HTML. For HTML5, it is \verb|<!DOCTYPE html>|.
+    \item \textbf{html}: The \verb|html| element is the root element that wraps all other content.
+    \item \textbf{head}: This element contains metadata and information about the page, including:
+    \begin{itemize}
+        \item \verb|<title>|: This element sets the title of the page, which appears in the browser tab.
+        \item \verb|<meta>|: This element includes metadata such as character encoding, and viewport settings.
+        \item \verb|<link>|: This element is used to link external resources like CSS stylesheets.
+        \item \verb|<script>|: This element is used to include JavaScript code or external JavaScript files.
+    \end{itemize}
+    \item \textbf{body}: The \verb|body| element contains all the visible content of the web page.
+\end{itemize}
+
+Here is a more complete example:
+
+\begin{verbatim}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome</h1>
+    <p>This is my website.</p>
+</body>
+</html>
+\end{verbatim}
+
+\section{Web Development and HTML}
+\index{Web Development!HTML}
+The Web Development trio consists of three essential languages that work
+together to create modern web applications. These languages are HTML, CSS, and JavaScript.
+
+\begin{itemize}
+    \item \textbf{HTML}: HTML provides the structure and content of web pages. It defines
+      what elements exist on the page. Think of it as the skeleton and meat of a web page.
+    \item \textbf{CSS}: Cascading Style Sheets (CSS) handles the presentation and styling. It controls how elements
+      look, including colors, fonts, spacing, and layout. Think of it as the clothing and makeup that makes the page visually appealing.
+    \item \textbf{JavaScript}: JavaScript adds interactivity and behavior. It enables dynamic
+      content changes, form validation, animations, and user interactions. Think of it as the brain that allows the page to respond to actions like clicking a button or submitting a form.
+\end{itemize}
+
+\section{Metadata}
+\index{HTML!metadata}
+Metadata is information about the HTML document that is not directly displayed on the page. 
+The information is provided through a series of \verb|<meta>| tags with certain attributes and their corresponding values.
+These are placed in the \verb|<head>| section and provides important
+information to browsers, search engines, and developers.
+
+Common metadata elements include:
+
+\begin{itemize}
+    \item \verb|<meta charset="UTF-8">|: This line specifies the character encoding of the document.
+      UTF-8 is the standard encoding for web pages.
+    \item \verb|<meta name="viewport" content="width=device-width, initial-scale=1.0">|:
+      This line configures the viewport for responsive design. This tells mobile browsers how
+      to scale the page.
+    \item \verb|<meta name="description" content="...">|: This line provides a brief description
+      of the page content for search engines.
+    \item \verb|<meta name="keywords" content="...">|: This line lists relevant keywords for search engine optimization (SEO).
+    \item \verb|<meta name="author" content="...">|: This line specifies the author of the document.
+\end{itemize}
+
+Example of using multiple meta tags:
+
+\begin{verbatim}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A tutorial about web development">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="John Doe">
+    <title>Web Development Tutorial</title>
+</head>
+\end{verbatim}
+
+\section{Div Elements}
+\index{HTML!div}
+The \verb|<div>| element is a generic container used to group content together. The name
+``div'' stands for ``division.''
+\verb|<div>| has no specific meaning to it. It is a neutral wrapper used for layout,
+styling, or organizing content with CSS and JavaScript.
+
+The \verb|<div>| element is one of the most commonly used HTML elements in existing applications. It is often
+used with \verb|class| or \verb|id| attributes to apply styling or add behavior.
+
+Here's a basic example:
+
+\begin{verbatim}
+<div class="container">
+    <h2>Section Title</h2>
+    <p>This is some content inside a div.</p>
+</div>
+\end{verbatim}
+
+As mentioned, it is one of the most commonly used HTML elements. Here's an example with multiple divs for layout:
+
+\begin{verbatim}
+<div class="header">
+    <h1>Website Title</h1>
+</div>
+
+<div class="content">
+    <p>Main content goes here.</p>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 My Website</p>
+</div>
+\end{verbatim}
+
+\section{Semantic HTML}
+\index{HTML!semantic elements}
+Unlike \verb|<div>| elements, Semantic HTML elements are elements that clearly describe their meaning to both the browser
+and the developer. This improves code readability, helps with search engine optimization (SEO), and makes pages
+more accessible to assistive technologies like screen readers.
+
+Semantic elements follow a logical structure that reflects the content of the page. Some common semantic elements include:
+
+\begin{itemize}
+    \item \verb|<header>|: The \verb|header| element represents the top section of the page or a section,
+      typically containing the logo, navigation, or introductory content.
+    \item \verb|<nav>|: The \verb|nav| element contains navigation links to other pages or sections.
+    \item \verb|<main>|: The \verb|main| element specifies the main content area of the page.
+    \item \verb|<article>|: The \verb|article| element represents independent, self-contained content that could
+      stand alone, such as a blog post or news article.
+    \item \verb|<section>|: The \verb|section| element defines a generic section of content. This is preferred instead of using multiple divs for grouping related content.
+    \item \verb|<aside>|: The \verb|aside| element contains supplementary content like sidebars, ads, or related links.
+    \item \verb|<footer>|: The \verb|footer| element represents the bottom section of a page or section.
+\end{itemize}
+
+Here is an example of using semantic elements to structure a simple blog page:
+
+\begin{verbatim}
+<header>
+    <h1>My Blog</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+    </nav>
+</header>
+
+<main>
+    <article>
+        <h2>Article Title</h2>
+        <p>Article content here...</p>
+    </article>
+
+    <aside>
+        <h3>Related Posts</h3>
+        <ul>
+            <li><a href="#post1">Post 1</a></li>
+            <li><a href="#post2">Post 2</a></li>
+        </ul>
+    </aside>
+</main>
+
+<footer>
+    <p>&copy; 2026 My Blog. All rights reserved.</p>
+</footer>
+\end{verbatim}
+
+\section{Headings and Sections}
+\index{HTML!headings}
+HTML provides six levels of headings, ranging from \verb|<h1>| to \verb|<h6>|.
+Headings establish a hierarchical structure for page content. \verb|<h1>| is the
+most important and typically used once per page for the main title, while \verb|<h6>|
+is the least important.
+
+\begin{verbatim}
+<h1>Main Page Title</h1>
+<h2>Major Section</h2>
+<h3>Subsection</h3>
+<h4>Sub-subsection</h4>
+<h5>Minor heading</h5>
+<h6>Least important heading</h6>
+\end{verbatim}
+
+Headings are important for defining the structure of the content and improving accessibility. 
+They allow users to quickly scan the page and understand the organization of information. 
+Proper use of headings also benefits SEO by signaling the importance of content to search engines.
+
+\section{Text Elements}
+\index{HTML!text formatting}
+HTML provides several elements for formatting text content. Here is a list of some of the most commonly used ones:
+
+\begin{itemize}
+    \item \verb|<p>|: The \verb|p| element defines a paragraph. Browsers automatically add space before and after.
+    \item \verb|<br>|: The \verb|br| element inserts a line break. This is a self-closing element.
+    \item \verb|<hr>|: The \verb|hr| element displays a horizontal line. This is a self-closing element.
+    \item \verb|<strong>|: The \verb|strong| element indicates strong importance. This is typically displayed in bold.
+    \item \verb|<em>|: The \verb|em| element indicates emphasis. This is typically displayed in italics.
+    \item \verb|<b>|: The \verb|b| element displays bold text without semantic importance.
+    \item \verb|<i>|: The \verb|i| element displays italic text without semantic emphasis.
+    \item \verb|<mark>|: The \verb|mark| element highlights text with a yellow background.
+    \item \verb|<code>|: The \verb|code| element displays text in monospace font for code.
+\end{itemize}
+
+Examples:
+
+\begin{verbatim}
+<p>This is a <strong>important</strong> point.</p>
+
+<p>This word is <em>emphasized</em>.</p>
+
+<p><code>var x = 5;</code></p>
+
+<p>This is <mark>highlighted</mark> text.</p>
+\end{verbatim}
+
+\section{Links}
+\index{HTML!links}
+Links are created using the \verb|<a>| (anchor) element with the \verb|href|
+attribute specifying the destination.
+
+\begin{verbatim}
+<a href="https://www.example.com">Visit Example</a>
+\end{verbatim}
+
+Links can point to various destinations:
+
+\begin{itemize}
+    \item \textbf{External websites}:
+    \verb|<a href="https://www.google.com">External Site</a>|. This will navigate the user to Google.
+
+    \item \textbf{Other pages within the same site}:
+    \verb|<a href="about.html">About</a>|. This will navigate the user to the about.html page within the same website.
+
+    \item \textbf{Email addresses}:
+    \verb|<a href="mailto:email@example.com">Email</a>|. This will open the user's email to send an email to the specified address.
+
+    \item \textbf{Phone numbers}:
+    \verb|<a href="tel:+1234567890">Call Us</a>|. This will initiate a phone call on devices that support it. This can be useful for mobile users.
+
+    \item \textbf{Specific locations on the same page}:
+    \verb|<a href="#section2">Jump to Section 2</a>| (where
+    \verb|<h2 id="section2">Section 2</h2>|). When the link is clicked, the page will scroll to the header with the id "section2".
+\end{itemize}
+
+Apart from the \verb|href| attribute, here are some other useful attributes for links:
+
+\begin{itemize}
+    \item \verb|target="_blank"|: This attribute and value pair opens the link in a new tab.
+    \item \verb|target="_self"|: This attribute and value pair opens the link in the same tab. This is the normal behavior if the target attribute is not specified.
+    \item \verb|title="tooltip"|: This attribute and value pair displays text when the user hovers over the link like a tooltip.
+\end{itemize}
+
+\section{Lists}
+\index{HTML!lists}
+HTML supports two main types of lists to organize content. These include unordered lists and ordered lists. Both types of lists use the \verb|<li>| element to define individual list items.
+
+\subsection{Unordered Lists}
+
+Unordered lists display items with bullet points. As the name suggests, the order of items is not important like the items of a shopping list. They use the \verb|<ul>| tag
+with list items defined by \verb|<li>|:
+
+\begin{verbatim}
+<ul>
+    <li>Apples</li>
+    <li>Bananas</li>
+    <li>Oranges</li>
+</ul>
+\end{verbatim}
+
+This would render an unordered list as:
+
+\begin{itemize}
+    \item Apples
+    \item Bananas
+    \item Oranges
+\end{itemize}
+
+\subsection{Ordered Lists}
+
+Ordered lists display items with numbers or other counters. As the name suggests, the order of items is important, like steps in a recipe. They use the
+\verb|<ol>| tag:
+
+\begin{verbatim}
+<ol>
+    <li>First step</li>
+    <li>Second step</li>
+    <li>Third step</li>
+</ol>
+\end{verbatim}
+
+The output of the above code would be:
+
+\begin{enumerate}
+    \item First step
+    \item Second step
+    \item Third step
+\end{enumerate}
+
+The \verb|<ol>| tag supports the \verb|type| attribute to customize or change the default numbering style. 
+So instead of numbers, you can use letters or Roman numerals. Some of the common attributes include:
+\begin{itemize}
+    \item \verb|type="a"|: Lowercase letters (a, b, c...).
+    \item \verb|type="A"|: Uppercase letters (A, B, C...).
+    \item \verb|type="i"|: Lowercase Roman numerals (i, ii, iii...)
+    \item \verb|type="I"|: Uppercase Roman numerals (I, II, III...)
+\end{itemize}
+
+\section{Navigation}
+\index{HTML!navigation}
+The \verb|<nav>| element is used to wrap navigational links within a navigation section. It's a semantic element
+that helps structure the page and signal to assistive technologies that this section contains navigation.
+This is commonly used for site menus, table of contents, or any set of links that help users navigate the website.
+
+\begin{verbatim}
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+</nav>
+\end{verbatim}
+
+\section{Tables}
+\index{HTML!tables}
+Tables organize data into rows and columns. They are created using the \verb|<table>| tag. However, that is used as a container for table elements necessary to render the layout of the table. 
+Those table elements include:
+
+\begin{itemize}
+    \item \verb|<tr>|: The \verb|tr| element defines a table row
+    \item \verb|<th>|: The \verb|th| element defines a table header cell. By default, it is displayed in bold and centered.
+     It is used to indicate that the cell is a header for a column or row.
+    \item \verb|<td>|: The \verb|td| element defines a table data cell. It is used for regular cells that contain data.
+    \item \verb|<thead>|: The \verb|thead| element groups header rows.
+    \item \verb|<tbody>|: The \verb|tbody| element groups body rows.
+    \item \verb|<tfoot>|: The \verb|tfoot| element groups footer rows.
+    \item \verb|<caption>|: The \verb|caption| element provides a title for the table.
+\end{itemize}
+
+Here's a basic table example:
+
+\begin{verbatim}
+<table>
+    <caption>Monthly Sales</caption>
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>January</td>
+            <td>$5000</td>
+        </tr>
+        <tr>
+            <td>February</td>
+            <td>$6000</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Total</th>
+            <td>$11000</td>
+        </tr>
+    </tfoot>
+</table>
+\end{verbatim}
+
+The output of the above code would be:
+
+\begin{table}[h]
+\centering
+\caption{Monthly Sales}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Month} & \textbf{Sales} \\
+\hline
+January & \$5000 \\
+February & \$6000 \\
+\hline
+\textbf{Total} & \$11000 \\
+\hline
+\end{tabular}
+\end{table}
+
+There are attributes that can be applied to table cells to make them span multiple rows or columns. These attributes are \verb|rowspan| (row span) and \verb|colspan| (column span).
+These attributes are used to merge cells together, which can be useful for creating more complex table layouts.
+\verb|colspan| is used to make a cell span across multiple columns, while \verb|rowspan| is used to make a cell span across multiple rows.
+The value of these attributes specifies the number of rows or columns the cell should span.
+
+Here's an example of how to use them:
+
+\begin{verbatim}
+<table>
+    <tr>
+        <th colspan="2">Personal Information</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>John Doe</td>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <th rowspan="2">Skills</th>
+    </tr>
+    <tr>
+        <td>30</td>
+    </tr>
+    <tr>
+        <td colspan="2">HTML, CSS, JavaScript</td>
+    </tr>
+</table>
+\end{verbatim}
+
+The output of the above code would be:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Personal Information}} \\
+\hline
+Name & John Doe \\
+\hline
+Age & Skills \\
+& (spans 2 rows) \\
+\hline
+\multicolumn{2}{|c|}{HTML, CSS, JavaScript} \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Forms}
+\index{HTML!forms}
+Forms allow users to input and submit data. 
+The \verb|<form>| element contains form controls and is submitted to a server to process the provided data.
+The most common form controls include text fields, checkboxes, radio buttons, and submit buttons.
+These form controls are created using input elements.
+
+Here's an example of a basic form structure with various input elements:
+
+\begin{verbatim}
+<form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+
+    <input type="submit" value="Submit">
+</form>
+\end{verbatim}
+
+The \verb|label| element is used to provide a label for form controls. 
+The \verb|for| attribute of the label should match the \verb|id| of the corresponding input element to associate them together. 
+
+Input fields have various types, each serving a different purpose. The ``type'' attribute indicates the type of input field. 
+Here's a list of the most common input types:
+
+\begin{itemize}
+    \item \verb|type="text"|: This is a single-line text input.
+    \item \verb|type="email"|: This is a single-line email input with validation that ensures the entered value is a valid email address.
+    \item \verb|type="password"|: This is a single-line password input (text is hidden).
+    \item \verb|type="number"|: This is a single-line numeric input.
+    \item \verb|type="checkbox"|: This is a checkbox for multiple selections.
+    \item \verb|type="radio"|: This is a radio button for single selection.
+    \item \verb|type="file"|: This is a file upload input.
+    \item \verb|type="date"|: This is a date picker input.
+    \item \verb|type="submit"|: This is a submit button.
+    \item \verb|type="reset"|: This is a reset button that will clear all form fields.
+\end{itemize}
+
+There are more form control elements besides the ``input'' element. Other form elements include:
+
+\begin{itemize}
+    \item \verb|<textarea>|: This is a multi-line text input.
+    \item \verb|<select>|: This is a dropdown menu. A dropdown is a list of options that can be expanded to show all available options.
+    \item \verb|<option>|: These are options within a dropdown.
+    \item \verb|<fieldset>|: This groups related form elements.
+    \item \verb|<legend>|: This is the title for a fieldset.
+\end{itemize}
+
+Here's an example that includes various form controls and uses fieldsets to group related information:
+
+\begin{verbatim}
+<form>
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+    </fieldset>
+
+    <fieldset>
+        <legend>Preferences</legend>
+
+        <label>
+            <input type="checkbox" name="newsletter">
+            Subscribe to newsletter
+        </label>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+            <option>Select a country</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+            <option value="ca">Canada</option>
+        </select>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+</form>
+\end{verbatim}
+
+\section{Images}
+\index{HTML!images}
+Images are added using the \verb|<img>| element, which is self-closing.
+
+The basic syntax for the \verb|<img>| element is:
+
+\begin{verbatim}
+<img src="image.jpg" alt="Description of image">
+\end{verbatim}
+
+The most essential attributes for the \verb|<img>| element are:
+
+\begin{itemize}
+    \item \verb|src|: The path to the image file. This is a required attribute that specifies the source of the image.
+     The source path can route to an image file within the application or an external URL similar to a link.
+     If the image cannot be found at the specified path, the browser will display a broken image icon.
+     The \verb|src| attribute is crucial for the image to load properly on the webpage.
+     It is important to ensure that the path is correct and that the image file exists at that location.
+    \item \verb|alt|: This is alternative text displayed if the image cannot load or for
+      screen readers. The \verb|alt| attribute should provide a concise description of the image content.
+\end{itemize}
+
+Images come in various sizes. To control the display size of an image, you can use the \verb|width| and \verb|height| attributes.
+
+\begin{itemize}
+    \item \verb|width|: This specifies the width of the image in pixels or percentage.
+    \item \verb|height|: This specifies the height of the image in pixels or percentage.
+\end{itemize}
+
+Here's an example of using the \verb|width| and \verb|height| attributes to specify the dimensions of an image:
+
+\begin{verbatim}
+<img src="logo.png" alt="Company Logo" width="200" height="100">
+\end{verbatim}
