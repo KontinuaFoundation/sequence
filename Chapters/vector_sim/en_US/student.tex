@@ -152,10 +152,10 @@ while current_time <= MAX_TIME:
     current_time += TIME_STEP
 
 print(f"Generated {len(position1_log)} data points.")
-\end{verbatim}
+\end{minted}
 
 When your run the simulation,  you will see the positions of the moons for 100 days:
-\begin{verbatim}
+\begin{minted}{python}
 > python3 moons.py 
 Day 0.00:
 	Moon 1:(0.0,200,000,000.0)
@@ -180,14 +180,14 @@ Look over the code. Make sure you understand what every line does.
 Now, you will use the matplotlib to graph the paths of the moons. Add this line to the beginning of 
 \filename{moons.py}.
 
-\begin{verbatim}
+\begin{minted}{python}
 import matplotlib.pyplot as plt
-\end{verbatim}
+\end{minted}
 
 
 Add this code to the end of your \filename{moons.py}:
 
-\begin{verbatim}
+\begin{minted}{python}
 # Convert lists to np.arrays
 positions1 = np.array(position1_log)
 positions2 = np.array(position2_log)
@@ -206,7 +206,7 @@ ax.plot(positions2[:, 0], positions2[:, 1], m2["color"], lw=0.7)
 
 # Save out the figure
 fig.savefig("plotmoons.png")
-\end{verbatim}
+\end{minted}
 
 When you run it, your \filename{plotmoons.png} should look like this:
 
@@ -220,15 +220,15 @@ When you run it, your \filename{plotmoons.png} should look like this:
 It is nifty to see the paths,  but we don't know where each moon was at a particular time.  In fact, it is difficult to figure out which end of each curve was the beginning and which was the ending.
 
 What if we added some lines and labels every 300 steps to put a sense of time into the plot?  Add one more constant after the import statements:
-\begin{verbatim}
+\begin{minted}{python}
 PAIR_LINE_STEP = 300  # How time steps between pair lines
-\end{verbatim}
+\end{minted}
 
 
 Immediately before you
 save the figure to the file,  add the following code:
 
-\begin{verbatim}
+\begin{minted}{python}
 # Draw some pair lines that help the
 # viewer understand time in the graph
 i = 0
@@ -245,7 +245,7 @@ while i < len(positions1):
     # Label the location of moon 1 with the day
     ax.text(a[0], a[1], f"{t/SEC_PER_DAY:.0f} days")
     i += PAIR_LINE_STEP
-\end{verbatim}
+\end{minted}
 
 When you run it,  your plot should look like this:
 \begin{figure}[H]
@@ -258,9 +258,9 @@ Now you can get a feel for what happened.  The moons were attracted to each othe
 
 Maybe we will get a better feel for what is happening if we look at more time. Let's increase it to 400 days. Change the relevant constant:
 
-\begin{verbatim}
+\begin{minted}{python}
 MAX_TIME = 400 * SEC_PER_DAY # 100 days
-\end{verbatim}
+\end{minted}
 
 Now it should look like this:
 \begin{figure}[H]
@@ -278,42 +278,42 @@ Recall the idea of momentum being conserved in a system. In these programs, you 
 We can compute the initial center of mass and its velocity.   In both cases,  we just do a weighted average using the mass of the moon as the weight. 
 
 Immediately after you initialize the state of two moons,  calculate the initial center of mass and its velocity:
-\begin{verbatim}
+\begin{minted}{python}
 # Calculate the initial position and velocity of the center of mass
 tm = m1["mass"] + m2["mass"]  # Total mass
 cm_position = (m1["mass"] * m1["position"] + m2["mass"] * m2["position"]) / tm
 cm_velocity = (m1["mass"] * m1["velocity"] + m2["mass"] * m2["velocity"]) / tm
-\end{verbatim}
+\end{minted}
 
 Let's record the center of mass for each time.   Before the loop starts,  create a list to hold them:
 
-\begin{verbatim}
+\begin{minted}{python}
 cm_log = []
-\end{verbatim}
+\end{minted}
 
 Inside the loop (before any calculations),  append the current center of mass position to the log:
 
-\begin{verbatim}
+\begin{minted}{python}
     cm_log.append(cm_position)
-\end{verbatim}
+\end{minted}
 
 Anywhere later in the loop (after you update the positions of the moon),  update \pyvar{cm\_position}:
 
-\begin{verbatim}
+\begin{minted}{python}
     # Update the center of mass
     cm_position = cm_position + cm_velocity * TIME_STEP
-\end{verbatim}
+\end{minted}
 
 Now, let's look at the positions of the moons relative to the center of mass.   Before you do any plotting,  
 convert the list to a numpy array and subtract it from the positions:
 
-\begin{verbatim}
+\begin{minted}{python}
 cms = np.array(cm_log)
 
 # Make positions relative to the center of mass
 positions1 = positions1 - cms
 positions2 = positions2 - cms
-\end{verbatim}
+\end{minted}
 
 When you run it, you can really see what is happening:
 \begin{figure}[H]
@@ -336,7 +336,7 @@ artists. matplotlib will call your functions,  tell the artists to draw themselv
 Make a copy of \filename{moons.py} called \filename{animate\_moons.py}. 
 
 Edit it to look like this:
-\begin{verbatim}
+\begin{minted}{python}
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -514,7 +514,7 @@ animation = FuncAnimation(
 
 # Save the rendering to a video file
 animation.save("moonmovie.mp4")
-\end{verbatim}
+\end{minted}
 
 When you run this,  it will take longer than the previous versions.  You should have a 
 video file that shows a simulation of the moons tracing their elliptical paths around their
@@ -543,7 +543,7 @@ as \newterm{dynamical systems} or \newterm{chaos theory}.)
 
 Copy \filename{moons.py}  to \filename{3moons.py}.  Here is a reasonable initial state for your third moon:
 
-\begin{verbatim}
+\begin{minted}{python}
 m3 = {
     "mass": 4.0e22,  # kg
     "position": np.array([50_000_000, 80_000_000]),  # m
@@ -551,7 +551,7 @@ m3 = {
     "radius": 1_700_000.0,  # m
     "color": "green" 
 }  
-\end{verbatim}
+\end{minted}
 
 If we run that simulation for 100 days, we get a plot like this:
 \begin{figure}[H]

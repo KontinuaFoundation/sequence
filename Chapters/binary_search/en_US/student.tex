@@ -3,7 +3,7 @@
 As mentioned in the last chapter, you are going to make a priority
 queue for use with Dijkstra's Algorithm.  Using it will look like this:\index{Priority Queue}
 
-\begin{verbatim}
+\begin{minted}{python}
 import kpqueue
 
 myqueue = pqueue.PriorityQueue()
@@ -11,13 +11,13 @@ myqueue.add(long_beach, 0) # Inserts first city and its cost
 myqueue.add(san_diego, 14) # Puts San Diego after Long Beach
 myqueue.add(los_angeles,12) # Inserts LA between Long Beach and San Diego
 current_city = myqueue.pop() # Returns first city (Long Beach) and removes it
-\end{verbatim}
+\end{minted}
 
 Now, if an item gets a new priority, we need to remove it and reinsert it in the new spot.
-\begin{verbatim}
+\begin{minted}{python}
 myqueue.add(city_a, 16) # Puts it last in the queue
 myqueue.update(city_a, 16, 13) # Moves it to between LA and San Diego
-\end{verbatim}
+\end{minted}
 
 \section{A Naive Implementation of the Priority Queue}
 
@@ -27,7 +27,7 @@ will keep it sorted by the priority.  If two tuples have the same
 priority, we will sort by the data.
 
 Type this in to \filename{kpqueue.py}:
-\begin{verbatim}
+\begin{minted}{python}
 class PriorityQueue:
     def __init__(self):
         self.list = []
@@ -53,7 +53,7 @@ class PriorityQueue:
         self.list.append(pair)
         # Resort the list
         self.list.sort()
-\end{verbatim}
+\end{minted}
 
 This will work fine, but it could be much more efficient:
 \begin{itemize}
@@ -83,7 +83,7 @@ into a separate dictionary?
 
 Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
 
-\begin{verbatim}
+\begin{minted}{python}
               # Visited nodes are already minimized, skip them
                 if v in finalized_dist:
                     continue
@@ -108,14 +108,14 @@ Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
                         pqueue.update(v, old_dist, alt)
 
         return (finalized_dist, prev)
-\end{verbatim}
+\end{minted}
 
 This should be have exactly the same result, except for the unreachable nodes.
 If you have a graph that is not connected, there will be nodes that
 cannot be reached from the origin.  In the old version, these had a
 cost of \pyvar{math.inf}.  Now, they will just not be in the dictionary at all.  So, change \filename{cities.py} to deal with this:
 
-\begin{verbatim}
+\begin{minted}{python}
 if nyc in cost_from_long_beach:
     nyc_cost = cost_from_long_beach[nyc]
     print(f"\n*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
@@ -124,7 +124,7 @@ if nyc in cost_from_long_beach:
     print(f"\n*** Cheapest path from Long Beach to NYC: {path_to_nyc} ***")
 else:
     print("You can't get to NYC from Long Beach")
-\end{verbatim}
+\end{minted}
 
 If you run \filename{cities.py} now, it should behave exactly like the old version.
 
@@ -132,17 +132,17 @@ However, there is a bug. It will rear its head if two cities with the same
 cost are in the priority queue together.  Change \filename{cities.py}
 so that Denver and Pheonix have the same cost:
 
-\begin{verbatim}
+\begin{minted}{python}
 graph.WeightedEdge(12, long_beach, los_angeles)
 graph.WeightedEdge(19, los_angeles, denver)
 graph.WeightedEdge(19, los_angeles, pheonix)
-\end{verbatim}
+\end{minted}
 
 Now try running it.  You should get an error:
 
-\begin{verbatim}
+\begin{minted}{python}
 TypeError: '<' not supported between instances of 'Node' and 'Node'
-\end{verbatim}
+\end{minted}
 
 What happened? The \pyfunction{loc\_for\_pair} method is comparing
 tuples made up of a \pytype{float} and a \pytype{Node}.  The
@@ -159,11 +159,11 @@ unique and constant over the life of the object. It is a rather
 arbitary ordering, but it will work for this problem.  Add a method to
 your \pytype{Node} class:
 
-\begin{verbatim}
+\begin{minted}{python}
     # Nodes will be ordered by their location in memory
     def __lt__(self, other):
         return id(self) < id(other)
-\end{verbatim}
+\end{minted}
 
 Fixed.
 
@@ -202,7 +202,7 @@ The binary search algorithm can be described as follows:
 \end{enumerate}
 
 
-\begin{verbatim}
+\begin{minted}{python}
 class PriorityQueue:
     def __init__(self):
         self.list = []
@@ -244,7 +244,7 @@ class PriorityQueue:
             else: # Found pair!
                 return next_split
         return lower
-\end{verbatim}
+\end{minted}
 
 If you try running it now, it should work perfectly.
 

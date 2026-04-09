@@ -228,7 +228,7 @@ Let's first see how to use Python to solve the equations in the previous
 exercise. If the equations are linearly independent, then $a_1 = a_2 = a_3 = 0$.
 
 Create a file called span\_independence.py and enter this code:
-\begin{Verbatim}
+\begin{minted}{python}
 import numpy as np
 
 A = np.array([[2, 2, 0], 
@@ -237,15 +237,15 @@ A = np.array([[2, 2, 0],
 b = np.array([0, 0, 0])
 c = np.linalg.solve(A,b)
 print(c)
-\end{Verbatim}
+\end{minted}
 You should get this result, which shows the equations are linearly independent.
-\begin{Verbatim}
+\begin{minted}{python}
 [0., -0.,  0.]
-\end{Verbatim}
+\end{minted}
 However, what happens if the equations are not independent? Let's make the 
 first two equations dependent by making equation 1 two times equation 2. Enter 
 this code into your file:
-\begin{Verbatim}
+\begin{minted}{python}
 import numpy as np
 
 D = np.array([[2, -2, 2], 
@@ -258,7 +258,7 @@ print(f)
 You should get many lines indicating an error. Among the spew, you should see:
 
 raise LinAlgError("Singular matrix")
-\end{Verbatim}
+\end{minted}
 So, while the linalg.solve() function is quite useful for solving a system of 
 independent linear equations, raising an error is not the most elegant way to 
 figure out if the equations are dependent. That is where the concept of a 
@@ -272,7 +272,7 @@ You will create a matrix that contains all the coefficients and a vector that
 contains the values on the right-side of the equations. 
 
 Enter this code into your file. 
-\begin{Verbatim}
+\begin{minted}{python}
 G = np.array([[4, 3, -5], 
               [-2, -4, 5], 
               [8, 8, 0]])
@@ -280,9 +280,9 @@ h = np.array([2, 5, -3])
 
 j = np.linalg.solve(G, h)
 print(j)
-\end{Verbatim}
+\end{minted}
 You should get this answer:
-\begin{Verbatim}
+\begin{minted}{python}
 [2.20833333, -2.58333333, -0.18333333]
-\end{Verbatim}
+\end{minted}
 

@@ -167,41 +167,41 @@ The SciPy library has functions that let a programmer work with a large collecti
 For example,  if you wanted to work with a continuous uniform distribution between 6 and 9,  you would import the relevant
 functions like this:
 
-\begin{verbatim}
+\begin{minted}{python}
 from scipy.stats import uniform
-\end{verbatim}
+\end{minted}
 
 Now, if you wanted a numpy array containing a sample of 300 numbers generated randomly from that distribution:
 
-\begin{verbatim}
+\begin{minted}{python}
 samples = uniform.rvs(loc=6,  scale=3,  size=300)
-\end{verbatim}
+\end{minted}
 
 The \pyvar{loc} argument is $a$. The \pyvar{scale} argument is $b - a$.
 
 If you wanted to know the value of the probability density function at 8 and 10, you could use the \pyfunction{pdf} function:
 
-\begin{verbatim}
+\begin{minted}{python}
 x_values = np.array([8, 10])
 p_values  = uniform.pdf(x_values,  loc=6,  scale=3)
-\end{verbatim}
+\end{minted}
 
 Now, \pyvar{p\_values} contains 0.33333 and 0.0.
 
 To get the value of the cumulative distribution function at those points,  you would use the \pyfunction{cdf} function:
 
-\begin{verbatim}
+\begin{minted}{python}
 cdf_values = uniform.cdf(x_values,  loc=6,  scale=3)
-\end{verbatim}
+\end{minted}
 
 Now, \pyvar{cdf\_values} contains 0.666667 and 1.0.
 
 The inverse of the CDF is very useful.  It answers questions like ``How heavy does a cow have to be to be in top 1\%?''
 
-\begin{verbatim}
+\begin{minted}{python}
 bottom_top_percentiles = np.array([0.01,  0.99])
 boundaries = uniform.ppf(bottom_top_percentiles,  loc=6,  scale=3)
-\end{verbatim}
+\end{minted}
 
 Now, \pyvar{boundaries} contains 6.03 and 8.97.
 
@@ -213,7 +213,7 @@ We will talk a lot more about the normal distribution in other chapters,  but le
 
 Create a file called \filename{plot\_norm.py} and add the following lines:
 
-\begin{verbatim}
+\begin{minted}{python}
 import numpy as np
 from scipy.stats import norm
 import matplotlib.pyplot as plt
@@ -258,7 +258,7 @@ axs[1].vlines(MEAN + STD, 0, max_density, "r", linestyle="dashed")
 
 # Save out the figure
 fig.savefig("norm_32_8.png")
-\end{verbatim}
+\end{minted}
 
 The resulting plot should look like this:
 
@@ -285,7 +285,7 @@ Use Python and SciPy stats to answer these questions:
 \end{Exercise}
 \begin{Answer}[ref=scipy_ppf]
 
-\begin{verbatim}
+\begin{minted}{python}
 from scipy.stats import norm
 
 # Constants
@@ -301,14 +301,14 @@ shorter_than_160 = norm.cdf(160, loc=MEAN, scale=STD)
 shorter_than_165 = norm.cdf(165, loc=MEAN, scale=STD)
 between = shorter_than_165 - shorter_than_160
 print(f"{between * 100.0:.2f}% of adult women are between 160 and 165 cm.")
-\end{verbatim}
+\end{minted}
 
 When run,  this will give you:
 
-\begin{verbatim}
+\begin{minted}{python}
 > python3 women.py
 To be in the top 10 percent, you must be at least 173.80 cm
 26.29% of adult women are between 160 and 165 cm.
-\end{verbatim}
+\end{minted}
 
 \end{Answer}

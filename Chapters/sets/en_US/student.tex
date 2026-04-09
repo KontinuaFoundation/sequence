@@ -428,53 +428,53 @@ and \texttt{False}.  We also have operators: \texttt{not},
 
 For example, you could find out what the expression ``$a$ and not
 $b$'' is if both variables are false like this:
-\begin{verbatim}
+\begin{minted}{python}
 a = False
 b = False
 result = a or not b
 print(f"a={a}, b={b}, a or not b = {result}")
-\end{verbatim}
+\end{minted}
 
 This would print out:
-\begin{verbatim}
+\begin{minted}{python}
 a=False, b=False, a or not b = True
-\end{verbatim}
+\end{minted}
 
 What if you wanted to try all possible values for \texttt{a} and
 \texttt{b}? You could use \texttt{itertools}.
 
-\begin{verbatim}
+\begin{minted}{python}
 import itertools
 
 all_combos = itertools.product([False, True], repeat=2)
 for (a, b) in all_combos:
     result = a or not b
     print(f"a={a}, b={b}: a or not b = {result}")       
-\end{verbatim}
+\end{minted}
 
 Type it in and run it. You should get the whole logic table:
 
-\begin{verbatim}
+\begin{minted}{python}
 a=False, b=False: a or not b = True
 a=False, b=True: a or not b = False
 a=True, b=False: a or not b = True
 a=True, b=True: a or not b = True
-\end{verbatim}
+\end{minted}
 
 If you had three inputs into the expression, your truth table would
 have eight entries.  For example, if you wanted to know the truth
 table for $a and not(b and c)$, here is the code:
 
-\begin{verbatim}
+\begin{minted}{python}
 all_combos = itertools.product([False, True], repeat=3)
 for (a, b, c) in all_combos:
     result = a and not(b and c)
     print(f"a={a}, b={b}, c={c}: a and not (b and c) = {result}")
-\end{verbatim}
+\end{minted}
 
 Type it in and run it. You should get:
 
-\begin{verbatim}
+\begin{minted}{python}
 a=False, b=False, c=False: a and not (b and c) = False
 a=False, b=False, c=True: a and not (b and c) = False
 a=False, b=True, c=False: a and not (b and c) = False
@@ -483,7 +483,7 @@ a=True, b=False, c=False: a and not (b and c) = True
 a=True, b=False, c=True: a and not (b and c) = True
 a=True, b=True, c=False: a and not (b and c) = True
 a=True, b=True, c=True: a and not (b and c) = False
-\end{verbatim}
+\end{minted}
 
 \section{The Contrapositive}
 
@@ -541,9 +541,9 @@ Here, then, is the logic table for XOR
 
 In Python, Logical XOR is done using \texttt{!=}:
 
-\begin{verbatim}
+\begin{minted}{python}
 just_one = (a != b)
-\end{verbatim}
+\end{minted}
 
 (Take 10 seconds to confirm that this is the same as the logic table
 above.)

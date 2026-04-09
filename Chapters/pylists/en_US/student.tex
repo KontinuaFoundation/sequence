@@ -8,7 +8,7 @@ zero. You can create a list using square brackets.
 You are now going to write a program that makes an array of
 strings. Type this code into a file called \filename{faves.py}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 favorites = ["Raindrops", "Whiskers", "Kettles", "Mittens"]
 favorites.append("Packages")
 print("Here are all my favorites:", favorites)
@@ -19,11 +19,11 @@ print("Number of things I like:", number_of_faves)
 
 for i in range(number_of_faves):
     print(i, ": I like", favorites[i])
-\end{Verbatim}
+\end{minted}
 
 Run it:
-\begin{Verbatim}[commandchars=\\\{\}]
-$ \textbf{python3 faves.py}
+\begin{minted}{python}
+$ python3 faves.py
 Here are all my favorites: ['Raindrops', 'Whiskers', 'Kettles', 'Mittens', 'Packages']
 My most favorite thing is Raindrops
 My second most favorite is Whiskers
@@ -33,16 +33,16 @@ Number of things I like: 5
 2 : I like Kettles
 3 : I like Mittens
 4 : I like Packages
-\end{Verbatim}
+\end{minted}
 After you have run the code, study it until the output makes sense.
 
 \begin{Exercise}[title={Assign into list}, label=assignintolist]
   Before you list the items, replace "Mittens" with "Gloves".
 \end{Exercise}
 \begin{Answer}[ref=assignintolist]
-\begin{Verbatim}
+\begin{minted}{python}
 favorites[3] = "Gloves"
-\end{Verbatim}
+\end{minted}
 \end{Answer}
 
 \section{Evaluating Polynomials in Python}
@@ -55,9 +55,9 @@ Back to polynomials: if you had a polynomial like $2x^3 -9x + 12$, you
 could write it like this: $12x^0 + (-9)x^1 + 0x^2 + 2x^3$.  We could
 use this representation to keep a polynomial in a Python list. We
 would simply store all the coefficients in order:
-\begin{Verbatim}
+\begin{minted}{python}
 pn1 = [12,-9,0,2]
-\end{Verbatim}
+\end{minted}
 
 In the list, the index of each coefficient would correspond to the
 degree of that monomial. For example, in the list, 2 is at index 3, so
@@ -67,7 +67,7 @@ In the last chapter, you evaluated the polynomial $x^3 - 3x^2 + 10x -
 12$ at $x=4$. Now you will write code that does that evalution.
 Create a file called \filename{polynomials.py} and type in the following:
 
-\begin{Verbatim}
+\begin{minted}{python}
 def evaluate_polynomial(pn, x):
     sum = 0.0  
     for degree in range(len(pn)):
@@ -79,7 +79,7 @@ def evaluate_polynomial(pn, x):
 pn1 = [-12.0, 10.0, -3.0, 1.0]
 y = evaluate_polynomial(pn1, 4.0)
 print("Polynomial 1: When x is 4.0, y is", y)
-\end{Verbatim}
+\end{minted}
 
 Run it. It should evaluate to 44.0.
 
@@ -87,18 +87,18 @@ Run it. It should evaluate to 44.0.
 
 Now you are going to make a function that makes a pretty string to
 represent your polynomial. Here is how it will be used:
-\begin{Verbatim}
+\begin{minted}{python}
 def polynomial_to_string(pn):
     ...Your Code Here...
 
 pn_test = [-12.0, 10.0, 0.0, 1.0]
 print(polynomial_to_string(pn1))
-\end{Verbatim}
+\end{minted}
 
 This would output:
-\begin{Verbatim}
+\begin{minted}{python}
 1.0x**3 + 10.0x + -12.0
-\end{Verbatim}
+\end{minted}
 This is not as simple as you might hope. In particular:
 \begin{itemize}
 \item You should skip the terms with a coefficient of zero
@@ -110,8 +110,8 @@ This is not as simple as you might hope. In particular:
 \end{itemize}
 
 Add this function to your \filename{polynomials.py} file after your \pyfunction{evaluate\_polynomial} function:
-\begin{Verbatim}
-  def polynomial_to_string(pn):
+\begin{minted}{python}
+def polynomial_to_string(pn):
     
     # Make a list of the monomial strings
     monomial_strings = []
@@ -146,7 +146,7 @@ Add this function to your \filename{polynomials.py} file after your \pyfunction{
     
     # Make a string that joins the terms with a plus sign
     return " + ".join(monomial_strings)
-\end{Verbatim}
+\end{minted}
 
 Note that in a list $n$ items, the indices go from 0 to $n-1$. When
 we are walking the list backwards, we start at \pyfunction{len(pn) -
@@ -157,12 +157,12 @@ with. For example, if you want to know about the \pyfunction(join)
 function, google for ``python join''.
 
 Now, change your code to use the new function:
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 pn1 = [-12.0, 10.0, -3.0, 1.0]
 y = evaluate_polynomial(pn1, 4.0)
-\textbf{print("y =", polynomial\_to\_string(pn1))}
+print("y =", polynomial\_to\_string(pn1))
 print("    When x is 4.0, y is", y)
-\end{Verbatim}
+\end{minted}
 
 Run the program. Does the function work?
 
@@ -175,7 +175,7 @@ Using the function that you just wrote, add a few lines of code to
 \end{itemize}
 \end{Exercise}
 \begin{Answer}[ref=pyevalpolynomials]
-\begin{Verbatim}
+\begin{minted}{python}
 pn2 = [2.5, 5.0, -2.0, -7.0, 4.0]
 y = evaluate_polynomial(pn2, 8.5)
 print("Polynomia 2: When x is 8.5, y is", y)
@@ -183,7 +183,7 @@ print("Polynomia 2: When x is 8.5, y is", y)
 pn3 = [-9.0, 0.0, 0.0, 0.0, 0.0, 5.0]
 y = evaluate_polynomial(pn3, 2.0)
 print("Polynomial 3: When x is 2.0, y is", y)    
-\end{Verbatim} 
+\end{minted} 
 \end{Answer}
 
 \section{Plot the polynomial}
@@ -194,9 +194,9 @@ called \filename{plot\_polynomial.py}. Copy your \pyfunction{evaluate\_polynomia
 function into the new file.
 
 Add a line at the beginning of the program that imports the plotting library matplotlib:
-\begin{Verbatim}
+\begin{minted}{python}
 import matplotlib.pyplot as plt
-\end{Verbatim}
+\end{minted}
 
 After the \pyfunction{evaluate\_polynomial} function:
 \begin{itemize}
@@ -208,7 +208,7 @@ After the \pyfunction{evaluate\_polynomial} function:
 \end{itemize}
 
 Like this:
-\begin{Verbatim}
+\begin{minted}{python}
 # x**3 - 7x + 6
 pn = [6.0, -7.0, 0.0, 1.0]
 
@@ -234,16 +234,16 @@ while current_x <= 3.5:
 plt.plot(x_list, y_list)
 plt.grid(True)
 plt.show()
-\end{Verbatim}
+\end{minted}
 
 You should get a beautiful plot like this:
 
 \includegraphics[width=\textwidth]{polyplot1.png}
 
 If you received an error that the matplotlib was not found, use pip to install it:
-\begin{Verbatim}[commandchars=\\\{\}]
-$ \textbf{pip3 install matplotlib}
-\end{Verbatim}
+\begin{minted}{python}
+$ pip3 install matplotlib
+\end{minted}
 
 \begin{Exercise}[title={Observations}, label=plotobservations]
   Where does your polynomial cross the y-axis? Looking at the

@@ -174,28 +174,28 @@ will follow \textit{the uniform distribution}. In other words, the
 probability is uniformly distributed among the 6 possibilities.\index{random number generation}
 
 Start python and try a few of the different ways to generate random numbers:
-\begin{Verbatim}[commandchars=\\\{\}]
-> \textbf{python3}
->>> \textbf{import random}
->>> \textbf{random.random()}  # Generates a random floating point number between 0 and 1
+\begin{minted}{python}
+> python3
+>>> import random
+>>> random.random()  # Generates a random floating point number between 0 and 1
 0.6840892758539989
->>> \textbf{randrange(5)}      # Generates an integer in the range 0 - 4
+>>> randrange(5)      # Generates an integer in the range 0 - 4
 2
->>> \textbf{x = ['Rock', 'Paper', 'Scissors']}
->>> \textbf{random.choice(x)}   # Pick a random entry from the sequence
+>>> x = ['Rock', 'Paper', 'Scissors']
+>>> random.choice(x)   # Pick a random entry from the sequence
 'Paper'
->>> \textbf{x}
+>>> x
 ['Rock', 'Paper', 'Scissors'] 
->>> \textbf{random.shuffle(x)}   # Shuffle the order of the sequence
->>> \textbf{x}
+>>> random.shuffle(x)   # Shuffle the order of the sequence
+>>> x
 ['Scissors', 'Paper', 'Rock']
->>> \textbf{a = list(range(30))}
->>> \textbf{a}
+>>> a = list(range(30))
+>>> a
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
   16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 29]
->>> \textbf{random.sample(a, 10)} # Return 10 randomly chosen items from the sequence
+>>> random.sample(a, 10) # Return 10 randomly chosen items from the sequence
 [8, 7, 20, 9, 25, 13, 23, 11, 14, 16]
-\end{Verbatim}
+\end{minted}
 % KA: https://www.youtube.com/watch?v=Jua-KWBdzfU
 Clearly, Python has many ways to do things that look random. However, here's the hidden truth: they aren't really
 random. The computer that you are using can't generate random
@@ -211,15 +211,15 @@ numbers are quite sufficient.
 If we generate two random numbers in the range 1 through 6 and add them together, we
 will have simulated rolling a pair of dice. Like this:
 
-\begin{Verbatim}[commandchars=\\\{\}]
->>> \textbf{a = random.randrange(6) + 1}
->>> \textbf{b = random.randrange(6) + 1}
->>> \textbf{a + b}
+\begin{minted}{python}
+>>> a = random.randrange(6) + 1
+>>> b = random.randrange(6) + 1
+>>> a + b
 8
-\end{Verbatim}
+\end{minted}
 
 First, let's write a program that just rolls the dice 100 times and shows the result. Make a file \url{dice.py}:
-\begin{Verbatim}
+\begin{minted}{python}
 import random
 
 roll_count = 100
@@ -229,11 +229,11 @@ for i in range(roll_count):
     b = random.randrange(6) + 1
     roll = a + b
     print(f"Toss {i}: {a} + {b} = {roll}")
-\end{Verbatim}
+\end{minted}
 
 When you run it, you should see something like:
-\begin{Verbatim}[commandchars=\\\{\}]
-> \textbf{python3 dice.py}
+\begin{minted}{python}
+> python3 dice.py
 Toss 0: 6 + 6 = 12
 Toss 1: 4 + 4 = 8
 Toss 2: 4 + 2 = 6
@@ -242,19 +242,19 @@ Toss 4: 4 + 4 = 8
 ...
 Toss 98: 5 + 2 = 7
 Toss 99: 5 + 2 = 7
-\end{Verbatim}
+\end{minted}
 
 Now we want to count occurrences of each possible outcome. Let's use an
 array of integers. We will start with an array of zeros. When we roll a 3, we will add 1 to item 3 in the array. (We can
 never roll a zero or a one, so those two entries will always be zero.)
 % ADD: Define Array
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import random
 
 roll_count = 100
 
-\textbf{# Make an array containing 13 zeros}
-\textbf{counts = [0] * 13}
+# Make an array containing 13 zeros
+counts = [0] * 13
 
 for i in range(roll_count):
     a = random.randrange(6) + 1
@@ -262,20 +262,20 @@ for i in range(roll_count):
     roll = a + b
     print(f"Toss {i}: {a} + {b} = {roll}")
 
-    \textbf{# Increment the count for roll}
-    \textbf{counts[roll] += 1}
+    # Increment the count for roll
+    counts[roll] += 1
 
-\textbf{print(f"Counts: {counts}")}
-\end{Verbatim}
+print(f"Counts: {counts")}
+\end{minted}
 
 When you run this, at the end you will see a count for each possible outcome:
 
-\begin{Verbatim}
+\begin{minted}{python}
 ...
 Toss 98: 3 + 2 = 5
 Toss 99: 6 + 1 = 7
 Counts: [0, 0, 2, 6, 16, 11, 13, 14, 11, 11, 6, 9, 1]
-\end{Verbatim}
+\end{minted}
 
 What was the count that we expected? For example, we expected to see a
 2 about once every 36 rolls, right? It might be nice to compare our
@@ -283,11 +283,11 @@ count to what we expected. Add a few more lines, and we are going to
 increase the number of rolls. You will probably want to delete the
 line that prints each roll separately:
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import random
 
-\textbf{# Can't ever be 0 or 1}
-\textbf{p = [0.0, 0.0, 1/36, 1/18, 1/12, 1/9, 5/36, 1/6, 5/36, 1/9, 1/12, 1/18, 1/36]}
+# Can't ever be 0 or 1
+p = [0.0, 0.0, 1/36, 1/18, 1/12, 1/9, 5/36, 1/6, 5/36, 1/9, 1/12, 1/18, 1/36]
 roll_count = 1000
 
 # Make an array containing 13 zeros
@@ -301,12 +301,12 @@ for i in range(roll_count):
     # Increment the count for roll
     counts[roll] += 1
 
-\textbf{for i in range(2,13):}
-    \textbf{print(f"{i} appeared {counts[i]} times, expected {p[i] * roll_count:.1f}")}
-\end{Verbatim}
+for i in range(2,13):
+    print(f"{i appeared {counts[i]} times, expected {p[i] * roll_count:.1f}")}
+\end{minted}
 
 Now you should see something like:
-\begin{Verbatim}
+\begin{minted}{python}
 2 appeared 39 times, expected 27.8
 3 appeared 55 times, expected 55.6
 4 appeared 84 times, expected 83.3
@@ -318,7 +318,7 @@ Now you should see something like:
 10 appeared 87 times, expected 83.3
 11 appeared 49 times, expected 55.6
 12 appeared 23 times, expected 27.8
-\end{Verbatim}
+\end{minted}
 
 Whenever you are dealing with random numbers, the outcome will seldom
 be \textit{exactly} what you expected. In this case, however, you should see that your
@@ -339,9 +339,9 @@ A bar graph is a nice way to look at quantities like this. Let's make a bar grap
 
 We need to describe the set of rectangles. To do this we will loop through each possible roll (2 - 12) and put data in four lists for each:
 % ADD: Define lists
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import random
-\textbf{import matplotlib.pyplot as plt}
+import matplotlib.pyplot as plt
 
 # Can't ever be 0 or 1
 p = [0.0, 0.0, 1/36, 1/18, 1/12, 1/9, 5/36, 1/6, 5/36, 1/9, 1/12, 1/18, 1/36]
@@ -358,32 +358,32 @@ for i in range(roll_count):
     # Increment the count for roll
     counts[roll] += 1
 
-\textbf{# Gather data for bar chart}
-\textbf{bar_width = 0.35}
-\textbf{expected = []}
-\textbf{actual_starts = []}
-\textbf{expected_starts = []}
-\textbf{labels = []}
-\textbf{actual = []}
+# Gather data for bar chart
+bar_width = 0.35
+expected = []
+actual_starts = []
+expected_starts = []
+labels = []
+actual = []
 for i in range(2,13):
-    \textbf{expected.append(p[i] * roll_count)}
-    \textbf{actual.append(counts[i])}      
-    \textbf{actual_starts.append(i - bar_width/2)}
-    \textbf{expected_starts.append(i + bar_width/2)}
-    \textbf{labels.append(i)}
+    expected.append(p[i] * roll_count)
+    actual.append(counts[i])      
+    actual_starts.append(i - bar_width/2)
+    expected_starts.append(i + bar_width/2)
+    labels.append(i)
     
-\textbf{fig, ax = plt.subplots()}
+fig, ax = plt.subplots()
     
-\textbf{# Create the bars}
-\textbf{ax.bar(actual_starts, actual, bar_width, label='Actual')}
-\textbf{ax.bar(expected_starts, expected, bar_width, label='Expected')}
-\textbf{ax.set_xticks(labels)}
+# Create the bars
+ax.bar(actual_starts, actual, bar_width, label='Actual')
+ax.bar(expected_starts, expected, bar_width, label='Expected')
+ax.set_xticks(labels)
 
-\textbf{# Provide labels}
-\textbf{ax.set_ylabel('Occurences')}
-\textbf{ax.set_title('Dice Rolls')}
-\textbf{ax.legend()}
-\textbf{plt.show()}
-\end{Verbatim}
+# Provide labels
+ax.set_ylabel('Occurences')
+ax.set_title('Dice Rolls')
+ax.legend()
+plt.show()
+\end{minted}
 
 % ADD: For extra guideance: https://pythoniseasytolearn.blogspot.com/2019/09/rolling-two-dice.html

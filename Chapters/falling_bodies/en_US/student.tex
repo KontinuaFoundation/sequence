@@ -364,7 +364,7 @@ will make a graph.)
 
 Create a file called \filename{falling.py} and type this into it:
 
-\begin{Verbatim}
+\begin{minted}{python}
 # Acceleration on earth
 acceleration = -9.8 # m/s/s
 
@@ -396,10 +396,10 @@ while height > 0.0:
 
 
 print(f"Hit the ground: Complete")
-\end{Verbatim}
+\end{minted}
 
 When you run it, you will see something like this:
-\begin{Verbatim}
+\begin{minted}{python}
 0.00 s:
 	acceleration: -9.80 m/s/s
 	speed: 12.00 m/s
@@ -426,7 +426,7 @@ When you run it, you will see something like this:
 	speed: -13.58 m/s
 	height: 0.07 m
 Hit the ground: Complete
-\end{Verbatim}
+\end{minted}
 
 Note that the acceleration isn't changing at all, but it is changing
 the speed, and the speed is changing the height.
@@ -444,19 +444,19 @@ For example, we will have a list of speeds, and the first three
 entries will be 12.0, 11.9, and 11.8.\index{lists, python}
 
 We create an empty list and assign it to a variable like this:
-\begin{Verbatim}
+\begin{minted}{python}
 x = []
-\end{Verbatim}
+\end{minted}
 
 Next, we can add items like this:
-\begin{Verbatim}
+\begin{minted}{python}
 x.append(3.14)
-\end{Verbatim}
+\end{minted}
 
 To get the first time back, we can ask for the object at index 0.
-\begin{Verbatim}
+\begin{minted}{python}
 y = x[0]
-\end{Verbatim}
+\end{minted}
 Note that the list starts at 0. If you have 32 items in the list,
 the first item is at index 0; the last item is at index 31.
 
@@ -469,8 +469,8 @@ you will create a plot and show it to the user.
 
 In \filename{falling\_graph.py}, add the bold code:
 
-\begin{Verbatim}[commandchars=\\\{\}]
-\textbf{import matplotlib.pyplot as plt}
+\begin{minted}{python}
+import matplotlib.pyplot as plt
 
 # Acceleration on earth
 acceleration = -9.8 # m/s/s
@@ -483,20 +483,20 @@ speed = 12  # m/s upward
 height = 2  # m above the ground
 current_time = 0.0  # seconds after release
 
-\textbf{# Create empty lists}
-\textbf{accelerations = []}
-\textbf{speeds = []}
-\textbf{heights = []}
-\textbf{times = []}
+# Create empty lists
+accelerations = []
+speeds = []
+heights = []
+times = []
 
 # Is the hammer still aloft?
 while height > 0.0:
 
-    \textbf{# Add the data to the lists}
-    \textbf{times.append(current_time)}
-    \textbf{accelerations.append(acceleration)}
-    \textbf{speeds.append(speed)}
-    \textbf{heights.append(height)}
+    # Add the data to the lists
+    times.append(current_time)
+    accelerations.append(acceleration)
+    speeds.append(speed)
+    heights.append(height)
     
     # Update height
     height = height + time_step * speed
@@ -507,14 +507,14 @@ while height > 0.0:
     # Update time
     current_time = current_time + time_step
 
-\textbf{# Make a plot}
-\textbf{fig, ax = plt.subplots()}
+# Make a plot
+fig, ax = plt.subplots()
 fig.suptitle("Falling Hammer")
-\textbf{ax.set_xlabel("Time (s)")}
-\textbf{ax.set_ylabel("Height (m)")}
-\textbf{ax.plot(times, heights)}
-\textbf{plt.show()}
-\end{Verbatim}
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Height (m)")
+ax.plot(times, heights)
+plt.show()
+\end{minted}
 
 When you run the program, you should see a graph of the height over time.
 
@@ -524,7 +524,7 @@ It is more interesting if we can see all three: acceleration, speed, and height.
 So, let's make three stacked plots. Change the plotting code in 
 \filename{falling\_graph.py} to:\index{matplotlib!subplots}
 
-\begin{Verbatim}
+\begin{minted}{python}
 # Make a plot with three subplots
 fig, ax = plt.subplots(3,1)
 fig.suptitle("Falling Hammer")
@@ -542,7 +542,7 @@ ax[2].set_xlabel("Time (s)")
 ax[2].set_ylabel("Height (m)")
 ax[2].plot(times, heights)
 plt.show()
-\end{Verbatim}
+\end{minted}
 
 You will now get plots of all three variables:
 

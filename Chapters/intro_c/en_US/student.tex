@@ -44,22 +44,22 @@ at runtime.
 
 To compile a C file called \texttt{hello.c}, you run:
 
-\begin{lstlisting}[language=bash]
+\begin{minted}{bash}
 gcc hello.c -o hello
-\end{lstlisting}
+\end{minted}
 
 The \texttt{-o hello} flag names the output executable \texttt{hello}.
 Then you run it:
 
-\begin{lstlisting}[language=bash]
+\begin{minted}{bash}
 ./hello
-\end{lstlisting}
+\end{minted}
 
 \section{Your First C Program}
 
 Create a file called \texttt{hello.c} and type the following:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 
 int main()
@@ -67,13 +67,13 @@ int main()
     printf("Hello, world!\n");
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 Compile and run it.  You should see:
 
-\begin{lstlisting}
+\begin{minted}{c}
 Hello, world!
-\end{lstlisting}
+\end{minted}
 
 Let's look at each piece.
 
@@ -106,10 +106,10 @@ Python figures out the type of each variable automatically.
 
 In C, you must declare the type of every variable when you create it:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int x = 5;
 double y = 3.14;
-\end{lstlisting}
+\end{minted}
 
 This is called \emph{static typing}\index{static typing}.  Once you
 declare a variable as \texttt{int}, it can only hold integers.  The
@@ -133,10 +133,10 @@ The common C types are:\index{C types}
 
 You can also declare a variable without immediately giving it a value:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int count;      /* declared but not initialized */
 count = 10;     /* now it has a value */
-\end{lstlisting}
+\end{minted}
 
 Warning: an uninitialized variable in C contains whatever random bytes
 happen to be in that memory location.  Unlike Python, C will not raise
@@ -150,16 +150,16 @@ You can also use \texttt{//} for single-line comments in modern C.
 
 \texttt{printf} uses format specifiers to print different types:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int age = 17;
 double height = 1.75;
 printf("Age: %d, Height: %f\n", age, height);
-\end{lstlisting}
+\end{minted}
 
 Output:
-\begin{lstlisting}
+\begin{minted}{c}
 Age: 17, Height: 1.750000
-\end{lstlisting}
+\end{minted}
 
 Common format specifiers:
 
@@ -182,7 +182,7 @@ The logic is the same as Python; only the syntax changes.
 
 \subsection{if / else}
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int score = 85;
 
 if (score >= 90) {
@@ -192,37 +192,37 @@ if (score >= 90) {
 } else {
     printf("C or below\n");
 }
-\end{lstlisting}
+\end{minted}
 
 The condition must be in parentheses \texttt{( )}, and each branch is
 surrounded by curly braces \texttt{\{ \}}.
 
 \subsection{for and while loops}
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 for (int i = 0; i < 5; i++) {
     printf("%d\n", i);
 }
-\end{lstlisting}
+\end{minted}
 
 A C \texttt{for} loop has three parts separated by semicolons: the
 initializer (\texttt{int i = 0}), the condition (\texttt{i < 5}), and
 the update (\texttt{i++}).  The \texttt{++} increments by 1, the same
 as \texttt{i = i + 1}.
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int i = 0;
 while (i < 5) {
     printf("%d\n", i);
     i++;
 }
-\end{lstlisting}
+\end{minted}
 
 \section{Functions}
 
 In C, you must declare the return type and the type of each parameter:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 double square(double x)
 {
     return x * x;
@@ -234,22 +234,22 @@ int main()
     printf("%f\n", square(2.5));   /* prints 6.250000  */
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 If a function returns nothing, its return type is \texttt{void}:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 void printGreeting(char *name)
 {
     printf("Hello, %s!\n", name);
 }
-\end{lstlisting}
+\end{minted}
 
 Functions must be defined \emph{before} they are called, or you must
 provide a \emph{forward declaration} (just the signature, ending in a
 semicolon) above \texttt{main}:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 double square(double x);   /* forward declaration */
 
 int main()
@@ -262,7 +262,7 @@ double square(double x)    /* full definition can come later */
 {
     return x * x;
 }
-\end{lstlisting}
+\end{minted}
 
 \section{The Stack: Blackboards for Functions}
 \index{stack}\index{stack frame}
@@ -287,7 +287,7 @@ off, and \texttt{main}'s frame is on top again.
 
 Here is a concrete example:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 
 int cookingMinutes(int weightPounds)
@@ -305,7 +305,7 @@ int main()
     printf("Cook for %d minutes.\n", result);
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 When \texttt{main} calls \texttt{cookingMinutes(9)}, the stack looks
 like this:
@@ -348,7 +348,7 @@ Every variable in your program lives at some address in memory.  You
 can find out the address of a variable using the \texttt{\&} operator,
 called the \emph{address-of} operator\index{address-of operator}:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 
 int main()
@@ -357,13 +357,13 @@ int main()
     printf("i stores its value at %p\n", (void *)&i);
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 Run this and you will see something like:
 
-\begin{lstlisting}
+\begin{minted}{c}
 i stores its value at 0x7ffeea3c4738
-\end{lstlisting}
+\end{minted}
 
 The address is printed in hexadecimal.  Your address will differ, because
 the operating system decides where in memory your variables live.
@@ -372,11 +372,11 @@ A \emph{pointer}\index{pointer} is a variable that holds an address.
 If you want to store the address of an \texttt{int}, you declare a
 variable of type \texttt{int *} (``pointer to int''):
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int i = 17;
 int *addressOfI = &i;
 printf("i is at %p\n", (void *)addressOfI);
-\end{lstlisting}
+\end{minted}
 
 The \texttt{*} in the declaration is part of the type; it means ``this
 variable holds an address, and the thing at that address is an
@@ -388,7 +388,7 @@ Once you have a pointer, you can use the \texttt{*} operator to read
 or write the value \emph{at} the address the pointer holds.  This is
 called \emph{dereferencing}\index{dereferencing} the pointer:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int i = 17;
 int *p = &i;
 
@@ -396,7 +396,7 @@ printf("%d\n", *p);   /* prints 17 -- reads through p  */
 
 *p = 89;              /* writes 89 to the address p holds */
 printf("%d\n", i);    /* prints 89 -- i was changed!   */
-\end{lstlisting}
+\end{minted}
 
 To summarize:
 \begin{itemize}
@@ -410,7 +410,7 @@ To summarize:
 Sometimes you want a pointer that does not yet point to anything.  Use
 \texttt{NULL}\index{NULL}:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 int *p = NULL;   /* p points to nothing */
 
 if (p) {
@@ -418,7 +418,7 @@ if (p) {
 } else {
     printf("p is null\n");
 }
-\end{lstlisting}
+\end{minted}
 
 A null pointer is simply the address zero.  \textbf{Never dereference
 a null pointer}, your program will crash.  Always check before
@@ -439,7 +439,7 @@ part, and needs to return \emph{both}.  Since a function can only return
 one value, it returns the fractional part and writes the integer part to
 an address you supply:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 #include <math.h>
 
@@ -456,13 +456,13 @@ int main()
     printf("Fraction part: %f\n", fractionPart);
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 Output:
-\begin{lstlisting}
+\begin{minted}{c}
 Integer part:  3.000000
 Fraction part: 0.140000
-\end{lstlisting}
+\end{minted}
 
 Here is another way to think about it.  Imagine you need to give a spy
 an assignment.  You say: ``I've left a length of steel pipe at the foot
@@ -477,7 +477,7 @@ leave the result.
 Here is our own pass-by-reference function that converts meters to feet
 and inches:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 #include <math.h>
 
@@ -501,7 +501,7 @@ int main()
     printf("%d ft %f in\n", feet, inches);
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 The caller declares the variables it wants filled in (\texttt{feet},
 \texttt{inches}), passes their addresses to the function, and the
@@ -514,17 +514,17 @@ A \emph{struct} lets you bundle several related values into a single
 named type.  In Python you might use a dictionary for this; in C, a
 struct is the fundamental grouping mechanism.
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 struct Person {
     double heightInMeters;
     int weightInKilos;
 };
-\end{lstlisting}
+\end{minted}
 
 This defines a new type called \texttt{struct Person}.  You can then
 create variables of that type:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 
 struct Person {
@@ -551,7 +551,7 @@ int main()
     printf("aaron BMI: %f\n", bodyMassIndex(aaron));
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 You access the members of a struct using a dot: \texttt{mikey.heightInMeters}.
 
@@ -585,11 +585,11 @@ it, and can be any size determined at runtime.
 In C, you claim heap memory with \texttt{malloc}\index{malloc} and
 release it with \texttt{free}\index{free}.
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdlib.h>
 
 struct Person *mikey = malloc(sizeof(struct Person));
-\end{lstlisting}
+\end{minted}
 
 \texttt{malloc} asks the system for enough heap memory to hold a
 \texttt{Person} struct and returns the address of that memory.
@@ -624,10 +624,10 @@ it lives on the stack, but the struct it points to lives on the heap.
 When you have a pointer to a struct, you access its members using
 \texttt{->}\index{arrow operator} instead of a dot:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 mikey->heightInMeters = 1.70;
 mikey->weightInKilos  = 96;
-\end{lstlisting}
+\end{minted}
 
 The code \texttt{mikey->weightInKilos} means: ``dereference the pointer
 \texttt{mikey} to get the struct, then access its \texttt{weightInKilos}
@@ -638,10 +638,10 @@ member.''  It is shorthand for \texttt{(*mikey).weightInKilos}.
 When you are done with heap-allocated memory, you must release it with
 \texttt{free}:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 free(mikey);
 mikey = NULL;   /* good habit: prevents accidental reuse */
-\end{lstlisting}
+\end{minted}
 
 After \texttt{free}, the memory is returned to the heap for reuse.
 Setting the pointer to \texttt{NULL} prevents you from accidentally
@@ -654,7 +654,7 @@ it can consume all available memory.
 
 \subsection{A complete heap example}
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -681,7 +681,7 @@ int main()
 
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 \texttt{bodyMassIndex} now takes a \texttt{struct Person *} instead of
 a \texttt{struct Person} by value.  This avoids copying the struct.
@@ -693,7 +693,7 @@ Functions that work on heap-allocated data almost always take pointers.
 You can also allocate a contiguous block of memory for multiple values.
 Use \texttt{malloc} with a count:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 /* Allocate space for 1000 doubles on the heap */
 double *buffer = malloc(1000 * sizeof(double));
 
@@ -702,7 +702,7 @@ buffer[1] = 2.72;
 
 free(buffer);
 buffer = NULL;
-\end{lstlisting}
+\end{minted}
 
 A pointer to the first element is all you need to work with the whole
 array.  The heap memory is contiguous, so \texttt{buffer[0]},
@@ -754,7 +754,7 @@ scratch.
 \item \textbf{Memory leak hunt.}  The following program has a memory
   leak.  Identify and fix it.
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -776,7 +776,7 @@ int main()
     }
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 \item A \texttt{struct tm} is defined in \texttt{<time.h>} and holds a
   broken-down calendar time.  The function \texttt{time(NULL)} returns
@@ -785,7 +785,7 @@ int main()
   \texttt{struct tm} with the corresponding date and time.  Here is a
   snippet to get you started:
 
-\begin{lstlisting}[language=C]
+\begin{minted}{c}
 #include <stdio.h>
 #include <time.h>
 
@@ -798,7 +798,7 @@ int main()
            now.tm_hour, now.tm_min, now.tm_sec);
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
   Look up the other fields of \texttt{struct tm} and modify the
   program to print today's full date.  Then modify it to print the

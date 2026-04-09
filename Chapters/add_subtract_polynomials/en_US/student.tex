@@ -69,7 +69,7 @@ To add the two polynomials then, we sum the coefficients for each degree.
 \textit{FIXME: Diagram here}
 
 Create a file called \filename{add\_polynomials.py}, and type in the following: 
-\begin{Verbatim}
+\begin{minted}{python}
 def add_polynomials(a, b):
     degree_of_result = len(a)
     result = []
@@ -84,14 +84,14 @@ polynomial2 = [-9.0, 0.0, 4.0, 2.0]
 polynomial3 = add_polynomials(polynomial1, polynomial2)
 
 print('Sum =', polynomial3)
-\end{Verbatim}
+\end{minted}
 
 Run the program.
 
 Unfortunately, this code only works if the polynomails are the same length. For
 example, try making \pyvar{polynomial1} have a larger degree than
 \pyvar{polynomial2}:
-\begin{Verbatim}
+\begin{minted}{python}
 # x**4 - 5x**3 + 3x**2 - 4x + 9
 polynomial1 = [9.0, -4.0, 3.0, -5.0, 1.0]
   
@@ -99,7 +99,7 @@ polynomial1 = [9.0, -4.0, 3.0, -5.0, 1.0]
 polynomial2 = [-9.0, 0.0, 4.0, 2.0]
 polynomial3 = add_polynomials(polynomial1, polynomial2)
 print('Sum =', polynomial3)
-\end{Verbatim}
+\end{minted}
 
 See the problem?
 
@@ -108,9 +108,9 @@ See the problem?
 Can you fix the function \pyfunction{add\_polynomials} to handle polynomials of different degrees?
 
 Here is a hint: In Python, there is a \pyfunction{max} function that returns the largest of the numbers it is passed.
-\begin{Verbatim}
+\begin{minted}{python}
 biggest = max(5,7)
-\end{Verbatim}
+\end{minted}
 Here \pyvar{biggest} would be set to 7.
 
 Here is another hint: If you have an array \pyvar{mylist}, \pyvar{i},
@@ -118,7 +118,7 @@ a non-negative integer, is only a legit index if \texttt{i <
   len(mylist)}.
 \end{Exercise}
 \begin{Answer}[ref=pyaddpolys]
-\begin{Verbatim}
+\begin{minted}{python}
 def add_polynomials(a, b):
     degree_of_result = max(len(a), len(b))
     result = []
@@ -135,7 +135,7 @@ def add_polynomials(a, b):
             
         result.append(coefficient_a + coefficient_b)
     return result
-\end{Verbatim}
+\end{minted}
 \end{Answer}
 
 \section{Scalar multiplication of  polynomials}
@@ -147,19 +147,19 @@ If you multiply a polynomial with a number, the distributive property applies:
 (When we are talking about things that are more complicated than a number, we use the word \emph{scalar} to mean ``Just a number''. This is the product of a scalar and a polynomial.)
 
 In \filename{add\_polynomials.py}, add a function to that multiplies a scalar and a polynomial:
-\begin{Verbatim}
+\begin{minted}{python}
 def scalar_polynomial_multiply(s, pn):
     result = []
     for coefficient in pn:
         result.append(s * coefficient)
     return result
-\end{Verbatim}
+\end{minted}
 
 Somewhere near the end of the program, test this function:
-\begin{Verbatim}
+\begin{minted}{python}
 polynomial4 = scalar_polynomial_multiply(5.0, polynomial1)
 print('Scalar product =', polynomial_to_string(polynomial4))
-\end{Verbatim}
+\end{minted}
 
 \begin{Exercise}[title=Subtract polynomials in Python, label=pysubpoly]
 Now, implement a function that does subtraction using
@@ -167,7 +167,7 @@ Now, implement a function that does subtraction using
 \pyfunction{add\_polynomials}.
 
 It should look like this:
-\begin{Verbatim}
+\begin{minted}{python}
 def subtract_polynomial(a, b):
     ...Your code here...
 
@@ -175,14 +175,14 @@ polynomial5 = [9.0, -4.0, 3.0, -5.0]
 polynomial6 = [-9.0, 0.0, 4.0, 2.0, 1.0]
 polynomial7 = subtract_polynomial(polynomial5, polynomial6)
 print('Difference =', polynomial_to_string(polynomial7))
-\end{Verbatim}
+\end{minted}
 \end{Exercise}
 \begin{Answer}[ref=pysubpoly]
-\begin{Verbatim}
+\begin{minted}{python}
 def subtract_polynomial(a, b):
     neg_b = scalar_polynomial_multiply(-1.0, b)
     return add_polynomials(a, neg_b)
-\end{Verbatim}
+\end{minted}
 \end{Answer}
 
 

@@ -22,9 +22,9 @@ will use sqlite to access it.
 
 In the terminal, get to the directory where \filename{bikes.db} lives. To open the sqlite tool on that file:
 
-\begin{Verbatim}[commandchars=\\\{\}]
-> \textbf{sqlite3 bikes.db}
-\end{Verbatim}
+\begin{minted}{sql}
+> sqlite3 bikes.db
+\end{minted}
 
 (If your system complains that there is no sqlite3 tool, you need to install sqlite. See this website: \url{https://sqlite.org/})
 
@@ -35,53 +35,53 @@ We mostly run SQL commands in this tool, but there are a few non-SQL
  commands that all start with a period. To see the tables and their
  columns, you can run \texttt{.schema}:
 
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{.schema}
+\begin{minted}{sql}
+sqlite> .schema
 CREATE TABLE bike (bike_id int PRIMARY KEY, brand text, size int,
           purchase_price real, purchase_date date, status text);
-\end{Verbatim}
+\end{minted}
 
 That is the SQL command that we used to create the \texttt{bike}
 table. You can see all the columns and their types.
 
 You want to see all the rows of data in that table?
 
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{select * from bike;}
+\begin{minted}{sql}
+sqlite> select * from bike;
 4997391|GT|57|269.61|2009-05-03|rented
 5429447|Cannondale|50|215.91|2002-02-17|broken
 5019171|Trek|58|251.17|1985-07-11|rented
 3000288|Cannondale|57|211.08|1993-01-05|broken
 880965|GT|52|281.75|1995-08-02|available
 ...
-\end{Verbatim}
+\end{minted}
 
 You will see 1000 rows of data!
 
 The SQL language is not case-sensitive, so you can also write it like this:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT * FROM BIKE;}  
-\end{Verbatim}
+\begin{minted}{sql}
+sqlite> SELECT * FROM BIKE;  
+\end{minted}
 
 Often, you will see SQL with just the SQL keywords in all caps:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT * FROM bike;}  
-\end{Verbatim}
+\begin{minted}{sql}
+sqlite> SELECT * FROM bike;  
+\end{minted}
 The semicolon is not part of SQL, but it tells sqlite that you are done writing a command and that it should be executed.
 
 SQL lets you choose which columns you would like to see. The asterisk (FIXME) used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the dataframe:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT bike_id, brand FROM bike;}
+\begin{minted}{sql}
+sqlite> SELECT bike_id, brand FROM bike;
 4997391|GT
 5429447|Cannondale
 5019171|Trek
 3000288|Cannondale
 ...
-\end{Verbatim}
+\end{minted}
 
 Using WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';}
+\begin{minted}{sql}
+sqlite> SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';
 4997391|GT|57|269.61|2009-05-03|rented
 326774|GT|56|165.0|2009-06-27|available
 264933|GT|52|302.43|2009-07-09|available
@@ -89,11 +89,11 @@ sqlite> \textbf{SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand 
 4819848|GT|51|221.71|2009-12-11|rented
 9347713|GT|52|232.32|2009-06-13|available
 3019205|GT|58|262.94|2009-08-22|available  
-\end{Verbatim}
+\end{minted}
 
 Using DISTINCT, SQL lets you get just one copy of each value:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{SELECT DISTINCT status FROM bike;}
+\begin{minted}{sql}
+sqlite> SELECT DISTINCT status FROM bike;
 rented
 broken
 available
@@ -103,14 +103,14 @@ Flat tire
 good
 out
 Rented
-\end{Verbatim}
+\end{minted}
 
 You can also edit these rows. For example, if you wanted every status
 that is \texttt{Busted} to be changed to \texttt{broken}, you can use an \verb|UPDATE| statement with a \verb|SET|:
 
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{UPDATE bike SET status='broken' WHERE status='Busted';}
-sqlite> \textbf{SELECT DISTINCT status FROM bike;}
+\begin{minted}{sql}
+sqlite> UPDATE bike SET status='broken' WHERE status='Busted';
+sqlite> SELECT DISTINCT status FROM bike;
 rented
 broken
 available
@@ -118,22 +118,22 @@ Flat tire
 good
 out
 Rented
-\end{Verbatim}
+\end{minted}
 
 You can insert new rows:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{INSERT INTO bike (bike_id, brand, size, purchase_price, purchase_date, status)}
-  ...> \textbf{VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');}
-sqlite> \textbf{SELECT * FROM bike WHERE bike_id = 1;}
+\begin{minted}{sql}
+sqlite> INSERT INTO bike (bike_id, brand, size, purchase_price, purchase_date, status)
+  ...> VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');
+sqlite> SELECT * FROM bike WHERE bike_id = 1;
 1|GT|53|123.45|2020-11-13|available
-\end{Verbatim}
+\end{minted}
 Note that the bike\_id here must be \emph{unique}. 
 
 You can delete rows:
-\begin{Verbatim}[commandchars=\\\{\}]
-sqlite> \textbf{DELETE FROM bike WHERE bike_id = 1;}
-sqlite> \textbf{SELECT * FROM bike WHERE bike_id = 1;}
-\end{Verbatim}
+\begin{minted}{sql}
+sqlite> DELETE FROM bike WHERE bike_id = 1;
+sqlite> SELECT * FROM bike WHERE bike_id = 1;
+\end{minted}
 
 To get out of sqlite, type \texttt{.exit}.
 
@@ -142,9 +142,9 @@ To get out of sqlite, type \texttt{.exit}.
  columns) of every Trek bike that cost more than \$300.
 \end{Exercise}
 \begin{Answer}[ref=sql_where]
-\begin{Verbatim}
- SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
-\end{Verbatim}
+\begin{minted}{sql}
+SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
+\end{minted}
 \end{Answer}
 
 \section{Using SQL from Python}
@@ -156,7 +156,7 @@ Let's create a simple program that fetches and displays the bike ID
 and purchase date of every Trek bike that cost more than \$300.
 
 Create a file called \filename{report.py}:
-\begin{Verbatim}
+\begin{minted}{sql}
 import sqlite3 as db
 
 con = db.connect('bikes.db')
@@ -170,16 +170,16 @@ for row in rows:
   print(f"Bike {row[0]}, purchased {row[1]}")
 
 con.close()
-\end{Verbatim}
+\end{minted}
 
 When you execute it, you should see:
-\begin{Verbatim}[commandchars=\\\{\}]
-> \textbf{python3 report.py}
+\begin{minted}{sql}
+> python3 report.py
 Bike 4128046, purchased 2007-08-06
 Bike 7117808, purchased 1995-03-12
 Bike 7176903, purchased 1986-07-03
 Bike 827899, purchased 2009-03-14
 Bike 363983, purchased 1970-08-16
-\end{Verbatim}
+\end{minted}
 
 % I think we need a sql_2, which expands on combining SQL db's (querying two different db files), real world applications, and more complex dbs, sub-databases. 

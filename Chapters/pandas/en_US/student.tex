@@ -72,13 +72,13 @@ In pandas, there are two datatypes that you use a lot:
 
 In the digital resources, you will fined \filename{bikes.csv}. If you
 look at it in a text editor, it will start like this:
-\begin{Verbatim}
+\begin{minted}{python}
 bike_id,brand,size,purchase_price,purchase_date,status
 5636248,GT,57,277.99,1986-09-07,available
 4156134,Giant,56,201.52,2005-01-09,rented
 7971254,Cannondale,54,292.25,1978-02-28,available
 3600023,Canyon,57,197.62,2007-02-15,broken
-\end{Verbatim}
+\end{minted}
 
 The first line is a header; it tells you the name of each column.
 Next, the each bike is represented by values which are separated by commas. (Thus the name: CSV stands
@@ -100,7 +100,7 @@ the number of rows and the number of columns. To confirm that we have
 actually read the data in, let's print those numbers.  Add these lines
 to \filename{report.py}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 import pandas as pd
 
 # Read the CSV and create a dataframe
@@ -111,14 +111,14 @@ df = pd.read_csv('bikes.csv', index_col="bike_id")
 print(f"*** Basics ***")
 print(f"Bikes: {row_count:,}")
 print(f"Columns: {col_count}")
-\end{Verbatim}
+\end{minted}
 
 Build it and run it. You should see something like this:
-\begin{Verbatim}
+\begin{minted}{python}
 *** Basics ***
 Bikes: 998
 Columns: 5
-\end{Verbatim}
+\end{minted}
 
 Note that your table actually has six columns. The index series is
 not included in the shape.
@@ -129,38 +129,38 @@ Let's get the lowest, the highest, and the mean purchase price of the
 bikes.  The purchase price is a series, and you can ask the dataframe
 for it. Add these lines to the end of your program:
 
-\begin{Verbatim}
+\begin{minted}{python}
 # Purchase price stats
 print("\n*** Purchase Price ***")
 series = df["purchase_price"]
 print(f"Lowest:{series.min()}")
 print(f"Highest:{series.max()}")
 print(f"Mean:{series.mean():.2f}")
-\end{Verbatim}
+\end{minted}
 
 Now when you run it, you will see a few additional lines:
-\begin{Verbatim}
+\begin{minted}{python}
 *** Purchase Price ***
 Lowest:107.37
 Highest:377.7
 Mean:249.01
-\end{Verbatim}
+\end{minted}
 
 What are all the brands of the bikes? Add a few more lines to your
 program that shows how many of each brand:
 
-\begin{Verbatim}
+\begin{minted}{python}
 # Brand stats
 print("\n*** Brands ***")
 series = df["brand"]
 series_counts = series.value_counts()
 print(f"{series_counts}")
-\end{Verbatim}
+\end{minted}
 
 Now when you run it, your report will include the number of bikes for
 each brand from most to least common:
 
-\begin{Verbatim}
+\begin{minted}{python}
 *** Brands ***
 Canyon        192
 BMC           173
@@ -169,7 +169,7 @@ Trek          166
 GT            150
 Giant         147
 Name: brand, dtype: int64
-\end{Verbatim}
+\end{minted}
 
 \pyfunction{value\_counts} returns a Series.  To format this better, we
 need to learn about accessing individual rows in a series.
@@ -180,16 +180,16 @@ In an array, you ask for data using an the location (as an int) of the
 item you want. You can do this in pandas using \pyfunction{iloc}. Add
 this to the end of your program:
 
-\begin{Verbatim}
+\begin{minted}{python}
 # First bike
 print("\n*** First Bike ***")
 row = df.iloc[0]
 print(f"{row}")
-\end{Verbatim}
+\end{minted}
 
 When you run it, you will see the attributes of the first row of data:
 
-\begin{Verbatim}
+\begin{minted}{python}
 *** First Bike ***
 brand                     GT
 size                      57
@@ -197,7 +197,7 @@ purchase_price        277.99
 purchase_date     1986-09-07
 status             available
 Name: 5636248, dtype: object
-\end{Verbatim}
+\end{minted}
 
 Notice that the data coming back is actually another series.
 
@@ -206,25 +206,25 @@ this row is 5636248.  In pandas, we usually use this to locate
 particular rows.  For example, there is a row with \texttt{bike\_id}
 equal to 2969341. Let's ask for one entry from the 
 
-\begin{Verbatim}
+\begin{minted}{python}
 print("\n*** Some Bike ***")
 brand = df.loc[2969341]['brand']
 print(f"brand = {brand}")
-\end{Verbatim}
+\end{minted}
 
 Now, you will see the information about that bike:
 
-\begin{Verbatim}
+\begin{minted}{python}
 *** Some Bike ***
 brand = Cannondale
-\end{Verbatim}
+\end{minted}
 
 pandas has a few different ways of getting to that value.  All of these get you the same thing:
-\begin{Verbatim}
+\begin{minted}{python}
 brand = df.loc[2969341]['brand'] # Get row, then get value
 brand = df['brand'][2969341]     # Get column, then get value
 brand = df.loc[2969341, 'brand'] # One call with both row and value
-\end{Verbatim}
+\end{minted}
 
 \section{Changing data}
 
@@ -233,7 +233,7 @@ status, and it should be one of the following strings:''available'',
 ``rented'', or ``broken''.  Get counts for each unique value in
 status:
 
-\begin{Verbatim}
+\begin{minted}{python}
 print("\n*** Status ***")
 series = df["status"]
 missing = series.isnull()
@@ -241,11 +241,11 @@ print(f"{missing.sum()} bikes have no status.")
 series_counts = series.value_counts()
 for value in series_counts.index:
     print(f"{series_counts.loc[value]} bikes are \"{value}\"")
-\end{Verbatim}
+\end{minted}
 
 This will show you:
 
-\begin{Verbatim}
+\begin{minted}{python}
 *** Status ***
 7 bikes have no status.
 389 bikes are "rented"
@@ -253,17 +253,17 @@ This will show you:
 296 bikes are "available"
 1 bikes are "Flat tire"
 1 bikes are "Available"
-\end{Verbatim}
+\end{minted}
 
 Right away, we can see two easily fixable problems: Someone typed
 ``Available'' instead of ``available''.  Right after you read the CSV
 in, fix this in the data frame:
 
-\begin{Verbatim}
+\begin{minted}{python}
 mask = df['status'] == 'Available'
 print(f"{mask}")
 df.loc[mask, 'status'] = 'available'
-\end{Verbatim}
+\end{minted}
 
 When you run this, you will see that the mask is a series with
 \texttt{bike\_id} as the index and \texttt{False} or \texttt{True} as the value,
@@ -275,80 +275,80 @@ assignment only happens in the one problematic row.
 
 Let's get rid of the mask variable and do the same for turning \texttt{Flat tire} into \texttt{Broken}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 df.loc[df['status'] == 'Available', 'status'] = 'available'
 df.loc[df['status'] == 'Flat tire', 'status'] = 'broken'
-\end{Verbatim}
+\end{minted}
 
 Now those problems are gone:
-\begin{Verbatim}
+\begin{minted}{python}
 7 bikes have no status.
 389 bikes are "rented"
 305 bikes are "broken"
 297 bikes are "available"
-\end{Verbatim}
+\end{minted}
 
 What about the rows with no values for status? If we were pretty certain
 that the bikes were available, we could just set them to 'available':
 
-\begin{Verbatim}
+\begin{minted}{python}
 missing_mask = df['status'].isnull()
 df.loc[missing_mask, 'status'] = 'available'
-\end{Verbatim}
+\end{minted}
 
 Or maybe we would print out the IDs of the bikes so that we could go look for them:
 
-\begin{Verbatim}
+\begin{minted}{python}
 missing_mask = df['status'].isnull()
 missing_ids = list(df[missing_mask].index)
 print(f"These bikes have no status:{missing_ids}")
-\end{Verbatim}
+\end{minted}
 
 However, let's just keep the rows where the status is not null:
-\begin{Verbatim}
+\begin{minted}{python}
 missing_mask = df['status'].isnull()
 df = df[~missing_mask]
-\end{Verbatim}
+\end{minted}
 
 At the end of your program, write out the improved CSV:
 
-\begin{Verbatim}
+\begin{minted}{python}
 df.to_csv('bikes2.csv')
-\end{Verbatim}
+\end{minted}
 
 Run the program and open \filename{bikes2.csv} in a text editor.
 
 \section{Derived columns}
 
 Let's say that you want to add a column with age of the bicycle in days:
-\begin{Verbatim}
+\begin{minted}{python}
 bike_id,brand,size,purchase_price,purchase_date,status,age_in_days
 5636248,GT,57,277.99,1986-09-07,available,13061
 4156134,Giant,56,201.52,2005-01-09,rented,6362
 7971254,Cannondale,54,292.25,1978-02-28,available,16174
-\end{Verbatim}
+\end{minted}
 
 Your first problem is that the \texttt{purchase\_date} column looks
 like a date, but really it is a string. So, you need to convert it to a
 date.  You can do this by applying a function to every item in the series:
-\begin{Verbatim}
+\begin{minted}{python}
 df['purchase_date'] = df['purchase_date'].apply(lambda s: datetime.date.fromisoformat(s))
-\end{Verbatim}
+\end{minted}
 
 (With pandas, there is often more than one way to do things.  pandas
 has a \pyfunction{to\_datetime} function that converts every entry in
 a sequence to a \pytype{datetime} object. Here is another way to
 convert the string column in to a date column:
-\begin{Verbatim}
+\begin{minted}{python}
 df['purchase_date'] = pd.to_datetime(df['purchase_date']).dt.date
-\end{Verbatim}
+\end{minted}
 You can look up \pyfunction{dt} and \pyfunction{date} if you are curious.)
 
 Now, we can use the same trick to create a new column with the age in days:
-\begin{Verbatim}
+\begin{minted}{python}
 today = datetime.date.today()
 df['age_in_days'] = df['purchase_date'].apply(lambda d: (today - d).days)
-\end{Verbatim}
+\end{minted}
 
 When you run this, the new \filename{bikes.csv} will have an \texttt{age\_by\_date} column.
 

@@ -100,7 +100,7 @@ Finally, the graph has a list of all the nodes, so we can just keep a
 set of the unvisited nodes.
 
 Add a method to the \pytype{Graph} class that implements Dijkstra's algorithm:
-\begin{verbatim}
+\begin{minted}{python}
     def cost_from_node(self, origin_node):
         # Cost of cheapest path from origin node discovered so far
         # Initially the origin is zero and all the other are infinity
@@ -150,11 +150,11 @@ Add a method to the \pytype{Graph} class that implements Dijkstra's algorithm:
                     prev[v] = current_node
 
         return (dist, prev)
-\end{verbatim}
+\end{minted}
 
 Append some code to your \filename{cities.py} that tests this method:
 
-\begin{verbatim}
+\begin{minted}{python}
 (cost_from_long_beach, prev) = network.cost_from_node(long_beach)
 print(f"\nMinimum costs from Long Beach = {cost_from_long_beach}")
 print(f"\nLast city before = {prev}")
@@ -165,22 +165,22 @@ if nyc_cost < math.inf:
     print(f"\n*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
 else:
     print("You can't get to NYC from Long Beach")
-\end{verbatim}
+\end{minted}
 
 When you run it, you should get a list of how much it costs to ship a
 container to each city from Long Beach:
-\begin{verbatim}
+\begin{minted}{python}
 Minimum costs from Long Beach = {(node:Long Beach, edges:1): 0.0,
 (node:Los Angeles, edges:3): 12.0, (node:Denver, edges:3): 35.0,
 (node:Pheonix, edges:3): 31.0, (node:Louisville, edges:3): 49.0,
 (node:Cleveland, edges:4): 44.0, (node:Boston, edges:2): 57.0,
 (node:New York City, edges:3): 52.0}
-\end{verbatim}
+\end{minted}
 
 You will also get a collection of node pairs. What are these? For each
 node, you get the node that you would pass through on the cheapest
 route from Long Beach:
-\begin{verbatim}
+\begin{minted}{python}
 Last city before = {(node:Los Angeles, edges:3):(node:Long Beach, edges:1),
 (node:Denver, edges:3):(node:Los Angeles, edges:3),
 (node:Pheonix, edges:3):(node:Los Angeles, edges:3),
@@ -188,13 +188,13 @@ Last city before = {(node:Los Angeles, edges:3):(node:Long Beach, edges:1),
 (node:Cleveland, edges:4):(node:Denver, edges:3),
 (node:New York City, edges:3):(node:Cleveland, edges:4),
 (node:Boston, edges:2): (node:Cleveland, edges:4)}
-\end{verbatim}
+\end{minted}
 
 Your users will not want to read this; give them the shortest path as a list.  Add a function to
 \filename{graph.py} that turns the \pyvar{prev} table into a path of
 nodes that lead from the origin to the destination:
 
-\begin{verbatim}
+\begin{minted}{python}
 def shortest_path(prev, destination):
 
     # Include the destination in the path
@@ -212,26 +212,26 @@ def shortest_path(prev, destination):
         current_node = previous_node
 
     return path
-\end{verbatim}
+\end{minted}
 
 Test that out:
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 if nyc_cost < math.inf:
     print(f"*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
 
-    \textbf{path_to_nyc = graph.shortest_path(prev, nyc)}
-    \textbf{print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc} ***")}
+    path_to_nyc = graph.shortest_path(prev, nyc)
+    print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc ***")}
 else:
     print("You can't get to NYC from Long Beach")
-\end{Verbatim}
+\end{minted}
 
 This should look like this:
-\begin{verbatim}
+\begin{minted}{python}
 *** Cheapest path from Long Beach to NYC: [(node:Long Beach, edges:1),
 (node:Los Angeles, edges:3), (node:Denver, edges:3), (node:Cleveland, edges:4),
 (node:New York City, edges:3)] ***
-\end{verbatim}
+\end{minted}
 
 \section{Making it faster}
 
@@ -243,14 +243,14 @@ take too long.
 
 However, there is a way to speed up this implementation. Look at this snippet:
 
-\begin{verbatim}
+\begin{minted}{python}
             # Find unvisited node with lowest cost
             min_cost = math.inf
             for u in unvisited:
                 if dist[u] < min_cost:
                     current_node = u
                     min_cost = dist[u]
-\end{verbatim}
+\end{minted}
 
 We are scanning through the list of all unvisited nodes, one by one,
 looking for the one with the lowest cost.  If we kept this list sorted

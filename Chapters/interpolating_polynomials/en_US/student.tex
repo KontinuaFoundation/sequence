@@ -56,7 +56,7 @@ Adding these three polynomials together gives you a new polynomial that touches 
 \end{equation*}
 
 You can test this in Python with your \pytype{Polynomial} class. Create a file called \filename{test\_interpolation.py}. Add this code:
-\begin{Verbatim}
+\begin{minted}{python}
 from Polynomial import Polynomial
 import matplotlib.pyplot as plt
 
@@ -91,7 +91,7 @@ plt.plot(x_list, y_list)
 plt.plot(in_x, in_y, "ko")
 plt.grid(True)
 plt.show()
-\end{Verbatim}
+\end{minted}
 
 You should get a nice plot that shows the graph of the polynomial
 passing through those three points.
@@ -124,17 +124,17 @@ using interpolation.\footnote{Note that other textbooks or resources may refer t
 Your method will take two lists of numbers: one contains x-values and
 the other contains y-values. So comment out the line that creates the
 polynomial in \filename{test\_interpolation.py} and create it from two lists:
-\begin{Verbatim}
+\begin{minted}{python}
 in_x = [2,3,4]
 in_y = [5,7,6]
 # pn = Polynomial([-8, 19/2, -3/2])
 pn = Polynomial.from_points(in_x, in_y)
 print(pn)
-\end{Verbatim}
+\end{minted}
 
 Add the following method to your Polynomial class in \filename{Polynomial.py}
-\begin{Verbatim}
-    @classmethod
+\begin{minted}{python}
+@classmethod
     def from_points(cls, x_values, y_values):
         coef_count = len(x_values)
 
@@ -160,7 +160,7 @@ Add the following method to your Polynomial class in \filename{Polynomial.py}
             sum_pn = sum_pn + scaled_pn
             
         return sum_pn  
-\end{Verbatim}
+\end{minted}
 
 It should work exactly the same as before.  You should get the same
 polynomial printed out as before as well as the same plot of the
@@ -168,10 +168,10 @@ curve passing through the three points.
 
 How about five points? Change \pyvar{in\_x} and \pyvar{in\_y} at the
 start of \filename{test\_interpolation.py}:
-\begin{Verbatim}
+\begin{minted}{python}
 in_x = [1.7, 2, 2.7, 3.5, 4, 4.4]
 in_y = [8, 12, 1, 4, -1, 6]
-\end{Verbatim}
+\end{minted}
 
 You should get a polynomial that passes through all five points:
 \begin{equation*}

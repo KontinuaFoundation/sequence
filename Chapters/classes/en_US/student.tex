@@ -3,7 +3,7 @@ FIXME integrate this better with polynomials, but we need to cover the following
 \section{Object-Oriented Programming Introduction}
 Imagine you want to implement multiple dogs in python. It gets a bit complicated to do the following:
 
-\begin{verbatim}
+\begin{minted}{python}
     dog1name = "Teddy"
     dog1age = 6
     dog1sound = "woof"
@@ -21,13 +21,13 @@ Imagine you want to implement multiple dogs in python. It gets a bit complicated
     print(f"{dog3name} is {dog3age} and says {dog3sound}!")
     
 
-\end{verbatim}
+\end{minted}
 
 Instead, we can use classes, which are a way to create your own datatype.\index{classes}
 Classes can contain custom methods that either return, print, or calculate different values for you, 
 and they con contain custom variables referred to as attributes.\index{attributes}
 
-\begin{verbatim}
+\begin{minted}{python}
 class Dog:
     """A simple model of a dog."""
     # constructor - which creates a new model of a dog. 
@@ -50,7 +50,7 @@ dog1.speak()
 dog2.speak()
 dog3.speak()
 
-\end{verbatim}
+\end{minted}
 
 Now let's talk about classes in the context of polynomials!
 
@@ -58,10 +58,10 @@ The built-in types, such as strings, have functions associated with
 them. So, for example, if you needed a string converted to uppercase,
 you would call its \pyfunction{upper()} function:
 -
-\begin{Verbatim}
+\begin{minted}{python}
 my_string = "houston, we have a problem!"
 louder_string = my_string.upper()
-\end{Verbatim}
+\end{minted}
 This would set \pyvar{louder\_string} to "HOUSTON, WE HAVE A PROBLEM!"
 When a function is associated with a datatype like this, it called a
 \emph{method}. A datatype with methods is known as a \emph{class}. Creating a new version of a class in a variable is called an \emph{instance}.\index{instance} For
@@ -69,19 +69,19 @@ example, in the example, we would say ``\pyvar{my\_string} is an instance of
 the class \pytype{str}. \pytype{str} has a method called \pyfunction{upper}''
 
 The function \pyfunction{type} will tell you the type of any data:
-\begin{Verbatim}
-  print(type(my_string))
-\end{Verbatim}
+\begin{minted}{python}
+print(type(my_string))
+\end{minted}
 This will output
-\begin{Verbatim}
+\begin{minted}{python}
 <class 'str'>
-\end{Verbatim}
+\end{minted}
 
 A class can also define operators.  \pyfunction{+}, for example, is
 redefined by \pytype{str} to concatenate strings together:
-\begin{Verbatim}
+\begin{minted}{python}
 long_string = "I saw " + "15 people"
-\end{Verbatim}
+\end{minted}
 
 \section{Parent classes}
 \index{classes!parent}
@@ -91,7 +91,7 @@ Classes can have classes they inherit from (called ``parent classes'') or classe
 inherit from them (called ``child classes''). 
 Parent classes (ie `Animal') give a subclass (or child) different attributes or methods. Let's check out an example:
 
-\begin{verbatim}
+\begin{minted}{python}
 class Animal:
     """Generic animal base-class."""
 
@@ -126,7 +126,7 @@ for dog in dogs:
     dog.describe()   # common behavior from Animal
     dog.speak()      # overridden behavior in Dog
 
-\end{verbatim}
+\end{minted}
 
 Here, we have made a parent class for `dog' called `animal'. 
 \section{Making a Polynomial class}
@@ -137,7 +137,7 @@ function name like \pyfunction{derivative\_of\_polynomial}.  Wouldn't it
 be more elegant if you had a Polynomial class with a
 \pyfunction{derivative} method? Then you could use your polynomial
 like this:\index{class in python}
-\begin{Verbatim}
+\begin{minted}{python}
 a = Polynomial([9.0, 0.0, 2.3])
 b = Polynomial([-2.0, 4.5, 0.0, 2.1])
 
@@ -149,19 +149,19 @@ print(a, "minus", b , "is", a-b)
 c = b.derivative()
 
 print("Derivative of", b ,"is", c)
-\end{Verbatim}
+\end{minted}
 
 And it would output:
-\begin{Verbatim}
+\begin{minted}{python}
 2.30x^2 + 9.00 plus 2.10x^3 + 4.50x + -2.00 is 2.10x^3 + 2.30x^2 + 4.50x + 7.00
 2.30x^2 + 9.00 times 2.10x^3 + 4.50x + -2.00 is 4.83x^5 + 29.25x^3 + -4.60x^2 + 40.50x + -18.00
 2.30x^2 + 9.00 times 3 is 6.90x^2 + 27.00
 2.30x^2 + 9.00 minus 2.10x^3 + 4.50x + -2.00 is -2.10x^3 + 2.30x^2 + -4.50x + 11.00
 Derivative of 2.10x^3 + 4.50x + -2.00 is 6.30x^2 + 4.50  
-\end{Verbatim}
+\end{minted}
 
 Create a file for your class definition called \filename{Polynomial.py}. Enter the following:
-\begin{Verbatim}
+\begin{minted}{python}
 class Polynomial:
     def __init__(self, coeffs):
         self.coefficients = coeffs.copy()
@@ -279,10 +279,10 @@ class Polynomial:
             result.append(0.0)
 
         return Polynomial(result)
-\end{Verbatim}
+\end{minted}
 
 Create a second file called \filename{test\_polynomial.py} to test it:
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 from Polynomial import Polynomial
 
 a = Polynomial([9.0, 0.0, 2.3])
@@ -300,11 +300,11 @@ print("Derivative of", b ,"is", c)
 slope = c(3)
 print("Value of the derivative at 3 is", slope)
 
-\end{Verbatim}
+\end{minted}
 
 Run the test code:
-\begin{Verbatim}
+\begin{minted}{python}
 python3 test_polynomial.py
-\end{Verbatim}
+\end{minted}
 
 

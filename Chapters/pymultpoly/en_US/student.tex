@@ -11,7 +11,7 @@ dealing with lists of coefficients as polynomials. Create a file called \filenam
 \end{itemize}
 
 Now, create another file in the same directory called \filename{test.py}. Type this into that file:
-\begin{Verbatim}
+\begin{minted}{python}
 import poly
 
 polynomial_a = [9.0, -4.0, 3.0, -5.0]
@@ -35,23 +35,23 @@ print('-3.2 * Polynomial B =', poly.polynomial_to_string(b_scalar))
 # Subtraction
 a_minus_b = poly.subtract_polynomial(polynomial_a, polynomial_b)
 print('A - B =', poly.polynomial_to_string(a_minus_b))
-\end{Verbatim}
+\end{minted}
 
 When you run it, you should get the following:
-\begin{Verbatim}
+\begin{minted}{python}
 Polynomial A = -5.0x^3 + 3.0x^2 + -4.0x + 9.0
 Polynomial B = 1.0x^4 + 2.0x^3 + 4.0x^2 + -9.0
 Polynomial B at 3 = 162.0
 A + B = 1.0x^4 + -3.0x^3 + 7.0x^2 + -4.0x
 -3.2 * Polynomial B = -3.2x^4 + -6.4x^3 + -12.8x^2 + 28.8
 A - B = -1.0x^4 + -7.0x^3 + -1.0x^2 + -4.0x + 18.0
-\end{Verbatim}
+\end{minted}
 
 You are now ready to implement the multiplication of polynomials. The function will look like this:
-\begin{Verbatim}
+\begin{minted}{python}
 def multiply_polynomials(a, b):
   ...Your code here...
-\end{Verbatim}
+\end{minted}
 It will return a list of coefficients.
 
 In an exercise in the last chapter, you were asked `` Let's say I have
@@ -63,33 +63,33 @@ In our implementation, a polynomial of degree 23 is held in a list of length 24.
 
 In Python, we wil be trying to multiply a polynomial $a$ and a
 polynomial $b$ represented as lists. What is the degree of that product?
-\begin{Verbatim}
-      result_degree = (len(a) - 1) + (len(b) - 1)
-\end{Verbatim}
+\begin{minted}{python}
+result_degree = (len(a) - 1) + (len(b) - 1)
+\end{minted}
 
 Now, we need to create an array of zeros that is one longer than that. Here is a cute Python trick: If you have a list, you can replicate it using the * operator. 
-\begin{Verbatim}
+\begin{minted}{python}
 a = [5,7]
 b = a * 4
 print(b)
 # [5, 7, 5, 7, 5, 7, 5, 7]
-\end{Verbatim}
+\end{minted}
 
 Here iss how you will get a list of zeros:
-\begin{Verbatim}
-      result = [0.0] * (result_degree + 1)
-\end{Verbatim}
+\begin{minted}{python}
+result = [0.0] * (result_degree + 1)
+\end{minted}
 
 We will step through $a$, getting the index and value of each entry. You can do this in one line using \pyfunction{enumerate}:
-\begin{Verbatim}
-      for a_degree, a_coefficient in enumerate(a):
-\end{Verbatim}
+\begin{minted}{python}
+for a_degree, a_coefficient in enumerate(a):
+\end{minted}
 For each of those, we will step through the entire $b$ polynomial. As
 you multiply together each term, you will add it to the appropriate
 coefficient of the result.
 
 Here is the whole function:
-\begin{Verbatim}
+\begin{minted}{python}
 def multiply_polynomials(a, b): # What is the degree of the resulting
 polynomial?  result_degree = (len(a) - 1) + (len(b) - 1)
 
@@ -109,16 +109,16 @@ polynomial?  result_degree = (len(a) - 1) + (len(b) - 1)
             result[degree] = result[degree] + coefficient
             
     return result
-\end{Verbatim}
+\end{minted}
 
 Take a long look at that function.  When you understand it, type it into \filename{poly.py}.
 
 In \filename{test.py}, try out the new function:
-\begin{Verbatim}
+\begin{minted}{python}
 # Multiplication
 a_times_b = poly.multiply_polynomials(polynomial_a, polynomial_b)
 print('A x B =', poly.polynomial_to_string(a_times_b))
-\end{Verbatim}
+\end{minted}
 
 This is an example of a \emph{nested loop}. The outer loop steps
 through the polynomial $a$. For each step it takes, the inner loop
@@ -127,11 +127,11 @@ steps through the entire polynomial $b$.
 \section{Something surprising about lists}
 
 You can imagine that you might want to create two very similar polynomials. Let's say polynomial $c$ is $x^2 + 2x + 1$ and polynomial $d$ is $x^2 -2x + 1$.  You might think you are very clever to just alter that degree 1 coefficient like this:
-\begin{Verbatim}
+\begin{minted}{python}
 c = [1.0, 2.0, 1.0]
 d = c
 d[1] = -2.0
-\end{Verbatim}
+\end{minted}
 
 If you printed out $c$, you would get $[1.0, -2.0, 1.0]$.  Why? You
 assigned two variables ($c$ and $d$) to the \emph{the same list}.  So,
@@ -140,9 +140,9 @@ change if you look at the list from either reference. \emph{FIXME:
   Diagram of two references to the same list here.}
 
 To create two separate lists, you would need to explicitly make a copy:
-\begin{Verbatim}
+\begin{minted}{python}
 c = [1.0, 2.0, 1.0]
 d = c.copy()
 d[1] = -2.0
-\end{Verbatim}
+\end{minted}
 

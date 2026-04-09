@@ -150,7 +150,7 @@ tl/.style = {% tick labels
 
 Create a file called \filename{cos.py}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -167,7 +167,7 @@ fig, ax = plt.subplots()
 ax.plot(thetas, cosines, 'r.', label="Cosine")
 ax.set_title("Cosine")
 plt.show()
-\end{Verbatim}
+\end{minted}
 
 This will plot 32 points on the cosine wave between 0 and 8. When you
 run it, you should see something like this:
@@ -311,38 +311,38 @@ it will push back with a force of 1 newton.
 
 Let's write a simulation of the skate-on-a-spring. Duplicate \filename{cos.py}, and name the new copy \filename{spring.py}.  Add code to implement the simulation:
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import numpy as np
 import matplotlib.pyplot as plt
 
 until = 8.0
 
-\textbf{# Constants}
-\textbf{mass = 100 # kg}
-\textbf{spring_constant = -1 # newtons per meter displacement}
-\textbf{time_step = 0.01 # s}
+# Constants
+mass = 100 # kg
+spring_constant = -1 # newtons per meter displacement
+time_step = 0.01 # s
 
-\textbf{# Initial state}
-\textbf{displacement = 1.0 # height above equilibrium in meters}
-\textbf{velocity = 0.0}
-\textbf{time = 0.0 # seconds}
+# Initial state
+displacement = 1.0 # height above equilibrium in meters
+velocity = 0.0
+time = 0.0 # seconds
 
-\textbf{# Lists to gather data}
-\textbf{displacements = []}
-\textbf{times = []}
+# Lists to gather data
+displacements = []
+times = []
 
-\textbf{# Run it for a little while}
-\textbf{while time <= until:}
-\textbf{    # Record data}
-\textbf{    displacements.append(displacement)}
-\textbf{    times.append(time)}
+# Run it for a little while
+while time <= until:
+    # Record data
+    displacements.append(displacement)
+    times.append(time)
 
-\textbf{    # Calculate the next state}
-\textbf{    time += time_step}
-\textbf{    displacement += time_step * velocity}
-\textbf{    force = spring_constant * displacement }
-\textbf{    acceleration = force / mass}
-\textbf{    velocity += acceleration}
+    # Calculate the next state
+    time += time_step
+    displacement += time_step * velocity
+    force = spring_constant * displacement 
+    acceleration = force / mass
+    velocity += acceleration
 
 # Make a plot of cosine
 thetas = np.linspace(0, until, 32)
@@ -352,15 +352,15 @@ for theta in thetas:
 
 # Plot the data
 fig, ax = plt.subplots()
-\textbf{ax.plot(times, displacements, 'b', label="Displacement")}
+ax.plot(times, displacements, 'b', label="Displacement")
 ax.plot(thetas, cosines, 'r.', label="Cosine")
 
-\textbf{ax.set_title("Weight on Spring vs. Cosine")}
-\textbf{ax.set_xlabel("Time (s)")}
-\textbf{ax.set_ylabel("Displacement (m)")}
-\textbf{ax.legend()}
+ax.set_title("Weight on Spring vs. Cosine")
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Displacement (m)")
+ax.legend()
 plt.show()
-\end{Verbatim}
+\end{minted}
 When you run it, you should get a plot of your spring and the cosine graph on the same plot.
 
 \includegraphics[width=0.8\textwidth]{springpy.png}

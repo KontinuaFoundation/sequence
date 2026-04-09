@@ -17,7 +17,7 @@ Let's create a simply python program that creates a file containing an
 all-black image that is 640 pixels wide and 480 pixels tall. Create a
 file called \filename{create\_image.py}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 import NumPy as np
 import imageio
 import sys
@@ -36,15 +36,15 @@ image = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3), dtype=np.uint8)
 
 # Write the array to the file
 imageio.imwrite(sys.argv[1], image)
-\end{Verbatim}
+\end{minted}
 
 To run this, you will need to supply the name of the file you are
 trying to create. The extension (like .png or .jpeg) will tell imageio
 what format you want written. Run it now:
 
-\begin{Verbatim}
+\begin{minted}{python}
 python3 create_image.py blackness.png
-\end{Verbatim}
+\end{minted}
 
 Open the image to confirm that it is 640 pixels wide, 480 pixels tall, and completely black.
 
@@ -54,7 +54,7 @@ Now, let's walk through through the image, pixel-by-pixel, adding some
 red. We will gradually increase the red from 0 on the left to 255 on
 the right.
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import NumPy as np
 import imageio
 import sys
@@ -71,19 +71,19 @@ IMAGE_HEIGHT = 480
 # Create an array of zeros
 image = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3), dtype=np.uint8)
 
-\textbf{for col in range(IMAGE_WIDTH):}
+for col in range(IMAGE_WIDTH):
 
-    \textbf{# Red goes from 0 to 255 (left to right)}
-    \textbf{r = int(col * 255.0 / IMAGE_WIDTH)}
+    # Red goes from 0 to 255 (left to right)
+    r = int(col * 255.0 / IMAGE_WIDTH)
 
-    \textbf{# Update all the pixels in that column}
-    \textbf{for row in range(IMAGE_HEIGHT):}
-        \textbf{# Set the red pixel}
-        \textbf{image[row, col, 0] = r}
+    # Update all the pixels in that column
+    for row in range(IMAGE_HEIGHT):
+        # Set the red pixel
+        image[row, col, 0] = r
 
 # Write the array to the file
 imageio.imwrite(sys.argv[1], image)
-\end{Verbatim}
+\end{minted}
 
 When you run the function to create a new image, it will be a fade
 from black to red as you move from left to right:
@@ -93,19 +93,19 @@ from black to red as you move from left to right:
 Now, inside the inner loop, update the blue channel so that it goes
 from zero at the top to 255 at the bottom:
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
     # Update all the pixels in that column
     for row in range(IMAGE_HEIGHT):
 
         # Update the red channel
         image[row,col,0] = r
         
-        \textbf{# Blue goes from 0 to 255 (top to bottom)}
-        \textbf{b = int(row * 255.0 / IMAGE_HEIGHT)}
-        \textbf{image[row,col,2] = b}
+        # Blue goes from 0 to 255 (top to bottom)
+        b = int(row * 255.0 / IMAGE_HEIGHT)
+        image[row,col,2] = b
 
 imageio.imwrite(sys.argv[1], image)
-\end{Verbatim}
+\end{minted}
 
 When you run the program again, you will see the color fades from
 black to blue as you go down the left side. As you go down the right
@@ -117,7 +117,7 @@ Notice that red and blue with no green looks magenta to your eye.
 
 Next, let's add some stripes of green:
 
-\begin{Verbatim}[commandchars=\\\{\}]
+\begin{minted}{python}
 import NumPy as np
 import imageio
 import sys
@@ -130,8 +130,8 @@ if len(sys.argv) < 2:
 # Constants
 IMAGE_WIDTH = 640
 IMAGE_HEIGHT = 480
-\textbf{STRIPE_WIDTH = 40}
-\textbf{pattern_width = STRIPE_WIDTH * 2}
+STRIPE_WIDTH = 40
+pattern_width = STRIPE_WIDTH * 2
 
 # Create an image of all zeros
 image = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3), dtype=np.uint8)
@@ -142,8 +142,8 @@ for col in range(IMAGE_WIDTH):
     # Red goes from 0 to 255 (left to right)
     r = int(col * 255.0 / IMAGE_WIDTH)
 
-    \textbf{# Should I add green to this column?}
-    \textbf{should_green = col % pattern_width > STRIPE_WIDTH}
+    # Should I add green to this column?
+    should_green = col % pattern_width > STRIPE_WIDTH
 
     # Update all the pixels in that column
     for row in range(IMAGE_HEIGHT):
@@ -151,16 +151,16 @@ for col in range(IMAGE_WIDTH):
         # Update the red channel
         image[row,col,0] = r
 
-        \textbf{# Should I add green to this pixel?}
-        \textbf{if should_green:}
-            \textbf{image[row,col,1] = 255}
+        # Should I add green to this pixel?
+        if should_green:
+            image[row,col,1] = 255
 
         # Blue goes from 0 to 255 (top to bottom)
         b = int(row * 255.0 / IMAGE_HEIGHT)
         image[row,col,2] = b
 
 imageio.imwrite(sys.argv[1], image)
-\end{Verbatim}
+\end{minted}
 
 When you run this version, you will see the previous image in half the
 stripes.  In the other half, you will see that green fades to cyan
@@ -176,7 +176,7 @@ channels out as its own image.
 
 Create a new file called \filename{separate\_image.py}:
 
-\begin{Verbatim}
+\begin{minted}{python}
 import imageio
 import sys
 import os
@@ -215,13 +215,13 @@ for i in range(3):
     new_filename = f"{colors[i]}_{filename}"
     print(f"Writing {new_filename}")
     imageio.imwrite(new_filename, newimage)
-\end{Verbatim}
+\end{minted}
 
 Now, you can run the program with any common RGB image type:
 
-\begin{Verbatim}
+\begin{minted}{python}
 python3 separate_image.py dog.jpg
-\end{Verbatim}
+\end{minted}
 
 This will create three images: \filename{red\_dog.jpg},
 \filename{green\_dog.jpg}, and \filename{blue\_dog.jpg}.
