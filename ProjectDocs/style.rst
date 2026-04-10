@@ -27,7 +27,7 @@ simple. Try for a 4th grade reading level.
 
 We do not generally use contractions. While they are natural to write,
 most readers (especially readers for whom English is not their first
-langauge) find them less easy to read.
+language) find them less easy to read.
 
 We try to use inclusive language: “The passenger checked their bag at
 the door” is better than “The passenger checked his bag at the door.”
@@ -78,7 +78,7 @@ Internationalization
 --------------------
 
 The build system is designed to allow the text to be customized for
-different langauges and locales. For example, when you are editing
+different languages and locales. For example, when you are editing
 ``Chapters/vectors/en_US/student.tex``, you are editing the US English
 version of the Vectors chapter of the student guide.
 

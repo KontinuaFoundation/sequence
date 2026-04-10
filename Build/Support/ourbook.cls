@@ -1362,7 +1362,7 @@ final=true]
 %   stringstyle=\itshape,
 %   literate={"}{{\texttt{"}}}1
 % }
-% Update as of 12/23/25 - repalcing this with minted environments
+% Update as of 12/23/25 - replacing this with minted environments
 
 \newcommand{\vecb}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 

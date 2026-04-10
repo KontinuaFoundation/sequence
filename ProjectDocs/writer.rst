@@ -64,8 +64,8 @@ Most of the libraries you would want are included.  Take a look at
 other chapters to get a good feel for how we do it.
 
 There is also a ``digital_resources.json`` file. These are the links to
-videos and other digital resources teh student would want.  It also
-defines the dependencies of the chapter: what are the prequisites?
+videos and other digital resources the student would want.  It also
+defines the dependencies of the chapter: what are the prerequisites?
 What objectives does the chapter attempt to cover?
 
 Anything you put in the repository becomes property of The Kontinua Foundation, Inc.
@@ -93,7 +93,7 @@ the ``student.tex`` that references it.
 If you use another application to create the image, please include the original source.
 For example, I have done a few diagrams in OmniGraffle. I have included the ``.graffle`` file.
 
-Overall, I'm trying to do diagrams in LaTeX whenever possible.  Maintanence is
+Overall, I'm trying to do diagrams in LaTeX whenever possible.  Maintenance is
 just so much easier.
 
 ======

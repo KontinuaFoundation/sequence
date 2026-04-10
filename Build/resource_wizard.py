@@ -134,7 +134,7 @@ for tkey in top_level:
                 confirmed = True
         data_dict[tkey] = new_value
 
-    # Childen? Gather answer as a list of dicts
+    # Children? Gather answer as a list of dicts
     else:
 
         # What are the keys for each dictionary?

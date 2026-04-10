@@ -8,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 # How many volumes are there?
 vol_count = 36
 
-# Get the tempate for the per-book file
+# Get the template for the per-book file
 environment = Environment(loader=FileSystemLoader("Support"))
 template = environment.get_template("resource_template.html")
 

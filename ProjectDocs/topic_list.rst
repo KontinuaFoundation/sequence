@@ -55,7 +55,7 @@ Math
   * The complex plane
   * Adding and subtracting complex numbers
   * Multiplying complex numbers
-  * Quadratic quations with complex solutions
+  * Quadratic equations with complex solutions
 
 * Polynomial factorization
   
@@ -166,7 +166,7 @@ Math
   
   * Limits from graphs
   * Limits from algebra
-  * Determing limits by squeezing
+  * Determining limits by squeezing
   * Types of discontinuities
   * Test for continuity
   * Infinite limits and vertical asymptotes
@@ -199,7 +199,7 @@ Math
   * Minimums and maximums
   * Using second derivatives to find extrema
   * Sketching curves of functions and their derivatives
-  * Solving optimization problmes
+  * Solving optimization problems
 
 * Integration
   
@@ -257,7 +257,7 @@ Math
   * Subspaces
   * Dot products
 
-* Matricies
+* Matrices
   
   * What is a matrix?
   * Scalar multiplication
@@ -352,10 +352,10 @@ Physics
 
 * One-dimensional motion
 
-  * Distance, diplacement, and coordinate systems
+  * Distance, displacement, and coordinate systems
   * Average velocity and speed
   * Velocity and speed from graphs
-  * Motion with constant accleration
+  * Motion with constant acceleration
 
 * Two-dimensional and three dimensional motion
 

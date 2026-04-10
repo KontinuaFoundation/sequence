@@ -57,7 +57,7 @@ For each language, the reader apps need to know:
 
 Mentoris needs to know the following differences:
 
-* Inserted new chapters: title in every languange, identifier, location (workbook and order).
+* Inserted new chapters: title in every language, identifier, location (workbook and order).
 * Deleted old chapters
 * Moved chapters
 * Renamed chapters

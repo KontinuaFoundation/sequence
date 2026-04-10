@@ -184,7 +184,7 @@ Workbook 3
 		Circuit_OnOff.png
 			Goal: Adapt the existing illustration that shows a simple circuit with a switch to the new style
 
-			I used Kontinua colors and re-used the KontinuAA graphic. I used lines the same color as the lit bulb to show that the light bulb was on. When the bulb is off, I lowered the opacity and removed the lines.
+			I used Kontinua colors and reused the KontinuAA graphic. I used lines the same color as the lit bulb to show that the light bulb was on. When the bulb is off, I lowered the opacity and removed the lines.
 
 			Note: Font weights should be standardized
 

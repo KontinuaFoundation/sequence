@@ -30,7 +30,7 @@ def progress_bar(iteration, total, prefix='', suffix='', length=30, fill='█'):
 # CLI functions.
 def get_auth_token() -> str | None:
     '''
-    Authenticaes the user and returns the token
+    Authenticates the user and returns the token
     Prints any failure messages, and returns none if it fails for any reason.
     '''
     username = input("Username: ")

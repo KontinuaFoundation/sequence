@@ -103,7 +103,7 @@ for chap_meta in all_chaps:
                 response = urllib.request.urlopen(req)
                 # any invalid response will result in storing a broken link
             except urllib.error.HTTPError as e:
-                print(f"\n\tError for {chap_meta['id']} {url}: The server couldn\'t fulfill the request.")
+                print(f"\n\tError for {chap_meta['id']} {url}: The server couldn't fulfill the request.")
                 print('\n\tError code: ', e.code)
                 broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': e.code})
                 continue
@@ -112,7 +112,7 @@ for chap_meta in all_chaps:
                 print('\n\tReason: ', e.reason)
                 continue
 
-            # attempt to read data. if doesnt work, retry until some data is provided
+            # attempt to read data. if doesn't work, retry until some data is provided
             data = None
             while data is None:
                 try:

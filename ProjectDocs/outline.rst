@@ -341,7 +341,7 @@ There are two questions that determine where any topic goes in the order:
 * Integration
 * Taylor expansions
 * Volumes and Second Integrals
-* Probility on Continuous Domains
+* Probability on Continuous Domains
   - Cumulative Density Function
   - Uniform Distribution
   - Normal Distribution
@@ -354,7 +354,7 @@ There are two questions that determine where any topic goes in the order:
   - Standardization
   - One-hot encoding of categorical features
 * Logistic regression with multivariate data
-* Measuring the Performace of Classifiers
+* Measuring the Performance of Classifiers
   - Training-Validation-Test split
   - Confusion Matrix
   - Precision vs Recall
