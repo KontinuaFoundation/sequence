@@ -69,7 +69,7 @@ def run_helper_scripts_parallel(BUILD, URL_CHECK_ARG, FORCE=False):
     run(["python3", "gather_resources.py"], cwd=str(BUILD))
     # FIXME gather needed?
 
-
+    run(["python3", "gather.py"], cwd=str(BUILD))
     # if force tag is given, passes force tag to make_chapter_pdfs.py
     make_chapters_cmd = ["python3", "make_chapter_pdfs.py", "en_US"]
     if FORCE:

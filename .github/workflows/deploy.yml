@@ -40,6 +40,11 @@ jobs:
       - name: Install Python dependencies
         run: python3 -m pip install -r Build/requirements.txt
 
+      - name: Verify minted setup
+        run: |
+          which pygmentize
+          pygmentize -V
+          kpsewhich minted.sty
       - name: Prepare build config
         shell: bash
         run: |
@@ -67,6 +72,7 @@ jobs:
           test -f Resources-en_US/Links.json
 
           python3 gather_resources.py
+          python3 gather.py 
 
           python3 make_chapter_pdfs.py en_US --force &
           python3 build_chapterlist.py &
