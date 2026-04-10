@@ -6,7 +6,7 @@ SEC_PER_DAY = 24 * 60 * 60   # How many seconds in a day?
 MAX_TIME = 100 * SEC_PER_DAY # 100 days
 TIME_STEP = 2 * 60 * 60      # Update every two hours
 
-# Create the inital state of Moon 1
+# Create the initial state of Moon 1
 m1 = {
     "mass": 6.0e22,  # kg
     "position": np.array([0.0, 200_000_000]),  # m
@@ -15,7 +15,7 @@ m1 = {
     "color": "red" # For plotting
 }
 
-# Create the inital state of Moon 2
+# Create the initial state of Moon 2
 m2 = {
     "mass": 11.0e22,  # kg
     "position": np.array([0.0, -150_000_000]),  # m

@@ -7,7 +7,7 @@ MEAN = 0.7
 STD = 0.08
 C = np.power(3 / (4 * np.pi), 1/3)
 
-# Plottin from the 0.5 percentile to the 99.5 percentile
+# Plotting from the 0.5 percentile to the 99.5 percentile
 r_min = 0.1
 r_max = norm.ppf(0.998, loc=MEAN, scale=STD)
 
@@ -59,7 +59,7 @@ axs[0].vlines(MEAN + STD, 0, max_density * 0.7, "r", linestyle="dashed",lw=0.5)
 axs[0].vlines(MEAN - 2 * STD, 0, max_density * 0.2, "g", linestyle="dashed",lw=0.5)
 axs[0].vlines(MEAN + 2 * STD, 0, max_density * 0.2, "g", linestyle="dashed",lw=0.5)
 
-# Draw the CDF on the second axix
+# Draw the CDF on the second axis
 axs[1].set_title("Cumulative Distribution of Radius")
 axs[1].set_ylim(bottom=0.0, top=1.0)
 axs[1].set_xlabel("radius (cm)")
@@ -81,7 +81,7 @@ m_values = mass_for_radius(r_values)
 # Make a figure with two axes
 fig, axs = plt.subplots(nrows=2, sharex=True, figsize=(10, 7), dpi=200)
 
-# Draw the CDF on the second axix
+# Draw the CDF on the second axis
 axs[0].set_title("Cumulative Distribution")
 axs[0].set_ylim(bottom=0.0, top=1.0)
 axs[0].set_xlim(left=0.0, right=m_max)
@@ -96,7 +96,7 @@ axs[0].vlines(MEAN + STD, 0, 0.9, "r", linestyle="dashed",lw=0.5)
 axs[0].vlines(MEAN - 2 * STD, 0, 0.05, "g", linestyle="dashed",lw=0.5)
 axs[0].vlines(MEAN + 2 * STD, 0, 1.0, "g", linestyle="dashed",lw=0.5)
 
-# Draw the CDF on the second axix
+# Draw the CDF on the second axis
 axs[1].set_ylim(bottom=0.0, top=1.0)
 axs[1].set_xlim(left=0.0, right=m_max)
 axs[1].set_xlabel("mass (g)")
@@ -121,7 +121,7 @@ pdf_values = norm.pdf(r_values, loc=MEAN, scale=STD) * dg_values
 # Make a figure with two axes
 fig, axs = plt.subplots(nrows=2, sharex=True, figsize=(10, 7), dpi=200)
 
-# Draw the CDF on the second axix
+# Draw the CDF on the second axis
 axs[0].set_title("CDF of Mass")
 axs[0].set_ylim(bottom=0.0, top=1.0)
 axs[0].set_xlim(left=0.0, right=m_max)
@@ -135,7 +135,7 @@ axs[0].vlines(m_minus_std, 0, 0.2, "r", linestyle="dashed",lw=0.5)
 axs[0].vlines(m_minus_2std, 0, 0.05, "g", linestyle="dashed",lw=0.5)
 axs[0].vlines(m_plus_2std, 0, 1.0, "g", linestyle="dashed",lw=0.5)
 
-# Draw the PDF on the second axix
+# Draw the PDF on the second axis
 axs[1].set_title("PDF of Mass")
 axs[1].set_ylim(bottom=0.0, top=1.0)
 axs[1].set_xlim(left=0.0, right=m_max)

@@ -69,7 +69,7 @@ def multiply_polynomials(a, b):
     # What is the degree of the resulting polynomial?
     result_degree = (len(a) - 1) + (len(b) - 1)
 
-    # Make a list of zeros to hold the coefficents
+    # Make a list of zeros to hold the coefficients
     result = [0.0] * (result_degree + 1)
 
     # Iterate over the indices and values of a

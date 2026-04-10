@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 MEAN = 32
 STD = 8
 
-# Plottin from the 0.5 percentile to the 99.5 percentile
+# Plotting from the 0.5 percentile to the 99.5 percentile
 x_min = norm.ppf(0.005, loc=MEAN, scale=STD)
 x_max = norm.ppf(0.995, loc=MEAN, scale=STD)
 
@@ -31,7 +31,7 @@ axs[0].set_title("CDF of Normal Distribution (mean=32, std=8)")
 axs[0].set_ylim(bottom=0.0, top=1.0)
 axs[0].plot(x_values, cdf_values)
 
-# Draw the PDF on the second axix
+# Draw the PDF on the second axis
 axs[1].set_title("PDF")
 axs[1].set_ylim(bottom=0.0, top=max_density * 1.1)
 axs[1].plot(x_values, pdf_values)

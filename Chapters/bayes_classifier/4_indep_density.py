@@ -54,7 +54,7 @@ axis.set_ylim(ylims)
 # Levels
 levels = [0.01 * x for x in range(8)]
 
-# Loop for each breed we have data fro
+# Loop for each breed we have data for
 for fish_name in fish_names:
 
     # Get the array with the data

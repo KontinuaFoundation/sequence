@@ -17,7 +17,7 @@ J = np.array([[ 5, 1, 3, 0],
               [ 6, 2, 1,-7]])
 J.transpose()
 
-# create and 8 by 10 zero matris
+# create and 8 by 10 zero matrix
  C = np.zeros((8, 10))
  C
 # create an 8 by 8 Identity matrix 

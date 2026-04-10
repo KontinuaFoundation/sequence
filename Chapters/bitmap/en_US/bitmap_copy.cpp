@@ -27,7 +27,7 @@ struct BITMAPINFOHEADER
     LONG biHeight; //species height in pixels
     WORD biPlanes; //specifies the number of color planes, must be 1
     WORD biBitCount; //specifies the number of bit per pixel
-    DWORD biCompression;//spcifies the type of compression
+    DWORD biCompression;//specifies the type of compression
     DWORD biSizeImage; //size of image in bytes
     LONG biXPelsPerMeter; //number of pixels per meter in x axis
     LONG biYPelsPerMeter; //number of pixels per meter in y axis

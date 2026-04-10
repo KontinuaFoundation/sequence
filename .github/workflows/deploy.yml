@@ -56,16 +56,17 @@ jobs:
           print("Created Build/user.cfg for CI")
           PY
 
-      - name: Run url_check.py
-        run: python3 Build/url_check.py 90
-
-      - name: Run gather_resources.py
-        run: python3 Build/gather_resources.py
-
-      - name: Build chapter PDFs and chapter list (parallel)
+      - name: Run helper scripts
+        shell: bash
         run: |
-          python3 Build/make_chapter_pdfs.py en_US --force &
-          python3 Build/build_chapterlist.py &
+          set -euo pipefail
+          cd Build
+
+          python3 url_check.py 90
+          python3 gather_resources.py
+
+          python3 make_chapter_pdfs.py en_US --force &
+          python3 build_chapterlist.py &
           wait
 
       - name: Concatenate chapters

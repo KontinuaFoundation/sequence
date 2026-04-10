@@ -19,7 +19,7 @@ ANI_INTERVAL = 1000 / 50  # ms for each frame in animation
 VSCALE = 140000.0
 ASCALE = VSCALE * 800000.0
 
-# Create the inital state of Moon 1
+# Create the initial state of Moon 1
 m1 = {
     "mass": 6.0e22,  # kg
     "position": np.array([0.0, 200_000_000]),  # m
@@ -28,7 +28,7 @@ m1 = {
     "color": "red",  # For plotting
 }
 
-# Create the inital state of Moon 2
+# Create the initial state of Moon 2
 m2 = {
     "mass": 11.0e22,  # kg
     "position": np.array([0.0, -150_000_000]),  # m

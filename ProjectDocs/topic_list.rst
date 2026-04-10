@@ -447,7 +447,7 @@ Physics
 * Fluids
 
   * Density and pressure
-  * Bouyant force and Archimedes' principle
+  * Buoyant force and Archimedes' principle
   * Fluid dynamics
 
 * Thermodynamics

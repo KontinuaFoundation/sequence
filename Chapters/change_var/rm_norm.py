@@ -61,7 +61,7 @@ print(f"Integral from {MIN_MASS:.2f} to {MAX_MASS:.2f}: {area_under_curve:.3f}")
 # Make a figure with two axes
 fig, axs = plt.subplots(nrows=2, sharex=True, figsize=(10, 7), dpi=200)
 
-# Draw the CDF on the second axix
+# Draw the CDF on the second axis
 axs[0].set_title("CDF of Mass")
 axs[0].set_ylim(bottom=0.0, top=1.0)
 axs[0].set_xlim(left=0.0, right=MAX_MASS)
@@ -78,7 +78,7 @@ axs[0].vlines(m_plus_2std, 0, 1.0, "g", linestyle="dashed",lw=0.5)
 # How high does the pdf go?
 max_density = pdf_values.max()
 
-# Draw the PDF on the second axix
+# Draw the PDF on the second axis
 axs[1].set_title("PDF of Mass")
 axs[1].set_ylim(bottom=0.0, top=max_density * 1.1)
 axs[1].set_xlim(left=0.0, right=MAX_MASS)
