@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          codespell --check-filenames --ignore-words-list="nd" .
+          codespell --check-filenames --ignore-words-list="nd" --skip="*.ai" .
 
   spell-check-changed:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
           fi
 
           printf '%s\n' "${spell_files[@]}"
-          codespell --check-filenames --ignore-words-list="nd" "${spell_files[@]}"
+          codespell --check-filenames --ignore-words-list="nd" --skip="*.ai" "${spell_files[@]}"
 
   rebuild-all-chapters:
     runs-on: ubuntu-latest

@@ -92,7 +92,7 @@ such as this one, will be created in
 not Markdown.
 
 The workbooks themselves will be written in
-`LaTeX <https://www.latex-project.org>`_. The workbooks are designed to printed onto paper. In commiting to
+`LaTeX <https://www.latex-project.org>`_. The workbooks are designed to printed onto paper. In committing to
 LaTeX instead of something like reStructuredText, we giving up nice
 web rendering in return for a lot of control over page layout.
 We have judged this to be a comfortable compromise.
@@ -111,7 +111,7 @@ Julia, which is a more elegant and efficient language, would also be a
 good choice, but at this time, Python is a more desirable skill in
 industry. For this reason, we will use Python.
 
-For simple problems, the student will use a speadsheet. We are not
+For simple problems, the student will use a spreadsheet. We are not
 specifying which spreadsheet program the student must use, but the
 book will use Google Sheets.
 
