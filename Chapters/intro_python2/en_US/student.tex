@@ -597,6 +597,50 @@ plt.show()
     \label{fig:lineOOP}
 \end{figure}
 
+% temporarily adding recursive algos here
+\section{Recursive Functions}
+As we briefly mentioned in the proofs chapter, \newterm{\textbf{recursion}} is the process of having a given function call itself over an over. Imagine you are making a phone call, but you have the phone that you are speaking into as well as the phone you are calling. If you put them next to each other and say ``Hello!'', it will cause ``Hello!'' to be spoken by the phone speaker into the microphone phone infinitely, until you hang up on one of the phones.\index{recursion}
+
+A \newterm{recursive function} can be as simple as this
+\begin{minted}{python}
+def foo():
+    # recursive call
+    foo()
+
+foo()
+\end{minted}
+The line that calls \mintinline{python}|foo()| within its self-definition is called a \newterm{recursive call}.\index{recursion!recursive call}
+However, doing this may cause you to get an error as follows
+\begin{minted}{python}
+RecursionError: maximum recursion depth exceeded
+\end{minted}
+What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{\textbf{base case}} or \newterm{\textbf{base condition}}.
+A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let's look at the famous Fibonacci sequence.\index{fibonacci}
+
+The fibonacci sequence is a sequence of numbers where each term $F_n$ is defined by adding the previous two terms:
+\begin{equation*}
+  \mathrm{fib}(n) = \begin{cases}
+    0 & n=0\\
+    1 & n=1\\
+    \mathrm{fib}(n-1)-\mathrm{fib}(n-2)& n \ge 2 \text{ and } n \in \mathbb{Z}
+  \end{cases}
+\end{equation*}
+
+In sequence notation we write the base cases as:
+$$F_0 = 0, \quad F_1=1$$
+$$F_n = F_{n-1} + F_{n-2}$$
+
+If we did not have a base case, how would we start defining the terms? Simply, we couldn't. There would be no way to define recursively-called previous terms explicitly as we wouldn't have a definite value for them.
+
+\subsection{Divide-and-Conquer Algorithms}
+If you look up information about recursive functions, you will find their most common use: \textbf{\newterm{divide-and-conquer algorithms}}. Divide-and-conquer algorithms are those that are run recursively to reduce problems into smaller versions of the same problem. As we talked about, problems involving trees, graphs, arrays are all best done with recursive functions as these are all structures that can be defined as smaller versions of the same structure.\index{recursion}
+
+A very common example of this is searching for a word in a dictionary. Let's say you are looking for the word \textit{keyboardist}. For example purposes, let's say this specific dictionary is $2048$ pages long (this will help our math). One way to find the word \textit{keyboardist} would be to search every individual page
+add: define divide and conquer algorithms
+ADD proof by induction
+ADD knights tour?
+ADD marble problem pseudocode
+
 \section{Errors}
 Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
 
@@ -698,3 +742,5 @@ Name two errors that could occur when this code is run. For each error, explain 
     \item Pencil is not in the list, so attempting to remove it will raise a \mintinline{python}{ValueError}. To fix this, we can use a try-except block to catch the \mintinline{python}{ValueError} and print a message indicating that the item was not found in the list.
 \end{enumerate}
 \end{Answer}
+
+recursive algos section here
