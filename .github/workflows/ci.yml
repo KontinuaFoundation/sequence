@@ -8,6 +8,55 @@ on:
   workflow_dispatch:
 
 jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install codespell
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install codespell
+
+      - name: Run spell check on changed text files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$GITHUB_SHA")"
+          echo "Changed files in $GITHUB_SHA:"
+          echo "$changed_files"
+
+          mapfile -t spell_files < <(
+            while IFS= read -r file; do
+              [[ -z "$file" ]] && continue
+              [[ ! -f "$file" ]] && continue
+
+              case "$file" in
+                *.md|*.rst|*.txt|*.tex|*.yaml|*.yml|*.json|*.csv)
+                  printf '%s\n' "$file"
+                  ;;
+              esac
+            done <<< "$changed_files"
+          )
+
+          if [[ ${#spell_files[@]} -eq 0 ]]; then
+            echo "No changed text-like files to spell-check."
+            exit 0
+          fi
+
+          printf '%s\n' "${spell_files[@]}"
+          codespell --check-filenames --ignore-words-list="nd" "${spell_files[@]}"
+
   rebuild-changed-chapters:
     runs-on: ubuntu-latest
 
