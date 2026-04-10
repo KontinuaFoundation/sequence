@@ -3,13 +3,13 @@ name: CI
 on:
   push:
     branches:
-      - master
-      - actions
+      - "**"
   workflow_dispatch:
 
 jobs:
-  spell-check:
+  spell-check-all:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Checkout repository
@@ -33,8 +33,117 @@ jobs:
           set -euo pipefail
           codespell --check-filenames --ignore-words-list="nd" .
 
+  spell-check-changed:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install codespell
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install codespell
+
+      - name: Run spell check on changed text files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base_sha="${{ github.event.before }}"
+          head_sha="${{ github.sha }}"
+
+          if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
+            changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
+          else
+            changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
+          fi
+
+          echo "Changed files considered for spell check:"
+          echo "$changed_files"
+
+          mapfile -t spell_files < <(
+            while IFS= read -r file; do
+              [[ -z "$file" ]] && continue
+              [[ ! -f "$file" ]] && continue
+
+              case "$file" in
+                *.md|*.rst|*.txt|*.tex|*.yaml|*.yml|*.json|*.csv)
+                  printf '%s\n' "$file"
+                  ;;
+              esac
+            done <<< "$changed_files"
+          )
+
+          if [[ ${#spell_files[@]} -eq 0 ]]; then
+            echo "No changed text-like files to spell-check."
+            exit 0
+          fi
+
+          printf '%s\n' "${spell_files[@]}"
+          codespell --check-filenames --ignore-words-list="nd" "${spell_files[@]}"
+
+  rebuild-all-chapters:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install LaTeX and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-luatex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            python3-pygments
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r Build/requirements.txt
+
+      - name: Prepare build config for CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+
+          cfg = {
+              "Languages": ["en_US"],
+              "Paper": "Letter",
+              "LatexExecutable": "lualatex",
+          }
+          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
+              json.dump(cfg, fp, indent=2)
+          print("Created Build/user.cfg for CI")
+          PY
+
+      - name: Rebuild all chapter PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd Build
+          python3 make_chapter_pdfs.py en_US --force
+
   rebuild-changed-chapters:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
 
     steps:
       - name: Checkout repository
@@ -64,8 +173,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$GITHUB_SHA")"
-          echo "Changed files in $GITHUB_SHA:"
+          base_sha="${{ github.event.before }}"
+          head_sha="${{ github.sha }}"
+
+          if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
+            changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
+          else
+            changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
+          fi
+
+          echo "Changed files considered for chapter rebuild:"
           echo "$changed_files"
 
           declare -A chapters=()
