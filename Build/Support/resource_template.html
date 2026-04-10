@@ -30,9 +30,9 @@
 	  {% set key = t["id"] %}
   <h4 id="{{key}}">{% if topics[key].desc %}{{topics[key].desc}}{% else %}{{key}}{% endif %}</h4>
   <ul>
-	{% for vlink in topics[key].videos %}<li>Video: <a href="{{vlink}}">{{links[vlink]['title']}}</a></li>
+	{% for vlink in topics[key].videos %}<li>Video: <a href="{{vlink}}">{{links[vlink]['title'] if vlink in links else vlink}}</a></li>
 	{% endfor %}
-	{% for rlink in topics[key].references %}<li>Reference: <a href="{{rlink}}">{{links[rlink]['title']}}</a></li>
+	{% for rlink in topics[key].references %}<li>Reference: <a href="{{rlink}}">{{links[rlink]['title'] if rlink in links else rlink}}</a></li>
 	{% endfor %}
   </ul> {% endfor %} {% endif %}
 {% if "requires" in md and md.requires|length > 0 %}
