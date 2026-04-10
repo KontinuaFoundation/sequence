@@ -1,0 +1,92 @@
+name: Deploy to Kontinua
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sequence repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Checkout kontinuafoundation.github.io
+        uses: actions/checkout@v4
+        with:
+          repository: kontinuafoundation/kontinuafoundation.github.io
+          path: kontinuafoundation.github.io
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-luatex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            rsync
+
+      - name: Install Python dependencies
+        run: python3 -m pip install -r Build/requirements.txt
+
+      - name: Prepare build config
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+
+          cfg = {
+              "Languages": ["en_US"],
+              "Paper": "Letter",
+              "LatexExecutable": "lualatex",
+          }
+          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
+              json.dump(cfg, fp, indent=2)
+          print("Created Build/user.cfg for CI")
+          PY
+
+      - name: Run url_check.py
+        run: python3 Build/url_check.py 90
+
+      - name: Run gather_resources.py
+        run: python3 Build/gather_resources.py
+
+      - name: Build chapter PDFs and chapter list (parallel)
+        run: |
+          python3 Build/make_chapter_pdfs.py en_US --force &
+          python3 Build/build_chapterlist.py &
+          wait
+
+      - name: Concatenate chapters
+        run: bash Build/concat_chaps.bash
+
+      - name: Deploy to kontinuafoundation.github.io
+        env:
+          DEPLOY_BRANCH: main
+        run: |
+          cd kontinuafoundation.github.io
+
+          # rsync Resources-en_US to the io repo root
+          rsync -av ../sequence/Build/Resources-en_US/ ./
+
+          # commit & push if there are changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
+            git push origin $DEPLOY_BRANCH
+          else
+            echo "No changes to deploy."
+          fi
