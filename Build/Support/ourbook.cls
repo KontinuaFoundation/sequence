@@ -1295,7 +1295,8 @@ width 0pt
 \newcommand{\pyvar}[1] {{\tt #1}}
 \newcommand{\pytype}[1] {{\tt #1}}
 \newcommand{\filename}[1] {{\tt #1}}
-\newcommand{\newterm}[1] {{\it #1}} 
+% \newcommand{\newterm}[1] {{\it #1}} 
+\newcommand{\newterm}[1]{\textit{#1}\index{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% [original] allows us to use version of theindex defined below
