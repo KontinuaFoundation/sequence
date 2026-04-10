@@ -47,7 +47,7 @@ now_str = now.isoformat(timespec='minutes')
 
 if day_count > 0:
     fetch_if_after = now - datetime.timedelta(days=day_count)
-    print("Refetching anything not fetched since {fetch_if_after.date}")
+    print(f"Refetching anything not fetched since {fetch_if_after.date()}")
 else:
     fetch_if_after = None
     print("Refetching everything")
@@ -126,7 +126,7 @@ for chap_meta in all_chaps:
             if ".pdf" in url:
                 # title is saved as the file's name instead of md title
                 new_links[url] = {'title':os.path.basename(url), 'date':now_str}
-                break
+                continue
             soup = BeautifulSoup(data, "html.parser")
             head = soup.head
             title = head.title.string
