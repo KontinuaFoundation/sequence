@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  rebuild-changed-chapters:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install LaTeX and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-luatex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            python3-pygments
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r Build/requirements.txt
+
+      - name: Detect changed chapter IDs in latest commit
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$GITHUB_SHA")"
+          echo "Changed files in $GITHUB_SHA:"
+          echo "$changed_files"
+
+          declare -A chapters=()
+
+          while IFS= read -r file; do
+            [[ -z "$file" ]] && continue
+
+            if [[ "$file" =~ ^Chapters/([^/]+)/ ]]; then
+              chapter_id="${BASH_REMATCH[1]}"
+              chapters["$chapter_id"]=1
+              continue
+            fi
+
+            if [[ "$file" =~ ^Chapters/book_[0-9]{2}\.txt$ ]]; then
+              while IFS= read -r line; do
+                chapter_id="$(echo "$line" | xargs)"
+                if [[ -n "$chapter_id" && ! "$chapter_id" =~ ^# ]]; then
+                  chapters["$chapter_id"]=1
+                fi
+              done < "$file"
+            fi
+          done <<< "$changed_files"
+
+          {
+            echo "chapters<<EOF"
+            for chapter in "${!chapters[@]}"; do
+              echo "$chapter"
+            done | sort
+            echo "EOF"
+            echo "count=${#chapters[@]}"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Detected ${#chapters[@]} chapter(s)."
+
+      - name: Skip when no chapters changed
+        if: steps.detect.outputs.count == '0'
+        run: echo "No chapter-related changes found in this commit."
+
+      - name: Prepare build config for CI
+        if: steps.detect.outputs.count != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+
+          cfg = {
+              "Languages": ["en_US"],
+              "Paper": "Letter",
+              "LatexExecutable": "lualatex",
+          }
+          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
+              json.dump(cfg, fp, indent=2)
+          print("Created Build/user.cfg for CI")
+          PY
+
+      - name: Build changed chapters
+        if: steps.detect.outputs.count != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Build/ci-artifacts
+
+          while IFS= read -r chapter; do
+            [[ -z "$chapter" ]] && continue
+            chapter_dir="Chapters/$chapter/en_US"
+            tex_file="$chapter_dir/student.tex"
+
+            if [[ ! -f "$tex_file" ]]; then
+              echo "Skipping $chapter: $tex_file not found"
+              continue
+            fi
+
+            echo "Building chapter: $chapter"
+            (
+              cd "$chapter_dir"
+              python3 ../../../Build/build_chapter.py
+            )
+
+            if [[ -f "$chapter_dir/student.pdf" ]]; then
+              cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${chapter}.pdf"
+            else
+              echo "Build did not produce PDF for $chapter"
+              exit 1
+            fi
+          done <<< "${{ steps.detect.outputs.chapters }}"
+
+      - name: Upload rebuilt chapter PDFs
+        if: steps.detect.outputs.count != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebuilt-chapters-${{ github.sha }}
+          path: Build/ci-artifacts/*.pdf
+          if-no-files-found: error
