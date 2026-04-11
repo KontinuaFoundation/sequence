@@ -105,8 +105,22 @@ for chap_meta in all_chaps:
             except urllib.error.HTTPError as e:
                 print(f"\n\tError for {chap_meta['id']} {url}: The server couldn't fulfill the request.")
                 print('\n\tError code: ', e.code)
-                broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': e.code})
-                continue
+                if e.code == 429:
+                    retry_after = e.headers.get("Retry-After")
+                    wait_time = int(retry_after) if retry_after else 10
+
+                    print(f"\n\t429 received. Sleeping {wait_time}s before retry...")
+                    time.sleep(wait_time)
+
+                    try:
+                        response = urllib.request.urlopen(req)
+                        data = response.read()
+                    except Exception:
+                        new_links[url] = old_links.get(url, {'title': url, 'date': now_str})
+                        continue
+                else:
+                    broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': e.code})
+                    continue
             except urllib.error.URLError as e:
                 print(f"\n\tError for {url}: Failed to reach server.")
                 print('\n\tReason: ', e.reason)

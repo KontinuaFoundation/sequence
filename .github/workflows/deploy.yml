@@ -66,13 +66,13 @@ jobs:
         run: |
           set -euo pipefail
           cd Build
-
-          python3 url_check.py 90
+          
+          python3 url_check.py 90 || (echo "url_check.py failed" && exit 1)
           echo "Checking Links.json exists..."
           test -f Resources-en_US/Links.json
 
-          python3 gather_resources.py
-          python3 gather.py 
+          python3 gather_resources.py || (echo "gather_resources.py failed" && exit 1)
+          python3 gather.py || (echo "gather.py failed" && exit 1)
 
           python3 make_chapter_pdfs.py en_US --force &
           python3 build_chapterlist.py &
