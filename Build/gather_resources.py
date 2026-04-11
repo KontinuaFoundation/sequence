@@ -1,5 +1,7 @@
 import os
 import datetime
+from pathlib import Path
+import re
 import json
 import util
 import shutil
@@ -78,3 +80,58 @@ indexname = f"{resources_dir}/index.html"
 with open(indexname, mode="w", encoding="utf-8") as message:
     message.write(content)
     print(f"Wrote {indexname}")
+
+# rewrite index.html content into a react valid resource as json
+
+OUTPUT_FILE = Path(resources_dir) / "workbooks.json"
+
+
+def workbook_sort_key(path: Path):
+    m = re.search(r"workbook-(\d+)\.json$", path.name, re.IGNORECASE)
+    return int(m.group(1)) if m else 9999
+
+
+def workbook_title_from_filename(path: Path) -> str:
+    m = re.search(r"workbook-(\d+)\.json$", path.name, re.IGNORECASE)
+    if not m:
+        raise ValueError(f"Unexpected filename: {path.name}")
+    return f"Workbook {int(m.group(1)):02d}"
+
+
+def workbook_href_from_filename(path: Path) -> str:
+    m = re.search(r"workbook-(\d+)\.json$", path.name, re.IGNORECASE)
+    if not m:
+        raise ValueError(f"Unexpected filename: {path.name}")
+    return f"Workbook-{int(m.group(1)):02d}.html"
+
+
+def convert_workbook(path: Path) -> dict:
+    with path.open("r", encoding="utf-8") as f:
+        chapters_raw = json.load(f)
+
+    chapters = []
+    for item in chapters_raw:
+        chapters.append(
+            {
+                "id": item["id"],
+                "title": item["title"],
+                "chap_num": item["chap_num"],
+            }
+        )
+
+    return {
+        "title": workbook_title_from_filename(path),
+        "href": workbook_href_from_filename(path),
+        "chapters": chapters,
+    }
+
+
+files = sorted(Path(resources_dir).glob("workbook-*.json"), key=workbook_sort_key)
+
+workbooks = [convert_workbook(path) for path in files]
+
+with OUTPUT_FILE.open("w", encoding="utf-8") as f:
+    json.dump(workbooks, f, indent=2, ensure_ascii=False)
+
+print(f"Wrote {OUTPUT_FILE} with {len(workbooks)} workbooks.")
+

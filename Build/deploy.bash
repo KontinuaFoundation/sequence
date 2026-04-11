@@ -12,7 +12,7 @@ cd ../../
 # overwrites files with the same name/path
 # skips files that haven’t changed
 # adds all new files
-rsync -av sequence/Build/Resources-en_US/ kontinuafoundation.github.io/
+rsync -av sequence/Build/Resources-en_US/ kontinuafoundation.github.io/kontinua-site/public
 
 
 # commit & push if there are changes
