@@ -597,50 +597,6 @@ plt.show()
     \label{fig:lineOOP}
 \end{figure}
 
-% temporarily adding recursive algos here
-\section{Recursive Functions}
-As we briefly mentioned in the proofs chapter, \newterm{recursion} is the process of having a given function call itself over an over. Imagine you are making a phone call, but you have the phone that you are speaking into as well as the phone you are calling. If you put them next to each other and say ``Hello!'', it will cause ``Hello!'' to be spoken by the phone speaker into the microphone phone infinitely, until you hang up on one of the phones.\index{recursion}
-
-A \newterm{recursive function} can be as simple as this
-\begin{minted}{python}
-def foo():
-    # recursive call
-    foo()
-
-foo()
-\end{minted}
-The line that calls \mintinline{python}|foo()| within its self-definition is called a \newterm{recursive call}.
-However, doing this may cause you to get an error as follows
-\begin{minted}{python}
-RecursionError: maximum recursion depth exceeded
-\end{minted}
-What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case} or \newterm{base condition}.
-A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let's look at the famous Fibonacci sequence.\index{fibonacci}
-
-The fibonacci sequence is a sequence of numbers where each term $F_n$ is defined by adding the previous two terms:
-\begin{equation*}
-  \mathrm{fib}(n) = \begin{cases}
-    0 & n=0\\
-    1 & n=1\\
-    \mathrm{fib}(n-1)-\mathrm{fib}(n-2)& n \ge 2 \text{ and } n \in \mathbb{Z}
-  \end{cases}
-\end{equation*}
-
-In sequence notation we write the base cases as:
-$$F_0 = 0, \quad F_1=1$$
-$$F_n = F_{n-1} + F_{n-2}$$
-
-If we did not have a base case, how would we start defining the terms? Simply, we couldn't. There would be no way to define recursively-called previous terms explicitly as we wouldn't have a definite value for them.
-
-\subsection{Divide-and-Conquer Algorithms}
-If you look up information about recursive functions, you will find their most common use: \newterm{divide-and-conquer algorithms}. Divide-and-conquer algorithms are those that are run recursively to reduce problems into smaller versions of the same problem. As we talked about, problems involving trees, graphs, arrays are all best done with recursive functions as these are all structures that can be defined as smaller versions of the same structure.\index{recursion}
-
-A very common example of this is searching for a word in a dictionary. Let's say you are looking for the word \textit{keyboardist}. For example purposes, let's say this specific dictionary is $2048$ pages long (this will help our math). One way to find the word \textit{keyboardist} would be to search every individual page. This would be referred to as an \newterm{iterative} approach.
-add: define divide and conquer algorithms
-ADD proof by induction
-ADD knights tour?
-ADD marble problem pseudocode
-
 \section{Errors}
 Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
 
@@ -743,4 +699,106 @@ Name two errors that could occur when this code is run. For each error, explain 
 \end{enumerate}
 \end{Answer}
 
-recursive algos section here
+\section{Recursive Functions}
+As we briefly mentioned in the proofs chapter, \newterm{recursion} is the process of having a given function call itself over an over. Imagine you are making a phone call, but you have the phone that you are speaking into as well as the phone you are calling. If you put them next to each other and say ``Hello!'', it will cause ``Hello!'' to be spoken by the phone speaker into the microphone phone infinitely, until you hang up on one of the phones.\index{recursion}
+
+A \newterm{recursive function} can be as simple as this
+\begin{minted}{python}
+def foo():
+    # recursive call
+    foo()
+
+foo()
+\end{minted}
+The line that calls \mintinline{python}|foo()| within its self-definition is called a \newterm{recursive call}.
+However, doing this may cause you to get an error as follows
+\begin{minted}{python}
+RecursionError: maximum recursion depth exceeded
+\end{minted}
+What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case} or \newterm{base condition}.
+A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let's look at the famous Fibonacci sequence.\index{fibonacci}
+
+The fibonacci sequence is a sequence of numbers where each term $F_n$ is defined by adding the previous two terms:
+\begin{equation*}
+  \mathrm{fib}(n) = \begin{cases}
+    0 & n=0\\
+    1 & n=1\\
+    \mathrm{fib}(n-1)-\mathrm{fib}(n-2)& n \ge 2 \text{ and } n \in \mathbb{Z}
+  \end{cases}
+\end{equation*}
+
+In sequence notation we write the base cases as:
+$$F_0 = 0, \quad F_1=1$$
+$$F_n = F_{n-1} + F_{n-2}$$
+
+If we did not have a base case, how would we start defining the terms? Simply, we couldn't. There would be no way to define recursively-called previous terms explicitly as we wouldn't have a definite value for them.
+
+\subsection{Binary Search and Divide-and-Conquer Algorithms}
+If you look up information about recursive functions, you will find their most common use: \newterm{divide-and-conquer algorithms}. Divide-and-conquer algorithms are those that are run recursively to reduce problems into smaller versions of the same problem. As we talked about, problems involving trees, graphs, arrays are all best done with recursive functions as these are all structures that can be defined as smaller versions of the same structure.\index{recursion}
+
+A very common example of this is searching for a word in a dictionary. Let's say you are looking for the word \textit{keyboardist}. For example purposes, let's say this specific dictionary is $2048$ pages long (this will help our math). One way to find the word \textit{keyboardist} would be to search every individual page. This would be referred to as an \newterm{iterative} approach. This wouldn't take too long if we were searching for the word \textit{apple}, but what about \textit{zebra}? We would be searching almost all $2048$ pages before reaching the word! 
+
+There is a much quicker and more efficient approach. Say we flip to approximately middle of the dictionary, page $1024$. The first word is \textit{muffin}. The word \textit{keyboardist} must be to left of this of this page, since we know the dictionary is alphabetically sorted and \textit{k} comes before \textit{m}. Let's split the $1024$ remaining pages in half; we flip to page $512$. The first word in page 512 is \textit{committee}. We need to go back towards the original middle, since \textit{c} comes before \textit{k}. So now we know \textit{keyboardist} must lie somewhere between pages $512$ and $1024$.
+
+We split that interval in half again and flip to page $768$. Suppose the first word there is \textit{gracious}. Since \textit{g} comes before \textit{k}, we know our word must be farther to the right, so we now restrict our search to pages $768$ through $1024$. We continue in this way, each time cutting the remaining search region in half and deciding whether to move left or right depending on alphabetical order.
+
+Eventually, we get to \textit{keyboardist} on page $980$. This method is much faster because every comparison eliminates about half of the remaining pages. Instead of checking pages one by one, we narrow the possibilities dramatically with each step. This process is a \newterm{divide-and-conquer} approach called \newterm{binary search}. Notice that at each step, we aren't actually doing one static action. We are reducing the possible page entries by half, and then recalling the same comparison on the function repeatedly until we reach our target. This is what makes our function a divide-and-conquer recursive algorithm. 
+ %ADD: O notation?
+
+Let's look at what a binary search for a list looks like in python:
+\begin{minted}{python}
+def binary_search(arr, target, left, right):
+    if left > right:
+        return -1  # not found
+
+    mid = (left + right) // 2
+
+    if arr[mid] == target:
+        return mid
+    elif target < arr[mid]:
+        return binary_search(arr, target, left, mid - 1)
+    else:
+        return binary_search(arr, target, mid + 1, right)
+\end{minted}
+
+Let's prove this algorithm is correct, just as we talked about in the proofs chapter. Since this algorithm is recursive and it functions by operating on smaller versions of itself, the best proof to use here is a \textit{proof by induction}.
+\begin{theorem}
+    For any indices $left$ and $right$, \mintinline{python}|binary_search(arr, target, left, right)| returns in index $i$ with $left \le i \le right$ and \mintinline{python}|arr[i] = target| if the target occurs within \mintinline{python}|arr[left...right]|, or returns $-1$ if the target is not found within the array.
+\end{theorem}
+\begin{proof}
+
+    We prove the statement by induction on $n = right - left + 1$, the length of the interval to be searched.
+
+    \paragraph{Basis Step.}
+    If $n\le0$, then $left > right$. The function immediately returns $-1$ via line $3$, which is correct. An empty interval contains no elements, so the target is not present.
+    \paragraph{Inductive Hypothesis.}
+    Assume the function works correctly for all intervals of length less than $n$. (Notice we are reducing the problem size).
+    \paragraph{Inductive Step.}
+    Now consider an interval of length $n > 0$, so $left \le right$. The function computes $mid = \left\lfloor \frac{left + right}{2} \right\rfloor$. There are three cases:
+    \begin{itemize}
+        \item \mintinline{python}|arr[mid] == target|: If the target we are searching for is at the middle of the new computed index, we correctly return the that index on line $8$.
+        \item \mintinline{python}|target < arr[mid]|: Because the array is sorted, every element at positions $left, left+1, \dots, mid$ is \emph{at most} \mintinline{python}|arr[mid]|, so all of them are greater than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[left...mid-1]|. The function then calls \mintinline{python}|binary_search(arr, target, left, mid - 1)|. The new interval has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Hence the original call is also correct.
+        
+        \item \mintinline{python}|target > arr[mid]|: Again, because the array is sorted, every element at positions $mid, mid+1, \dots, right$ is \emph{at least} arr[mid], so all of them are greater than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[mid+1...right]|. The function then calls \mintinline{python}|binary_search(arr, target, mid + 1, right)|. The new interval, again, has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Therefore, the original call is also correct.
+    \end{itemize}
+    \paragraph{Conclusion.} The proof covers all possible recursive calls and all of them accurately reduce the interval length in half. By induction on the interval length $n$, the function is correct for every valid call. 
+\end{proof}
+
+\begin{Exercise}[title={Recursive Factorial}, label={ex:factorial}]
+
+  \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        Write a Pythonian function that recursively finds the factorial of a given number $n$. Assume $n \ge 0$.
+        \vfil}
+  \end{center}
+\end{Exercise}
+\begin{Answer}[ref={ex:factorial}]
+\begin{minted}{python}    
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+\end{minted}
+\end{Answer}

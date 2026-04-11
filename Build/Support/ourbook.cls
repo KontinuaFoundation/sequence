@@ -824,6 +824,7 @@
 
 \usepackage[cache=true,cachedir=minted-cache]{minted}
 \setminted{
+    linenos,
   fontsize=\small,
   breaklines,
   frame=single
