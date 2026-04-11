@@ -37,6 +37,7 @@ jobs:
             texlive-fonts-recommended \
             texlive-binaries \
             python3-pygments \
+            texlive-science \
             rsync
       - name: Install Python dependencies
         run: python3 -m pip install -r Build/requirements.txt
@@ -105,18 +106,18 @@ jobs:
         env:
           DEPLOY_BRANCH: main
         run: |
+          set -euo pipefail
           cd kontinuafoundation.github.io
 
-          # rsync Resources-en_US to the io repo root
-          rsync -av ../sequence/Build/Resources-en_US/ ./
+          test -d ../Build/Resources-en_US
+          rsync -av --delete ../Build/Resources-en_US/ ./Resources-en_US/
 
-          # commit & push if there are changes
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
             git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
-            git push origin $DEPLOY_BRANCH
+            git push origin "$DEPLOY_BRANCH"
           else
             echo "No changes to deploy."
           fi
