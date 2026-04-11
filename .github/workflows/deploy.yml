@@ -61,12 +61,19 @@ jobs:
           print("Created Build/user.cfg for CI")
           PY
 
+      - name: Restore Links.json cache
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: Build/Resources-en_US/Links.json
+          key: links-en_US
+
       - name: Run helper scripts
         shell: bash
         run: |
           set -euo pipefail
           cd Build
-          
+
           python3 url_check.py 90 || (echo "url_check.py failed" && exit 1)
           echo "Checking Links.json exists..."
           test -f Resources-en_US/Links.json
@@ -81,6 +88,13 @@ jobs:
       - name: Concatenate chapters
         run: bash Build/concat_chaps.bash
 
+      - name: Save Links.json cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: Build/Resources-en_US/Links.json
+          key: links-en_US
+          
       - name: Deploy to kontinuafoundation.github.io
         env:
           DEPLOY_BRANCH: main
