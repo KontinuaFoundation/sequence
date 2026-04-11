@@ -32,21 +32,26 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            texlive-base \
+            texlive-binaries \
             texlive-luatex \
             texlive-latex-extra \
             texlive-fonts-recommended \
-            texlive-binaries \
-            python3-pygments \
             texlive-science \
+            python3-pygments \
             rsync
       - name: Install Python dependencies
         run: python3 -m pip install -r Build/requirements.txt
 
-      - name: Verify minted setup
+
+      - name: Verify LaTeX Tools
         run: |
           which pygmentize
           pygmentize -V
+          which kpsewhich
           kpsewhich minted.sty
+          kpsewhich algpseudocode.sty
+
       - name: Prepare build config
         shell: bash
         run: |

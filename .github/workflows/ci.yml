@@ -22,11 +22,13 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Verify minted setup
+      - name: Verify LaTeX Tools
         run: |
           which pygmentize
           pygmentize -V
+          which kpsewhich
           kpsewhich minted.sty
+          kpsewhich algpseudocode.sty
 
       - name: Install codespell
         run: |
@@ -112,16 +114,17 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install LaTeX and Python dependencies
+      - name: Install LaTeX and Python Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            texlive-base \
+            texlive-binaries \
             texlive-luatex \
             texlive-latex-extra \
             texlive-fonts-recommended \
-            texlive-binaries \
-            python3-pygments \
             texlive-science \
+            python3-pygments \
             rsync
           python3 -m pip install --upgrade pip
           python3 -m pip install -r Build/requirements.txt
@@ -164,15 +167,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-
-      - name: Install LaTeX and Python dependencies
+      - name: Install LaTeX and Python Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            texlive-base \
+            texlive-binaries \
             texlive-luatex \
             texlive-latex-extra \
             texlive-fonts-recommended \
-            python3-pygments
+            texlive-science \
+            python3-pygments \
+            rsync
           python3 -m pip install --upgrade pip
           python3 -m pip install -r Build/requirements.txt
 
