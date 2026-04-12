@@ -798,7 +798,9 @@
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
-\usetikzlibrary{calc,patterns,angles,quotes}
+\usetikzlibrary{calc,patterns,angles,quotes,graphs,graphs.standard,arrows.meta}
+% \usegdlibrary{layered}
+
 \usepackage[american]{circuitikz}
 \usepackage{tikz-3dplot}
 \usepackage{cancel}
@@ -1333,6 +1335,30 @@ final=true]
 %\usepackage{enumitem}
 %\setlist{noitemsep}
 
+% Graphs Chapter Styling
+\tikzset{
+  kontinuaNode/.style={
+    circle,
+    draw=sdkblue,
+    text=sdkblue,
+    minimum width=10mm,
+    minimum height=10mm,
+    text width=8mm,
+    inner sep=0pt,
+    outer sep=0pt,
+    align=center,
+    font=\tiny,
+    line width=1pt
+  },
+  kontinuaEdge/.style={
+    draw=sdkblue,
+    line width=1pt
+  },
+  directed/.style={
+    ->,
+    >={Stealth}
+  }
+}
 \topsep=8pt
 \itemsep=8pt
 \parsep=8pt

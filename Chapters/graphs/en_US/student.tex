@@ -1,67 +1,122 @@
 \chapter{Introduction to Graphs}
-%FIXME sequence issue 70 regarding this
 
-Some data is easier to work with if we imagine it as a set of
-\newterm{nodes} connected by \newterm{edges}. For example, on some
+\section{Introduction}
+Some data is easier to work with if we imagine it as a set of connections. When we say \newterm{graph} in this chapter, we are referring to set of data defined by a collection of \newterm{nodes} (you may also hear vertex) and connected by \newterm{edges}. For example, on some
 social networks, each user can follow any number of other users. We
 can think of each user as a node, and the edge points from the user who
-follows to the user they follow:\index{graph}\index{edge}\index{node}
+follows to the user they follow:
+
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{simpledirected.png}
-    \caption{A simple directed graph.}
-    \label{fig:simpledirected}
+  \centering
+  \begin{tikzpicture}[  every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge, directed}, scale=1.5]
+    \node (a) at (0,1) {Fred232};
+    \node (b) at (3,1) {SSontag};
+    \node (c) at (6,1) {StephenK};
+    \node (d) at (1,0) {DrDoom3};
+
+    \draw (a) -- (b);
+    \draw (b) -- (c);
+    \draw (d) -- (b);
+  \end{tikzpicture}
+  \caption{A graph showing four users and three ``following'' relationships.}
+  \label{fig:following}
 \end{figure}
 
-This diagram shows four users and three follows. Following is a
-directed relationship: Fred232 follows SSontag, but SSontag doesn't
-follow Fred232. So we would way that this is a \newterm{directed
- graph} with four nodes and three edges.\index{graph!directed}
+Following is a \newterm{directed} relationship: Fred232 follows SSontag, but SSontag doesn't
+follow Fred232. So we would say that this is a \newterm{directed graph}
+with four nodes and three edges.\index{graph!directed}
 
 There are also undirected graphs. For example, you can imagine a
 graph that represents big data lines between cities. All the big data
 lines allow communications in both directions, like two-way roads:\index{graph!undirected}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{simpleundirected.png}
+%     \caption{A simple undirected graph.}
+%     \label{fig:simpleundirected}
+% \end{figure}
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{simpleundirected.png}
-    \caption{A simple undirected graph.}
-    \label{fig:simpleundirected}
+  \centering
+  \begin{tikzpicture}[  every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge},xscale=1.7] % undirected
+    \node (m) at (0,0) {Miami};
+    \node (atl) at (1,2) {Atlanta};
+    \node (ash) at (2,4) {Asheville};
+    \node (c) at (4,2) {Charlotte};
+    \node (r) at (6,3.5) {Raleigh};
+
+    \draw (m) -- (atl);
+    \draw (atl) -- (ash);
+    \draw (ash) -- (c);
+    \draw (atl) -- (c);
+    \draw (c) -- (r);
+  \end{tikzpicture}
+  \caption{A set of cities, represented by nodes, on the east coast of the United States connected by roads, represented by edges.}
+  \label{fig:east_coast1}
 \end{figure}
 
-The arrows are gone; if data can flow from Charlotte to Raleigh, then
-data can flow from Raleigh to Charlotte. Most graphs are shown as undirected.
+The arrows are gone; if data can flow from Miami to Raleigh, then
+data can flow from Raleigh to Miama. A linked connection of edges between two or more nodes is called a \newterm{path}. Notice how Atlanta and Charlotte have $3$ edges; we would say that Atlanta and Charlotte each have a \newterm{degree} of $3$.
+
 
 There is a whole branch of mathematics called \newterm{Graph Theory}
-that studies the properties of graphs. Here are two questions that we
+that studies the properties of graphs. Here are two questions that mathematicians
 might ask about this graph:
 \begin{itemize}
-\item What is the shortest number of edges that we would need to follow to get from Miami to Raleigh?
-\item Does the graph have any paths where you could end up where you
- started? This is called a \newterm{cycle}. This graph has one
- cycle: Atlanta $\rightarrow$ Asheville $\rightarrow$ Charlotte
- $\rightarrow$ Atlanta.
-\end{itemize}\index{graph theory}
+  \item What is the smallest number of edges that we would need to follow to get from Miami to Raleigh?
+  \item Does the graph have any paths where you could end up where you
+        started?
+\end{itemize}
 
-There are even database systems that are specifically designed to hold
-and analyze graph data. Not surprisingly, these are called
-\newterm{Graph Databases}.\index{graph!database}
+That second question asks if there is a \newterm{cycle} in the graph. This graph has one
+cycle: $\text{Atlanta} \rightarrow \text{Asheville} \rightarrow \text{Charlotte}
+  \rightarrow \text{Atlanta}$.
 
 Some graphs are \newterm{connected}: You can get from one node to any
 other node by following edges. Is this graph connected?\index{graph!connected}
+
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{notconnected.png}
-    \caption{A graph with some not connected nodes.}
-    \label{fig:notconnected}
+  \centering
+  % \includegraphics[width=0.7\textwidth]{notconnected.png}
+  \begin{tikzpicture}[  every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge},xscale=1.2] % undirected
+    \node (SD) at (0,0) {San Diego};
+    \node (LA) at (3,1.6) {Los\\Angeles};
+    \node (SF) at (5.6,3.1) {San\\Francisco};
+    \node (PO) at (8.2,4.9) {Portland};
+    \node (SE) at (11.2,7.0) {Seattle};
+    \node (SP) at (12.0,2.5) {Spokane};
+
+    \draw (SD) -- (LA);
+    \draw (LA) -- (SF);
+    \draw (SE) -- (PO);
+    \draw (SE) -- (SP);
+    \draw (PO) -- (SP);
+  \end{tikzpicture}
+  \caption{A set of cities (nodes) that are not all connected. Each set of \emph{connected} cities forms a \newterm{connected component}.}
+  \label{fig:notconnected}
 \end{figure}
 
-This graph is \textit{not} connected! You can't follow edges from San Diego to Seattle.
+This graph is \textit{not} connected! You can't follow edges from San Diego to Seattle. However, you could identify two \newterm{connected components}, \newterm{subgraphs} of a graph that remain connected. 
+\begin{itemize}
+  \item San Diego, Los Angeles, San Francisco
+  \item Portland, Seattle, Spokane
+\end{itemize}
+
+Connectivity is defined as, for all pairs of nodes in that graph, there 
+exists a path between them. A subgraph is much simpler than a connected 
+component, it's only requirement is to contain a subset of at least one 
+node and, optionally, edges to go between nodes. Note that you cannot 
+have a subgraph that contains a single node and an edge, because the 
+edge would not be able to connect to anything else.
 
 In graph data, the nodes and edges often have attributes. For
 example, a node representing a city might have a name and a
 population. An edge representing a data line might have a bandwidth
 (bits per second) and a latency (how many nanoseconds between when you
-put a bit into the pipe and when it comes out the other end).
+put a bit into the pipe and when it comes out the other end). This is 
+how we define a graph.
 
 \section{Finding Good Paths}
 
@@ -73,23 +128,120 @@ Sometimes the edges have a cost attribute. For example, you might
 want to find the cheapest way to ship a container from New York City
 to Long Beach, California. In this case the nodes are train depots. Each
 train line between the depots has a cost. What is the cheapest path?
-%this image has a typo
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{depots.png}
-    \caption{A weighted graph shown through train depots.}
-    \label{fig:depots}
+  \centering
+
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge},
+      lbl/.style={draw=none, fill=none, font=\small}
+    ]
+
+    % Nodes
+    \node (LB) at (0,0) {Long\\Beach};
+    \node (LA) at (3,2) {Los\\Angeles};
+    \node (DE) at (4.5,5) {Denver};
+    \node (PH) at (6.2,0) {Phoenix};
+    \node (LO) at (9.5,0.4) {Louisville};
+    \node (CL) at (8.5,4.2) {Cleveland};
+    \node (NY) at (12.3,4) {NYC};
+    \node (BO) at (11.5,7.2) {Boston};
+
+    % Edges
+    \draw (LB) -- node[lbl, below] {$\mathdollar12$} (LA);
+    \draw (LA) -- node[lbl, left] {$\mathdollar23$} (DE);
+    \draw (LA) -- node[lbl, below] {$\mathdollar19$} (PH);
+    \draw (DE) -- node[lbl, above] {$\mathdollar9$} (CL);
+    \draw (DE) -- node[lbl, left] {$\mathdollar14$} (LO);
+    \draw (PH) -- node[lbl, below] {$\mathdollar80$} (CL);
+    \draw (PH) -- node[lbl, below] {$\mathdollar52$} (LO);
+    \draw (CL) -- node[lbl, above] {$\mathdollar13$} (BO);
+    \draw (CL) -- node[lbl, above] {$\mathdollar8$} (NY);
+    \draw (BO) -- node[lbl, right] {$\mathdollar7$} (NY);
+    \draw (LO) -- node[lbl, right] {$\mathdollar28$} (NY);
+
+  \end{tikzpicture}
+  \caption{A graph of interconnected cities where each edge has a respective cost.}
+  \label{fig:weighted}
 \end{figure}
 
-When edges have costs like this, we call the \newterm{weighted edges}, which forms a \newterm{weighted graph}.
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{depots.png}
+%     \caption{A weighted graph shown through train depots.}
+%     \label{fig:depots}
+% \end{figure}
+When edges have costs like this, we call the \newterm{weighted edges}, which forms a \newterm{weighted graph}. In weighted graphs, the \emph{degree} of a node is split into the \newterm{in-degree} and \newterm{out-degree} of nodes. The in-degree identifies the incoming edges that originate from other nodes, and out-degree is the amount of edges going out of that node.
 
 The graphs that you see here are really small, so finding efficient
 paths isn't difficult --- you could just try all of them! However, in
-many computer programs, we are working with millions of nodes and
+many computer programs, we are working with \emph{millions} of nodes and
 edges. Efficient graph algorithms are \textit{really} important.
-\section{Graphs in Python}
 
-In this section you are going to write Python classes that will let
+\section{Graphs in Python}
+There are many ways to represent graph data. There are database systems that are specifically designed to hold
+and analyze graph data. Not surprisingly, these are called \newterm{Graph Databases}. 
+
+You may also hear about \newterm{adjacency lists}, which store, for each node, the list of nodes it is connected to. Each direct connection from one node to another is called a \newterm{neighbor}. Simply, adjacency lists store lists of neighbors.
+
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Nodes
+    \node (A) at (0,0) {A};
+    \node (B) at (1,3) {B};
+    \node (C) at (3,-1) {C};
+    \node (D) at (-1,2) {D};
+
+
+    % Edges
+    \draw (A) -- (B);
+    \draw (A) -- (C);
+    \draw (B) -- (D);
+
+  \end{tikzpicture}
+  \caption{A simple (undirected unweighted) graph used to make an adjacency list.}
+  \label{fig:adjacency}
+\end{figure}
+
+As an adjacency list, this would look like:
+\begin{itemize}
+  \item A: [B, C]
+  \item B: [A, D]
+  \item C: [A]
+  \item D: [B]
+\end{itemize}
+
+\begin{Exercise}[title={Directed Adjacency Lists}, label={ex:dir_adj}]
+
+    \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        Consider the concept of adjacency lists discussed above. How would the storage method change if the edges were to have weights?
+        \vfil}
+  \end{center}
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:dir_adj}]
+
+In a weighted graph, each node would have to store a set of neighbors and their respective weights. The best way to do this would be a tuple. For example, 
+\begin{itemize}
+  \item A: [(B, 4), (C, 3)]
+  \item B: [(A, 4), (D, 8)]
+  \item C: [(A, 3)]
+  \item D: [(B, 8)]
+\end{itemize}
+
+\end{Answer}
+
+For simplicity, you are going to write Python classes that will let
 you represent an undirected graph with weighted edges, like the
 shipping problem above.
 
@@ -103,9 +255,9 @@ create a \pytype{Graph} class that will just hold onto the list of
 its nodes.
 
 \begin{itemize}
-\item A \pytype{Node} will have a label string and a list of edges that touch it.
-\item A \pytype{Edge} will have a cost and two nodes: \pyvar{node\_a} and \pyvar{node\_b}.
-\item A \pytype{Graph} will have a list of nodes.
+  \item A \pytype{Node} will have a label string and a list of edges that touch it.
+  \item A \pytype{WeightedEdge} will have a cost and two nodes: \pyvar{node\_a} and \pyvar{node\_b}.
+  \item A \pytype{Graph} will have a list of nodes.
 \end{itemize}
 
 Here is what the object diagram would look like if you had only three cities:
@@ -131,11 +283,12 @@ class WeightedEdge:
     self.node_b = node_b
     node_b.edges.append(self)
 
-  def other_end(self, node_from):
+def other_end(self, node_from):
     if self.node_a == node_from:
-      return self.node_b
-    else:
-      return self.node_a
+        return self.node_b
+    if self.node_b == node_from:
+        return self.node_a
+    raise ValueError("node is not an endpoint of this edge")
 
 class Graph:
   def __init__(self):
@@ -147,7 +300,7 @@ class Graph:
   def __repr__(self):
     return f"(Graph:{self.nodes})"
 \end{minted}
-
+This is a graph class that handles undirected weighted graphs. 
 Now, let's create some instances of \pytype{Node} and
 \pytype{WeightedEdge} and wire them together. Create another file in
 the same directory called \filename{cities.py}. Put in this code:

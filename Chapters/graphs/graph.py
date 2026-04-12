@@ -20,8 +20,9 @@ class WeightedEdge:
     def other_end(self, node_from):
         if self.node_a == node_from:
             return self.node_b
-        else:
+        if self.node_b == node_from:
             return self.node_a
+        raise ValueError("node is not an endpoint of this edge")
 
 
 class Graph:
