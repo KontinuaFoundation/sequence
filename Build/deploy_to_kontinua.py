@@ -7,6 +7,9 @@ import os
 import sys
 from pathlib import Path
 
+import time
+
+
 URL_CHECK_DAYS = 90
 
 BUILD_DIR = Path(__file__).resolve().parent
@@ -65,21 +68,33 @@ def run_helper_scripts_parallel(BUILD, URL_CHECK_ARG, FORCE=False):
     """Runs listed scripts to assist in building of Kontinua PDF web viewer."""
 
     # consecutive
-    run(["python3", "url_check.py", str(URL_CHECK_ARG)], cwd=str(BUILD))
-    run(["python3", "gather_resources.py"], cwd=str(BUILD))
-    # FIXME gather needed?
 
-    run(["python3", "gather.py"], cwd=str(BUILD))
     # if force tag is given, passes force tag to make_chapter_pdfs.py
     make_chapters_cmd = ["python3", "make_chapter_pdfs.py", "en_US"]
     if FORCE:
         make_chapters_cmd.append("--force")
+    workbook_cmds = [
+        ["python3", "build_workbook.py", str(i)]
+        for i in range(1, 37)
+    ]
 
-    # parallel
-    run_parallel([
-        make_chapters_cmd,
-        ["python3", "build_chapterlist.py"],
-    ], cwd=str(BUILD))
+    # Runs the following in parallel (time constraints)
+    # url_check.py
+    # build_chapterlist.py
+    # make_chapter_pdfs.py en_US (all individual chapter pdfs) (forced)
+    # builds all workbooks in parallel
+    run_parallel(
+        [
+            make_chapters_cmd,
+            ["python3", "url_check.py", str(URL_CHECK_ARG)],
+            ["python3", "build_chapterlist.py"],
+            *workbook_cmds,
+        ],
+        cwd=str(BUILD),
+    )
+    
+    run(["python3", "gather.py"], cwd=str(BUILD))
+    run(["python3", "gather_resources.py"], cwd=str(BUILD))
 
     print("====================================")
     print("finished running helper scripts.")
@@ -96,6 +111,8 @@ def run_bash_script(BUILD, filename: str):
         check=True
     )
 
+start = time.time()
+
 # -----------------------------
 # pass FORCE through
 # -----------------------------
@@ -104,5 +121,11 @@ run_helper_scripts_parallel(
     URL_CHECK_ARG=URL_CHECK_DAYS,
     FORCE=FORCE,
 )
+
 run_bash_script(BUILD=BUILD_DIR, filename="concat_chaps.bash")
+run_bash_script(BUILD=BUILD_DIR, filename="copy_resources_to_workbooks.bash")
 run_bash_script(BUILD=BUILD_DIR, filename="deploy.bash")
+end = time.time()
+print("====================================")
+print(f"Elapsed: {end - start:.4f} seconds")
+print("====================================")

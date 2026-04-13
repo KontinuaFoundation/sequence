@@ -63,7 +63,15 @@ today_str = datetime.datetime.now().isoformat(timespec='minutes')
 for i in book_indices:
     book_str = str(i + 1).zfill(2)
     metadatas = books_metadata[i]
-    content = template.render( topics=all_topics, chapters=metadatas, book_str=book_str, today_str=today_str, links=links)
+    pdf_href = f"workbook-{book_str}.pdf"
+    content = template.render(
+        topics=all_topics, 
+        chapters=metadatas, 
+        book_str=book_str, 
+        today_str=today_str, 
+        links=links,
+        pdf_href=pdf_href
+        )
     filename = f"Workbook-{book_str}.html"
     path = f"{resources_dir}/{filename}"
     # print(f"Writing {path}")
@@ -104,6 +112,11 @@ def workbook_href_from_filename(path: Path) -> str:
         raise ValueError(f"Unexpected filename: {path.name}")
     return f"Workbook-{int(m.group(1)):02d}.html"
 
+def workbook_pdf_from_filename(path: Path) -> str:
+    m = re.search(r"workbook-(\d+)\.json$", path.name, re.IGNORECASE)
+    if not m:
+        raise ValueError(f"Unexpected filename: {path.name}")
+    return f"Workbook-{int(m.group(1)):02d}.pdf"
 
 def convert_workbook(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as f:
@@ -122,6 +135,7 @@ def convert_workbook(path: Path) -> dict:
     return {
         "title": workbook_title_from_filename(path),
         "href": workbook_href_from_filename(path),
+        "pdf": workbook_pdf_from_filename(path),
         "chapters": chapters,
     }
 

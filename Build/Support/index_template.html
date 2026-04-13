@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="kontinua.css">
@@ -8,13 +9,18 @@
 
 <body>
   <h1>Table of Contents for Digital Resources</h1>
-  
+
   {% for num in books %} {% set filename = "Workbook-{}.html".format(num) %}
-  <h2><a href="{{filename}}">Workbook {{num}}</a></h2> {% set chaps = chapters[num] %}
+  <h2>
+    <a href="{{filename}}">Workbook {{num}}</a>
+    <a href="workbook-{{num}}.pdf" target="_blank">Workbook {{num}} PDF</a>
+  </h2>
+  {% set chaps = chapters[num] %}
   <ul>
-  {% for chap in chaps %}<li><a href="{{filename}}#{{chap["id"]}}">{{chap["chap_num"]}}: {{chap["title"]}}</a>
-  {% endfor %}
+    {% for chap in chaps %}<li><a href="{{filename}}#{{chap[" id"]}}">{{chap["chap_num"]}}: {{chap["title"]}}</a>
+      {% endfor %}
   </ul>
-{% endfor %}
+  {% endfor %}
 </body>
+
 </html>
