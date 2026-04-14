@@ -113,7 +113,7 @@ There are two questions that determine where any topic goes in the order:
 	- Electric potential
 	- Why don't atoms collapse?
 * `angles <../Chapters/angles/en_US/student.tex>`_: Angles
-* `triangles_circles <../Chapters/triangles_circles/en_US/student.tex>`_: Introduction to Triangles
+* `triangles <../Chapters/triangles/en_US/student.tex>`_: Introduction to Triangles
 	- Equilateral and Isosceles Triangles
 	- Interior Angles of a Triangle
 * `pythagorean_theorem <../Chapters/pythagorean_theorem/en_US/student.tex>`_: Pythagorean Theorem
