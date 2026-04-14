@@ -108,6 +108,9 @@ There are two questions that determine where any topic goes in the order:
 	- Resistors in Parallel
 * `charge <../Chapters/charge/en_US/student.tex>`_: Charge
 	- Lightning
+	- Electric fields
+	- Electric dipoles
+	- Electric potential
 	- Why don't atoms collapse?
 * `angles <../Chapters/angles/en_US/student.tex>`_: Angles
 * `triangles_circles <../Chapters/triangles_circles/en_US/student.tex>`_: Introduction to Triangles
@@ -118,16 +121,24 @@ There are two questions that determine where any topic goes in the order:
 	- Distance in 3 Dimensions
 * `congruence <../Chapters/congruence/en_US/student.tex>`_: Congruence
 	- Triangle Congruency
-* Parallel and Perpendicular Lines
+* `parallel_perpendicular <../Chapters/parallel_perpendicular/en_US/student.tex>`_: Parallel & Perpendicular
+    - Parallel and Perpendicular Lines
 * Inscribed Angle and Shapes
-* Tangents to a Circle
-* Equation of a Circle
-* Ellipses
-* Hyperbolas
+* `circles <../Chapters/circles/en_US/student.tex>`_: Circles
+    - circle terminology
+    - equation of a circle
+    - Tangents to a Circle
+    - Spheres
+* Cylinders, Pyramids, and Cones
 * Rectangular Solids
   - Surface area and volume
-* Cylinders, Pyramids, and Cones
-* Spheres
+.. * Spheres
+* `conic_sections <../Chapters/conic_sections/en_US/student.tex>`_: Conic sections
+    - Intersections of planes and cones
+    - Ellipses
+    - Hyperbolas
+    - parabolas
+    - circles
 * `vectors <../Chapters/vectors/en_US/student.tex>`_: Vectors
 	- Adding Vectors
 	- Multiplying a vector with a scalar
@@ -201,6 +212,11 @@ There are two questions that determine where any topic goes in the order:
 	- Derivatives of sine and cos
 	- A weight on a spring
 	- Integral of sine and cosine
+* `trig_identities <../Chapters/trig_identities/en_US/student.tex>`_: Trigometric Identities
+	- unit circle
+	- common values of trig functions
+    - 4 quadrants
+    - sum and difference formulas
 * `transforms <../Chapters/transforms/en_US/student.tex>`_: Transforming Functions
 	- Translation up and down
 	- Translation left and right
@@ -220,15 +236,25 @@ There are two questions that determine where any topic goes in the order:
 	- Velocity
 	- Acceleration
 	- Centripetal force
+* `circular 2 <../Chapters/circular_/en_US/student.tex>`_: Circular Motion
+	- Torque
+	- moment of intertia
+	- parallel axis theorem
+	- rotational version of newton's second law
+* `oscillations <../Chapters/oscillations/en_US/student.tex>`_: Sinusoidal and oscillatory motion
+	- oscillating forces in the form :math:`m x'' - c x' - k x = F(t)`
+	- equilibrium position
+	- intro to linear systems, damping, and linear diff-eqs
+	- pendulums
+	- alternating current
 * `orbits <../Chapters/orbits/en_US/student.tex>`_: Orbits
 	- Astronauts are \emph{not
 	- Geosynchronous Orbits
 * `emwaves <../Chapters/emwaves/en_US/student.tex>`_: Electromagnetic Waves
 	- The greenhouse effect
-* oscillations
-	- oscillating forces in the form :math:`m x'' - c x' - k x = F(t)`
-	- equilibrium position
-	- intro to linear systems, damping, and linear diff-eqs
+	- wavelengths
+
+
 * `camera <../Chapters/camera/en_US/student.tex>`_: How Cameras Work
 	- The Light That Shines On the Cow
 	- Light Hits the Cow
@@ -244,9 +270,17 @@ There are two questions that determine where any topic goes in the order:
 	- Using an existing image
 * `bitmap <../Chapters/bitmap/en_US/student.tex>`_: Bitmaps in C++
 	- analysis of byte patterns, hex colors, and bitmap padding in C++.
-* Reflections
-* Refraction
-* Lens
+* `reflections <../Chapters/reflection/en_US/student.tex>`_:Reflections
+    - Photons and motion of photons
+    - energy of photons
+    - law of reflections
+* `refraction <../Chapters/refraction/en_US/student.tex>`_: Refraction
+    - snell's law
+    - refraction through water
+* `lens <../Chapters/lens/en_US/student.tex>`_: Lens
+    - Focal Length
+    - Refractice index
+    - convex vs concave
 * `polynomials_intro <../Chapters/polynomials_intro/en_US/student.tex>`_: Introduction to Polynomials
 * `pylists <../Chapters/pylists/en_US/student.tex>`_: Python Lists
 	- Evaluating Polynomials in Python
@@ -305,12 +339,15 @@ There are two questions that determine where any topic goes in the order:
   - Parsing JSON and XML
   - Parsing HTML
 * Working with Text
-  - Stop words, stemming, and lemmatization
+  - `stop_words <../Chapters/stop_words/en_US/student.tex>`_:Stop words
+  - `stop_word <../Chapters/stop_words/en_US/student.tex>`_:Stop words
+  - stemming
+  - lemmatization
   - Accents, right-to-left, and other international text challenges
 * Basic Geographical Data
-  - Longitude, Latitude, and Distance
-  - Geocoding and reverse geocoding using Google Maps API
-  - Making a map
+  - `Long_lat_distance <../Chapters/long_lat_dist/en_US/student.tex>`_:Longitude, Latitude, and Distance 
+  - `Geocoding <../Chapters/geocoding/en_US/student.tex>`_: Geocoding and reverse geocoding using Google Maps API
+  - `Geocoding <../Chapters/making_a_map/en_US/student.tex>`_: Making a map
 * `limits <../Chapters/limits/en_US/student.tex>`_: Limits
 * Methods for finding limits
 * `differentiation <../Chapters/differentiation/en_US/student.tex>`_: Differentiation
