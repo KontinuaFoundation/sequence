@@ -1,5 +1,33 @@
 \chapter{Floating Point Arithmetic}
 
 \section{Why Computers Can't Count Perfectly}
-\section{Binary Representation of Numbers}
-\section{The IEEE 754 Standard}
+
+Computers are known to be very precise. They are modern processors that can perform billions of calculations per second easily and hence, it is not intuitive to think about this evergreen challenge that they have. Computers cannot store most numbers exactly.
+
+Let us think about what it would actually take to store a number like $\frac{1}{3}$. You
+probably know its decimal expansion:
+\[
+    \frac{1}{3} = 0.3333333\ldots\]
+The digits go on forever. Now imagine you are a computer with a fixed amount of memory.
+You cannot store infinitely many digits. So you store $0.333$ or $0.3333333$, depending on how much space you have, and you accept that the result is not exactly right. That gap between the number you wanted and the number you
+actually stored is called \newterm{approximation error}\index{approximation error}, and
+it never fully goes away.
+
+This is not just a problem for fractions with repeating decimals. Irrational numbers like
+$\sqrt{2} = 1.41421356\ldots$ and transcendental numbers like $\pi = 3.14159265\ldots$
+also have infinite, non-repeating decimal expansions. Every one of them must be
+approximated when stored in a computer.
+
+To handle this systematically, mathematicians and engineers developed the
+\newterm{floating-point system}\index{floating-point system}. Before we look at how it works, it helps to understand the two core reasons why any finite system will always fall short of
+the real number line.
+
+\subsection{The Number Line is Continuous and Unbounded}
+
+Between any two real numbers, no matter how close together, there are infinitely many
+others. Pick any two decimals you like. For example, if you picked $1.00$ and $1.01$, you can always find a number between them: $1.005$, $1.0051$, $1.00500001$, and so on without end. This is referred to as \newterm{continuity}\index{continuity}. A computer's number system cannot be continuous. It stores numbers using a fixed string
+of digits, which means it can only represent finitely many values. Real numbers have to be rounded to the nearest representable value. 
+
+The real numbers stretch infinitely in both directions. There is no largest real number
+and no smallest positive real number. A computer's memory is finite, so its number system must have both a largest and a smallest representable value. Numbers too large to store cause a problem called \newterm{overflow}\index{overflow}. Numbers too small to distinguish from zero cause \newterm{underflow}\index{underflow}. 
+
