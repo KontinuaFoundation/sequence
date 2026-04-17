@@ -238,7 +238,7 @@ There are two questions that determine where any topic goes in the order:
 	- Centripetal force
 * `circular 2 <../Chapters/circular_/en_US/student.tex>`_: Circular Motion
 	- Torque
-	- moment of intertia
+	- moment of inertia
 	- parallel axis theorem
 	- rotational version of newton's second law
 * `oscillations <../Chapters/oscillations/en_US/student.tex>`_: Sinusoidal and oscillatory motion
@@ -279,7 +279,7 @@ There are two questions that determine where any topic goes in the order:
     - refraction through water
 * `lens <../Chapters/lens/en_US/student.tex>`_: Lens
     - Focal Length
-    - Refractice index
+    - Refractive index
     - convex vs concave
 * `polynomials_intro <../Chapters/polynomials_intro/en_US/student.tex>`_: Introduction to Polynomials
 * `pylists <../Chapters/pylists/en_US/student.tex>`_: Python Lists
