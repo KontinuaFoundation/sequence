@@ -416,7 +416,7 @@ There are two questions that determine where any topic goes in the order:
 * An Introduction to Data Structures
   - Linked List in C++
 * Trees
-* Searching Trees
+* Tree Traversal
 * Hash tables
 * Sorting algorithms
 * Graphs

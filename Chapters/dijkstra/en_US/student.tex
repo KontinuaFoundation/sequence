@@ -3,7 +3,7 @@
 Edsger W. Dijkstra was a great Dutch computer scientist. He came up
 with an algorithm for finding the cheapest path through a graph with
 weighted edges. Today it is known as \newterm{Dijkstra's
-  Algorithm}. It is used in a wide variety of common problems, and is
+    Algorithm}. It is used in a wide variety of common problems, and is
 also both simple and elegant.\index{Dijkstra, Edsger}
 
 \section{Algorithm Description}
@@ -14,12 +14,63 @@ container from Long Beach, you will mark each city with the cost of
 getting the container to that city.
 
 You start by marking the price for Long Beach to zero (the container is already there). You then mark each adjacent city with the cost on
-the edge. Next, you declare Long Beach to be ``visited''.
+the edge (figure ~\ref{fig:step1a}). Next, you declare Long Beach to be ``visited'' (figure ~\ref{fig:step1b}).
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{step1.png}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[
+                every node/.style={kontinuaNode, scale=1.4},
+                every path/.style={kontinuaEdge},
+                lbl/.style={draw=none, fill=none, font=\small}, scale=.8]
+
+            \node (lb1) at (0,0) {Long Beach\\\$0};
+
+            \node (la1) at (4,2.8) {Los Angeles\\?};
+            \node (sc1) at (8,3.3) {Sacramento\\?};
+            \node (bk1) at (8,0) {Bakersfield\\?};
+            \node (sd1) at (4,-3.2) {San Diego\\?};
+
+            \draw (lb1) -- node[lbl, below] {\$12} (la1);
+            \draw (la1) -- node[lbl, above] {\$20} (sc1);
+            \draw (la1) -- node[lbl, below] {\$10} (bk1);
+            \draw (lb1) -- node[lbl, below] {\$14} (sd1);
+            \draw (sd1) -- node[lbl, below] {\$7} (bk1);
+
+        \end{tikzpicture}
+        \caption{The initialized state of the graph, selecting Long Beach as our origin node.}
+        \label{fig:step1a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+
+        \centering
+        \begin{tikzpicture}[
+                every node/.style={kontinuaNode, scale=1.4},
+                every path/.style={kontinuaEdge},
+                lbl/.style={draw=none, fill=none, font=\small}, scale=.8]
+
+            \node (lb2) at (0,0) {Long Beach\\\$0\\Visited};
+
+            \node (la2) at (4,2.8) {Los Angeles\\\$12};
+            \node (sc2) at (8,3.2) {Sacramento\\?};
+            \node (bk2) at (8,0) {Bakersfield\\?};
+            \node (sd2) at (4,-3.4) {San Diego\\\$14};
+
+            \draw (lb2) -- node[lbl, below] {\$12} (la2);
+            \draw (la2) -- node[lbl, above] {\$20} (sc2);
+            \draw (la2) -- node[lbl, below] {\$10} (bk2);
+            \draw (lb2) -- node[lbl, below] {\$14} (sd2);
+            \draw (sd2) -- node[lbl, below] {\$7} (bk2);
+
+        \end{tikzpicture}
+        \caption{Marking Long Beach as visited, we change the cost values of Los Angeles and San Diego to their respective edges.}
+        \label{fig:step1b}
+    \end{subfigure}
+
     \caption{A map of weighted cities.}
     \label{fig:step1}
+    %     \includegraphics[width=0.9\textwidth]{step1.png}
 \end{figure}
 
 After that, you find the cheapest of the unvisited nodes.  In this case, Los
@@ -28,19 +79,75 @@ next.
 
 You mark all of the unvisited nodes adjacent to Los Angeles, with the
 price to ship it to Los Angeles plus the cost of shipping the
-container from Los Angeles to that city. Note that Bakersfield is
+container from Los Angeles to that city (figure ~\ref{fig:step2a}). Note that Bakersfield is
 marked with \$22.
+
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{step2.png}
-    \caption{Marking each node with the cost to get to that city from the origin.}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[
+                every node/.style={kontinuaNode, scale=1.4},
+                every path/.style={kontinuaEdge},
+                lbl/.style={draw=none, fill=none, font=\small}, scale=.8]
+
+            \node (lb2) at (0,0) {Long Beach\\\$0\\Visited};
+
+            \node (la2) at (4,2.8) {Los Angeles\\\$12\\Visited};
+            \node (sc2) at (8,3.2) {Sacramento\\\$32};
+            \node (bk2) at (8,0) {Bakersfield\\\$22};
+            \node (sd2) at (4,-3.4) {San Diego\\\$14};
+
+            \draw (lb2) -- node[lbl, below] {\$12} (la2);
+            \draw (la2) -- node[lbl, above] {\$20} (sc2);
+            \draw (la2) -- node[lbl, below] {\$10} (bk2);
+            \draw (lb2) -- node[lbl, below] {\$14} (sd2);
+            \draw (sd2) -- node[lbl, below] {\$7} (bk2);
+
+        \end{tikzpicture}
+        \caption{After visiting Los Angeles.}
+             \label{fig:step2a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+
+        \centering
+        \begin{tikzpicture}[
+                every node/.style={kontinuaNode, scale=1.4},
+                every path/.style={kontinuaEdge},
+                lbl/.style={draw=none, fill=none, font=\small}, scale=.8]
+
+            \node (lb2) at (0,0) {Long Beach\\\$0\\Visited};
+
+            \node (la2) at (4,2.8) {Los Angeles\\\$12\\Visited};
+            \node (sc2) at (8,3.2) {Sacramento\\\$32};
+            \node (bk2) at (8,0) {Bakersfield\\\$21};
+            \node (sd2) at (4,-3.4) {San Diego\\\$14\\Visited};
+
+            \draw (lb2) -- node[lbl, below] {\$12} (la2);
+            \draw (la2) -- node[lbl, above] {\$20} (sc2);
+            \draw (la2) -- node[lbl, below] {\$10} (bk2);
+            \draw (lb2) -- node[lbl, below] {\$14} (sd2);
+            \draw (sd2) -- node[lbl, below] {\$7} (bk2);
+
+        \end{tikzpicture}
+        \caption{After visiting San Diego.}
+        \label{fig:step2b}
+    \end{subfigure}
+
+    \caption{Visiting the next two minimum cost cities.}
     \label{fig:step2}
+    %     \includegraphics[width=0.9\textwidth]{step1.png}
 \end{figure}
-%FIXME these could be changed to latex
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{step2.png}
+%     \caption{Marking each node with the cost to get to that city from the origin.}
+%     \label{fig:step2}
+% \end{figure}
 
 Now, the cheapest unvisited node is San Diego, so you mark its
 neighbors with the cost to ship to San Diego, plus the price to ship
-from San Diego to the neighbor.
+from San Diego to the neighbor (figure ~\ref{fig:step2b}).
 
 Notice that Bakersfield is already labeled with \$22 from a route
 through Los Angeles.  But the price would be \$21 if you shipped it to
@@ -64,24 +171,64 @@ node.  This is easy to do as we execute the algorithm.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{prev.png}
-    \caption{Marking each previous node.}
+    % \includegraphics[width=0.4\textwidth]{prev.png}
+
+
+        \centering
+        \begin{tikzpicture}[
+                every node/.style={kontinuaNode, scale=1.4},
+                every path/.style={kontinuaEdge},
+                lbl/.style={draw=none, fill=none, font=\small}, scale=.8]
+
+            \node (lb) at (0,0) {Long Beach\\\$0\\Visited};
+
+            \node (la) at (4,2.8) {Los Angeles\\\$12\\Visited};
+            \node (sc) at (8,3.2) {Sacramento\\\$32\\Visited};
+            \node (bk) at (8,0) {Bakersfield\\\$21\\Visited};
+            \node (sd) at (4,-3.4) {San Diego\\\$14\\Visited};
+
+            \draw (lb) -- node[lbl, below] {\$12} (la);
+            \draw (la) -- node[lbl, above] {\$20} (sc);
+            \draw (la) -- node[lbl, below] {\$10} (bk);
+            \draw (lb) -- node[lbl, below] {\$14} (sd);
+            \draw (sd) -- node[lbl, below] {\$7} (bk);
+            \draw[->]
+                (la) to[out=140, in=100] node[lbl, above] {prev} (lb);
+
+            \draw[->]
+                (sc) to[out=100, in=80] node[lbl, above] {prev} (la);
+
+            \draw[->]
+                (bk) to[out=-20, in=-45] node[lbl, below] {prev} (sd);
+
+            \draw[->]
+                (sd) to[out=180, in=-100] node[lbl, below] {prev} (lb);
+
+        \end{tikzpicture}
+    \caption{Marking each node with a previous pointer.}
     \label{fig:example}
 \end{figure}
 
-Now, to figure out the cheapest route from San Diego to Bakersfield,
+Now, to figure out the cheapest route from Long Beach to Bakersfield,
 we start at the destination and follow the \pyvar{prev} pointer back
-through San Diego, then to Long Beach.
+through San Diego, then to Long Beach. 
+\begin{Exercise}[title={Expanding on the Delivery Graph}, label={ex:deliv_1}]
+Notice that the path between Los Angeles to Bakersfield is not used once we add in our previous labels. Why might this be?
+\end{Exercise}
+\begin{Answer}[ref={ex:deliv_1}]
+Los Angeles $\rightarrow$ Bakersfield is not chosen because it does not give the best known cost to Bakersfield. The \pyvar{prev} pointer for Bakersfield goes to San Diego instead, since $\mathdollar21 < \mathdollar22$.
 
+The tree that is generated is called a \newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
+\end{Answer}
 \section{Implementation}
 
 We do not actually want to sully our graph objects with the three additional pieces of information we need:
 \begin{itemize}
-\item The current minimal cost from the origin node. This is usually
-  called the \pyvar{dist}, from ``distance''.
-\item The neighbor who gives us the current minimal cost. This is
-  usually called \pyvar{prev}, from ``previous''.
-\item Whether the city is visited or now.
+    \item The current minimal cost from the origin node. This is usually
+          called the \pyvar{dist}, from ``distance''.
+    \item The neighbor who gives us the current minimal cost. This is
+          usually called \pyvar{prev}, from ``previous''.
+    \item Whether the city is visited or now.
 \end{itemize}
 So, we will keep them in collections external to the graph.
 
