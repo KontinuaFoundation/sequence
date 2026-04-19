@@ -1,41 +1,25 @@
 import os
 import re
 
-# Define the base directory relative to the location of the script in the Build folder
-base_dir = os.path.join(os.path.dirname(__file__), '..', 'Chapters')
+base_dir = os.path.join(os.path.dirname(__file__), "..", "Chapters")
+include_graphics_re = re.compile(r"\\includegraphics(?:\[.*\])?\{(.+?)\}")
 
-# Regular expression to match \includegraphics tags and extract the file path
-include_graphics_regex = r'\\includegraphics(?:\[.*\])?\{(.+?)\}'
+for root, _, files in os.walk(base_dir):
+    if os.path.basename(root) != "en_US":
+        continue
 
-# Walk through the directory structure
-for root, dirs, files in os.walk(base_dir):
-    # Check if the current directory is an 'en_US' folder
-    if os.path.basename(root) == 'en_US':
-        # Collect all PNG files in the directory
-        all_pngs = {file for file in files if file.endswith('.png')}
-        
-        # Set to store all PNGs referenced in .tex files within the same directory
-        referenced_pngs = set()
+    all_pngs = {f for f in files if f.endswith(".png")}
+    referenced_pngs = set()
 
-        # Iterate through each .tex file in the current 'en_US' directory
-        for file in files:
-            if file.endswith('.tex'):
-                # Construct the full file path
-                tex_file_path = os.path.join(root, file)
-                # Read the .tex file
-                with open(tex_file_path, 'r') as tex_file:
-                    tex_content = tex_file.read()
-                    # Find all matches of \includegraphics
-                    matches = re.findall(include_graphics_regex, tex_content)
-                    for match in matches:
-                        # Extract just the filename in case the path is included
-                        referenced_png = os.path.basename(match)
-                        referenced_pngs.add(referenced_png)
+    for file in files:
+        if not file.endswith(".tex"):
+            continue
+        with open(os.path.join(root, file), "r") as tex_file:
+            for match in include_graphics_re.findall(tex_file.read()):
+                referenced_pngs.add(os.path.basename(match))
 
-        # Find PNG files not mentioned in any .tex file in the same directory
-        unreferenced_pngs = all_pngs - referenced_pngs
-
-        if unreferenced_pngs:
-            print(f"In {root}, the following PNGs are not referenced in any .tex file:")
-            for png in unreferenced_pngs:
-                print(png)
+    unreferenced = all_pngs - referenced_pngs
+    if unreferenced:
+        print(f"In {root}, the following PNGs are not referenced in any .tex file:")
+        for png in unreferenced:
+            print(png)
