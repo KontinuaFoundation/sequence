@@ -16,12 +16,14 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Checkout kontinuafoundation.github.io
-        uses: actions/checkout@v4
-        with:
-          repository: kontinuafoundation/kontinuafoundation.github.io
-          path: kontinuafoundation.github.io
-          fetch-depth: 1
+      # TODO: Re-enable once DEPLOY_TOKEN secret is configured (needs write access to kontinuafoundation.github.io).
+      # - name: Checkout kontinuafoundation.github.io
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: kontinuafoundation/kontinuafoundation.github.io
+      #     token: ${{ secrets.DEPLOY_TOKEN }}
+      #     path: kontinuafoundation.github.io
+      #     fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,8 +40,14 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-science \
+            texlive-pstricks \
+            fonts-open-sans \
             python3-pygments \
             rsync
+          sudo mkdir -p /usr/share/fonts/truetype/kontinua
+          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+          sudo fc-cache -fv
+          luaotfload-tool --update
       - name: Install Python dependencies
         run: python3 -m pip install -r Build/requirements.txt
 
@@ -78,7 +86,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: Build/Resources-en_US/Links.json
-          key: links-en_US
+          key: links-en_US-${{ hashFiles('Chapters/**') }}
 
       - name: Run helper scripts
         shell: bash
@@ -94,8 +102,11 @@ jobs:
           # python3 gather.py || (echo "gather.py failed" && exit 1)
 
           python3 make_chapter_pdfs.py en_US --force &
+          pid1=$!
           python3 build_chapterlist.py &
-          wait
+          pid2=$!
+          wait $pid1 || (echo "make_chapter_pdfs.py failed" && exit 1)
+          wait $pid2 || (echo "build_chapterlist.py failed" && exit 1)
 
       - name: Concatenate chapters
         run: bash Build/concat_chaps.bash
@@ -105,27 +116,32 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: Build/Resources-en_US/Links.json
-          key: links-en_US
+          key: links-en_US-${{ hashFiles('Chapters/**') }}
       # TODO: Add steps
       # Rebuild all workbooks
       # Copy all workbooks from the Workbooks-en_US-Letter directory to the resources-en_US directory.
 
-      - name: Deploy to kontinuafoundation.github.io
-        env:
-          DEPLOY_BRANCH: main
-        run: |
-          set -euo pipefail
-          cd kontinuafoundation.github.io
-
-          test -d ../Build/Resources-en_US
-          rsync -av --delete ../Build/Resources-en_US/ ./Resources-en_US/
-
-          if [ -n "$(git status --porcelain)" ]; then
-            git add -A
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
-            git push origin "$DEPLOY_BRANCH"
-          else
-            echo "No changes to deploy."
-          fi
+      # TODO: Re-enable this step once a deploy token (with write access to
+      # kontinuafoundation/kontinuafoundation.github.io) is added as a repo
+      # secret and wired into the checkout step above via `token: ${{ secrets.DEPLOY_TOKEN }}`.
+      # - name: Deploy to kontinuafoundation.github.io
+      #   env:
+      #     DEPLOY_BRANCH: main
+      #   run: |
+      #     set -euo pipefail
+      #     cd kontinuafoundation.github.io
+      #
+      #     test -d ../Build/Resources-en_US
+      #     rsync -av --delete ../Build/Resources-en_US/ ./Resources-en_US/
+      #
+      #     if [ -n "$(git status --porcelain)" ]; then
+      #       git add -A
+      #       git config user.name "GitHub Actions"
+      #       git config user.email "actions@github.com"
+      #       git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
+      #       git push origin "$DEPLOY_BRANCH"
+      #     else
+      #       echo "No changes to deploy."
+      #     fi
+      - name: Deploy skipped (no token configured)
+        run: echo "Deploy step disabled until DEPLOY_TOKEN secret is configured."

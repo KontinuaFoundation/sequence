@@ -1,131 +1,105 @@
-'''
-PLEASE READ THE README.rst in root/Build BEFORE RUNNING TO understand what this script does!
-'''
+"""
+PLEASE READ THE README.rst in root/Build BEFORE RUNNING.
+"""
 
 import subprocess
-import os
 import sys
+import time
 from pathlib import Path
 
-import time
-
-
 URL_CHECK_DAYS = 90
-
 BUILD_DIR = Path(__file__).resolve().parent
+VALID_ARGS = {"--force", "--help", "-h"}
+
 
 def usage(exit_code=0):
     print(
-        "deploy_to_kontinua.py: Runs a sequence of functions to prepare and transfer files to the kontinuafoundation.github.io page website for live view."
+        "deploy_to_kontinua.py: Runs helper scripts to prepare and transfer files\n"
+        "to the kontinuafoundation.github.io site.\n\n"
         "Usage:\n"
-        "  python3 build_all.py [--force]\n\n"
+        "  python3 deploy_to_kontinua.py [--force]\n\n"
         "Options:\n"
         "  --force    Force rebuild of chapter PDFs (disables date checks)\n"
     )
     sys.exit(exit_code)
 
-VALID_ARGS = {"--force", "--help", "-h"}
-
-args = sys.argv[1:]
-
-# Reject unknown args
-for arg in args:
-    if arg not in VALID_ARGS:
-        print(f"Unknown argument: {arg}\n")
-        usage(1)
-
-# Handle help
-if "--help" in args or "-h" in args:
-    usage(0)
-
-# Reject too many args
-if len(args) > 1:
-    print("Too many arguments.\n")
-    usage(1)
-
-# Detect --force
-
-FORCE = "--force" in sys.argv
-if FORCE:
-    sys.argv.remove("--force")
 
 def run(cmd, cwd):
     print("> " + " ".join(cmd))
     subprocess.run(cmd, cwd=cwd, check=True)
 
+
 def run_parallel(cmds, cwd):
-    procs = []
-    for cmd in cmds:
+    procs = [(cmd, subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)) for cmd in cmds]
+    for cmd, _ in procs:
         print("> (parallel) " + " ".join(cmd))
-        procs.append(subprocess.Popen(cmd, cwd=cwd))
-    # wait for all, fail if any failed
-    for p in procs:
-        rc = p.wait()
-        if rc != 0:
-            raise RuntimeError(f"A parallel command failed with exit code {rc}")
+    failures = []
+    for cmd, p in procs:
+        out, _ = p.communicate()
+        output = out.decode(errors="replace")
+        print(f"--- {' '.join(cmd)} ---\n{output}")
+        if p.returncode != 0:
+            failures.append((cmd, p.returncode))
+    if failures:
+        for cmd, rc in failures:
+            print(f"FAILED (rc={rc}): {' '.join(cmd)}")
+        raise RuntimeError(f"{len(failures)} parallel command(s) failed")
 
-def run_helper_scripts_parallel(BUILD, URL_CHECK_ARG, FORCE=False):
-    """Runs listed scripts to assist in building of Kontinua PDF web viewer."""
 
-    # consecutive
-
-    # if force tag is given, passes force tag to make_chapter_pdfs.py
+def run_helper_scripts_parallel(build_dir, url_check_days, force=False):
     make_chapters_cmd = ["python3", "make_chapter_pdfs.py", "en_US"]
-    if FORCE:
+    if force:
         make_chapters_cmd.append("--force")
-    workbook_cmds = [
-        ["python3", "build_workbook.py", str(i)]
-        for i in range(1, 37)
-    ]
+    workbook_cmds = [["python3", "build_workbook.py", str(i)] for i in range(1, 37)]
 
-    # Runs the following in parallel (time constraints)
-    # url_check.py
-    # build_chapterlist.py
-    # make_chapter_pdfs.py en_US (all individual chapter pdfs) (forced)
-    # builds all workbooks in parallel
     run_parallel(
         [
             make_chapters_cmd,
-            ["python3", "url_check.py", str(URL_CHECK_ARG)],
+            ["python3", "url_check.py", str(url_check_days)],
             ["python3", "build_chapterlist.py"],
             *workbook_cmds,
         ],
-        cwd=str(BUILD),
+        cwd=str(build_dir),
     )
-    
-    run(["python3", "gather.py"], cwd=str(BUILD))
-    run(["python3", "gather_resources.py"], cwd=str(BUILD))
+
+    run(["python3", "gather_resources.py"], cwd=str(build_dir))
+    run(["python3", "gather.py"], cwd=str(build_dir))
 
     print("====================================")
     print("finished running helper scripts.")
     print("====================================")
 
-def run_bash_script(BUILD, filename: str):
-    """Run a generic bash script"""
+
+def run_bash_script(build_dir, filename):
     print("====================================")
-    print(f'Running {filename} in:', BUILD)
+    print(f"Running {filename} in: {build_dir}")
     print("====================================")
-    subprocess.run(
-        ["bash", filename],
-        cwd=str(BUILD),
-        check=True
-    )
+    subprocess.run(["bash", filename], cwd=str(build_dir), check=True)
 
-start = time.time()
 
-# -----------------------------
-# pass FORCE through
-# -----------------------------
-run_helper_scripts_parallel(
-    BUILD=BUILD_DIR,
-    URL_CHECK_ARG=URL_CHECK_DAYS,
-    FORCE=FORCE,
-)
+def main():
+    args = sys.argv[1:]
+    for a in args:
+        if a not in VALID_ARGS:
+            print(f"Unknown argument: {a}\n")
+            usage(1)
+    if "--help" in args or "-h" in args:
+        usage(0)
+    if len(args) > 1:
+        print("Too many arguments.\n")
+        usage(1)
 
-run_bash_script(BUILD=BUILD_DIR, filename="concat_chaps.bash")
-run_bash_script(BUILD=BUILD_DIR, filename="copy_resources_to_workbooks.bash")
-run_bash_script(BUILD=BUILD_DIR, filename="deploy.bash")
-end = time.time()
-print("====================================")
-print(f"Elapsed: {end - start:.4f} seconds")
-print("====================================")
+    force = "--force" in args
+
+    start = time.time()
+    run_helper_scripts_parallel(BUILD_DIR, URL_CHECK_DAYS, force)
+    run_bash_script(BUILD_DIR, "concat_chaps.bash")
+    run_bash_script(BUILD_DIR, "copy_resources_to_workbooks.bash")
+    run_bash_script(BUILD_DIR, "deploy.bash")
+    print("====================================")
+    print(f"Elapsed: {time.time() - start:.4f} seconds")
+    print("====================================")
+
+
+if __name__ == "__main__":
+    main()

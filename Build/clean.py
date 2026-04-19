@@ -1,24 +1,17 @@
-import os
-import shutil
 import glob
+import os
 import pathlib
+import shutil
 
-# Delete the generated directories
-dirs = ["Intermediate"]
-dirs.extend(glob.glob("Resources-*"))
-dirs.extend(glob.glob("Workbooks-*"))
-for dir in dirs:
-    if os.path.exists(dir):
-        shutil.rmtree(dir)
+dirs = ["Intermediate", *glob.glob("Resources-*"), *glob.glob("Workbooks-*")]
+for d in dirs:
+    if os.path.exists(d):
+        shutil.rmtree(d)
 
-# Delete any old chapter drafts
-files = glob.glob("../Chapters/*/*/student.pdf")
-for draft_file in files:
+for draft_file in glob.glob("../Chapters/*/*/student.pdf"):
     os.remove(draft_file)
 
-# Delete any pycache directories
-for p in pathlib.Path('../Chapters').rglob('__pycache__'):
+for p in pathlib.Path("../Chapters").rglob("__pycache__"):
     shutil.rmtree(p)
 
-print('Cleaned.')
-    
+print("Cleaned.")

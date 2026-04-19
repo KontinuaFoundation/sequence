@@ -1,18 +1,21 @@
-import os
 import datetime
 import json
-import util
+import os
 import shutil
 import sys
-import urllib.request
 import time
+import urllib.error
+import urllib.request
+
 from bs4 import BeautifulSoup
 
+import util
+
 if len(sys.argv) != 2:
-    print("Usage: python3 <days>")
+    print("Usage: python3 url_check.py <days>")
     print(" Any link that has been confirmed in the last <days> is assumed unchanged")
     print(" If <days> is zero, always refetch")
-    exit(1)
+    sys.exit(1)
 
 day_count = int(sys.argv[1])
 
@@ -143,9 +146,17 @@ for chap_meta in all_chaps:
                 continue
             soup = BeautifulSoup(data, "html.parser")
             head = soup.head
-            title = head.title.string
-            print(f"\"{title}\"")
-            new_links[url] = {'title':title, 'date':now_str}
+            if head is None or head.title is None:
+                new_links[url] = {'title':url, 'date':now_str}
+                print(f"(no title found)")
+            else:
+                title = head.title.string
+                if title is None:
+                    new_links[url] = {'title':url, 'date':now_str}
+                    print(f"(empty title)")
+                else:
+                    print(f"\"{title}\"")
+                    new_links[url] = {'title':title, 'date':now_str}
 
 with open(linkpath,"w") as f:
     json.dump(new_links, f, indent=2)
