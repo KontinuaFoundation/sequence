@@ -106,6 +106,24 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Restore apt cache
+        uses: actions/cache/restore@v4
+        id: apt-cache
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/ci.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Restore pip cache
+        uses: actions/cache/restore@v4
+        id: pip-cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install LaTeX and Python Dependencies
         run: |
           sudo apt-get update
@@ -305,6 +323,20 @@ jobs:
               exit 1
             fi
           done <<< "${{ steps.detect.outputs.chapters }}"
+
+      - name: Save apt cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/ci.yml') }}
+
+      - name: Save pip cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Upload rebuilt chapter PDFs
         if: steps.detect.outputs.count != '0'

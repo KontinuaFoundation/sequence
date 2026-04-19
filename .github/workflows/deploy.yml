@@ -30,6 +30,15 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Restore apt cache
+        uses: actions/cache/restore@v4
+        id: apt-cache
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/deploy.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
       - name: Install LaTeX
         run: |
           sudo apt-get update
@@ -48,6 +57,15 @@ jobs:
           sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
           sudo fc-cache -fv
           luaotfload-tool --update
+      - name: Restore pip cache
+        uses: actions/cache/restore@v4
+        id: pip-cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install Python dependencies
         run: python3 -m pip install -r Build/requirements.txt
 
@@ -143,5 +161,19 @@ jobs:
       #     else
       #       echo "No changes to deploy."
       #     fi
+      - name: Save apt cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/deploy.yml') }}
+
+      - name: Save pip cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+
       - name: Deploy skipped (no token configured)
         run: echo "Deploy step disabled until DEPLOY_TOKEN secret is configured."
