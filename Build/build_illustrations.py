@@ -1,16 +1,12 @@
-//make a new student.tex
-//go through each student.tex
-//get chapter name
-//find and copy each \includegraphics
-//paste that in new student.tex
+"""Placeholder / scratchpad for a future illustration-collector script.
 
+Intended behavior:
+    - Make a new student.tex
+    - Walk each existing student.tex
+    - Extract \\includegraphics entries
+    - Paste them into the new student.tex
 
+Not implemented. Do not run.
+"""
 
-
-\section{Basic Terminology}
-\includegraphics[width=.75\textwidth]{bowStern.png}
-\includegraphics[width=.75\textwidth]{bowStern.png}
-
-
-
-
+raise SystemExit("build_illustrations.py is a stub — no implementation yet.")
