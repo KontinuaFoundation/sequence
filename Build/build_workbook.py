@@ -18,7 +18,7 @@ def usage():
 
 def _run_latex(tool, tex_file):
     return subprocess.run(
-        [tool, "-halt-on-error", "-synctex=1", tex_file]
+        [tool, "-halt-on-error", "-synctex=1", "-shell-escape", tex_file]
     ).returncode
 
 
