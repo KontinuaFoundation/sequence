@@ -1,8 +1,6 @@
-from email.policy import default
 import json
 import os
 import readline
-from tkinter import NO
 
 filename = "digital_resources.json"
 
