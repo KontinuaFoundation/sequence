@@ -146,9 +146,17 @@ for chap_meta in all_chaps:
                 continue
             soup = BeautifulSoup(data, "html.parser")
             head = soup.head
-            title = head.title.string
-            print(f"\"{title}\"")
-            new_links[url] = {'title':title, 'date':now_str}
+            if head is None or head.title is None:
+                new_links[url] = {'title':url, 'date':now_str}
+                print(f"(no title found)")
+            else:
+                title = head.title.string
+                if title is None:
+                    new_links[url] = {'title':url, 'date':now_str}
+                    print(f"(empty title)")
+                else:
+                    print(f"\"{title}\"")
+                    new_links[url] = {'title':title, 'date':now_str}
 
 with open(linkpath,"w") as f:
     json.dump(new_links, f, indent=2)
