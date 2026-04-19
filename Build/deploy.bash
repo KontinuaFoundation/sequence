@@ -1,21 +1,15 @@
-# to work you must have the following structure of cloned repos
-# GitHub Folder
-    # sequence repo
-        # Build
-            # this script
-    # kontinuafoundation.github.io repo 
-# ------------------
-cd ../../
-# pwd
+#!/usr/bin/env bash
+# Expected layout:
+#   GitHub/
+#     sequence/Build/<this script>
+#     kontinuafoundation.github.io/
+set -euo pipefail
 
-# copies files from a source to a destinationwhat are 
-# overwrites files with the same name/path
-# skips files that haven’t changed
-# adds all new files
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/../../"
+
+# Mirror generated site assets (overwrites, skips unchanged, adds new).
 rsync -av sequence/Build/Resources-en_US/ kontinuafoundation.github.io/kontinua-site/public
-
-
-# commit & push if there are changes
 
 cd kontinuafoundation.github.io
 if [ -n "$(git status --porcelain)" ]; then
