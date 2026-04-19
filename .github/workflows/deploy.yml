@@ -38,6 +38,7 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-science \
+            texlive-pstricks \
             python3-pygments \
             rsync
       - name: Install Python dependencies
@@ -78,7 +79,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: Build/Resources-en_US/Links.json
-          key: links-en_US
+          key: links-en_US-${{ hashFiles('Chapters/**') }}
 
       - name: Run helper scripts
         shell: bash
@@ -94,8 +95,11 @@ jobs:
           # python3 gather.py || (echo "gather.py failed" && exit 1)
 
           python3 make_chapter_pdfs.py en_US --force &
+          pid1=$!
           python3 build_chapterlist.py &
-          wait
+          pid2=$!
+          wait $pid1 || (echo "make_chapter_pdfs.py failed" && exit 1)
+          wait $pid2 || (echo "build_chapterlist.py failed" && exit 1)
 
       - name: Concatenate chapters
         run: bash Build/concat_chaps.bash
@@ -105,7 +109,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: Build/Resources-en_US/Links.json
-          key: links-en_US
+          key: links-en_US-${{ hashFiles('Chapters/**') }}
       # TODO: Add steps
       # Rebuild all workbooks
       # Copy all workbooks from the Workbooks-en_US-Letter directory to the resources-en_US directory.

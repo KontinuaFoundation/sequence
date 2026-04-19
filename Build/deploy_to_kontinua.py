@@ -30,12 +30,15 @@ def run(cmd, cwd):
 
 
 def run_parallel(cmds, cwd):
-    procs = [(cmd, subprocess.Popen(cmd, cwd=cwd)) for cmd in cmds]
+    procs = [(cmd, subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)) for cmd in cmds]
     for cmd, _ in procs:
         print("> (parallel) " + " ".join(cmd))
     failures = []
     for cmd, p in procs:
-        if p.wait() != 0:
+        out, _ = p.communicate()
+        output = out.decode(errors="replace")
+        print(f"--- {' '.join(cmd)} ---\n{output}")
+        if p.returncode != 0:
             failures.append((cmd, p.returncode))
     if failures:
         for cmd, rc in failures:
@@ -59,8 +62,8 @@ def run_helper_scripts_parallel(build_dir, url_check_days, force=False):
         cwd=str(build_dir),
     )
 
-    run(["python3", "gather.py"], cwd=str(build_dir))
     run(["python3", "gather_resources.py"], cwd=str(build_dir))
+    run(["python3", "gather.py"], cwd=str(build_dir))
 
     print("====================================")
     print("finished running helper scripts.")
