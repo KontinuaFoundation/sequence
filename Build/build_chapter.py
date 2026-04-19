@@ -4,16 +4,15 @@ import os
 import util
 
 chap_file = "student.tex"
-chap_dir = os.getcwd()
-chap_dir = chap_dir.replace("\\", "/")
+chap_dir = os.getcwd().replace("\\", "/")
 workdir = "../../../Build/Intermediate"
-if not os.path.exists(workdir):
-    os.mkdir(workdir)
+
+os.makedirs(workdir, exist_ok=True)
 os.chdir(workdir)
 
-with open("../user.cfg", "r") as config_fd:
-    config = json.load(config_fd)
+with open("../user.cfg", "r") as f:
+    config = json.load(f)
 
 print(f"Building {chap_file} (in {chap_dir})")
-final_pdf_path = chap_dir + "/student.pdf"
+final_pdf_path = f"{chap_dir}/student.pdf"
 util.build_chapter(chap_file, chap_dir, config, final_pdf_path)
