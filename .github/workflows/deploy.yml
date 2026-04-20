@@ -221,6 +221,16 @@ jobs:
           set -euo pipefail
           mkdir -p Build/Resources-en_US
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r Build/requirements.txt
+
       - name: Run gather and url_check
         shell: bash
         run: |
