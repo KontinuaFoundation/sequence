@@ -1,0 +1,101 @@
+name: "Reusable: Build all workbooks"
+
+on:
+  workflow_call:
+
+jobs:
+  workbooks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Restore apt cache
+        uses: actions/cache/restore@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Restore pip cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install LaTeX and Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-base \
+            texlive-binaries \
+            texlive-luatex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-science \
+            texlive-pstricks \
+            fonts-open-sans \
+            python3-pygments \
+            rsync
+          sudo mkdir -p /usr/share/fonts/truetype/kontinua
+          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+          sudo fc-cache -fv
+          luaotfload-tool --update
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r Build/requirements.txt
+
+      - name: Verify LaTeX Tools
+        run: |
+          which pygmentize
+          pygmentize -V
+          which kpsewhich
+          kpsewhich minted.sty
+          kpsewhich algpseudocode.sty
+
+      - name: Save apt cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+
+      - name: Save pip cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+
+      - name: Prepare build config
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          cfg = {
+              "Languages": ["en_US"],
+              "Paper": "Letter",
+              "LatexExecutable": "lualatex",
+          }
+          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
+              json.dump(cfg, fp, indent=2)
+          print("Created Build/user.cfg")
+          PY
+
+      - name: Build all workbooks
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd Build
+          python3 build_workbook.py all
+
+      - name: Copy workbooks to Resources
+        run: |
+          set -euo pipefail
+          mkdir -p Build/Resources-en_US
+          cp -r Build/Workbooks-en_US-Letter/* Build/Resources-en_US/

@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - "**"
+  pull_request:
   workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   spell-check-all:
@@ -15,7 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -58,8 +66,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          base_sha="${{ github.event.before }}"
-          head_sha="${{ github.sha }}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+            head_sha="${{ github.sha }}"
+          fi
 
           if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
             changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
@@ -91,93 +104,7 @@ jobs:
           printf '%s\n' "${spell_files[@]}"
           codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" "${spell_files[@]}"
 
-  rebuild-all-chapters:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-
-      - name: Restore apt cache
-        uses: actions/cache/restore@v4
-        id: apt-cache
-        with:
-          path: /var/cache/apt/archives
-          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/ci.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-apt-
-
-      - name: Restore pip cache
-        uses: actions/cache/restore@v4
-        id: pip-cache
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install LaTeX and Python Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            texlive-base \
-            texlive-binaries \
-            texlive-luatex \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            texlive-science \
-            texlive-pstricks \
-            fonts-open-sans \
-            python3-pygments \
-            rsync
-          sudo mkdir -p /usr/share/fonts/truetype/kontinua
-          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
-          sudo fc-cache -fv
-          luaotfload-tool --update
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r Build/requirements.txt
-
-      - name: Verify LaTeX Tools
-        run: |
-          which pygmentize
-          pygmentize -V
-          which kpsewhich
-          kpsewhich minted.sty
-          kpsewhich algpseudocode.sty
-
-      - name: Prepare build config for CI
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-
-          cfg = {
-              "Languages": ["en_US"],
-              "Paper": "Letter",
-              "LatexExecutable": "lualatex",
-          }
-          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
-              json.dump(cfg, fp, indent=2)
-          print("Created Build/user.cfg for CI")
-          PY
-
-      - name: Rebuild all chapter PDFs
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd Build
-          python3 make_chapter_pdfs.py en_US --force
-
-  rebuild-changed-chapters:
+  build-changed-chapters:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/master'
 
@@ -185,41 +112,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-          
-      - name: Install LaTeX and Python Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            texlive-base \
-            texlive-binaries \
-            texlive-luatex \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            texlive-science \
-            texlive-pstricks \
-            fonts-open-sans \
-            python3-pygments \
-            rsync
-          sudo mkdir -p /usr/share/fonts/truetype/kontinua
-          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
-          sudo fc-cache -fv
-          luaotfload-tool --update
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r Build/requirements.txt
-
-      - name: Verify LaTeX Tools
-        run: |
-          which pygmentize
-          pygmentize -V
-          which kpsewhich
-          kpsewhich minted.sty
-          kpsewhich algpseudocode.sty
 
       - name: Detect changed chapter IDs in latest commit
         id: detect
@@ -227,8 +125,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          base_sha="${{ github.event.before }}"
-          head_sha="${{ github.sha }}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+            head_sha="${{ github.sha }}"
+          fi
 
           if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
             changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
@@ -274,6 +177,55 @@ jobs:
       - name: Skip when no chapters changed
         if: steps.detect.outputs.count == '0'
         run: echo "No chapter-related changes found in this commit."
+
+      - name: Restore apt cache
+        if: steps.detect.outputs.count != '0'
+        uses: actions/cache/restore@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Restore pip cache
+        if: steps.detect.outputs.count != '0'
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install LaTeX and Python dependencies
+        if: steps.detect.outputs.count != '0'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-base \
+            texlive-binaries \
+            texlive-luatex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-science \
+            texlive-pstricks \
+            fonts-open-sans \
+            python3-pygments \
+            rsync
+          sudo mkdir -p /usr/share/fonts/truetype/kontinua
+          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+          sudo fc-cache -fv
+          luaotfload-tool --update
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r Build/requirements.txt
+
+      - name: Verify LaTeX tools
+        if: steps.detect.outputs.count != '0'
+        run: |
+          which pygmentize
+          pygmentize -V
+          which kpsewhich
+          kpsewhich minted.sty
+          kpsewhich algpseudocode.sty
 
       - name: Prepare build config for CI
         if: steps.detect.outputs.count != '0'
@@ -325,14 +277,14 @@ jobs:
           done <<< "${{ steps.detect.outputs.chapters }}"
 
       - name: Save apt cache
-        if: always()
+        if: always() && steps.detect.outputs.count != '0'
         uses: actions/cache/save@v4
         with:
           path: /var/cache/apt/archives
-          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/ci.yml') }}
+          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Save pip cache
-        if: always()
+        if: always() && steps.detect.outputs.count != '0'
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/pip
