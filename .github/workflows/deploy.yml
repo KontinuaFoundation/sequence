@@ -146,18 +146,20 @@ jobs:
       - name: Deploy to kontinuafoundation.github.io
         env:
           DEPLOY_BRANCH: main
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
           set -euo pipefail
           cd kontinuafoundation.github.io
-      
+
           test -d ../Build/Resources-en_US
           rsync -av --delete ../Build/Resources-en_US/ ./Resources-en_US/
-      
+
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
             git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
+            git remote set-url origin "https://x-access-token:${DEPLOY_TOKEN}@github.com/kontinuafoundation/kontinuafoundation.github.io.git"
             git push origin "$DEPLOY_BRANCH"
           else
             echo "No changes to deploy."
