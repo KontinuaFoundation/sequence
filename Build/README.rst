@@ -96,18 +96,18 @@ Scripts
      ``student.tex`` file. Results in a ``draft.pdf`` file.
    | Example: ``python3 ../../../Build/build_chapter.py``
 
--  | ``url_check.py``: Used to check all the URLs in the
-      ``digital_resources.json`` files. Also looks up the title of each.
-    | Example: ``python3 url_check.py 1``
+-  | ``gather_resources.py``: Checks URLs in ``digital_resources.json``
+       (optionally incrementally) and writes ``Resources-en_US/Links.json``.
+    | Example: ``python3 gather_resources.py 1``
 
 -  | ``make_chapter_pdfs.py``: Used to build pdfs of each chapter.
     This takes a while to run.
     | Example: ``python3 make_chapter_pdfs.py en_US``
 
--  | ``gather_resources.py``: Builds an HTML document for each workbook.
-     The files will be created in the ``Resources-en_US`` directory.
-    Run ``url_check.py`` first -- it uses the titles.
-   | Example: ``python3 gather_resources.py``
+-  | ``url_check.py``: Builds workbook HTML and index files in
+      ``Resources-en_US`` using ``Links.json``.
+     Run ``gather_resources.py`` first -- it provides link titles.
+    | Example: ``python3 url_check.py``
 
 -  | ``gather.py``: Builds a json document for each workbook and a topic index for the whole collection.
         The files will be created in the ``Resources-en_US`` directory.

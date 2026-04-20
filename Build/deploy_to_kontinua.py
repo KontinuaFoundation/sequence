@@ -55,15 +55,15 @@ def run_helper_scripts_parallel(build_dir, url_check_days, force=False):
     run_parallel(
         [
             make_chapters_cmd,
-            ["python3", "url_check.py", str(url_check_days)],
+            ["python3", "gather_resources.py", str(url_check_days)],
             ["python3", "build_chapterlist.py"],
             *workbook_cmds,
         ],
         cwd=str(build_dir),
     )
 
-    run(["python3", "gather_resources.py"], cwd=str(build_dir))
     run(["python3", "gather.py"], cwd=str(build_dir))
+    run(["python3", "url_check.py"], cwd=str(build_dir))
 
     print("====================================")
     print("finished running helper scripts.")

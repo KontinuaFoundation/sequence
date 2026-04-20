@@ -1,4 +1,4 @@
-name: Deploy to Kontinua
+name: Full Deploy
 
 on:
   workflow_dispatch:
@@ -279,7 +279,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [post-process]
-    if: github.event_name != 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true'
 
     steps:
       - name: Ensure deploy token exists

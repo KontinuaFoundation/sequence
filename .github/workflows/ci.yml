@@ -39,23 +39,97 @@ jobs:
           set -euo pipefail
           codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" .
 
-  build-all:
-    name: Build All
+  build-changed:
+    name: Build Changed Chapters
     runs-on: ubuntu-latest
     needs: [spell-check]
-    timeout-minutes: 240
+    timeout-minutes: 120
+    outputs:
+      has_changes: ${{ steps.detect.outputs.has_changes }}
+      chapter_count: ${{ steps.detect.outputs.count }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
+      - name: Detect changed chapter IDs
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            base_sha="$(git rev-parse "${{ github.sha }}^" 2>/dev/null || true)"
+            head_sha="${{ github.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+            head_sha="${{ github.sha }}"
+          fi
+
+          if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
+            changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
+          else
+            changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
+          fi
+
+          echo "Changed files considered for chapter rebuild:"
+          echo "$changed_files"
+
+          declare -A chapters=()
+
+          while IFS= read -r file; do
+            [[ -z "$file" ]] && continue
+
+            if [[ "$file" =~ ^Chapters/([^/]+)/ ]]; then
+              chapter_id="${BASH_REMATCH[1]}"
+              chapters["$chapter_id"]=1
+              continue
+            fi
+
+            if [[ "$file" =~ ^Chapters/book_[0-9]{2}\.txt$ && -f "$file" ]]; then
+              while IFS= read -r line; do
+                chapter_id="$(echo "$line" | xargs)"
+                if [[ -n "$chapter_id" && ! "$chapter_id" =~ ^# ]]; then
+                  chapters["$chapter_id"]=1
+                fi
+              done < "$file"
+            fi
+          done <<< "$changed_files"
+
+          count="${#chapters[@]}"
+          if [[ "$count" -gt 0 ]]; then
+            has_changes=true
+          else
+            has_changes=false
+          fi
+
+          {
+            echo "chapters<<EOF"
+            for chapter in "${!chapters[@]}"; do
+              echo "$chapter"
+            done | sort
+            echo "EOF"
+            echo "count=$count"
+            echo "has_changes=$has_changes"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Detected $count chapter(s)."
+
+      - name: Skip when no chapters changed
+        if: steps.detect.outputs.has_changes != 'true'
+        run: echo "No chapter-related changes found for this run."
+
       - name: Restore apt cache
+        if: steps.detect.outputs.has_changes == 'true'
         uses: actions/cache/restore@v4
         with:
           path: /var/cache/apt/archives
@@ -64,6 +138,7 @@ jobs:
             ${{ runner.os }}-apt-
 
       - name: Restore pip cache
+        if: steps.detect.outputs.has_changes == 'true'
         uses: actions/cache/restore@v4
         with:
           path: ~/.cache/pip
@@ -72,6 +147,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install LaTeX and Python dependencies
+        if: steps.detect.outputs.has_changes == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -93,6 +169,7 @@ jobs:
           python3 -m pip install -r Build/requirements.txt
 
       - name: Verify LaTeX tools
+        if: steps.detect.outputs.has_changes == 'true'
         run: |
           which pygmentize
           pygmentize -V
@@ -101,6 +178,7 @@ jobs:
           kpsewhich algpseudocode.sty
 
       - name: Prepare build config
+        if: steps.detect.outputs.has_changes == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -117,81 +195,64 @@ jobs:
           print("Created Build/user.cfg")
           PY
 
-      - name: Build all chapters
+      - name: Build changed chapters
+        if: steps.detect.outputs.has_changes == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          cd Build
-          python3 make_chapter_pdfs.py en_US --force
+          mkdir -p Build/ci-artifacts
 
-      - name: Build all workbooks
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd Build
-          python3 build_workbook.py all
+          while IFS= read -r chapter; do
+            [[ -z "$chapter" ]] && continue
+            chapter_dir="Chapters/$chapter/en_US"
+            tex_file="$chapter_dir/student.tex"
 
-      - name: Ensure resources directory exists
-        run: |
-          set -euo pipefail
-          mkdir -p Build/Resources-en_US
+            if [[ ! -f "$tex_file" ]]; then
+              echo "Skipping $chapter: $tex_file not found"
+              continue
+            fi
 
-      - name: Restore Links.json cache
-        uses: actions/cache/restore@v4
-        with:
-          path: Build/Resources-en_US/Links.json
-          key: links-en_US-${{ hashFiles('Chapters/**') }}
+            echo "Building chapter: $chapter"
+            (
+              cd "$chapter_dir"
+              python3 ../../../Build/build_chapter.py
+            )
 
-      - name: Run gather and URL checks
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd Build
-          python3 gather_resources.py
-          python3 url_check.py 90
-          test -f Resources-en_US/Links.json
-
-      - name: Concatenate chapters
-        run: bash Build/concat_chaps.bash
-
-      - name: Merge workbooks into resources
-        run: |
-          set -euo pipefail
-          cp -r Build/Workbooks-en_US-Letter/* Build/Resources-en_US/
-
-      - name: Save Links.json cache
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: Build/Resources-en_US/Links.json
-          key: links-en_US-${{ hashFiles('Chapters/**') }}
+            if [[ -f "$chapter_dir/student.pdf" ]]; then
+              cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${chapter}.pdf"
+            else
+              echo "Build did not produce PDF for $chapter"
+              exit 1
+            fi
+          done <<< "${{ steps.detect.outputs.chapters }}"
 
       - name: Save apt cache
-        if: always()
+        if: always() && steps.detect.outputs.has_changes == 'true'
         uses: actions/cache/save@v4
         with:
           path: /var/cache/apt/archives
           key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Save pip cache
-        if: always()
+        if: always() && steps.detect.outputs.has_changes == 'true'
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
 
-      - name: Upload build artifact
+      - name: Upload changed chapters artifact
+        if: steps.detect.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: resources-build
-          path: Build/Resources-en_US/
+          name: changed-chapters-${{ github.sha }}
+          path: Build/ci-artifacts/*.pdf
           if-no-files-found: error
 
   deploy:
-    name: Deploy
+    name: Deploy Changed Chapters
     runs-on: ubuntu-latest
-    needs: [build-all]
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch')
+    needs: [build-changed]
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch') && needs.build-changed.outputs.has_changes == 'true'
     timeout-minutes: 30
     steps:
       - name: Ensure deploy token exists
@@ -212,28 +273,31 @@ jobs:
           path: kontinuafoundation.github.io
           fetch-depth: 1
 
-      - name: Download build artifact
+      - name: Download changed chapters artifact
         uses: actions/download-artifact@v4
         with:
-          name: resources-build
-          path: Build/Resources-en_US/
+          name: changed-chapters-${{ github.sha }}
+          path: Build/ci-artifacts/
 
-      - name: Deploy to kontinuafoundation.github.io
+      - name: Deploy changed chapter PDFs
         env:
           DEPLOY_BRANCH: main
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
           set -euo pipefail
           cd kontinuafoundation.github.io
+          mkdir -p Resources-en_US
 
-          test -d ../Build/Resources-en_US
-          rsync -av --delete ../Build/Resources-en_US/ ./Resources-en_US/
+          shopt -s nullglob
+          for pdf in ../Build/ci-artifacts/*.pdf; do
+            rsync -av "$pdf" "Resources-en_US/"
+          done
 
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
-            git commit -m "Deploy site: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
+            git commit -m "Deploy changed chapters: $(date -u +"%Y-%m-%d %H:%M:%SZ")"
             git remote set-url origin "https://x-access-token:${DEPLOY_TOKEN}@github.com/kontinuafoundation/kontinuafoundation.github.io.git"
             git push origin "$DEPLOY_BRANCH"
           else

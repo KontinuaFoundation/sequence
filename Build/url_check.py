@@ -1,169 +1,151 @@
+import argparse
 import datetime
 import json
 import os
 import shutil
 import sys
-import time
-import urllib.error
-import urllib.request
+from pathlib import Path
 
-from bs4 import BeautifulSoup
+from jinja2 import Environment, FileSystemLoader
 
 import util
 
-if len(sys.argv) != 2:
-    print("Usage: python3 url_check.py <days>")
-    print(" Any link that has been confirmed in the last <days> is assumed unchanged")
-    print(" If <days> is zero, always refetch")
-    sys.exit(1)
+VOL_COUNT = 36
 
-day_count = int(sys.argv[1])
 
-# How many volumes are there?
-vol_count = 36
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Render workbook HTML/index resources using Links.json. "
+            "Can be limited to books affected by changed chapters."
+        )
+    )
+    parser.add_argument(
+        "days",
+        nargs="?",
+        default=None,
+        help="Legacy positional argument kept for compatibility; ignored.",
+    )
+    parser.add_argument(
+        "--chapters-file",
+        type=str,
+        default="",
+        help="Optional file containing chapter IDs (one per line).",
+    )
+    return parser.parse_args()
 
-# Does the user not have a config file?
-if not os.path.exists("user.cfg"):
-    # Give them the default
-    shutil.copyfile("Support/default.cfg", "user.cfg")
 
-# Read in the config
-with open("user.cfg", "r") as config_fd:
-    config = json.load(config_fd)
+def load_changed_chapters(path):
+    chapter_ids = []
+    with open(path, "r", encoding="utf-8") as f:
+        for raw in f:
+            chapter = raw.strip()
+            if chapter and not chapter.startswith("#"):
+                chapter_ids.append(chapter)
+    return set(chapter_ids)
 
-# Linkfile
-dirpath = f"Resources-{config['Languages'][0]}"
-if not os.path.exists(dirpath):
-    os.makedirs(dirpath)
 
-linkpath = f"{dirpath}/Links.json"
+def affected_books_for_chapters(mod_dir, chapter_ids, langlist):
+    if not chapter_ids:
+        return set()
 
-# Read the last lookup
-if os.path.exists(linkpath):
-    with open(linkpath,"r") as f:
-        old_links = json.load(f)
-else:
-    old_links = {}
+    affected = set()
+    for n in range(1, VOL_COUNT + 1):
+        book = str(n).zfill(2)
+        ids, _ = util.dir_list_for_book(mod_dir, book, langlist)
+        if any(ch in chapter_ids for ch in ids):
+            affected.add(book)
+    return affected
 
-now = datetime.datetime.now()
-now_str = now.isoformat(timespec='minutes')
 
-if day_count > 0:
-    fetch_if_after = now - datetime.timedelta(days=day_count)
-    print(f"Refetching anything not fetched since {fetch_if_after.date()}")
-else:
-    fetch_if_after = None
-    print("Refetching everything")
+def main():
+    args = parse_args()
+    chapters_file = args.chapters_file.strip()
+    incremental = bool(chapters_file)
 
-# Gather all metadatas
-print("Reading metadata for all books")
-book_nums = [str(x).zfill(2) for x in range(1, vol_count + 1)]
-all_chaps = []
-for book in book_nums:
-    (book_chaps, _) = util.gather_data("../Chapters", book, config)
-    all_chaps.extend(book_chaps)
+    environment = Environment(loader=FileSystemLoader("Support"))
+    template = environment.get_template("resource_template.html")
 
-# maps url -> {title:"", confirmed:datetime}
-new_links = {}
+    if not os.path.exists("user.cfg"):
+        shutil.copyfile("Support/default.cfg", "user.cfg")
 
-# Which ones were unfetchable?
-broken_links = []
-count = 0
-for chap_meta in all_chaps:
-    # What URLs are videos and references for this chapter?
-    urls = util.urls_in_chapter_meta(chap_meta)
-    if len(urls) > 0:
-        print(f"Chapter: {chap_meta['id']} ({chap_meta['title']})...")
-        for url in urls:
-            # Maybe I don't need to fetch this?
-            if fetch_if_after is not None and url in old_links:
-                link_data = old_links[url]
-                if 'date' in link_data:
-                    old_fetch = datetime.datetime.fromisoformat(link_data['date'])
-                    # Can I skip the fetch?
-                    if old_fetch > fetch_if_after:
-                        # Copy the old data into the new dict
-                        new_links[url] = link_data
-                        print(f"\tSkipping {url}: Cached {link_data['date']}")
-                        # Go on to the next URL
-                        continue
-            
+    with open("user.cfg", "r", encoding="utf-8") as f:
+        config = json.load(f)
 
-            print(f"\tFetching {url}:", end="", flush=True)
-            # added user agent to support select broken urls
-            headers = {
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/115.0 Safari/537.36"
-                ),
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "en-US,en;q=0.5",
-                "Connection": "keep-alive",
+    main_locale = config["Languages"][0]
+    resources_dir = f"Resources-{main_locale}"
+    os.makedirs(resources_dir, exist_ok=True)
+    shutil.copyfile("Support/kontinua.css", f"{resources_dir}/kontinua.css")
+
+    linkpath = f"{resources_dir}/Links.json"
+    if not os.path.exists(linkpath):
+        print(f"Run gather_resources.py first to create {linkpath}")
+        sys.exit(1)
+
+    with open(linkpath, "r", encoding="utf-8") as f:
+        links = json.load(f)
+
+    mod_dir = "../Chapters"
+    book_nums = [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
+    if incremental:
+        changed_chapters = load_changed_chapters(chapters_file)
+        affected_books = affected_books_for_chapters(mod_dir, changed_chapters, config["Languages"])
+        print(f"Incremental mode for {len(changed_chapters)} chapter(s). Affected books: {sorted(affected_books)}")
+    else:
+        affected_books = set(book_nums)
+
+    books_metadata = {}
+    all_topics = {}
+    for book in book_nums:
+        print(f"Indexing book {book}...")
+        book_metadatas, topics = util.gather_data(mod_dir, book, config)
+        books_metadata[book] = book_metadatas
+        all_topics.update(topics)
+
+    today_str = datetime.datetime.now().isoformat(timespec="minutes")
+    for book in sorted(affected_books):
+        metadatas = books_metadata[book]
+        content = template.render(
+            topics=all_topics,
+            chapters=metadatas,
+            book_str=book,
+            today_str=today_str,
+            links=links,
+            pdf_href=f"workbook-{book}.pdf",
+        )
+        path = f"{resources_dir}/Workbook-{book}.html"
+        with open(path, mode="w", encoding="utf-8") as out:
+            out.write(content)
+        print(f"Wrote {path}")
+
+    # Index always reflects all books/chapters.
+    index_template = environment.get_template("index_template.html")
+    indexname = f"{resources_dir}/index.html"
+    with open(indexname, mode="w", encoding="utf-8") as out:
+        out.write(index_template.render(books=book_nums, chapters=books_metadata))
+    print(f"Wrote {indexname}")
+
+    output_file = Path(resources_dir) / "workbooks.json"
+    workbooks = []
+    for book in book_nums:
+        chapters_raw = books_metadata[book]
+        workbooks.append(
+            {
+                "title": f"Workbook {book}",
+                "href": f"Workbook-{book}.html",
+                "pdf": f"Workbook-{book}.pdf",
+                "chapters": [
+                    {"id": c["id"], "title": c["title"], "chap_num": c["chap_num"]}
+                    for c in chapters_raw
+                ],
             }
-            req = urllib.request.Request(url, headers=headers)
-            try:
-                response = urllib.request.urlopen(req)
-                # any invalid response will result in storing a broken link
-            except urllib.error.HTTPError as e:
-                print(f"\n\tError for {chap_meta['id']} {url}: The server couldn't fulfill the request.")
-                print('\n\tError code: ', e.code)
-                if e.code == 429:
-                    retry_after = e.headers.get("Retry-After")
-                    wait_time = int(retry_after) if retry_after else 10
+        )
 
-                    print(f"\n\t429 received. Sleeping {wait_time}s before retry...")
-                    time.sleep(wait_time)
+    with output_file.open("w", encoding="utf-8") as f:
+        json.dump(workbooks, f, indent=2, ensure_ascii=False)
 
-                    try:
-                        response = urllib.request.urlopen(req)
-                        data = response.read()
-                    except Exception:
-                        new_links[url] = old_links.get(url, {'title': url, 'date': now_str})
-                        continue
-                else:
-                    broken_links.append({'chap_id':chap_meta['id'], 'url':url, 'error': e.code})
-                    continue
-            except urllib.error.URLError as e:
-                print(f"\n\tError for {url}: Failed to reach server.")
-                print('\n\tReason: ', e.reason)
-                continue
+    print(f"Wrote {output_file} with {len(workbooks)} workbooks.")
 
-            # attempt to read data. if doesn't work, retry until some data is provided
-            data = None
-            while data is None:
-                try:
-                    data = response.read()
-                except Exception as e:
-                    print("\n\tread failed. Waiting 10 seconds and trying again")
-                    time.sleep(10)
-                    response = urllib.request.urlopen(req)
-            
-            # pdf exists but does not have html md
-            if ".pdf" in url:
-                # title is saved as the file's name instead of md title
-                new_links[url] = {'title':os.path.basename(url), 'date':now_str}
-                continue
-            soup = BeautifulSoup(data, "html.parser")
-            head = soup.head
-            if head is None or head.title is None:
-                new_links[url] = {'title':url, 'date':now_str}
-                print(f"(no title found)")
-            else:
-                title = head.title.string
-                if title is None:
-                    new_links[url] = {'title':url, 'date':now_str}
-                    print(f"(empty title)")
-                else:
-                    print(f"\"{title}\"")
-                    new_links[url] = {'title':title, 'date':now_str}
 
-with open(linkpath,"w") as f:
-    json.dump(new_links, f, indent=2)
-
-print(f"Done. Saved in {linkpath}")
-
-if len(broken_links) > 0:
-    print("Broken links:")
-    for link in broken_links:
-        print(f"{link['chap_id']}, Error {link['error']}, {link['url']} ")
+if __name__ == "__main__":
+    main()
