@@ -63,7 +63,7 @@ def run_helper_scripts_parallel(build_dir, url_check_days, force=False):
         cwd=str(build_dir),
     )
 
-    run(["python3", "gather.py"], cwd=str(build_dir))
+    # run(["python3", "gather.py"], cwd=str(build_dir))
     run(["python3", "url_check.py"], cwd=str(build_dir))
 
     print("====================================")
