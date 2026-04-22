@@ -57,6 +57,7 @@ def run_helper_scripts_parallel(build_dir, url_check_days, force=False):
             make_chapters_cmd,
             ["python3", "gather_resources.py", str(url_check_days)],
             ["python3", "build_chapterlist.py"],
+            ["python3", "topo_sort.py"],
             *workbook_cmds,
         ],
         cwd=str(build_dir),

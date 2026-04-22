@@ -231,7 +231,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install -r Build/requirements.txt
 
-      - name: Run gather and url_check
+      - name: Run gather, url_check, and topo_sort
         shell: bash
         run: |
           set -euo pipefail
@@ -239,6 +239,7 @@ jobs:
 
           python3 gather_resources.py || (echo "gather_resources.py failed" && exit 1)
           python3 url_check.py 90 || (echo "url_check.py failed" && exit 1)
+          python3 topo_sort.py || (echo "topo_sort.py failed" && exit 1)
 
           test -f Resources-en_US/Links.json
 
