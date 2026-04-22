@@ -205,18 +205,32 @@ jobs:
           name: workbooks-build
           path: Build/Workbooks-en_US-Letter/
 
-      - name: Restore Links.json cache
-        id: links-cache
-        uses: actions/cache/restore@v4
-        with:
-          path: Build/Resources-en_US/Links.json
-          key: links-en_US-${{ hashFiles('Chapters/**') }}
-          
-      - name: Fail if Links.json cache missing
-        if: steps.links-cache.outputs.cache-hit != 'true'
+      - name: Fetch Links.json from deployed site
         run: |
-          echo "Links.json cache not found. Aborting."
-          exit 1
+          set -euo pipefail
+      
+          mkdir -p Build/Resources-en_US
+      
+          curl -L \
+            https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/kontinua-site/public/Links.json \
+            -o Build/Resources-en_US/Links.json
+      
+          test -f Build/Resources-en_US/Links.json
+          
+      - name: Ensure Links.json exists
+        run: |
+          set -euo pipefail
+      
+          if [ ! -f Build/Resources-en_US/Links.json ]; then
+            echo "Links.json missing, attempting fetch..."
+      
+            curl -f -L \
+              https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/kontinua-site/public/Links.json \
+              -o Build/Resources-en_US/Links.json \
+            || echo "{}" > Build/Resources-en_US/Links.json
+          fi
+      
+          test -f Build/Resources-en_US/Links.json
 
       - name: Ensure Resources directory exists
         run: |
