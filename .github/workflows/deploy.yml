@@ -171,15 +171,13 @@ jobs:
           cd Build
           python3 build_workbook.py all
 
-      - name: Save caches
+      - name: Save pip cache
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: |
-            /var/cache/apt/archives
-            ~/.cache/pip
-          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
-
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          
       - name: Upload workbooks artifact
         uses: actions/upload-artifact@v4
         with:
