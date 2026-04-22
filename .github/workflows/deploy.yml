@@ -26,8 +26,9 @@ jobs:
           path: |
             /var/cache/apt/archives
             ~/.cache/pip
-          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+          key: ${{ runner.os }}-apt-${{ github.job }}-${{ hashFiles('Build/requirements.txt') }}
           restore-keys: |
+            ${{ runner.os }}-apt-${{ github.job }}-
             ${{ runner.os }}-apt-
             ${{ runner.os }}-pip-
 
@@ -88,7 +89,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ github.job }}-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Upload chapters artifact
         uses: actions/upload-artifact@v4
@@ -112,8 +113,9 @@ jobs:
           path: |
             /var/cache/apt/archives
             ~/.cache/pip
-          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+          key: ${{ runner.os }}-apt-${{ github.job }}-${{ hashFiles('Build/requirements.txt') }}
           restore-keys: |
+            ${{ runner.os }}-apt-${{ github.job }}-
             ${{ runner.os }}-apt-
             ${{ runner.os }}-pip-
 
@@ -169,12 +171,13 @@ jobs:
           cd Build
           python3 build_workbook.py all
 
+
       - name: Save pip cache
         if: always()
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ github.job }}-${{ hashFiles('Build/requirements.txt') }}
           
       - name: Upload workbooks artifact
         uses: actions/upload-artifact@v4
@@ -341,7 +344,9 @@ jobs:
           cd kontinuafoundation.github.io
 
           test -d ../Build/Resources-en_US
-          rsync -av --delete ../Build/Resources-en_US/ kontinuafoundation.github.io/kontinua-site/public/
+          mkdir -p kontinua-site/public
+
+          rsync -av --delete ../Build/Resources-en_US/ kontinua-site/public/
 
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
