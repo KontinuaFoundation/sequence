@@ -186,7 +186,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: workbooks-build
-          path: Build/Workbooks-en_US-Letter/
+          path: |
+            Build/Workbooks-en_US-Letter/
+            Build/Intermediate/
           if-no-files-found: error
 
   gather-resources:
@@ -209,7 +211,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: workbooks-build
-          path: Build/Workbooks-en_US-Letter/
+          path: ./
           
       - name: Fetch Links.json from deployed site
         run: |
@@ -261,8 +263,8 @@ jobs:
 
           python3 gather_resources.py 90 || (echo "gather_resources.py failed" && exit 1)
           python3 build_chapterlist.py || (echo "build_chapterlist.py failed" && exit 1)
-          python3 gather.py || (echo "gather.py failed" && exit 1)
           python3 topo_sort.py || (echo "topo_sort.py failed" && exit 1)
+          python3 gather.py || (echo "gather.py failed" && exit 1)
           python3 url_check.py || (echo "url_check.py failed" && exit 1)
 
           test -f Resources-en_US/Links.json
