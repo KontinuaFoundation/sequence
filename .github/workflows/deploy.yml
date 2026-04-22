@@ -215,6 +215,12 @@ jobs:
         with:
           path: Build/Resources-en_US/Links.json
           key: links-en_US-${{ hashFiles('Chapters/**') }}
+          
+      - name: Fail if Links.json cache missing
+        if: steps.links-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Links.json cache not found. Aborting."
+          exit 1
 
       - name: Ensure Resources directory exists
         run: |
