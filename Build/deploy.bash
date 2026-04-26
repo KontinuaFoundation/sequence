@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR/../../"
 
 # Mirror generated site assets (overwrites, skips unchanged, adds new).
-rsync -av sequence/Build/Resources-en_US/ kontinuafoundation.github.io/kontinua-site/public/
+rsync -av sequence/Build/Resources-en_US/ kontinuafoundation.github.io/public/
 
 cd kontinuafoundation.github.io
 if [ -n "$(git status --porcelain)" ]; then

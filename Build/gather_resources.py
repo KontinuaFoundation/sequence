@@ -72,7 +72,7 @@ def chapter_metas_for_all_books(mod_dir, config, vol_count=36):
     return all_chaps
 
 
-def fetch_title_for_url(url):
+def fetch_title_for_url(url, max_retries=5, base_wait=10, max_wait=120):
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -83,37 +83,52 @@ def fetch_title_for_url(url):
         "Accept-Language": "en-US,en;q=0.5",
         "Connection": "keep-alive",
     }
-    req = urllib.request.Request(url, headers=headers)
 
-    try:
-        response = urllib.request.urlopen(req)
-    except urllib.error.HTTPError as e:
-        if e.code == 429:
-            retry_after = e.headers.get("Retry-After")
-            wait_time = int(retry_after) if retry_after else 10
-            print(f"\n\t429 received for {url}. Sleeping {wait_time}s before retry...")
-            time.sleep(wait_time)
+    for attempt in range(max_retries):
+        req = urllib.request.Request(url, headers=headers)
+        try:
             response = urllib.request.urlopen(req)
-        else:
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                retry_after = e.headers.get("Retry-After")
+                if retry_after:
+                    wait_time = int(retry_after)
+                else:
+                    wait_time = min(base_wait * (2 ** attempt), max_wait)
+                print(f"\n\t429 received for {url}. Sleeping {wait_time}s before retry...")
+                time.sleep(wait_time)
+                continue
             raise
 
-    data = None
-    while data is None:
-        try:
-            data = response.read()
-        except Exception:
-            print("\n\tread failed. Waiting 10 seconds and trying again")
-            time.sleep(10)
-            response = urllib.request.urlopen(req)
+        data = None
+        while data is None:
+            try:
+                data = response.read()
+            except Exception:
+                print("\n\tread failed. Waiting 10 seconds and trying again")
+                time.sleep(10)
+                try:
+                    response = urllib.request.urlopen(req)
+                except urllib.error.HTTPError as e:
+                    if e.code == 429:
+                        wait_time = min(base_wait * (2 ** attempt), max_wait)
+                        print(f"\n\t429 received during retry for {url}. Sleeping {wait_time}s...")
+                        time.sleep(wait_time)
+                        continue
+                    raise
+                except Exception:
+                    raise
 
-    if ".pdf" in url:
-        return os.path.basename(url)
+        if ".pdf" in url:
+            return os.path.basename(url)
 
-    soup = BeautifulSoup(data, "html.parser")
-    head = soup.head
-    if head is None or head.title is None or head.title.string is None:
-        return url
-    return head.title.string
+        soup = BeautifulSoup(data, "html.parser")
+        head = soup.head
+        if head is None or head.title is None or head.title.string is None:
+            return url
+        return head.title.string
+
+    raise Exception(f"Failed to fetch {url} after {max_retries} retries")
 
 
 def main():
