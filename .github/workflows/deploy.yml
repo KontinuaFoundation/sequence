@@ -218,26 +218,31 @@ jobs:
 
           mkdir -p Build/Resources-en_US
 
-          curl -L \
+          # Use a temporary file for download to avoid partial/corrupted files
+          TEMP_LINKS="/tmp/Links.json.tmp"
+          rm -f "$TEMP_LINKS"
+
+          # Try to fetch the Links.json file
+          if curl -f -L \
             https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/kontinua-site/public/Links.json \
-            -o Build/Resources-en_US/Links.json
-
-          test -f Build/Resources-en_US/Links.json
-
-      - name: Ensure Links.json exists
-        run: |
-          set -euo pipefail
-
-          if [ ! -f Build/Resources-en_US/Links.json ]; then
-            echo "Links.json missing, attempting fetch..."
-
-            curl -f -L \
-              https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/kontinua-site/public/Links.json \
-              -o Build/Resources-en_US/Links.json \
-            || echo "{}" > Build/Resources-en_US/Links.json
+            -o "$TEMP_LINKS" 2>/dev/null; then
+            # Validate the JSON is valid before moving it
+            if python3 -c "import json; json.load(open('$TEMP_LINKS'))" 2>/dev/null; then
+              mv "$TEMP_LINKS" Build/Resources-en_US/Links.json
+            else
+              echo "Downloaded file is not valid JSON, using empty object"
+              echo "{}" > Build/Resources-en_US/Links.json
+              rm -f "$TEMP_LINKS"
+            fi
+          else
+            # Fetch failed, use empty object
+            echo "Failed to fetch Links.json from deployed site, using empty object"
+            echo "{}" > Build/Resources-en_US/Links.json
           fi
 
+          # Verify Links.json exists and is valid JSON
           test -f Build/Resources-en_US/Links.json
+          python3 -c "import json; json.load(open('Build/Resources-en_US/Links.json'))" || (echo "Links.json is not valid JSON" && exit 1)
 
       - name: Ensure Resources directory exists
         run: |

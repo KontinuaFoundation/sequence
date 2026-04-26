@@ -149,8 +149,13 @@ def main():
     linkpath = f"{dirpath}/Links.json"
 
     if os.path.exists(linkpath):
-        with open(linkpath, "r", encoding="utf-8") as f:
-            old_links = json.load(f)
+        try:
+            with open(linkpath, "r", encoding="utf-8") as f:
+                old_links = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"Warning: Could not parse {linkpath}: {e}")
+            print("Starting with empty links dictionary")
+            old_links = {}
     else:
         old_links = {}
 
