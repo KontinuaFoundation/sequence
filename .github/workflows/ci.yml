@@ -255,6 +255,11 @@ jobs:
     if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch') && needs.build-changed.outputs.has_changes == 'true'
     timeout-minutes: 30
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Download changed chapters artifact
         uses: actions/download-artifact@v4
         with:
