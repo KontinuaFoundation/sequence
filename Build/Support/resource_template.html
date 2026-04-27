@@ -2,17 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="kontinua.css">
-  <title>Workbook {{book_str}}</title>
+  <link rel="icon" type="image/svg+xml" href="color_spiral.svg">
+  <title>Workbook {{book_str}} — Kontinua</title>
 </head>
 
 <body>
-  <p><a href="index.html">[Top]</a></p>
+  <header class="site-header">
+    <a href="index.html" class="site-brand">
+      <img src="color_spiral.svg" alt="Kontinua" class="site-logo">
+      <span>Kontinua</span>
+    </a>
+    <a href="index.html" class="back-link">← All Workbooks</a>
+  </header>
 
-  <h1>Workbook {{book_str}}</h1>
-  <div class="workbook-actions">
-  <a href="{{ pdf_href }}" target="_blank">Download PDF</a>
-</div>
+  <main>
+  <div class="workbook-title-row">
+    <h1>Workbook {{book_str}}</h1>
+    <a href="{{ pdf_href }}" target="_blank" class="pdf-link">Download PDF</a>
+  </div>
 
 {% for md in chapters %}
 <h2 id="{{md.id}}">Chapter {{md.chap_num}}: {{md.title}}</h2>
@@ -46,6 +55,7 @@
     {% endif %}{% endfor %}
   </ul>
 {% endif %}<hr />{% endfor %}
-<p>Generated {{today_str}}.</p>
+<p class="generated">Generated {{today_str}}.</p>
+  </main>
 </body>
 </html>
