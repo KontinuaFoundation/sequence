@@ -332,6 +332,12 @@ jobs:
     needs: [ post-process ]
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.sha }}
+
       - name: Download resources artifact
         uses: actions/download-artifact@v4
         with:
