@@ -5,6 +5,7 @@ import os
 import shutil
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -72,7 +73,29 @@ def chapter_metas_for_all_books(mod_dir, config, vol_count=36):
     return all_chaps
 
 
+def _is_youtube_video_url(url):
+    return "youtu.be/" in url or ("youtube.com/watch" in url and "v=" in url)
+
+
+def _fetch_youtube_oembed_title(url):
+    oembed = (
+        "https://www.youtube.com/oembed?url="
+        + urllib.parse.quote(url, safe="")
+        + "&format=json"
+    )
+    try:
+        response = urllib.request.urlopen(urllib.request.Request(oembed))
+        return json.loads(response.read()).get("title")
+    except Exception:
+        return None
+
+
 def fetch_title_for_url(url, max_retries=5, base_wait=10, max_wait=120):
+    if _is_youtube_video_url(url):
+        title = _fetch_youtube_oembed_title(url)
+        if title:
+            return title
+
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -196,7 +219,9 @@ def main():
         for url in urls:
             if fetch_if_after is not None and url in old_links:
                 link_data = old_links[url]
-                if "date" in link_data:
+                cached_title = link_data.get("title", "")
+                stale_title = not cached_title or cached_title.strip() == "- YouTube"
+                if "date" in link_data and not stale_title:
                     old_fetch = datetime.datetime.fromisoformat(link_data["date"])
                     if old_fetch > fetch_if_after:
                         new_links[url] = link_data
