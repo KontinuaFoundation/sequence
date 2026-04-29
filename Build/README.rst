@@ -118,17 +118,18 @@ Scripts
      contains the titles of every chapter for every book.
    | Example: ``python3 build_chapter_list.py``
 
--  | ``make_topic_index.py``: Outputs ``topic_index.json`` in ``Resources-en_US``. This is a dependency mapping used for the KontinuaResourceEditor to be able to connect prerequisite topics to a chapter. Also prints a report of missing topics, misaligned dependencies, and duplicate topics.
-   | Example: ``python3 make_topic_index.py``
-   | Output::
-   | 🛑 Book 10 | Introduction to Graphs                   | requires dataviz              | found later: Book 11 | Introduction to Data Visualization
-   | 🛑 Book 12 | Parametric Functions                     | requires derivatives          | found later: Book 17 | Differentiating Polynomials   
-   | 🛑 Book 12 | Vector-valued Functions                  | requires derivatives          | found later: Book 17 | Differentiating Polynomials   
-   | 🛑 Book 13 | Oscillations                             | requires derivatives          | found later: Book 17 | Differentiating Polynomials   
-   | 🛑 Book 14 | Circular Motion, continued               | requires cross                | found later: Book 22 | Cross Product                 
-   | --------------
-   | ⚠️  DUPLICATE TOPIC drag: origin: airplanes → duplicated in: drag
-   | --------------
+- | ``make_topic_index.py``: Outputs ``topic_index.json`` in ``Resources-en_US``. This is a dependency mapping used for the KontinuaResourceEditor to be able to connect prerequisite topics to a chapter. Also prints a report of missing topics, misaligned dependencies, and duplicate topics.
+  | Example: ``python3 make_topic_index.py``
+  | Output:
+  | --------------
+  | 🛑 Book 10 | Introduction to Graphs                   | requires dataviz              | found later: Book 11 | Introduction to Data Visualization
+  | 🛑 Book 12 | Parametric Functions                     | requires derivatives          | found later: Book 17 | Differentiating Polynomials
+  | 🛑 Book 12 | Vector-valued Functions                  | requires derivatives          | found later: Book 17 | Differentiating Polynomials
+  | 🛑 Book 13 | Oscillations                             | requires derivatives          | found later: Book 17 | Differentiating Polynomials
+  | 🛑 Book 14 | Circular Motion, continued               | requires cross                | found later: Book 22 | Cross Product
+  | --------------
+  | ⚠️  DUPLICATE TOPIC drag: origin: airplanes → duplicated in: drag
+  | --------------
 Status
 ------
 
