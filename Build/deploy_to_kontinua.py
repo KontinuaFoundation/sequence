@@ -79,6 +79,12 @@ def run_bash_script(build_dir, filename):
 
 
 def main():
+    print("WARNING: This script is deprecated and will be removed in a future release.")
+    resp = input("Proceed anyway? [y/N]: ").strip().lower()
+    if resp != "y":
+        print("Aborted.")
+        sys.exit(1)
+
     args = sys.argv[1:]
     for a in args:
         if a not in VALID_ARGS:
