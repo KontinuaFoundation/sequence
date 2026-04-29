@@ -14,6 +14,6 @@ def generate_latex_commands(image_directory, output_file):
 
 if __name__ == "__main__":
     image_directory = "../Collected_PNGs"
-    output_file = "pngLatex.txt"
+    output_file = "png_latex.txt"
     generate_latex_commands(image_directory, output_file)
     print(f"LaTeX commands have been written to {output_file}")

@@ -62,20 +62,7 @@ jobs:
           kpsewhich algpseudocode.sty
 
       - name: Prepare build config
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          cfg = {
-              "Languages": ["en_US"],
-              "Paper": "Letter",
-              "LatexExecutable": "lualatex",
-          }
-          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
-              json.dump(cfg, fp, indent=2)
-          print("Created Build/user.cfg")
-          PY
+        run: python3 Build/create_user_config.py
 
       - name: Build all chapters
         shell: bash
@@ -150,20 +137,7 @@ jobs:
           kpsewhich algpseudocode.sty
 
       - name: Prepare build config
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          cfg = {
-              "Languages": ["en_US"],
-              "Paper": "Letter",
-              "LatexExecutable": "lualatex",
-          }
-          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
-              json.dump(cfg, fp, indent=2)
-          print("Created Build/user.cfg")
-          PY
+        run: python3 Build/create_user_config.py
 
       - name: Build all workbooks
         shell: bash
@@ -264,9 +238,9 @@ jobs:
           cd Build
 
           python3 gather_resources.py 90 || (echo "gather_resources.py failed" && exit 1)
-          python3 build_chapterlist.py || (echo "build_chapterlist.py failed" && exit 1)
-          python3 topo_sort.py || (echo "topo_sort.py failed" && exit 1)
-          python3 url_check.py || (echo "url_check.py failed" && exit 1)
+          python3 build_chapter_list.py || (echo "build_chapter_list.py failed" && exit 1)
+          python3 topological_sort.py || (echo "topological_sort.py failed" && exit 1)
+          python3 build_workbooks_index.py || (echo "build_workbooks_index.py failed" && exit 1)
 
           test -f Resources-en_US/Links.json
 

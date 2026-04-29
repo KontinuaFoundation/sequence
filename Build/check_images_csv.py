@@ -4,7 +4,7 @@ import re
 
 base_dir = os.path.join(os.path.dirname(__file__), "..", "Chapters")
 book_txt_path = os.path.join(base_dir, "book_00.txt")
-csv_file_path = os.path.join(os.path.dirname(__file__), "PNG_Usage_Status.csv")
+csv_file_path = os.path.join(os.path.dirname(__file__), "png_usage_status.csv")
 
 include_graphics_re = re.compile(r"\\includegraphics(?:\[.*\])?\{(.+?)\}")
 

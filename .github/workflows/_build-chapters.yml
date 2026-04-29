@@ -77,20 +77,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Prepare build config
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          cfg = {
-              "Languages": ["en_US"],
-              "Paper": "Letter",
-              "LatexExecutable": "lualatex",
-          }
-          with open("Build/user.cfg", "w", encoding="utf-8") as fp:
-              json.dump(cfg, fp, indent=2)
-          print("Created Build/user.cfg")
-          PY
+        run: python3 Build/create_user_config.py
 
       - name: Build all chapters
         shell: bash
