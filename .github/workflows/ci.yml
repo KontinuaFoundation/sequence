@@ -1,5 +1,7 @@
 name: CI
 
+run-name: "CI · ${{ github.ref_name }} by @${{ github.actor }}"
+
 on:
   push:
   pull_request:
@@ -18,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -48,7 +50,7 @@ jobs:
       has_changes: ${{ steps.detect.outputs.has_changes }}
       chapter_count: ${{ steps.detect.outputs.count }}
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -241,7 +243,7 @@ jobs:
     if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch') && needs.build-changed.outputs.has_changes == 'true'
     timeout-minutes: 30
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
