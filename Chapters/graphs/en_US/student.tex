@@ -98,26 +98,67 @@ other node by following edges. Is this graph connected?\index{graph!connected}
   \label{fig:notconnected}
 \end{figure}
 
-This graph is \textit{not} connected! You can't follow edges from San Diego to Seattle. However, you could identify two \newterm{connected components}, \newterm{subgraphs} of a graph that remain connected. 
+This graph is \textit{not} connected! You can't follow edges from San Diego to Seattle. However, you could identify two \newterm{connected components}, \newterm{subgraphs} of a graph that remain connected.
 \begin{itemize}
   \item San Diego, Los Angeles, San Francisco
   \item Portland, Seattle, Spokane
 \end{itemize}
 
-Connectivity is defined as, for all pairs of nodes in that graph, there 
-exists a path between them. A subgraph is much simpler than a connected 
-component, it's only requirement is to contain a subset of at least one 
-node and, optionally, edges to go between nodes. Note that you cannot 
-have a subgraph that contains a single node and an edge, because the 
+Connectivity is defined as, for all pairs of nodes in that graph, there
+exists a path between them. A subgraph is much simpler than a connected
+component, it's only requirement is to contain a subset of at least one
+node and, optionally, edges to go between nodes. Note that you cannot
+have a subgraph that contains a single node and an edge, because the
 edge would not be able to connect to anything else.
 
 In graph data, the nodes and edges often have attributes. For
 example, a node representing a city might have a name and a
 population. An edge representing a data line might have a bandwidth
 (bits per second) and a latency (how many nanoseconds between when you
-put a bit into the pipe and when it comes out the other end). This is 
+put a bit into the pipe and when it comes out the other end). This is
 how we define a graph.
 
+\begin{Exercise}[title={Word Graphs}, label={ex:word_graph}]
+
+  Consider the concept of a graph as a set of nodes and edges. How would you create a graph where the nodes are words and the edges represent a one letter difference between two words?
+
+  For example, the word \texttt{cat} would be connected to \texttt{cot}, \texttt{cart}, and \texttt{cut}, but not to \texttt{dog}.
+
+  Define explciitly what the nodes would be in this graph, and what the edges would be. Draw a simple example of this graph with at least 5 nodes and 5 edges.
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:word_graph}]
+
+The nodes in this graph are unique words. The edges represent a valid one letter operations that can be preformed from one word to another word. These operations include adding a letter, removing a letter, or changing a letter into another. For example, the word \texttt{cat} would be connected to \texttt{cot} (change), \texttt{cart} (add), and \texttt{cut} (change), but not to \texttt{dog}. Usually this will be represented as a tree, which is a special type of graph we will cover later.
+
+Here is an example of a word graph:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[  every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge},xscale=.8] % undirected
+    \node (bad) at (5,10) {bad};
+    \node (bed) at (4, 7) {bed};
+    \node (bar) at (7,7) {bar};
+    \node (car) at (6,6) {car};
+    \node (barf) at (10,8) {barf};
+    \node (bark) at (11, 6) {bark};
+    \node (bee) at (3,5) {bee};
+    \node (dog) at (-1,6) {dog};
+    \node (apple) at (-0.5,4.5) {apple};
+
+    \draw (bad) -- (bed);
+    \draw (bad) -- (bar);
+    \draw (bar) -- (car);
+    \draw (bar) -- (barf);
+    \draw (bar) -- (bark);
+    \draw (barf) -- (bark);
+    \draw (bed) -- (bee);
+  \end{tikzpicture}
+  \caption{A word graph where the nodes are unique words and the edges represent a one letter operations between two words.}
+  \label{fig:word_graph_ex}
+\end{figure}
+\end{Answer}
 \section{Finding Good Paths}
 
 For many problems, we are trying to find the best path from one
@@ -180,7 +221,7 @@ edges. Efficient graph algorithms are \textit{really} important.
 
 \section{Graphs in Python}
 There are many ways to represent graph data. There are database systems that are specifically designed to hold
-and analyze graph data. Not surprisingly, these are called \newterm{Graph Databases}. 
+and analyze graph data. Not surprisingly, these are called \newterm{Graph Databases}.
 
 You may also hear about \newterm{adjacency lists}, which store, for each node, the list of nodes it is connected to. Each direct connection from one node to another is called a \newterm{neighbor}. Simply, adjacency lists store lists of neighbors.
 
@@ -219,7 +260,7 @@ As an adjacency list, this would look like:
 
 \begin{Exercise}[title={Directed Adjacency Lists}, label={ex:dir_adj}]
 
-    \vspace{2cm}
+  \vspace{2cm}
 
   \begin{center}
     \vbox to 2cm{\vfil
@@ -231,13 +272,13 @@ As an adjacency list, this would look like:
 
 \begin{Answer}[ref={ex:dir_adj}]
 
-In a weighted graph, each node would have to store a set of neighbors and their respective weights. The best way to do this would be a tuple. For example, 
-\begin{itemize}
-  \item A: [(B, 4), (C, 3)]
-  \item B: [(A, 4), (D, 8)]
-  \item C: [(A, 3)]
-  \item D: [(B, 8)]
-\end{itemize}
+  In a weighted graph, each node would have to store a set of neighbors and their respective weights. The best way to do this would be a tuple. For example,
+  \begin{itemize}
+    \item A: [(B, 4), (C, 3)]
+    \item B: [(A, 4), (D, 8)]
+    \item C: [(A, 3)]
+    \item D: [(B, 8)]
+  \end{itemize}
 
 \end{Answer}
 
@@ -300,7 +341,7 @@ class Graph:
   def __repr__(self):
     return f"(Graph:{self.nodes})"
 \end{minted}
-This is a graph class that handles undirected weighted graphs. 
+This is a graph class that handles undirected weighted graphs.
 Now, let's create some instances of \pytype{Node} and
 \pytype{WeightedEdge} and wire them together. Create another file in
 the same directory called \filename{cities.py}. Put in this code:
