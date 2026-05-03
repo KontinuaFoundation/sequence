@@ -45,7 +45,7 @@ Less formally, a \newterm{forest} is a collection of multiple trees (may be disc
 
 Trees have a unique structural property: between any two nodes, there exists exactly one simple path. This follows directly from the fact that trees are both connected and acyclic. As a result, there is only one way to move from a start node to an end node.
 
-Although trees are often drawn with a root at the top, this is a matter of convention. Any node in a tree can be chosen as the root, and doing so induces a hierarchical structure in which edges are interpreted as parent-child relationships. 
+Although trees are often drawn with a root at the top, this is a matter of convention. Any node in a tree can be chosen as the root, and doing so induces a hierarchical structure in which edges are interpreted as parent-child relationships.
 
 Once a root is selected, every node (except the root) has exactly one parent, and zero or more children. Because of this relationship, any randomly selected node can form a tree (we call this a \newterm{subtree}, consisting of the node and all its descendants), making the tree structure \newterm{recursive}. Moving from one node to the next is the recursive step that minimizes the size.
 
@@ -64,12 +64,12 @@ Nodes with no children are called, as you'd expect, \newterm{leaves}, as they ar
       edge from parent/.style={kontinuaEdge}
     ]
     \node (root) {Root}
-    child { node (c1) {Child 1} 
-      child { node (c7) {Grandchild 4} 
-        child { node (c8) {Great Grandchild 1} }
-        child { node (c9) {Great Grandchild 2} }
+    child { node (c1) {Child 1}
+        child { node (c7) {Grandchild 4}
+            child { node (c8) {Great Grandchild 1} }
+            child { node (c9) {Great Grandchild 2} }
+          }
       }
-    }
     child { node (c2) {Child 2}
         child { node (c4) {Grandchild 1} }
         child { node (c5) {Grandchild 2} }
@@ -103,35 +103,35 @@ FIXME tree proof
 \section{Binary Trees and Binary Search Trees}
 The most common type of tree is the \newterm{binary tree}, where each node has \emph{at most} two children, referred to as the \newterm{left child} and the \newterm{right child}. Binary trees are widely used in various applications, including expression parsing, binary search trees, and heaps.
 
-Let's put this practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page. 
+Let's put this practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page.
 
 
 \begin{wrapfigure}[15]{r}{0.55\textwidth}
   \centering
   \begin{tikzpicture}[
-    scale=1.3,
-    transform shape,
-    level distance=25mm,
-    level 1/.style={sibling distance=32mm},
-    level 2/.style={sibling distance=18mm},
-    level 3/.style={sibling distance=14mm},
-    every node/.style={kontinuaNode},
-    edge from parent/.style={kontinuaEdge},
+      scale=1.3,
+      transform shape,
+      level distance=25mm,
+      level 1/.style={sibling distance=32mm},
+      level 2/.style={sibling distance=18mm},
+      level 3/.style={sibling distance=14mm},
+      every node/.style={kontinuaNode},
+      edge from parent/.style={kontinuaEdge},
     ]
     \node {mango}
     child { node {apple}
-    child { node {anagram} }
-    child { node {banana} }
-    }
+        child { node {anagram} }
+        child { node {banana} }
+      }
     child { node {pear}
-    child { node {peach} }
-    child { node {peony} }
-    };
+        child { node {peach} }
+        child { node {peony} }
+      };
   \end{tikzpicture}
   \caption{A binary search tree with 7 words.}
   \label{fig:bst1}
 \end{wrapfigure}
-Say we wanted to represent our dictionary as a tree that we could recursively binary search through. For simplicity, we will limit our words to \texttt{mango}, \texttt{apple}, \texttt{pear}, \texttt{banana}, \texttt{anagram}, \texttt{peony} and \texttt{peach}. These 7 words form a binary tree of height 2, as seen in Figure~\ref{fig:bst1}. We select the word \texttt{mango} as the root as it is the middle word after sorting alphabetically. 
+Say we wanted to represent our dictionary as a tree that we could recursively binary search through. For simplicity, we will limit our words to \texttt{mango}, \texttt{apple}, \texttt{pear}, \texttt{banana}, \texttt{anagram}, \texttt{peony} and \texttt{peach}. These 7 words form a binary tree of height 2, as seen in Figure~\ref{fig:bst1}. We select the word \texttt{mango} as the root as it is the middle word after sorting alphabetically.
 
 Similar to binary search, we can find any word in the tree by starting at the root and comparing the target word to the current node's word. If the target word is less than the current node's word, we move to the left child; if it is greater, we move to the right child. We repeat this process until we find the target word or reach a leaf node, which tells us that the target word is not in the tree. This structure allows us to cut the available words in half with each step in the tree we go.
 
@@ -139,18 +139,107 @@ FIXME expand on addition, removal, and search of binary trees
 FIXME add exercise of a similar dictionary tree with more words, have student add and remove words, and search for words
 
 \section{File Structures and File System Hierarchies}
-Computers, since their first creation in the 1980s, have needed a way to store and organize data. Prior to computers, many systems of organization were used to store physical data, such as filing cabinets, libraries, and warehouses. 
+Computers, since their first creation in the 1980s, have needed a way to store and organize data. Prior to computers, many systems of organization were used to store physical data, such as filing cabinets, libraries, and warehouses.
 
-These systems often had a hierarchical structure, with a top-level category that branched out into subcategories, with these subcategories further branching out into more specific categories, and so on. 
+These systems often had a hierarchical structure, with a top-level category that branched out into subcategories, with these subcategories further branching out into more specific categories, and so on.
 
 For example, a library might have two top-level categories: \texttt{fiction} and \texttt{non-fiction}. Within the category \texttt{non-fiction}, you may find \texttt{psychology}, \texttt{biographies}, \texttt{autobiographies}, \texttt{self-help}, \texttt{journalism} books, or even \texttt{nature guides}. Under the category \texttt{fiction}, you may find \texttt{romance}, \texttt{classics}, \texttt{crime}, \texttt{science fiction}, \texttt{thriller}, or \texttt{fantasy} novels. Of course, these sub-genres can have even further categorizations too.
 
-A hospital may have patient records categorized by first letter of last name, and then sorted alphabetically from there. 
+A hospital may have patient records categorized by first letter of last name, and then sorted alphabetically from there.
 
-With the development of the computer, sorting these types of hierarchical data became easy with the concept of directories. A \newterm{directory}, also called a \newterm{folder}, is a categorical way of organizing data. We will stick to the more technical term of directories, however, any time you create a folder on your computer, you are making a \emph{directory}. The name comes from how, in the twentieth-century, many phone books were referred to as telephone directories. You can open a directory in the sense of viewing other folders and documents, but it will not open the same as a PDF file would. %FIXME sentence
+With the development of the computer, sorting these types of hierarchical data became easy with the concept of directories. A \newterm{directory}, also called a \newterm{folder}, is a categorical way of organizing data (for example, by storing files or other subdirectories). We will stick to the more technical term of directories, however, any time you create a folder on your computer, you are making a \emph{directory}. The name comes from how, in the twentieth-century, many phone books were referred to as telephone directories.
 
-% https://e115.engr.ncsu.edu/accessing-nfs/file-system-hierarchy/
+This structure naturally fits into the tree data structure:
+\begin{itemize}
+  \item The \textbf{root} of the tree is the top-level directory (\texttt{/} on Linux/Unix\footnote{There is a very helpful video in Linux File Systems in your digital resources. Check it out!} systems or \texttt{C:\textbackslash} on Windows).
+  \item A \textbf{node} is naturally fits the idea of either \emph{directories nodes} or \emph{files nodes}.
+  \item A \textbf{directory node} may have children, where its children are subdirectories or files.
+  \item A \textbf{file node} is a \textbf{leaf}, meaning it has no children.
+\end{itemize}
 
+The \textbf{path} to a file describes the unique sequence of directories from the root to that file.
+
+\subsection*{Example}
+A small file system might look like:
+
+% prefer this diagram over latex trees for space and understanding capacity
+
+\begin{forest}
+  for tree={
+  font=\ttfamily,
+  grow'=0,
+  child anchor=west,
+  parent anchor=east,
+  anchor=west,
+  edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.parent anchor) -- +(8pt,0) |- (.child anchor)\forestoption{edge label};
+    },
+  l sep=18pt,
+  s sep=4pt,
+  }
+  [./
+  [passwords.txt]
+  [Downloads/
+  [homework1.pdf]
+  [calculator.exe]
+  [notes.txt]
+  ]
+  [Documents/
+  [resume.pdf]
+  [report.docx]
+  [picture.jpg]
+  [Projects/
+  [project1/
+  [main.py]
+  [README.md]
+  ]
+  [project2/
+  [data.csv]
+  ]
+  ]
+  ]
+  ]
+\end{forest}
+
+In tree terminology:
+\begin{itemize}
+  \item \texttt{./} is the root node.
+  \item \texttt{Downloads}, \texttt{Documents}, and its subdirectories are internal nodes (directories).
+  \item All files, such as those ending in \texttt{.txt}, \texttt{.png}, \texttt{.exe},\texttt{.csv}, \texttt{.docx}, \texttt{.py} files are leaf nodes.
+\end{itemize}
+Side note: please do not store your passwords in anywhere on your computer's memory!
+
+\begin{Exercise}[title={File Paths}, label={ex:filePath}]
+  \vspace{2cm}
+
+  \begin{center}
+    \vbox to 2cm{\vfil
+        In the above File Hierarchy Tree, what is the path to \texttt{data.csv}? What is the depth of the file tree at that point?
+        \vfil}
+  \end{center}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:filePath}]
+
+The path to \texttt{data.csv} is 
+\begin{center}
+  \texttt{./Documents/Projects/project2/data.csv}
+\end{center}
+
+The depth is the number of edges from the root to the node. 
+
+In this case, it is the number of subdirectories needed to reach \texttt{data.csv}:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \texttt{./} $\rightarrow$ \texttt{Documents}
+  \item \texttt{Documents} $\rightarrow$ \texttt{Projects}
+  \item \texttt{Projects} $\rightarrow$ \texttt{project2}
+  \item \texttt{project2} $\rightarrow$ \texttt{data.csv}
+\end{enumerate}
+
+So \texttt{data.csv} is at a depth of \textbf{4}.
+\end{Answer}
 \section{Red-Black Trees and AVL Trees}
 
 \section{B-Trees, Tries, and Suffix Trees}

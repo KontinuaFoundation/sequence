@@ -795,6 +795,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{forest}
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
