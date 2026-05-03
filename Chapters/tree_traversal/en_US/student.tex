@@ -4,3 +4,131 @@
 % DFS vs BFS from a graph to a tree
 % Recursive vs iterative traversal
 % Searching in BSTs
+
+Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \newterm{traversals} based on the order in which the nodes are visited.
+
+This chapter will discuss \newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \newterm{level-order}. Each level is traversed in sequential order.
+
+Alternatively, there is \newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
+
+While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires you do have a preselected node a your \emph{start node}.
+\section{BFS}
+Let's look at running BFS on a tree. Starting out with this tree:
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            scale=1.3,
+            transform shape,
+            level distance=25mm,
+            level 1/.style={sibling distance=32mm},
+            level 2/.style={sibling distance=18mm},
+            level 3/.style={sibling distance=14mm},
+            every node/.style={kontinuaNode},
+            edge from parent/.style={kontinuaEdge},
+        ]
+        \node {Alan}
+        child { node {Brad}
+                child { node {Dean} }
+                child { node {Emily} }
+            }
+        child { node {Connie}
+                child { node {Faith} }
+                child { node {Gordon} }
+            };
+    \end{tikzpicture}
+
+    \caption{Our original tree containing a list of names to be traversed.}
+    \label{fig:originalTree}
+\end{figure}
+
+To perform BFS, we use a \newterm{queue}, which follows a first-in, first-out (\newterm{FIFO}) order. We begin by placing the root node into the queue. At each step, we remove the front node from the queue, visit it, and then add all of its children to the \emph{back} of the queue. %FIXME ensure queues are defined before this point, or expand on them in the future.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            scale=1.3,
+            transform shape,
+            level distance=25mm,
+            level 1/.style={sibling distance=32mm},
+            level 2/.style={sibling distance=18mm},
+            every node/.style={kontinuaNode},
+            edge from parent/.style={kontinuaEdge},
+        ]
+        \node[fill=gray!30] {Alan}
+        child { node {Brad} }
+        child { node {Connie} };
+    \end{tikzpicture}
+
+    \caption{Step 1: Visit Alan, then add its children (Brad, Connie) to the queue.}
+\end{figure}
+
+Here, we visit the root node first, which is Alan. After visiting Alan, we add its children, Brad and Connie, to the queue. Since there are no other nodes to visit at this level, we move on to the next level of the tree.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        scale=1.3,
+        transform shape,
+        level distance=25mm,
+        level 1/.style={sibling distance=32mm},
+        level 2/.style={sibling distance=18mm},
+        every node/.style={kontinuaNode},
+        edge from parent/.style={kontinuaEdge},
+    ]
+        \node[fill=gray!80] {Alan}
+        child { node[fill=gray!30] {Brad}
+            child { node {Dean} }
+            child { node {Emily} }
+        }
+        child { node {Connie} };
+    \end{tikzpicture}
+
+    \caption{Step 2: Visit Brad, then add its children (Dean, Emily) to the queue.}
+\end{figure}
+We continue this process, visiting Connie next and adding its children, Faith and Gordon, to the queue. The queue now contains Connie, Dean, and Emily. Here is a step trace of the BFS traversal:
+\begin{center}
+    \begin{tabular}{c|c|c}
+        Step  & Queue                        & Output (visited)                     \\
+        \hline
+        Start & [Alan]                       & []                         \\
+        1     & [Brad, Connie]               & [Alan]                     \\
+        2     & [Connie, Dean, Emily]        & [Alan, Brad]               \\
+        3     & [Dean, Emily, Faith, Gordon] & [Alan, Brad, Connie]       \\
+        4     & [Emily, Faith, Gordon]       & [Alan, Brad, Connie, Dean] \\
+    \end{tabular}
+\end{center}
+
+Continuing this process until the queue is empty gives the final traversal:
+
+\begin{center}
+Alan, Brad, Connie, Dean, Emily, Faith, Gordon
+\end{center}
+
+This ordering reflects a level-by-level traversal of the tree, which is why BFS on a tree is also called level-order traversal.
+
+FIXME exercise - run DFS on a tree 
+
+Our queue steps can be reflected as pseudocode as follows:
+\begin{algorithm}
+\caption{Breadth-First Search (BFS)}
+\begin{algorithmic}
+\Procedure{BFS}{root}
+    \State $Q \gets$ empty queue
+    \State \Call{Enqueue}{$Q$, root}
+    \While{$Q$ is not empty}
+        \State node $\gets$ \Call{Dequeue}{$Q$}
+        \State \Call{Visit}{node}
+        \For{each child of node}
+            \State \Call{Enqueue}{$Q$, child}
+        \EndFor
+    \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+This procedure is often used in game applications to find paths, such as maze solvers, chess algorithms, and tic-tac-toe solutions. It is also used in social network analysis to find the shortest path between two users, and in web crawling to explore the structure of websites.
+\section{DFS}
+\subsection{Pre-order}
+\subsection{Post-order}
+\subsection{In-order}
+% Note somewhere that Inorder traversal only makes sense for binary trees
+% because it depends on having a left and right child.

@@ -8,15 +8,152 @@
 %AVL, red black
 % applications in file systems
 % binary searchtrees
+% https://tikz.dev/tikz-trees
 
-Trees are one of the most versatile and widely used data structures in computer science. A tree is a hierarchical data structure consisting of nodes, where each node has a value and a set of references to its child nodes. The node at the top of the hierarchy is called the root, and nodes with the same parent are called siblings.
+% FIXME it would be good to relate or hint towards linked lists, or have linked lists come before this
+Trees are one of the most versatile and widely used data structures in computer science. A \newterm{tree} is a hierarchical data structure consisting of nodes, where each node has a value and a set of references (\newterm{edges}) to its child nodes. The node at the top of the hierarchy is called the \newterm{root}, and nodes with the same parent are called \newterm{siblings}, as seen in Figure~\ref{fig:tree1}.\\
+\begin{wrapfigure}[12]{l}{0.45\textwidth}
+  \centering
+  \begin{tikzpicture}[
+      % level 1/.style={sibling distance=30mm},
+      level distance=25mm,
+      every node/.style={kontinuaNode},
+      edge from parent/.style={kontinuaEdge}
+    ]
+    \node {Root}
+    child { node (c1) {Child 1} }
+    child { node (c2) {Child 2} }
+    child { node (c3) {Child 3} };
 
+    \draw[decorate,decoration={brace,amplitude=8pt, mirror}, very thick]
+    ($(c1.west)+(0,-8mm)$) -- ($(c3.east)+(0,-8mm)$)
+    node[midway, below=2mm, draw=none, fill=none] {Siblings};
+  \end{tikzpicture}
+  \caption{A tree with a root node and 3 children.}
+  \label{fig:tree1}
+\end{wrapfigure}
 % \includegraphics[width=0.75\textwidth]{parentChild.png}
-
 % \includegraphics[width=0.75\textwidth]{rootLeaves.png}
+Trees are a subset of Graphs, a data structure comprised of nodes and edges. Graphs can be converted into trees by adding the following two constraints:
+\begin{itemize}
+  \item The graph is connected, such that there exists a path between every pair of nodes
+  \item The graph is acyclic; no cycles exist in the graph
+\end{itemize}
+With this comes the caveat that the number of edges in a tree is $\text{edges} = n - 1$, where $n$ is the number of nodes in the tree. This is because a tree with $n$ nodes must have exactly $n-1$ edges to maintain its connected and acyclic properties. If there were more than $n-1$ edges, it would create a cycle, violating the acyclic property. If there were fewer than $n-1$ edges, it would not be fully connected, violating the connected property.
 
-% Many graphs can be converted into trees
+Less formally, a \newterm{forest} is a collection of multiple trees (may be disconnected), and a \newterm{tree} is a forest with only one tree. Lots of agricultural terms in this chapter!
 
+Trees have a unique structural property: between any two nodes, there exists exactly one simple path. This follows directly from the fact that trees are both connected and acyclic. As a result, there is only one way to move from a start node to an end node.
+
+Although trees are often drawn with a root at the top, this is a matter of convention. Any node in a tree can be chosen as the root, and doing so induces a hierarchical structure in which edges are interpreted as parent-child relationships. 
+
+Once a root is selected, every node (except the root) has exactly one parent, and zero or more children. Because of this relationship, any randomly selected node can form a tree (we call this a \newterm{subtree}, consisting of the node and all its descendants), making the tree structure \newterm{recursive}. Moving from one node to the next is the recursive step that minimizes the size.
+
+Nodes with no children are called, as you'd expect, \newterm{leaves}, as they are the outermost node of a tree. The \newterm{depth} of a chosen node is the number of edges from the \emph{root} to that node, and the \newterm{height} of a tree is the maximum depth among all nodes. Equivalent to the height of a tree is the maximum number of edges from the \emph{root} to any leaf. You may see the \newterm{level} of a node referred to as the number of edges from the \emph{root} to that node, similar to depth. By convention, the level and depth of the root is 0. See Figure~\ref{fig:tree2}.
+
+\begin{wrapfigure}[20]{r}{0.55\textwidth}
+  \centering
+  \begin{tikzpicture}[
+      % level 1/.style={sibling distance=30mm},
+      level distance=25mm,
+      level 1/.style={sibling distance=32mm},
+      level 2/.style={sibling distance=18mm},
+      level 3/.style={sibling distance=14mm},
+      level distance=25mm,
+      every node/.style={kontinuaNode},
+      edge from parent/.style={kontinuaEdge}
+    ]
+    \node (root) {Root}
+    child { node (c1) {Child 1} 
+      child { node (c7) {Grandchild 4} 
+        child { node (c8) {Great Grandchild 1} }
+        child { node (c9) {Great Grandchild 2} }
+      }
+    }
+    child { node (c2) {Child 2}
+        child { node (c4) {Grandchild 1} }
+        child { node (c5) {Grandchild 2} }
+        child { node (c6) {Grandchild 3} }}
+    child { node (c3) {Child 3} };
+
+    \draw[decorate,decoration={brace,amplitude=8pt, mirror}, very thick]
+    ($(c4.west)+(0,-8mm)$) -- ($(c6.east)+(0,-8mm)$)
+    node[midway, below=2mm, draw=none, fill=none] {\textbf{Leaves}};
+
+    \draw[decorate,decoration={brace,amplitude=8pt, mirror}, very thick]
+    ($(root.west)+(-42mm,0)$) -- ($(c8.west)+(-3mm,0)$)
+    node[midway, left=4mm, draw=none, fill=none] {\textbf{Height = 3}};
+    \draw[decorate,decoration={brace,amplitude=8pt}, very thick]
+    ($(root.east)+(32mm,0)$) -- ($(c6.east)+(14mm,0)$)
+    node[midway, right=4mm, draw=none, fill=none] {\textbf{Depth = 2}};
+  \end{tikzpicture}
+  \caption{A tree with a root node and 3 children, a few grandchildren, and 2 great grandchildren.}
+  \label{fig:tree2}
+\end{wrapfigure}
+
+Some more relevant terminology you may encounter in the context of trees:
+\begin{itemize}
+  \item \newterm{Path}: A sequence of nodes where each adjacent pair is connected by an edge. This can be used to show the idea of how to get between two nodes in a tree, for example, between two cities in a flight path network.
+  \item \newterm{Ancestor}: A node that lies on the path from the root to a given node. This is done by repeatedly traversing from a child node to a parent node until the selected node is reached.
+  \item \newterm{Descendant}: A node that lies on the path from a given node to a leaf. This is done by repeatedly traversing from a parent node to a child node until a leaf is reached.
+\end{itemize}
+
+FIXME tree proof
+
+\section{Binary Trees and Binary Search Trees}
+The most common type of tree is the \newterm{binary tree}, where each node has \emph{at most} two children, referred to as the \newterm{left child} and the \newterm{right child}. Binary trees are widely used in various applications, including expression parsing, binary search trees, and heaps.
+
+Let's put this practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page. 
+
+
+\begin{wrapfigure}[15]{r}{0.55\textwidth}
+  \centering
+  \begin{tikzpicture}[
+    scale=1.3,
+    transform shape,
+    level distance=25mm,
+    level 1/.style={sibling distance=32mm},
+    level 2/.style={sibling distance=18mm},
+    level 3/.style={sibling distance=14mm},
+    every node/.style={kontinuaNode},
+    edge from parent/.style={kontinuaEdge},
+    ]
+    \node {mango}
+    child { node {apple}
+    child { node {anagram} }
+    child { node {banana} }
+    }
+    child { node {pear}
+    child { node {peach} }
+    child { node {peony} }
+    };
+  \end{tikzpicture}
+  \caption{A binary search tree with 7 words.}
+  \label{fig:bst1}
+\end{wrapfigure}
+Say we wanted to represent our dictionary as a tree that we could recursively binary search through. For simplicity, we will limit our words to \texttt{mango}, \texttt{apple}, \texttt{pear}, \texttt{banana}, \texttt{anagram}, \texttt{peony} and \texttt{peach}. These 7 words form a binary tree of height 2, as seen in Figure~\ref{fig:bst1}. We select the word \texttt{mango} as the root as it is the middle word after sorting alphabetically. 
+
+Similar to binary search, we can find any word in the tree by starting at the root and comparing the target word to the current node's word. If the target word is less than the current node's word, we move to the left child; if it is greater, we move to the right child. We repeat this process until we find the target word or reach a leaf node, which tells us that the target word is not in the tree. This structure allows us to cut the available words in half with each step in the tree we go.
+
+FIXME expand on addition, removal, and search of binary trees
+FIXME add exercise of a similar dictionary tree with more words, have student add and remove words, and search for words
+
+\section{File Structures and File System Hierarchies}
+Computers, since their first creation in the 1980s, have needed a way to store and organize data. Prior to computers, many systems of organization were used to store physical data, such as filing cabinets, libraries, and warehouses. 
+
+These systems often had a hierarchical structure, with a top-level category that branched out into subcategories, with these subcategories further branching out into more specific categories, and so on. 
+
+For example, a library might have two top-level categories: \texttt{fiction} and \texttt{non-fiction}. Within the category \texttt{non-fiction}, you may find \texttt{psychology}, \texttt{biographies}, \texttt{autobiographies}, \texttt{self-help}, \texttt{journalism} books, or even \texttt{nature guides}. Under the category \texttt{fiction}, you may find \texttt{romance}, \texttt{classics}, \texttt{crime}, \texttt{science fiction}, \texttt{thriller}, or \texttt{fantasy} novels. Of course, these sub-genres can have even further categorizations too.
+
+A hospital may have patient records categorized by first letter of last name, and then sorted alphabetically from there. 
+
+With the development of the computer, sorting these types of hierarchical data became easy with the concept of directories. A \newterm{directory}, also called a \newterm{folder}, is a categorical way of organizing data. We will stick to the more technical term of directories, however, any time you create a folder on your computer, you are making a \emph{directory}. The name comes from how, in the twentieth-century, many phone books were referred to as telephone directories. You can open a directory in the sense of viewing other folders and documents, but it will not open the same as a PDF file would. %FIXME sentence
+
+% https://e115.engr.ncsu.edu/accessing-nfs/file-system-hierarchy/
+
+\section{Red-Black Trees and AVL Trees}
+
+\section{B-Trees, Tries, and Suffix Trees}
 
 % The power of trees comes from their ability to represent complex relationships between objects, while providing efficient operations for accessing and modifying those objects. Trees can be used to represent hierarchical relationships, to organize data for quick search and insertion, and to manage sorted lists of data, among other uses.
 
