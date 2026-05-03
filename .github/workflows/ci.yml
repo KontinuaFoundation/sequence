@@ -260,8 +260,11 @@ jobs:
           set -euo pipefail
           mkdir -p Build/ci-artifacts
 
-          while IFS= read -r workbook; do
+                 while IFS= read -r workbook; do
             [[ -z "$workbook" ]] && continue
+
+            # skip book_00 if desired
+            [[ "$workbook" == "book_00" ]] && continue
 
             workbook_number="${workbook#book_}"
 
@@ -272,15 +275,13 @@ jobs:
               python3 build_workbook.py "$workbook_number"
             )
 
-            if [[ -f "Workbooks/${workbook}.pdf" ]]; then
-              cp "Workbooks/${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
-            elif [[ -f "Build/${workbook}.pdf" ]]; then
-              cp "Build/${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
-            elif [[ -f "${workbook}.pdf" ]]; then
-              cp "${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
+            pdf_path="Build/Workbooks-en_US-Letter/workbook-${workbook_number}.pdf"
+
+            if [[ -f "$pdf_path" ]]; then
+              cp "$pdf_path" "Build/ci-artifacts/${workbook}.pdf"
             else
-              echo "Could not find generated PDF for $workbook"
-              find . -name "${workbook}.pdf" -o -name "*${workbook_number}*.pdf"
+              echo "Missing expected PDF: $pdf_path"
+              ls -R Build || true
               exit 1
             fi
           done <<< "${{ steps.detect.outputs.workbooks }}"
