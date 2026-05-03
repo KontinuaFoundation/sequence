@@ -1,273 +1,342 @@
-name: CI
+  name: CI
 
-run-name: "CI · ${{ github.ref_name }} by @${{ github.actor }}"
+  run-name: "CI · ${{ github.ref_name }} by @${{ github.actor }}"
 
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  on:
+    push:
+    pull_request:
+    workflow_dispatch:
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
 
-permissions:
-  contents: read
+  permissions:
+    contents: read
 
-jobs:
-  spell-check:
-    name: Spell Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+  jobs:
+    spell-check:
+      name: Spell Check
+      runs-on: ubuntu-latest
+      timeout-minutes: 20
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: "3.13"
 
-      - name: Install codespell
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install codespell
+        - name: Install codespell
+          run: |
+            python3 -m pip install --upgrade pip
+            python3 -m pip install codespell
 
-      - name: Run spell check on all files
-        shell: bash
-        run: |
-          set -euo pipefail
-          codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" .
+        - name: Run spell check on all files
+          shell: bash
+          run: |
+            set -euo pipefail
+            codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" .
 
-  build-changed:
-    name: Build Changed Chapters
-    runs-on: ubuntu-latest
-    needs: [spell-check]
-    timeout-minutes: 120
-    outputs:
-      has_changes: ${{ steps.detect.outputs.has_changes }}
-      chapter_count: ${{ steps.detect.outputs.count }}
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    build-changed:
+      name: Build Changed Chapters
+      runs-on: ubuntu-latest
+      needs: [spell-check]
+      timeout-minutes: 120
+      outputs:
+        has_changes: ${{ steps.detect.outputs.has_changes }}
+        chapter_count: ${{ steps.detect.outputs.chapter_count }}
+        workbook_count: ${{ steps.detect.outputs.workbook_count }}
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: "3.13"
 
-      - name: Detect changed chapter IDs
-        id: detect
-        shell: bash
-        run: |
-          set -euo pipefail
+        - name: Detect changed chapter IDs
+          id: detect
+          shell: bash
+          run: |
+            set -euo pipefail
 
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            base_sha="${{ github.event.pull_request.base.sha }}"
-            head_sha="${{ github.event.pull_request.head.sha }}"
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            base_sha="$(git rev-parse "${{ github.sha }}^" 2>/dev/null || true)"
-            head_sha="${{ github.sha }}"
-          else
-            base_sha="${{ github.event.before }}"
-            head_sha="${{ github.sha }}"
-          fi
-
-          if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
-            changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
-          else
-            changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
-          fi
-
-          echo "Changed files considered for chapter rebuild:"
-          echo "$changed_files"
-
-          declare -A chapters=()
-
-          while IFS= read -r file; do
-            [[ -z "$file" ]] && continue
-
-            if [[ "$file" =~ ^Chapters/([^/]+)/ ]]; then
-              chapter_id="${BASH_REMATCH[1]}"
-              chapters["$chapter_id"]=1
-              continue
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              base_sha="${{ github.event.pull_request.base.sha }}"
+              head_sha="${{ github.event.pull_request.head.sha }}"
+            elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              base_sha="$(git rev-parse "${{ github.sha }}^" 2>/dev/null || true)"
+              head_sha="${{ github.sha }}"
+            else
+              base_sha="${{ github.event.before }}"
+              head_sha="${{ github.sha }}"
             fi
 
-            if [[ "$file" =~ ^Chapters/book_[0-9]{2}\.txt$ && -f "$file" ]]; then
+            if [[ -z "$base_sha" || "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
+              changed_files="$(git diff-tree --no-commit-id --name-only --root -r "$head_sha")"
+            else
+              changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
+            fi
+
+            echo "Changed files considered for chapter rebuild:"
+            echo "$changed_files"
+
+            declare -A chapters=()
+            declare -A workbooks=()
+
+            while IFS= read -r file; do
+              [[ -z "$file" ]] && continue
+
+              if [[ "$file" =~ ^Chapters/([^/]+)/ ]]; then
+                chapter_id="${BASH_REMATCH[1]}"
+                chapters["$chapter_id"]=1
+                continue
+              fi
+
+              if [[ "$file" =~ ^Chapters/book_[0-9]{2}\.txt$ && -f "$file" ]]; then
+                while IFS= read -r line; do
+                  chapter_id="$(echo "$line" | xargs)"
+                  if [[ -n "$chapter_id" && ! "$chapter_id" =~ ^# ]]; then
+                    chapters["$chapter_id"]=1
+                  fi
+                done < "$file"
+              fi
+            done <<< "$changed_files"
+
+            for book_file in Chapters/book_*.txt; do
+              [[ -f "$book_file" ]] || continue
+
+              workbook_id="$(basename "$book_file" .txt)"
+
               while IFS= read -r line; do
                 chapter_id="$(echo "$line" | xargs)"
-                if [[ -n "$chapter_id" && ! "$chapter_id" =~ ^# ]]; then
-                  chapters["$chapter_id"]=1
+
+                [[ -z "$chapter_id" ]] && continue
+                [[ "$chapter_id" =~ ^# ]] && continue
+
+                if [[ -n "${chapters[$chapter_id]+x}" ]]; then
+                  workbooks["$workbook_id"]=1
                 fi
-              done < "$file"
+              done < "$book_file"
+            done  
+
+            chapter_count="${#chapters[@]}"
+            workbook_count="${#workbooks[@]}"
+
+            if [[ "$chapter_count" -gt 0 || "$workbook_count" -gt 0 ]]; then
+              has_changes=true
+            else
+              has_changes=false
             fi
-          done <<< "$changed_files"
 
-          count="${#chapters[@]}"
-          if [[ "$count" -gt 0 ]]; then
-            has_changes=true
-          else
-            has_changes=false
-          fi
+            {
+              echo "chapters<<EOF"
+              for chapter in "${!chapters[@]}"; do
+                echo "$chapter"
+              done | sort
+              echo "EOF"
 
-          {
-            echo "chapters<<EOF"
+              echo "workbooks<<EOF"
+              for workbook in "${!workbooks[@]}"; do
+                echo "$workbook"
+              done | sort
+              echo "EOF"
+
+              echo "chapter_count=$chapter_count"
+              echo "workbook_count=$workbook_count"
+              echo "has_changes=$has_changes"
+            } >> "$GITHUB_OUTPUT"
+
+            echo "Detected $chapter_count chapter(s):"
             for chapter in "${!chapters[@]}"; do
               echo "$chapter"
             done | sort
-            echo "EOF"
-            echo "count=$count"
-            echo "has_changes=$has_changes"
-          } >> "$GITHUB_OUTPUT"
 
-          echo "Detected $count chapter(s)."
+            echo "Detected $workbook_count workbook(s):"
+            for workbook in "${!workbooks[@]}"; do
+              echo "$workbook"
+            done | sort
 
-      - name: Skip when no chapters changed
-        if: steps.detect.outputs.has_changes != 'true'
-        run: echo "No chapter-related changes found for this run."
+        - name: Skip when no chapters changed
+          if: steps.detect.outputs.has_changes != 'true'
+          run: echo "No chapter-related changes found for this run."
 
-      - name: Restore apt cache
-        if: steps.detect.outputs.has_changes == 'true'
-        uses: actions/cache/restore@v4
-        with:
-          path: /var/cache/apt/archives
-          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-apt-
+        - name: Restore apt cache
+          if: steps.detect.outputs.has_changes == 'true'
+          uses: actions/cache/restore@v4
+          with:
+            path: /var/cache/apt/archives
+            key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+            restore-keys: |
+              ${{ runner.os }}-apt-
 
-      - name: Restore pip cache
-        if: steps.detect.outputs.has_changes == 'true'
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+        - name: Restore pip cache
+          if: steps.detect.outputs.has_changes == 'true'
+          uses: actions/cache/restore@v4
+          with:
+            path: ~/.cache/pip
+            key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+            restore-keys: |
+              ${{ runner.os }}-pip-
 
-      - name: Install LaTeX and Python dependencies
-        if: steps.detect.outputs.has_changes == 'true'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            texlive-base \
-            texlive-binaries \
-            texlive-luatex \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            texlive-science \
-            texlive-pstricks \
-            fonts-open-sans \
-            python3-pygments \
-            rsync
-          sudo mkdir -p /usr/share/fonts/truetype/kontinua
-          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
-          sudo fc-cache -fv
-          luaotfload-tool --update
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r Build/requirements.txt
+        - name: Install LaTeX and Python dependencies
+          if: steps.detect.outputs.has_changes == 'true'
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              texlive-base \
+              texlive-binaries \
+              texlive-luatex \
+              texlive-latex-extra \
+              texlive-fonts-recommended \
+              texlive-science \
+              texlive-pstricks \
+              fonts-open-sans \
+              python3-pygments \
+              rsync
+            sudo mkdir -p /usr/share/fonts/truetype/kontinua
+            sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+            sudo fc-cache -fv
+            luaotfload-tool --update
+            python3 -m pip install --upgrade pip
+            python3 -m pip install -r Build/requirements.txt
 
-      - name: Verify LaTeX tools
-        if: steps.detect.outputs.has_changes == 'true'
-        run: |
-          which pygmentize
-          pygmentize -V
-          which kpsewhich
-          kpsewhich minted.sty
-          kpsewhich algpseudocode.sty
+        - name: Verify LaTeX tools
+          if: steps.detect.outputs.has_changes == 'true'
+          run: |
+            which pygmentize
+            pygmentize -V
+            which kpsewhich
+            kpsewhich minted.sty
+            kpsewhich algpseudocode.sty
 
-      - name: Prepare build config
-        if: steps.detect.outputs.has_changes == 'true'
-        run: python3 Build/create_user_config.py
+        - name: Prepare build config
+          if: steps.detect.outputs.has_changes == 'true'
+          run: python3 Build/create_user_config.py
 
-      - name: Build changed chapters
-        if: steps.detect.outputs.has_changes == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p Build/ci-artifacts
+        - name: Build changed chapters
+          if: steps.detect.outputs.has_changes == 'true'
+          shell: bash
+          run: |
+            set -euo pipefail
+            mkdir -p Build/ci-artifacts
 
-          while IFS= read -r chapter; do
-            [[ -z "$chapter" ]] && continue
-            chapter_dir="Chapters/$chapter/en_US"
-            tex_file="$chapter_dir/student.tex"
+            while IFS= read -r chapter; do
+              [[ -z "$chapter" ]] && continue
+              chapter_dir="Chapters/$chapter/en_US"
+              tex_file="$chapter_dir/student.tex"
 
-            if [[ ! -f "$tex_file" ]]; then
-              echo "Skipping $chapter: $tex_file not found"
-              continue
-            fi
+              if [[ ! -f "$tex_file" ]]; then
+                echo "Skipping $chapter: $tex_file not found"
+                continue
+              fi
 
-            echo "Building chapter: $chapter"
-            (
-              cd "$chapter_dir"
-              python3 ../../../Build/build_chapter.py
-            )
+              echo "Building chapter: $chapter"
+              (
+                cd "$chapter_dir"
+                python3 ../../../Build/build_chapter.py
+              )
 
-            if [[ -f "$chapter_dir/student.pdf" ]]; then
-              cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${chapter}.pdf"
-            else
-              echo "Build did not produce PDF for $chapter"
-              exit 1
-            fi
-          done <<< "${{ steps.detect.outputs.chapters }}"
+              if [[ -f "$chapter_dir/student.pdf" ]]; then
+                cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${chapter}.pdf"
+              else
+                echo "Build did not produce PDF for $chapter"
+                exit 1
+              fi
+            done <<< "${{ steps.detect.outputs.chapters }}"
 
-      - name: Save apt cache
-        if: always() && steps.detect.outputs.has_changes == 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: /var/cache/apt/archives
-          key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
+        - name: Build changed workbooks
+          if: steps.detect.outputs.has_changes == 'true'
+          shell: bash
+          run: |
+            set -euo pipefail
+            mkdir -p Build/ci-artifacts
 
-      - name: Save pip cache
-        if: always() && steps.detect.outputs.has_changes == 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+            while IFS= read -r chapter; do
+              [[ -z "$chapter" ]] && continue
+              chapter_dir="Chapters/$chapter/en_US"
+              tex_file="$chapter_dir/student.tex"
 
-      - name: Upload changed chapters artifact
-        if: steps.detect.outputs.has_changes == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: changed-chapters-${{ github.sha }}
-          path: Build/ci-artifacts/*.pdf
-          if-no-files-found: error
+              if [[ ! -f "$tex_file" ]]; then
+                echo "Skipping $chapter: $tex_file not found"
+                continue
+              fi
 
-  deploy:
-    name: Deploy Changed Chapters
-    runs-on: ubuntu-latest
-    needs: [build-changed]
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch') && needs.build-changed.outputs.has_changes == 'true'
-    timeout-minutes: 30
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+              echo "Building chapter: $"
+              (
+                cd "$chapter_dir"
+                python3 ../../../Build/build_workbook.py
+              )
 
-      - name: Download changed chapters artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: changed-chapters-${{ github.sha }}
-          path: chapters/
+              if [[ -f "$chapter_dir/student.pdf" ]]; then
+                cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${workbook}.pdf"
+              else
+                echo "Build did not produce PDF for $workbook"
+                exit 1
+              fi
+            done <<< "${{ steps.detect.outputs.chapters }}"
 
-      - name: Set deploy timestamp
-        id: ts
-        run: echo "ts=$(date -u +'%Y-%m-%d %H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+        - name: Save apt cache
+          if: always() && steps.detect.outputs.has_changes == 'true'
+          uses: actions/cache/save@v4
+          with:
+            path: /var/cache/apt/archives
+            key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
 
-      - name: Deploy changed chapter PDFs
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.DEPLOY_TOKEN }}
-          repository-name: kontinuafoundation/kontinuafoundation.github.io
-          branch: main
-          folder: chapters
-          target-folder: public
-          clean: false
-          force: false
-          commit-message: "Deploy changed chapters: ${{ steps.ts.outputs.ts }}"
-          git-config-name: github-actions[bot]
-          git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+        - name: Save pip cache
+          if: always() && steps.detect.outputs.has_changes == 'true'
+          uses: actions/cache/save@v4
+          with:
+            path: ~/.cache/pip
+            key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
+
+        - name: Upload changed chapters and workbooks artifact
+          if: steps.detect.outputs.has_changes == 'true'
+          uses: actions/upload-artifact@v4
+          with:
+            name: changed-chapters-${{ github.sha }}
+            path: Build/ci-artifacts/*.pdf
+            if-no-files-found: error
+
+
+    deploy:
+      name: Deploy Changed Chapters
+      runs-on: ubuntu-latest
+      needs: [build-changed]
+      if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch') && needs.build-changed.outputs.has_changes == 'true'
+      timeout-minutes: 30
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 1
+
+        - name: Download changed chapters artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: changed-chapters-${{ github.sha }}
+            path: chapters/
+
+        - name: Set deploy timestamp
+          id: ts
+          run: echo "ts=$(date -u +'%Y-%m-%d %H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+        - name: Deploy changed chapter PDFs
+          uses: JamesIves/github-pages-deploy-action@v4
+          with:
+            token: ${{ secrets.DEPLOY_TOKEN }}
+            repository-name: kontinuafoundation/kontinuafoundation.github.io
+            branch: main
+            folder: chapters
+            target-folder: public
+            clean: false
+            force: false
+            commit-message: "Deploy changed chapters: ${{ steps.ts.outputs.ts }}"
+            git-config-name: github-actions[bot]
+            git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
