@@ -258,29 +258,30 @@
             set -euo pipefail
             mkdir -p Build/ci-artifacts
 
-            while IFS= read -r chapter; do
-              [[ -z "$chapter" ]] && continue
-              chapter_dir="Chapters/$chapter/en_US"
-              tex_file="$chapter_dir/student.tex"
+            while IFS= read -r workbook; do
+              [[ -z "$workbook" ]] && continue
 
-              if [[ ! -f "$tex_file" ]]; then
-                echo "Skipping $chapter: $tex_file not found"
-                continue
-              fi
+              workbook_number="${workbook#book_}"
 
-              echo "Building chapter: $"
+              echo "Building workbook: $workbook_number"
+
               (
-                cd "$chapter_dir"
-                python3 ../../../Build/build_workbook.py
+                cd Build
+                python3 build_workbooks.py "$workbook_number"
               )
 
-              if [[ -f "$chapter_dir/student.pdf" ]]; then
-                cp "$chapter_dir/student.pdf" "Build/ci-artifacts/${workbook}.pdf"
+              if [[ -f "Workbooks/${workbook}.pdf" ]]; then
+                cp "Workbooks/${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
+              elif [[ -f "Build/${workbook}.pdf" ]]; then
+                cp "Build/${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
+              elif [[ -f "${workbook}.pdf" ]]; then
+                cp "${workbook}.pdf" "Build/ci-artifacts/${workbook}.pdf"
               else
-                echo "Build did not produce PDF for $workbook"
+                echo "Could not find generated PDF for $workbook"
+                find . -name "${workbook}.pdf" -o -name "*${workbook_number}*.pdf"
                 exit 1
               fi
-            done <<< "${{ steps.detect.outputs.chapters }}"
+            done <<< "${{ steps.detect.outputs.workbooks }}"
 
         - name: Save apt cache
           if: always() && steps.detect.outputs.has_changes == 'true'
@@ -317,7 +318,7 @@
           with:
             fetch-depth: 1
 
-        - name: Download changed chapters artifact
+        - name: Download changed PDFs artifact (workbooks + chapters)
           uses: actions/download-artifact@v4
           with:
             name: changed-chapters-${{ github.sha }}
@@ -327,7 +328,7 @@
           id: ts
           run: echo "ts=$(date -u +'%Y-%m-%d %H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
-        - name: Deploy changed chapter PDFs
+        - name: Deploy changed PDFs artifact (workbooks + chapters)
           uses: JamesIves/github-pages-deploy-action@v4
           with:
             token: ${{ secrets.DEPLOY_TOKEN }}
