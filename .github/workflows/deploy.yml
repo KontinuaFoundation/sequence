@@ -1,3 +1,4 @@
+# NOTE: THIS WORKFLOW ON RUNS ON MANUAL TRIGGER IN GITHUB
 name: Full Deploy
 
 run-name: "Full deploy by @${{ github.actor }}"
@@ -16,6 +17,7 @@ jobs:
   build-chapters:
     name: Build Chapters
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -92,6 +94,7 @@ jobs:
   build-workbooks:
     name: Build Workbooks
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -169,6 +172,7 @@ jobs:
   gather-resources:
     name: Gather Resources
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     needs: [ build-chapters, build-workbooks ]
     steps:
       - name: Check out repository
@@ -266,6 +270,8 @@ jobs:
   post-process:
     name: Post-process
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     needs: [ gather-resources, build-workbooks ]
     steps:
       - name: Check out repository
@@ -310,6 +316,8 @@ jobs:
   deploy:
     name: Deploy to Frontend
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+
     needs: [ post-process ]
 
     steps:
