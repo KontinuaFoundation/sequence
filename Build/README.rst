@@ -118,12 +118,11 @@ Scripts
      contains the titles of every chapter for every book.
    | Example: ``python3 build_chapter_list.py``
 
-- ``make_topic_index.py``: Outputs ``topic_index.json`` in ``Resources-en_US``.
-  This is a dependency mapping used for the KontinuaResourceEditor to be able
-  to connect prerequisite topics to a chapter. Also prints a report of missing
-  topics, misaligned dependencies, and duplicate topics.
-
-  Example: ``python3 make_topic_index.py``
+- | ``make_topic_index.py``: Outputs ``topic_index.json`` in ``Resources-en_US``.
+    This is a dependency mapping used for the KontinuaResourceEditor to be able
+    to connect prerequisite topics to a chapter. Also prints a report of missing
+    topics, misaligned dependencies, and duplicate topics.
+  | Example: ``python3 make_topic_index.py``
 
   Output::
 

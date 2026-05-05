@@ -3,7 +3,7 @@ import os
 import pathlib
 import shutil
 
-dirs = ["Intermediate", *glob.glob("Resources-*"), *glob.glob("Workbooks-*")]
+dirs = ["Intermediate", *glob.glob("Resources-*"), *glob.glob("Workbooks-*"), "Custom-Workbooks"]
 for d in dirs:
     if os.path.exists(d):
         shutil.rmtree(d)
