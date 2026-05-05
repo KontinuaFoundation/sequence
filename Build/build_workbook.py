@@ -109,7 +109,7 @@ def main():
         chapters = [c.strip() for c in args.chapters.split(",")]
         print(f"Building custom workbook with: {chapters}")
         for c in chapters:
-            if not Path(CHAPTERS_DIR / c / "en_US").exists(): # FIXME en_US harcoded
+            if not Path(CHAPTERS_DIR / c / "en_US").exists(): # FIXME en_US hardcoded
                 print(f"Invalid chapter: {c}")
                 sys.exit(1)
         
