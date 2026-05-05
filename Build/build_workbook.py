@@ -62,44 +62,42 @@ def parse_args():
 
 def _run_latex(tool, tex_file):
     return subprocess.run(
-        [tool, "-halt-on-error", "-synctex=1", "-shell-escape", tex_file]
+        [tool, "-halt-on-error", "-synctex=1", "-shell-escape", str(tex_file)],
+        cwd=INTERMEDIATE_DIR,
     ).returncode
-
-
 def build_book(book_id, config, draft, final_dir, header, footer):
     locale_list = config["Languages"]
     tool = config["LatexExecutable"]
 
-    output_tex_file = Path(f"workbook-{book_id}.tex")
-    output_pdf_file = Path(f"workbook-{book_id}.pdf")
+    output_tex_file = INTERMEDIATE_DIR / f"workbook-{book_id}.tex"
+    output_pdf_file = INTERMEDIATE_DIR / f"workbook-{book_id}.pdf"
     final_pdf_path = final_dir / output_pdf_file.name
-    if os.path.exists(final_pdf_path):
-        os.remove(final_pdf_path)
 
-    chapter_ids, chapter_paths = util.dir_list_for_book(mod_dir, book_id, locale_list)
+    if final_pdf_path.exists():
+        final_pdf_path.unlink()
 
-    with open(output_tex_file, "w") as out:
+    chapter_ids, chapter_paths = util.dir_list_for_book(CHAPTERS_DIR, book_id, locale_list)
+
+    with output_tex_file.open("w") as out:
         out.write(header)
         for chapter, path in zip(chapter_ids, chapter_paths):
             if not chapter:
                 continue
-            out.write(
-                f"\\graphicspath{{{{../../Chapters/{chapter}/{locale_list[0]}}}}}\n"
-            )
-            out.write(f"\\input{{{path}/student.tex}}\n")
+            out.write(f"\\graphicspath{{{{{Path(path).as_posix()}/}}}}\n")
+            out.write(f"\\input{{{(Path(path) / 'student.tex').as_posix()}}}\n")
         out.write(footer)
 
-    rc = _run_latex(tool, output_tex_file)
-    if rc != 0 or not os.path.exists(output_pdf_file):
+    rc = _run_latex(tool, output_tex_file.name)
+
+    if rc != 0 or not output_pdf_file.exists():
         print(f"Build failed for {final_pdf_path}")
         return None
 
     if not draft:
-        # Second pass for cross-references.
-        _run_latex(tool, output_tex_file)
+        _run_latex(tool, output_tex_file.name)
         shutil.move(output_pdf_file, final_pdf_path)
 
-    return output_pdf_file
+    return final_pdf_path
 
 
 def main():
@@ -146,7 +144,12 @@ def main():
     footer = (BUILD_DIR / "Support" / "bookfooter.tex").read_text()
     
     if mode == Mode.NUMBERED:
-
+        print("BUILD_DIR:", BUILD_DIR)
+        print("ROOT_DIR:", ROOT_DIR)
+        print("CHAPTERS_DIR:", CHAPTERS_DIR)
+        print("INTERMEDIATE_DIR:", INTERMEDIATE_DIR)
+        print("book file:", CHAPTERS_DIR / "book_32.txt")
+        print("book exists:", (CHAPTERS_DIR / "book_32.txt").exists())
         final_dir = BUILD_DIR / f"Workbooks-{config['Languages'][0]}-{config['Paper']}"
         for d in (INTERMEDIATE_DIR, final_dir):
             os.makedirs(d, exist_ok=True)

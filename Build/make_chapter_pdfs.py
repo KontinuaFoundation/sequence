@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-
+from pathlib import Path
 import util
 
 
@@ -30,31 +30,35 @@ if len(args) != 1:
 
 iso_code = args[0]
 date_check = None if force else True
-vol_count = 36
+VOL_COUNT = 36
 
 chap_file = "student.tex"
-workdir = "Intermediate"
-os.makedirs(workdir, exist_ok=True)
-os.chdir(workdir)
+BUILD_DIR = Path.cwd() 
+ROOT_DIR = BUILD_DIR.parent
+CHAPTERS_DIR = ROOT_DIR / "Chapters"
+USR_CFG = BUILD_DIR / "user.cfg"
+INTERMEDIATE_DIR = BUILD_DIR / "Intermediate"  
+ 
+INTERMEDIATE_DIR.mkdir(parents=True, exist_ok=True)
+os.chdir(INTERMEDIATE_DIR)
 
-with open("../user.cfg", "r") as f:
+with USR_CFG.open("r") as f:
     config = json.load(f)
 
 config["Languages"] = [iso_code]
 
-resources_dir = f"../Resources-{iso_code}"
-os.makedirs(resources_dir, exist_ok=True)
+RESOURCES_DIR = BUILD_DIR / f"Resources-{iso_code}"
+os.makedirs(RESOURCES_DIR, exist_ok=True)
 
-book_nums = [str(x).zfill(2) for x in range(1, vol_count + 1)]
-mod_dir = "../../Chapters"
+book_nums = [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
 
 failures = []
 for book_str in book_nums:
     result_ids, result_paths = util.dir_list_for_book(
-        mod_dir, book_str, config["Languages"]
+        CHAPTERS_DIR, book_str, config["Languages"]
     )
     for chap, chap_id in enumerate(result_ids):
-        outfile = f"{resources_dir}/{chap_id}.pdf"
+        outfile = f"{RESOURCES_DIR}/{chap_id}.pdf"
         print(f"{book_str}:{chap}: Making {outfile}")
         success = util.build_chapter(
             chap_file,

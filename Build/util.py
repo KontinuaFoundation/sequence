@@ -3,7 +3,7 @@ import os
 import re
 import shutil
 import subprocess
-
+from pathlib import Path
 title_pattern = re.compile(r"chapter\{([^\}]+)\}")
 chapter_pattern = re.compile(
     r"chapter\}\{\\numberline \{([^\}]+)\}[^\}]+\}\{([0-9]+)\}"
@@ -34,29 +34,26 @@ def dir_for_id(mod_dir, identifier, langlist):
     # FIXME: should search from favorite to least favorite
     return f"{mod_dir}/{identifier}/{langlist[0]}"
 
-
 def dir_list_for_book(mod_dir, book_str, langlist):
-    # FIXME: should search from favorite to least favorite
-    modlist_path = f"{mod_dir}/book_{book_str}.txt"
-    if not os.path.exists(modlist_path):
-        print(f"Error: Chapter file {modlist_path} doesn't exist")
-        return ([], [])
+    mod_dir = Path(mod_dir).resolve()
+    modlist_path = mod_dir / f"book_{book_str}.txt"
 
-    with open(modlist_path, "r") as f:
-        chapters = f.readlines()
+    if not modlist_path.exists():
+        print(f"Error: Chapter file {modlist_path} doesn't exist")
+        return [], []
+
+    chapters = modlist_path.read_text(encoding="utf-8").splitlines()
 
     result_paths = []
     result_ids = []
+
     for chapter in chapters:
         trimmed = chapter.strip()
         if trimmed and not trimmed.startswith("#"):
-            print(f"Processing {trimmed}")
             result_ids.append(trimmed)
             result_paths.append(dir_for_id(mod_dir, trimmed, langlist))
-        else:
-            print(f"Skipping {trimmed}")
-    return (result_ids, result_paths)
 
+    return result_ids, result_paths
 
 def title_for_dir(dir):
     fullpath = f"{dir}/student.tex"
@@ -122,7 +119,18 @@ def should_build_chapter(tex_path, pdf_path):
 
 
 def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, date_check=None):
-    tex_path = os.path.join(chap_dir, chapter_file)
+    chap_dir = Path(chap_dir).resolve()
+    chapter_file = Path(chapter_file)
+    final_pdf_path = Path(final_pdf_path).resolve()
+
+    BUILD_DIR = Path(__file__).resolve().parent
+    INTERMEDIATE_DIR = BUILD_DIR / "Intermediate"
+
+    support_dir = BUILD_DIR / "Support"
+
+    INTERMEDIATE_DIR.mkdir(parents=True, exist_ok=True)
+
+    tex_path = chap_dir / chapter_file
 
     if date_check is not None and not should_build_chapter(tex_path, final_pdf_path):
         print(f"Skipping {final_pdf_path}: PDF up to date with {tex_path}")
@@ -130,33 +138,34 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
 
     tool = config["LatexExecutable"]
 
-    output_tex_path = "draft.tex"
-    output_pdf_path = "draft.pdf"
-    if os.path.exists(output_pdf_path):
-        os.remove(output_pdf_path)
+    output_tex_path = INTERMEDIATE_DIR / "draft.tex"
+    output_pdf_path = INTERMEDIATE_DIR / "draft.pdf"
 
-    # Only prepend macOS TeX path if it exists; do not pollute PATH otherwise.
-    texbin = "/Library/TeX/texbin"
-    if os.path.isdir(texbin) and texbin not in os.environ.get("PATH", ""):
-        os.environ["PATH"] = texbin + os.pathsep + os.environ.get("PATH", "")
+    if output_pdf_path.exists():
+        output_pdf_path.unlink()
 
-    with open(output_tex_path, "w") as out:
-        out.write(_read("../Support/minibookheader.tex"))
-        out.write(f"\\graphicspath{{{{{chap_dir}/}}}}\n")
-        out.write(f"\\input{{{chap_dir}/{chapter_file}}}\n")
-        out.write(_read("../Support/draftmsg.tex"))
-        out.write(_read("../Support/bookfooter.tex"))
+    texbin = Path("/Library/TeX/texbin")
+    if texbin.is_dir() and str(texbin) not in os.environ.get("PATH", ""):
+        os.environ["PATH"] = str(texbin) + os.pathsep + os.environ.get("PATH", "")
 
-    cmd = [tool, "-halt-on-error", "-shell-escape", output_tex_path]
-    subprocess.run(cmd)
+    with output_tex_path.open("w") as out:
+        out.write(_read(support_dir / "minibookheader.tex"))
+        out.write(f"\\graphicspath{{{{{chap_dir.as_posix()}/}}}}\n")
+        out.write(f"\\input{{{tex_path.as_posix()}}}\n")
+        out.write(_read(support_dir / "draftmsg.tex"))
+        out.write(_read(support_dir / "bookfooter.tex"))
+
+    cmd = [tool, "-halt-on-error", "-shell-escape", output_tex_path.name]
+
+    subprocess.run(cmd, cwd=INTERMEDIATE_DIR)
     if draft:
-        # Second pass for cross-references.
-        subprocess.run(cmd)
+        subprocess.run(cmd, cwd=INTERMEDIATE_DIR)
 
-    if os.path.exists(output_pdf_path):
+    if output_pdf_path.exists():
         shutil.move(output_pdf_path, final_pdf_path)
         print(f"{final_pdf_path} built.")
         return True
+
     print(f"Build of {final_pdf_path} Failed")
     return False
 
