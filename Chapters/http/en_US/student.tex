@@ -17,7 +17,48 @@ An HTTP request is made up of several components:
     \item \textbf{Body}: The body of the request, used when sending data in POST or PUT requests.
 \end{itemize}
 
+One way to think about an HTTP request is to imagine ordering food at
+a restaurant. The method is the type of action you want to take, such
+as asking to see the menu, placing an order, changing an order, or
+canceling it. The URL is like telling the server exactly which
+restaurant counter to go to. The headers are like the extra details
+you give, such as saying you want vegetarian food or that you would
+like water with your meal. The body is the actual order information,
+such as the list of food you want to buy.
+
+The method tells the server what kind of action the client wants to
+perform. For example, a GET request is used when the client wants to
+receive information from the server, such as loading a web page or
+asking for a list of items. A POST request is used when the client
+wants to send new information to the server, such as creating an
+account or submitting a form. A PUT request is used to update
+something that already exists, and a DELETE request is used to remove
+something.
+
+The URL works like an address. It tells the request where to go. If
+the method explains what the client wants to do, the URL explains
+where that action should happen. For example, if a web app wants a
+list of users, it might send a request to a URL that ends in
+\verb|/users|. If it wants information for one specific user, it might
+send a request to a URL like \verb|/users/5|.
+
+Headers help the client and server understand each other better. They
+carry extra information along with the request or response, such as
+what type of data is being sent. This is similar to writing
+``Fragile'' on a package or adding a note that says ``Please handle
+with care.'' The message is still the same package, but the note helps
+explain how it should be handled.
+
+The body is the part of the request that contains the actual data
+being sent. For example, when a user fills out a sign-up form, the
+name, email address, and password they enter may be placed in the body
+of the request. Not every request needs a body. GET requests usually
+do not send one, because they are mainly asking to receive information
+rather than send it.
+
+
 \section{Using HTTP with Web-Based APIs}
+
 
 Software developers often use HTTP to interact with web-based APIs. An
 Application Programming Interface (API) is a set of rules that allows
@@ -30,7 +71,103 @@ them. The response from the server will often be in a format like JSON
 or XML, which the developer can then use in their own application.
 
 For example, a developer might make a GET request to
-`\texttt{https://api.example.com/users}` to retrieve a list of all
+\texttt{https://api.example.com/users} to retrieve a list of all
 users. The server would respond with a list of users in a format like
 JSON.
 
+An API endpoint is a specific URL that a client can use to communicate
+with a server. Each endpoint usually has a clear purpose. One endpoint
+might return a list of books, while another might return information
+about a single book. In the same way that a restaurant has different
+counters for ordering food, paying, or picking up an order, an API can
+have different endpoints for different tasks.
+
+When a client sends a request to an API, the server reads the request
+and decides how to respond. If the request is valid, the server sends
+back a response with the requested data or a message saying the action
+worked. If something is wrong, the server sends back a response
+explaining that there was a problem. This back-and-forth communication
+is one of the main ways web applications work behind the scenes.
+
+For example, imagine a school website that stores a list of students.
+A client could send a GET request to an endpoint like \texttt{/students}
+to ask for the full list. It could send a POST request to the same
+endpoint to add a new student. It could send a PUT request to
+\texttt{/students/3} to update the information for one student, or a
+DELETE request to \texttt{/students/3} to remove that student from the
+list. These requests follow the same HTTP ideas, even if the website
+or app itself looks very different on the screen.
+
+Many modern apps work this way. A weather app may send a request to
+get the latest forecast. A music app may send a request to get a list
+of songs. A shopping app may send a request to place an order. Even
+though users may only see buttons, menus, and pictures, HTTP requests
+are often moving data in the background.
+
+
+\section{HTTP Responses}
+
+After a server receives an HTTP request, it sends back an HTTP
+response. The response is the server's answer to the client. Just as a
+request has several parts, a response also has its own important
+parts.
+
+An HTTP response usually includes a status code, headers, and
+sometimes a body. The status code tells the client what happened. The
+headers give extra information about the response. The body contains
+the returned data, if there is any.
+
+A simple way to think about a response is to imagine asking a librarian
+for a book. The librarian might say, ``Here is the book you asked
+for,'' ``That book is checked out,'' or ``We do not have that
+book.'' These are different kinds of responses to the same kind of
+request.
+
+Some common HTTP status codes are:
+
+\begin{itemize}
+    \item 200: The request worked, and the server is sending back the requested data.
+    \item 201: The request worked, and the server created something new.
+    \item 400: The request had a problem, such as missing or incorrect information.
+    \item 404: The server could not find what was requested.
+    \item 500: Something went wrong on the server.
+\end{itemize}
+
+These codes help the client understand the result quickly. Instead of
+reading a long message first, the client can look at the status code
+and get a fast summary of what happened.
+
+
+\section{Data Formats in Responses}
+
+When a server sends data back to a client, that data needs to be
+organized in a way both sides can understand. Two common formats are
+JSON and XML. These formats are simply ways of arranging information
+so that programs can read it clearly and consistently.
+
+JSON is one of the most common formats used with web APIs. It is
+popular because it is lightweight and easy for both humans and
+programs to read. A JSON response might include data written as
+key--value pairs. For example, a user might be described with data
+such as a name, age, and email address.
+
+Here is a small example of JSON:
+
+\begin{verbatim}
+{
+  "name": "Ava",
+  "grade": 10,
+  "club": "Robotics"
+}
+\end{verbatim}
+
+In this example, \texttt{"name"}, \texttt{"grade"}, and \texttt{"club"}
+are the labels, and \texttt{"Ava"}, \texttt{10}, and
+\texttt{"Robotics"} are the values. This is similar to filling out an
+information card. Each label tells what kind of information is being
+stored, and each value is the actual information.
+
+XML is another format that may be used. It organizes information with
+opening and closing tags. While it is less common in many modern
+beginner examples, it is still useful to know that different APIs may
+return data in different formats.

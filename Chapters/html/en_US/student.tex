@@ -94,8 +94,6 @@ The main components are:
     \begin{itemize}
         \item \verb|<title>|: This element sets the title of the page, which appears in the browser tab.
         \item \verb|<meta>|: This element includes metadata such as character encoding, and viewport settings.
-        \item \verb|<link>|: This element is used to link external resources like CSS stylesheets.
-        \item \verb|<script>|: This element is used to include JavaScript code or external JavaScript files.
     \end{itemize}
     \item \textbf{body}: The \verb|body| element contains all the visible content of the web page.
 \end{itemize}
@@ -109,7 +107,6 @@ Here is a more complete example:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Website</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Welcome</h1>
@@ -117,6 +114,47 @@ Here is a more complete example:
 </body>
 </html>
 \end{minted}
+
+\begin{Exercise}[label=html-structure1, title=Building a Full HTML Document]
+Create the beginning of a web page for a chocolate chip cookie recipe. 
+Add the \texttt{DOCTYPE} declaration, the \texttt{html} element, 
+a \texttt{head} with a \texttt{title} that says "Chocolate Chip Cookies", 
+and move the following content into the \texttt{body}.
+
+\begin{minted}{html}
+<body>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+</body>
+\end{minted}
+
+Write a full HTML5 page that wraps this content correctly.
+\end{Exercise}
+
+After this exercise, the page should look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-structure1.png}
+  \caption{HTML Structure Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-structure1]
+\begin{minted}{html}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chocolate Chip Cookies</title>
+</head>
+<body>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+</body>
+</html>
+\end{minted}
+\end{Answer}
 
 \section{Web Development and HTML}
 \index{Web Development!HTML}
@@ -201,6 +239,52 @@ As mentioned, it is one of the most commonly used HTML elements. Here's an examp
 </div>
 \end{minted}
 
+\begin{Exercise}[label=html-div1, title=Grouping Recipe Content with div]
+Group the recipe title and introduction paragraph into a \texttt{div}.
+Add a "class" attribute to the \texttt{div} with the value "recipe-header".
+
+\begin{minted}{html}
+<body>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+</body>
+\end{minted}
+
+Add two more \texttt{p} elements for ingredients and steps in the body. 
+Place the \texttt{p} elements into two separate \texttt{div} elements.
+The ingredients \texttt{div} should have a class attribute with a value of "ingredients-section".
+The steps \texttt{div} should have a class attribute with a value of "steps-section".
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-div1.png}
+  \caption{HTML Div Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-div1]
+\begin{minted}{html}
+<body>
+  <div class="recipe-header">
+    <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+    <p class="intro" title="A short recipe description">
+      This recipe makes soft and sweet chocolate chip cookies.
+    </p>
+  </div>
+
+  <div class="ingredients-section">
+    <p>Ingredients</p>
+  </div>
+
+  <div class="steps-section">
+    <p>Steps</p>
+  </div>
+</body>
+\end{minted}
+\end{Answer}
+
 \section{Semantic HTML}
 \index{HTML!semantic elements}
 Unlike \verb|<div>| elements, Semantic HTML elements are elements that clearly describe their meaning to both the browser
@@ -253,6 +337,59 @@ Here is an example of using semantic elements to structure a simple blog page:
 </footer>
 \end{minted}
 
+\begin{Exercise}[label=html-semantic1, title=Using Semantic Elements]
+Replace general \texttt{div} containers with semantic elements where they make sense. 
+Use \texttt{header} for the "recipe-header".
+Use \texttt{section} for the "ingredients-section" and "steps-section". Afterwards, put these inside a \texttt{main} element.
+Add a \texttt{footer} for the bottom note. There will be no content in the footer for now.
+
+\begin{minted}{html}
+<body>
+  <div class="recipe-header">
+    <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+    <p class="intro" title="A short recipe description">
+      This recipe makes soft and sweet chocolate chip cookies.
+    </p>
+  </div>
+
+  <div class="ingredients-section">
+    <p>Ingredients</p>
+  </div>
+
+  <div class="steps-section">
+    <p>Steps</p>
+  </div>
+</body>
+\end{minted}
+\end{Exercise}
+After this, the web page should still look the same from the previous exercise.
+
+\begin{Answer}[ref=html-semantic1]
+\begin{minted}{html}
+<body>
+  <header>
+    <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+    <p class="intro" title="A short recipe description">
+      This recipe makes soft and sweet chocolate chip cookies.
+    </p>
+  </header>
+
+  <main>
+    <section class="ingredients-section">
+      <p>Ingredients</p>
+    </section>
+
+    <section class="steps-section">
+      <p>Steps</p>
+    </section>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+\end{minted}
+\end{Answer}
+
 \section{Headings and Sections}
 \index{HTML!headings}
 HTML provides six levels of headings, ranging from \verb|<h1>| to \verb|<h6>|.
@@ -272,6 +409,45 @@ is the least important.
 Headings are important for defining the structure of the content and improving accessibility. 
 They allow users to quickly scan the page and understand the organization of information. 
 Proper use of headings also benefits SEO by signaling the importance of content to search engines.
+
+\begin{Exercise}[label=html-headings1, title=Adding Section Headings]
+Replace the \texttt{p} elements in the ingredients and steps sections with \texttt{h2} tags.
+
+\begin{minted}{html}
+<main>
+  <section class="ingredients-section">
+    <p>Ingredients</p>
+  </section>
+
+  <section class="steps-section">
+    <p>Steps</p>
+  </section>
+</main>
+\end{minted}
+
+Update the main content to include headings both the Ingredients and Steps sections.
+Add an \texttt{id} attribute to each heading with the value "ingredients" and "steps" respectively.
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-headings1.png}
+  \caption{HTML Headings Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-headings1]
+\begin{minted}{html}
+<main>
+  <section class="ingredients-section">
+    <h2 id="ingredients">Ingredients</h2>
+  </section>
+
+  <section class="steps-section">
+    <h2 id="steps">Steps</h2>
+  </section>
+</main>
+\end{minted}
+\end{Answer}
 
 \section{Text Elements}
 \index{HTML!text formatting}
@@ -300,6 +476,33 @@ Examples:
 
 <p>This is <mark>highlighted</mark> text.</p>
 \end{minted}
+
+\begin{Exercise}[label=html-text1, title=Using Text Elements]
+
+Add a \texttt{p} element in the footer section of the cookie recipe page. 
+The paragraph should say: "\textbf{Important Note:} Make sure not to overbake the cookies, or they will become hard."
+
+\begin{minted}{html}
+<footer>
+</footer>
+\end{minted}
+
+Add a paragraph element inside of the \texttt{footer} element. Use the \texttt{strong} element to make "Important Note:" bold.
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-text1.png}
+  \caption{HTML Text Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-text1]
+\begin{minted}{html}
+<footer>
+  <p><strong>Important Note:</strong> Make sure not to overbake the cookies, or they will become hard.</p>
+</footer>
+\end{minted}
+\end{Answer}
 
 \section{Links}
 \index{HTML!links}
@@ -393,6 +596,79 @@ So instead of numbers, you can use letters or Roman numerals. Some of the common
     \item \verb|type="I"|: Uppercase Roman numerals (I, II, III...)
 \end{itemize}
 
+\begin{Exercise}[label=html-lists1, title=Ingredients and Steps Lists]
+Use lists to show the cookie ingredients and the baking steps. 
+The ingredients should be an unordered list, and the steps should be an ordered list.
+
+\begin{minted}{html}
+<section class="ingredients-section">
+  <h2 id="ingredients">Ingredients</h2>
+  <!-- Add an unordered list of ingredients here -->
+</section>
+
+<section class="steps-section">
+  <h2 id="steps">Steps</h2>
+  <!-- Add an ordered list of steps here -->
+</section>
+\end{minted}
+
+Here is the list of ingredients:
+
+2 1/4 cups flour.
+1 teaspoon baking soda.
+1 teaspoon salt.
+1 cup butter, 3/4 cup sugar.
+3/4 cup brown sugar, 2 eggs.
+2 cups chocolate chips.
+
+Here is the list of steps:
+
+Preheat the oven to 375°F. 
+Mix the dry ingredients in one bowl. 
+Mix the butter, sugar, brown sugar, and eggs in another bowl. 
+Stir the dry ingredients into the wet ingredients. 
+Add the chocolate chips. 
+Scoop the dough onto a baking sheet. 
+Bake for 9 to 11 minutes.
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-lists1.png}
+  \caption{HTML Lists Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-lists1]
+\begin{minted}{html}
+<section class="ingredients-section">
+  <h2 id="ingredients">Ingredients</h2>
+  <ul>
+    <li>2 1/4 cups flour</li>
+    <li>1 teaspoon baking soda</li>
+    <li>1 teaspoon salt</li>
+    <li>1 cup butter</li>
+    <li>3/4 cup sugar</li>
+    <li>3/4 cup brown sugar</li>
+    <li>2 eggs</li>
+    <li>2 cups chocolate chips</li>
+  </ul>
+</section>
+
+<section class="steps-section">
+  <h2 id="steps">Steps</h2>
+  <ol>
+    <li>Preheat the oven to 375°F.</li>
+    <li>Mix the dry ingredients in one bowl.</li>
+    <li>Mix the butter, sugar, brown sugar, and eggs in another bowl.</li>
+    <li>Stir the dry ingredients into the wet ingredients.</li>
+    <li>Add the chocolate chips.</li>
+    <li>Scoop the dough onto a baking sheet.</li>
+    <li>Bake for 9 to 11 minutes.</li>
+  </ol>
+</section>
+\end{minted}
+\end{Answer}
+
 \section{Navigation}
 \index{HTML!navigation}
 The \verb|<nav>| element is used to wrap navigational links within a navigation section. It's a semantic element
@@ -409,6 +685,49 @@ This is commonly used for site menus, table of contents, or any set of links tha
     </ul>
 </nav>
 \end{minted}
+
+\begin{Exercise}[label=html-nav1, title=Creating a Simple Navigation Bar]
+Add a navigation bar to the top of the cookie page within the \texttt{header} element.
+The navigation should link to the “Ingredients” and “Steps" sections.
+
+\begin{minted}{html}
+<header>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+
+  <!-- Add navigation here -->
+</header>
+\end{minted}
+
+Insert a \texttt{nav} element with links to each section. 
+Each link should use the \texttt{href} attribute to point to the corresponding section's \texttt{id} (e.g., \texttt{href="\#ingredients"} and \texttt{href="\#steps"}) within the same page.
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-nav1.png}
+  \caption{HTML Navigation Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-nav1]
+\begin{minted}{html}
+<header>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+
+  <nav>
+    <ul>
+      <li><a href="#ingredients">Ingredients</a></li>
+      <li><a href="#steps">Steps</a></li>
+    </ul>
+  </nav>
+</header>
+\end{minted}
+\end{Answer}
 
 \section{Tables}
 \index{HTML!tables}
@@ -519,6 +838,61 @@ Age & Skills \\
 \hline
 \end{tabular}
 \end{table}
+
+\begin{Exercise}[label=html-tables1, title=Recipe Facts Table]
+Create a new section for recipe facts. Inside the section, add a \texttt{h2} heading with the text "Recipe Facts".
+
+\begin{minted}{html}
+<section>
+  <h2>Baking Tips</h2>
+</section>
+\end{minted}
+
+Add a table that shows basic facts about the chocolate chip cookie recipe, such as prep time, bake time, and servings.
+The table must have three rows and two columns.
+Add a \texttt{border} attribute to the \texttt{<table>} element with a value of "1" to make the table borders visible.
+
+\begin{tabular}{|c|c|}
+\hline
+Prep Time & 15 minutes \\
+\hline
+Bake Time & 10 minutes \\
+\hline
+Servings & 24 cookies \\
+\hline
+\end{tabular}
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-tables1.png}
+  \caption{HTML Tables Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-tables1]
+\begin{minted}{html}
+<section>
+  <h2>Recipe Facts</h2>
+  <table border="1">
+    <caption>Chocolate Chip Cookie Recipe Facts</caption>
+    <tbody>
+      <tr>
+        <td>Prep Time</td>
+        <td>15 minutes</td>
+      </tr>
+      <tr>
+        <td>Bake Time</td>
+        <td>10 minutes</td>
+      </tr>
+      <tr>
+        <td>Servings</td>
+        <td>24 cookies</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+\end{minted}
+\end{Answer}
 
 \section{Forms}
 \index{HTML!forms}
@@ -639,3 +1013,57 @@ Here's an example of using the \verb|width| and \verb|height| attributes to spec
 \begin{minted}{html}
 <img src="logo.png" alt="Company Logo" width="200" height="100">
 \end{minted}
+
+For the next exercise, we will add an image to the cookie recipe page. Use the image below as a reference for the image you will add to the page.
+\begin{figure}[H]
+  \includegraphics[width=0.5\textwidth]{cookies.jpg}
+  \caption{Image of chocolate chip cookies}
+\end{figure}
+
+\begin{Exercise}[label=html-images1, title=The Recipe Image]
+Add a picture of the cookies to the recipe page add the bottom of the \texttt{header} element.
+
+\begin{minted}{html}
+<header>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+
+  <!-- nav is here. Just showing the header for context -->
+
+  <!-- Add the image element here -->
+</header>
+\end{minted}
+
+Add an \texttt{<img>} element with the source set to "cookies.jpg".
+Make sure that the image file is in the same folder as your HTML file.
+The \texttt{alt} attribute should be set to "Fresh chocolate chip cookies on a plate".
+Set the width of the image to 500 pixels and the height to 300 pixels.
+\end{Exercise}
+
+After this exercise, the page should now look like the following:
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{html-images1.png}
+  \caption{HTML Images Exercise Output}
+\end{figure}
+
+\begin{Answer}[ref=html-images1]
+\begin{minted}{html}
+<header>
+  <h1 id="recipe-title">Chocolate Chip Cookies</h1>
+  <p class="intro" title="A short recipe description">
+    This recipe makes soft and sweet chocolate chip cookies.
+  </p>
+
+  <nav>
+    <ul>
+      <li><a href="#ingredients">Ingredients</a></li>
+      <li><a href="#steps">Steps</a></li>
+    </ul>
+  </nav>
+
+  <img src="cookies.jpg" alt="Fresh chocolate chip cookies on a plate" width="500" height="300">
+</header>
+\end{minted}
+\end{Answer}
