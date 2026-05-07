@@ -5,6 +5,8 @@
 % Recursive vs iterative traversal
 % Searching in BSTs
 
+% FIXME adding stacks and queues as prereqs even though they dont exist yet
+
 Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \newterm{traversals} based on the order in which the nodes are visited.
 
 This chapter will discuss \newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \newterm{level-order}. Each level is traversed in sequential order.
@@ -66,19 +68,19 @@ Here, we visit the root node first, which is Alan. After visiting Alan, we add i
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[
-        scale=1.3,
-        transform shape,
-        level distance=25mm,
-        level 1/.style={sibling distance=32mm},
-        level 2/.style={sibling distance=18mm},
-        every node/.style={kontinuaNode},
-        edge from parent/.style={kontinuaEdge},
-    ]
+            scale=1.3,
+            transform shape,
+            level distance=25mm,
+            level 1/.style={sibling distance=32mm},
+            level 2/.style={sibling distance=18mm},
+            every node/.style={kontinuaNode},
+            edge from parent/.style={kontinuaEdge},
+        ]
         \node[fill=gray!80] {Alan}
         child { node[fill=gray!30] {Brad}
-            child { node {Dean} }
-            child { node {Emily} }
-        }
+                child { node {Dean} }
+                child { node {Emily} }
+            }
         child { node {Connie} };
     \end{tikzpicture}
 
@@ -87,7 +89,7 @@ Here, we visit the root node first, which is Alan. After visiting Alan, we add i
 We continue this process, visiting Connie next and adding its children, Faith and Gordon, to the queue. The queue now contains Connie, Dean, and Emily. Here is a step trace of the BFS traversal:
 \begin{center}
     \begin{tabular}{c|c|c}
-        Step  & Queue                        & Output (visited)                     \\
+        Step  & Queue                        & Output (visited)           \\
         \hline
         Start & [Alan]                       & []                         \\
         1     & [Brad, Connie]               & [Alan]                     \\
@@ -100,35 +102,134 @@ We continue this process, visiting Connie next and adding its children, Faith an
 Continuing this process until the queue is empty gives the final traversal:
 
 \begin{center}
-Alan, Brad, Connie, Dean, Emily, Faith, Gordon
+    Alan, Brad, Connie, Dean, Emily, Faith, Gordon
 \end{center}
 
 This ordering reflects a level-by-level traversal of the tree, which is why BFS on a tree is also called level-order traversal.
 
-FIXME exercise - run DFS on a tree 
+% FIXME exercise - run BFS on a tree 
 
-Our queue steps can be reflected as pseudocode as follows:
+To use BFS for \emph{searching} rather than full traversal, we simply introduce a target value and stop the algorithm as soon as the target is found. Instead of visiting every node, we check each node when it is dequeued and terminate early if it matches the desired value.
+
+For example, suppose we want to find ``Faith'' in the tree. BFS will examine nodes level by level: Alan, then Brad and Connie, then Dean, Emily, and Faith. As soon as Faith is encountered (we \emph{dequeue} it from the queue), the search stops, without visiting any remaining nodes.
+
+Our steps can be reflected as pseudocode as follows:
 \begin{algorithm}
-\caption{Breadth-First Search (BFS)}
-\begin{algorithmic}
-\Procedure{BFS}{root}
-    \State $Q \gets$ empty queue
-    \State \Call{Enqueue}{$Q$, root}
-    \While{$Q$ is not empty}
-        \State node $\gets$ \Call{Dequeue}{$Q$}
-        \State \Call{Visit}{node}
+    \caption{Breadth-First Search (BFS) - Iterative}
+    \begin{algorithmic}
+        \Procedure{BFS}{root, target}
+        \State $Q =$ empty queue
+        \State \Call{Enqueue}{$Q$, root}
+        \While{$Q$ is not empty}
+        \State node $=$ \Call{Dequeue}{$Q$}
+        \If{node = target}
+        \State \Return node
+        \EndIf
         \For{each child of node}
-            \State \Call{Enqueue}{$Q$, child}
+        \State \Call{Enqueue}{$Q$, child}
         \EndFor
-    \EndWhile
-\EndProcedure
-\end{algorithmic}
+        \EndWhile
+        \State \Return null
+        \EndProcedure
+    \end{algorithmic}
 \end{algorithm}
 
 This procedure is often used in game applications to find paths, such as maze solvers, chess algorithms, and tic-tac-toe solutions. It is also used in social network analysis to find the shortest path between two users, and in web crawling to explore the structure of websites.
 \section{DFS}
+
+In contrast, we can run a \emph{depth-first search} on the original tree (see Figure~\ref{fig:originalTree}). Depth-first search, as the name implies, goes as deep down the tree until reaching a leaf, and then backtracks to the next possible, unsearched path. DFS (implicitly) uses a stack to explore the graph or tree.
+
+The steps are fairly simple:
+\begin{enumerate}
+    \item Push the root node into the stack.
+    \item Pop a node from the stack, and mark it as visited.
+    \item Push all unvisited adjacent nodes into the stack.
+    \item Repeat steps 2 and 3 until the stack is empty.
+\end{enumerate}
+
+
+There are 3 orders in which we can traverse/search the deepest tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
+
+
+However, these orders essentially perform the same basic three tasks, 
+\begin{description}
+    \item[V] Visit the selected node.
+    \item[L] Run DFS on the selected node's left subtree.
+    \item[R] Run DFS on the selected node's right subtree.
+\end{description}
+
+The recursion terminates when we reach a leaf. At this point, the algorithm returns to the previous call, which is how \emph{backtracking} occurs. This backtracking is done via the stack we had mentioned previously.
+
 \subsection{Pre-order}
+In \texttt{pre-order} traversal, we visit the node \emph{before} exploring its subtrees.  
+The order is:
+\[
+(V, L, R)
+\]
+
+We visit the node \emph{before} its children because the node's value is needed \emph{prior} to exploring its subtrees.  
+This is useful when the node represents a decision that affects which branch of the tree you go down, such as in tree copying or directory traversal like we talked about in the previous chapter.
+
+Using our original tree, the pre-order results are:
+\begin{center}
+Alan, Brad, Dean, Emily, Connie, Faith, Gordon
+\end{center}
 \subsection{Post-order}
+In \texttt{post-order} traversal, we visit the node \emph{after} exploring both subtrees.  
+The order is:
+\[
+(L, R, V)
+\]
+
+We visit the node \emph{after} its children because the node's computation depends on results from both subtrees.  
+This is useful when combining subtree results or deleting trees, where children must be handled before the parent.
+
+The post-order traversal of our original tree is
+\begin{center}
+Dean, Emily, Brad, Faith, Gordon, Connie, Alan
+\end{center}
 \subsection{In-order}
-% Note somewhere that Inorder traversal only makes sense for binary trees
-% because it depends on having a left and right child.
+In \texttt{in-order} traversal, we visit the node \emph{between} exploring its subtrees.  
+The order is:
+\[
+(L, V, R)
+\]
+
+We visit the node \emph{between} its subtrees because the correct interpretation of the node depends on partially processed children.  
+In-order only makes sense for binary trees, because it returns the \emph{sorted order} of the binary search tree. It depends on left and right subchildren. This would be like the alphabetical order of our dictionary example from the previous chapter.
+
+The in-order traversal of our original tree becomes
+\begin{center}
+Dean, Brad, Emily, Alan, Faith, Connie, Gordon
+\end{center}
+\section{Pseudocode}
+% FIXME explain
+\begin{algorithm}
+    \caption{Depth-First Search (DFS) - Iterative}
+    \begin{algorithmic}
+        \Procedure{DFS}{$G$, $v$}
+        \State $S =$ empty stack
+        \State \Call{Push}{$S$, $v$}
+        \While{$S$ is not empty}
+            \State $v =$ \Call{Pop}{$S$}
+            \If{$v$ is not labeled as discovered}
+                \State label $v$ as discovered
+                \For{each $w$ adjacent to $v$}
+                    \State \Call{Push}{$S$, $w$}
+                \EndFor
+            \EndIf
+        \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+DFS is particularly useful for solving problems like connected-component detection in graphs and maze-solving.
+
+\section{Recursive vs Iterative Traversal}
+As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too.
+
+% FIXME
+
+\subsection{Pre-order and Post-order Numbering}
+
+% exercise about prepost num
