@@ -42,7 +42,7 @@ jobs:
           codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" .
 
   build-changed:
-    name: Build Changed Chapters
+    name: Build Changed Files
     runs-on: ubuntu-latest
     needs: [spell-check]
     timeout-minutes: 120
@@ -177,7 +177,7 @@ jobs:
         run: echo "No chapter-related changes found for this run."
 
       - name: Restore apt cache
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         uses: actions/cache/restore@v4
         with:
           path: /var/cache/apt/archives
@@ -186,7 +186,7 @@ jobs:
             ${{ runner.os }}-apt-
 
       - name: Restore pip cache
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         uses: actions/cache/restore@v4
         with:
           path: ~/.cache/pip
@@ -195,7 +195,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install LaTeX and Python dependencies
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -217,7 +217,7 @@ jobs:
           python3 -m pip install -r Build/requirements.txt
 
       - name: Verify LaTeX tools
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         run: |
           which pygmentize
           pygmentize -V
@@ -226,8 +226,27 @@ jobs:
           kpsewhich algpseudocode.sty
 
       - name: Prepare build config
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         run: python3 Build/create_user_config.py
+
+
+      - name: Restore Links.json cache
+        if: steps.detect.outputs.digital_resources_changed == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: Build/Resources-en_US/Links.json
+          key: links-json-${{ runner.os }}-${{ github.ref_name }}
+          restore-keys: |
+            links-json-${{ runner.os }}-
+      - name: Rebuild digital resources
+        if: steps.detect.outputs.digital_resources_changed == 'true'
+        run: |
+          mkdir -p Build/ci-artifacts
+          cd Build
+          python3 gather_resources.py 1
+          python3 build_workbooks_index.py
+          cp Resources-en_US/Links.json ci-artifacts/Links.json
+          cp Resources-en_US/workbooks.json ci-artifacts/workbooks.json
 
       - name: Run topological sort
         if: steps.detect.outputs.digital_resources_changed == 'true'
@@ -237,8 +256,15 @@ jobs:
           python3 topological_sort.py
           cp Workbooks-en_US-Letter/graph.json ci-artifacts/graph.json
 
+      - name: Save Links.json cache
+        if: always() && steps.detect.outputs.digital_resources_changed == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: Build/Resources-en_US/Links.json
+          key: links-json-${{ runner.os }}-${{ github.run_id }}
+
       - name: Build changed chapters
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' 
         shell: bash
         run: |
           set -euo pipefail
@@ -269,7 +295,7 @@ jobs:
           done <<< "${{ steps.detect.outputs.chapters }}"
 
       - name: Build changed workbooks
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' 
         shell: bash
         run: |
           set -euo pipefail
@@ -301,15 +327,15 @@ jobs:
             fi
           done <<< "${{ steps.detect.outputs.workbooks }}"
 
-      - name: Save apt cache
-        if: always() && steps.detect.outputs.has_changes == 'true'
+      - name: Save apt cache || steps.detect.outputs.digital_resources_changed == 'true'
+        if: always() && steps.detect.outputs.has_changes == 'true' 
         uses: actions/cache/save@v4
         with:
           path: /var/cache/apt/archives
           key: ${{ runner.os }}-apt-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Save pip cache
-        if: always() && steps.detect.outputs.has_changes == 'true'
+        if: always() && steps.detect.outputs.has_changes == 'true'  || steps.detect.outputs.digital_resources_changed == 'true'
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/pip
@@ -326,7 +352,7 @@ jobs:
           if-no-files-found: error
 
   deploy:
-    name: Deploy Changed Chapters
+    name: Deploy Changed Files
     runs-on: ubuntu-latest
     needs: [build-changed]
     if: >
