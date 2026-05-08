@@ -44,12 +44,13 @@ jobs:
   build-changed:
     name: Build Changed Chapters
     runs-on: ubuntu-latest
-    needs: [ spell-check ]
+    needs: [spell-check]
     timeout-minutes: 120
     outputs:
       has_changes: ${{ steps.detect.outputs.has_changes }}
       chapter_count: ${{ steps.detect.outputs.chapter_count }}
       workbook_count: ${{ steps.detect.outputs.workbook_count }}
+      digital_resources_changed: ${{ steps.detect.outputs.digital_resources_changed }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -89,9 +90,14 @@ jobs:
 
           declare -A chapters=()
           declare -A workbooks=()
+          digital_resources_changed=false
 
           while IFS= read -r file; do
             [[ -z "$file" ]] && continue
+
+            if [[ "$file" =~ digital_resources\.json$ ]]; then
+              digital_resources_changed=true
+            fi
 
             if [[ "$file" =~ ^Chapters/([^/]+)/ ]]; then
               chapter_id="${BASH_REMATCH[1]}"
@@ -153,6 +159,7 @@ jobs:
             echo "chapter_count=$chapter_count"
             echo "workbook_count=$workbook_count"
             echo "has_changes=$has_changes"
+            echo "digital_resources_changed=$digital_resources_changed"
           } >> "$GITHUB_OUTPUT"
 
           echo "Detected $chapter_count chapter(s):"
@@ -221,6 +228,14 @@ jobs:
       - name: Prepare build config
         if: steps.detect.outputs.has_changes == 'true'
         run: python3 Build/create_user_config.py
+
+      - name: Run topological sort
+        if: steps.detect.outputs.digital_resources_changed == 'true'
+        run: |
+          mkdir -p Build/ci-artifacts
+          cd Build
+          python3 topological_sort.py
+          cp Workbooks-en_US-Letter/graph.json ci-artifacts/graph.json
 
       - name: Build changed chapters
         if: steps.detect.outputs.has_changes == 'true'
@@ -301,20 +316,27 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
 
       - name: Upload changed chapters and workbooks artifact
-        if: steps.detect.outputs.has_changes == 'true'
+        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: changed-chapters-${{ github.sha }}
-          path: Build/ci-artifacts/*.pdf
+          path: |
+            Build/ci-artifacts/*.pdf
+            Build/ci-artifacts/*.json
           if-no-files-found: error
 
   deploy:
     name: Deploy Changed Chapters
     runs-on: ubuntu-latest
-    needs: [ build-changed ]
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' ||
+    needs: [build-changed]
+    if: >
+      github.event_name != 'pull_request' &&
+      (github.ref == 'refs/heads/master' ||
       github.event_name == 'workflow_dispatch') &&
-      needs.build-changed.outputs.has_changes == 'true'
+      (
+        needs.build-changed.outputs.has_changes == 'true' ||
+        needs.build-changed.outputs.digital_resources_changed == 'true'
+      )
     timeout-minutes: 30
     steps:
       - name: Check out repository

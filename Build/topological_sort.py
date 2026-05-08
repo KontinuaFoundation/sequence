@@ -9,7 +9,13 @@ from graphviz import Digraph
 
 import util
 
+import random
 
+def random_position():
+    return {
+        "x": random.uniform(-70, 70),
+        "y": random.uniform(-70, 70),
+    }
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Build graph.json and optional graph image from workbook metadata."
@@ -66,16 +72,33 @@ def main():
             graph.setdefault(chap_id, set())
 
     book_00_graph = dict(graph)
-    output = {}
-
-    for topic, prereqs in book_00_graph.items():
-        output[topic] = {
-            "workbook": str(chapter_to_book.get(topic)).zfill(2),
-            "prereqs": list(prereqs),
-        }
 
     path = Path("Workbooks-en_US-Letter") / "graph.json"
     path.parent.mkdir(parents=True, exist_ok=True)
+
+    old_output = {}
+    if path.exists():
+        with path.open("r") as f:
+            old_output = json.load(f)
+
+    output = {}
+
+    for topic, prereqs in book_00_graph.items():
+        old_node = old_output.get(topic, {})
+        old_x = old_node.get("x")
+        old_y = old_node.get("y")
+
+        if isinstance(old_x, (int, float)) and isinstance(old_y, (int, float)):
+            pos = {"x": old_x, "y": old_y}
+        else:
+            pos = random_position()
+
+        output[topic] = {
+            "workbook": str(chapter_to_book.get(topic)).zfill(2),
+            "prereqs": sorted(prereqs),
+            "x": pos["x"],
+            "y": pos["y"],
+        }
 
     with path.open("w") as f:
         json.dump(output, f, indent=2)
