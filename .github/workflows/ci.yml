@@ -293,8 +293,8 @@ jobs:
             fi
           done <<< "${{ steps.detect.outputs.workbooks }}"
 
-      - name: Save apt cache || steps.detect.outputs.digital_resources_changed == 'true'
-        if: always() && steps.detect.outputs.has_changes == 'true' 
+      - name: Save apt cache 
+        if: always() && steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
         uses: actions/cache/save@v4
         with:
           path: /var/cache/apt/archives
