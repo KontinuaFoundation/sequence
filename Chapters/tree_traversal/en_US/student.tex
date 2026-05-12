@@ -112,7 +112,7 @@ This ordering reflects a level-by-level traversal of the tree, which is why BFS 
 To use BFS for \emph{searching} rather than full traversal, we simply introduce a target value and stop the algorithm as soon as the target is found. Instead of visiting every node, we check each node when it is dequeued and terminate early if it matches the desired value.
 
 For example, suppose we want to find ``Faith'' in the tree. BFS will examine nodes level by level: Alan, then Brad and Connie, then Dean, Emily, and Faith. As soon as Faith is encountered (we \emph{dequeue} it from the queue), the search stops, without visiting any remaining nodes.
-
+\subsection{Pseudocode}
 Our steps can be reflected as pseudocode as follows:
 \begin{algorithm}
     \caption{Breadth-First Search (BFS) - Iterative}
@@ -143,7 +143,7 @@ The steps are fairly simple:
 \begin{enumerate}
     \item Push the root node into the stack.
     \item Pop a node from the stack, and mark it as visited.
-    \item Push all unvisited adjacent nodes into the stack.
+    \item Push the node's children onto the stack.
     \item Repeat steps 2 and 3 until the stack is empty.
 \end{enumerate}
 
@@ -202,21 +202,24 @@ The in-order traversal of our original tree becomes
 \begin{center}
 Dean, Brad, Emily, Alan, Faith, Connie, Gordon
 \end{center}
-\section{Pseudocode}
-% FIXME explain
-\begin{algorithm}
-    \caption{Depth-First Search (DFS) - Iterative}
+\subsection{Pseudocode}
+
+The previous sections (pre-order, in-order, and post-order) describe \emph{when} a node is visited during a depth-first traversal.  
+
+The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
+    \caption{Depth-First Search (DFS) - Iterative on a Tree}
     \begin{algorithmic}
-        \Procedure{DFS}{$G$, $v$}
+        \Procedure{DFS}{root}
         \State $S =$ empty stack
-        \State \Call{Push}{$S$, $v$}
+        \State \Call{Push}{$S$, root}
         \While{$S$ is not empty}
-            \State $v =$ \Call{Pop}{$S$}
-            \If{$v$ is not labeled as discovered}
-                \State label $v$ as discovered
-                \For{each $w$ adjacent to $v$}
-                    \State \Call{Push}{$S$, $w$}
-                \EndFor
+            \State node $=$ \Call{Pop}{$S$}
+            \State visit(node)\Comment{V}
+            \If{node.left $\neq$ null}
+                \State \Call{Push}{$S$, node.left}\Comment{L}
+            \EndIf
+            \If{node.right $\neq$ null}
+                \State \Call{Push}{$S$, node.right}\Comment{R}
             \EndIf
         \EndWhile
         \EndProcedure
@@ -226,11 +229,41 @@ Dean, Brad, Emily, Alan, Faith, Connie, Gordon
 DFS is particularly useful for solving problems like connected-component detection in graphs and maze-solving.
 
 \section{Recursive vs Iterative Traversal}
-As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too.
+As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let's look at DFS recursively. 
 
-We can try
-% FIXME
+Importantly, they do not change the traversal order (pre-, in-, post-order); they only change how the traversal is implemented.
 
+A \newterm{recursive traversal} relies on the program's \emph{call stack} (recall from the Advanced Python Syntax chapter). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
+ 
+\begin{Exercise}[title={Recursive DFS}, label={ex:recur_dfs}]
+    Take a look at the Iterative DFS code above. 
+
+    How can we rewrite the pseudocode to be recursively define, taking advantage of a inherent recursive structure? Try pre-order recursively first. Assume the tree is a binary tree.
+\end{Exercise}
+
+
+
+\begin{Answer}[ref={ex:recur_dfs}]
+
+\noindent\textbf{Algorithm: DFS (Pre-order) run recursively on a tree}
+
+\begin{algorithmic}
+    \Procedure{DFS}{root}
+    \If{root = null}
+        \State \Return
+    \EndIf
+    \State visit(root) \Comment{V}
+    \State \Call{DFS}{root.left} \Comment{L}
+    \State \Call{DFS}{root.right} \Comment{R}
+    \EndProcedure
+\end{algorithmic}
+
+This algorithm defines a depth-first search on a binary tree. Because the node is visited before its subtrees, it corresponds specifically to a pre-order traversal.
+\end{Answer}
+
+Note that we can create recursive DFS just by reordering the three operations (\texttt{V}, \texttt{L}, \texttt{R}).
+
+What about BFS? BFS is typically implemented iteratively because it relies on a queue. While recursive versions exist, they still depend on a queue and offer little conceptual advantage, so we omit them here.
 \subsection{Pre-order and Post-order Numbering}
 
 % exercise about prepost num
