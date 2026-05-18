@@ -307,21 +307,22 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('Build/requirements.txt') }}
 
-      - name: Upload changed chapters and workbooks artifact
-        if: steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'
+      - name: Upload changed PDFs artifact
+        if: steps.detect.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: changed-chapters-${{ github.sha }}
-          path: |
-            Build/ci-artifacts/*.pdf
-            Build/ci-artifacts/*.json
+          name: changed-pdfs-${{ github.sha }}
+          path: Build/ci-artifacts/*.pdf
           if-no-files-found: error
+
   gather-resources:
     name: Gather Resources
     runs-on: ubuntu-latest
     timeout-minutes: 60
     needs: [build-changed]
-    if: needs.build-changed.outputs.digital_resources_changed == 'true'
+    if: >
+      needs.build-changed.outputs.has_changes == 'true' ||
+      needs.build-changed.outputs.digital_resources_changed == 'true'
 
     steps:
       - name: Check out repository
@@ -402,26 +403,42 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Create deploy staging directory
+        run: mkdir -p deploy-public
+
       - name: Download changed PDFs artifact (workbooks + chapters)
+        if: needs.build-changed.outputs.has_changes == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: changed-chapters-${{ github.sha }}
-          path: chapters/
+          name: changed-pdfs-${{ github.sha }}
+          path: deploy-public/
+
+      - name: Download gathered resources artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gathered-resources-${{ github.sha }}
+          path: deploy-public/
+
+      - name: Verify deployment payload
+        run: |
+          set -euo pipefail
+          test -f deploy-public/workbooks.json
+          python3 -c "import json; json.load(open('deploy-public/workbooks.json'))"
 
       - name: Set deploy timestamp
         id: ts
         run: echo "ts=$(date -u +'%Y-%m-%d %H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy changed PDFs artifact (workbooks + chapters)
+      - name: Deploy changed files to kontinuafoundation.github.io
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
           repository-name: kontinuafoundation/kontinuafoundation.github.io
           branch: main
-          folder: chapters
+          folder: deploy-public
           target-folder: public
           clean: false
           force: false
-          commit-message: "Deploy changed chapters: ${{ steps.ts.outputs.ts }}"
+          commit-message: "Deploy changed site files: ${{ steps.ts.outputs.ts }}"
           git-config-name: github-actions[bot]
           git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
