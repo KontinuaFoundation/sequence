@@ -1,19 +1,1022 @@
 \chapter{Numerical Methods of Describing Data}
-% As of 03/16 has not been added to the book yet. 
-%Introduction
 
-\section{Numerical Summaries}
+In the Introduction to Data Visualization chapter, you learned to read a distribution from a graph.
+A histogram or boxplot can show you immediately whether data is skewed,
+where the center sits, and how spread out the values are. But a picture
+has limits. You cannot subtract two histograms. You cannot use a boxplot
+to predict a salary or compare a test score to a national average. For
+that, you need numbers.
+
+This chapter develops the numerical tools that complement the graphical
+ones you already know. By the end, you will be able to describe any
+distribution precisely, locate any individual value within it, and
+avoid the most common errors people make when summarizing data.
+
+\section{Why Numerical Summaries Matter}
+
+Look back at the scatter plot from the previous chapter. To draw the
+line of best fit through that data, two quantities appeared in the
+formula: $S_x$ and $S_y$, the standard deviations of the two variables.
+The slope of the regression line depends directly on them. Before you
+can apply any of the methods in the next chapter, you need to know
+exactly what those quantities are and how to compute them. That is what
+this chapter is for.
+
+There are three families of numerical measures, each answering a
+different question about a data set:
+
+\begin{itemize}
+    \item \newterm{Measures of central tendency}\index{measures of
+    central tendency} ask: what is a typical value?
+    \item \newterm{Measures of variation}\index{measures of variation}
+    ask: how spread out are the values?
+    \item \newterm{Measures of position}\index{measures of position}
+    ask: where does a particular value sit relative to the rest?
+\end{itemize}
+
+Each family has more than one tool, and choosing the right one depends
+on the shape of your data.
+That connection between shape and the choice of numerical summary is
+one of the central ideas of this chapter.
+
+\subsection{Summation Notation}
+
+Nearly every numerical measure involves adding things up. Before
+computing anything, we need a compact way to write sums.
+
+Suppose you record the daily sales at a shop over $n$ days, calling
+them $X_1, X_2, \ldots, X_n$. Writing out every term quickly becomes
+unwieldy. The Greek capital letter $\Sigma$ (read as ''sigma '') gives
+us a cleaner way:
+
+\[
+\sum_{i=1}^{n} X_i = X_1 + X_2 + \cdots + X_n
+\]
+
+The expression below $\Sigma$ tells you where to start; the expression
+above tells you where to stop. When the range is clear from context,
+we often write $\sum X_i$ or simply $\sum X$.
+
+Consider a student who scores the following on ten quizzes:
+
+\[ 8,\ 9,\ 0,\ 10,\ 10,\ 8,\ 7,\ 9,\ 10,\ 5 \]
+
+Their total score is
+
+\[
+\sum_{i=1}^{10} X_i = 8 + 9 + 0 + 10 + 10 + 8 + 7 + 9 + 10 + 5 = 76
+\]
+
+This notation will appear in every formula in this chapter. When you
+see $\sum X_i$, read it as ''add up all the values of $X$. ''
+
+\begin{Exercise}[title={Summation Practice}, label={ex:summation_practice}]
+A student records the daily high temperatures (in degrees Celsius)
+over one week: $22,\ 19,\ 25,\ 21,\ 18,\ 23,\ 20$.
+
+\begin{enumerate}
+    \item Write the sum of all seven values using summation notation
+    and compute it.
+    \item Compute $\displaystyle\sum_{i=1}^{7}(X_i - 20)$. What do
+    you notice about how this compares to your answer in (a)?
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:summation_practice}]
+\begin{enumerate}
+    \item $\displaystyle\sum_{i=1}^{7} X_i = 22 + 19 + 25 + 21 + 18
+    + 23 + 20 = 148$.
+    \item $(2)+(-1)+(5)+(1)+(-2)+(3)+(0) = 8$. The sum decreased
+    by $7 \times 20 = 140$, which is $n$ times the constant
+    subtracted. Shifting every value by a constant shifts the
+    total by $n$ times that constant.
+\end{enumerate}
+\end{Answer}
+
+\section{Measures of Center}
+
+You already know how to read the center of a distribution from a graph:
+it is roughly where the data balances. Now we want to pin that idea down
+to a single number. There are two main tools for this, and they do not
+always agree.
+
+\subsection{The Mean}
+
+The \newterm{mean}\index{mean} is the arithmetic average of a data set.
+You can think of it as the balancing point of the distribution. It is the
+point at which the data would balance if every value were a weight on a
+number line. This is the same seesaw idea from the graphical chapter,
+now expressed as a formula. 
+
+When the data represent an entire \newterm{population}\index{population}
+of $N$ values, the mean is denoted by the Greek letter $\mu$ (read
+``mu ''):
+
+\[
+\mu = \frac{\displaystyle\sum_{i=1}^{N} X_i}{N}
+\]
+
+When the data are a \newterm{sample}\index{sample} of $n$ values drawn
+from a larger population, the mean is denoted $\bar{X}$ (read
+``X-bar ''):
+
+\[
+\bar{X} = \frac{\displaystyle\sum_{i=1}^{n} X_i}{n}
+\]
+
+The formula is identical in both cases. Only the notation changes to
+signal whether you are describing a full population or a sample.
+
+Consider the student from the previous section with ten quiz scores:
+
+\[ 8,\ 9,\ 0,\ 10,\ 10,\ 8,\ 7,\ 9,\ 10,\ 5 \]
+
+\[
+\bar{X} = \frac{8 + 9 + 0 + 10 + 10 + 8 + 7 + 9 + 10 + 5}{10}
+= \frac{76}{10} = 7.6
+\]
+
+Notice what that zero does. One failed quiz pulled the mean down from
+what would otherwise be a strong set of scores. This is the key
+property of the mean: it is not \newterm{resistant}\index{resistant
+measure}. Every value in the data set contributes to it, so extreme
+Values which could be unusually high or low scores, can pull it noticeably away from the center of the bulk of the data.
+
+\subsection{The Median}
+
+The \newterm{median}\index{median} takes a different approach. Rather
+than averaging all the values, it finds the middle one. Half the data
+falls at or below the median; half falls at or above it.
+
+To find the median $M$ of a data set with $n$ measurements:
+
+\begin{enumerate}
+    \item Arrange all measurements in increasing order.
+    \item Compute $l = \dfrac{n+1}{2}$.
+    \item The median $M$ is the value of the $l$th measurement,
+    counted from the smallest.
+\end{enumerate}
+
+If $n$ is odd, $l$ is a whole number and the median is a value that
+actually appears in the data. If $n$ is even, $l$ falls halfway
+between two observations and the median is their average, it may not
+correspond to any value in the data.
+
+Return to the car dealership from the summation exercise. Over 14 days,
+the number of cars sold was:
+
+\[ 14,\ 9,\ 23,\ 7,\ 11,\ 23,\ 17,\ 11,\ 3,\ 24,\ 21,\ 2,\ 20,\ 20 \]
+
+Arranged in order:
+
+\[ 2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24 \]
+
+With $n = 14$:
+
+\[
+l = \frac{14 + 1}{2} = 7.5
+\]
+
+The median is the average of the 7th and 8th observations. Counting
+from the smallest, the 7th is 14 and the 8th is 17:
+
+\[
+M = \frac{14 + 17}{2} = 15.5 \text{ cars}
+\]
+
+Now notice what happens if the dealership's best day (24 cars) were
+replaced by an exceptional day of 80 cars. The mean would shift upward. The median would not move at all, as the 7th and 8th values in the sorted list are unchanged. This is what it means for the median to be resistant! That is, it does not react to extreme values the
+the way the mean does.
+
+\begin{Exercise}[title={Computing Mean and Median}, label={ex:mean_median}]
+A small bookshop records the number of books sold each day over
+eight days:
+
+\[ 12,\ 15,\ 9,\ 11,\ 14,\ 8,\ 13,\ 52 \]
+
+\begin{enumerate}
+    \item Compute the mean.
+    \item Compute the median.
+    \item The value 52 is an unusually high day. It could be a sale
+    event. Which measure is more affected by it? Explain why.
+    \item Remove the value 52 and recompute both the mean and the
+    median using the remaining seven values. How much did each change?
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:mean_median}]
+\begin{enumerate}
+    \item $\bar{X} = \dfrac{12+15+9+11+14+8+13+52}{8} =
+    \dfrac{134}{8} = 16.75$ books.
+    \item Sorted: $8,\ 9,\ 11,\ 12,\ 13,\ 14,\ 15,\ 52$.
+    $l = \dfrac{9}{2} = 4.5$, so $M = \dfrac{12+13}{2} = 12.5$ books.
+    \item The mean is more affected. It uses every value in the
+    calculation, so the outlier of 52 pulls it upward. The median
+    depends only on the middle two values, which are unaffected by
+    how extreme the highest value is.
+    \item Without 52: $\bar{X} = \dfrac{82}{7} \approx 11.71$ books.
+    Sorted: $8,\ 9,\ 11,\ 12,\ 13,\ 14,\ 15$; median $= 12$.
+    The mean dropped by about 5 books; the median changed by only 0.5.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Choosing Between Them}
+
+The mean and median each have their place, and choosing between them
+is not arbitrary. The right choice depends on the shape of the distribution,  which you can now read directly from a histogram or boxplot.
+
+For a \newterm{symmetric distribution}\index{symmetric distribution},
+the mean and median are close to each other. Either works, but the
+mean is generally preferred because it uses every observation and
+forms the foundation of most inferential statistics you will encounter
+later.
+
+For a \newterm{skewed distribution}\index{skewed distribution} or any
+data set with outliers, the mean is pulled toward the tail while the
+median stays near the bulk of the data. In these cases, the median
+gives a more honest picture of a typical value.
+
+You saw this in \textit{Introduction to Data Visualizations}. Most
+people earn within a moderate range, but a small number earn vastly
+more. The mean income for a country is often much higher than what a
+typical person earns, precisely because it is dragged upward by those
+extreme high values. The median income is usually the figure reported
+when the goal is to describe a typical household.
+
+The relationship between mean, median, and skew follows a consistent
+pattern:
+
+\begin{itemize}
+    \item Symmetric: mean $\approx$ median
+    \item Right-skewed: mean $>$ median
+    \item Left-skewed: mean $<$ median
+\end{itemize}
+
+\begin{Exercise}[title={Choosing a Measure of Center}, label={ex:choose_center}]
+For each situation, state whether you would report the mean or the
+median as the measure of center, and explain your reasoning.
+
+\begin{enumerate}
+    \item The distribution of exam scores in a class of 30 students
+    is roughly symmetric with no outliers.
+    \item The distribution of monthly salaries at a company is
+    strongly right-skewed. The CEO earns considerably more than
+    all other employees.
+    \item A histogram of the ages at which people in a city receive
+    their first driving licence shows a large cluster between 16
+    and 19, and a long tail extending into the 30s and 40s.
+    \item After removing the CEO's salary from the company data in
+    (b), the remaining distribution is roughly symmetric. Now
+    which measure would you report, and does your answer change?
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:choose_center}]
+\begin{enumerate}
+    \item Mean. Symmetric data with no outliers means the mean and
+    median are close, and the mean is preferred for further
+    calculations.
+    \item Median. The CEO's salary is an extreme outlier that would
+    pull the mean well above what a typical employee earns. The
+    median better represents the center of the bulk of the data.
+    \item Median. The long right tail indicates right skew; the mean
+    would be pulled toward the older ages and away from where most
+    people cluster.
+    \item Mean. Once the outlier is removed and the distribution is
+    symmetric, the mean is the appropriate choice.
+\end{enumerate}
+\end{Answer}
+
+\section{Measures of Spread}
+
+Two data sets can share exactly the same mean and still tell completely
+different stories. What distinguishes them is spread, which is, how far the
+values are scattered around the center. This section develops the
+numerical tools for measuring that scatter precisely.
+
+\subsection{Range and IQR}
+
+You already encountered these in the graphical chapter when building
+boxplots, so this is a brief review before introducing the more
+powerful measures.
+
+The \newterm{range}\index{range} is the simplest measure of spread:
+
+\[
+R = \text{largest value} - \text{smallest value}
+\]
+
+For the car dealership data, $R = 24 - 2 = 22$ cars. Range is easy to
+compute but unreliable, because it depends entirely on the two most extreme
+values and ignores everything in between. One unusual observation can
+make the range misleading.
+
+The \newterm{interquartile range}\index{interquartile range} (IQR)
+improves on this by focusing on the middle 50\% of the data:
+
+\[
+IQR = Q_3 - Q_1
+\]
+
+For the dealership data, $Q_1 = 9$, $Q_3 = 21$, so $IQR = 12$ cars.
+Because IQR ignores the tails entirely, it is a resistant measure, so    
+outliers do not affect it. When the median is the appropriate measure
+of center, IQR is the matching measure of spread.
+
+\subsection{Variance and Standard Deviation}
+
+Range and IQR both have a blind spot: they ignore most of the data.
+The \newterm{standard deviation}\index{standard deviation} fixes this
+by taking every value into account. It measures how far, on average,
+each observation sits from the mean.
+
+Before we can compute the standard deviation, we need the
+\newterm{variance}\index{variance}. The variance is the average of the
+squared distances from the mean. Squaring serves two purposes: it
+removes the sign so that values above and below the mean do not cancel
+each other out, and it penalizes large deviations more heavily than
+small ones.
+
+The \newterm{population variance}\index{population variance} is denoted
+$\sigma^2$:
+
+\[
+\sigma^2 = \frac{\displaystyle\sum_{i=1}^{N}(x_i - \mu)^2}{N}
+\]
+
+The \newterm{sample variance}\index{sample variance} is denoted $s^2$:
+
+\[
+s^2 = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2}{n-1}
+\]
+
+We divide by $n - 1$ rather than $n$ when working with a sample.
+Dividing by $n$ would systematically underestimate the true population
+spread because a sample tends to cluster closer to its own mean than
+the full population does. Subtracting one corrects for that.
+
+The standard deviation is simply the square root of the variance, which
+brings the units back to the same scale as the original data:
+
+\[
+\sigma = \sqrt{\sigma^2}
+\qquad \qquad
+s = \sqrt{s^2}
+\]
+
+A population standard deviation is denoted $\sigma$ (``sigma ''); a
+sample standard deviation is denoted $s$.
+
+\subsubsection*{Computing Standard Deviation by Hand}
+
+Let us work through the quiz score data step by step. The ten scores
+are $8,\ 9,\ 0,\ 10,\ 10,\ 8,\ 7,\ 9,\ 10,\ 5$ with $\bar{X} = 7.6$.
+
+\textbf{Step 1.} Compute each deviation from the mean, $x_i - \bar{x}$:
+
+\begin{center}
+\begin{tabular}{ccc}
+$x_i$ & $x_i - \bar{x}$ & $(x_i - \bar{x})^2$ \\
+\hline
+8  & $0.4$  & $0.16$ \\
+9  & $1.4$  & $1.96$ \\
+0  & $-7.6$ & $57.76$ \\
+10 & $2.4$  & $5.76$ \\
+10 & $2.4$  & $5.76$ \\
+8  & $0.4$  & $0.16$ \\
+7  & $-0.6$ & $0.36$ \\
+9  & $1.4$  & $1.96$ \\
+10 & $2.4$  & $5.76$ \\
+5  & $-2.6$ & $6.76$ \\
+\hline
+   &        & $86.40$ \\
+\end{tabular}
+\end{center}
+
+\textbf{Step 2.} Divide the sum of squared deviations by $n - 1 = 9$
+to get the sample variance:
+
+\[
+s^2 = \frac{86.40}{9} = 9.60
+\]
+
+\textbf{Step 3.} Take the square root:
+
+\[
+s = \sqrt{9.60} \approx 3.10
+\]
+
+Notice that the zero score contributes a squared
+deviation of 57.76, which is larger than the contributions of all nine
+other scores combined. One extreme value had an outsized effect on the
+standard deviation. This is what it means for standard deviation to be
+non-resistant.
+
+\begin{Exercise}[title={Computing Variance and Standard Deviation},
+label={ex:variance_sd}]
+A small car dealership records the number of cars sold each day over
+14 days:
+
+\[ 14,\ 9,\ 23,\ 7,\ 11,\ 23,\ 17,\ 11,\ 3,\ 24,\ 21,\ 2,\ 20,\ 20 \]
+
+The mean is $\bar{X} \approx 14.64$ cars.
+
+\begin{enumerate} 
+    \item The sum of squared deviations $\displaystyle\sum(x_i -
+    \bar{x})^2$ for this data set is approximately $800.38$. Use this
+    to compute the sample variance $s^2$.
+    \item Compute the sample standard deviation $s$.
+    \item Standard deviation is measured in the same units as the
+    original data. What are the units of $s$ here? What are the units
+    of $s^2$?
+    \item A second dealership has a mean of 14.64 cars per day and
+    $s = 2.1$ cars. Without any other information, which dealership
+    has more consistent daily sales? Explain.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:variance_sd}]
+\begin{enumerate} 
+    \item $s^2 = \dfrac{800.38}{14 - 1} = \dfrac{800.38}{13}
+    \approx 61.57$ cars$^2$.
+
+    Note: the exact sum of squared deviations is $\approx 742.21$,
+    giving $s^2 \approx 57.09$. If your computation gives a slightly
+    different value due to rounding $\bar{X}$, that is expected. Using
+    the unrounded mean gives $s \approx 7.56$ cars.
+
+    \item $s = \sqrt{57.09} \approx 7.56$ cars.
+    \item $s$ is measured in cars. $s^2$ is measured in cars$^2$,
+    which has no natural interpretation, which is one reason we prefer the
+    standard deviation over the variance for reporting.
+    \item The second dealership. Both have the same mean, but a smaller
+    standard deviation means the daily sales are more tightly clustered
+    around the average.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Interpreting Spread}
+
+Standard deviation is a unit of distance. Once you have computed $s$
+for a data set, you can ask of any individual observation: how many
+standard deviations away from the mean is this value? That question
+will become the foundation of the next section on z-scores.
+
+For now, focus on two properties that are always true.
+
+First, a larger standard deviation means a wider distribution. Compare
+two students' quiz scores:
+
+\begin{center}
+\begin{tabular}{lll}
+Student A: & $8,\ 9,\ 4,\ 8,\ 6,\ 8,\ 7,\ 9,\ 10,\ 5$ &
+$s_A \approx 1.90$ \\[2pt]
+Student B: & $7,\ 8,\ 6,\ 7,\ 6,\ 6,\ 7,\ 5,\ 5,\ 7$ &
+$s_B \approx 0.97$ \\
+\end{tabular}
+\end{center}
+
+Student A's scores vary more from quiz to quiz. Student B's are tightly
+packed. The standard deviations reflect exactly what you see in the
+data: $s_A > s_B$.
+
+Second, standard deviation is not resistant. Because it is computed
+from the mean, and the mean is pulled by extreme values, any outlier
+also inflates the standard deviation. Recall the quiz example: the
+single zero score contributed a squared deviation of 57.76 out of a
+total of 86.40. One observation accounted for two-thirds of the total
+spread.
+
+This is why the choice of spread measure mirrors the choice of center
+measure:
+
+\begin{itemize}
+    \item Symmetric data, no outliers: use mean and standard deviation
+    \item Skewed data or data with outliers: use median and IQR
+\end{itemize}
+
+\begin{Exercise}[title={Choosing a Measure of Spread},
+label={ex:choose_spread}]
+For each situation, state which measure of spread (standard deviation
+or IQR) is more appropriate, and explain why.
+
+\begin{enumerate} 
+    \item The distribution of heights of adult men in a country is
+    roughly symmetric and bell-shaped with no outliers.
+    \item The distribution of house prices in a city is strongly
+    right-skewed, with a small number of luxury properties selling
+    for many times more than the typical home.
+    \item A researcher removes all outliers from a right-skewed data
+    set. The remaining distribution is approximately symmetric. Which
+    measure of spread should she now report?
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:choose_spread}]
+\begin{enumerate} 
+    \item Standard deviation. Symmetric data with no outliers is
+    exactly the situation where the mean and standard deviation
+    are appropriate.
+    \item IQR. The extreme high values would inflate the standard
+    deviation substantially, making it a misleading measure of
+    typical spread. IQR focuses on the middle 50\% and is
+    unaffected by the luxury properties.
+    \item Standard deviation. Once the distribution is symmetric and
+    outlier-free, the standard deviation is the preferred measure and
+    will now accurately reflect the spread of the remaining data.
+\end{enumerate}
+\end{Answer}
+
+\section{Connecting Shape to Numerical Measures}
+
+You already know how to read shape from a histogram or boxplot. This
+section translates what you see graphically into numerical consequences:
+specifically, what skew and outliers do to the measures you just
+computed.
+
+\subsection{Symmetric Data: Mean Approximately Equals Median}
+
+When a distribution is roughly symmetric, the mean and median land
+close to each other. Neither tail is pulling the mean away from the
+center of the data. This is the situation where mean and standard
+deviation are both appropriate, and where most inferential procedures
+work as intended.
 
 
-\section{Describing Center and Spread}
+%ILLUSTRATION OR EXAMPLE OF SYMMETRIC DATA WITH MEAN AND MEDIAN CLOSE TOGETHER
 
-    \subsection{Symmetric Data}
-    \subsection{Skewed Data}
+\subsection{Skewed Data: Mean Pulled Toward the Tail}
+
+When a distribution is skewed, the mean chases the tail while the
+median stays near the bulk of the data. The direction of the skew
+tells you exactly which way the mean is pulled:
+
+% ILLUSTRATION OR EXAMPLE OF SKEWED DATA WITH MEAN AND MEDIAN FAR APART
+
+\begin{itemize}
+    \item Right-skewed: mean $>$ median. The right tail pulls the
+    mean upward.
+    \item Left-skewed: mean $<$ median. The left tail pulls the mean
+    downward.
+\end{itemize}
+
+This is not just a rule to memorize! It also follows directly from what
+you know about the mean. Because the mean uses every value in its
+calculation, a cluster of extreme values in the right tail will drag
+it rightward. The median, which depends only on rank order, does not
+move.
+
+Consider a small right-skewed data set:
+
+\[ 2,\ 3,\ 4,\ 4,\ 5,\ 5,\ 5,\ 6,\ 6,\ 7,\ 15,\ 20 \]
+
+The mean is approximately 6.83 and the median is 5.00. The two extreme
+values at 15 and 20 pull the mean well above where most of the data
+sits. On a histogram, most bars would be clustered at the left with a
+long right tail. This shape corresponds to mean $>$
+median.
+
+\subsection{Effects of Outliers}
+
+You have heard this term used all over our Statistics chapters! An \newterm{outlier}\index{outlier} is a value that sits far from the
+rest of the data. You saw the numerical definition in the graphical
+chapter: any value more than $1.5 \times IQR$ below $Q_1$ or above
+$Q_3$ is flagged as an outlier.
+
+What outliers do to each measure follows directly from whether that
+measure is resistant:
+
+\begin{itemize}
+    \item Mean: pulled toward the outlier. One extreme value can move
+    the mean substantially.
+    \item Median: unaffected. Moving the most extreme value further
+    into the tail does not change the middle rank.
+    \item Standard deviation: inflated. Because it is computed from
+    the mean, an outlier that moves the mean also increases the
+    squared deviations.
+    \item IQR: unaffected. It depends only on $Q_1$ and $Q_3$, which
+    are determined by the middle of the data.
+\end{itemize}
+
+This is why mean and standard deviation always travel together, and
+median and IQR always travel together. They are matched pairs, both
+resistant or both non-resistant.
+
+\subsection{Changing Units on Summary Measures}
+
+One practical question comes up often: if every value in a data set
+is shifted or scaled, what happens to the summary measures? Suppose a
+teacher adds 20 points to every student's test score, or a government
+increases all property taxes by 2\%. You do not need to recompute
+everything from scratch.
+
+The rules depend on whether you are adding a constant or multiplying
+by one.
+
+\textbf{Adding a constant $a$ to every value.} Shifting every
+observation by the same amount shifts the measures of center and
+position by the same amount. Measures of spread are unaffected,
+because the distances between values do not change.
+
+\textbf{Multiplying every value by a constant $b$.} Scaling every
+observation multiplies all measures, such as center, spread, and position, by the same factor. The absolute value $|b|$ is used for
+spread measures, since spread is always non-negative.
+
+These rules are summarized in the table below.
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Measure} & $Y_i = X_i + a$ & $Y_i = b \cdot X_i$ \\
+\hline
+Mean        & $\bar{Y} = \bar{X} + a$     & $\bar{Y} = b\bar{X}$ \\
+Median      & Median$(Y)$ = Median$(X) + a$ & Median$(Y) = b \cdot$Median$(X)$ \\
+Range       & Unaffected                  & Range$(Y) = |b|$\,Range$(X)$ \\
+Std dev     & Unaffected                  & $s_Y = |b| \cdot s_X$ \\
+$Q_1$, $Q_3$  & $Q_1 + a$,\ $Q_3 + a$      & $b \cdot Q_1$,\ $b \cdot Q_3$ \\
+IQR         & Unaffected                  & $IQR(Y) = |b| \cdot IQR(X)$ \\
+\end{tabular}
+\end{center}
+
+The key pattern: adding a constant moves everything but changes no
+distances; multiplying stretches or compresses everything including
+distances.
+
+\textbf{Example.} A class takes a five-question test worth 20 points
+each. The summary statistics for their scores are:
+
+\begin{center}
+\begin{tabular}{ll}
+Mean & 62 \\
+Median & 60 \\
+Range & 45 \\
+Standard deviation & 8 \\
+$Q_1$ & 48 \\
+$Q_3$ & 71 \\
+IQR & 23 \\
+\end{tabular}
+\end{center}
+
+After grading, the teacher discovers a typographical error in question
+2 that made it unanswerable. She adds 20 points to every student's
+score. The new summary statistics are:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Measure} & \textbf{Original} & \textbf{After adding 20} \\
+\hline
+Mean        & 62 & $62 + 20 = 82$ \\
+Median      & 60 & $60 + 20 = 80$ \\
+Range       & 45 & 45 (unaffected) \\
+Std dev     & 8  & 8 (unaffected) \\
+$Q_1$       & 48 & $48 + 20 = 68$ \\
+$Q_3$       & 71 & $71 + 20 = 91$ \\
+IQR         & 23 & 23 (unaffected) \\
+\end{tabular}
+\end{center}
+
+Every student's score shifted by the same amount, so the spread of
+the distribution is unchanged. The center and quartiles each moved
+up by exactly 20.
+
+\begin{Exercise}[title={Changing Units}, label={ex:changing_units}]
+County residents vote to increase property taxes by 2\% to fund local
+schools. The current summary statistics for property tax (in dollars
+per year) are:
+
+\begin{center}
+\begin{tabular}{ll}
+Mean & 12{,}000 \\
+Median & 8{,}000 \\
+Range & 30{,}000 \\
+Standard deviation & 5{,}000 \\
+$Q_1$ & 5{,}000 \\
+$Q_3$ & 14{,}000 \\
+IQR & 9{,}000 \\
+\end{tabular}
+\end{center}
+
+Each resident's new tax will be $1.02 \times$ their current tax.
+Compute the new value of each summary measure.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:changing_units}]
+Multiplying every value by $b = 1.02$:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Measure} & \textbf{Original} & \textbf{After multiplying by 1.02} \\
+\hline
+Mean        & 12{,}000 & $1.02(12{,}000) = 12{,}240$ \\
+Median      & 8{,}000  & $1.02(8{,}000) = 8{,}160$ \\
+Range       & 30{,}000 & $1.02(30{,}000) = 30{,}600$ \\
+Std dev     & 5{,}000  & $1.02(5{,}000) = 5{,}100$ \\
+$Q_1$       & 5{,}000  & $1.02(5{,}000) = 5{,}100$ \\
+$Q_3$       & 14{,}000 & $1.02(14{,}000) = 14{,}280$ \\
+IQR         & 9{,}000  & $1.02(9{,}000) = 9{,}180$ \\
+\end{tabular}
+\end{center}
+
+Unlike adding a constant, multiplying affects the spread measures too.
+Every distance in the distribution is stretched by the same factor.
+\end{Answer}
+
+\section{Z-scores}
+
+The previous section showed that adding a constant to every value
+shifts the mean but leaves the standard deviation unchanged. That
+means the distances between values, relative to the center, stay
+exactly the same. There is a natural way to express those distances
+as a single number: the \newterm{z-score}\index{z-score}, also called
+a \newterm{standardized score}\index{standardized score}.
+
+The z-score of a measurement tells you how far that value sits from
+the mean, expressed in units of standard deviations:
+
+\[
+z = \frac{x - \bar{x}}{s}
+\]
+
+For population data, replace $\bar{x}$ with $\mu$ and $s$ with
+$\sigma$. The interpretation is the same either way.
+
+A positive z-score means the value is above the mean. A negative
+z-score means it is below. A z-score of zero means the value equals
+the mean exactly. The magnitude tells you how many standard deviations
+separate the value from the center.
+
+\textbf{Example.} A class takes a test with mean 74 and standard
+deviation 6. Two students receive the following scores:
+
+\begin{center}
+\begin{tabular}{lcl}
+Student A & 88 &
+$z = \dfrac{88 - 74}{6} = \dfrac{14}{6} \approx 2.33$ \\[10pt]
+Student B & 70 &
+$z = \dfrac{70 - 74}{6} = \dfrac{-4}{6} \approx -0.67$ \\
+\end{tabular}
+\end{center}
+
+Student A scored about 2.33 standard deviations above the class
+average. Student B scored about 0.67 standard deviations below it.
+Student B is actually closer to the mean than Student A: $|-0.67|
+< |2.33|$.
+
+%\subsubsection*{Z-scores and the Changing Units Connection}
+
+%Notice something: if the teacher adds 20 points to every student's
+%score (as in the previous section), the mean increases by 20 and
+%the standard deviation stays the same. Student A's new score is 108,
+%the new mean is 94, and the new z-score is $\frac{108 - 94}{6} =
+%2.33$, which is exactly what it was before. Adding a constant to every value
+%does not change any student's relative position in the distribution.
+%Z-scores are invariant under shifting.
+%
+%This is why z-scores are useful for comparison: they strip away the
+%units and the scale, leaving only information about relative position.
+
+\subsubsection*{Comparing Across Different Distributions}
+
+Z-scores become especially powerful when comparing measurements from
+distributions with different means and standard deviations. Without
+standardization, comparing values measured on different scales is
+meaningless. With z-scores, it becomes straightforward.
+
+Suppose two cities report their daily high temperatures:
+
+\begin{center}
+\begin{tabular}{lcc}
+City & Mean daily high & Standard deviation \\
+\hline
+North Bend & $80^{\circ}$F & $12^{\circ}$F \\
+South Bend & $84^{\circ}$F & $4^{\circ}$F \\
+\end{tabular}
+\end{center}
+
+Both cities report a high of $95^{\circ}$F on the same day. Which
+city had the more unusually warm day?
+
+The raw difference from the mean is larger for North Bend
+($95 - 80 = 15$) than South Bend ($95 - 84 = 11$), but that ignores
+how variable the temperatures are in each city. Compute the z-scores:
+
+\[
+\text{North Bend: } z = \frac{95 - 80}{12} = 1.25
+\qquad
+\text{South Bend: } z = \frac{95 - 84}{4} = 2.75
+\]
+
+South Bend's $95^{\circ}$F sits 2.75 standard deviations above its
+Mean which is far more unusual than North Bend's 1.25. The day was more
+remarkably warm in South Bend, even though it was not further above
+South Bend's mean in raw degrees.
+
+\begin{Exercise}[title={Computing and Interpreting Z-scores},
+label={ex:zscores}]
+The car dealership from earlier in this chapter had mean daily sales
+of $\bar{X} \approx 14.64$ cars and standard deviation $s \approx
+7.56$ cars.
+
+\begin{enumerate}  
+    \item Compute the z-score for the best sales day (24 cars).
+    Interpret it in context.
+    \item Compute the z-score for the worst sales day (2 cars).
+    Interpret it in context.
+    \item A second dealership reports a best day of 31 cars, with
+    mean 20 and standard deviation 4. Which dealership had the more
+    unusually good best day? Show your work.
+    \item The owner of the first dealership adds a fixed weekend
+    bonus, increasing every daily total by 5 cars. Without
+    recomputing, what is the z-score for the original best day
+    of 24 cars under the new totals? Explain.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:zscores}]
+\begin{enumerate}  
+    \item $z = \dfrac{24 - 14.64}{7.56} \approx 1.24$. The best day
+    was about 1.24 standard deviations above the mean. It was a
+    notably good day but not extreme.
+    \item $z = \dfrac{2 - 14.64}{7.56} \approx -1.67$. The worst day
+    was about 1.67 standard deviations below the mean and further from
+    typical than the best day was above it.
+    \item Second dealership: $z = \dfrac{31 - 20}{4} = 2.75$.
+    The second dealership's best day was more unusually high at 2.75
+    standard deviations above its mean, compared to 1.24 for the
+    first dealership.
+    \item Still $z \approx 1.24$. Adding a constant to every value
+    shifts the mean by the same constant and leaves the standard
+    deviation unchanged. The relative position of every observation
+    in the distribution stays the same, so z-scores are unaffected.
+\end{enumerate}
+\end{Answer}
+
+Key Points: % Not sure if this shoukd be standard inclusion for all chapters yet, but working on adding this to most chapters and sections -Cheery
+\begin{itemize}
+    \item A z-score expresses a value as a number of standard
+    deviations above or below the mean
+    \item Positive z-scores are above the mean; negative z-scores
+    are below it
+    \item Z-scores allow meaningful comparison across data sets
+    measured on different scales
+    \item Adding a constant to every value does not change any
+    z-score; z-scores are invariant under shifting
+\end{itemize}
+
+\section{Percentiles and Quartiles}
+
+The mean, median, and standard deviation describe the whole
+distribution. Sometimes the question is narrower: where does one
+particular value sit relative to everyone else? A student who scores
+1400 on the SAT wants to know not just that the median was 1040,
+but what percentage of students she scored above. That is what
+percentiles and quartiles answer.
+
+\subsection*{Percentiles}
+
+The \newterm{$k$th percentile}\index{percentile} $P_k$ is the value
+such that $k\%$ of observations fall at or below it and $(100-k)\%$
+fall at or above it. For example, $P_{95}$ is the 95th percentile:
+a value at $P_{95}$ is higher than 95\% of the data and lower than
+the remaining 5\%.
+
+Three percentiles you already know appear here under new names:
+$P_{25} = Q_1$, $P_{50} = Q_2 = M$ (the median), and $P_{75} = Q_3$.
+
+To find $P_k$ for a data set of $n$ measurements:
+
+\begin{enumerate}
+    \item Arrange all measurements in increasing order.
+    \item Compute $l = \dfrac{(n+1)k}{100}$.
+    \item $P_k$ is the value of the measurement in position $l$,
+    counted from the smallest. If $l$ is not a whole number,
+    interpolate between the two surrounding observations.
+\end{enumerate}
+
+Return to the dealership data ($n = 14$, sorted):
+
+\[ 2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24 \]
+
+To find $P_{90}$:
+
+\[
+l = \frac{(14+1) \times 90}{100} = 13.5
+\]
+
+The 90th percentile falls halfway between the 13th and 14th
+observations. The 13th is 23 and the 14th is 24:
+
+\[
+P_{90} = \frac{23 + 24}{2} = 23.5 \text{ cars}
+\]
+
+On 90\% of days, the dealership sold 23.5 or fewer cars.
+
+To find $P_{10}$:
+
+\[
+l = \frac{(14+1) \times 10}{100} = 1.5
+\]
+
+Halfway between the 1st observation (2) and the 2nd (3):
+
+\[
+P_{10} = \frac{2 + 3}{2} = 2.5 \text{ cars}
+\]
+
+On 10\% of days, the dealership sold 2.5 or fewer cars.
+
+\subsection*{Quartiles and the Five-Number Summary}
+
+\newterm{Quartiles}\index{quartiles} divide a sorted data set into
+four equal parts using the 25th, 50th, and 75th percentiles. You
+first encountered these when building boxplots in the \textit{Introduction to Data Visualization}
+chapter. Here is the formal connection:
+
+\begin{itemize}
+    \item $Q_1 = P_{25}$: 25\% of values fall at or below $Q_1$
+    \item $Q_2 = P_{50} = M$: the median
+    \item $Q_3 = P_{75}$: 75\% of values fall at or below $Q_3$
+\end{itemize}
+
+In practice, quartiles are computed by splitting the sorted data into
+a lower half and an upper half and taking the median of each. For
+even $n$, split the data at the midpoint with no overlap. For odd
+$n$, exclude the median from both halves.
+
+%Might change dealership to something more inclusive in the final version, but keeping it for now -Cheery
+
+For the dealership data, split at the midpoint ($n = 14$, so seven
+values on each side):
+
+\begin{center}
+Lower half: $2,\ 3,\ 7,\ \mathbf{9},\ 11,\ 11,\ 14$
+$\Rightarrow Q_1 = 9$ \\[4pt]
+Upper half: $17,\ 20,\ 20,\ \mathbf{21},\ 23,\ 23,\ 24$
+$\Rightarrow Q_3 = 21$
+\end{center}
+
+You may notice that the median-of-halves method gives $Q_1 = 9$,
+while the percentile formula gives $P_{25} = 8.5$. Both are correct, as different software and textbooks use slightly different conventions
+for quartile computation. Small disagreements between methods are
+normal and expected. On the AP exam, the median-of-halves method is
+standard.
+
+Together with the minimum and maximum, the quartiles form the
+\newterm{five-number summary}\index{five-number summary}: the same
+five values you used to build a boxplot.
+
+\begin{center}
+\begin{tabular}{lllll}
+Min & $Q_1$ & Median & $Q_3$ & Max \\
+\hline
+2 & 9 & 15.5 & 21 & 24 \\
+\end{tabular}
+\end{center}
+
+The five-number summary and the boxplot are two representations of
+exactly the same information: one numerical, one graphical.
+
+\begin{Exercise}[title={Relative Standing},
+label={ex:percentiles}]
+Use the dealership data: \\
+$2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24$
+($n = 14$).
+
+\begin{enumerate}  
+    \item Compute $P_{50}$ using the formula $l = \dfrac{(n+1)k}{100}$.
+    Does it match the median you computed earlier? What position in
+    the sorted list does $l$ point to?
+    \item On what percentage of days did the dealership sell at most
+    21 cars?
+    \item A sales consultant tells the owner that a day with 17 cars
+    sold falls in the ''third quarter '' of the distribution. Verify
+    this by identifying which quarter 17 belongs to.
+    \item The owner wants to flag the bottom 10\% of days as
+    underperforming. Using $P_{10} = 2.5$ cars, how many of the 14
+    days fall in this category? List them.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:percentiles}]
+\begin{enumerate}  
+    \item $l = \dfrac{(14+1)(50)}{100} = 7.5$. The 50th percentile
+    falls halfway between the 7th observation (14) and the 8th (17):
+    $P_{50} = \dfrac{14+17}{2} = 15.5$. This matches the median
+    exactly.
+    \item $Q_3 = P_{75} = 21$, so 75\% of days had 21 or fewer cars
+    sold.
+    \item $Q_1 = 9$ and $Q_3 = 21$. The value 17 lies between $Q_2
+    = 15.5$ and $Q_3 = 21$, placing it in the third quarter (between
+    the median and $Q_3$). The consultant is correct.
+    \item Days with 2 or fewer cars: only the day with 2 cars sold.
+    That is 1 out of 14 days, which is about 7\% consistent with
+    the bottom 10\% cutoff of 2.5.
+\end{enumerate}
+\end{Answer}
 
 
-\section{Z-scores and Percentiles}
 
 
-\section{Common Mistakes}
 
-\
+
+
