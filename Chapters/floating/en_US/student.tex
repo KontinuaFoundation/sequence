@@ -60,3 +60,232 @@ What we can do is design the floating-point system carefully so that the errors 
 
 The key insight is that a floating-point number is not just a string of digits. A floating-point number has three parts: a \newterm{sign}\index{sign}, a \newterm{significand}\index{significand}
 (sometimes called the mantissa), and an \newterm{exponent}\index{exponent}.
+
+
+\section{Binary and the Floating-Point System}
+
+In the previous section you saw that computers cannot store most numbers
+exactly.
+Now the natural question is: how do they store numbers at all?
+The answer starts at the hardware level, with the smallest possible piece of
+information a computer can hold.
+
+\subsection{Binary System}
+
+Every process inside a CPU comes down to the flow of electrical current through
+tiny switches called \newterm{transistors}\index{transistors}.
+A transistor is either on (carrying current) or off (not carrying current).
+That gives us exactly two states, which we write as $0$ and $1$.
+This is why computers use \newterm{binary}\index{binary}: it is the only number
+system that hardware can physically implement with a simple on/off switch.
+
+A single binary digit is called a \newterm{bit}\index{bit}.
+Eight bits grouped together form a \newterm{byte}\index{byte}.
+You have probably seen units like megabyte (MB) or gigabyte (GB) before.
+One megabyte is $10^6$ bytes, and one gigabyte is $10^9$ bytes.
+A modern smartphone holds tens of billions of bits.
+
+\begin{Exercise}[title={Bits and bytes}, label={ex:bits-bytes}]
+  \begin{enumerate}
+    \item A file is $4$ megabytes.
+          How many bytes is that?
+          How many bits?
+    \item A hard drive stores $500$ gigabytes.
+          How many bits can it hold?
+          Write your answer using scientific notation.
+    \item A single bit can be $0$ or $1$.
+          Two bits together can be $00$, $01$, $10$, or $11$, which are four possible
+          values.
+          How many distinct values can $8$ bits (one byte) represent?
+          How about $64$ bits?
+  \end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:bits-bytes}]
+  \begin{enumerate}
+    \item $4 \times 10^6$ bytes;\; $4 \times 10^6 \times 8 = 3.2 \times 10^7$
+          bits.
+    \item $500 \times 10^9 \times 8 = 4 \times 10^{12}$ bits.
+    \item $2^8 = 256$ values for one byte;\;
+          $2^{64} \approx 1.8 \times 10^{19}$ values for 64 bits.
+  \end{enumerate}
+\end{Answer}
+
+
+\subsection{Floating-Point Number}
+
+Recall that a floating-point number has three parts:
+a \newterm{sign}\index{sign}, a
+\newterm{significand}\index{significand} (sometimes called the mantissa), and
+an \newterm{exponent}\index{exponent}.
+
+Before we write any formulas, let us see why all three parts are necessary
+with a base-10 analogy.
+
+Consider the number $-0.001234$.
+Written in scientific notation it is $-1.234 \times 10^{-3}$.
+Three pieces of information do all the work:
+\begin{itemize}
+  \item The \textbf{sign} ($-$) tells us the number is negative.
+  \item The \textbf{significand} ($1.234$) holds the meaningful digits.
+  \item The \textbf{exponent} ($-3$) tells us how large or small the number
+        is by shifting the decimal point.
+\end{itemize}
+
+Now watch what the exponent does when we fix the significand at $0.1234$ and
+vary it in base 10:
+
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+  Float                    & Value \\
+  \hline
+  $0.1234 \times 10^{-2}$  & $0.001234$ \\
+  $0.1234 \times 10^{1}$   & $1.234$ \\
+  $0.1234 \times 10^{4}$   & $1234$ \\
+  $0.1234 \times 10^{8}$   & $12{,}340{,}000$ \\
+  \hline
+\end{tabular}
+\end{center}
+
+The decimal point \emph{floats}, which means it can sit anywhere, controlled entirely
+by the exponent.
+That is why these are called floating-point numbers.
+The significand always carries the same digits; only the scale changes.
+
+\begin{Exercise}[title={The floating point in action}, label={ex:fp-float}]
+  The significand is fixed at $0.5050$ and the base is $10$.
+  Fill in the value represented by each float.
+
+  \begin{center}
+  \begin{tabular}{ll}
+    \hline
+    Float                    & Value \\
+    \hline
+    $0.5050 \times 10^{0}$   & \\[6pt]
+    $0.5050 \times 10^{2}$   & \\[6pt]
+    $0.5050 \times 10^{-1}$  & \\[6pt]
+    $0.5050 \times 10^{5}$   & \\[6pt]
+    \hline
+  \end{tabular}
+  \end{center}
+
+  Now answer: if you want to represent $505{,}000{,}000$ using the same
+  significand, what exponent do you need?
+\end{Exercise}
+\begin{Answer}[ref={ex:fp-float}]
+  \begin{itemize}
+    \item $0.5050 \times 10^{0} = 0.5050$
+    \item $0.5050 \times 10^{2} = 50.50$
+    \item $0.5050 \times 10^{-1} = 0.05050$
+    \item $0.5050 \times 10^{5} = 50{,}500$
+  \end{itemize}
+  For $505{,}000{,}000 = 0.5050 \times 10^9$, the exponent needed is $9$.
+\end{Answer}
+
+\subsection{Floating-Point System}
+
+A floating-point system is defined by four numbers, written $(\beta, p, m, M)$.
+Every float in that system looks like this:
+\[
+  \pm \;(0.d_1\, d_2\, \cdots\, d_p)_\beta \;\times\; \beta^e
+\]
+
+This looks intimidating at first, but each symbol has a simple job.
+Let us unpack them one at a time.
+
+\medskip
+$\boldsymbol{\beta}$  represents the \newterm{base}\index{base}.
+This is the number that the exponent is a power of.
+In everyday life we use $\beta = 10$.
+Computers use $\beta = 2$ (binary).
+
+\medskip
+$\boldsymbol{p}$  represents the \newterm{precision}\index{precision}.
+This is how many digits the significand gets to use.
+The significand $0.d_1 d_2 \cdots d_p$ has exactly $p$ digits, each chosen
+from $\{0, 1, \ldots, \beta - 1\}$.
+More digits means more precision, that is, you can represent numbers more
+accurately.
+Fewer digits means faster arithmetic but more rounding error.
+
+\medskip
+$\boldsymbol{e}$  represents the \newterm{exponent}\index{exponent}.
+This shifts the significand left or right.
+The exponent is not free to be any integer; it is capped between a minimum
+$m$ and a maximum $M$.
+Those bounds set the range of the system, i.e., how large and how small the
+representable numbers can be.
+
+\medskip
+$\boldsymbol{m}$ and $\boldsymbol{M}$  represents the \newterm{exponent bounds}\index{exponent bounds}.
+The exponent must satisfy $m \leq e \leq M$.
+Together they control overflow and underflow.
+If a result needs an exponent below $m$, underflow occurs.
+If it needs an exponent above $M$, overflow occurs.
+
+\medskip
+We say the system is \newterm{parametrized}\index{parametrized} by
+$(\beta, p, m, M)$.
+Changing any one of the four gives a new floating-point system with different
+capabilities and different limitations.
+
+\begin{Exercise}[title={Reading the parameters}, label={ex:fp-parameter}]
+  A toy floating-point system has parameters $(\beta, p, m, M) = (10, 4, -3, 4)$.
+  \begin{enumerate}
+    \item What base does this system use?
+    \item How many significant digits does it carry?
+    \item What are the smallest and largest allowed exponents?
+    \item Can this system represent $12{,}345$?
+          Try writing $12{,}345$ in the form $0.d_1d_2d_3d_4 \times 10^e$ and
+          check whether the exponent is within bounds.
+    \item Can it represent $0.00001$?
+          Show your reasoning.
+    \item Write two numbers that \emph{can} be represented exactly, and one
+          that causes overflow.
+  \end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:fp-parameter}]
+  \begin{enumerate}
+    \item Base $10$.
+    \item $4$ significant digits.
+    \item Smallest: $m = -3$;\; largest: $M = 4$.
+    \item $12{,}345 = 0.12345 \times 10^5$.
+          The exponent $5$ exceeds $M = 4$, so this causes \textbf{overflow}.
+          The system would need to round to $0.1235 \times 10^5 = 12{,}350$
+          and even then the exponent is out of range.
+    \item $0.00001 = 0.1000 \times 10^{-4}$.
+          The exponent $-4$ is below $m = -3$, so this causes
+          \textbf{underflow}.
+    \item Any number in the range $10^{-3}$ to $(1-10^{-4}) \times 10^4$
+          works, for example $0.5000 \times 10^2 = 50.00$ or
+          $0.9999 \times 10^{4} = 9999$.
+          Overflow example: any number with magnitude above $9999$, such
+          as $100{,}000$.
+  \end{enumerate}
+\end{Answer}
+
+\subsection{Connecting to Binary Floating-Point}
+
+All of the above applies to a computer's binary floating-point system,
+with $\beta = 2$ instead of $\beta = 10$.
+The significand digits $d_1, d_2, \ldots, d_p$ are now bits: each one is either
+$0$ or $1$.
+The exponent is a power of $2$.
+
+So a binary float looks like:
+\[
+  \pm \;(0.d_1\, d_2\, \cdots\, d_p)_2 \;\times\; 2^e,
+  \qquad d_i \in \{0,1\}, \quad m \leq e \leq M
+\]
+
+The specific choices of $p$, $m$, and $M$ define how much memory is used and
+how accurately numbers are stored.
+The international standard that fixes these choices for every modern computer
+is called \newterm{IEEE 754}\index{IEEE 754}, and it is the subject of the next
+section.
+
+
+
+
+
+
