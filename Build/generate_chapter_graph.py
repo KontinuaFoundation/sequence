@@ -25,6 +25,11 @@ def parse_args():
         action="store_true",
         help="Also render the dependency graph as graph.png",
     )
+    parser.add_argument(
+        "--recommended",
+        action="store_true",
+        help="Also write recommended_book_00.txt with the topological chapter order",
+    )
     return parser.parse_args()
 
 
@@ -110,12 +115,13 @@ def main():
     except CycleError as e:
         raise RuntimeError(f"cycle detected in dependency graph: {e}") from None
 
-    recommended_path = Path("../Chapters") / "recommended_book_00.txt"
-    with recommended_path.open("w") as f:
-        for chapter in order:
-            f.write(chapter + "\n")
+    if args.recommended_book_00:
+        recommended_path = Path("../Chapters") / "recommended_book_00.txt"
+        with recommended_path.open("w") as f:
+            for chapter in order:
+                f.write(chapter + "\n")
 
-    print(f"Saved {recommended_path}")
+        print(f"Saved {recommended_path}")
 
     if args.image:
         dot = Digraph()
