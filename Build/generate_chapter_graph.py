@@ -27,6 +27,8 @@ def parse_args():
     )
     parser.add_argument(
         "--recommended",
+        "--recommended-book-00",
+        dest="recommended_book_00",
         action="store_true",
         help="Also write recommended_book_00.txt with the topological chapter order",
     )
@@ -115,7 +117,7 @@ def main():
     except CycleError as e:
         raise RuntimeError(f"cycle detected in dependency graph: {e}") from None
 
-    if args.recommended_book_00:
+    if args.recommended:
         recommended_path = Path("../Chapters") / "recommended_book_00.txt"
         with recommended_path.open("w") as f:
             for chapter in order:
