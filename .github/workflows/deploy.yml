@@ -250,8 +250,10 @@ jobs:
           python3 build_chapter_list.py || (echo "build_chapter_list.py failed" && exit 1)
           python3 generate_chapter_graph.py || (echo "generate_chapter_graph.py failed" && exit 1)
           python3 build_workbooks_index.py || (echo "build_workbooks_index.py failed" && exit 1)
+          cp Workbooks-en_US-Letter/graph.json Resources-en_US/graph.json
 
           test -f Resources-en_US/Links.json
+          test -f Resources-en_US/graph.json
 
       - name: Upload gathered resources artifact
         uses: actions/upload-artifact@v4
