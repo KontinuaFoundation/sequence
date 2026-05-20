@@ -117,7 +117,7 @@ def main():
     except CycleError as e:
         raise RuntimeError(f"cycle detected in dependency graph: {e}") from None
 
-    if args.recommended:
+    if args.recommended_book_00:
         recommended_path = Path("../Chapters") / "recommended_book_00.txt"
         with recommended_path.open("w") as f:
             for chapter in order:
