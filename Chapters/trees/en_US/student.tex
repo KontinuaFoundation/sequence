@@ -101,7 +101,7 @@ The most common type of tree is the \newterm{binary tree}, where each node has \
 Let's put this practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page.
 
 
-\begin{wrapfigure}[15]{r}{0.55\textwidth}
+\begin{wrapfigure}[25]{r}{0.55\textwidth}
   \centering
   \begin{tikzpicture}[
       scale=1.3,
@@ -129,6 +129,16 @@ Let's put this practice. Recall our binary search implementation from the recurs
 Say we wanted to represent our dictionary as a tree that we could recursively binary search through. For simplicity, we will limit our words to \texttt{mango}, \texttt{apple}, \texttt{pear}, \texttt{banana}, \texttt{anagram}, \texttt{peony} and \texttt{peach}. These 7 words form a binary tree of height 2, as seen in Figure~\ref{fig:bst1}. We select the word \texttt{mango} as the root as it is the middle word after sorting alphabetically.
 
 Similar to binary search, we can find any word in the tree by starting at the root and comparing the target word to the current node's word. If the target word is less than the current node's word, we move to the left child; if it is greater, we move to the right child. We repeat this process until we find the target word or reach a leaf node, which tells us that the target word is not in the tree. This structure allows us to cut the available words in half with each step in the tree we go.
+
+What if we want to insert into a binary search tree? We must complete four actions:
+\begin{itemize}
+  \item Find the correct location for the new node. % FIXME is it always a leaf?
+  \item Create and insert the node at that location,
+  \item Connect it to its respective parent(s).
+  \item Ensure the BST properties are maintained.
+\end{itemize}
+
+Let's say, on our tree above, we want to add \texttt{orange} to the tree. Because of alphabetical sorting, 
 
 FIXME expand on addition, removal, and search of binary trees
 FIXME add exercise of a similar dictionary tree with more words, have student add and remove words, and search for words
@@ -217,23 +227,23 @@ Side note: please do not store your passwords in anywhere on your computer's mem
 
 \begin{Answer}[ref={ex:filePath}]
 
-The path to \texttt{data.csv} is 
-\begin{center}
-  \texttt{./Documents/Projects/project2/data.csv}
-\end{center}
+  The path to \texttt{data.csv} is
+  \begin{center}
+    \texttt{./Documents/Projects/project2/data.csv}
+  \end{center}
 
-The depth is the number of edges from the root to the node. 
+  The depth is the number of edges from the root to the node.
 
-In this case, it is the number of subdirectories needed to reach \texttt{data.csv}:
+  In this case, it is the number of subdirectories needed to reach \texttt{data.csv}:
 
-\begin{enumerate}[label=(\arabic*)]
-  \item \texttt{./} $\rightarrow$ \texttt{Documents}
-  \item \texttt{Documents} $\rightarrow$ \texttt{Projects}
-  \item \texttt{Projects} $\rightarrow$ \texttt{project2}
-  \item \texttt{project2} $\rightarrow$ \texttt{data.csv}
-\end{enumerate}
+  \begin{enumerate}[label=(\arabic*)]
+    \item \texttt{./} $\rightarrow$ \texttt{Documents}
+    \item \texttt{Documents} $\rightarrow$ \texttt{Projects}
+    \item \texttt{Projects} $\rightarrow$ \texttt{project2}
+    \item \texttt{project2} $\rightarrow$ \texttt{data.csv}
+  \end{enumerate}
 
-So \texttt{data.csv} is at a depth of \textbf{4}.
+  So \texttt{data.csv} is at a depth of \textbf{4}.
 \end{Answer}
 \section{Red-Black Trees and AVL Trees}
 
