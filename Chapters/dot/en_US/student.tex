@@ -233,24 +233,88 @@ The angle between u and v is 78.55 degrees
 \section{Work and Power}
 %diagram here
 Earlier, we mentioned that mechanical work is the product of the 
-force you apply to something and the amount it moves. For example, if you 
+force you apply to something and the amount it moves (formulaic representation: $W = \vec{F} \cdot \vec{d}$). For example, if you 
 push a train with a force of 10 newtons as it moves 5 meters, you have done 50 joules of work.
 
 What if you try to push the train sideways? It moves down the track 5 meters, 
-but you push it as if you were trying to derail it --- perpendicular to its motion.  
+but you push it as if you were trying to derail — perpendicular to its the tracks and its motion.  
 You have done no work, because the train didn't move at all in the direction you were pushing.
 
 % \includegraphics[width=0.8\textwidth]{train.png}
 
-
-Now that you know about dot products: The work you do is the dot
+Now that you know about dot products: The \newterm{work} you do is the dot
 product of the force vector you apply and the displacement vector of the train. (The displacement
-vector is the vector that tells how the train moved while you pushed it.) \index{work}
+vector is the vector that tells how the train moved while you pushed it.)
+$$W = \vec{F} \cdot \vec{d} = |\vec{F}| |\vec{d}| \cos\theta$$
+$$P = \vec{F} \cdot \vec{v} = |\vec{F}| |\vec{v}| \cos\theta$$
 
-Similarly, we mentioned that power is the product of the force you apply and the velocity of the
+Similarly, we mentioned that \newterm{power} is the product of the force you apply and the velocity of the
 mass you are applying it to. It is actually the dot product of the force vector and the velocity vector.\index{power}
 
 For example, if you are pushing a sled with a force of 10 newtons and it is moving 2 meters per second, 
 but your push is 20 degrees off, you aren't transferring 20 watts of power to the sled.  
 You are transferring $10 \times 2 \times \cos(20 \text{ degrees}) \approx 18.8$ watts of power.
-%add ramps and sin
+
+\begin{Exercise}[title={Power at an angle}, label=power_angle]
+A person pushes a skateboard with a force of $40$ N. The skateboard is moving forward at
+$3$ m/s, but the person's push is angled $30^\circ$ above the direction of motion.
+How much power is being transferred to the skateboard?
+\end{Exercise}
+
+\begin{Answer}[ref=power_angle]
+Power is the dot product of the force vector and the velocity vector:
+\[
+P = \vec{F} \cdot \vec{v}
+\]
+
+Since the force and velocity are at an angle, we can use:
+\[
+P = |\vec{F}| |\vec{v}| \cos\theta
+\]
+
+Here, $|\vec{F}| = 40$ N, $|\vec{v}| = 3$ m/s, and $\theta = 30^\circ$:
+\[
+P = 40(3)\cos(30^\circ)
+\]
+
+Since $\cos(30^\circ) \approx 0.866$:
+\[
+P \approx 120(0.866) \approx 104 \text{ W}
+\]
+
+Only the part of the force pointing in the direction of motion transfers power
+to the skateboard. The angled part still matters physically, but it does not all help
+move the skateboard forward. So the power transferred to the skateboard is about $104$ watts.
+\end{Answer}
+
+Similarly, the same thing happens when pushing vertically, against forces such as gravity.
+If a cart moves a distance $L$ up a ramp at angle $\theta$, its displacement is
+$\vec{d} = [L\cos\theta, L\sin\theta]$. Gravity is $\vec{F}_g = [0, -mg]$.
+
+Therefore,
+$$\vec{F}_g \cdot \vec{d} = [0, -mg] \cdot [L\cos\theta, L\sin\theta]
+= -mgL\sin\theta.$$
+
+Since $L\sin\theta$ is the height of the ramp, gravity does $-mgh$ joules of work. This is where the get that a change in potential energy is a form of work being done.
+
+\begin{Exercise}[title={Work done on a Box}, label={ex:work_pll}]
+A force $\vec{F} = [12, 5]$ N pushes a box whose displacement is
+$\vec{d} = [3, 0]$ m. How much work is done?
+\end{Exercise}
+
+\begin{Answer}[ref=work_pll]
+The work done is the dot product of the force vector and the displacement vector:
+\[
+W = \vec{F} \cdot \vec{d}
+\]
+
+Here, the force is $\vec{F} = [12, 5]$ N and the displacement is
+$\vec{d} = [3, 0]$ m. So, we use vector multiplication but multiplying each component:
+\[
+W = [12, 5] \cdot [3, 0] = 12(3) + 5(0) = 36 \text{ J}
+\]
+
+The horizontal part of the force does work because the box moves horizontally.
+The vertical part of the force does no work because the box does not move
+vertically. So the total work done is $36$ joules.
+\end{Answer}
