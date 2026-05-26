@@ -42,10 +42,10 @@ nature of the materials will simplify the job of the mentor.
 To this end, there is an online system ("Mentoris") that generates a test and its
 answer key for each workbook. Mentors will need to join the mentor
 network to access this system.  It is hoped that mentors will also use
-this system to suggest new quiz questions and improvements to the materals.
+this system to suggest new quiz questions and improvements to the materials.
 
 Learning these ideas is a journey, and everyone will travel at
-different speeds. Not everyone will make it to through to the
+different speeds. Not everyone will make it through to the
 end. This sequence is designed to accommodate that reality. That said,
 we have tried to design the workbooks so that each one will take about
 40 hours of work for the average student to consume.
@@ -92,8 +92,8 @@ such as this one, will be created in
 not Markdown.
 
 The workbooks themselves will be written in
-`LaTeX <https://www.latex-project.org>`_. The workbooks are designed to printed onto paper. In committing to
-LaTeX instead of something like reStructuredText, we giving up nice
+`LaTeX <https://www.latex-project.org>`_. The workbooks are designed to be printed onto paper. In committing to
+LaTeX instead of something like reStructuredText, we are giving up nice
 web rendering in return for a lot of control over page layout.
 We have judged this to be a comfortable compromise.
 
