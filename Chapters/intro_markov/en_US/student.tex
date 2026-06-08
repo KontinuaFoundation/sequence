@@ -1,0 +1,188 @@
+\chapter{Introduction to Markov Chains}
+\section{Markov Chains}
+Today was a \texttt{Sunny} day. However, I would like to know if it will be \texttt{Sunny} tomorrow. How can I predict the weather? Further, how many days previously do I need to know the weather to make an accurate prediction?
+
+This is the question that Russian mathematician Andrey Markov curious about:
+\begin{quote}
+    How much history of a state do you need to predict a current state?
+\end{quote}
+
+His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states.
+
+Suppose there are 3 days: Yesterday, Today, and Tomorrow. Information about Yesterday's weather does not provide any additional information about Tomorrow's weather once we know Today's weather.
+
+$$
+    P(\text{Tomorrow} \mid \text{Today}, \text{Yesterday})
+    =
+    P(\text{Tomorrow} \mid \text{Today})
+$$
+
+While weather, in reality, is not perfectly Markovian, this property allows us to model and predict it using a simplified framework. In a Markov chain, we can represent the states (\texttt{Sunny}, \texttt{Rainy}, \texttt{Cloudy}) and the probabilities of transitioning from one state to another.
+
+Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Based on historical observations, we might estimate the following probabilities:
+
+\begin{itemize}
+    \item If today is \texttt{Sunny}, tomorrow will be \texttt{Sunny} with probability $0.8$ and \texttt{Rainy} with probability $0.2$.
+    \item If today is \texttt{Rainy}, tomorrow will be \texttt{Sunny} with probability $0.4$ and \texttt{Rainy} with probability $0.6$.
+\end{itemize}
+
+These probabilities completely describe our Markov chain. Once we know today's weather, we can predict the probabilities for tomorrow's weather without needing to know what happened last week.
+
+The states and transitions probabilities can be represented using a \newterm{Markov chain}, also called a \newterm{state diagram},(which looks similar to a graph!):
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[
+            every node/.style={kontinuaNode},
+            every path/.style={kontinuaEdge},
+            lbl/.style={draw=none, fill=none, font=\small}, scale=1.5
+        ]
+
+        % Nodes
+        \node (Sunny) at (0,0) {Sunny};
+        \node (Rainy) at (2,0) {Rainy};
+
+        % Edges
+        \path[->] (Sunny) edge [loop above] node [lbl, above] {0.8} (Sunny);
+        \path[->]
+        (Sunny) edge[bend left=20] node[lbl, above] {0.2} (Rainy);
+        \path[->]
+        (Rainy) edge[bend left=20] node[lbl, below] {0.4} (Sunny);
+        \path[->] (Rainy) edge [loop above] node [lbl, above] {0.6} (Rainy);
+
+    \end{tikzpicture}
+    \caption{A Markov chain representing the weather with two states: \texttt{Sunny} and \texttt{Rainy}. The arrows indicate the probabilities of transitioning from one state to another.}
+    \label{fig:markov_1}
+\end{figure}
+Here, given the state of the weather today, we can predict the probabilities of the weather tomorrow by following the chain of arrows. There is a great visualization of Markov chains in your digital resources.
+
+FIXME exercise in drawing a state diagram, determine state space
+
+We can generalize the \newterm{Markov property} as the following equation:
+$$P(X_{n+1}=j \mid X_0,X_1,\ldots,X_n)
+    =
+    P(X_{n+1}=j \mid X_n)$$
+where $X_0, X_1, \ldots, X_n$ are states of a given process at times $0, 1, \ldots, n$ respectively. This means that the probability of transitioning to a next or future state $j$ depends only on the current state $X_n$ and not on any of the previous states.
+
+As the number of states increases, the Markov chain can become more complex. However, the Markov property still holds, allowing us to model and analyze processes in the form of a matrix of transition probabilities. This matrix, known as the \newterm{transition matrix}, captures the probabilities of moving from one state to another in a compact form.
+
+\section{Transition Matrices}
+
+A \newterm{transition matrix} records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
+
+A transition matrix $P$ for a Markov chain with $n$ states can be represented as follows:
+\[
+    P=
+    \begin{array}{c}
+        X_{t+1} \\[1em]
+        \begin{array}{c|cccc}
+            X_t    &
+            1      & 2      & \cdots & n               \\ \hline
+            1      & p_{11} & p_{12} & \cdots & p_{1n} \\
+            2      & p_{21} & p_{22} & \cdots & p_{2n} \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            n      & p_{n1} & p_{n2} & \cdots & p_{nn}
+        \end{array}
+    \end{array}
+\]
+where the rows represent $X_t$ (current state at time $t$) and the columns represent $X_{t+1}$ (next state at time $t+1$).
+
+The entry $p_{ij}$ represents the probability of transitioning from state $i$ at time $t$ to state $j$ at time $t+1$. In probability notation, we can express this as:
+\[
+    p_{ij}=P(X_{t+1}=j\mid X_t=i)
+\]
+
+For the weather example, the transition matrix is
+
+\[
+    P=
+    \begin{array}{ccc}
+                     & \text{Sunny} & \text{Rainy} \\
+        \text{Sunny} & 0.8          & 0.2          \\
+        \text{Rainy} & 0.4          & 0.6
+    \end{array}
+\]
+
+The entry in row $i$ and column $j$ gives the probability of moving from state $i$ to state $j$ in a single time step.
+
+FIXME exercise in writing a transition matrix
+
+FIXME talk about squaring the transition matrix to find probabilities of transitioning in two steps, etc.
+
+For many Markov chains, these probabilities eventually stabilize as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
+
+A steady-state distribution has a special property: applying the transition matrix does not change it. If $\mathbf{x}$ is a steady-state vector and $P$ is the transition matrix, then
+
+\[
+    P\mathbf{x}=\mathbf{x}.
+\]
+
+In other words, once the chain reaches equilibrium, the probabilities remain unchanged from one time step to the next. This equation is also the eigenvector equation with eigenvalue $1$. Therefore, steady-state distributions can be found by determining the eigenvector corresponding to the eigenvalue $1$ and then normalizing its entries so that they sum to $1$.
+
+The following example illustrates how eigenvectors can be used to determine the long-run proportion of time a Markov chain spends in each state.
+
+\begin{Exercise}[title={Markov Chain in the form of Transition Matrix}, label={ex:transition_eigen}]
+    \textit{This question is taken from an IB practice exam.}
+    A Markov Chain has two possible states, \texttt{A} and \texttt{B}. The transition matrix $P$ is given by:
+    $$\begin{array}{c} P=
+            \begin{pmatrix}
+                p   & 1-q \\
+                1-p & q
+            \end{pmatrix}\end{array}$$
+    Given one of the eigenvalues is $1$.
+    \begin{enumerate}
+        \item Solve for the eigenvector corresponding to the eigenvalue $1$.
+        \item Find an expression for the proportion of time the Markov chain spends in state \texttt{A} in the long run in terms of $p$ and $q$.
+        \item Hence or otherwise, find the proportion of time spent in state \texttt{A} when $p=0.3$ and $q=0.6$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:transition_eigen}]
+
+    \begin{enumerate}
+        \item We want to solve for $P\mathbf{x}=\mathbf{x}$. Let $\begin{array}{c} \mathbf{x}=
+                      \begin{pmatrix}
+                          x \\
+                          y
+                      \end{pmatrix}\end{array}$. Then we have
+              $$\begin{pmatrix}
+                      p   & 1-q \\
+                      1-p & q
+                  \end{pmatrix}
+                  \begin{pmatrix}
+                      x \\
+                      y
+                  \end{pmatrix}
+                  =
+                  \begin{pmatrix}
+                      x \\
+                      y
+                  \end{pmatrix}$$
+              Then this gives us the following system of equations:
+              \begin{align*}
+                  px+(1-q)y & =x \\
+                  (1-p)x+qy & =y
+              \end{align*}
+              $$x=1-q, \qquad y=1-p$$
+              Therefore, the eigenvector corresponding to the eigenvalue $1$ is
+              $$\begin{pmatrix}
+                      1-q \\
+                      1-p
+                  \end{pmatrix}$$
+              
+        \item Normalizing it gives us $(1-q)+(1-p)=2-p-q$. Therefore, the steady-state distribution is
+              $$\begin{pmatrix}
+                      \frac{1-q}{2-p-q} \\
+                      \frac{1-p}{2-p-q}
+                  \end{pmatrix}$$
+              Which for $A$ is $\frac{1-q}{2-p-q}$.
+        \item Plugging in $p=0.3$ and $q=0.6$ gives us $\frac{1-0.6}{2-0.3-0.6}=\frac{0.4}{1.1}=\frac{4}{11} = 0.364$ of the proportion of time spent in state \texttt{A}.
+    \end{enumerate}
+
+\end{Answer}
+\section{Applications}
+% https://en.wikipedia.org/wiki/PageRank
+% https://www.youtube.com/watch?v=mLiGy8KND0E
+%  talk about natural stabilization
+% nlp app intro
