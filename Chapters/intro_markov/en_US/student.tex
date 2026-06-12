@@ -1,13 +1,15 @@
 \chapter{Introduction to Markov Chains}
 \section{Markov Chains}
-Today was a \texttt{Sunny} day. However, I would like to know if it will be \texttt{Sunny} tomorrow. How can I predict the weather? Further, how many days previously do I need to know the weather to make an accurate prediction?
+Today was a \texttt{Sunny} day. However, I would like to know if it will be \texttt{Sunny} tomorrow. These are two categorical states of the weather.
+
+How can I predict the weather? In this case, we are trying to determine values of \emph{uncertainty}. We are uncertain of the weather the next day, or even, the weather in the next 5 days. How many days previously do I need to know the weather to make an accurate prediction?
 
 This is the question that Russian mathematician Andrey Markov curious about:
 \begin{quote}
     How much history of a state do you need to predict a current state?
 \end{quote}
 
-His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states.
+His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states. Generally, this chapter will deal with \newterm{discrete-time Markov chains}, where the process evolves in discrete time steps. We will discuss continuous-time Markov chains in a later chapter.
 
 Suppose there are 3 days: Yesterday, Today, and Tomorrow. Information about Yesterday's weather does not provide any additional information about Tomorrow's weather once we know Today's weather.
 
@@ -19,7 +21,9 @@ $$
 
 While weather, in reality, is not perfectly Markovian, this property allows us to model and predict it using a simplified framework. In a Markov chain, we can represent the states (\texttt{Sunny}, \texttt{Rainy}, \texttt{Cloudy}) and the probabilities of transitioning from one state to another.
 
-Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Based on historical observations, we might estimate the following probabilities:
+Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Notice the special $S$ in the notation $\mathcal{S}$, which stands for \textit{state space}.
+
+Based on historical observations, we might estimate the following probabilities:
 
 \begin{itemize}
     \item If today is \texttt{Sunny}, tomorrow will be \texttt{Sunny} with probability $0.8$ and \texttt{Rainy} with probability $0.2$.
@@ -57,8 +61,6 @@ The states and transitions probabilities can be represented using a \newterm{Mar
 \end{figure}
 Here, given the state of the weather today, we can predict the probabilities of the weather tomorrow by following the chain of arrows. There is a great visualization of Markov chains in your digital resources.
 
-FIXME exercise in drawing a state diagram, determine state space
-
 We can generalize the \newterm{Markov property} as the following equation:
 $$P(X_{n+1}=j \mid X_0,X_1,\ldots,X_n)
     =
@@ -67,9 +69,84 @@ where $X_0, X_1, \ldots, X_n$ are states of a given process at times $0, 1, \ldo
 
 As the number of states increases, the Markov chain can become more complex. However, the Markov property still holds, allowing us to model and analyze processes in the form of a matrix of transition probabilities. This matrix, known as the \newterm{transition matrix}, captures the probabilities of moving from one state to another in a compact form.
 
+% Takes up entire page
+\begin{Exercise}[title={Frank's Hot Dog Chain}, label={ex:markov_1}]
+Frank is opening a new hot dog stand. Depending on how much they like his hot dogs, new customers have a chance of becoming a regular customer. If they do not like them, they may become an inactive customer.  
+
+A new customer has a:
+\begin{itemize}
+    \item 40\% chance of remaining new,
+    \item 50\% chance of becoming regular,
+    \item 10\% chance of becoming inactive.
+\end{itemize}
+A regular customer has a:
+\begin{itemize}
+    \item 10\% chance of reverting to new,
+    \item 80\% chance of staying regular,
+    \item 10\% chance of becoming inactive.
+\end{itemize}
+An inactive customer has a:
+\begin{itemize}
+    \item 20\% chance of returning as new,
+    \item 30\% chance of becoming regular,
+    \item 50\% chance of remaining inactive.
+\end{itemize}
+
+Assuming the $X_n$ are the states at of the $n$-th visit to the store (such that $X_0 \implies \text{First Visit}$),
+\begin{enumerate}
+    \item Identify the state space of this Markov chain.
+    \item Draw a Markov chain to represent this process.
+    \item Simplify this using the Markov property, and solve for the following probability:
+    $$P(X_{n+1}=R \mid X_n=I, X_{n-1}=R, X_{n-2}=N)$$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:markov_1}]
+
+\begin{enumerate}
+    \item   The state space of this Markov chain is $\mathcal{S} = \{N, R, I\}$ where $N$ represents new customers, $R$ represents regular customers, and $I$ represents inactive customers.
+    \item 
+    \begin{tikzpicture}[
+        every node/.style={kontinuaNode},
+        every path/.style={kontinuaEdge},
+        lbl/.style={draw=none, fill=none, font=\small}, scale=1
+        ]
+
+        % Nodes
+        \node (N) at (0,0) {N};
+        \node (R) at (4,0) {R};
+        \node (I) at (2, -4) {I};
+
+        % Edges
+        \path[->] (N) edge [loop above] node [lbl, above] {0.4} (N);
+        \path[->]
+        (N) edge[bend left=20] node[lbl, above] {0.5} (R);
+        \path[->]
+        (N) edge[bend left=20] node[lbl, left] {0.1} (I);
+
+        \path[->] (I) edge [loop below] node [lbl, below] {0.5} (I);
+        \path[->]
+        (I) edge[bend left=20] node[lbl, right] {0.3} (R);
+        \path[->]
+        (I) edge[bend left=20] node[lbl, left] {0.2} (N);
+
+        \path[->] (R) edge [bend left = 20] node [lbl, right] {0.1} (I);
+        \path[->]
+        (R) edge [loop above] node[lbl, above] {0.8} (R);
+        \path[->]
+        (R) edge[bend left=20] node[lbl, below] {0.1} (N);
+    \end{tikzpicture}
+    \item 
+    $$P(X_{n+1}=R \mid X_n=I, X_{n-1}=R, X_{n-2}=N)
+=
+P(X_{n+1}=R \mid X_n=I)$$
+$$\text{Probability: } 30\%$$
+\end{enumerate}
+\end{Answer}
+
 \section{Transition Matrices}
 
-A \newterm{transition matrix} records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
+A \newterm{transition matrix} (also sometimes called a \newterm{stochastic matrix}) records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
 
 A transition matrix $P$ for a Markov chain with $n$ states can be represented as follows:
 \[
@@ -106,10 +183,127 @@ For the weather example, the transition matrix is
 
 The entry in row $i$ and column $j$ gives the probability of moving from state $i$ to state $j$ in a single time step.
 
-FIXME exercise in writing a transition matrix
 
-FIXME talk about squaring the transition matrix to find probabilities of transitioning in two steps, etc.
+\begin{Exercise}[title={Frank's Hot Dog stand, returns}, label={ex:markov_2}]
 
+Suppose Frank's hot dog stand is still running strong, but the customers are getting harder to please. The states still remain $\mathcal{S} = \{N, R, I\}$. The transition probabilities have changed, and the new transition matrix is given by:
+
+$$\begin{array}{c} P=
+\begin{bmatrix}
+0.50 & 0.30 & 0.20 \\
+0.15 & 0.65 & 0.20 \\
+0.10 & 0.15 & 0.75
+\end{bmatrix} \end{array}$$
+
+\begin{enumerate}
+    \item Find the probability that a regular customer becomes an inactive customer on their next visit.
+    \item Find the probability that an inactive customer becomes a regular customer after two visits.
+    \item Find the probability that a new customer becomes an inactive customer after three visits.
+\end{enumerate}
+
+\end{Exercise}
+\begin{Answer}[ref={ex:markov_2}]
+
+
+\begin{enumerate}
+    \item Regular $\rightarrow$ Inactive: $P(X_{n+1}=I \mid X_n=R) = 0.20$.
+    \item Inactive $\rightarrow$ Regular after two visits: We need to find $P(X_{n+2}=R \mid X_n=I)$. This can be calculated by two multiplications and summing over all possible intermediate states:
+     \begin{itemize}
+        \item $I\to N\to R = 0.10 \times 0.30 = 0.03$
+        \item $I\to R\to R = 0.15 \times 0.65 = 0.0975$
+        \item $I\to I\to R = 0.75 \times 0.15 = 0.1125$
+     \end{itemize}
+
+     $$0.03+0.0975+0.1125 = 0.24$$
+    \item New $\rightarrow$ Inactive after three visits: We need to find $P(X_{n+3}=I \mid X_n=N)$. This can be calculated by \emph{three} multiplications and summing over all possible intermediate states:
+     \begin{itemize}
+        \item $N\to N\to N\to I = 0.50 \times 0.50 \times 0.20 = 0.05$
+        \item $N\to N\to R\to I = 0.50 \times 0.30 \times 0.20 = 0.03$
+        \item $N\to N\to I\to I = 0.50 \times 0.20 \times 0.75 = 0.075$
+        \item $N\to R\to N\to I = 0.30 \times 0.15 \times 0.20 = 0.009$
+        \item $N\to R\to R\to I = 0.30 \times 0.65 \times 0.20 = 0.039$
+        \item $N\to R\to I\to I = 0.30 \times 0.20 \times 0.75 = 0.045$
+        \item $N\to I\to N\to I = 0.20 \times 0.10 \times 0.20 = 0.004$
+        \item $N\to I\to R\to I = 0.20 \times 0.15 \times 0.20 = 0.006$
+        \item $N\to I\to I\to I = 0.20 \times 0.75 \times 0.75 = 0.1125$
+     \end{itemize}
+
+     $$0.050+0.030+0.075+0.009+0.039+0.045+0.004+0.006+0.1125 = 0.3705$$
+\end{enumerate}
+\end{Answer}
+
+From this exercise, we saw how to calculate the probability of transitioning from one state to another after multiple steps. This can be done by multiplying the transition probabilities along the path of states and summing over all possible paths.
+
+We can also do this process using matrix multiplication. Specifically, if we want to find the probability of transitioning from one state to another after $k$ steps, we can compute the $k$-th power of the transition matrix $P^k$. The entry in row $i$ and column $j$ of $P^k$ will give us the probability of transitioning from state $i$ to state $j$ in exactly $k$ steps.
+
+The transition matrix P gives probabilities for one state change. To find probabilities after two state changes, we compute $P^2$. This is done by multiplying the transition matrix by itself:
+\[
+P^2 = P \times P
+\]
+For example, using the hot dog stand transition matrix, we would represent the probability of transitioning from a new customer to an regular customer after two steps as:
+\[
+\sum_{k} P_{N,k} \cdot P_{k,R}= P^2_{N,R}
+\]
+where $k$ ranges over all possible intermediate states (new, regular, inactive). 
+
+Therefore, if we want the probability of moving from state $i$ to state $j$ after two steps, we look at the $(i,j)$ entry of $P^2$, written $(P^2)_{ij}$.
+
+Generally we can represen this as the following equation:
+\[
+P^k_{ij} = P(X_{n+k}=j \mid X_n=i)
+\]  
+where $P^k_{ij}$ is the entry in row $i$ and column $j$ of the matrix $P^k$. This gives us the probability of transitioning from state $i$ to state $j$ in exactly $k$ steps. 
+\[
+\text{Distribution after $k$ steps} = P^{k}
+\]
+Note that this is only possible square matrices, which means the number of states must be the same for the current and next state. This is a common assumption in Markov chains, as it allows us to model processes where the set of possible states does not change over time.
+\begin{Exercise}[title={Chemical Change}, label={ex:markov_3}]
+A chemical changes colors approximately every 30 minutes. The state space of this chemical is $\mathcal{S} = \{\text{Green}, \text{Blue}\}$.
+
+$$\begin{array}{c} P=
+\begin{bmatrix}
+0.2 &  0.8 \\
+0.1 & 0.9 
+\end{bmatrix} \end{array}$$
+
+Find the $P^3$, the transition matrix after 90 minutes. Then, find $P(X_{n+3}=\text{Green} \mid X_n=\text{Blue})$.
+\end{Exercise}
+\begin{Answer}[ref={ex:markov_3}]
+
+To find $P^3$, we need to compute the matrix multiplication of $P$ with itself three times. First, we compute $P^2$:
+$$\begin{array}{c} P^2=
+\begin{bmatrix}
+0.2(0.2)+0.8(0.1) & 0.2(0.8)+0.8(0.9)\\
+0.1(0.2)+0.9(0.1) & 0.1(0.8)+0.9(0.9)
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.12 & 0.88\\
+0.11 & 0.89
+\end{bmatrix} \end{array}$$
+Then find $P^3$ from $P^2\cdot P$
+\begin{align*}
+P^3 &= \begin{bmatrix}
+0.12 & 0.88\\
+0.11 & 0.89
+\end{bmatrix}
+\begin{bmatrix}
+0.2 & 0.8\\
+0.1 & 0.9
+\end{bmatrix} \\
+&= \begin{bmatrix}
+0.12(0.2)+0.88(0.1) & 0.12(0.8)+0.88(0.9)\\
+0.11(0.2)+0.89(0.1) & 0.11(0.8)+0.89(0.9)
+\end{bmatrix} \\
+&= \begin{bmatrix}
+0.112 & 0.888\\
+0.111 & 0.889
+\end{bmatrix}
+\end{align*}
+
+So $$P^3_{\text{Blue},\text{Green}} = P(X_{n+3}=\text{Green}\mid X_n=\text{Blue})=0.111$$, which means that if the chemical is currently blue, there is an 11.1\% chance it will be green after 90 minutes.
+\end{Answer}
+\section{Steady State Distribution}
 For many Markov chains, these probabilities eventually stabilize as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
 
 A steady-state distribution has a special property: applying the transition matrix does not change it. If $\mathbf{x}$ is a steady-state vector and $P$ is the transition matrix, then
@@ -182,7 +376,23 @@ The following example illustrates how eigenvectors can be used to determine the 
 
 \end{Answer}
 \section{Applications}
-% https://en.wikipedia.org/wiki/PageRank
-% https://www.youtube.com/watch?v=mLiGy8KND0E
-%  talk about natural stabilization
-% nlp app intro
+% add a general application paragraph
+\subsection{PageRank}
+
+Imagine an individual browsing the internet. They start on a random webpage and click on links to navigate to other pages. The probability of moving from one webpage to another can be modeled as a Markov chain, where each webpage represents a state and the links between pages represent transitions with certain probabilities.
+
+In this case, each page is a \emph{state} and each link from one page to another represents a \emph{transition} with a certain probability. The transition probabilities can be determined based on the structure of the web, such as the number of links on each page and the likelihood of a user clicking on those links. If a page has more links, the probability of transitioning to any particular linked page is lower. For example, if page $i$ has 3 \newterm{outgoing links}, the probability of transitioning to each linked page would be $\frac{1}{3}$. The more links to a given page that exist (called \newterm{incoming links}), the more ``important'' that webpage is. Since these links are directed and each form a Markov Chain, recognize that this is \emph{directed graph}. 
+
+Now, if we want to find the long-run proportion of time a user spends on each webpage, we can use the \emph{steady-state distribution} of this Markov chain. The steady-state distribution will give us the PageRank of each webpage, which is a measure of its importance based on the structure of the web. A few issues arise in this model, such as the presence of \emph{dead ends} (pages with no outgoing links) and \emph{spider traps} (sets of pages that link to each other but not to the rest of the web). To find the ultimate page rank, we can use a modified version of the transition matrix that consists of a stabilized probability
+\[
+\pi_{n+1} = \pi_n P
+\]
+eventually this will converge to a steady-state distribution $\pi$ such that $\pi P = \pi$. This is the PageRank vector (similar to the eigenvector discussed above), which gives the relative importance of each webpage in the long run.
+
+There may be an additional \newterm{damping factor} ($d$) that is introduced to compensate for the possibility that a user randomly stops following links and instead jumps to a different random page. This is often set to around $0.85$. The probability that they instead jump to any random page is $1 - d$, usually $0.15$. In matrix terms, this leads to a modified transition model    
+\[
+G = dP + (1-d)\frac{1}{n}J,
+\]
+where $J$ is the all-ones matrix and $n$ is the number of pages. This ensures the resulting chain is irreducible and aperiodic, so the steady-state distribution exists and is unique.
+\subsection{Hidden Markov Models}
+% \newtermP{Hidden Markov Models} (HMMs) are a 
