@@ -462,8 +462,31 @@ This should look like this:
 % In the next chapter, you will make a priority queue class that will
 % work in this case.
 
-\section{A* (A-star) Search Algorithm}
 
 
 \section{Bellman-Ford Algorithm}
 
+The Bellman-Ford Algorithm is another shortest path algorithm like
+Dijkstra's. However, unlike Dijkstra's Algorithm, Bellman-Ford can
+handle graphs with negative weight edges.\index{Bellman-Ford algorithm}
+
+The algorithm works as follows:
+
+\begin{enumerate}
+    \item Assign a tentative distance value for every node: set it to
+      zero for our initial node and to infinity for all other nodes.
+    \item For each edge $(u, v)$ with weight $w$, if the current
+      distance to $v$ is greater than the distance to $u$ plus $w$,
+      update the distance to $v$ to be the distance to $u$ plus $w$.
+    \item Repeat the previous step $|V| - 1$ times, where $|V|$ is the
+      number of vertices in the graph.
+    \item After the above steps, if you can still find a shorter path,
+      there exists a negative cycle.
+\end{enumerate}
+
+If the graph does not contain a negative cycle reachable from the
+source, the shortest paths are well-defined, and Bellman-Ford will
+correctly calculate them. If a negative cycle is reachable, no
+solution exists, but Bellman-Ford will detect it.
+
+\section{A* (A-star) Search Algorithm}

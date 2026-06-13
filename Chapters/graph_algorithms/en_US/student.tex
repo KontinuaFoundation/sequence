@@ -1,17 +1,6 @@
 \chapter{Other Graph Algorithms and Proofs}
 
-% note: we are splitting this chapter and its previous chapters into three chapters to cover concepts more clearly
-% Previous chapters
-% - graphs
-% trees 
-% new
-% 1. Graph and Tree Traversal
-% DFS
-% BFS 
-% 2. Shortest Paths
-% BFS (unweighted shortest path)
-% Dijkstra (non negative weights)
-% Bellman-Ford Algorithm (negative weights)
+
 % 3. Graph optimization (this chapter)
 % Prim's - MST
 %  kruska - mst
@@ -20,45 +9,138 @@
 %  adjacency matrices [prereq matrices and lin alg.] https://github.com/KontinuaFoundation/sequence/issues/303
 
 % note, eliminate dijkstra and binarys search as their own chapters
-Now that you are familiar with Dijkstra's algorithm for finding the
-shortest path in a graph, you are well-equipped to understand more
-graph algorithms. This document will discuss two other important
-algorithms: \newterm{Depth-First Search} (\newterm{DFS}) and the Bellman-Ford algorithm.\index{depth-first search} \index{DFS}
+This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs).
+\section{Adjacency Matrices}
+
+Recall that we can represent graphs as lists of data called adjacency lists. In code, this could look like the following:
+\begin{itemize}
+  \item A: [B, C]
+  \item B: [A, D]
+  \item C: [A]
+  \item D: [B]
+\end{itemize}
+
+This represents the following graph
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Nodes
+    \node (A) at (0,0) {A};
+    \node (B) at (1,3) {B};
+    \node (C) at (3,-1) {C};
+    \node (D) at (-1,2) {D};
 
 
-\section{Bellman-Ford Algorithm}
+    % Edges
+    \draw (A) -- (B);
+    \draw (A) -- (C);
+    \draw (B) -- (D);
 
-The Bellman-Ford Algorithm is another shortest path algorithm like
-Dijkstra's. However, unlike Dijkstra's Algorithm, Bellman-Ford can
-handle graphs with negative weight edges.\index{Bellman-Ford algorithm}
+  \end{tikzpicture}
+  \caption{A simple (undirected unweighted) graph used to make an adjacency list and adjacency matrix.}
+  \label{fig:adjacency1}
+\end{figure}
 
-The algorithm works as follows:
+We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$. The above graph in Figure~\ref{fig:adjacency1} can be represented as:
 
-\begin{enumerate}
-    \item Assign a tentative distance value for every node: set it to
-      zero for our initial node and to infinity for all other nodes.
-    \item For each edge $(u, v)$ with weight $w$, if the current
-      distance to $v$ is greater than the distance to $u$ plus $w$,
-      update the distance to $v$ to be the distance to $u$ plus $w$.
-    \item Repeat the previous step $|V| - 1$ times, where $|V|$ is the
-      number of vertices in the graph.
-    \item After the above steps, if you can still find a shorter path,
-      there exists a negative cycle.
-\end{enumerate}
+$$\begin{array}{c} A=
+    \begin{bmatrix}
+      0 & 1 & 1 & 0 \\
+      1 & 0 & 0 & 1 \\
+      1 & 0 & 0 & 0 \\
+      0 & 1 & 0 & 0
+    \end{bmatrix}\end{array}$$
 
-If the graph does not contain a negative cycle reachable from the
-source, the shortest paths are well-defined, and Bellman-Ford will
-correctly calculate them. If a negative cycle is reachable, no
-solution exists, but Bellman-Ford will detect it.
+    For \emph{undirected} graphs, the adjacency matrix is symmetric, meaning that the transpose of matrix is the same matrix!
+    
+    $$A = A^T$$
+    \begin{figure}[H]
+      \centering
+    
+      \begin{tikzpicture}[
+          every node/.style={kontinuaNode},
+          every path/.style={kontinuaEdge}
+        ]
+    
+        % Nodes
+        \node (A) at (0,0) {A};
+        \node (B) at (1,3) {B};
+        \node (C) at (3,-1) {C};
+        \node (D) at (-1,2) {D};
+    
+    
+        % Edges
+        \draw (A) -- (B);
+        \draw (A) -- (C);
+        \draw (B) -- (D);
+        \draw (D) to [loop above, looseness=12] (D);
+    
+      \end{tikzpicture}
+      \caption{A simple graph with an added loop on vertex D.}
+      \label{fig:adjacency2}
+    \end{figure}
+By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, there are two edges from vertex (D) to itself in Figure~\ref{fig:adjacency2}, so the corresponding diagonal entry is (2).
 
-\section{Prim's Algorithm}
-Prim's Algorithm is minimum spanning tree 
+For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge, directed}
+    ]
+
+    % Nodes
+    \node (A) at (-1,-1) {A};
+    \node (B) at (2.5,1) {B};
+    \node (C) at (-1,2) {C};
+
+    % Edges
+    \draw (A) -> (B);
+    \draw (A) -> (C);
+
+  \end{tikzpicture}
+  \caption{A simple directed graph used to make an adjacency matrix.}
+  \label{fig:adjacency_directed}
+\end{figure}
+
+The resulting adjacency matrix is
+$$\begin{array}{c} A=
+\begin{bmatrix}
+  0 & 1 & 1 \\
+  0 & 0 & 0 \\
+  0 & 0 & 0
+\end{bmatrix}\end{array}$$
+
+Notice how, now, $A \ne A^T$, because the edges are directional.
+
+\begin{Exercise}[title={Adjacency Matrix Exercise}, label={ex:adjacency1}]
+
+
+
+\end{Exercise}
+\begin{Answer}[ref={ex:adjacency1}]
+
+
+
+\end{Answer}
+% Strengths of an adjacency matrix
+\section{Prim's Algorithm and Kruskal's Algorithm for Minimum Spanning Trees}
+Prim's Algorithm is minimum spanning tree
+% https://github.com/KontinuaFoundation/sequence/issues/312
+
 FIXME https://github.com/KontinuaFoundation/sequence/issues/315
 
-\section{Breadth-First Search}
-%FIXME isomorphism
+\section{Travelling Salesperson Problem and Nearest Neighbour}
+% https://github.com/KontinuaFoundation/sequence/issues/312
+\section{Isomorphism}
+\section{Topological Sort and DAGs}
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 
-
+\section{Proofs}
 %FIXME proof of leaf, subgraph
-%FIXME topological sort (DAG)
