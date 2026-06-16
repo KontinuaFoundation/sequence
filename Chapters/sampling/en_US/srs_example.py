@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load data from a local CSV file
-df = pd.read_csv("population.csv")
+df = pd.read_csv("srs_example.csv")
 
 # Choose one year and keep only the country name and population value
 year = 2022
