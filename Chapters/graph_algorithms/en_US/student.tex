@@ -46,7 +46,7 @@ This represents the following graph
   \label{fig:adjacency1}
 \end{figure}
 
-We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$. The above graph in Figure~\ref{fig:adjacency1} can be represented as:
+We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
 
 $$\begin{array}{c} A=
     \begin{bmatrix}
@@ -56,34 +56,34 @@ $$\begin{array}{c} A=
       0 & 1 & 0 & 0
     \end{bmatrix}\end{array}$$
 
-    For \emph{undirected} graphs, the adjacency matrix is symmetric, meaning that the transpose of matrix is the same matrix!
-    
-    $$A = A^T$$
-    \begin{figure}[H]
-      \centering
-    
-      \begin{tikzpicture}[
-          every node/.style={kontinuaNode},
-          every path/.style={kontinuaEdge}
-        ]
-    
-        % Nodes
-        \node (A) at (0,0) {A};
-        \node (B) at (1,3) {B};
-        \node (C) at (3,-1) {C};
-        \node (D) at (-1,2) {D};
-    
-    
-        % Edges
-        \draw (A) -- (B);
-        \draw (A) -- (C);
-        \draw (B) -- (D);
-        \draw (D) to [loop above, looseness=12] (D);
-    
-      \end{tikzpicture}
-      \caption{A simple graph with an added loop on vertex D.}
-      \label{fig:adjacency2}
-    \end{figure}
+For \emph{undirected} graphs, the adjacency matrix is symmetric, and thusly $n\times n$, meaning that the transpose of matrix is the same matrix!
+
+$$A = A^T$$
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Nodes
+    \node (A) at (0,0) {A};
+    \node (B) at (1,3) {B};
+    \node (C) at (3,-1) {C};
+    \node (D) at (-1,2) {D};
+
+
+    % Edges
+    \draw (A) -- (B);
+    \draw (A) -- (C);
+    \draw (B) -- (D);
+    \draw (D) to [loop above, looseness=12] (D);
+
+  \end{tikzpicture}
+  \caption{A simple graph with an added loop on vertex D.}
+  \label{fig:adjacency2}
+\end{figure}
 By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, there are two edges from vertex (D) to itself in Figure~\ref{fig:adjacency2}, so the corresponding diagonal entry is (2).
 
 For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
@@ -111,21 +111,67 @@ For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \
 
 The resulting adjacency matrix is
 $$\begin{array}{c} A=
-\begin{bmatrix}
-  0 & 1 & 1 \\
-  0 & 0 & 0 \\
-  0 & 0 & 0
-\end{bmatrix}\end{array}$$
+    \begin{bmatrix}
+      0 & 1 & 1 \\
+      0 & 0 & 0 \\
+      0 & 0 & 0
+    \end{bmatrix}\end{array}$$
 
 Notice how, now, $A \ne A^T$, because the edges are directional.
 
 \begin{Exercise}[title={Adjacency Matrix Exercise}, label={ex:adjacency1}]
 
+  The following is an adjacency matrix for a weighted (undirected) graph.
 
+  \[
+    \begin{array}{c|ccccccc}
+        & A & B & C  & D & E  & F & G \\
+      \hline
+      A & 0 & 4 & 2  & 0 & 0  & 0 & 0 \\
+      B & 4 & 0 & 1  & 5 & 0  & 0 & 0 \\
+      C & 2 & 1 & 0  & 8 & 10 & 0 & 0 \\
+      D & 0 & 5 & 8  & 0 & 2  & 6 & 0 \\
+      E & 0 & 0 & 10 & 2 & 0  & 3 & 7 \\
+      F & 0 & 0 & 0  & 6 & 3  & 0 & 4 \\
+      G & 0 & 0 & 0  & 0 & 7  & 4 & 0 \\
+    \end{array}
+  \]
+
+  Draw the corresponding graph with weighted edges.
 
 \end{Exercise}
 \begin{Answer}[ref={ex:adjacency1}]
 
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge},
+      lbl/.style={draw=none, fill=none, font=\small, color=red}
+    ]
+
+    % Nodes
+    \node (A) at (-6, 6) {A};
+    \node (B) at (-4, -5) {B};
+    \node (C) at (0,-1) {C};
+    \node (D) at (-7, 1) {D};
+    \node (E) at (6, 5) {E};
+    \node (F) at (4, -6) {F};
+    \node (G) at (0, 7) {G};
+
+    % Edges
+    \draw (A) -- node[lbl] {4} (B);
+    \draw (A) -- node[lbl] {2} (C);
+    \draw (B) -- node[lbl] {1} (C);
+    \draw (B) -- node[lbl] {5} (D);
+    \draw (C) -- node[lbl] {8} (D);
+    \draw (C) -- node[lbl] {10} (E);
+    \draw (D) -- node[lbl] {2} (E);
+    \draw (D) -- node[lbl] {6} (F);
+    \draw (E) -- node[lbl] {3} (F);
+    \draw (E) -- node[lbl] {7} (G);
+    \draw (F) -- node[lbl] {4} (G);
+    \draw (F) -- node[lbl] {4} (G);
+
+  \end{tikzpicture}
 
 
 \end{Answer}
@@ -136,6 +182,87 @@ Prim's Algorithm is minimum spanning tree
 
 FIXME https://github.com/KontinuaFoundation/sequence/issues/315
 
+
+\section{A* (A-star) Search Algorithm}
+% moved from shortest path to graph algorithms so that priority queues can be introduced first.
+
+The last shortest path we will discuss in this chapter is the \newterm{A-star Algorithm}, more commonly represented as \newterm{A* Algorithm}. In essence, it is an extension of Dijkstra's Algorithm in combination with a \emph{priority-based heuristic function}. A heuristic is an introduced estimated cost from any node to the goal.
+
+The key behind this implementation is the following function
+\[
+  f(n) = g(n) + h(n)
+\]
+where
+\begin{itemize}
+  \item $g(n)$: the cost of the path from the start node (usually $S$) to the current node $n$
+  \item $h(n)$: the \newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
+  \item $f(n) = g(n) + h(n)$: the estimated total cost of a path from $S$ to $E$ passing through node $n$
+\end{itemize}
+
+\subsection{The Path Cost $g(n)$}
+$g(n)$ remains to be the same value that we used in Dijkstra's and other shortest path algorithms.
+
+When moving from a node $u$ to an adjacent node $v$, the path cost is \emph{updated} as
+
+\[
+  g(v) = g(u) + c(u,v)
+\]
+
+where $c(u,v)$ is the cost of traversing the edge from $u$ to $v$. As we discussed in the chapter on Dijkstra's, we have a decision to make upon each visit to a node:
+Each time we visit a node, we have a decision to make:
+\[
+  \text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
+\]
+\subsection{The Heuristic Function $h(n)$}
+The heuristic $h(n)$ function depends on the problem domain. Its purpose is to estimate the remaining cost from node $n$ to the goal. While this is a difficult task, we can use basic algebra to make an informed guess.
+
+For example, in a map-based pathfinding problem, $h(n)$ may be the straight-line distance, or \newterm{Euclidean distance} between node $n$ and the goal. Since the actual path cannot be shorter than the Euclidean distance, this provides a reasonable estimate of the remaining cost. If a nodes location is represented on a 2D plane (such as a map or graph) $(x_n, y_n)$ and the goal location as $(x_g, y_g)$, the Euclidean Heuristic
+$$h(n) = \sqrt{(x_g-x_n)^2 + (y_g-y_n)^2}$$
+
+Alternatively, many 2D games use a similar either \newterm{taxicab distance} (typically for 4-way movement),
+$$h(n) = |x_g-x_n| + |y_g-y_n|$$
+or \newterm{Chebyshev distance} (typically for 8-way movement in a game)
+$$d = \max(|x_2 - x_1|,\ |y_2 - y_1|)$$
+which takes the maximum of the horizontal and vertical movements.
+
+Sometimes, graphs without direct spatial meaning become more difficult to work with because there is no obvious notion of distance between two nodes.
+
+For general graphs, such as social networks, communication networks, or dependency graphs, the heuristic must be derived from problem-specific knowledge. For example, a social network application might use information such as mutual connections, community membership, or other metadata to estimate how \textit{close} a user is to a target user.
+
+In many cases, however, no suitable heuristic is known. In these situations, the heuristic is often defined as
+$$h(n) = 0$$
+for all nodes $n$. Substituting this into the A* evaluation function gives
+$$f(n) = g(n)$$
+which causes A* to reduce to to Dijkstra's algorithm. While this guarantees an optimal path, it loses the efficiency gains that a good heuristic can provide.
+
+There is an important property that the Heuristic Function must satisfy:
+$$h(n) \leq \text{true remaining cost}$$
+
+When an admissible heuristic is used (such that $h(n) \leq \text{true remaining cost}$), A* is guaranteed to find an optimal path if one exists.
+
+\subsection{The Total Estimated Distance $f(n)$ and Priority Queues}
+
+The purpose of the function
+
+\[
+  f(n) = g(n) + h(n)
+\]
+
+is to assign a priority to each node during the search. Recall from our discussion of priority queues that each element is associated with a priority value, and the element with the highest (or lowest) priority is removed first.
+
+In A*, the priority of a node is its estimated total distance $f(n)$. Nodes with smaller values of $f(n)$ are considered more promising because they represent paths that appear likely to reach the goal with a lower total cost.
+
+As with Dijkstra's algorithm, A* maintains a priority queue containing nodes that have been discovered but not yet fully explored. However, instead of prioritizing nodes solely by their known distance from the start node, A* prioritizes nodes according to their estimated total distance
+
+\[
+  \text{priority}(n) = f(n)
+\]
+
+At each step, the node with the smallest $f(n)$ value is removed from the priority queue and explored. When a neighboring node is discovered, its path cost $g(n)$ is updated, a new heuristic estimate $h(n)$ is calculated, and a new value of $f(n)$ is computed.
+
+There are some good references about this in your digital resources, as well as a fun Minecraft-based explanation \href{https://www.youtube.com/watch?v=Zg0Cxn8AVZA}{here}.
+
+
 \section{Travelling Salesperson Problem and Nearest Neighbour}
 % https://github.com/KontinuaFoundation/sequence/issues/312
 \section{Isomorphism}
@@ -144,3 +271,25 @@ FIXME https://github.com/KontinuaFoundation/sequence/issues/315
 
 \section{Proofs}
 %FIXME proof of leaf, subgraph
+% CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
+
+% Prove the following theorem:
+% In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
+% Consider the Clique problem restricted to graphs in which every vertex has degree at most 3. Prove
+% that this problem is in NP.
+% 4. Suppose that Vertex Cover is NP-Complete (it is), use that fact to show that Independent Set is
+% NP-Complete.
+% 5. Suppose that Clique is NP-Complete (it is), use that fact to show that Independent Set is NP-Complete.
+% 6. Stingy SAT is the following problem: given a set of clauses (each a disjunction of literals) and an
+% integer k, find a satisfying assignment in which at most k variables are true, if such an assignment
+% exists.
+% Prove that Stingy SAT is NP-complete. (Hint: Use 3SAT)
+% 7. In the Subgraph Isomorphism problem we are given as input two undirected graphs G and H, we
+% wish to determine whether G is a subgraph of H (that is, whether by deleting certain vertices and
+% edges of H we obtain a graph that is, up to renaming of vertices, identical to G), and if so, return the
+% corresponding mapping of V (G) into V (H).
+% Prove that Subgraph Isomorphism is NP-complete. (Hint: Use Clique)
+% 8. In the Set Cover problem, we are given a set (“universe”) of elements: f1; 2; : : :mg and a set S of n
+% sets whose union is the universe. The goal is to find a subset of S of size y whose union equals the
+% universe. Note that this is the decision version of the Set Cover problem stated above.
+% Prove that Set Cover is NP-complete. (Hint: Use Vertex Cover)

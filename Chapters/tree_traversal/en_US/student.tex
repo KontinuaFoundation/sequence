@@ -151,7 +151,7 @@ The steps are fairly simple:
 There are 3 orders in which we can traverse/search the deepest tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
 
 
-However, these orders essentially perform the same basic three tasks, 
+However, these orders essentially perform the same basic three tasks,
 \begin{description}
     \item[V] Visit the selected node.
     \item[L] Run DFS on the selected node's left subtree.
@@ -161,67 +161,67 @@ However, these orders essentially perform the same basic three tasks,
 The recursion terminates when we reach a leaf. At this point, the algorithm returns to the previous call, which is how \emph{backtracking} occurs. This backtracking is done via the stack we had mentioned previously.
 
 \subsection{Pre-order}
-In \texttt{pre-order} traversal, we visit the node \emph{before} exploring its subtrees.  
+In \texttt{pre-order} traversal, we visit the node \emph{before} exploring its subtrees.
 The order is:
 \[
-(V, L, R)
+    (V, L, R)
 \]
 
-We visit the node \emph{before} its children because the node's value is needed \emph{prior} to exploring its subtrees.  
+We visit the node \emph{before} its children because the node's value is needed \emph{prior} to exploring its subtrees.
 This is useful when the node represents a decision that affects which branch of the tree you go down, such as in tree copying or directory traversal like we talked about in the previous chapter.
 
 Using our original tree, the pre-order results are:
 \begin{center}
-Alan, Brad, Dean, Emily, Connie, Faith, Gordon
+    Alan, Brad, Dean, Emily, Connie, Faith, Gordon
 \end{center}
 \subsection{Post-order}
-In \texttt{post-order} traversal, we visit the node \emph{after} exploring both subtrees.  
+In \texttt{post-order} traversal, we visit the node \emph{after} exploring both subtrees.
 The order is:
 \[
-(L, R, V)
+    (L, R, V)
 \]
 
-We visit the node \emph{after} its children because the node's computation depends on results from both subtrees.  
+We visit the node \emph{after} its children because the node's computation depends on results from both subtrees.
 This is useful when combining subtree results or deleting trees, where children must be handled before the parent.
 
 The post-order traversal of our original tree is
 \begin{center}
-Dean, Emily, Brad, Faith, Gordon, Connie, Alan
+    Dean, Emily, Brad, Faith, Gordon, Connie, Alan
 \end{center}
 \subsection{In-order}
-In \texttt{in-order} traversal, we visit the node \emph{between} exploring its subtrees.  
+In \texttt{in-order} traversal, we visit the node \emph{between} exploring its subtrees.
 The order is:
 \[
-(L, V, R)
+    (L, V, R)
 \]
 
-We visit the node \emph{between} its subtrees because the correct interpretation of the node depends on partially processed children.  
+We visit the node \emph{between} its subtrees because the correct interpretation of the node depends on partially processed children.
 In-order only makes sense for binary trees, because it returns the \emph{sorted order} of the binary search tree. It depends on left and right subchildren. This would be like the alphabetical order of our dictionary example from the previous chapter.
 
 The in-order traversal of our original tree becomes
 \begin{center}
-Dean, Brad, Emily, Alan, Faith, Connie, Gordon
+    Dean, Brad, Emily, Alan, Faith, Connie, Gordon
 \end{center}
 \subsection{Pseudocode}
 
-The previous sections (pre-order, in-order, and post-order) describe \emph{when} a node is visited during a depth-first traversal.  
+The previous sections (pre-order, in-order, and post-order) describe \emph{when} a node is visited during a depth-first traversal.
 
 The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
-\begin{algorithm}    
+\begin{algorithm}
     \caption{Depth-First Search (DFS) - Iterative on a Tree}
     \begin{algorithmic}
         \Procedure{DFS}{root}
         \State $S =$ empty stack
         \State \Call{Push}{$S$, root}
         \While{$S$ is not empty}
-            \State node $=$ \Call{Pop}{$S$}
-            \State visit(node)\Comment{V}
-            \If{node.left $\neq$ null}
-                \State \Call{Push}{$S$, node.left}\Comment{L}
-            \EndIf
-            \If{node.right $\neq$ null}
-                \State \Call{Push}{$S$, node.right}\Comment{R}
-            \EndIf
+        \State node $=$ \Call{Pop}{$S$}
+        \State visit(node)\Comment{V}
+        \If{node.left $\neq$ null}
+        \State \Call{Push}{$S$, node.left}\Comment{L}
+        \EndIf
+        \If{node.right $\neq$ null}
+        \State \Call{Push}{$S$, node.right}\Comment{R}
+        \EndIf
         \EndWhile
         \EndProcedure
     \end{algorithmic}
@@ -230,14 +230,14 @@ The following algorithm instead describes the general \emph{mechanism} of depth-
 DFS is particularly useful for solving problems like connected-component detection in graphs and maze-solving.
 
 \section{Recursive vs Iterative Traversal}
-As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let's look at DFS recursively. 
+As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let's look at DFS recursively.
 
 Importantly, they do not change the traversal order (pre-, in-, post-order); they only change how the traversal is implemented.
 
 A \newterm{recursive traversal} relies on the program's \emph{call stack} (recall from the Advanced Python Syntax chapter). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
- 
+
 \begin{Exercise}[title={Recursive DFS}, label={ex:recur_dfs}]
-    Take a look at the Iterative DFS code above. 
+    Take a look at the Iterative DFS code above.
 
     How can we rewrite the pseudocode to be recursively define, taking advantage of a inherent recursive structure? Try pre-order recursively first. Assume the tree is a binary tree.
 \end{Exercise}
@@ -246,25 +246,97 @@ A \newterm{recursive traversal} relies on the program's \emph{call stack} (recal
 
 \begin{Answer}[ref={ex:recur_dfs}]
 
-\noindent\textbf{Algorithm: DFS (Pre-order) run recursively on a tree}
+    \noindent\textbf{Algorithm: DFS (Pre-order) run recursively on a tree}
 
-\begin{algorithmic}
-    \Procedure{DFS}{root}
-    \If{root = null}
+    \begin{algorithmic}
+        \Procedure{DFS}{root}
+        \If{root = null}
         \State \Return
-    \EndIf
-    \State visit(root) \Comment{V}
-    \State \Call{DFS}{root.left} \Comment{L}
-    \State \Call{DFS}{root.right} \Comment{R}
-    \EndProcedure
-\end{algorithmic}
+        \EndIf
+        \State visit(root) \Comment{V}
+        \State \Call{DFS}{root.left} \Comment{L}
+        \State \Call{DFS}{root.right} \Comment{R}
+        \EndProcedure
+    \end{algorithmic}
 
-This algorithm defines a depth-first search on a binary tree. Because the node is visited before its subtrees, it corresponds specifically to a pre-order traversal.
+    This algorithm defines a depth-first search on a binary tree. Because the node is visited before its subtrees, it corresponds specifically to a pre-order traversal.
 \end{Answer}
 
 Note that we can create recursive DFS just by reordering the three operations (\texttt{V}, \texttt{L}, \texttt{R}).
 
 What about BFS? BFS is typically implemented iteratively because it relies on a queue. While recursive versions exist, they still depend on a queue and offer little conceptual advantage, so we omit them here.
 \subsection{Pre-order and Post-order Numbering}
+There also exists pre-order and post-order numbering, regardless of which version of DFS is run.
+Pre-order and post-order numbering are techniques used during a depth-first search (DFS) traversal to record when each node is encountered and when it is fully processed.
+A \newterm{pre-order number} is assigned when the traversal first visits a node, before exploring any of its children. A \newterm{post-order number} is assigned after all of the node's descendants have been explored and the traversal is about to return to the node's parent. These numbers can be viewed as \textit{timestamps} that describe the progress of the DFS.
 
-% exercise about prepost num
+Pre-order numbers capture the order in which nodes are discovered, while post-order numbers capture the order in which nodes are completed. This information is useful in many graph and tree algorithms, including dependency analysis, topological sorting (which we will talk about in the future), and determining ancestor-descendant relationships.
+
+\begin{Exercise}[title={DFS Pseudocode}, label={ex:pre_post1}]
+
+
+    Alter the \emph{recursive} DFS pseudocode to include an assignment of preorder and post order numbers for every node.
+
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pre_post1}]
+    \begin{algorithmic}
+        \Procedure{DFS}{root}
+        \If{root = null}
+        \State \Return
+        \EndIf
+
+        \State pre(root) = counter
+        \State counter = counter + 1
+
+        \State \Call{DFS}{root.left}
+        \State \Call{DFS}{root.right}
+
+        \State post(root) = counter
+        \State counter = counter + 1
+        \EndProcedure
+    \end{algorithmic}
+
+
+
+\end{Answer}
+
+\begin{Exercise}[title={Pre- and Post-order numbers}, label={ex:pre_post2}]
+
+    Write the pre and post order numbers for the person graph we have been working with, Figure~\ref{fig:originalTree}
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pre_post2}]
+
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            Node   & Pre-order Number & Post-order Number \\
+            \hline
+            Alan   & 1                & 14                \\
+            Brad   & 2                & 7                 \\
+            Dean   & 3                & 4                 \\
+            Emily  & 5                & 6                 \\
+            Connie & 8                & 13                \\
+            Faith  & 9                & 10                \\
+            Gordon & 11               & 12                \\
+        \end{tabular}
+    \end{center}
+
+\end{Answer}
+% For question bank:
+% Describe how to determine if a back edge in an undirected graph creates an odd length cycle using
+% only pre or post order numbers for each vertex.
+
+% A bipartite graph is a graph G = (V;E) such that V can be partitioned into two sets (V = V1 union V2 and
+% V1 \ V2 = emtpy) such that there are no edges between vertices in the same set.
+% (a) Design and analyze an algorithm that determines whether an undirected graph is bipartite.
+% (b) Prove the following theorem:
+% An undirected graph, G, is bipartite if and only if it contains no cycles of odd length.
+
+% True or False? (Proof or counterexample) If a depth-first search on a directed graph G = (V;E)
+% produces exactly one back edge, then it is possible to choose an edge e 2 E such that the graph
+% without e (G0 = (V;E n feg)) is acyclic.
+% 13. True or False? (Proof or counterexample) If a directed graph G = (V;E) is cyclic but can be made
+% acyclic by removing one edge, then a depth-first search in G will encounter exactly one back edge.
