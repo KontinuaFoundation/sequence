@@ -1272,6 +1272,7 @@ width 0pt
 \setlength{\parindent}{0pt}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\newtheorem{definition}{Definition}
 \newtheorem{case}{Case}
 \newtheorem{subcase}{Case}[case]
 \newtheorem{theorem}{Theorem}

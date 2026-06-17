@@ -9,7 +9,7 @@
 %  adjacency matrices [prereq matrices and lin alg.] https://github.com/KontinuaFoundation/sequence/issues/303
 
 % note, eliminate dijkstra and binarys search as their own chapters
-This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs).
+This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs). A lot of these are very advanced graph theory topics, so you won't be tested on too heavily of these topics. Many of these appear on AP/IB exams, or in advanced college level CS classes.
 \section{Adjacency Matrices}
 
 Recall that we can represent graphs as lists of data called adjacency lists. In code, this could look like the following:
@@ -262,11 +262,205 @@ At each step, the node with the smallest $f(n)$ value is removed from the priori
 
 There are some good references about this in your digital resources, as well as a fun Minecraft-based explanation \href{https://www.youtube.com/watch?v=Zg0Cxn8AVZA}{here}.
 
+\section{Injection, Surjection, Bijection, and Isomorphism}
 
+Let's talk about Graph Isomorphism. To do this, we must first introduce the terms of \newterm{injection}, \newterm{surjection}, and \newterm{bijection}. These are types of functions in set theory as well as mathematics.
+
+\begin{definition}[Injection]
+  A function $f : A\rightarrow B$ is injective if different inputs always produce different outputs. Importantly, this means no two integers map to the same output.
+\end{definition}
+
+\begin{definition}[Surjection]
+  A function $f : A\rightarrow B$ is surjective if every element of B is hit by at least one element of A. In essence, all of the elements of B are covered.
+\end{definition}
+\begin{definition}[Bijection]
+  A function $f : A\rightarrow B$ is bijective if it is both injective and surjective. Ultimately, the function creates no collisions and hits all functions of B.
+\end{definition}
+
+\begin{Exercise}[title={Bijective, Surjective, Injective Exercise}, label={ex:bi_sur_in}]
+Determine whether each function is injective, surjective, bijective, or none of these.
+
+\begin{enumerate}
+  \item $f:\{1,2,3\}\rightarrow\{a,b,c,d\}$ defined by
+  \[
+    f(1)=a,\quad f(2)=b,\quad f(3)=c.
+  \]
+
+  \item $g:\{1,2,3,4\}\rightarrow\{a,b,c\}$ defined by
+  \[
+    g(1)=a,\quad g(2)=b,\quad g(3)=c,\quad g(4)=a.
+  \]
+
+  \item $h:\{1,2,3\}\rightarrow\{a,b,c\}$ defined by
+  \[
+    h(1)=b,\quad h(2)=c,\quad h(3)=a.
+  \]
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:bi_sur_in}]
+\begin{enumerate}
+  \item Injective, but not surjective. No two inputs map to the same output, but $d$ is never reached.
+
+  \item Surjective, but not injective. Every element of the codomain is reached, but both $1$ and $4$ map to $a$.
+
+  \item Bijective. Every element of the codomain is reached exactly once.
+\end{enumerate}
+\end{Answer}
+Now, let's talk about \newterm{Isomorphism}. A \newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
+
+\begin{definition}[Graph Isomorphism]
+  Let $G=(V_G,E_G)$ and $H=(V_H,E_H)$ be graphs. An isomorphism from $G$ to $H$ is a bijection
+
+  \[
+    f : V_G \to V_H
+  \]
+
+  such that for all vertices $u,v \in V_G$,
+
+  \[
+    \{u,v\}\in E_G
+    \quad\iff\quad
+    \{f(u),f(v)\}\in E_H.
+  \]
+
+  If such a function exists, we say that $G$ and $H$ are isomorphic and write
+
+  \[
+    G \cong H.
+  \]
+\end{definition}
+
+\begin{figure}[H]
+
+
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Graph G
+    \node (A) at (-6,0) {A};
+    \node (B) at (-4,0) {B};
+    \node (C) at (-2,0) {C};
+    \node (D) at (0,0) {D};
+
+    \draw (A) -- (B);
+    \draw (B) -- (C);
+    \draw (C) -- (D);
+
+  \end{tikzpicture}
+  \hspace{2cm}
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Graph H
+    \node (W) at (0,2) {W};
+    \node (X) at (1,1) {X};
+    \node (Y) at (0,0) {Y};
+    \node (Z) at (-1,-1) {Z};
+
+    \draw (W) -- (X);
+    \draw (X) -- (Y);
+    \draw (Y) -- (Z);
+
+  \end{tikzpicture}
+  \centering
+  \caption{Two graphs that are isomorphic. Graph G (left) and Graph H (right).}
+  \label{fig:isomorphic1}
+\end{figure}
+We are able to say that these graphs (Figure~\ref{fig:isomorphic1}) are isomorphic as one vertex from G can be paired with one vertex from H, while maintaining the same edge connections.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Graph X
+    \node (A) at (-6,0) {A};
+    \node (B) at (-4,0) {B};
+    \node (C) at (-2,0) {C};
+    \node (D) at (0,0) {D};
+
+    \draw (A) -- (B);
+    \draw (B) -- (C);
+    \draw (C) -- (D);
+
+  \end{tikzpicture}
+  \hspace{2cm}
+  \begin{tikzpicture}[
+      every node/.style={kontinuaNode},
+      every path/.style={kontinuaEdge}
+    ]
+
+    % Graph Y
+    \node (W) at (0,2) {W};
+    \node (X) at (-1,0) {X};
+    \node (Y) at (1,0) {Y};
+    \node (Z) at (0,-2) {Z};
+
+    \draw (W) -- (X);
+    \draw (W) -- (Y);
+    \draw (W) -- (Z);
+
+  \end{tikzpicture}
+  \caption{Graph X and Y; not isomorphic.}
+  \label{fig:isomorphic2}
+\end{figure}
+In Figure~\ref{fig:isomorphic2}, we can see the vertices are not isomorphic without adding or subtracting edges. For example, Graph $X$ does not have a vertex with 3 edges, unlike Graph $Y$.
+
+If any of these differ, the graphs are not isomorphic:
+
+\begin{itemize}
+  \item Number of vertices
+  \item Number of edges
+  \item Degree sequence (if degree sequences are intact, it does not guarantee isomorphism)
+  \item Number of connected components
+  \item Number of cycles of a given length
+  \item Chromatic number
+\end{itemize}
+\textbf{Example.}
+
+A common example that you will not be tested on but is important to know is the following. We may need to introduce a definition first.
+\begin{definition}[Clique]
+A clique is a set of vertices in a graph such that every pair of distinct vertices is connected by an edge.
+\end{definition}
+\begin{definition}[Clique Subgraph]
+  A $k$-clique is exactly a subgraph isomorphic to the complete graph $K_k$. A 3-clique would be a clique of size 3, called $K_3$.
+\end{definition}
+
+Now, given two graphs $G$ and $H$, how can we determine $G$ contain a subgraph isomorphic to $H$, a graph of smaller to equal size to $G$?
+
+This may be easy if $G$ and $H$ are pretty small, but the math becomes infinitely harder as the number of vertices and edges go up.
+
+We can simplify this by transforming the inputs of a clique problem to inputs of the subgraph isomorphism problem.
+
+The clique problem gives us a graph $M$ and a threshold $k$. The output of this is whether $M$ contains a clique of size at least $k$.
+
+To transform this into an instance of the subgraph isomorphism problem, construct a smaller subgraph $H = K_k$, the complete graph on $k$ vertices, and let $G = M$, the larger graph.
+
+We now ask the subgraph isomorphism question:
+
+\begin{quote}
+  Does $G$ contain a subgraph isomorphic to $H$?
+\end{quote}
+
+Since $H$ is the complete graph $K_k$, a subgraph of $G$ isomorphic to $H$ must contain $k$ vertices where every pair of vertices is connected by an edge. By definition, this is exactly a $k$-clique.
+
+Therefore,
+
+\[
+M \text{ contains a } k\text{-clique}\iff G \text{ contains a subgraph isomorphic to } K_k.
+\]
+
+This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem.
 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
 % https://github.com/KontinuaFoundation/sequence/issues/312
-\section{Isomorphism}
 \section{Topological Sort and DAGs}
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 
