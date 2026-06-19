@@ -14,164 +14,164 @@ This chapter is an overview of other graph algorithms, proofs, and concepts that
 
 Recall that we can represent graphs as lists of data called adjacency lists. In code, this could look like the following:
 \begin{itemize}
-  \item A: [B, C]
-  \item B: [A, D]
-  \item C: [A]
-  \item D: [B]
+	\item A: [B, C]
+	\item B: [A, D]
+	\item C: [A]
+	\item D: [B]
 \end{itemize}
 
 This represents the following graph
 \begin{figure}[H]
-  \centering
+	\centering
 
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Nodes
-    \node (A) at (0,0) {A};
-    \node (B) at (1,3) {B};
-    \node (C) at (3,-1) {C};
-    \node (D) at (-1,2) {D};
+		% Nodes
+		\node (A) at (0,0) {A};
+		\node (B) at (1,3) {B};
+		\node (C) at (3,-1) {C};
+		\node (D) at (-1,2) {D};
 
 
-    % Edges
-    \draw (A) -- (B);
-    \draw (A) -- (C);
-    \draw (B) -- (D);
+		% Edges
+		\draw (A) -- (B);
+		\draw (A) -- (C);
+		\draw (B) -- (D);
 
-  \end{tikzpicture}
-  \caption{A simple (undirected unweighted) graph used to make an adjacency list and adjacency matrix.}
-  \label{fig:adjacency1}
+	\end{tikzpicture}
+	\caption{A simple (undirected unweighted) graph used to make an adjacency list and adjacency matrix.}
+	\label{fig:adjacency1}
 \end{figure}
 
 We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
 
 $$\begin{array}{c} A=
-    \begin{bmatrix}
-      0 & 1 & 1 & 0 \\
-      1 & 0 & 0 & 1 \\
-      1 & 0 & 0 & 0 \\
-      0 & 1 & 0 & 0
-    \end{bmatrix}\end{array}$$
+		\begin{bmatrix}
+			0 & 1 & 1 & 0 \\
+			1 & 0 & 0 & 1 \\
+			1 & 0 & 0 & 0 \\
+			0 & 1 & 0 & 0
+		\end{bmatrix}\end{array}$$
 
 For \emph{undirected} graphs, the adjacency matrix is symmetric, and thusly $n\times n$, meaning that the transpose of matrix is the same matrix!
 
 $$A = A^T$$
 \begin{figure}[H]
-  \centering
+	\centering
 
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Nodes
-    \node (A) at (0,0) {A};
-    \node (B) at (1,3) {B};
-    \node (C) at (3,-1) {C};
-    \node (D) at (-1,2) {D};
+		% Nodes
+		\node (A) at (0,0) {A};
+		\node (B) at (1,3) {B};
+		\node (C) at (3,-1) {C};
+		\node (D) at (-1,2) {D};
 
 
-    % Edges
-    \draw (A) -- (B);
-    \draw (A) -- (C);
-    \draw (B) -- (D);
-    \draw (D) to [loop above, looseness=12] (D);
+		% Edges
+		\draw (A) -- (B);
+		\draw (A) -- (C);
+		\draw (B) -- (D);
+		\draw (D) to [loop above, looseness=12] (D);
 
-  \end{tikzpicture}
-  \caption{A simple graph with an added loop on vertex D.}
-  \label{fig:adjacency2}
+	\end{tikzpicture}
+	\caption{A simple graph with an added loop on vertex D.}
+	\label{fig:adjacency2}
 \end{figure}
 By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, there are two edges from vertex (D) to itself in Figure~\ref{fig:adjacency2}, so the corresponding diagonal entry is (2).
 
 For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
 
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge, directed}
-    ]
+	\centering
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge, directed}
+		]
 
-    % Nodes
-    \node (A) at (-1,-1) {A};
-    \node (B) at (2.5,1) {B};
-    \node (C) at (-1,2) {C};
+		% Nodes
+		\node (A) at (-1,-1) {A};
+		\node (B) at (2.5,1) {B};
+		\node (C) at (-1,2) {C};
 
-    % Edges
-    \draw (A) -> (B);
-    \draw (A) -> (C);
+		% Edges
+		\draw (A) -> (B);
+		\draw (A) -> (C);
 
-  \end{tikzpicture}
-  \caption{A simple directed graph used to make an adjacency matrix.}
-  \label{fig:adjacency_directed}
+	\end{tikzpicture}
+	\caption{A simple directed graph used to make an adjacency matrix.}
+	\label{fig:adjacency_directed}
 \end{figure}
 
 The resulting adjacency matrix is
 $$\begin{array}{c} A=
-    \begin{bmatrix}
-      0 & 1 & 1 \\
-      0 & 0 & 0 \\
-      0 & 0 & 0
-    \end{bmatrix}\end{array}$$
+		\begin{bmatrix}
+			0 & 1 & 1 \\
+			0 & 0 & 0 \\
+			0 & 0 & 0
+		\end{bmatrix}\end{array}$$
 
 Notice how, now, $A \ne A^T$, because the edges are directional.
 
 \begin{Exercise}[title={Adjacency Matrix Exercise}, label={ex:adjacency1}]
 
-  The following is an adjacency matrix for a weighted (undirected) graph.
+	The following is an adjacency matrix for a weighted (undirected) graph.
 
-  \[
-    \begin{array}{c|ccccccc}
-        & A & B & C  & D & E  & F & G \\
-      \hline
-      A & 0 & 4 & 2  & 0 & 0  & 0 & 0 \\
-      B & 4 & 0 & 1  & 5 & 0  & 0 & 0 \\
-      C & 2 & 1 & 0  & 8 & 10 & 0 & 0 \\
-      D & 0 & 5 & 8  & 0 & 2  & 6 & 0 \\
-      E & 0 & 0 & 10 & 2 & 0  & 3 & 7 \\
-      F & 0 & 0 & 0  & 6 & 3  & 0 & 4 \\
-      G & 0 & 0 & 0  & 0 & 7  & 4 & 0 \\
-    \end{array}
-  \]
+	\[
+		\begin{array}{c|ccccccc}
+			  & A & B & C  & D & E  & F & G \\
+			\hline
+			A & 0 & 4 & 2  & 0 & 0  & 0 & 0 \\
+			B & 4 & 0 & 1  & 5 & 0  & 0 & 0 \\
+			C & 2 & 1 & 0  & 8 & 10 & 0 & 0 \\
+			D & 0 & 5 & 8  & 0 & 2  & 6 & 0 \\
+			E & 0 & 0 & 10 & 2 & 0  & 3 & 7 \\
+			F & 0 & 0 & 0  & 6 & 3  & 0 & 4 \\
+			G & 0 & 0 & 0  & 0 & 7  & 4 & 0 \\
+		\end{array}
+	\]
 
-  Draw the corresponding graph with weighted edges.
+	Draw the corresponding graph with weighted edges.
 
 \end{Exercise}
 \begin{Answer}[ref={ex:adjacency1}]
 
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge},
-      lbl/.style={draw=none, fill=none, font=\small, color=red}
-    ]
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge},
+			lbl/.style={draw=none, fill=none, font=\small, color=red}
+		]
 
-    % Nodes
-    \node (A) at (-6, 6) {A};
-    \node (B) at (-4, -5) {B};
-    \node (C) at (0,-1) {C};
-    \node (D) at (-7, 1) {D};
-    \node (E) at (6, 5) {E};
-    \node (F) at (4, -6) {F};
-    \node (G) at (0, 7) {G};
+		% Nodes
+		\node (A) at (-6, 6) {A};
+		\node (B) at (-4, -5) {B};
+		\node (C) at (0,-1) {C};
+		\node (D) at (-7, 1) {D};
+		\node (E) at (6, 5) {E};
+		\node (F) at (4, -6) {F};
+		\node (G) at (0, 7) {G};
 
-    % Edges
-    \draw (A) -- node[lbl] {4} (B);
-    \draw (A) -- node[lbl] {2} (C);
-    \draw (B) -- node[lbl] {1} (C);
-    \draw (B) -- node[lbl] {5} (D);
-    \draw (C) -- node[lbl] {8} (D);
-    \draw (C) -- node[lbl] {10} (E);
-    \draw (D) -- node[lbl] {2} (E);
-    \draw (D) -- node[lbl] {6} (F);
-    \draw (E) -- node[lbl] {3} (F);
-    \draw (E) -- node[lbl] {7} (G);
-    \draw (F) -- node[lbl] {4} (G);
-    \draw (F) -- node[lbl] {4} (G);
+		% Edges
+		\draw (A) -- node[lbl] {4} (B);
+		\draw (A) -- node[lbl] {2} (C);
+		\draw (B) -- node[lbl] {1} (C);
+		\draw (B) -- node[lbl] {5} (D);
+		\draw (C) -- node[lbl] {8} (D);
+		\draw (C) -- node[lbl] {10} (E);
+		\draw (D) -- node[lbl] {2} (E);
+		\draw (D) -- node[lbl] {6} (F);
+		\draw (E) -- node[lbl] {3} (F);
+		\draw (E) -- node[lbl] {7} (G);
+		\draw (F) -- node[lbl] {4} (G);
+		\draw (F) -- node[lbl] {4} (G);
 
-  \end{tikzpicture}
+	\end{tikzpicture}
 
 
 \end{Answer}
@@ -190,13 +190,13 @@ The last shortest path we will discuss in this chapter is the \newterm{A-star Al
 
 The key behind this implementation is the following function
 \[
-  f(n) = g(n) + h(n)
+	f(n) = g(n) + h(n)
 \]
 where
 \begin{itemize}
-  \item $g(n)$: the cost of the path from the start node (usually $S$) to the current node $n$
-  \item $h(n)$: the \newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
-  \item $f(n) = g(n) + h(n)$: the estimated total cost of a path from $S$ to $E$ passing through node $n$
+	\item $g(n)$: the cost of the path from the start node (usually $S$) to the current node $n$
+	\item $h(n)$: the \newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
+	\item $f(n) = g(n) + h(n)$: the estimated total cost of a path from $S$ to $E$ passing through node $n$
 \end{itemize}
 
 \subsection{The Path Cost $g(n)$}
@@ -205,13 +205,13 @@ $g(n)$ remains to be the same value that we used in Dijkstra's and other shortes
 When moving from a node $u$ to an adjacent node $v$, the path cost is \emph{updated} as
 
 \[
-  g(v) = g(u) + c(u,v)
+	g(v) = g(u) + c(u,v)
 \]
 
 where $c(u,v)$ is the cost of traversing the edge from $u$ to $v$. As we discussed in the chapter on Dijkstra's, we have a decision to make upon each visit to a node:
 Each time we visit a node, we have a decision to make:
 \[
-  \text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
+	\text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
 \]
 \subsection{The Heuristic Function $h(n)$}
 The heuristic $h(n)$ function depends on the problem domain. Its purpose is to estimate the remaining cost from node $n$ to the goal. While this is a difficult task, we can use basic algebra to make an informed guess.
@@ -245,7 +245,7 @@ When an admissible heuristic is used (such that $h(n) \leq \text{true remaining 
 The purpose of the function
 
 \[
-  f(n) = g(n) + h(n)
+	f(n) = g(n) + h(n)
 \]
 
 is to assign a priority to each node during the search. Recall from our discussion of priority queues that each element is associated with a priority value, and the element with the highest (or lowest) priority is removed first.
@@ -255,7 +255,7 @@ In A*, the priority of a node is its estimated total distance $f(n)$. Nodes with
 As with Dijkstra's algorithm, A* maintains a priority queue containing nodes that have been discovered but not yet fully explored. However, instead of prioritizing nodes solely by their known distance from the start node, A* prioritizes nodes according to their estimated total distance
 
 \[
-  \text{priority}(n) = f(n)
+	\text{priority}(n) = f(n)
 \]
 
 At each step, the node with the smallest $f(n)$ value is removed from the priority queue and explored. When a neighboring node is discovered, its path cost $g(n)$ is updated, a new heuristic estimate $h(n)$ is calculated, and a new value of $f(n)$ is computed.
@@ -267,161 +267,161 @@ There are some good references about this in your digital resources, as well as 
 Let's talk about Graph Isomorphism. To do this, we must first introduce the terms of \newterm{injection}, \newterm{surjection}, and \newterm{bijection}. These are types of functions in set theory as well as mathematics.
 
 \begin{definition}[Injection]
-  A function $f : A\rightarrow B$ is injective if different inputs always produce different outputs. Importantly, this means no two integers map to the same output.
+	A function $f : A\rightarrow B$ is injective if different inputs always produce different outputs. Importantly, this means no two integers map to the same output.
 \end{definition}
 
 \begin{definition}[Surjection]
-  A function $f : A\rightarrow B$ is surjective if every element of B is hit by at least one element of A. In essence, all of the elements of B are covered.
+	A function $f : A\rightarrow B$ is surjective if every element of B is hit by at least one element of A. In essence, all of the elements of B are covered.
 \end{definition}
 \begin{definition}[Bijection]
-  A function $f : A\rightarrow B$ is bijective if it is both injective and surjective. Ultimately, the function creates no collisions and hits all functions of B.
+	A function $f : A\rightarrow B$ is bijective if it is both injective and surjective. Ultimately, the function creates no collisions and hits all functions of B.
 \end{definition}
 
 \begin{Exercise}[title={Bijective, Surjective, Injective Exercise}, label={ex:bi_sur_in}]
-Determine whether each function is injective, surjective, bijective, or none of these.
+	Determine whether each function is injective, surjective, bijective, or none of these.
 
-\begin{enumerate}
-  \item $f:\{1,2,3\}\rightarrow\{a,b,c,d\}$ defined by
-  \[
-    f(1)=a,\quad f(2)=b,\quad f(3)=c.
-  \]
+	\begin{enumerate}
+		\item $f:\{1,2,3\}\rightarrow\{a,b,c,d\}$ defined by
+		      \[
+			      f(1)=a,\quad f(2)=b,\quad f(3)=c.
+		      \]
 
-  \item $g:\{1,2,3,4\}\rightarrow\{a,b,c\}$ defined by
-  \[
-    g(1)=a,\quad g(2)=b,\quad g(3)=c,\quad g(4)=a.
-  \]
+		\item $g:\{1,2,3,4\}\rightarrow\{a,b,c\}$ defined by
+		      \[
+			      g(1)=a,\quad g(2)=b,\quad g(3)=c,\quad g(4)=a.
+		      \]
 
-  \item $h:\{1,2,3\}\rightarrow\{a,b,c\}$ defined by
-  \[
-    h(1)=b,\quad h(2)=c,\quad h(3)=a.
-  \]
-\end{enumerate}
+		\item $h:\{1,2,3\}\rightarrow\{a,b,c\}$ defined by
+		      \[
+			      h(1)=b,\quad h(2)=c,\quad h(3)=a.
+		      \]
+	\end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref={ex:bi_sur_in}]
-\begin{enumerate}
-  \item Injective, but not surjective. No two inputs map to the same output, but $d$ is never reached.
+	\begin{enumerate}
+		\item Injective, but not surjective. No two inputs map to the same output, but $d$ is never reached.
 
-  \item Surjective, but not injective. Every element of the codomain is reached, but both $1$ and $4$ map to $a$.
+		\item Surjective, but not injective. Every element of the codomain is reached, but both $1$ and $4$ map to $a$.
 
-  \item Bijective. Every element of the codomain is reached exactly once.
-\end{enumerate}
+		\item Bijective. Every element of the codomain is reached exactly once.
+	\end{enumerate}
 \end{Answer}
 Now, let's talk about \newterm{Isomorphism}. A \newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
 
 \begin{definition}[Graph Isomorphism]
-  Let $G=(V_G,E_G)$ and $H=(V_H,E_H)$ be graphs. An isomorphism from $G$ to $H$ is a bijection
+	Let $G=(V_G,E_G)$ and $H=(V_H,E_H)$ be graphs. An isomorphism from $G$ to $H$ is a bijection
 
-  \[
-    f : V_G \to V_H
-  \]
+	\[
+		f : V_G \to V_H
+	\]
 
-  such that for all vertices $u,v \in V_G$,
+	such that for all vertices $u,v \in V_G$,
 
-  \[
-    \{u,v\}\in E_G
-    \quad\iff\quad
-    \{f(u),f(v)\}\in E_H.
-  \]
+	\[
+		\{u,v\}\in E_G
+		\quad\iff\quad
+		\{f(u),f(v)\}\in E_H.
+	\]
 
-  If such a function exists, we say that $G$ and $H$ are isomorphic and write
+	If such a function exists, we say that $G$ and $H$ are isomorphic and write
 
-  \[
-    G \cong H.
-  \]
+	\[
+		G \cong H.
+	\]
 \end{definition}
 
 \begin{figure}[H]
 
 
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Graph G
-    \node (A) at (-6,0) {A};
-    \node (B) at (-4,0) {B};
-    \node (C) at (-2,0) {C};
-    \node (D) at (0,0) {D};
+		% Graph G
+		\node (A) at (-6,0) {A};
+		\node (B) at (-4,0) {B};
+		\node (C) at (-2,0) {C};
+		\node (D) at (0,0) {D};
 
-    \draw (A) -- (B);
-    \draw (B) -- (C);
-    \draw (C) -- (D);
+		\draw (A) -- (B);
+		\draw (B) -- (C);
+		\draw (C) -- (D);
 
-  \end{tikzpicture}
-  \hspace{2cm}
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\end{tikzpicture}
+	\hspace{2cm}
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Graph H
-    \node (W) at (0,2) {W};
-    \node (X) at (1,1) {X};
-    \node (Y) at (0,0) {Y};
-    \node (Z) at (-1,-1) {Z};
+		% Graph H
+		\node (W) at (0,2) {W};
+		\node (X) at (1,1) {X};
+		\node (Y) at (0,0) {Y};
+		\node (Z) at (-1,-1) {Z};
 
-    \draw (W) -- (X);
-    \draw (X) -- (Y);
-    \draw (Y) -- (Z);
+		\draw (W) -- (X);
+		\draw (X) -- (Y);
+		\draw (Y) -- (Z);
 
-  \end{tikzpicture}
-  \centering
-  \caption{Two graphs that are isomorphic. Graph G (left) and Graph H (right).}
-  \label{fig:isomorphic1}
+	\end{tikzpicture}
+	\centering
+	\caption{Two graphs that are isomorphic. Graph G (left) and Graph H (right).}
+	\label{fig:isomorphic1}
 \end{figure}
 We are able to say that these graphs (Figure~\ref{fig:isomorphic1}) are isomorphic as one vertex from G can be paired with one vertex from H, while maintaining the same edge connections.
 
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\centering
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Graph X
-    \node (A) at (-6,0) {A};
-    \node (B) at (-4,0) {B};
-    \node (C) at (-2,0) {C};
-    \node (D) at (0,0) {D};
+		% Graph X
+		\node (A) at (-6,0) {A};
+		\node (B) at (-4,0) {B};
+		\node (C) at (-2,0) {C};
+		\node (D) at (0,0) {D};
 
-    \draw (A) -- (B);
-    \draw (B) -- (C);
-    \draw (C) -- (D);
+		\draw (A) -- (B);
+		\draw (B) -- (C);
+		\draw (C) -- (D);
 
-  \end{tikzpicture}
-  \hspace{2cm}
-  \begin{tikzpicture}[
-      every node/.style={kontinuaNode},
-      every path/.style={kontinuaEdge}
-    ]
+	\end{tikzpicture}
+	\hspace{2cm}
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge}
+		]
 
-    % Graph Y
-    \node (W) at (0,2) {W};
-    \node (X) at (-1,0) {X};
-    \node (Y) at (1,0) {Y};
-    \node (Z) at (0,-2) {Z};
+		% Graph Y
+		\node (W) at (0,2) {W};
+		\node (X) at (-1,0) {X};
+		\node (Y) at (1,0) {Y};
+		\node (Z) at (0,-2) {Z};
 
-    \draw (W) -- (X);
-    \draw (W) -- (Y);
-    \draw (W) -- (Z);
+		\draw (W) -- (X);
+		\draw (W) -- (Y);
+		\draw (W) -- (Z);
 
-  \end{tikzpicture}
-  \caption{Graph X and Y; not isomorphic.}
-  \label{fig:isomorphic2}
+	\end{tikzpicture}
+	\caption{Graph X and Y; not isomorphic.}
+	\label{fig:isomorphic2}
 \end{figure}
 In Figure~\ref{fig:isomorphic2}, we can see the vertices are not isomorphic without adding or subtracting edges. For example, Graph $X$ does not have a vertex with 3 edges, unlike Graph $Y$.
 
 If any of these differ, the graphs are not isomorphic:
 
 \begin{itemize}
-  \item Number of vertices
-  \item Number of edges
-  \item Degree sequence (if degree sequences are intact, it does not guarantee isomorphism)
-  \item Number of connected components
-  \item Number of cycles of a given length
-  \item Chromatic number
+	\item Number of vertices
+	\item Number of edges
+	\item Degree sequence (if degree sequences are intact, it does not guarantee isomorphism)
+	\item Number of connected components
+	\item Number of cycles of a given length
+	\item Chromatic number
 \end{itemize}
 
 % FIXME add new LaTeX example environment
@@ -429,10 +429,10 @@ If any of these differ, the graphs are not isomorphic:
 
 A common example that you will not be tested on but is important to know is the following. We may need to introduce a definition first.
 \begin{definition}[Clique]
-A clique is a set of vertices in a graph such that every pair of distinct vertices is connected by an edge.
+	A clique is a set of vertices in a graph such that every pair of distinct vertices is connected by an edge.
 \end{definition}
 \begin{definition}[Clique Subgraph]
-  A $k$-clique is exactly a subgraph isomorphic to the complete graph $K_k$. A 3-clique would be a clique of size 3, called $K_3$.
+	A $k$-clique is exactly a subgraph isomorphic to the complete graph $K_k$. A 3-clique would be a clique of size 3, called $K_3$.
 \end{definition}
 
 Now, given two graphs $G$ and $H$, how can we determine $G$ contain a subgraph isomorphic to $H$, a graph of smaller to equal size to $G$?
@@ -448,7 +448,7 @@ To transform this into an instance of the subgraph isomorphism problem, construc
 We now ask the subgraph isomorphism question:
 
 \begin{quote}
-  Does $G$ contain a subgraph isomorphic to $H$?
+	Does $G$ contain a subgraph isomorphic to $H$?
 \end{quote}
 
 Since $H$ is the complete graph $K_k$, a subgraph of $G$ isomorphic to $H$ must contain $k$ vertices where every pair of vertices is connected by an edge. By definition, this is exactly a $k$-clique.
@@ -456,7 +456,7 @@ Since $H$ is the complete graph $K_k$, a subgraph of $G$ isomorphic to $H$ must 
 Therefore,
 
 \[
-M \text{ contains a } k\text{-clique}\iff G \text{ contains a subgraph isomorphic to } K_k.
+	M \text{ contains a } k\text{-clique}\iff G \text{ contains a subgraph isomorphic to } K_k.
 \]
 
 This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem.
@@ -464,9 +464,111 @@ This shows that every instance of the Clique problem can be transformed into an 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
 % https://github.com/KontinuaFoundation/sequence/issues/312
 \section{Topological Sort and DAGs}
-%FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
+Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
 
+To do this, we are going to use Python's \texttt{Graphlib}, and its \texttt{TopologicalSorter} module.
+
+In the \texttt{graphlib} module, graphs are defined in the following format:
+\begin{minted}{python}
+{
+  node: {predecessors}
+}
+\end{minted}
+
+A basic example of this is the following
+
+\begin{minted}{python}
+{
+  "C": {"A", "B"}
+}
+\end{minted}
+Which says that $A$ and $B$ need to come before $C$, such that one possible ordering is
+$$A \rightarrow B \rightarrow C$$
+
+Now suppose we alter the graph format as follows:
+\begin{minted}{python}
+{
+  "C": {"A", "B"},
+  "A": {"Z"},
+  "B": {"Z"},
+  "Z": {"C"}
+}
+\end{minted}
+Here,
+\begin{itemize}
+	\item $C$ depends on $A$ and $B$
+	\item $A$ and $B$ depend on $Z$
+	\item $Z$ depends on $C$
+\end{itemize}
+There is no way to determine a \emph{starting point}. Now we have an ordering that contains a cycle. This implies that C must come before itself, which is impossible in a linear ordering. Therefore no topological ordering can exist.
+\begin{definition}[Cycle]
+	A \newterm{cycle} is a valid walk $\displaystyle (v_{1},v_{2},\dotsc ,v_{n})$ where the only repeated vertex is ${\displaystyle v_{n}=v_{1}}$, meaning the last vertex equals the first vertex.
+\end{definition}
+So, we cannot do a topological sort on a graph that contains a cycle. This provides us with a theorem:
+\begin{mdframed}[frametitle = {Topological Sorting and DAGs}, style = important]
+	A directed graph admits a topological ordering if and only if it is a \newterm{Directed Acyclic Graph} (DAG). That is, the directed graph may not contain any cycles (acyclic).
+\end{mdframed}
+In fact, the python graphlib library will not produce a valid Topological Sort if a cycle exists. Running the following code
+\begin{minted}{python}
+from graphlib import TopologicalSorter
+graph = {
+  "C": {"A", "B"},
+  "A": {"Z"},
+  "B": {"Z"},
+  "Z": {"C"}
+}
+list(TopologicalSorter(graph).static_order())
+\end{minted}
+will produce the following error \index{Cycle Error}
+\begin{minted}{python}
+graphlib.CycleError: ('nodes are in a cycle', ['C', 'Z', 'A', 'C'])
+\end{minted}
+The exception reports one cycle that prevents the ordering from being constructed. In this case, $C\rightarrow Z\rightarrow A\rightarrow C$ forms a directed cycle.
+
+We can also introduce tasks that can be done in parallel. Create the following file \mintinline{python}|parallel_dag.py|
+\begin{minted}{python}
+from graphlib import TopologicalSorter
+tasks = {
+    "Compile": set(),
+    "Build Frontend": {"Compile"},
+    "Build Backend": {"Compile"},
+    "Test": {"Build Frontend", "Build Backend"},
+    "Deploy": {"Test"},
+}from graphlib import TopologicalSorter
+tasks = {
+    "Compile": set(),
+    "Build Frontend": {"Compile"},
+    "Build Backend": {"Compile"},
+    "Test": {"Build Frontend", "Build Backend"},
+    "Deploy": {"Test"},
+}
+from graphlib import TopologicalSorter
+
+ts = TopologicalSorter(tasks)
+ts.prepare()
+
+while ts.is_active():
+    ready = ts.get_ready()
+    print(ready)
+
+    for task in ready:
+        ts.done(task)
+
+\end{minted}
+
+The 5 nodes here are tasks for a basic software project. The ordering is as follows:
+$$\text{Compile} \rightarrow \text{Build Frontend and Build Backend} \rightarrow \text{Test} \rightarrow \text{Deploy}$$
+Howeverm notice that \textit{Build Frontend} and \textit{Build Backend} are not dependent on each other, so they could be done in \emph{parallel}. The \textit{Test} task cannot begin until both builds have finished.
+Running this code outputs the following
+\begin{minted}{python}
+('Compile',)
+('Build Frontend', 'Build Backend')
+('Test',)
+('Deploy',)
+\end{minted}
+showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently.
 \section{Proofs}
+%FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 %FIXME proof of leaf, subgraph
 % CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
 
