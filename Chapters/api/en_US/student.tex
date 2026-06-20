@@ -72,4 +72,92 @@ So, let's dive into the world of HTTP APIs and uncover the endless
 possibilities they offer for enhancing your software engineering
 projects.
 
+\section{Setting up an API}
+
+Create a file called \texttt{server.js}. This will be a basic webserver that we will use to test our an API. This is called a \newterm{RESTful API}. Write the following code to create a basic server for our API.
+\begin{minted}{javascript}
+const express = require("express");
+
+const app = express();
+const PORT = 3000;
+
+const student = {
+  student_id: 42,
+  name: "John Smith",
+  major: "Computer Science",
+  credits_completed: 88
+};
+
+app.get("/students/42", (req, res) => {
+  res.json(student);
+});
+
+app.listen(PORT, () => {
+  console.log(`API running at http://localhost:${PORT}`);
+});
+\end{minted}
+Then, run the following
+\begin{minted}{shell}
+npm init -y   
+npm install express
+node server.js
+\end{minted}
+\begin{itemize}
+  \item Endpoint
+  \item Review HTTP methods
+  \item headers
+  \item Body
+\end{itemize}
+\section{Requests with cURL}
+Curl, sometimes stylized as \texttt{cURL} or \texttt{curl}.
+
+The simplest curl command
+\begin{minted}{shell}
+curl http://example.com
+\end{minted}
+which will return the \texttt{html} source code of the website \url{http://example.com}.
+\begin{minted}{html}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Example Domain</title>
+    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #eee;
+            width: 60vw;
+            margin: 15vh auto;
+            font-family: system-ui, sans-serif
+        }
+
+        h1 {
+            font-size: 1.5em
+        }
+
+        div {
+            opacity: 0.8
+        }
+
+        a:link,
+        a:visited {
+            color: #348
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Example Domain</h1>
+        <p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p>
+        <p><a href="https://iana.org/domains/example">Learn more</a></p>
+    </div>
+</body>
+
+</html>
+\end{minted}
+
+That's all great, but we can put cURL to work on much more laborious tasks. Going back to our created api example:
+
 FIXME talk about API keys, API requests, how it interacts with HTTP requests, why keys should not be shared
