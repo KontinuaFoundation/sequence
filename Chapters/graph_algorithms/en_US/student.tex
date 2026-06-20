@@ -459,7 +459,7 @@ Therefore,
 	M \text{ contains a } k\text{-clique}\iff G \text{ contains a subgraph isomorphic to } K_k.
 \]
 
-This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem.
+This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem. We call this an \newterm{algorithmic reduction}.\footnote{Algorithmic Reductions are the basis of a set of problems called P, NP, and NP-Complete. See \href{https://youtu.be/eHZifpgyH_4}{this video} for more.} 
 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
 % https://github.com/KontinuaFoundation/sequence/issues/312
@@ -566,14 +566,91 @@ Running this code outputs the following
 ('Test',)
 ('Deploy',)
 \end{minted}
-showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently.
+showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently (this is similar to running circuits in parallel!).
 \section{Proofs}
+% CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 %FIXME proof of leaf, subgraph
-% CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
+This section will be a set of proofs or algorithm design problems for graph-related concepts that are important to know. At the basis level, these are just practice problems for graph understand, but can be applied in many real world scenarios.
+
+\subsection{Example 1: Bipartite} %FIXME Example environment
+
+\begin{mdframed}[frametitle = {Bipartite Graph}, style = important]
+
+A \newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitioned into two sets $(V = V_1 \cup V_2)$ and $(V_1 \cap V_2 = empty)$ such that there are no edges between vertices in the same set.
+FIXME Diagram
+\end{mdframed}
+
+\begin{theorem}
+An undirected graph \(G\) is bipartite if and only if it contains no cycles of odd length.
+\end{theorem}
+\begin{Exercise}[title={Algorithm for Determining Bipartite}, label={ex:proofs_bipartite}]
+Design pseudocode for an algorithm that determines whether or not an undirected graph is bipartite. Hint: use the theorem.
+\end{Exercise}
+\begin{Answer}[ref={ex:proofs_bipartite}]
+FIXME
+
+\end{Answer}
+\begin{proof}
+
+First, suppose \(G\) is bipartite. Then its vertices can be partitioned into two sets
+\(V_1\) and \(V_2\), with every edge going between \(V_1\) and \(V_2\). Any cycle in \(G\)
+must alternate between vertices in \(V_1\) and vertices in \(V_2\). Therefore, after an
+odd number of edges, the cycle would end in the opposite set from where it started,
+so it cannot return to its starting vertex. Hence every cycle has even length.
+
+Conversely, suppose \(G\) contains no cycles of odd length. Choose any connected
+component of \(G\), and pick a vertex \(s\). Put each vertex at even distance from \(s\)
+in \(V_1\), and each vertex at odd distance from \(s\) in \(V_2\). We claim this gives a
+valid bipartition.
+
+Assume for contradiction that there is an edge \((u,v)\) where \(u\) and \(v\) are in the
+same set. Then \(u\) and \(v\) have distances from \(s\) with the same parity. Taking
+shortest paths from \(s\) to \(u\) and from \(s\) to \(v\), together with the edge
+\((u,v)\), creates a cycle of odd length. This contradicts the assumption that \(G\)
+has no odd cycles.
+
+Thus no edge connects two vertices in the same set, so each connected component is
+bipartite. Applying this construction to every connected component of \(G\), the whole
+graph \(G\) is bipartite.
+
+Therefore, \(G\) is bipartite if and only if it contains no cycles of odd length.
+\end{proof}
+
+\subsection{Example 2 and 3. Cycle Detection and Leaves}
+\begin{Exercise}[title={Cycle Detection}, label={ex:proofs_cycle}]
+
+Design pseudocode for an algorithm which takes as an input an undirected graph, $G$, and an edge,
+$e = (u, v)$, and determines whether $G$ has a cycle containing $e$.
+\end{Exercise}
+\begin{Answer}[ref={ex:proofs_cycle}]
+
+
+\begin{algorithmic}
+\State Remove the edge \(e=(u,v)\) from \(G\).
+\State Run BFS or DFS starting from \(u\).
+\If{\(v\) is reached}
+    \State Return \textsc{True}.
+\Else
+    \State Return \textsc{False}.
+\EndIf
+\end{algorithmic}
+\end{Answer}
+
+\begin{Exercise}[title={}, label={}]
+In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
+
+
+\end{Exercise}
+\begin{Answer}[ref={}]
+
+
+
+\end{Answer}
+
 
 % Prove the following theorem:
-% In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
+% 
 % Consider the Clique problem restricted to graphs in which every vertex has degree at most 3. Prove
 % that this problem is in NP.
 % 4. Suppose that Vertex Cover is NP-Complete (it is), use that fact to show that Independent Set is
