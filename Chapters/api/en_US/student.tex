@@ -102,8 +102,42 @@ npm init -y
 npm install express
 node server.js
 \end{minted}
+This will create a new server, along with a ton of dependency files that javascript and node automatically install as part of your server.
+\subsection{What is an endpoint?}
+An \newterm{endpoint} is a URL exposed by the API. It usually is able to display a page or data based on the request of the endpoint. 
+
+We can navigate to the endpoint \texttt{GET /students/42}, where students is the resource that usually maps to a database, and \texttt{42} is the id of a student in the database. To retrieve this student from the database, we can navigate to 
+\begin{minted}{python}
+GET http://localhost:3000/students/42
+\end{minted}
+which is an endpoint from our API. This will output
+\begin{minted}{json}
+{
+  "student_id": 42,
+  "name": "John Smith",
+  "major": "Computer Science",
+  "credits_completed": 88
+}
+
+Note that this is done in json format, common for backend data parsing.
+\end{minted}
+Each endpoint combines a resource path with an HTTP method to complete an action.
+
+This leads us to the idea of \newterm{CRUD operations}. CRUD, which stands for CREATE, REMOVE, UPDATE, DELETE, are a form of outlining an API's routes. Calling a route that aims to alter should follow one of the CRUD operations. GET does not have an operation since it is \newterm{read-only}.
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{HTTP Method} & \textbf{Purpose} & \textbf{CRUD Op}     & \textbf{Example}                  \\ \hline
+GET             & Fetch Data             &   N/A   & Get student information           \\ \hline
+PUT             & Update Data             &   UPDATE    & Fully update student              \\ \hline
+PATCH           & Update section of Data   &  UPDATE    & Update a student's major          \\ \hline
+POST            & Create Data              &   CREATE    & Create a new student              \\ \hline
+DELETE          & Remove Data             &   DELETE  & Remove a student after graduation \\ \hline
+\end{tabular}
+\end{table}
+
 \begin{itemize}
-  \item Endpoint
   \item Review HTTP methods
   \item headers
   \item Body
@@ -161,3 +195,4 @@ which will return the \texttt{html} source code of the website \url{http://examp
 That's all great, but we can put cURL to work on much more laborious tasks. Going back to our created api example:
 
 FIXME talk about API keys, API requests, how it interacts with HTTP requests, why keys should not be shared
+FIXME postman
