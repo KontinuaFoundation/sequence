@@ -39,7 +39,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          codespell --check-filenames --ignore-words-list="nd,multline,alph,dne,vise,leaded,trough,ream,te,oint,2st,bu" --skip="*.ai,*.pdf,*.svg" .
+          tail -n +2 .aspell.en.pws \
+            | sed '/^[[:space:]]*$/d' \
+            | tr '[:upper:]' '[:lower:]' \
+            | sort -u > /tmp/codespell-ignore-words.txt
+
+          codespell --check-filenames --ignore-words=/tmp/codespell-ignore-words.txt --skip="*.ai,*.pdf,*.svg" .
 
   build-changed:
     name: Build Changed Files

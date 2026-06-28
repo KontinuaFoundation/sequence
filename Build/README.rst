@@ -146,7 +146,7 @@ CI
 ---------
 These scripts have all been compiled into CI/CD workflows that automatically run upon a commit. Any changes will rebuild a localized version of a chapter and its corresponding resources, and send it over to `the live repo <https://kontinuafoundation.github.io/>`_. 
 
-A note about spell checking: a spell check has been implemented to prevent authors from committing mistaken code. If you commit a spell check, the CI will fail upon its first step. In the GitHub errorlog, you can see what was flagged as a spelling error. Sometimes, it flags incorrectly, such as code variables, tikZ diagrams, or differences between British English and American English for example. To add a word as valid, add the word in the ``Build/.aspell.en.pws`` file.
+A note about spell checking: CI runs ``codespell`` to prevent authors from committing mistaken code. Some local/editor workflows may also use Aspell. Both flows use the root ``.aspell.en.pws`` word list as the shared project vocabulary; CI converts that file into a lowercase ``codespell`` ignore list before running. Sometimes spell checking flags code variables, tikZ diagrams, or differences between British English and American English. To add a word as valid, add it to the root ``.aspell.en.pws`` file.
 
 Committing
 ----------
