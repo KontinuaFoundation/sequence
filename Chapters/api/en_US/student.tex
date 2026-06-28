@@ -29,38 +29,38 @@ Throughout this chapter, we will explore various aspects of working
 with HTTP APIs, including:
 
 \begin{itemize}
-\item API endpoints and methods: Understanding how to interact with an
-  API involves identifying the available endpoints and the supported
-  methods, such as GET, POST, PUT, DELETE, and so on. We will discuss how to
-  construct API requests and handle different response formats.
+  \item API endpoints and methods: Understanding how to interact with an
+        API involves identifying the available endpoints and the supported
+        methods, such as GET, POST, PUT, DELETE, and so on. We will discuss how to
+        construct API requests and handle different response formats.
 
-\item Authentication and authorization: Many APIs require
-  authentication to ensure secure access and protect sensitive
-  data. We will delve into different authentication mechanisms,
-  including API keys, tokens, OAuth, and other authentication
-  protocols commonly used in API integrations.
+  \item Authentication and authorization: Many APIs require
+        authentication to ensure secure access and protect sensitive
+        data. We will delve into different authentication mechanisms,
+        including API keys, tokens, OAuth, and other authentication
+        protocols commonly used in API integrations.
 
-\item Request parameters and payloads: APIs often accept additional
-  parameters or payloads to customize the request or send data for
-  processing. We will explore how to pass query parameters, request
-  headers, and request bodies when interacting with APIs.
+  \item Request parameters and payloads: APIs often accept additional
+        parameters or payloads to customize the request or send data for
+        processing. We will explore how to pass query parameters, request
+        headers, and request bodies when interacting with APIs.
 
-\item Error handling and status codes: Learning how to handle errors
-  and interpret status codes returned by APIs is crucial for building
-  robust and resilient applications. We will discuss common status
-  codes and best practices for handling various scenarios gracefully.
+  \item Error handling and status codes: Learning how to handle errors
+        and interpret status codes returned by APIs is crucial for building
+        robust and resilient applications. We will discuss common status
+        codes and best practices for handling various scenarios gracefully.
 
-\item Rate limiting and throttling: Many APIs impose restrictions on
-  the number of requests you can make within a given timeframe to
-  prevent abuse and ensure fair usage. We will cover techniques for
-  handling rate limiting and implementing efficient strategies to
-  manage API quotas.
+  \item Rate limiting and throttling: Many APIs impose restrictions on
+        the number of requests you can make within a given timeframe to
+        prevent abuse and ensure fair usage. We will cover techniques for
+        handling rate limiting and implementing efficient strategies to
+        manage API quotas.
 
-\item API documentation and testing: Proper documentation is essential
-  for understanding an API's capabilities, endpoints, and expected
-  behavior. We will explore how to read and interpret API
-  documentation, as well as techniques for testing and validating API
-  integrations.
+  \item API documentation and testing: Proper documentation is essential
+        for understanding an API's capabilities, endpoints, and expected
+        behavior. We will explore how to read and interpret API
+        documentation, as well as techniques for testing and validating API
+        integrations.
 \end{itemize}
 
 By mastering the art of using HTTP APIs, you will expand your
@@ -104,9 +104,9 @@ node server.js
 \end{minted}
 This will create a new server, along with a ton of dependency files that javascript and node automatically install as part of your server.
 \subsection{What is an endpoint?}
-An \newterm{endpoint} is a URL exposed by the API. It usually is able to display a page or data based on the request of the endpoint. 
+An \newterm{endpoint} is a URL exposed by the API. It usually is able to display a page or data based on the request of the endpoint.
 
-We can navigate to the endpoint \texttt{GET /students/42}, where students is the resource that usually maps to a database, and \texttt{42} is the id of a student in the database. To retrieve this student from the database, we can navigate to 
+We can navigate to the endpoint \texttt{GET /students/42}, where students is the resource that usually maps to a database, and \texttt{42} is the id of a student in the database. To retrieve this student from the database, we can navigate to
 \begin{minted}{python}
 GET http://localhost:3000/students/42
 \end{minted}
@@ -118,32 +118,93 @@ which is an endpoint from our API. This will output
   "major": "Computer Science",
   "credits_completed": 88
 }
+\end{minted}
 
 Note that this is done in json format, common for backend data parsing.
-\end{minted}
+
 Each endpoint combines a resource path with an HTTP method to complete an action.
 
 This leads us to the idea of \newterm{CRUD operations}. CRUD, which stands for CREATE, REMOVE, UPDATE, DELETE, are a form of outlining an API's routes. Calling a route that aims to alter should follow one of the CRUD operations. GET does not have an operation since it is \newterm{read-only}.
 
 \begin{table}[]
-\begin{tabular}{|l|l|l|l|}
-\hline
-\textbf{HTTP Method} & \textbf{Purpose} & \textbf{CRUD Op}     & \textbf{Example}                  \\ \hline
-GET             & Fetch Data             &   N/A   & Get student information           \\ \hline
-PUT             & Update Data             &   UPDATE    & Fully update student              \\ \hline
-PATCH           & Update section of Data   &  UPDATE    & Update a student's major          \\ \hline
-POST            & Create Data              &   CREATE    & Create a new student              \\ \hline
-DELETE          & Remove Data             &   DELETE  & Remove a student after graduation \\ \hline
-\end{tabular}
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{HTTP Method} & \textbf{Purpose}       & \textbf{CRUD Op} & \textbf{Example}                  \\ \hline
+    GET                  & Fetch Data             & N/A              & Get student information           \\ \hline
+    PUT                  & Update Data            & UPDATE           & Fully update student              \\ \hline
+    PATCH                & Update section of Data & UPDATE           & Update a student's major          \\ \hline
+    POST                 & Create Data            & CREATE           & Create a new student              \\ \hline
+    DELETE               & Remove Data            & DELETE           & Remove a student after graduation \\ \hline
+  \end{tabular}
 \end{table}
 
-\begin{itemize}
-  \item Review HTTP methods
-  \item headers
-  \item Body
-\end{itemize}
+For a database representing students (assume more than just one), we would want to have routes that can complete each CRUD operation.
+
+Before an API can receive data from a client, Express must parse JSON
+request bodies. Add the following line after creating the application.
+
+\begin{minted}{javascript}
+app.use(express.json());
+\end{minted}
+
+This middleware automatically converts incoming JSON into a JavaScript
+object that can be accessed through \texttt{req.body}.
+
+\subsection{Reading all resources}
+
+Most APIs provide a route for retrieving an entire collection. Change the students array to look like the following.
+\begin{minted}{javascript}
+const students = [
+  {
+    student_id: 42,
+    name: "John Smith",
+    major: "Computer Science",
+    credits_completed: 88
+  },
+  {
+    student_id: 43,
+    name: "Jane Doe",
+    major: "Mathematics",
+    credits_completed: 61
+  }
+];
+
+app.get("/students", (req, res) => {
+  res.json(students);
+});
+\end{minted}
+
+The endpoint
+
+\begin{minted}{text}
+GET /students
+\end{minted}
+
+returns every student currently stored in the collection. Notice that we did not include an id. Now, there are more than one possible ids, so we need to make a general route that takes in an id of a student to fetch
+\begin{minted}{javascript}
+app.get("/students/:id", (req, res) => {
+  // use the id that is passed in the route
+  const id = Number(req.params.id);
+  // find a student from our students array
+  const student = students.find((s) => s.student_id === id);
+
+  // if the id is not found, we assume the student is not in the array
+  if (!student) {
+    return res.status(404).json({ error: "Student not found" });
+  }
+
+  res.json(student);
+});
+\end{minted}
+Start the server. Now, \mintinline{bash}|http://localhost:3000/students| returns the entire students array, while \mintinline{bash}|http://localhost:3000/students/43| only returns information about Jane Doe.
+
+Routing to \mintinline{bash}|http://localhost:3000/students/19| is invalid, so it returns
+\begin{minted}{json}
+{"error":"Student not found"}
+\end{minted}
+
 \section{Requests with cURL}
-Curl, sometimes stylized as \texttt{cURL} or \texttt{curl}.
+Curl, sometimes stylized as \texttt{cURL} or \texttt{curl}, is a command-line based resource used for sending API and HTTP requests for web server data.
 
 The simplest curl command
 \begin{minted}{shell}
@@ -192,7 +253,99 @@ which will return the \texttt{html} source code of the website \url{http://examp
 </html>
 \end{minted}
 
-That's all great, but we can put cURL to work on much more laborious tasks. Going back to our created api example:
+FIXME expand here 
+
+\section{Creating resources with POST}
+
+That's all great, but we can put cURL to work on much more laborious tasks. Going back to our created api example, we can post, update, and delete resources using cURL.
+
+A POST request creates a new resource. Unlike GET requests, POST
+requests send data inside the request body.
+
+\begin{minted}{javascript}
+app.post("/students", (req, res) => {
+  const student = req.body;
+
+  // basic validation: ensure a body is received
+  if (!student) {
+    return res.status(400).json({ error: "Invalid student data" });
+  }
+
+  students.push(student);
+
+  // status 201 means that the student was pushed successfully
+  res.status(201).json(student);
+});
+\end{minted}
+
+Notice the use of
+
+\begin{minted}{javascript}
+req.body
+\end{minted}
+
+which contains the JSON sent by the client.
+
+HTTP requests are composed of headers and a body. Headers are metadata such as \texttt{Content-Type} (most commonly application/json) or \texttt{Authorization} that describe how the request should be handled. The body is the payload that carries actual data, like the student record being created by a POST request.
+
+In Express, request headers are available on \texttt{req.headers}. For JSON payloads, middleware like \texttt{express.json()} parses the body so that the data is available on \texttt{req.body}.
+
+A template for sending json in the body looks something like the following:
+\begin{minted}{bash}
+curl -X METHOD URL \
+     -H "Header: Value" \
+     -d 'JSON DATA'
+\end{minted}
+
+To send a request body, include the body data in the HTTP request and set the appropriate \texttt{Content-Type} header. For example, with curl:
+
+\begin{minted}{shell}
+curl -X POST http://localhost:3000/students \
+  -H "Content-Type: application/json" \
+  -d '{
+      "student_id": 44,
+      "name": "Jerry Doe",
+      "major": "Computer Science",
+      "credits_completed": 23
+    }'
+\end{minted}
+This can be broken down as:
+
+\begin{itemize}
+  \item \texttt{curl}: The command-line tool for making HTTP requests.
+  \item \texttt{-X POST}: Use the POST HTTP method.
+  \item \texttt{http://localhost:3000/students}: The endpoint being contacted. Must exist in our server routes.
+  \item \texttt{-H "Content-Type: application/json"}: Tell the server the request body contains JSON.
+  \item \verb|-d '{ ... }'|: Send this JSON as the request body.
+\end{itemize}
+
+The request body in this example is the JSON string passed with \texttt{-d}. Express will parse that JSON into \texttt{req.body} when \texttt{express.json()} middleware is enabled.
+
+Note that our server.js students array will not update with Jerry Doe, because the server only stores the students array upon initialization, but we can see our now three students by running a GET request on \texttt{/students}
+
+\begin{minted}{json}
+[
+  {
+    "student_id": 42,
+    "name": "John Smith",
+    "major": "Computer Science",
+    "credits_completed": 88
+  },
+  {
+    "student_id": 43,
+    "name": "Jane Doe",
+    "major": "Mathematics",
+    "credits_completed": 61
+  },
+  {
+    "student_id": 44,
+    "name": "Jerry Doe",
+    "major": "Computer Science",
+    "credits_completed": 23
+  }
+]
+\end{minted}
+
 
 FIXME talk about API keys, API requests, how it interacts with HTTP requests, why keys should not be shared
 FIXME postman
