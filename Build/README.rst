@@ -142,6 +142,12 @@ All these scripts work, but the support for localization is incomplete.
 Once we start localizing the materials, we will correct this
 situation.
 
+CI
+---------
+These scripts have all been compiled into CI/CD workflows that automatically run upon a commit. Any changes will rebuild a localized version of a chapter and its corresponding resources, and send it over to `the live repo <https://kontinuafoundation.github.io/>`_. 
+
+A note about spell checking: a spell check has been implemented to prevent authors from commiting mistaken code. If you commit a spell check, the CI will fail upon its first step. In the GitHub errorlog, you can see what was flagged as a spelling error. Sometimes, it flags incorrectly, such as code variables, tikZ diagrams, or differences between British English and American English for example. To add a word as valid, add the word in the ``Build/.aspell.en.pws`` file.
+
 Committing
 ----------
 
