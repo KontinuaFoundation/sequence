@@ -138,7 +138,7 @@ do not respond.
 All three skip chance. Sampling methods based on random selection give everyone a fair shot and usually make more 
 trustworthy results.
 
-\subsection{Simple Random Sampling}
+\section{Simple Random Sampling}
 
 A \newterm{simple random sample}\index{simple random sample} (SRS) is a sample chosen so every group of 
 the same size has the same chance of being picked. 
@@ -231,6 +231,51 @@ A regional transit authority wants to survey 25 of its 300 bus drivers about wor
     not an SRS.
 \end{enumerate}
 \end{Answer}
+
+\textbf{Sampling Real Data from the Web}
+
+In this exercise you will load real world population data published by the World Bank, treat all 265 countries and territories as your population, draw a simple random sample, and compare your sample mean to the true population mean.
+
+\begin{enumerate} 
+    \item Import the necessary libraries.
+
+\begin{minted}{python}
+import pandas as pd
+\end{minted}
+
+    \item Load the dataset directly from the web and filter to the year 2020.
+
+\begin{minted}{python}
+url = "https://raw.githubusercontent.com/datasets/population/main/data/population.csv"
+df = pd.read_csv(url)
+
+pop2020 = df[df["Year"] == 2020][["Country Name", "Value"]].reset_index(drop=True)
+print(pop2020.head())
+print(f"Total entries: {len(pop2020)}")
+\end{minted}
+
+    \item Calculate the true population mean. This is the parameter you are trying to estimate.
+
+\begin{minted}{python}
+true_mean = pop2020["Value"].mean()
+print(f"True population mean: {true_mean:,.0f}")
+\end{minted}
+
+    \item Draw an SRS of 20 countries and compute the sample mean.
+
+\begin{minted}{python}
+sample = pop2020.sample(n=20)
+sample_mean = sample["Value"].mean()
+print(f"Sample mean (n=20): {sample_mean:,.0f}")
+\end{minted}
+
+    \item Run step (d) five times and record the sample mean each time. How close is each to the true mean? Are they all the same?
+
+    \item Change the sample size to 80 and repeat step (e). How do the results compare? What does this tell you about the relationship between sample size and sampling error?
+
+\end{enumerate}
+
+
 
 \subsection{Other Methods of Random Sampling}
 
@@ -516,7 +561,108 @@ A film festival puts all 900 registered attendee names in a database and uses so
 \end{itemize}
 \end{Answer}
 
-\subsection{Bias in Surveys}
+\textbf{Comparing Sampling Methods in Python}
+
+In this exercise you will apply three sampling methods to the same dataset and compare what each one produces. The dataset contains 30 students across three grade levels with their test scores.
+
+\textbf{Setup: Create the dataset.}
+
+\begin{minted}{python}
+import pandas as pd
+import numpy as np
+
+np.random.seed(42)
+
+data = {
+    "student_id": range(1, 31),
+    "grade": ["9th"]*10 + ["10th"]*10 + ["11th"]*10,
+    "score": (
+        list(np.random.randint(60, 80, 10)) +
+        list(np.random.randint(70, 90, 10)) +
+        list(np.random.randint(80, 100, 10))
+    )
+}
+
+df = pd.DataFrame(data)
+print(df)
+\end{minted}
+
+\textbf{Compute the true population mean.}
+
+\begin{minted}{python}
+true_mean = df["score"].mean()
+print(f"True mean score: {true_mean:.1f}")
+\end{minted}
+
+\begin{enumerate} 
+
+\item \textbf{Simple Random Sample.} Draw an SRS of 9 students.
+
+\begin{minted}{python}
+srs = df.sample(n=9)
+print(f"SRS mean: {srs['score'].mean():.1f}")
+print(srs[["student_id", "grade", "score"]])
+\end{minted}
+
+Run this three times. What grades tend to appear? Does the SRS always represent all three grades?
+
+\item \textbf{Stratified Random Sample.} Draw 3 students from each grade level.
+
+\begin{minted}{python}
+stratified = df.groupby("grade", group_keys=False).apply(
+    lambda x: x.sample(n=3)
+)
+print(f"Stratified mean: {stratified['score'].mean():.1f}")
+print(stratified[["student_id", "grade", "score"]])
+\end{minted}
+
+Run this three times. How does the sample mean compare to the true mean? Is it more or less stable than the SRS?
+
+\item \textbf{Cluster Sample.} Randomly select one entire grade level as the cluster.
+
+\begin{minted}{python}
+chosen_grade = pd.Series(df["grade"].unique()).sample(n=1).values[0]
+cluster = df[df["grade"] == chosen_grade]
+print(f"Cluster selected: {chosen_grade}")
+print(f"Cluster mean: {cluster['score'].mean():.1f}")
+\end{minted}
+
+Run this three times. How much does the cluster mean vary? Why?
+
+\item Fill in the table with your results.
+
+\medskip
+\begin{tabular}{|p{0.22\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.18\textwidth}|}
+\hline
+\textbf{Method} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Most stable?} \\
+\hline
+SRS & & & & \\[1.5em]
+\hline
+Stratified & & & & \\[1.5em]
+\hline
+Cluster & & & & \\[1.5em]
+\hline
+True mean & \multicolumn{4}{c|}{79.7} \\
+\hline
+\end{tabular}
+
+\medskip
+\item Why does the stratified sample tend to produce a more stable estimate than the SRS? Why does the cluster sample vary the most?
+
+\end{enumerate}
+
+%\begin{Answer}[ref={ex:sampling-compare}]
+%\begin{enumerate} 
+%    \item The SRS may accidentally oversample one grade and undersample another. Since 11th graders have much higher scores than 9th graders, a sample that happens to include more 11th graders will overestimate the true mean.
+%    \item The stratified sample is more stable because every grade level is always represented. The within-grade variation is smaller than the overall variation, so the estimate stays close to the true mean across runs.
+%    \item The cluster mean varies dramatically because the entire sample is determined by which grade is chosen. Selecting 9th grade gives a mean around 70; selecting 11th grade gives a mean around 92. The cluster mean can be far from the true mean of 79.7.
+%    \item The stratified sample is most stable because it controls for the known difference between grade levels. The cluster sample is most variable because it takes all-or-nothing from each group, and the groups differ significantly from each other in score.
+%\end{enumerate}
+%\end{Answer}
+
+
+
+\section{Bias in Surveys}
 
 Even a good random sample can still give bad results if the survey is set up badly. Bias can happen at many steps, further down 
 the line from when 
