@@ -191,9 +191,36 @@ The coefficients of each term are given by the entries in Pascal's triangle:
 (a + b)^4 = 1a^4 + 4a^3b + 6a^2 b^2 + 4 a b^3 + 1 b^4   
 \end{equation*}
 
+Notice how each term fits the form ${\displaystyle \textstyle ax^{k}y^{m}}$. The coefficient ${\displaystyle a}$ 
+in each term $\textstyle ax^{k}y^{m}$ is known as the binomial coefficient or \newterm{binomial theorem}. The binomial coefficient is denoted 
+as ${\displaystyle \textstyle \binom{n}{k}}$ where $n$ is the exponent and $k$ is the term number (starting with 0). 
+This is said ``n choose k''. \index{combinatorics} For example, in $(a + b)^4$, the coefficient of the third term 
+($6a^2b^2$) is $\binom{n}{k}=\binom{4}{2} = 6$. We will heavily discuss this in a future chapter on combinatorics.
+
 \begin{Exercise}[title={Using Pascal's Triangle}, label=pascalbinomial]
     \Question{What is $(x + \pi)^5$?}
 \end{Exercise}
 \begin{Answer}[ref=pascalbinomial]
   $(x + \pi)^5 = x^5 + 5\pi x^4 + 10\pi^2 x^3 + 10 \pi^3 + x^2 + 5 \pi^2 x + \pi^5$
+\end{Answer}
+
+\begin{Exercise}[title={Coding Pascal's Triangle}, label={ex:pascalrow}]
+
+Write a Python script that finds the row of Pascal's Triangle at a given index $n$. 
+
+\textit{Hint}: it does not need to be recursive.
+
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pascalrow}]
+
+\begin{minted}{python}
+"""Return the nth row (0-indexed) of Pascal's Triangle."""
+n = int(input("Enter row index n: "))
+row = [1]
+for k in range(1, n + 1):
+    row.append(row[-1] * (n - k + 1) // k)
+return row
+\end{minted}
+
 \end{Answer}

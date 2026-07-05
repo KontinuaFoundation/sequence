@@ -33,24 +33,24 @@ engraved?
 
 % \includegraphics[width=0.8\textwidth]{Race.png}
 
-In this case, once someone has been given first place, they can't win
-second or third place. Thus, any of the 6 people can come in first,
-but once you have engraved that person's name on the plaque, there are
-only 5 people whose names can appear in second place. Once you have
-engraved that name, there are only 4 people whose names can appear in
-third place. Thus, you would get $6 \times 5 \times 4 = 120$ plaques
-engraved.
-% ADD: This situation is a little confusing given if they're doing the plaques before hand, they wouldn't know who came in each place
+Since you're making these plaques before the race even happens, you need one
+plaque for every possible outcome. So think of it as filling in three blanks:
+first place, second place, and third place. Any of the 6 people could fill
+the first blank. Whoever fills that blank can't also fill the second blank
+--- a person can't come in both first \textit{and} second --- so only 5
+people are left to fill the second blank. Likewise, only 4 people remain
+to fill the third blank, since two people have already been assigned to
+the first two spots. Multiplying these together, $6 \times 5 \times 4 =
+120$, tells you exactly how many different first-second-third outcomes
+are possible --- and thus how many plaques you'd need engraved.
 
-What if the plaque includes all 6 places?  Then you would need $6 \times 5
-\times 4 \times 3 \times 2 \times 1 = 720$ plaques engraved.  We use
-this process often enough that we gave it a name.  We say ``I need 6
-factorial plaques engraved.''  When we write a \newterm{factorial}, we use an
-exclamation point:\index{factorial}
-% ADD: Same issue here
+What if the plaque includes all 6 places?  Using the same reasoning, you'd
+fill in six blanks instead of three: $6 \times 5 \times 4 \times 3 \times 2
+\times 1 = 720$ plaques engraved.  We use this process often enough that
+we gave it a name.  We say ``I need 6 factorial plaques engraved.''  When
+we write a \newterm{factorial}, we use an exclamation point:\index{factorial}
 
 $$6! = 6 \times 5 \times 4 \times 3 \times 2 \times 1 = 720$$
-
 We use the word ``permutation'' to mean a particular ordering.
 This rule says $n$ items can be ordered in $n!$ ways. Thus,
 mathematicians actually say ``If you have a list of $n$ items then we
@@ -80,7 +80,7 @@ $$\frac{n!}{(n-m)!}$$
 \end{mdframed}
 % KA: https://www.khanacademy.org/computing/pixar/crowds/crowds2/v/combinatorics8
 
-\subsection{Choose}
+\section{Choose}
 
 Let's say that there are 12 kids in a classroom and you need a team
 of four to clean the top of the desks. How many different possible teams are
@@ -101,7 +101,7 @@ That gets us our answer: How many different teams of four can be chosen from 12 
 
 $$\frac{12!}{(12-4)! 4!}= 495$$
 % ADD: Needs a bit more explanation for claretiy, might just be my understanding
-Generally, this formula, referred to as the Binomial coefficient. \index{binomial coefficient}
+Generally, this formula, referred to as the \newterm{Binomial coefficient}. \index{binomial coefficient}
 In combinatorics, we use this quantity a lot, so we have given it a name: \textit{choose}\index{choose function}
 \index{combinations!formula}
 \begin{mdframed}[frametitle = {Combinations}, style = important]
@@ -123,3 +123,107 @@ Python has the \pyfunction{math.comb} function:
 495  
 \end{minted}
 
+We briefly saw this in the common polynomial products chapter. The binomial theorem says that the coefficients of the terms in the expansion of $(a + b)^n$ are given by the binomial coefficients ${n \choose k}$.
+\begin{equation*}
+(a + b)^4 = 1a^4 + 4a^3b + 6a^2 b^2 + 4 a b^3 + 1 b^4 =\binom{4}{0}a^4 + \binom{4}{1}a^3b + \binom{4}{2}a^2b^2 + \binom{4}{3}ab^3 + \binom{4}{4}b^4
+\end{equation*}
+\section{Fractional Binomial Theorem}
+An issue arises when we have fractional exponents for this theorem. For example, what is $\sqrt{1+5x}=(1 + 5x)^{1/2}$? We can use the binomial theorem to expand this as follows:
+\begin{equation*}
+(1 + 5x)^{1/2} = \binom{1/2}{0}1 + \binom{1/2}{1}5x + \binom{ 
+1/2}{2}(5x)^2 + \binom{1/2}{3}(5x)^3 + \ldots
+\end{equation*}
+Pascal's triangle only works when the exponent $n$ is a non-negative integer. Here, the exponent is $\frac{1}{2}$, not a whole number. There's no "row $\frac{1}{2}$" of Pascal's triangle, so we need to extend the pattern.
+
+This extension is called the \textbf{\newterm{general binomial theorem}}. To make sense of $\binom{1/2}{k}$, we need a definition of the binomial coefficient that doesn't rely on factorials, since $(1/2)!$ doesn't make sense. Recall that
+\begin{equation*}
+\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1)(n-2)\cdots(n-k-1)}{k!}
+\end{equation*}
+Notice that the right-hand side only ever multiplies and divides — it never actually requires $n$ to be a whole number! This gives us a definition that works for \emph{any} real number $n$, including fractions and negative numbers:
+\index{binomial coefficient!generalized}
+\begin{mdframed}[frametitle = {Generalized Binomial Coefficient}, style = important]
+For any real number $n$ and non-negative integer $k$,
+\begin{equation*}
+\binom{n}{k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}
+\end{equation*}
+\end{mdframed}
+
+When $n$ is \emph{not} a non-negative integer, like $n = \frac{1}{2}$, none of the factors $n, n-1, n-2, \ldots$ is ever zero, so the expansion never terminates. Instead of a finite row of Pascal's triangle, we get an infinite series.
+
+\begin{mdframed}[frametitle = {General Binomial Theorem}, style = important]
+Recall that for $|x| < 1$, the geometric series gives
+\begin{equation*}
+    \frac{1}{1-x} = 1 + x + x^2 + x^3 + \cdots
+\end{equation*}
+Since $\frac{1}{1-x} = (1-x)^{-1}$, this looks like a binomial expansion where the exponent $-1$ is not a positive integer. Using the generalized binomial coefficient,
+\begin{equation*}
+    \binom{n}{k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}
+\end{equation*}
+For any real number $n$ and $|x| < 1$,
+\begin{equation*}
+(1+x)^n = \sum_{k=0}^{\infty} \binom{n}{k}x^k = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \cdots
+\end{equation*}
+this is called the \newterm{binomial series}, and it generalizes the binomial theorem to arbitrary real exponents. Setting $n = -1$ recovers the geometric series above.
+\end{mdframed}
+
+The condition $|x| < 1$ matters here for convergence. When $n$ was a positive integer, the expansion was just a polynomial, and polynomials are perfectly well-behaved for every value of $x$. But now that we have an infinite series, we need the terms to actually get smaller and smaller so the sum settles down to a finite value. If $|x| \geq 1$, the terms don't shrink, and the series doesn't converge to anything useful.
+
+Let's compute the coefficients for $\binom{1/2}{k}$
+\begin{align*}
+\binom{1/2}{0} &= 1 \\
+\binom{1/2}{1} &= \frac{1}{2} \\
+\binom{1/2}{2} &= \frac{\frac{1}{2}\left(\frac{1}{2}-1\right)}{2!} = \frac{\frac{1}{2}\cdot\left(-\frac{1}{2}\right)}{2} = -\frac{1}{8} \\
+\binom{1/2}{3} &= \frac{\frac{1}{2}\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)}{3!} = \frac{3/8}{6} = \frac{1}{16}
+\end{align*}
+So,
+\begin{equation*}
+(1+x)^{1/2} = 1 + \frac{1}{2}x - \frac{1}{8}x^2 + \frac{1}{16}x^3 - \cdots
+\end{equation*}
+
+Now we can go back to our original problem, $\sqrt{1+5x} = (1+5x)^{1/2}$. This is just $(1+x)^{1/2}$ with $x$ replaced by $5x$, so we substitute $5x$ everywhere:
+\begin{align*}
+\sqrt{1+5x} &= 1 + \frac{1}{2}(5x) - \frac{1}{8}(5x)^2 + \frac{1}{16}(5x)^3 - \cdots \\
+&= 1 + \frac{5}{2}x - \frac{25}{8}x^2 + \frac{125}{16}x^3 - \cdots
+\end{align*}
+This expansion is only valid for $|5x| < 1$, i.e. $|x| < \frac{1}{5}$.
+
+\begin{Exercise}[title={Fractional Binomial Expansion}, label=fracbinom]
+  \Question{Find the first four terms in the expansion of $(1+x)^{-1}$, in ascending powers of $x$. For what values of $x$ is this expansion valid?}
+  \Question{Find the first three terms in the expansion of $\sqrt{1-2x}$, in ascending powers of $x$.}
+\end{Exercise}
+\begin{Answer}[ref=fracbinom]
+  1. $(1+x)^{-1} = 1 - x + x^2 - x^3 + \cdots$, valid for $|x| < 1$
+
+  2. $\sqrt{1-2x} = 1 - x - \frac{1}{2}x^2 - \cdots$
+\end{Answer}
+\section{Applications in Probability}
+
+Suppose you flip a fair coin 5 times. What's the probability that you get exactly 3 heads? 
+
+Note that there are only two options: Heads (H) or Tails (T). Thus, there are $2^5 = 32$ possible sequences of flips. Each sequence is equally likely, so the probability of any particular sequence is $\frac{1}{32}$. Only a certain number of sequences will have exactly 3 heads.
+
+One way to get 3 heads is HHHTT. There's also HTHHT, THHHT, and many other orderings also give you 3 heads. Before we can find the probability, we need to know \textit{how many} different sequences of 5 coin flips contain exactly 3 heads. As we have discussed, we can use the $n$-choose-$k$ formula. There are
+
+$$\binom{5}{3} = \frac{5!}{3!2!} = 10$$
+
+such sequences. This is said "5 choose 3", or, more explicitly ``get 3 successes in 5 trials''. 
+
+Each individual sequence, like HHHTT, has probability $\left(\frac{1}{2}\right)^3\left(\frac{1}{2}\right)^2$ of occurring, since each flip is independent. Since there are 10 equally likely sequences that give exactly 3 heads, we add up 10 copies of that probability:
+
+$$P(\text{exactly 3 heads}) = \binom{5}{3}\left(\frac{1}{2}\right)^3\left(\frac{1}{2}\right)^2 = 10 \cdot \frac{1}{32} = \frac{10}{32} = \frac{5}{16}$$
+
+This pattern of counting the arrangements with $\binom{n}{k}$, then multiplying by the probability of one arrangement works whenever you have repeated \emph{independent} trials with only two possible outcomes each time (success or failure). 
+
+\begin{Exercise}[title={Free Throws}, label={ex:free_throw_prob}]
+A free throw shooter has a past record of making 60\% of her free throws. Over the next 6 free throws, what is the probability that she makes exactly 4 of them?
+\end{Exercise}
+
+
+\begin{Answer}[ref={ex:free_throw_prob}]
+
+\[
+P(\text{exactly 4 makes}) = \binom{6}{4}(0.6)^4(0.4)^2 = 0.31104
+\]
+
+\end{Answer}
+This probability situation has been rightfully called the \newterm{binomial distribution}. This is a brief introduction to the binomial distribution, and we will discuss it in more detail in a later chapter.
