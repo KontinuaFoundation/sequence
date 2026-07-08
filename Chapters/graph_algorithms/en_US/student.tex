@@ -178,7 +178,6 @@ Notice how, now, $A \ne A^T$, because the edges are directional.
 % Strengths of an adjacency matrix
 \section{Prim's Algorithm and Kruskal's Algorithm for Minimum Spanning Trees}
 Prim's Algorithm is minimum spanning tree
-% https://github.com/KontinuaFoundation/sequence/issues/312
 
 FIXME https://github.com/KontinuaFoundation/sequence/issues/315
 
@@ -462,7 +461,7 @@ Therefore,
 This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem. We call this an \newterm{algorithmic reduction}.\footnote{Algorithmic Reductions are the basis of a set of problems called P, NP, and NP-Complete. See \href{https://youtu.be/eHZifpgyH_4}{this video} for more.} 
 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
-% https://github.com/KontinuaFoundation/sequence/issues/312
+FIXME https://github.com/KontinuaFoundation/sequence/issues/312
 \section{Topological Sort and DAGs}
 Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
 
@@ -570,7 +569,6 @@ showing us that our sort outputs which ones can happen at the same time. In soft
 \section{Proofs}
 % CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
-%FIXME proof of leaf, subgraph
 This section will be a set of proofs or algorithm design problems for graph-related concepts that are important to know. At the basis level, these are just practice problems for graph understand, but can be applied in many real world scenarios.
 
 \subsection{Example 1: Bipartite} %FIXME Example environment
@@ -581,16 +579,44 @@ A \newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitio
 FIXME Diagram
 \end{mdframed}
 
-\begin{theorem}
+\begin{theorem}\label{thm:bipartite}
 An undirected graph \(G\) is bipartite if and only if it contains no cycles of odd length.
 \end{theorem}
 \begin{Exercise}[title={Algorithm for Determining Bipartite}, label={ex:proofs_bipartite}]
-Design pseudocode for an algorithm that determines whether or not an undirected graph is bipartite. Hint: use the theorem.
+Design pseudocode for an algorithm that determines whether or not an undirected graph is bipartite. 
+\textit{Hint: use the theorem.}
+
+\textit{Hint 2: This function may be useful}
+
+\texttt{FindOdd$(G, e)$}
+\begin{algorithmic}[1]
+\Require $G$, a graph on which DFS has been run; $e = (x,y)$, a back edge
+\Ensure \textbf{true} if $e$ creates a cycle of odd length, \textbf{false} otherwise
+\If{$\text{pre}(x) - \text{post}(y) \equiv 0 \pmod 2$}
+    \State \Return \textbf{true}
+\Else
+    \State \Return \textbf{false}
+\EndIf
+\end{algorithmic}
 \end{Exercise}
 \begin{Answer}[ref={ex:proofs_bipartite}]
-FIXME
+Assuming \texttt{FindOdd} exists, we can make the following pseudecode.
 
+
+\texttt{IsBipartite$(G)$}
+\begin{algorithmic}[1]
+\Require $G$, a graph on which DFS has been run
+\Ensure \textbf{true} if $G$ is bipartite, \textbf{false} otherwise
+\For{all back edges $e$}
+    \If{$\Call{FindOdd}{G, e} = \textbf{true}$}
+        \State \Return \textbf{false}
+    \EndIf
+\EndFor
+\State \Return \textbf{true}
+\end{algorithmic}
 \end{Answer}
+
+While you don't have to go through it on your own, here is the outline of how we can do a proof by contradiction for a graph, specifically proving theorem \ref{thm:bipartite}.
 \begin{proof}
 
 First, suppose \(G\) is bipartite. Then its vertices can be partitioned into two sets
@@ -637,18 +663,48 @@ $e = (u, v)$, and determines whether $G$ has a cycle containing $e$.
 \end{algorithmic}
 \end{Answer}
 
-\begin{Exercise}[title={}, label={}]
+\begin{Exercise}[title={Leaf Removal}, label={ex:proofs_leaf}]
+\textbf{Proof the following statement:}
 In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
-
-
+\vspace*{20mm}
 \end{Exercise}
-\begin{Answer}[ref={}]
-
-
-
+\begin{Answer}[ref={ex:proofs_leaf}]
+\begin{proof}
+Run DFS on given graph $G$. Find a leaf, $l$ in the output DFS tree (sometimes called the explore tree). Remove $l$ from the graph. Run DFS on the graph ($G' = G / \{l\}$). If the DFS tree is connected, then we are done. If not, then there is a vertex $v$ in the DFS tree that is not connected to the rest of the graph. This means that $v$ was only connected to $l$ in the original graph. But this contradicts the fact that $l$ was a leaf in the DFS tree, since $v$ would have been explored before $l$. Since a leaft must exist, removing it from the explore tree does not create a new tree. Therefore, there must be a vertex whose removal leaves the graph connected.
+\end{proof}
 \end{Answer}
 
+Sometimes, we may need to create new graphs as counterexamples to disprove a statement. Consider the following:
+\begin{theorem}
+An graph $G$ is \newterm{strongly connected} if every vertex is reachable from every other vertex.
+\end{theorem}
+Another way to say this is that a select vertex of the graph has a path to every other vertex on the graph. Often, this comes up in finding \emph{subgraphs} of graphs that are strongly connected, called \newterm{strongly connected components}.
+\begin{Exercise}[title={Strongly Connected Graphs}, label={ex:proofs_strongly_connected}]
+Create an example of a strongly connected directed graph $G = (V,E)$ such that, for every $v \in V$,
+removing $v$ from $G$ leaves a directed graph that is not strongly connected. 
 
+\textit{Hint: the simplest answer is usually the best. Start with one vertex.}
+\end{Exercise}
+\begin{Answer}[ref={ex:proofs_strongly_connected}]
+
+
+
+	\begin{tikzpicture}[
+			every node/.style={kontinuaNode},
+			every path/.style={kontinuaEdge, directed}
+		]
+
+		% Graph G
+		\node (A) at (-1,2) {A};
+		\node (B) at (-3,-1) {B};
+		\node (C) at (1,-1) {C};
+
+		\draw (A) to[bend left=20] (B);
+		\draw (B) to[bend left=20] (C);
+		\draw (C) to[bend left=20] (A);
+
+	\end{tikzpicture}
+\end{Answer}
 % Prove the following theorem:
 % 
 % Consider the Clique problem restricted to graphs in which every vertex has degree at most 3. Prove
