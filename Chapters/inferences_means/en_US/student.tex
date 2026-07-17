@@ -1,0 +1,382 @@
+\chapter{Statistical Inferences for Means}
+
+In Statistical Inferences for Proportions, every question came down to a percentage: what proportion of trial users converted to paying customers, and whether that proportion changed after a redesign. Not every question reduces to a percentage. 
+
+Sometimes what you want to know is a genuine measurement, how long something takes, how much something weighs, how far something travels, on average. 
+
+A quantitative variable like this calls for the same two tools you already trust, a confidence interval to estimate a mean and a significance test to check a claim about one, but neither tool behaves the way it did for proportions. This is because sometimes you are missing crucial information: you almost never know the population's true standard deviation, only what your own sample can tell you. That gap forces a new distribution into the picture, which looks like the  normal curve. 
+
+\section{The \texorpdfstring{$t$}{t}-Distribution and Conditions for Inference about a Mean}
+
+
+% Continuing example from Statistical Inferences for Proportions. edit to be more clear about this. 
+
+
+Suppose the streaming service now wants to know something different from Statistical Inferences for Proportions's conversion rate: how long, on average, a subscriber watches in a single sitting. A product analyst pulls a random sample of viewing sessions and calculates a sample mean watch time, $\bar{x}$. To turn that one number into a confidence interval or a significance test, you need the standard error of $\bar{x}$, and the standard error depends on the population standard deviation, $\sigma$. Here is the catch: nobody knows $\sigma$. The population's true spread in viewing habits is exactly the kind of thing you would need a census to pin down, and if you had a census, you would not need inference in the first place.
+
+\subsection{Meet the \texorpdfstring{$t$}{t}-Distribution}
+
+So what do you use instead of $\sigma$? The obvious candidate is the sample standard deviation, $s$. Swapping $s$ in for $\sigma$ seems harmless, but it changes the shape of the sampling distribution you are working with. Once you estimate $\sigma$ using $s$, the statistic $\dfrac{\bar{x} - \mu}{s / \sqrt{n}}$ no longer follows a normal distribution. It follows a \newterm{$t$-distribution}\index{t-distribution}, first described by a statistician working at the Guinness brewery in Dublin, who published under the pen name Student because his employer did not allow staff to publish under their own names. The name stuck, so you will sometimes see it called Student's $t$-distribution.
+
+The $t$-distribution looks a lot like the normal curve, but not identical to it. It is continuous, symmetric, and centered at 0, but it is shorter in the middle and thicker in the tails, meaning that values far from the center are somewhat more likely than the normal distribution would predict. How much thicker depends on a parameter called \newterm{degrees of freedom}\index{degrees of freedom}, abbreviated $df$. For inference about a single mean, $df = n - 1$. Smaller samples produce a more spread-out $t$-distribution, since a small sample gives you a shakier estimate of $\sigma$. As $n$ grows, $s$ becomes a more reliable stand-in for $\sigma$, the $t$-distribution's tails shrink, and the curve converges toward the standard normal distribution. By the time $df$ reaches the high double digits, the two are nearly indistinguishable.
+
+This matters because it changes which critical value you use. Instead of $z^*$, a $t$-interval or $t$-test uses $t^*$, the value with a specified area beyond it in the tails of the $t$-distribution with $n-1$ degrees of freedom. You find $t^*$ the same way you found $z^*$: decide on a confidence level, split the leftover area between the two tails, and read the value off a $t$-table using $df$ and the tail area together, since unlike the $z$-table, a $t$-table needs both.
+
+Say the analyst samples $n = 18$ viewing sessions and wants a 90 percent confidence interval for the true mean watch time. That is $df = 17$, and looking up the value where the upper tail holds 5 percent of the area gives $t^* = 1.740$. Compare that to $z^* = 1.645$, the value you would use if $\sigma$ were somehow known. The $t^*$ value is larger, which makes sense: estimating $\sigma$ with $s$ adds uncertainty, and a wider margin of error is the price of that uncertainty. Had the sample been $n = 101$ instead, giving $df = 100$, $t^*$ would drop to $1.984$, much closer to $z^*$. Notice the gap: with $df=17$, the $t$-interval already has to work harder to reach 90 percent confidence than a $z$-interval would.
+
+\begin{Exercise}[title={Reading the $t$-Table}, label={ex:means-tdist-critical}]
+A logistics company samples $n = 25$ delivery times and wants to construct a 95 percent confidence interval for the true mean delivery time. State the degrees of freedom, and find $t^*$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-tdist-critical}]
+$df = n - 1 = 24$. A 95 percent confidence interval splits the remaining 5 percent evenly between the two tails, leaving 2.5 percent, or $0.025$, in the upper tail. Reading the $t$-table at $df = 24$ and upper-tail area $0.025$ gives $t^* = 2.064$.
+\end{Answer}
+
+\subsection{Conditions for Inference about a Mean}
+
+A $t$-procedure is only trustworthy when two conditions hold, and they should sound familiar from the last chapter, since means and proportions lean on the same underlying logic.
+
+The first condition is independence. The data should come from a random sample or a randomized experiment, and if you are sampling without replacement, the sample size should be no more than 10 percent of the population. This is exactly the same independence check you already used for proportions, just applied to a quantitative variable instead of a categorical one.
+
+The second condition concerns the shape of the sampling distribution of $\bar{x}$. Because the $t$-procedures assume that $\bar{x}$ is approximately normally distributed, you need some evidence that the population itself is not wildly skewed and does not contain extreme outliers, since either one would drag the sampling distribution of $\bar{x}$ out of shape too. If you have access to the raw data, make a dotplot, stemplot, or normal probability plot and look for strong skew or outliers. If the population is known to already be normal, or the sample size is large, generally taken to mean $n \geq 30$, the condition is satisfied even without inspecting the shape directly, since the central limit theorem takes over from there.
+
+Notice what is missing from this list: there is no condition that checks whether $\sigma$ is known. That is deliberate. In the rare event you do know $\sigma$, a $z$-procedure for the mean is technically the correct tool, since it avoids the extra uncertainty from estimating $\sigma$ altogether. In practice, and on the AP exam, this case almost never comes up. Assume $t$, not $z$, unless a problem tells you outright that $\sigma$ is known.
+
+\begin{itemize}
+    \item Independence: random sample or randomized experiment, and $n \leq 10\%$ of the population when sampling without replacement.
+    \item Normal or large sample: no strong skew or outliers in the data, the population is known to be normal, or $n \geq 30$.
+    \item Default to a $t$-procedure. Only switch to $z$ if $\sigma$ is explicitly given.
+\end{itemize}
+
+\begin{Exercise}[title={Spot the Error}, label={ex:means-conditions-error}]
+A student is asked to construct a confidence interval for a population mean using a sample of $n = 22$ measurements. The student writes, "Since $n = 22$ is less than 30, I cannot use a $t$-interval. I need to collect a bigger sample first." Explain what is wrong with this reasoning.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-conditions-error}]
+The $n \geq 30$ threshold is not a hard requirement for using a $t$-interval. It is one way to satisfy the normality condition when you cannot otherwise verify the shape of the population. If the population itself is known to be normally distributed, or if a dotplot or stemplot of the sample shows no strong skew or outliers, the normality condition is satisfied regardless of how small $n$ is, and a $t$-interval is entirely appropriate. The student conflated a fallback rule with a strict cutoff.
+\end{Answer}
+
+\subsection{When the Data Comes in Pairs}
+
+Every example so far has assumed one independent sample. Sometimes your data is not shaped that way at all. Suppose the streaming service rolls out a new recommendation algorithm and wants to know whether it changes how long the same subscribers watch. Every subscriber in the study contributes two measurements, one before the rollout and one after, and those two numbers obviously are not independent of each other. A subscriber who tends to binge-watch on weekends will likely do so both before and after the update.
+
+Data like this is called \newterm{matched pairs}\index{matched pairs}, and the fix is simpler than it might look. Rather than treating this as two samples, subtract to get one difference per subscriber, $d_i = x_i - y_i$, and you are back to a single sample, just a sample of differences instead of raw measurements. Everything you just learned in this section, the $t$-distribution, degrees of freedom, the independence and normality conditions, applies directly to that sample of differences. The only condition that shifts slightly is independence, which now refers to the pairs themselves being independent of one another, not to the two measurements within a pair.
+
+This is worth flagging now because it is easy to mistake matched pairs for a comparison of two separate means, which is not what it is. A comparison of two independent means needs two separate random samples from two populations. Matched pairs needs one sample of paired subjects, and one sample of differences.
+
+\begin{Exercise}[title={Paired or Independent?}, label={ex:means-paired-classify}]
+For each scenario, state whether the data described would be analyzed as matched pairs or as two independent samples, and justify your answer in one sentence.
+\begin{enumerate}
+    \item[(a)] Twenty subscribers each have their nightly watch time recorded for one week before a recommendation algorithm update and one week after.
+    \item[(b)] A researcher randomly splits 200 subscribers into two groups, shows one group only comedy titles and the other only drama titles for a month, and compares the two groups' average watch time.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-paired-classify}]
+(a) Matched pairs. The same twenty subscribers are measured twice, so the two sets of measurements are linked subscriber by subscriber, and the natural next step is to subtract to get one sample of twenty differences.
+
+(b) Two independent samples. The comedy-watching group and the drama-watching group are made up of entirely different subscribers with no pairing between them, so there is no meaningful way to subtract one group's values from the other's.
+\end{Answer}
+
+section{Constructing and Justifying a Confidence Interval for a Population Mean}
+ 
+You now have everything you need to actually build an interval. The general shape of a $t$-interval is the same shape every confidence interval takes: a point estimate, plus or minus a margin of error.
+ 
+\subsection{The Confidence Interval for a Population Mean}
+ 
+The point estimate for a population mean $\mu$ is the sample mean, $\bar{x}$. The margin of error is the critical value $t^*$ times the standard error of $\bar{x}$, which is $\dfrac{s}{\sqrt{n}}$. Putting the two together,
+\[
+\bar{x} \pm t^* \dfrac{s}{\sqrt{n}}
+\]
+is a $(1-\alpha)100\%$ confidence interval for $\mu$, using $t^*$ from a $t$-distribution with $n-1$ degrees of freedom.
+ 
+Back to the streaming service. The analyst samples $n = 24$ viewing sessions and finds a sample mean watch time of $\bar{x} = 47.8$ minutes with a sample standard deviation of $s = 9.6$ minutes. A dotplot of the sample shows no strong skew or outliers, and the sessions were pulled at random from the full session log, well under 10 percent of all sessions logged that month. Both conditions are satisfied, so a $t$-interval is appropriate.
+ 
+For a 95 percent confidence interval, $df = 23$ and $t^* = 2.069$. The standard error is $\dfrac{9.6}{\sqrt{24}} \approx 1.960$, so the margin of error is $2.069 \times 1.960 \approx 4.05$ minutes. The interval is
+\[
+47.8 \pm 4.05 \Rightarrow (43.75,\ 51.85)
+\]
+so the analyst estimates the true mean session watch time to be between 43.75 and 51.85 minutes.
+ 
+\begin{Exercise}[title={Building a \texorpdfstring{$t$}{t}-Interval}, label={ex:means-ci-build}]
+A city transportation office samples $n = 16$ commute times and finds $\bar{x} = 28.4$ minutes and $s = 6.2$ minutes. Conditions for inference are satisfied. Construct a 98 percent confidence interval for the true mean commute time.
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-ci-build}]
+$df = 15$. A 98 percent confidence interval leaves 1 percent, or $0.01$, in each tail, giving $t^* = 2.602$. The standard error is $\dfrac{6.2}{\sqrt{16}} = 1.55$, so the margin of error is $2.602 \times 1.55 \approx 4.03$ minutes. The interval is $28.4 \pm 4.03 \Rightarrow (24.37,\ 32.43)$ minutes.
+\end{Answer}
+ 
+\subsection{Interpreting and Justifying the Interval}
+ 
+An interpretation of a confidence interval for a mean always references two things: the confidence level, and the population the sample represents. For the streaming service example, the correct interpretation is that the analyst is 95 percent confident that the true mean watch time per session, across all sessions, falls between 43.75 and 51.85 minutes.
+ 
+Resist the urge to say there is a 95 percent probability that $\mu$ falls in this particular interval. Once the sample is collected and the interval is calculated, $\mu$ either is or is not inside it, there is no probability left to talk about. The 95 percent describes the method: if you repeated this sampling process many times and built a new interval each time, about 95 percent of those intervals would capture the true $\mu$. Confidence is a property of the process, not of any one interval.
+ 
+A confidence interval can also be used to justify a claim. Suppose the product team's target is an average watch time of at least 45 minutes per session. Because the entire interval, $(43.75, 51.85)$, does not lie entirely above 45, and in fact dips below it, the interval does not provide convincing evidence that the true mean watch time is at least 45 minutes. Notice how directly this works: you are not running a separate test, you are simply checking whether the claimed value falls inside or outside the interval you already built.
+ 
+Two more relationships are worth carrying forward. First, for a fixed confidence level, the width of the interval shrinks as $n$ grows, roughly proportional to $\dfrac{1}{\sqrt{n}}$. Quadrupling the sample from $n = 24$ to $n = 96$ shrinks the margin of error from about 4.05 minutes to about 1.95 minutes, close to half, not because the streaming service got lucky, but because $\sqrt{4} = 2$. Second, for a fixed sample, raising the confidence level widens the interval, since capturing $\mu$ more often demands a wider net.
+ 
+textbf{Computing in Excel}
+ 
+Excel does not have a single built-in function that hands back a finished confidence interval, but two functions cover everything once you have $n$, $\bar{x}$, and $s$.
+ 
+If you have the raw session lengths in a column, say \texttt{A2:A25}, get the three summary values first:
+\begin{itemize}
+    \item \texttt{=AVERAGE(A2:A25)} for $\bar{x}$
+    \item \texttt{=STDEV.S(A2:A25)} for $s$
+    \item \texttt{=COUNT(A2:A25)} for $n$
+\end{itemize}
+ 
+Suppose those land in cells \texttt{B1} ($n = 24$), \texttt{B2} ($\bar{x} = 47.8$), and \texttt{B3} ($s = 9.6$), with the confidence level in \texttt{B4} (\texttt{0.95}).
+ 
+The most direct route is \texttt{CONFIDENCE.T}, which returns the margin of error by itself:
+\begin{itemize}
+    \item \texttt{=CONFIDENCE.T(1-B4, B3, B1)} returns $4.054$, the margin of error.
+\end{itemize}
+ 
+Then the interval bounds are just \texttt{=B2-C1} and \texttt{=B2+C1}, where \texttt{C1} holds that margin of error.
+ 
+If you would rather see each piece of the formula spelled out, build it manually instead:
+\begin{itemize}
+    \item \texttt{=B1-1} for $df$
+    \item \texttt{=T.INV.2T(1-B4, C1)} for $t^*$, where \texttt{C1} is the $df$ cell (\texttt{T.INV.2T} takes the two-tailed probability, so use $1 - 0.95 = 0.05$ directly, not $0.025$)
+    \item \texttt{=B3/SQRT(B1)} for the standard error
+    \item \texttt{=C2*C3} for the margin of error, where \texttt{C2} and \texttt{C3} hold $t^*$ and the standard error
+\end{itemize}
+ 
+Both routes return the same margin of error, $4.054$, and the same interval, $(43.75, 51.85)$. The manual version is worth building at least once, since it makes visible exactly where the $t$-distribution and the sample size are doing their work; \texttt{CONFIDENCE.T} is what you would reach for afterward, once you trust the formula.
+ 
+% Insert screenshot: Excel worksheet showing the raw session data or summary statistics in columns A-B, the CONFIDENCE.T and/or manual T.INV.2T formulas in the formula bar, and the resulting interval bounds, update cell references above if layout differs
+ 
+\begin{Exercise}[title={A Matched-Pairs Interval}, label={ex:means-ci-paired}]
+A call center tests a new training program on $n = 12$ employees, recording each employee's average call-handling time before and after training. The sample of differences (before minus after) has $\bar{d} = -3.2$ minutes and $s_d = 4.5$ minutes. Conditions for inference on the differences are satisfied. Construct a 90 percent confidence interval for $\mu_d$, and state what it suggests about the training program.
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-ci-paired}]
+This is matched pairs, so the sample is the twelve differences, and everything proceeds exactly as it did for a single mean. $df = 11$, and a 90 percent confidence interval leaves 5 percent in each tail, giving $t^* = 1.796$. The standard error is $\dfrac{4.5}{\sqrt{12}} \approx 1.299$, so the margin of error is $1.796 \times 1.299 \approx 2.33$ minutes. The interval is $-3.2 \pm 2.33 \Rightarrow (-5.53,\ -0.87)$ minutes. Because the entire interval is negative, and the differences were defined as before minus after, this suggests call-handling time decreased after training, by somewhere between about 0.87 and 5.53 minutes on average.
+\end{Answer}
+ 
+\begin{Exercise}[title={Spot the Error}, label={ex:means-ci-interp-error}]
+A student reports the streaming-service interval $(43.75, 51.85)$ and writes, "There is a 95 percent probability that the true mean watch time is between 43.75 and 51.85 minutes." Explain what is wrong with this interpretation, and rewrite it correctly.
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-ci-interp-error}]
+The true mean $\mu$ is a fixed, though unknown, number. It is not a random variable, so it makes no sense to assign it a probability of falling anywhere. What is random is the interval itself, since a different sample would have produced a different $\bar{x}$ and a different interval. The corrected interpretation is that the analyst is 95 percent confident that the true mean watch time per session falls between 43.75 and 51.85 minutes, meaning that if this sampling process were repeated many times, about 95 percent of the resulting intervals would capture the true mean.
+\end{Answer}
+ 
+\section{Setting Up and Carrying Out a Test for a Population Mean}
+ 
+\subsection{Setting Up the Test}
+ 
+A test for a population mean starts the same way a test for a proportion did: state hypotheses about the parameter, never about a sample statistic. The null hypothesis takes the form $H_0: \mu = \mu_0$, where $\mu_0$ is whatever value is being challenged. The alternative hypothesis is $H_a: \mu < \mu_0$, $H_a: \mu > \mu_0$, or $H_a: \mu \neq \mu_0$, depending on which direction the question points.
+ 
+Choosing the method and verifying conditions works exactly as it did in the last section: check independence, check that the population is normal or the sample is large enough and free of strong skew or outliers, and default to a $t$-test unless $\sigma$ is somehow known. If the data arrives as matched pairs, subtract first, then run everything that follows on the sample of differences, testing $H_0: \mu_d = 0$ against whichever alternative fits the question.
+ 
+\subsection{Carrying Out the Test}
+ 
+The test statistic for a population mean is
+\[
+t = \dfrac{\bar{x} - \mu_0}{s / \sqrt{n}}
+\]
+with $n - 1$ degrees of freedom. Once you have $t$, find the p-value from the $t$-distribution, matching the tail or tails to the alternative hypothesis, then compare it to $\alpha$. Reject $H_0$ if the p-value is less than $\alpha$; otherwise, fail to reject.
+ 
+The streaming service just simplified its home screen, and the product team wants to know whether average session watch time has actually increased above the old baseline of 42 minutes. They sample $n = 30$ post-redesign sessions and find $\bar{x} = 44.6$ minutes and $s = 8.2$ minutes. The sample shows no strong skew or outliers, and the sessions were selected at random, well under 10 percent of all sessions logged since the redesign, so a $t$-test is appropriate.
+ 
+\[
+H_0: \mu = 42 \qquad H_a: \mu > 42
+\]
+ 
+With $df = 29$, the standard error is $\dfrac{8.2}{\sqrt{30}} \approx 1.497$, so
+\[
+t = \dfrac{44.6 - 42}{1.497} \approx 1.737
+\]
+Using $\alpha = 0.05$, the p-value for $t = 1.737$ with 29 degrees of freedom is about $0.0465$. Because $0.0465 < 0.05$, reject $H_0$. There is sufficient evidence, at the 5 percent significance level, that the true mean session watch time increased above 42 minutes after the redesign.
+ 
+Notice how close that p-value sits to $\alpha$. A slightly less favorable sample, and the conclusion flips to failing to reject, which is worth sitting with: statistical significance is not the same as an overwhelming result, and a p-value of $0.0465$ is a much shakier win than one of $0.0003$ would be.
+ 
+The call center's training program from the last section makes a good matched-pairs example here too. With $\bar{d} = -3.2$ minutes, $s_d = 4.5$ minutes, and $n = 12$ employees, testing $H_0: \mu_d = 0$ against $H_a: \mu_d < 0$ gives $df = 11$, $t \approx -2.463$, and a p-value of about $0.0157$. At $\alpha = 0.05$, reject $H_0$: there is sufficient evidence that the training program decreased average call-handling time. Notice this matches the confidence interval from the last section, which fell entirely below 0. A test and an interval built from the same data will never contradict each other.
+ 
+\begin{Exercise}[title={Setting Up and Testing a Claim}, label={ex:means-test-bakery}]
+A bakery's recipe is supposed to produce loaves with a mean weight of 500 grams. A random sample of $n = 16$ loaves has $\bar{x} = 498.2$ grams and $s = 6.4$ grams, with no strong skew or outliers in the sample. At $\alpha = 0.05$, is there sufficient evidence that the true mean loaf weight differs from 500 grams?
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-test-bakery}]
+$H_0: \mu = 500$, $H_a: \mu \neq 500$. Conditions are satisfied, so use a $t$-test with $df = 15$. The standard error is $\dfrac{6.4}{\sqrt{16}} = 1.6$, giving $t = \dfrac{498.2 - 500}{1.6} \approx -1.125$. For a two-sided test with $df = 15$, this gives a p-value of about $0.278$. Because $0.278 > 0.05$, fail to reject $H_0$. There is not sufficient evidence that the true mean loaf weight differs from 500 grams.
+\end{Answer}
+ 
+\begin{Exercise}[title={A Matched-Pairs Test}, label={ex:means-test-paired}]
+A wellness program measures resting heart rate for $n = 15$ participants before and after an eight-week exercise regimen. The sample of differences (before minus after) has $\bar{d} = 4.8$ beats per minute and $s_d = 6.1$ beats per minute. Conditions for inference on the differences are satisfied. At $\alpha = 0.05$, is there sufficient evidence that the regimen decreased mean resting heart rate?
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-test-paired}]
+Since the differences are defined as before minus after, a decrease in heart rate shows up as a positive mean difference, so $H_0: \mu_d = 0$, $H_a: \mu_d > 0$. This is matched pairs, so $df = 14$. The standard error is $\dfrac{6.1}{\sqrt{15}} \approx 1.575$, giving $t = \dfrac{4.8}{1.575} \approx 3.048$, with a one-sided p-value of about $0.0043$. Because $0.0043 < 0.05$, reject $H_0$. There is sufficient evidence that the regimen decreased mean resting heart rate.
+\end{Answer}
+ 
+\begin{Exercise}[title={Spot the Error}, label={ex:means-test-hyp-error}]
+A student sets up a test with the hypotheses $H_0: \bar{x} = 500$ and $H_a: \bar{x} \neq 500$. Explain what is wrong with this setup.
+\end{Exercise}
+ 
+\begin{Answer}[ref={ex:means-test-hyp-error}]
+Hypotheses are statements about the population parameter, $\mu$, never about the sample statistic, $\bar{x}$. The sample mean is a single computed number from one sample; it is not something you test a hypothesis about, since it is already known exactly once the sample is collected. The correct hypotheses are $H_0: \mu = 500$ and $H_a: \mu \neq 500$.
+\end{Answer}
+
+\section{Confidence Intervals for a Difference in Two Means}
+
+Every example so far has looked at one population at a time. Just as often, the real question is a comparison: not "what is the mean watch time," but "is the mean watch time different between two groups."
+
+\subsection{Two Independent Samples}
+
+Suppose the streaming service wants to compare average watch time per session between free-tier subscribers and paid-tier subscribers. These are two separate groups of people, so the two samples are independent, no subscriber shows up in both. Let $\mu_1$ and $\mu_2$ denote the true mean watch time for each tier. The parameter of interest is $\mu_1 - \mu_2$, and the point estimate is $\bar{x}_1 - \bar{x}_2$.
+
+The standard error of that difference is
+\[
+SE = \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
+\]
+and the confidence interval takes the same shape as always, point estimate plus or minus a critical value times the standard error:
+\[
+(\bar{x}_1 - \bar{x}_2) \pm t^* \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
+\]
+
+The degrees of freedom here are messier than $n-1$. Technology calculates them using the Welch-Satterthwaite approximation, which lands somewhere between the smaller of $n_1 - 1$ and $n_2 - 1$, and $n_1 + n_2 - 2$. You will never be asked to compute this formula by hand, a calculator or software handles it, but you should recognize that it is not simply $n_1 + n_2 - 2$.
+
+\textit{A note on scope: some textbooks also present a pooled, or equal-variances, version of this procedure, which assumes $\sigma_1 = \sigma_2$ and computes a single pooled standard deviation from both samples. That approach is not part of the current AP CED, which uses the unpooled formula above by default, so this workbook will not build out the pooled version.}
+
+The conditions are the independent-samples version of what you already know: both samples must be independently and randomly selected, with each sample size no more than 10 percent of its population if sampling without replacement, and each sample's distribution should be reasonably free of strong skew and outliers, or each $n$ should be at least 30.
+
+Suppose the analyst samples $n_1 = 20$ free-tier sessions, finding $\bar{x}_1 = 35.2$ minutes and $s_1 = 8.4$ minutes, and $n_2 = 18$ paid-tier sessions, finding $\bar{x}_2 = 44.6$ minutes and $s_2 = 10.1$ minutes. Both samples show roughly symmetric dotplots with no outliers, and the two groups were sampled independently of each other. For a 95 percent confidence interval, the standard error is
+\[
+SE = \sqrt{\dfrac{8.4^2}{20} + \dfrac{10.1^2}{18}} \approx 3.032
+\]
+and technology gives $df \approx 33$, so $t^* \approx 2.035$. The margin of error is $2.035 \times 3.032 \approx 6.17$ minutes, and the point estimate is $35.2 - 44.6 = -9.4$ minutes, giving
+\[
+-9.4 \pm 6.17 \Rightarrow (-15.57,\ -3.23)
+\]
+The analyst is 95 percent confident that the true difference in mean watch time, free-tier minus paid-tier, is between $-15.57$ and $-3.23$ minutes. Because the entire interval is negative, this provides convincing evidence that paid-tier subscribers watch more per session, on average, than free-tier subscribers.
+
+\begin{Exercise}[title={Building a Two-Sample Interval}, label={ex:means-build}]
+A tech reviewer compares battery life between two phone models. Model A: $n_1 = 15$, $\bar{x}_1 = 11.2$ hours, $s_1 = 1.8$ hours. Model B: $n_2 = 17$, $\bar{x}_2 = 9.8$ hours, $s_2 = 2.1$ hours. The two samples are independent, and conditions for inference are satisfied. Construct a 90 percent confidence interval for the true difference in mean battery life, Model A minus Model B. Technology gives $df \approx 29$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-build}]
+$SE = \sqrt{\dfrac{1.8^2}{15} + \dfrac{2.1^2}{17}} \approx 0.690$. With $df = 29$, $t^* \approx 1.699$, so the margin of error is $1.699 \times 0.690 \approx 1.17$ hours. The point estimate is $11.2 - 9.8 = 1.4$ hours, giving $1.4 \pm 1.17 \Rightarrow (0.23,\ 2.57)$ hours.
+\end{Answer}
+
+\begin{Exercise}[title={Justifying a Claim}, label={ex:means-justify}]
+Using the battery-life interval from the previous exercise, does the data provide convincing evidence that Model A's true mean battery life exceeds Model B's by more than one hour? Explain using the interval.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:justify}]
+No. The interval $(0.23, 2.57)$ does contain values above 1, but it also contains values below 1, so it does not provide convincing evidence that the difference exceeds one full hour specifically. The interval does support the weaker claim that Model A's mean battery life is greater than Model B's, since the entire interval is positive, just not the stronger one-hour claim.
+\end{Answer}
+
+\begin{Exercise}[title={Spot the Error}, label={ex:pooling-error}]
+A student compares two independent samples with visibly different spreads, one sample's dotplot is tightly clustered, the other is spread out much wider, and writes, "Since both populations are approximately normal, I'll pool the two sample standard deviations into one estimate of $\sigma$ and use that in my confidence interval." Explain what is wrong with this reasoning for an AP Statistics response.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pooling-error}]
+Pooling assumes the two population standard deviations are equal, $\sigma_1 = \sigma_2$. Here, the two samples show clearly different spreads, which is evidence against that assumption, not for it. Even setting that aside, the current AP Statistics CED does not include the pooled, equal-variances procedure at all, only the unpooled two-sample $t$-interval using $\sqrt{s_1^2/n_1 + s_2^2/n_2}$ with technology-computed degrees of freedom. The student should use the unpooled formula regardless of how similar or different the spreads look.
+\end{Answer}
+
+\section{Significance Tests for a Difference in Two Means, and Selecting the Right Procedure}
+
+\subsection{Setting Up and Carrying Out the Test}
+
+Testing a claim about a difference in means follows the same four-step process you have used all chapter, aimed now at $\mu_1 - \mu_2$. The null hypothesis is almost always $H_0: \mu_1 - \mu_2 = 0$, equivalently $H_0: \mu_1 = \mu_2$, and the alternative points in whichever direction the question asks about, $H_a: \mu_1 - \mu_2 < 0$, $> 0$, or $\neq 0$.
+
+The test statistic mirrors the confidence interval you just built,
+\[
+t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}
+\]
+using the same Welch-approximated degrees of freedom from technology, and the same independence and normality conditions from Section 4.
+
+Return to the free-tier versus paid-tier comparison. Using the same samples, $n_1 = 20$, $\bar{x}_1 = 35.2$, $s_1 = 8.4$ and $n_2 = 18$, $\bar{x}_2 = 44.6$, $s_2 = 10.1$, suppose the product team wants to test whether paid-tier subscribers watch more, on average, than free-tier subscribers:
+\[
+H_0: \mu_1 - \mu_2 = 0 \qquad H_a: \mu_1 - \mu_2 < 0
+\]
+where $\mu_1$ is free-tier and $\mu_2$ is paid-tier. The standard error is the same $3.032$ from Section 4, so
+\[
+t = \dfrac{35.2 - 44.6}{3.032} \approx -3.100
+\]
+with $df \approx 33$. The one-sided $p$-value comes out to about $0.00196$. Since that is far below any reasonable $\alpha$, reject $H_0$: there is convincing evidence that paid-tier subscribers watch more per session, on average, than free-tier subscribers. Notice this lines up exactly with the confidence interval from Section 4, which was entirely negative in the free-minus-paid direction, the test and the interval are two views of the same evidence.
+
+\begin{Exercise}[title={Running a Two-Sample Test}, label={ex:means-test2-run}]
+Two store locations track customer wait times. Store 1: $n_1 = 22$, $\bar{x}_1 = 8.3$ minutes, $s_1 = 2.1$ minutes. Store 2: $n_2 = 25$, $\bar{x}_2 = 9.6$ minutes, $s_2 = 2.8$ minutes. The samples are independent, and conditions for inference are satisfied. Test, at $\alpha = 0.05$, whether Store 1's mean wait time is shorter. Technology gives $df \approx 44$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-run}]
+$H_0: \mu_1 - \mu_2 = 0$, $H_a: \mu_1 - \mu_2 < 0$. The standard error is $\sqrt{\dfrac{2.1^2}{22} + \dfrac{2.8^2}{25}} \approx 0.717$, so $t = \dfrac{8.3-9.6}{0.717} \approx -1.813$, with $df \approx 44$. The one-sided $p$-value is about $0.0383$. Since $0.0383 < 0.05$, reject $H_0$. There is convincing evidence that Store 1's mean wait time is shorter than Store 2's.
+\end{Answer}
+
+\subsection{Selecting the Right Procedure}
+
+By this point you have four inference procedures for means and, from the last chapter, four more for proportions. The hardest part of a real problem is often not the arithmetic, it is recognizing which of those eight procedures actually fits. Figure 1 lays out the same three questions, in order, that will get you there every time.
+
+% [Verify cfigure environment and TikZ diagram]
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    every node/.style={font=\small, align=center},
+    question/.style={rectangle, rounded corners, draw=black!70, very thick, fill=white, text width=4.6cm, minimum height=1.1cm, inner sep=6pt},
+    outcome/.style={rectangle, rounded corners, draw=black!50, fill=gray!12, text width=4.6cm, minimum height=1.1cm, inner sep=6pt},
+    >=Stealth, ->, thick
+]
+
+\node[question] (q1) {Is the variable categorical or quantitative?};
+
+\node[outcome, below=1.3cm of q1, xshift=-3.6cm] (a1) {Categorical: use the tools from \emph{Inference for Proportions} or \emph{Inference for Chi-Square}};
+\node[question, below=1.3cm of q1, xshift=3.6cm] (q2) {Quantitative: one sample, or two?};
+
+\node[outcome, below=1.3cm of q2, xshift=-3.6cm] (a2) {One sample: the one-sample $t$-interval or $t$-test for a mean (this chapter, Sections 2--3)};
+\node[question, below=1.3cm of q2, xshift=3.6cm] (q3) {Two samples: paired, or independent?};
+
+\node[outcome, below=1.3cm of q3, xshift=-3.6cm] (a3) {Paired: subtract to get one sample of differences, then use the one-sample $t$-procedures on $d$};
+\node[outcome, below=1.3cm of q3, xshift=3.6cm] (a4) {Independent: the two-sample $t$-interval or $t$-test (this chapter, Sections 4--5)};
+
+\draw (q1) -- (a1);
+\draw (q1) -- (q2);
+\draw (q2) -- (a2);
+\draw (q2) -- (q3);
+\draw (q3) -- (a3);
+\draw (q3) -- (a4);
+
+\end{tikzpicture}
+\caption{Selecting an inference procedure for a single quantitative or categorical variable}
+\end{figure}
+
+Two of the three questions have already been answered by the time you finish reading a problem. Categorical or quantitative is usually obvious from the variable itself, counts and percentages versus measurements. Paired or independent is the one worth slowing down for, since it is the question students skip most often. Ask directly: does each measurement in one group have a natural partner in the other group, or could you shuffle the two groups' labels without anything becoming meaningless? If shuffling would be meaningless, as with two measurements on the same subscriber, it is paired. If shuffling changes nothing about what the data represents, as with two disjoint groups of subscribers, it is independent.
+
+\subsection{Common Errors}
+
+Type I error, Type II error, and power all carry over from the last chapter without any changes to their definitions, just a change in what the parameter is. A Type I error here means rejecting $H_0: \mu_1 = \mu_2$ when the two population means really are equal, concluding the streaming service's paid tier watches more when it actually does not. A Type II error means failing to reject $H_0$ when there really is a difference, missing a real effect. Power is still the probability of correctly detecting a real difference when one exists, and it still increases with a larger sample size, a larger true difference, or a higher significance level, exactly as it did for proportions.
+
+\begin{Exercise}[title={Naming the Error}, label={ex:means-test2-error}]
+In the store wait-time test from the previous exercise, the data led to rejecting $H_0$ in favor of Store 1 having a shorter mean wait time. Suppose, unknown to the researcher, the two stores' true mean wait times are actually equal. What type of error, if any, occurred? Explain.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-error}]
+This would be a Type I error. The researcher rejected $H_0$ (concluding Store 1's mean wait time is shorter), but if the true means are actually equal, $H_0$ was in fact true, so rejecting it was a mistake. Because the test used $\alpha = 0.05$, this kind of error would occur no more than about 5 percent of the time across many repeated studies like this one.
+\end{Answer}
+
+\begin{Exercise}[title={Choosing the Procedure}, label={ex:means-test2-select}]
+For each scenario, state which of the four procedures from Figure 1 applies, quantitative one-sample, quantitative paired, quantitative independent-samples, or categorical.
+\begin{enumerate}
+    \item[(a)] A gym wants to know whether the average weight lifted by 30 randomly selected members changed after switching to a new equipment brand, measuring the same members' max lift before and after the switch.
+    \item[(b)] A researcher wants to compare the proportion of two different email subject lines that get opened.
+    \item[(c)] A nutritionist samples 40 adults at random and wants to estimate the true mean daily sugar intake in the population.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-select}]
+(a) Quantitative, paired. The same 30 members are measured twice, before and after, so the natural approach is to subtract and work with the sample of differences.
+
+(b) Categorical. Proportions of an email being opened or not are categorical counts, not measurements, so this belongs to the tools from \emph{Inference for Proportions}.
+
+(c) Quantitative, one sample. A single random sample is used to estimate one population mean, with no comparison to a second group or a second measurement per subject.
+\end{Answer}
+
+That decision flowchart will keep earning its keep. The next chapter turns to a different kind of categorical question, one with more than two possible outcomes at once, and the first thing you will need to decide, again, is which procedure actually fits the shape of the data in front of you.
+
+
+ 
