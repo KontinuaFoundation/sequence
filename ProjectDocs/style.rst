@@ -121,7 +121,7 @@ Please wrap your text to 80 columns. LaTeX will rewrap them, but 80
 columns makes it easy for anyone to open them in any text editor.
 
 Please don’t add libraries to the individual ``.tex`` files. We will
-agree on a set of libraries and they will all be added in the preable.
+agree on a set of libraries and they will all be added in the preamble.
 
 If you chapter includes code, please include the source code in the
 repository.

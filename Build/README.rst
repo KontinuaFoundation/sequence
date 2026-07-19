@@ -73,6 +73,12 @@ It may ask to trust ``github.com``, say yes.
 
 Prettier has been configured for consistency in formatting. You can align a `.tex` file with prettier settings by running `npx prettier path/to/file.tex --write
 
+This repository also spell-checks your work automatically before every commit. For that to work, run this once after cloning (and again any time ``package.json`` changes)::
+
+  bun install
+
+(Don't have ``bun``? Install it from `bun.sh <https://bun.sh>`_, or use ``npm install`` instead -- either works.) This sets up a git hook that runs `cspell <https://cspell.org>`_ on your changes right before each commit. See the "CI" section below for what to do if it flags something.
+
 Configuration
 -------------
 
@@ -146,7 +152,15 @@ CI
 ---------
 These scripts have all been compiled into CI/CD workflows that automatically run upon a commit. Any changes will rebuild a localized version of a chapter and its corresponding resources, and send it over to `the live repo <https://kontinuafoundation.github.io/>`_. 
 
-A note about spell checking: CI runs ``codespell`` to prevent authors from committing mistaken code. Some local/editor workflows may also use Aspell. Both flows use the root ``.aspell.en.pws`` word list as the shared project vocabulary; CI converts that file into a lowercase ``codespell`` ignore list before running. Sometimes spell checking flags code variables, tikZ diagrams, or differences between British English and American English. To add a word as valid, add it to the root ``.aspell.en.pws`` file.
+A note about spell checking: this project uses `cspell <https://cspell.org>`_ to catch typos before they reach the live site. It runs in two places: automatically on your machine right before each commit (via a `husky <https://typicode.github.io/husky/>`_ git hook), and again in CI on every push/PR as a backstop. If either one flags something, the commit (or CI run) is stopped and the offending word(s), file(s), and line number(s) are printed so you know exactly what to fix.
+
+Spell checking will sometimes flag things that are actually correct: code variables, TikZ diagram internals, people's names, abbreviations, or British/American spelling differences. This is expected, not a bug. You are able to store these flags via the following steps.
+
+1. Open the root ``project-words.txt`` file (plain text, one word per line).
+2. Add the word on its own line, roughly alphabetically.
+3. Save the file and commit/push again.
+
+(This replaces the old ``.aspell.en.pws``/``codespell`` setup as if 19 July 2026)
 
 Committing
 ----------

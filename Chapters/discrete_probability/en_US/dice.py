@@ -33,7 +33,7 @@ for i in range(2,13):
 fig, ax = plt.subplots()
 ax.bar(actual_starts, actual, bar_width, label='Actual')
 ax.bar(expected_starts, expected, bar_width, label='Expected')
-ax.set_ylabel('Occurences')
+ax.set_ylabel('Occurrences')
 ax.set_title('Dice Rolls')
 ax.set_xticks(labels)
 ax.legend()

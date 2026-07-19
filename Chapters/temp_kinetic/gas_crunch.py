@@ -9,7 +9,7 @@ T_initial = 300.0 # kelvin
 P_initial = 100000 # pascals
 
 # Constants
-R = 8.314462618 # ideal gas constnt
+R = 8.314462618 # ideal gas constant
 C_v =  3.0 * R / 2.0 # molar heat capacity (constant volume)
 
 # Compute the number of moles

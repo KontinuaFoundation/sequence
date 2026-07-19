@@ -76,6 +76,24 @@ jobs:
           cd Build
           python3 make_chapter_pdfs.py en_US --force
 
+      - name: Show chapter build logs on failure
+        if: failure()
+        run: |
+          for log in Build/Intermediate/*.log; do
+            [[ -f "$log" ]] || continue
+            echo "::group::$log"
+            cat "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload chapter build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter-build-logs-${{ github.sha }}
+          path: Build/Intermediate/*.log
+          if-no-files-found: ignore
+
       - name: Save caches
         if: always()
         uses: actions/cache/save@v4
@@ -152,6 +170,24 @@ jobs:
           set -euo pipefail
           cd Build
           python3 build_workbook.py all
+
+      - name: Show workbook build logs on failure
+        if: failure()
+        run: |
+          for log in Build/Intermediate/*.log; do
+            [[ -f "$log" ]] || continue
+            echo "::group::$log"
+            cat "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload workbook build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workbook-build-logs-${{ github.sha }}
+          path: Build/Intermediate/*.log
+          if-no-files-found: ignore
 
       - name: Save pip cache
         if: always()

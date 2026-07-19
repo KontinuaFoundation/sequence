@@ -25,26 +25,16 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          python-version: "3.13"
+          bun-version: latest
 
-      - name: Install codespell
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install codespell
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Run spell check on all files
-        shell: bash
-        run: |
-          set -euo pipefail
-          tail -n +2 .aspell.en.pws \
-            | sed '/^[[:space:]]*$/d' \
-            | tr '[:upper:]' '[:lower:]' \
-            | sort -u > /tmp/codespell-ignore-words.txt
-
-          codespell --check-filenames --ignore-words=/tmp/codespell-ignore-words.txt --skip="*.ai,*.pdf,*.svg" .
+        run: bun run spellcheck
 
   build-changed:
     name: Build Changed Files
@@ -274,6 +264,24 @@ jobs:
             fi
           done <<< "${{ steps.detect.outputs.chapters }}"
 
+      - name: Show chapter build logs on failure
+        if: failure() && steps.detect.outputs.has_changes == 'true'
+        run: |
+          for log in Build/Intermediate/*.log; do
+            [[ -f "$log" ]] || continue
+            echo "::group::$log"
+            cat "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload chapter build logs on failure
+        if: failure() && steps.detect.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter-build-logs-${{ github.sha }}
+          path: Build/Intermediate/*.log
+          if-no-files-found: ignore
+
       - name: Build changed workbooks
         if: steps.detect.outputs.has_changes == 'true' 
         shell: bash
@@ -306,6 +314,24 @@ jobs:
               exit 1
             fi
           done <<< "${{ steps.detect.outputs.workbooks }}"
+
+      - name: Show workbook build logs on failure
+        if: failure() && steps.detect.outputs.has_changes == 'true'
+        run: |
+          for log in Build/Intermediate/*.log; do
+            [[ -f "$log" ]] || continue
+            echo "::group::$log"
+            cat "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload workbook build logs on failure
+        if: failure() && steps.detect.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: workbook-build-logs-${{ github.sha }}
+          path: Build/Intermediate/*.log
+          if-no-files-found: ignore
 
       - name: Save apt cache 
         if: always() && steps.detect.outputs.has_changes == 'true' || steps.detect.outputs.digital_resources_changed == 'true'

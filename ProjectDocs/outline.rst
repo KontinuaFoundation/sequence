@@ -206,13 +206,13 @@ There are two questions that determine where any topic goes in the order:
 	- Changing Bases
 	- Natural Logarithm
 	- Logarithms in Spreadsheets
-* `trig_functions <../Chapters/trig_functions/en_US/student.tex>`_: Trigometric Functions
+* `trig_functions <../Chapters/trig_functions/en_US/student.tex>`_: Trigonometric Functions
 	- Graphs of sine and cosine
 	- Plot cosine in Python
 	- Derivatives of sine and cos
 	- A weight on a spring
 	- Integral of sine and cosine
-* `trig_identities <../Chapters/trig_identities/en_US/student.tex>`_: Trigometric Identities
+* `trig_identities <../Chapters/trig_identities/en_US/student.tex>`_: Trigonometric Identities
 	- unit circle
 	- common values of trig functions
     - 4 quadrants

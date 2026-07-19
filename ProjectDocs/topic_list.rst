@@ -30,7 +30,7 @@ Math
   * Inscribed shapes
   * Properties of tangents
   * Graphs of circles
-  * Equation of a cricle
+  * Equation of a circle
   * Constructing regular polygons inscribed in circles
   * Constructing circumcircles and incircles
   * Constructing a line tangent to a circle
@@ -60,7 +60,7 @@ Math
 * Polynomial factorization
   
   * Factoring quadratics
-  * Factoring higher degree polymials
+  * Factoring higher degree polynomials
   * Greatest common factor
   * Geometric series
 
@@ -232,7 +232,7 @@ Math
   
 * Differential equations
   
-  * Modeling simulatonis with differential equations
+  * Modeling simulations with differential equations
   * Verifying solutions of differential equations
   * Separation of variables
   * Initial conditions
@@ -298,7 +298,7 @@ Probability and statistics
   * Graphs for quantitative data
   * Common distributions
 
-* Summarizing quatitative data
+* Summarizing quantitative data
   
   * Mean and median
   * Quartiles and percentiles
@@ -380,7 +380,7 @@ Physics
   
   * Kinetic energy
   * Work-energy theorem
-  * Graviational potential energy and conservative forces
+  * Gravitational potential energy and conservative forces
   * Spring potential energy and Hooke's law
   * Conservation of energy
   * Power
@@ -399,7 +399,7 @@ Physics
   * Rotational kinetic energy
   * Angular momentum and angular impulse
   * Conservation of angular momentum
-  * Graviational potential energy at large distances
+  * Gravitational potential energy at large distances
 
 * Simple harmonic motion
 

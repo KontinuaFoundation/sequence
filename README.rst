@@ -137,7 +137,7 @@ philosophy behind the ideas, which can be shared with the students
 that care.
 
 This is **not** a project-based approach. Project-based learning relies heavily
-upon a teacher and well-equiped classroom --- these assumptions do not align with our goals. Instead, we teach an idea and give
+upon a teacher and well-equipped classroom --- these assumptions do not align with our goals. Instead, we teach an idea and give
 the student a chance to solve a problem with it.
 
 

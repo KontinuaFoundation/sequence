@@ -1,0 +1,19 @@
+echo "Checking spelling (cspell)..."
+bun run spellcheck
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "------------------------------------------------------------"
+  echo "Spell check failed - commit blocked."
+  echo ""
+  echo "If a word above is spelled correctly (a name, a technical term,"
+  echo "an abbreviation, etc.), you can teach it to the spell checker:"
+  echo ""
+  echo "  1. Open project-words.txt in the project root."
+  echo "  2. Add the word on its own line (roughly alphabetical is fine)."
+  echo "  3. Save the file and try committing again."
+  echo ""
+  echo "No code or configuration changes needed."
+  echo "------------------------------------------------------------"
+  exit 1
+fi

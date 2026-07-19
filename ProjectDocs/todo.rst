@@ -27,7 +27,7 @@ Digital Resources
 =================
 
 Every chapter needs a ``digital_resources.json`` file. Most of them
-don't have one. This involves reading the chapter, browsing the web for relevant videos and resources, and putting htem in the ``digital_resources.json`` file for that chapter using the editor app.  You need to have a Mac to run the editor.
+don't have one. This involves reading the chapter, browsing the web for relevant videos and resources, and putting them in the ``digital_resources.json`` file for that chapter using the editor app.  You need to have a Mac to run the editor.
 
 More info: `Digital Resources
 <https://github.com/KontinuaFoundation/sequence/blob/master/ProjectDocs/digital_resources.rst>`_.
