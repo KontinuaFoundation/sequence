@@ -34,7 +34,7 @@ class Mode(str, Enum):
 #         "OR\n"
 #         "Usage:\n"
 #         "  python3 build_workbook.py --c chapters=\"<chapters>\"\n"
-#         "  --c   Enables custom workbook book build. Must be followed by a sequence of chapters separrated by commas\n"
+#         "  --c   Enables custom workbook book build. Must be followed by a sequence of chapters separated by commas\n"
 #         "  python3 build_workbook.py --c chapters=circles,circular,circular_2,oscillations"
 #     )
 #     sys.exit(1)
@@ -60,10 +60,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def _run_latex(tool, tex_file):
+def _run_latex(tool, tex_file, log_f):
     return subprocess.run(
         [tool, "-halt-on-error", "-synctex=1", "-shell-escape", str(tex_file)],
         cwd=INTERMEDIATE_DIR,
+        stdout=log_f,
+        stderr=subprocess.STDOUT,
     ).returncode
 def build_book(book_id, config, draft, final_dir, header, footer):
     locale_list = config["Languages"]
@@ -87,16 +89,26 @@ def build_book(book_id, config, draft, final_dir, header, footer):
             out.write(f"\\input{{{(Path(path) / 'student.tex').as_posix()}}}\n")
         out.write(footer)
 
-    rc = _run_latex(tool, output_tex_file.name)
+    log_path = INTERMEDIATE_DIR / f"workbook-{book_id}.log"
+    total_passes = 1 if draft else 2
+    prefix = f"Building workbook-{book_id}"
 
-    if rc != 0 or not output_pdf_file.exists():
-        print(f"Build failed for {final_pdf_path}")
-        return None
+    with log_path.open("w") as log_f:
+        util.print_progress_bar(0, total_passes, prefix=prefix)
+        rc = _run_latex(tool, output_tex_file.name, log_f)
+        util.print_progress_bar(1, total_passes, prefix=prefix)
 
-    if not draft:
-        _run_latex(tool, output_tex_file.name)
-        shutil.move(output_pdf_file, final_pdf_path)
+        if rc != 0 or not output_pdf_file.exists():
+            print(f"Build failed for {final_pdf_path} (see {log_path} for details)")
+            util.print_separator(success=False)
+            return None
 
+        if not draft:
+            _run_latex(tool, output_tex_file.name, log_f)
+            util.print_progress_bar(2, total_passes, prefix=prefix)
+            shutil.move(output_pdf_file, final_pdf_path)
+
+    util.print_separator(success=True)
     return final_pdf_path
 
 
@@ -148,8 +160,6 @@ def main():
         print("ROOT_DIR:", ROOT_DIR)
         print("CHAPTERS_DIR:", CHAPTERS_DIR)
         print("INTERMEDIATE_DIR:", INTERMEDIATE_DIR)
-        print("book file:", CHAPTERS_DIR / "book_32.txt")
-        print("book exists:", (CHAPTERS_DIR / "book_32.txt").exists())
         final_dir = BUILD_DIR / f"Workbooks-{config['Languages'][0]}-{config['Paper']}"
         for d in (INTERMEDIATE_DIR, final_dir):
             os.makedirs(d, exist_ok=True)
@@ -174,7 +184,10 @@ def main():
                 print(final_dir / filename)
 
         if failednumbers:
-            print(f"**** Failures: {failednumbers} *****")
+            print("\n**** Failures: ****")
+            for book in failednumbers:
+                log_path = INTERMEDIATE_DIR / f"workbook-{book}.log"
+                print(f"  workbook-{book} (see {log_path} for details)")
             sys.exit(1)
     if mode == Mode.CUSTOM:
         print("Entering Custom Workbook Mode")
@@ -201,14 +214,25 @@ def main():
 
             out.write(footer)
 
-        rc = _run_latex(config["LatexExecutable"], output_tex)
+        log_path = INTERMEDIATE_DIR / f"{output_tex.stem}.log"
+        total_passes = 2
+        prefix = f"Building {output_tex.stem}"
 
-        if rc != 0 or not output_pdf.exists():
-            print(f"Build failed for {final_file}")
-            sys.exit(1)
+        with log_path.open("w") as log_f:
+            util.print_progress_bar(0, total_passes, prefix=prefix)
+            rc = _run_latex(config["LatexExecutable"], output_tex, log_f)
+            util.print_progress_bar(1, total_passes, prefix=prefix)
 
-        _run_latex(config["LatexExecutable"], output_tex)
+            if rc != 0 or not output_pdf.exists():
+                print(f"Build failed for {final_file} (see {log_path} for details)")
+                util.print_separator(success=False)
+                sys.exit(1)
+
+            _run_latex(config["LatexExecutable"], output_tex, log_f)
+            util.print_progress_bar(2, total_passes, prefix=prefix)
+
         shutil.move(output_pdf, final_file)
+        util.print_separator(success=True)
 
         print(f"\nCreated:\n{final_file}")
         print("Containing:\n")

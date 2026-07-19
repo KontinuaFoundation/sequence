@@ -9,6 +9,23 @@ chapter_pattern = re.compile(
     r"chapter\}\{\\numberline \{([^\}]+)\}[^\}]+\}\{([0-9]+)\}"
 )
 
+_GREEN = "\033[92m"
+_RED = "\033[91m"
+_RESET = "\033[0m"
+
+
+def print_progress_bar(current, total, prefix="Building", width=30):
+    filled = width if total <= 0 else int(width * current / total)
+    bar = "#" * filled + "-" * (width - filled)
+    pct = 100 if total <= 0 else int(100 * current / total)
+    end = "\n" if current >= total else ""
+    print(f"\r{prefix} [{bar}] {current}/{total} ({pct}%)", end=end, flush=True)
+
+
+def print_separator(success, width=60):
+    color = _GREEN if success else _RED
+    print(f"{color}{'=' * width}{_RESET}")
+
 
 def _read(path):
     with open(path, "r") as f:
@@ -157,16 +174,24 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
 
     cmd = [tool, "-halt-on-error", "-shell-escape", output_tex_path.name]
 
-    subprocess.run(cmd, cwd=INTERMEDIATE_DIR)
-    if draft:
-        subprocess.run(cmd, cwd=INTERMEDIATE_DIR)
+    chapter_id = chap_dir.parent.name
+    log_path = INTERMEDIATE_DIR / f"{chapter_id}.log"
+    total_passes = 2 if draft else 1
+
+    with log_path.open("w") as log_f:
+        for pass_num in range(1, total_passes + 1):
+            print_progress_bar(pass_num - 1, total_passes, prefix=f"Building {chapter_id}")
+            subprocess.run(cmd, cwd=INTERMEDIATE_DIR, stdout=log_f, stderr=subprocess.STDOUT)
+            print_progress_bar(pass_num, total_passes, prefix=f"Building {chapter_id}")
 
     if output_pdf_path.exists():
         shutil.move(output_pdf_path, final_pdf_path)
         print(f"{final_pdf_path} built.")
+        print_separator(success=True)
         return True
 
-    print(f"Build of {final_pdf_path} Failed")
+    print(f"Build of {final_pdf_path} Failed (see {log_path} for details)")
+    print_separator(success=False)
     return False
 
 
