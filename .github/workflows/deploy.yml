@@ -1,10 +1,13 @@
-# NOTE: THIS WORKFLOW ON RUNS ON MANUAL TRIGGER IN GITHUB
+# NOTE: THIS WORKFLOW RUNS WEEKLY ON A SCHEDULE, OR MANUALLY VIA WORKFLOW DISPATCH IN GITHUB
 name: Full Deploy
 
 run-name: "Full deploy by @${{ github.actor }}"
 
 on:
   workflow_dispatch:
+  schedule:
+    # Weekly full rebuild + deploy, Monday 06:00 UTC.
+    - cron: "0 6 * * 1"
 
 permissions:
   contents: read
