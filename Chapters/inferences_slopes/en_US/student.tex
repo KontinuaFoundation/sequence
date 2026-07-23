@@ -2,21 +2,21 @@
 
 \section{The Regression Model and Why We Need Inference for the Slope}
 
-A sleep researcher pulls data from a sample of $8$ teenagers: daily screen time, in hours, and how many hours they slept that night. She plots the points, fits a line, and finds a slope of $b_1 = -0.16$: for every extra hour of screen time, sleep drops by about ten minutes. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this purely by chance, even if there is no relationship at all in the full population?
+A sleep researcher pulls data from a sample of $8$ teenagers: daily screen time, in hours, and how many hours they slept that night. She plots the points, fits a line, and finds a slope of $b_1 = -0.16$: for every extra hour of screen time, sleep drops by about ten minutes. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this by chance?
 
-Recall from the Numerical Methods chapter that the least-squares regression line $\hat{y} = b_0 + b_1x$ is built entirely from your sample. You calculated $b_0$ and $b_1$, checked how well the line fit using $r$ and residuals, and used the line to predict $y$ for a given $x$. All of that was descriptive: a summary of the data you had in front of you.
+Recall from the Numerical Methods chapter that the least-squares line $\hat{y} = b_0 + b_1x$ describes your sample: descriptive statistics, not inference.
 
-But a sample slope is only one piece of evidence about a bigger question. Just as a sample proportion $\hat{p}$ estimates an unknown population proportion $p$, and a sample mean $\bar{x}$ estimates an unknown population mean $\mu$, a sample slope $b_1$ estimates an unknown population slope, written $\beta_1$. Statisticians describe the true relationship between two quantitative variables using a \newterm{population regression model}\index{population regression model}:
+A sample slope $b_1$ estimates an unknown population slope $\beta_1$, the same way $\hat{p}$ estimates $p$ and $\bar{x}$ estimates $\mu$. Statisticians describe the true relationship between two quantitative variables using a \newterm{population regression model}\index{population regression model}:
 \[
 Y = \beta_0 + \beta_1 X + \varepsilon
 \]
-Here $\beta_0$ is the population $y$-intercept, $\beta_1$ is the population slope, and $\varepsilon$ is a random error term: the part of $Y$ that isn't explained by $X$, capturing everything else that pushes an individual response above or below the line. $\beta_0$ and $\beta_1$ are parameters. They describe the entire population and, in practice, you never know their exact values. $b_0$ and $b_1$ are statistics, calculated from your one sample, and used to estimate $\beta_0$ and $\beta_1$.
+$\beta_0$ is the population $y$-intercept, $\beta_1$ is the population slope, and $\varepsilon$ is random error: the part of $Y$ not explained by $X$. $\beta_0$ and $\beta_1$ are parameters, describing the entire population; $b_0$ and $b_1$ are statistics, calculated from your sample, used to estimate them.
 
-This is exactly the same logic you used for proportions and means. There, you built confidence intervals and ran significance tests to reason from $\hat{p}$ to $p$, or from $\bar{x}$ to $\mu$. Now you will do the same thing for slopes: reason from $b_1$, the one number your sample happened to give you, to $\beta_1$, the value you actually care about.
+The rest of this chapter reasons from $b_1$, the number your sample gives you, to $\beta_1$, the value you actually care about, using the same confidence interval and significance test tools you've already built for proportions and means.
 
 \subsection*{Estimating the Slope and Intercept}
 
-The formulas for $b_0$ and $b_1$ are the ones you already know:
+The formulas for $b_0$ and $b_1$:
 \[
 b_1 = r\frac{s_y}{s_x} \qquad \text{and} \qquad b_0 = \bar{y} - b_1\bar{x}
 \]
@@ -24,11 +24,11 @@ where $r$ is the sample correlation coefficient and $s_x, s_y$ are the sample st
 \[
 b_1 = \frac{n\sum xy - \left(\sum x\right)\left(\sum y\right)}{n\sum x^2 - \left(\sum x\right)^2}
 \]
-Both formulas give the same $b_1$; use whichever matches the summary statistics you have on hand.
+Both formulas give the same $b_1$. You can use whichever matches the summary statistics you have.
 
-The residual for any data point is still $e = y - \hat{y}$, where $\hat{y} = b_0 + b_1x$ is the value your line predicts. The standard deviation of all the residuals in your sample, $s_e$, tells you the typical size of a prediction miss. You will lean on $s_e$ heavily in the next section, because it is the key ingredient in measuring how much $b_1$ itself might vary from sample to sample.
+The residual for any data point is still $e = y - \hat{y}$, where $\hat{y} = b_0 + b_1x$ is the value your line predicts. The standard deviation of all the residuals in your sample, $s_e$, tells you the typical size of a prediction miss. You will use $s_e$ heavily, because it is the key in measuring how much $b_1$ itself might vary from sample to sample.
 
-For the rest of this chapter, we will follow the sleep researcher's study. She samples $8$ teenagers at random and records their daily screen time ($X$, in hours) and their sleep duration that night ($Y$, in hours):
+Following the sleep researcher's study, she samples $8$ teenagers at random and records their daily screen time ($X$, in hours) and their sleep duration that night ($Y$, in hours):
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -44,7 +44,7 @@ For this sample, $\bar{x} = 5.5$, $\bar{y} = 7.34$, $s_x = 2.45$, $s_y = 0.47$, 
 \[
 b_1 = (-0.854)\frac{0.47}{2.45} = -0.165 \qquad b_0 = 7.34 - (-0.165)(5.5) = 8.25
 \]
-so $\hat{y} = 8.25 - 0.165x$. The negative slope matches what the researcher suspected: more screen time is associated with less sleep, at least in this sample. The question this chapter answers is whether that association is strong enough, and consistent enough, to conclude something about $\beta_1$ for teenagers in general, or whether a slope this far from zero is a believable result of sampling variation alone.
+so $\hat{y} = 8.25 - 0.165x$. The negative slope matches what the researcher suspected: more screen time is associated with less sleep, at least in this sample. The question this chapter answers is whether that association is strong enough and consistent enough, to conclude something about $\beta_1$ for teenagers in general, or whether a slope this far from zero is a believable result of sampling variation alone.
 
 \begin{itemize}
     \item $Y = \beta_0 + \beta_1 X + \varepsilon$ is the population regression model; $\beta_0$ and $\beta_1$ are unknown parameters, and $\varepsilon$ is random error.
@@ -72,30 +72,30 @@ A horticulturist records the amount of fertilizer applied (in grams per plant) a
 \end{enumerate}
 \end{Answer}
 
-\begin{Exercise}[title={Spot the Error}, label={ex:slope-model-2}]
-A student in the sleep study writes: "I calculated $\beta_1 = -0.165$ from my sample of 8 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.165$ hours of sleep for every teenager." Identify two separate errors in this statement.
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-model-2}]
-First, the value $-0.165$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
-\end{Answer}
-
-\begin{Exercise}[title={Computing the Line}, label={ex:slope-model-3}]
-An engineer records the operating temperature (in degrees Celsius) and the battery life (in hours) for a random sample of $6$ devices. She finds $\bar{x} = 30$, $\bar{y} = 9.2$, $s_x = 8.5$, $s_y = 1.4$, and $r = -0.79$.
-\begin{enumerate}
-    \item Find $b_1$ and $b_0$.
-    \item Write the least-squares regression equation.
-    \item Predict the battery life for a device operating at $35^\circ$C.
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-model-3}]
-\begin{enumerate}
-    \item $b_1 = (-0.79)\dfrac{1.4}{8.5} = -0.130$; $b_0 = 9.2 - (-0.130)(30) = 13.10$.
-    \item $\hat{y} = 13.10 - 0.130x$.
-    \item At $x = 35$: $\hat{y} = 13.10 - 0.130(35) = 8.55$ hours.
-\end{enumerate}
-\end{Answer}
+% \begin{Exercise}[title={Spot the Error}, label={ex:slope-model-2}]
+% A student in the sleep study writes: "I calculated $\beta_1 = -0.165$ from my sample of 8 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.165$ hours of sleep for every teenager." Identify two separate errors in this statement.
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-model-2}]
+% First, the value $-0.165$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
+% \end{Answer}
+%
+% \begin{Exercise}[title={Computing the Line}, label={ex:slope-model-3}]
+% An engineer records the operating temperature (in degrees Celsius) and the battery life (in hours) for a random sample of $6$ devices. She finds $\bar{x} = 30$, $\bar{y} = 9.2$, $s_x = 8.5$, $s_y = 1.4$, and $r = -0.79$.
+% \begin{enumerate}
+%     \item Find $b_1$ and $b_0$.
+%     \item Write the least-squares regression equation.
+%     \item Predict the battery life for a device operating at $35^\circ$C.
+% \end{enumerate}
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-model-3}]
+% \begin{enumerate}
+%     \item $b_1 = (-0.79)\dfrac{1.4}{8.5} = -0.130$; $b_0 = 9.2 - (-0.130)(30) = 13.10$.
+%     \item $\hat{y} = 13.10 - 0.130x$.
+%     \item At $x = 35$: $\hat{y} = 13.10 - 0.130(35) = 8.55$ hours.
+% \end{enumerate}
+% \end{Answer}
 
 \textbf{Computing in Excel}
 
@@ -110,23 +110,21 @@ Enter the sleep study data from earlier in this section into two columns: screen
 
 Watch the argument order: for both \texttt{SLOPE} and \texttt{INTERCEPT}, the known $y$-values are listed first, then the known $x$-values. Reversing the two ranges is a common mistake, and it will silently hand you the wrong sign or a nonsense intercept rather than an error message.
 
-Exercise 3 gave you $\bar{x}$, $\bar{y}$, $s_x$, $s_y$, and $r$ directly rather than raw data, since with only five summary numbers, computing $b_1 = r\frac{s_y}{s_x}$ by hand is just as fast as opening a spreadsheet. \texttt{SLOPE} and \texttt{INTERCEPT} need the original data columns to work; if you had the original $6$ temperature and battery-life pairs instead, entering them into two columns and applying \texttt{SLOPE} and \texttt{INTERCEPT} directly would skip the $r$, $s_x$, $s_y$ step entirely.
+% Exercise 3 gave you $\bar{x}$, $\bar{y}$, $s_x$, $s_y$, and $r$ directly rather than raw data, since with only five summary numbers, computing $b_1 = r\frac{s_y}{s_x}$ by hand is just as fast as opening a spreadsheet. \texttt{SLOPE} and \texttt{INTERCEPT} need the original data columns to work; if you had the original $6$ temperature and battery-life pairs instead, entering them into two columns and applying \texttt{SLOPE} and \texttt{INTERCEPT} directly would skip the $r$, $s_x$, $s_y$ step entirely.
 
 % [placeholder: spreadsheet with screen time / sleep duration columns and SLOPE, INTERCEPT, CORREL formula results]
 
 \section{The Sampling Distribution of $b_1$ and the Confidence Interval for the Slope}
 
-Suppose the sleep researcher ran her study again with a brand new sample of $8$ teenagers. Would she get $b_1 = -0.165$ a second time? Almost certainly not exactly. A different sample means different data points, a different fitted line, and a different $b_1$. This is the same problem you have already run into twice before: a sample proportion $\hat{p}$ bounces around from sample to sample, and so does a sample mean $\bar{x}$. Now it is the slope's turn.
+Suppose the sleep researcher ran her study again with a brand new sample of $8$ teenagers. A new sample of $8$ teenagers would give a different fitted line and a different $b_1$, the same way $\hat{p}$ and $\bar{x}$ vary from sample to sample. That variation is the \newterm{sampling distribution}\index{sampling distribution!of the slope} of $b_1$: the distribution of values you'd get from repeated random samples of the same size. Under the conditions for inference, this distribution is approximately normal, centered at $\beta_1$, with standard deviation $\sigma_{b_1}$.
 
-That variation is not a flaw in the method. It is exactly what a \newterm{sampling distribution}\index{sampling distribution!of the slope} describes: the distribution of $b_1$-values you would get if you repeated the study over and over, each time drawing a new random sample of the same size. Provided the conditions for inference hold (you will check these in detail in the next section), that sampling distribution of $b_1$ is approximately normal, centered at the true population slope $\beta_1$, with standard deviation $\sigma_{b_1}$.
-
-In practice, you never know $\sigma_{b_1}$ exactly, because it depends on $\sigma_\varepsilon$, the population standard deviation of the errors, which is unknown. So you estimate it from your sample, calling the estimate $s_{b_1}$, the \newterm{standard error of the slope}\index{standard error!of the slope}. Once you replace the unknown $\sigma_{b_1}$ with the estimated $s_{b_1}$, the statistic
+$\sigma_{b_1}$ depends on $\sigma_\varepsilon$, the population standard deviation of the errors, which is unknown, so you estimate it with $s_{b_1}$, the \newterm{standard error of the slope}\index{standard error!of the slope}. Substituting $s_{b_1}$ for $\sigma_{b_1}$ turns
 \[
 t = \frac{b_1 - \beta_1}{s_{b_1}}
 \]
-no longer follows a normal distribution exactly. It follows a $t$-distribution with $df = n - 2$ degrees of freedom, the same pattern you saw for means: swap in an estimated standard error, lose a bit of precision, and the normal distribution becomes a $t$-distribution.
+from normal into a $t$-distribution with $df = n - 2$, the same trade as with means: estimated standard error in, precision out, $t$-distribution in place of normal.
 
-Here is a genuine difference from earlier chapters, though. For a proportion or a mean, you sometimes computed the standard error by hand from a simple formula. For the slope, you almost never will. $s_{b_1}$ depends on $s_e$, the sample size, and how spread out your $x$-values are, and computing it from scratch is tedious enough that no exam or workplace expects you to. Instead, $s_{b_1}$ is something you read directly from output, whether that is a graphing calculator's regression screen or software printout, in a column often labeled "StDev" or "SE Coef." Recognizing and interpreting that column, correctly, is itself a tested skill.
+Unlike proportions and means, you will almost never compute $s_{b_1}$ by hand: it depends on $s_e$, sample size, and the spread of your $x$-values, and doing that from scratch is tedious enough that no exam or workplace expects it. Instead, $s_{b_1}$ is read directly from a calculator's regression screen or software printout, in a column usually labeled "StDev" or "SE Coef." Recognizing and interpreting that column is the actual skill.
 
 \subsection*{Constructing the Confidence Interval}
 
@@ -136,7 +134,7 @@ With $s_{b_1}$ in hand, a confidence interval for $\beta_1$ takes the same shape
 \]
 where $t^*$ is the critical value from a $t$-distribution with $df = n-2$, chosen to match your desired confidence level.
 
-Return to the sleep study. A statistical package fits the regression line to the $8$ data points and reports the following output:
+Let's return to the sleep study. A statistical package fits the regression line to the $8$ data points and reports the following output:
 
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|}
@@ -156,6 +154,7 @@ with $n = 8$, so $df = n - 2 = 6$. To build a $90\%$ confidence interval for $\b
 \[
 \text{Confidence Interval: } -0.1649 \pm 0.0798 = (-0.2447, -0.0850)
 \]
+
 We are $90\%$ confident that, for teenagers in general, each additional hour of daily screen time is associated with a change in average sleep duration of between $-0.245$ and $-0.085$ hours. Notice that this entire interval is negative. Since it does not contain $0$, every plausible value of $\beta_1$ in this interval represents some negative relationship between screen time and sleep, which is a first hint that the effect the researcher found in her sample may reflect something real in the population, and not just sampling noise. Sections 3 and 4 make that hint precise, first by checking whether this procedure was even valid to use, and then by testing the claim directly.
 
 \begin{itemize}
@@ -175,38 +174,38 @@ A researcher studies the relationship between weekly study hours ($X$) and the i
 \end{enumerate}
 \end{Exercise}
 
-\begin{Answer}[ref={ex:slope-ci-1}]
-\begin{enumerate}
-    \item $df = n - 2 = 12 - 2 = 10$.
-    \item Margin of error $= (2.228)(0.68) = 1.515$. Confidence interval: $2.35 \pm 1.515 = (0.835, 3.865)$.
-    \item We are $95\%$ confident that, in the population of students like those sampled, each additional hour of weekly study is associated with an average exam score improvement of between $0.835$ and $3.865$ points.
-\end{enumerate}
-\end{Answer}
-
-\begin{Exercise}[title={Spot the Error}, label={ex:slope-ci-2}]
-A student computes a $95\%$ confidence interval for the slope relating screen time and sleep duration and gets $(-0.265, -0.064)$. She writes: "There is a $95\%$ probability that the true slope $\beta_1$ falls between $-0.265$ and $-0.064$." Explain what is wrong with this interpretation and give a correct version.
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-ci-2}]
-$\beta_1$ is a fixed, though unknown, number; it either falls in that interval or it does not; there is no probability attached to it once the interval is calculated. The $95\%$ refers to the long-run success rate of the method: if we repeated this sampling process many times and built a confidence interval each time using the same procedure, about $95\%$ of those intervals would capture the true $\beta_1$. A correct interpretation is: "We are $95\%$ confident that the interval from $-0.265$ to $-0.064$ captures the true population slope $\beta_1$."
-\end{Answer}
-
-\begin{Exercise}[title={Fill In the Table}, label={ex:slope-ci-3}]
-A separate study relates the number of hours of sleep lost the night before a road trip ($X$) to the number of driving errors made in a simulator ($Y$), for a random sample of $n = 11$ drivers. Regression output shows $b_1 = -4.8$ and $s_{b_1} = 1.5$.
-\begin{enumerate}
-    \item Find $df$ and the $t$-statistic for $b_1$.
-    \item Construct a $90\%$ confidence interval for $\beta_1$. ($t^*_{0.05}(9) = 1.833$.)
-    \item Does this interval suggest that sleep loss and driving errors are unrelated in the population? Explain using the interval.
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-ci-3}]
-\begin{enumerate}
-    \item $df = 11 - 2 = 9$. $t = \dfrac{-4.8}{1.5} = -3.20$.
-    \item Margin of error $= (1.833)(1.5) = 2.750$. Confidence interval: $-4.8 \pm 2.750 = (-7.550, -2.050)$.
-    \item No. The entire interval is negative and does not contain $0$, so every plausible value of $\beta_1$ represents a negative relationship between sleep loss and driving errors; this suggests the two are related in the population, not unrelated.
-\end{enumerate}
-\end{Answer}
+% \begin{Answer}[ref={ex:slope-ci-1}]
+% \begin{enumerate}
+%     \item $df = n - 2 = 12 - 2 = 10$.
+%     \item Margin of error $= (2.228)(0.68) = 1.515$. Confidence interval: $2.35 \pm 1.515 = (0.835, 3.865)$.
+%     \item We are $95\%$ confident that, in the population of students like those sampled, each additional hour of weekly study is associated with an average exam score improvement of between $0.835$ and $3.865$ points.
+% \end{enumerate}
+% \end{Answer}
+%
+% \begin{Exercise}[title={Spot the Error}, label={ex:slope-ci-2}]
+% A student computes a $95\%$ confidence interval for the slope relating screen time and sleep duration and gets $(-0.265, -0.064)$. She writes: "There is a $95\%$ probability that the true slope $\beta_1$ falls between $-0.265$ and $-0.064$." Explain what is wrong with this interpretation and give a correct version.
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-ci-2}]
+% $\beta_1$ is a fixed, though unknown, number; it either falls in that interval or it does not; there is no probability attached to it once the interval is calculated. The $95\%$ refers to the long-run success rate of the method: if we repeated this sampling process many times and built a confidence interval each time using the same procedure, about $95\%$ of those intervals would capture the true $\beta_1$. A correct interpretation is: "We are $95\%$ confident that the interval from $-0.265$ to $-0.064$ captures the true population slope $\beta_1$."
+% \end{Answer}
+%
+% \begin{Exercise}[title={Fill In the Table}, label={ex:slope-ci-3}]
+% A separate study relates the number of hours of sleep lost the night before a road trip ($X$) to the number of driving errors made in a simulator ($Y$), for a random sample of $n = 11$ drivers. Regression output shows $b_1 = -4.8$ and $s_{b_1} = 1.5$.
+% \begin{enumerate}
+%     \item Find $df$ and the $t$-statistic for $b_1$.
+%     \item Construct a $90\%$ confidence interval for $\beta_1$. ($t^*_{0.05}(9) = 1.833$.)
+%     \item Does this interval suggest that sleep loss and driving errors are unrelated in the population? Explain using the interval.
+% \end{enumerate}
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-ci-3}]
+% \begin{enumerate}
+%     \item $df = 11 - 2 = 9$. $t = \dfrac{-4.8}{1.5} = -3.20$.
+%     \item Margin of error $= (1.833)(1.5) = 2.750$. Confidence interval: $-4.8 \pm 2.750 = (-7.550, -2.050)$.
+%     \item No. The entire interval is negative and does not contain $0$, so every plausible value of $\beta_1$ represents a negative relationship between sleep loss and driving errors; this suggests the two are related in the population, not unrelated.
+% \end{enumerate}
+% \end{Answer}
 
 %Check numbers again 
 
@@ -237,21 +236,21 @@ The regression output table above, including $s_{b_1}$, can be generated directl
 
 \section{Conditions for Inference on the Slope}
 
-The confidence interval you just built in Section 2 quietly assumed something you have not actually checked yet: that it was valid to use a $t$-procedure at all. Every inference method in this book comes with conditions attached, and the slope is no exception. Skip the check, and a beautifully computed interval can still be meaningless.
+The confidence interval you just built in Section 2  assumed that it was valid to use a $t$-procedure at all. Every inference method in this book comes with conditions attached, and the slope is no exception. 
 
-You have already met four of these five conditions in some form, for proportions and for means. The fifth, linearity, is new, because it is specific to relationships between two variables rather than a single one.
+You have already met four of these five conditions for proportions and for means.
 
 \begin{itemize}
-    \item \textbf{Random}: the data come from a random sample or a randomized experiment.
+    
     \item \textbf{Linearity}: the true relationship between $X$ and $Y$ is actually linear, not curved.
     \item \textbf{Independence}: individual observations do not influence one another; if sampling without replacement, the population is at least $10$ times the sample size.
     \item \textbf{Normality}: for any fixed value of $X$, the residuals are approximately normally distributed.
     \item \textbf{Equal variance}: the spread of the residuals is roughly the same across all values of $X$.
+    \item \textbf{Random}: the data come from a random sample or a randomized experiment.
 \end{itemize}
 
-Together these are sometimes remembered by the acronym LINER. Random and Independence are conditions you check from the design of the study itself, the same way you always have. Linearity, Normality, and Equal variance are different: you check all three using the same tool, a \newterm{residual plot}\index{residual plot}, which graphs each residual against its corresponding $x$-value.
+These are remembered by the acronym LINER. Random and Independence are conditions you check from the design of the study itself, the same way you always have. Linearity, Normality, and Equal variance are different: you check all three using the same tool, a \newterm{residual plot}\index{residual plot}, which graphs each residual against its corresponding $x$-value.
 
-A residual plot with no leftover curve supports linearity. A residual plot with a fairly even band of points, neither fanning out nor narrowing as $x$ increases, supports equal variance. And a roughly symmetric spread of residuals, without strong skew or outliers, supports normality, though a normal probability plot or a graph of the residuals alone gives a more direct check on shape than the residual-versus-$x$ plot does.
 
 \subsection*{Checking the Conditions: The Sleep Study}
 
@@ -324,28 +323,28 @@ A researcher studies the relationship between a car's weight and its fuel effici
 \end{enumerate}
 \end{Answer}
 
-\begin{Exercise}[title={Checking Conditions in an Experiment}, label={ex:slope-cond-2}]
-A greenhouse manager wants to know whether the amount of fertilizer given to a plant predicts its final height. She has $40$ identical seedlings and randomly assigns each one a fertilizer amount from a predetermined list of $8$ possible amounts, $5$ seedlings per amount. After eight weeks, she measures each plant's height and looks at the residual plot, which shows a fairly even, patternless band of points.
-\begin{enumerate}
-    \item Is the Random condition satisfied here? Explain, being careful about whether this is a sample or an experiment.
-    \item Based on the residual plot description, which conditions does the data appear to satisfy?
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-cond-2}]
-\begin{enumerate}
-    \item Yes, though not through random sampling. This is a randomized experiment: fertilizer amounts were randomly assigned to seedlings, which satisfies the Random condition just as well as a random sample would for this purpose.
-    \item A fairly even, patternless band of residuals supports linearity (no leftover curve) and equal variance (no fanning or narrowing). It does not, by itself, say anything about normality, which needs a separate look at the shape of the residuals rather than the pattern in a residual-versus-$x$ plot.
-\end{enumerate}
-\end{Answer}
-
-\begin{Exercise}[title={Spot the Error}, label={ex:slope-cond-3}]
-A student checking conditions for a slope inference problem writes: "I made a dotplot of the $x$-values and it looked roughly symmetric, so the Normality condition is satisfied." What is wrong with this reasoning?
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-cond-3}]
-The Normality condition is about the residuals, not the $x$-values. The distribution of the predictor variable itself does not need to be normal, and checking it tells you nothing about whether the errors around the regression line are normally distributed. The student should instead make a dotplot, boxplot, or normal probability plot of the residuals.
-\end{Answer}
+% \begin{Exercise}[title={Checking Conditions in an Experiment}, label={ex:slope-cond-2}]
+% A greenhouse manager wants to know whether the amount of fertilizer given to a plant predicts its final height. She has $40$ identical seedlings and randomly assigns each one a fertilizer amount from a predetermined list of $8$ possible amounts, $5$ seedlings per amount. After eight weeks, she measures each plant's height and looks at the residual plot, which shows a fairly even, patternless band of points.
+% \begin{enumerate}
+%     \item Is the Random condition satisfied here? Explain, being careful about whether this is a sample or an experiment.
+%     \item Based on the residual plot description, which conditions does the data appear to satisfy?
+% \end{enumerate}
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-cond-2}]
+% \begin{enumerate}
+%     \item Yes, though not through random sampling. This is a randomized experiment: fertilizer amounts were randomly assigned to seedlings, which satisfies the Random condition just as well as a random sample would for this purpose.
+%     \item A fairly even, patternless band of residuals supports linearity (no leftover curve) and equal variance (no fanning or narrowing). It does not, by itself, say anything about normality, which needs a separate look at the shape of the residuals rather than the pattern in a residual-versus-$x$ plot.
+% \end{enumerate}
+% \end{Answer}
+%
+% \begin{Exercise}[title={Spot the Error}, label={ex:slope-cond-3}]
+% A student checking conditions for a slope inference problem writes: "I made a dotplot of the $x$-values and it looked roughly symmetric, so the Normality condition is satisfied." What is wrong with this reasoning?
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-cond-3}]
+% The Normality condition is about the residuals, not the $x$-values. The distribution of the predictor variable itself does not need to be normal, and checking it tells you nothing about whether the errors around the regression line are normally distributed. The student should instead make a dotplot, boxplot, or normal probability plot of the residuals.
+% \end{Answer}
 
 \section{Testing a Claim About the Slope}
 
@@ -413,40 +412,41 @@ Because $p = 0.0035 < \alpha = 0.05$, reject $H_0$. There is convincing statisti
     \item Reject $H_0$ when $p < \alpha$; state the conclusion in context, and be careful not to claim causation from an observational study.
 \end{itemize}
 
-\begin{Exercise}[title={Running the Test}, label={ex:slope-test-1}]
-A marketing analyst studies the relationship between weekly advertising spend, in thousands of dollars ($X$), and weekly sales, in thousands of dollars ($Y$), for a random sample of $n = 10$ stores. She expects that more spend predicts more sales. Regression output gives $b_1 = 3.6$ and $s_{b_1} = 1.2$.
-\begin{enumerate}
-    \item State $H_0$ and $H_a$.
-    \item Find $df$ and the test statistic $t$.
-    \item Software reports a two-sided $p$-value of $0.0171$. Find the correct one-sided $p$-value.
-    \item At $\alpha = 0.05$, state a conclusion in context.
-\end{enumerate}
-\end{Exercise}
 
-\begin{Answer}[ref={ex:slope-test-1}]
-\begin{enumerate}
-    \item $H_0: \beta_1 = 0$; $H_a: \beta_1 > 0$.
-    \item $df = 10 - 2 = 8$. $t = \dfrac{3.6}{1.2} = 3.00$.
-    \item $t = 3.00$ is positive, matching the direction of $H_a: \beta_1 > 0$, so the sign check passes. One-sided $p$-value $= \dfrac{0.0171}{2} = 0.0086$.
-    \item Since $p = 0.0086 < \alpha = 0.05$, reject $H_0$. There is convincing statistical evidence that, among stores like those sampled, higher advertising spend is associated with higher weekly sales.
-\end{enumerate}
-\end{Answer}
-
-\begin{Exercise}[title={Spot the Error}, label={ex:slope-test-2}]
-A student is testing $H_0: \beta_1 = 0$ against $H_a: \beta_1 < 0$ for a study relating hours of television watched to standardized test scores. Regression output gives $t = 2.10$ and a two-sided $p$-value of $0.0575$. The student writes: "The one-sided $p$-value is $0.0575 / 2 = 0.0288$, which is less than $0.05$, so I reject $H_0$ and conclude there is a negative relationship." Identify the error and give the correct one-sided $p$-value.
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-test-2}]
-The student divided the two-sided $p$-value by $2$ without first checking whether the sign of $t$ matches the direction of $H_a$. Here $t = 2.10$ is positive, but $H_a$ claims a negative relationship ($\beta_1 < 0$); the sign does not match. This means the sample data actually point in the opposite direction from what $H_a$ claims, so the correct one-sided $p$-value is not $0.0288$, but $1 - 0.0288 = 0.9712$, which is far from significant. There is no evidence here of a negative relationship; if anything, the (non-significant) trend runs the other way.
-\end{Answer}
-
-\begin{Exercise}[title={Interpreting the Conclusion}, label={ex:slope-test-3}]
-Using the sleep study results from this section ($p = 0.0035$, $\alpha = 0.05$), a classmate says: "This proves that screen time causes reduced sleep in teenagers." Explain what is wrong with this statement, and rewrite it as a statistically defensible conclusion.
-\end{Exercise}
-
-\begin{Answer}[ref={ex:slope-test-3}]
-The word "proves" overstates what a significance test can show; a small $p$-value provides convincing evidence against $H_0$, not proof. More importantly, the study is observational, since screen time was not randomly assigned to the teenagers. Without random assignment, a demonstrated relationship cannot establish causation; some other variable, such as stress level, extracurricular commitments, or household routines, could be influencing both screen time and sleep duration. A defensible conclusion: "There is convincing statistical evidence of a negative association between screen time and sleep duration in this population, but since the study was observational, this does not establish that screen time causes reduced sleep."
-\end{Answer}
+% \begin{Exercise}[title={Running the Test}, label={ex:slope-test-1}]
+% A marketing analyst studies the relationship between weekly advertising spend, in thousands of dollars ($X$), and weekly sales, in thousands of dollars ($Y$), for a random sample of $n = 10$ stores. She expects that more spend predicts more sales. Regression output gives $b_1 = 3.6$ and $s_{b_1} = 1.2$.
+% \begin{enumerate}
+%     \item State $H_0$ and $H_a$.
+%     \item Find $df$ and the test statistic $t$.
+%     \item Software reports a two-sided $p$-value of $0.0171$. Find the correct one-sided $p$-value.
+%     \item At $\alpha = 0.05$, state a conclusion in context.
+% \end{enumerate}
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-test-1}]
+% \begin{enumerate}
+%     \item $H_0: \beta_1 = 0$; $H_a: \beta_1 > 0$.
+%     \item $df = 10 - 2 = 8$. $t = \dfrac{3.6}{1.2} = 3.00$.
+%     \item $t = 3.00$ is positive, matching the direction of $H_a: \beta_1 > 0$, so the sign check passes. One-sided $p$-value $= \dfrac{0.0171}{2} = 0.0086$.
+%     \item Since $p = 0.0086 < \alpha = 0.05$, reject $H_0$. There is convincing statistical evidence that, among stores like those sampled, higher advertising spend is associated with higher weekly sales.
+% \end{enumerate}
+% \end{Answer}
+%
+% \begin{Exercise}[title={Spot the Error}, label={ex:slope-test-2}]
+% A student is testing $H_0: \beta_1 = 0$ against $H_a: \beta_1 < 0$ for a study relating hours of television watched to standardized test scores. Regression output gives $t = 2.10$ and a two-sided $p$-value of $0.0575$. The student writes: "The one-sided $p$-value is $0.0575 / 2 = 0.0288$, which is less than $0.05$, so I reject $H_0$ and conclude there is a negative relationship." Identify the error and give the correct one-sided $p$-value.
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-test-2}]
+% The student divided the two-sided $p$-value by $2$ without first checking whether the sign of $t$ matches the direction of $H_a$. Here $t = 2.10$ is positive, but $H_a$ claims a negative relationship ($\beta_1 < 0$); the sign does not match. This means the sample data actually point in the opposite direction from what $H_a$ claims, so the correct one-sided $p$-value is not $0.0288$, but $1 - 0.0288 = 0.9712$, which is far from significant. There is no evidence here of a negative relationship; if anything, the (non-significant) trend runs the other way.
+% \end{Answer}
+%
+% \begin{Exercise}[title={Interpreting the Conclusion}, label={ex:slope-test-3}]
+% Using the sleep study results from this section ($p = 0.0035$, $\alpha = 0.05$), a classmate says: "This proves that screen time causes reduced sleep in teenagers." Explain what is wrong with this statement, and rewrite it as a statistically defensible conclusion.
+% \end{Exercise}
+%
+% \begin{Answer}[ref={ex:slope-test-3}]
+% The word "proves" overstates what a significance test can show; a small $p$-value provides convincing evidence against $H_0$, not proof. More importantly, the study is observational, since screen time was not randomly assigned to the teenagers. Without random assignment, a demonstrated relationship cannot establish causation; some other variable, such as stress level, extracurricular commitments, or household routines, could be influencing both screen time and sleep duration. A defensible conclusion: "There is convincing statistical evidence of a negative association between screen time and sleep duration in this population, but since the study was observational, this does not establish that screen time causes reduced sleep."
+% \end{Answer}
 
 \textbf{Computing in Excel}
 
