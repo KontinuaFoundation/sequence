@@ -1,0 +1,323 @@
+\chapter{Statistical Inferences: Chi-Square Distribution}
+\section{The Chi-Square Distribution}
+
+A garden center might want to know whether the flower colors coming out of a seed mix really match the ratio printed on the packet. A hospital might want to know whether patient outcomes are spread across categories the way a published study says they should be. In cases like these you are comparing an entire distribution of counts to another distribution of counts, rather than comparing one number to another.
+
+Suppose a garden center sells a wildflower seed mix advertised to bloom in a 3:2:5 ratio of red, yellow, and white flowers, that is, 30\% red, 20\% yellow, and 50\% white. A gardener plants 200 seeds from this mix and, once everything blooms, counts 54 red flowers, 38 yellow flowers, and 108 white flowers. These three counts, 54, 38, and 108, are called \newterm{observed frequencies}\index{observed frequency}, denoted $O_1, O_2, \ldots, O_k$ for $k$ categories. They always add up to the total sample size, here $54 + 38 + 108 = 200$.
+
+If the packet's claim is true, how many flowers of each color should the gardener expect out of 200 seeds? Multiply the total by each claimed proportion: $200(0.30) = 60$ red, $200(0.20) = 40$ yellow, and $200(0.50) = 100$ white. These are the \newterm{expected frequencies}\index{expected frequency}, denoted $E_1, E_2, \ldots, E_k$. Like the observed frequencies, they sum to the total sample size.
+
+Notice that the observed and expected counts are close, but not identical: 54 versus 60, 38 versus 40, 108 versus 100. Is that gap small enough to chalk up to ordinary sampling variability, or large enough to cast doubt on the packet's claim? To answer that, you need a single number that summarizes how far the observed counts are from the expected counts.
+
+The natural first idea is to look at each difference, $O_i - E_i$. But differences can be positive or negative, and they would cancel out if you just added them up. 
+
+So, just as you did when building the variance of a data set, square each difference to keep everything positive: $(O_i - E_i)^2$. 
+
+There is one more adjustment to make. A difference of 6 matters more when the expected count is 10 than when the expected count is 1{,}000. Dividing each squared difference by its own expected count, $E_i$, scales the discrepancy relative to how large that category was expected to be. Adding these scaled, squared discrepancies across all $k$ categories gives the \newterm{chi-square statistic}\index{chi-square statistic}:
+
+\[
+\chi^2 = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i}
+\]
+
+For the wildflower example, this comes out to
+
+\[
+\chi^2 = \frac{(54-60)^2}{60} + \frac{(38-40)^2}{40} + \frac{(108-100)^2}{100} = 0.6 + 0.1 + 0.64 = 1.34
+\]
+
+A small $\chi^2$ value means the observed counts landed close to what was expected; a large value means they landed far away. What counts as "small" or "large" depends on comparing $\chi^2$ to a reference distribution, which is exactly what the chi-square distribution gives you.
+
+\subsection{Properties of the Chi-Square Distribution}
+
+The $\chi^2$ statistic follows an approximate \newterm{chi-square distribution}\index{chi-square distribution}, a continuous probability distribution with the following properties:
+
+\begin{itemize}
+    \item It only takes positive values, since it is built entirely out of squared terms.
+    \item It is right-skewed, especially for small degrees of freedom.
+    \item Its shape depends on its \newterm{degrees of freedom}\index{degrees of freedom (chi-square)} ($df$). As $df$ increases, the distribution stretches out and becomes more symmetric, shifting to the right.
+    \item Its mean is equal to $df$, and its standard deviation is equal to $\sqrt{2 \cdot df}$.
+\end{itemize}
+
+% [figure placeholder: chi-square density curves for df = 1, 4, 8, and 15, showing the right skew that fades and the peak shifting right as df increases]
+
+You will see exactly how $df$ is determined for each type of chi-square test in the sections that follow; it depends on the number of categories or the size of the table involved, not on the sample size itself.
+
+\subsection{Reading a Chi-Square Table}
+
+Because the chi-square distribution changes shape with $df$, a chi-square table has to account for both $df$ and the tail area you care about. The value $\chi^2_\alpha$ is defined as the value such that the area under the curve to its right equals $\alpha$.
+
+To find $\chi^2_{0.05}$ for $df = 8$, locate the row for $df = 8$ and the column for a right-tail area of $0.05$, and read off the value where they intersect. That value is $15.507$. To find $\chi^2_{0.01}$ for the same $df = 8$, you would instead go to the $0.01$ column, giving $20.09$. Notice that a smaller tail area pushes you further out into the right tail of the distribution, so the critical value grows as $\alpha$ shrinks.
+
+Table~\ref{tab:chisq-critical} gives critical values for the tail areas most commonly used in this course, for $df = 1$ through $10$.
+
+\begin{table}[H]
+\centering
+\caption{Chi-square critical values, $\chi^2_\alpha$}
+\label{tab:chisq-critical}
+\begin{tabular}{c|cccc}
+$df$ & $\alpha = 0.10$ & $\alpha = 0.05$ & $\alpha = 0.025$ & $\alpha = 0.01$ \\
+\hline
+1  & 2.706  & 3.841  & 5.024  & 6.635 \\
+2  & 4.605  & 5.991  & 7.378  & 9.210 \\
+3  & 6.251  & 7.815  & 9.348  & 11.345 \\
+4  & 7.779  & 9.488  & 11.143 & 13.277 \\
+5  & 9.236  & 11.070 & 12.833 & 15.086 \\
+6  & 10.645 & 12.592 & 14.449 & 16.812 \\
+7  & 12.017 & 14.067 & 16.013 & 18.475 \\
+8  & 13.362 & 15.507 & 17.535 & 20.090 \\
+9  & 14.684 & 16.919 & 19.023 & 21.666 \\
+10 & 15.987 & 18.307 & 20.483 & 23.209 \\
+\end{tabular}
+\end{table}
+
+\begin{Exercise}[title={Reading the table}, label={ex:chisq-table-read}]
+Using Table~\ref{tab:chisq-critical}, find $\chi^2_{0.01}$ for $df = 3$. Then find $\chi^2_{0.10}$ for $df = 6$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:chisq-table-read}]
+$\chi^2_{0.01}(3) = 11.345$ and $\chi^2_{0.10}(6) = 10.645$.
+\end{Answer}
+
+
+\section{The Chi-Square Test for Goodness of Fit}
+
+$\chi^2$ measures how far a set of observed counts strays from what was expected, and the $\chi^2$ distribution that tells you how large that statistic can get just by chance. Putting the two together gives you a full hypothesis test: the \newterm{chi-square goodness-of-fit test}\index{chi-square goodness-of-fit test}, used to check whether observed categorical data match a claimed distribution across categories.
+
+\subsection{Conditions}
+
+Before running the test, three conditions need to be met.
+
+\begin{itemize}
+    \item The data are counts. They should not be percentages, averages, or any other summary.
+    \item The sample was selected at random from the population of interest.
+    \item The sample is large enough that the chi-square distribution is a reasonable approximation. This applies when every expected count is at least 5, that is, $E_i \geq 5$ for every category. If some expected counts fall below 5, combine that category with a neighboring one until every expected count clears 5.
+\end{itemize}
+
+\subsection{Stating the Hypotheses}
+
+For $k$ categories with claimed proportions $p_1, p_2, \ldots, p_k$ (which must add to 1), the hypotheses are:
+
+\begin{itemize}
+    \item $H_0$: The population is distributed across the $k$ categories according to $p_1, p_2, \ldots, p_k$.
+    \item $H_a$: The population is \emph{not} distributed according to $p_1, p_2, \ldots, p_k$; at least one category's true proportion differs from what was claimed.
+\end{itemize}
+
+Under $H_0$, the test statistic $\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}$ follows an approximate chi-square distribution with $df = k - 1$. You reject $H_0$ if $\chi^2$ falls in the rejection region, that is, if $\chi^2 > \chi^2_\alpha(df)$, or equivalently, if the $p$-value is less than $\alpha$.
+
+\textbf{Example}
+
+Return to the wildflower seed mix from the previous section. The packet claims a 30\% red, 20\% yellow, 50\% white split. Out of 200 seeds planted, the gardener observed 54 red, 38 yellow, and 108 white flowers. Is there evidence that the true color distribution differs from the packet's claim?
+
+\textbf{State:} Let $p_1, p_2, p_3$ be the true proportions of red, yellow, and white flowers produced by this seed mix.
+
+\[
+H_0: p_1 = 0.30, \ p_2 = 0.20, \ p_3 = 0.50 \qquad H_a: \text{at least one } p_i \text{ differs from its claimed value}
+\]
+
+Use $\alpha = 0.05$.
+
+\textbf{Plan:} This is a chi-square goodness-of-fit test. Check conditions: the data are counts of flowers by color, the 200 seeds were planted as an independent random selection from the seed mix, and the expected counts (60, 40, and 100, calculated in the previous section) are all well above 5. All three conditions are satisfied, so a chi-square test is appropriate here. With $k = 3$ categories, $df = 3 - 1 = 2$.
+
+\textbf{Do:} The test statistic was already computed: $\chi^2 = 1.34$. From Table~\ref{tab:chisq-critical}, $\chi^2_{0.05}(2) = 5.991$. Because $1.34$ is nowhere near $5.991$, this is not going to be a close call. The exact $p$-value is $P(\chi^2(2) > 1.34) \approx 0.512$.
+
+\textbf{Conclude:} Because $\chi^2 = 1.34 < 5.991$ (equivalently, because the $p$-value of $0.512$ is far greater than $0.05$), we fail to reject $H_0$. There is not sufficient evidence that the true color distribution of this seed mix differs from the packet's claimed 30\%/20\%/50\% split.
+
+Once the observed and expected counts are in hand, the goodness-of-fit test is really just: find $df$, compare $\chi^2$ to the table, and interpret. 
+
+\begin{Exercise}[title={Goodness-of-Fit Test for a Bakery}, label={ex:chisq-gof-bakery}]
+A bakery believes weekday demand for its most popular pastry is the same on all five weekdays. Over 44 weeks, it records the number of times each weekday was the single best-selling day for that pastry: Monday 41, Tuesday 38, Wednesday 52, Thursday 45, Friday 44 (220 weekdays total). Test, at $\alpha = 0.05$, whether best-selling days are evenly spread across the five weekdays.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:chisq-gof-bakery}]
+$H_0$: best-selling days are equally likely across the 5 weekdays ($p_i = 0.20$ for each). $H_a$: at least one weekday's true proportion differs from 0.20.
+
+Conditions: counts, so assume the 220 weekdays behave as a random sample of best-selling-day outcomes; expected count per day is $220/5 = 44$, which is at least 5 for every category. Conditions apply!
+
+With $k = 5$, $df = 4$. Expected count for every weekday is 44. The test statistic is
+\[
+\chi^2 = \frac{(41-44)^2}{44} + \frac{(38-44)^2}{44} + \frac{(52-44)^2}{44} + \frac{(45-44)^2}{44} + \frac{(44-44)^2}{44} = 2.5
+\]
+From Table~\ref{tab:chisq-critical}, $\chi^2_{0.05}(4) = 9.488$. Since $2.5 < 9.488$ (p-value $\approx 0.645$), we fail to reject $H_0$. There is not sufficient evidence that best-selling days are unevenly distributed across the weekdays.
+\end{Answer}
+
+
+\section{The Chi-Square Test for Independence}
+
+Let’s say you have two categorical variables measured on the same individuals, how would you figure out if they are related? Does a customer's preferred way of reaching support have anything to do with how satisfied they end up? Does a plant's soil type have anything to do with which color it blooms? These questions call for the \newterm{chi-square test of independence}\index{chi-square test of independence}.
+
+\subsection{Contingency Tables}
+
+Data for this test is organized into a \newterm{contingency table}\index{contingency table}: rows represent categories of one variable, columns represent categories of the other, and each cell holds the count of individuals falling into that combination. Every row has a row total, every column has a column total, and both sets of totals add up to the grand total, the overall sample size.
+
+%[figure placeholder: illustration]
+
+\subsection{Conditions}
+
+Same as for the goodness-of-fit test. These conditions are adjusted for two variables instead of one.
+
+\begin{itemize}
+    \item The data are counts of individuals falling into each combination of categories.
+    \item Individuals were selected at random (or, if not literally random, in a way that can reasonably be treated as a random sample from the population of interest).
+    \item Every expected count is at least 5. As before, if a cell's expected count is too small, adjacent categories should be combined.
+\end{itemize}
+
+\subsection{Hypotheses and Expected Counts}
+
+For a test of independence, the hypotheses are always framed the same way, regardless of context:
+
+\begin{itemize}
+    \item $H_0$: the two categorical variables are independent.
+    \item $H_a$: the two categorical variables are not independent (there is an association between them).
+\end{itemize}
+
+The tricky part is computing expected counts, since there is no claimed proportion handed to you the way there was for goodness-of-fit. Instead, expected counts are built directly from the table itself. 
+
+If the two variables really were independent, the proportion of individuals in any given column should be the same across every row. That leads to the expected count formula for the cell in row $i$, column $j$:
+
+\[
+E_{ij} = \frac{(\text{row } i \text{ total}) \times (\text{column } j \text{ total})}{\text{grand total}}
+\]
+
+Once every $E_{ij}$ is computed, the test statistic is the same $\chi^2 = \sum \frac{(O_{ij} - E_{ij})^2}{E_{ij}}$ you already know, and it follows an approximate chi-square distribution with
+
+\[
+df = (r - 1)(c - 1)
+\]
+
+where $r$ is the number of rows and $c$ is the number of columns.
+
+\textbf{Example}
+
+A garden center runs a season-long trial to see whether the type of fertilizer used on its potted plants is related to how well those plants ultimately grow. Across 240 plants split evenly into three fertilizer groups, garden staff rated each plant's growth as thriving, average, or struggling. The results:
+
+\begin{table}[H]
+\centering
+\caption{Growth outcome by fertilizer type ($n = 240$)}
+\begin{tabular}{l|ccc|c}
+ & Thriving & Average & Struggling & Row total \\
+\hline
+Organic   & 30 & 31 & 19 & 80 \\
+Synthetic & 27 & 29 & 24 & 80 \\
+None      & 27 & 30 & 23 & 80 \\
+\hline
+Column total & 84 & 90 & 66 & 240 \\
+\end{tabular}
+\end{table}
+
+The garden center's horticulturist runs a chi-square test for independence at $\alpha = 0.05$ and reports the critical value as $\chi^2_{0.05}(4) = 9.488$.
+
+\textbf{State:} $H_0$: fertilizer type and growth outcome are independent. $H_a$: fertilizer type and growth outcome are not independent.
+
+\textbf{Plan:} This is a chi-square test of independence. The data are counts, the 240 plants were assigned to fertilizer groups and rated independently of one another, and every expected count (computed below) is well above 5. With $r = 3$ rows and $c = 3$ columns, $df = (3-1)(3-1) = 4$.
+
+\textbf{Do:} Using $E_{ij} = \frac{(\text{row total})(\text{column total})}{240}$, every expected count in this table works out to 28, 30, or 22, since all three row totals equal 80:
+
+\begin{table}[H]
+\centering
+\caption{Expected counts under independence}
+\begin{tabular}{l|ccc}
+ & Thriving & Average & Struggling \\
+\hline
+Organic   & 28 & 30 & 22 \\
+Synthetic & 28 & 30 & 22 \\
+None      & 28 & 30 & 22 \\
+\end{tabular}
+\end{table}
+
+\[
+\chi^2 = \sum \frac{(O_{ij}-E_{ij})^2}{E_{ij}} \approx 0.917
+\]
+
+\textbf{Conclude:} Because $\chi^2 = 0.917 < 9.488$, we fail to reject $H_0$. There is not sufficient evidence that fertilizer type and plant growth outcome are related at this garden center.
+
+\begin{Exercise}[title={Spotting a misinterpretation}, label={ex:chisq-indep-fertilizer}]
+Suppose the horticulturist looks at the same table and writes: "Since the observed counts differ from group to group, this proves fertilizer type affects growth, so we reject $H_0$." Is this conclusion correct? Justify your answer, and write the correct conclusion in context.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:chisq-indep-fertilizer}]
+No. The horticulturist is reasoning from the raw observed differences alone rather than from the test statistic and critical value. Even though the observed counts are not perfectly equal across groups, $\chi^2 = 0.917$ is far below the critical value of $9.488$, so those differences are well within what random variation alone would produce. The correct conclusion is: there is not sufficient evidence that fertilizer type and growth outcome are associated; fail to reject $H_0$. It's also worth noting that failing to reject $H_0$ does not \emph{prove} the two variables are independent,so it only means this data set didn't provide strong enough evidence of a relationship.
+\end{Answer}
+
+\section{The Chi-Square Test for Homogeneity of Proportions}
+
+The test for independence and test for homogeneity for proportions are almost identical. They use the same test statistic, same $df = (r-1)(c-1)$, same table lookup. The differences include the question being asked and how the data were collected.
+
+%A test for independence starts with \emph{one} sample and measures \emph{two} 
+% categorical variables on each individual in it. In this case, 
+
+A \newterm{chi-square test for homogeneity}\index{chi-square test for homogeneity}, by contrast, starts with \emph{separate, independent samples}, one from each of several populations or groups, and measures categorical variable on each. 
+
+\subsection{Conditions and Hypotheses}
+
+The conditions are the same as for independence: counts, random samples (in this case, an independent random sample from each group), and every expected count at least 5. 
+
+The hypotheses:
+
+\begin{itemize}
+    \item $H_0$: the distribution of the categorical variable is the same across all of the populations or groups.
+    \item $H_a$: the distribution of the categorical variable is not the same across all of the populations or groups.
+\end{itemize}
+
+%Expected counts are still computed with $E_{ij} = \frac{(\text{row total})(\text{column %total})}{\text{grand total}}$, and $df = (r-1)(c-1)$, exactly as before. In practice, the only %real difference on the page is how the row or column totals came to be: in a homogeneity %setting, one set of totals (say, the sample size from each group) was fixed by the design of %the study before any data were collected, rather than arising naturally from a single sample.
+
+\textbf{ Example}
+
+A garden center wants to compare three seed suppliers before choosing one to stock going forward. It plants exactly 100 seeds from each supplier, all of the same wildflower variety, and records the bloom color:
+
+\begin{table}[H]
+\centering
+\caption{Bloom color by seed supplier (100 seeds planted per supplier)}
+\begin{tabular}{l|ccc|c}
+ & Red & Yellow & White & Row total \\
+\hline
+Supplier A & 50 & 20 & 30 & 100 \\
+Supplier B & 30 & 40 & 30 & 100 \\
+Supplier C & 20 & 45 & 35 & 100 \\
+\hline
+Column total & 100 & 105 & 95 & 300 \\
+\end{tabular}
+\end{table}
+
+Test, at $\alpha = 0.05$, whether bloom color distribution is the same across the three suppliers.
+
+\textbf{State:} $H_0$: bloom color distribution is the same across all three suppliers. $H_a$: bloom color distribution is not the same across all three suppliers.
+
+\textbf{Plan:} This is a chi-square test for homogeneity: three independent samples, one fixed at 100 seeds per supplier by design, each measuring the same categorical variable (bloom color). Expected counts (below) are all well above 5. With $r = 3$ and $c = 3$, $df = 4$.
+
+\textbf{Do:} Since all three row totals equal 100, every expected count is just the column total divided by 3:
+
+\begin{table}[H]
+\centering
+\caption{Expected counts under homogeneity}
+\begin{tabular}{l|ccc}
+ & Red & Yellow & White \\
+\hline
+Supplier A & 33.33 & 35.00 & 31.67 \\
+Supplier B & 33.33 & 35.00 & 31.67 \\
+Supplier C & 33.33 & 35.00 & 31.67 \\
+\end{tabular}
+\end{table}
+
+\[
+\chi^2 = \sum \frac{(O_{ij}-E_{ij})^2}{E_{ij}} \approx 24.53
+\]
+
+\textbf{Conclude:} From Table~\ref{tab:chisq-critical}, $\chi^2_{0.05}(4) = 9.488$. Since $24.53 > 9.488$ (p-value $< 0.001$), we reject $H_0$. There is sufficient evidence that bloom color distribution is not the same across the three seed suppliers. Looking back at the table, Supplier A stands out with far more red blooms than expected, which is likely driving most of that gap.
+
+\begin{Exercise}[title={Independence or homogeneity?}, label={ex:chisq-indep-vs-homog}]
+For each scenario, state whether a chi-square test for independence or a chi-square test for homogeneity is appropriate, and identify the categorical variable(s) involved.
+
+\begin{enumerate}
+    \item A single random sample of 300 commuters is asked both their mode of transportation (car, bus, bike) and whether they arrived to work on time that day.
+    \item Independent random samples of 150 patients are drawn from three different hospitals, and each patient's recovery outcome (full recovery, partial recovery, no improvement) is recorded.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:chisq-indep-vs-homog}]
+\begin{enumerate}
+    \item Test for independence. There is one sample, and two categorical variables (mode of transportation, on-time status) are measured on each commuter in it.
+    \item Test for homogeneity. There are three separate, independently drawn samples (one per hospital), and one categorical variable (recovery outcome) is compared across them.
+\end{enumerate}
+\end{Answer}
+
+
