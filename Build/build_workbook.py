@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import subprocess
 import sys
 import argparse
 from pathlib import Path
@@ -60,13 +59,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def _run_latex(tool, tex_file, log_f):
-    return subprocess.run(
-        [tool, "-halt-on-error", "-synctex=1", "-shell-escape", str(tex_file)],
-        cwd=INTERMEDIATE_DIR,
-        stdout=log_f,
-        stderr=subprocess.STDOUT,
-    ).returncode
 def build_book(book_id, config, draft, final_dir, header, footer):
     locale_list = config["Languages"]
     tool = config["LatexExecutable"]
@@ -93,9 +85,10 @@ def build_book(book_id, config, draft, final_dir, header, footer):
     total_passes = 1 if draft else 2
     prefix = f"Building workbook-{book_id}"
 
+    cmd = [tool, "-halt-on-error", "-synctex=1", "-shell-escape", output_tex_file.name]
+
     with log_path.open("w") as log_f:
-        util.print_progress_bar(0, total_passes, prefix=prefix)
-        rc = _run_latex(tool, output_tex_file.name, log_f)
+        rc = util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=0, total=total_passes)
         util.print_progress_bar(1, total_passes, prefix=prefix)
 
         if rc != 0 or not output_pdf_file.exists():
@@ -104,7 +97,7 @@ def build_book(book_id, config, draft, final_dir, header, footer):
             return None
 
         if not draft:
-            _run_latex(tool, output_tex_file.name, log_f)
+            util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=1, total=total_passes)
             util.print_progress_bar(2, total_passes, prefix=prefix)
             shutil.move(output_pdf_file, final_pdf_path)
 
@@ -218,9 +211,10 @@ def main():
         total_passes = 2
         prefix = f"Building {output_tex.stem}"
 
+        cmd = [config["LatexExecutable"], "-halt-on-error", "-synctex=1", "-shell-escape", str(output_tex)]
+
         with log_path.open("w") as log_f:
-            util.print_progress_bar(0, total_passes, prefix=prefix)
-            rc = _run_latex(config["LatexExecutable"], output_tex, log_f)
+            rc = util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=0, total=total_passes)
             util.print_progress_bar(1, total_passes, prefix=prefix)
 
             if rc != 0 or not output_pdf.exists():
@@ -228,7 +222,7 @@ def main():
                 util.print_separator(success=False)
                 sys.exit(1)
 
-            _run_latex(config["LatexExecutable"], output_tex, log_f)
+            util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=1, total=total_passes)
             util.print_progress_bar(2, total_passes, prefix=prefix)
 
         shutil.move(output_pdf, final_file)

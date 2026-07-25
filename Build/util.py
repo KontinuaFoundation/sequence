@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 from pathlib import Path
 title_pattern = re.compile(r"chapter\{([^\}]+)\}")
 chapter_pattern = re.compile(
@@ -14,12 +15,33 @@ _RED = "\033[91m"
 _RESET = "\033[0m"
 
 
-def print_progress_bar(current, total, prefix="Building", width=30):
+# Classic braille "dots" spinner: each frame lights up a subset of a 2x3 dot
+# grid, giving the rotating look used by npm, yarn, gh, etc.
+_SPINNER_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+
+
+def print_progress_bar(current, total, prefix="Building", width=30, spinner_frame=None):
     filled = width if total <= 0 else int(width * current / total)
     bar = "#" * filled + "-" * (width - filled)
     pct = 100 if total <= 0 else int(100 * current / total)
+    spinner = f" {spinner_frame}" if spinner_frame else ""
     end = "\n" if current >= total else ""
-    print(f"\r{prefix} [{bar}] {current}/{total} ({pct}%)", end=end, flush=True)
+    # \033[K clears any leftover characters from a previous, longer line
+    # (e.g. a spinner frame) before redrawing.
+    print(f"\r\033[K{prefix} [{bar}] {current}/{total} ({pct}%){spinner}", end=end, flush=True)
+
+
+def run_with_spinner(cmd, cwd, log_f, prefix, current, total, width=30, interval=0.1):
+    process = subprocess.Popen(cmd, cwd=cwd, stdout=log_f, stderr=subprocess.STDOUT)
+    frame = 0
+    while process.poll() is None:
+        print_progress_bar(
+            current, total, prefix=prefix, width=width,
+            spinner_frame=_SPINNER_FRAMES[frame % len(_SPINNER_FRAMES)],
+        )
+        frame += 1
+        time.sleep(interval)
+    return process.returncode
 
 
 def print_separator(success, width=60):
@@ -180,8 +202,10 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
 
     with log_path.open("w") as log_f:
         for pass_num in range(1, total_passes + 1):
-            print_progress_bar(pass_num - 1, total_passes, prefix=f"Building {chapter_id}")
-            subprocess.run(cmd, cwd=INTERMEDIATE_DIR, stdout=log_f, stderr=subprocess.STDOUT)
+            run_with_spinner(
+                cmd, INTERMEDIATE_DIR, log_f,
+                prefix=f"Building {chapter_id}", current=pass_num - 1, total=total_passes,
+            )
             print_progress_bar(pass_num, total_passes, prefix=f"Building {chapter_id}")
 
     if output_pdf_path.exists():
