@@ -1,16 +1,17 @@
 \chapter{Rotorcraft}
 
 \section{Introduction}
-FIXME
+This chapter moves on from airplane movement to quadcopters! You may here rotorcopters, drones, or unmanned aerial vehicle, which all refer to similar types of the same structure. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\textwidth]{quad.png}
     \caption{The general look of a quadcopter. Includes four rotors, a frame called a fuselage, and generally a head or designated front.}
     \label{fig:quad}
 \end{figure}
+Before we dive in depth, let's introduce a few terms that will be repeated within this chapter.
 \begin{description}
     \item[Quadcopter] Often defined as an aircraft with 4 rotors, synonymous with drone.
-    \item[Rotor] The rotor is the part of the aircraft which causes lift by spinning at a high velocity. It consists of a \emph{hub}, \emph{tip}, and \emph{twist} or \emph{blade arm}. You may hear the term propeller like from our airplanes chapter, but the more correct term for quadcopters is \newterm{rotor}.
+    \item[Rotor] The rotor is the part of the aircraft which causes lift by spinning at a high velocity. It consists of a central \emph{hub} with two or more \newterm{blades} attached. You may hear the term propeller like from our airplanes chapter, but the more correct term for quadcopters is \newterm{rotor}.
     \item[UAS / UAV] Unmanned Aircraft System or Unmanned Aircraft Vehicle. Often used to describe drones or semi-autonomous quadcopters. This includes the drones themselves, the software needed to avoid obstacles and track positioning, and equipment used by people to communicate with them.
     \item[Fuselage] The main body of a quadcopter or aircraft; synonymous to frame.
     \item[Isometric] We also want to be clear about our use of views in our diagrams. An \newterm{isometric} perspective is one that visually represents all 3 views of a 3D object in a 2D space (a printed diagram). When we get to calculus, we will talk about \newterm{isometry} as transformation or mapping between two spaces that perfectly preserves distances.
@@ -40,13 +41,23 @@ If we just want our quadcopter to \emph{hover in place}, the forces vertically n
 \section{Rotor Structure}
 Now, the remaining question is how do rotors work? 
 
-Recall our airplanes chapter; the wings are what create lift, and this is heavily dependent on the wings shape. On quadcopters, the rotors (you may also hear the term \newterm{blade} to describe one ``arm'') are specifically designed to push air \emph{opposite} the direction the aircraft needs to go.
+Recall our airplanes chapter; the wings are what create lift, and this is heavily dependent on the wings shape. On quadcopters, each rotor is made up of two or more \newterm{blades} attached to a central hub, and these blades are specifically designed to push air \emph{opposite} the direction the aircraft needs to go.
 
-The blade consists of the \newterm{tip} and \newterm{twist}, which connects to the hub. 
+FIXME diagram labeling blades
+
+Each blade has a \newterm{root}, which connects to the hub, and a \newterm{tip} at its outer end. Along its length, the blade also has a \newterm{twist}, where the blade's angle gradually changes from root to tip, similar to the shape of a screw thread.
+
+FIXME diagram comparing screw to shape of blade with twist
 
 The direction the air is pushed depends on which way the quadcopter goes; reversing the rotation of a rotor reverses the direction of the air pushed, and thus the direction of the quadcopter.
 
-FIXME diagram comparing screw to shape of blade with twist
+Rotors are typically described by three numbers\index{quadcopter!propellers!numbers}: their \newterm{diameter}, their \newterm{pitch}, and their \newterm{number of blades}. Typically, you will see something like \textit{10x5 inch}, which refers to the diameter and pitch, and the visual will tell you the number of blades.
+
+The diameter measures the tip to tip distance that a propeller can reach. If there is only 1 blade, this measurement is twice the hub-to-tip distance. Larger diameter rotors move a bigger column of air, but at slower speeds. Thrust scales roughly equal to the square of velocity, while power scales to the cube of velocity. Bigger props are meaningfully more efficient. This is the same reason helicopters use one large slow rotor while quadcopters use several small fast ones.
+
+Two is the typical amount of blades per propeller, and ensure symetry along the Y-Axis, as well as mass-production capability. Adding blades increases total thrust at a given diameter and RPM, but each additional blade partly flies through the turbulent wake left by the blade ahead of it (this is called \newterm{aerodynamic interference}), so you get diminishing thrust returns per blade.
+
+The pitch is the distance the propeller would move after one 360$^\circ$ rotation. Similar to how a screw moves when twisted, this measurement predicts how the propeller would move in vertical space. Lower pitch means less torque needed and higher maximum RPM, but less thrust and vertical movement is produced per rotor. Higher pitch generates more thrust and RPM, but draws more torque from the motor.
 
 \section{Movement, Spin Direction, and Torque}
 Generally, two rotors spin clockwise (CW) and two spin counter-clockwise (CCW). Rotors positioned diagonally from each other spin in the same direction. Rotors right next to each other spin in opposite directions. If all four rotors spun in the same direction, the body of the drone would violently spin in the opposite direction. By having two CW and two CCW motors, the forces cancel each other out. This balance allows the drone to hover completely still and turn smoothly post-VTOL. 
@@ -137,7 +148,7 @@ Rotation of the ahead about the center of gravity is called \newterm{yaw}. Inste
 \subsection{Introduction}
 Single Rotor Quadcopter - Helicopter
 
-Instead of a fixed wing like on an airplane, the propeller (one large one as compared to a quadcopter). rotates around to produce lift.
+Instead of a fixed wing like on an airplane, the main rotor (one large rotor, compared to a quadcopter's four) rotates to produce lift.
 
 \includegraphics[width=.75\textwidth]{torque.png}
 
