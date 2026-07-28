@@ -58,10 +58,13 @@ Each year, the balance is multiplied by $1 + r$, so after one year,
 $P_0$ would become $P_0 \times (1 + r)$.  The next year you would multiply
 this number by $(1 + r)$ again: $P_0 \times (1 + r) \times (1 + r)$. The
 next year? $P_0 \times (1 + r) \times (1 + r) \times (1 + r)$ See the
-pattern? $P_n$ is this balance after $n$ years, then \index{compound interest formula}
+pattern? $P_n$ is this balance after $n$ years, then
+\begin{equation}
+  P_n = P_0 (1+r)^n
+  \label{eq:compound}
+\end{equation}
 
-$$P_n = P_0 (1+r)^n$$
-
+\ref{eq:compound} is referred to as the standard \newterm{compound interest formula}. 
 Because $n$ is an exponent, we call this \textit{exponential growth}.
 There are few things as terrifying to a scientist as
 the phrase ``The population is undergoing exponential growth''.\index{exponential growth}
@@ -70,7 +73,10 @@ If the principal is not compounded annually, we can modify the equation to accou
 
 $$n = m t$$
 
-Where $t$ is the frequency of the compounding, called the period: (1: annually, 12: monthly, 52: weekly, 365: daily), and $m$ is the number of periods.
+Where $t$ is the frequency of the compounding, called the period: (1: annually, 12: monthly, 52: weekly, 365: daily), and $m$ is the number of periods. 
+This equation becomes
+$$P_n = P_0 (1+\frac{r}{n})^{nt}$$
+We will see these two terms pop up in other areas of the curriculum like circular motion and waves.
 % Diagram/ Explain
 
 \section{Sensitivity to interest rate}
@@ -91,4 +97,74 @@ Now edit the second interest rate to be 8\%:
 
 \includegraphics[width=0.6\textwidth]{AtBiggerInterestRate.png}
 
-% FIXME continuous compounding
+\section{Continuous Compound Interest}
+Let's say, hypothetically, that we compound interest on a given balance for an \emph{indefinite} amount of time. Then, we take the formula $$P_n = P_0 (1+\frac{r}{n})^{nt}$$
+
+What if we divide our time period into infinite chunks? This would mean splitting our $n$ into much smaller pieces. We can use calculus notation to find the limit of this:
+\begin{equation*}
+  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{r}{n})^{nt}
+\end{equation*}
+we can create a variable $x=\frac{n}{r}$. We do this so that we eliminate some other dummy variables. Now we have
+\begin{equation*}
+  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{1}{x})^{xrt}
+\end{equation*}
+as we can eliminate $n$ with $n=xr$.
+
+Now we can isolate parts of our compound interest equation into the limit, and extract variables out.
+
+\begin{equation*}
+  P_0 \left(\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}\right)^{rt}
+\end{equation*}
+
+
+Fun math fact: $\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}$ is equal to the mathematical constant $e$. We are going to dive into this in the \emph{logs} chapter! For now, just understand that it is a constant in mathematics that describes many growth or decay values. With that, we can simplify the equation as the continuous compound interest equation (\ref{eq:continuous_compound})
+\begin{equation}\label{eq:continuous_compound}
+  P_0e^{rt}
+\end{equation}
+
+\section{Practice Exercises}
+
+\begin{Exercise}[label=compoundinterest1]
+You deposit \$1500 into a savings account that pays an annual interest
+rate of 5\%, compounded annually. What is the balance after 8 years?
+
+Note: you can also use excel or google sheets built in function \texttt{=FV()}.
+\end{Exercise}
+
+\begin{Answer}[ref=compoundinterest1]
+Using \ref{eq:compound} with $P_0 = 1500$, $r = 0.05$, and $n = 8$:
+$$P_8 = 1500 (1+0.05)^8 = 1500 (1.05)^8 \approx \$2216.18$$
+
+Alternatively, in Sheets/Excel, we can use \texttt{=FV(0.05, 8, 0, -1500)} to say that we want the \newterm{future value} of 1500 deposited (hence, negative), after 8 years compounded once per year.
+\end{Answer}
+
+\begin{Exercise}[label=compoundinterest2]
+A bank offers two savings accounts, both with a stated annual interest
+rate of 6\%. Account A compounds monthly ($t = 12$) and Account B
+compounds daily ($t = 365$). If you deposit \$3000 into each account,
+which account has the higher balance after 5 years, and by how much?
+
+Create two columns in Excel/Sheets showing the balance after each year
+for each account, using \$3000 as the principal. Start with year 0 for the
+initial deposit, then fill in years 1 through 5 using the compound
+interest formula for monthly and daily compounding.
+\end{Exercise}
+
+\begin{Answer}[ref=compoundinterest2]
+Using $P_n = P_0 (1+\frac{r}{n})^{nt}$ with $P_0 = 3000$, $r = 0.06$, and $n = 5$ years:
+
+Account A (monthly, $t=12$):
+$$P = 3000 \left(1+\frac{0.06}{12}\right)^{12 \times 5} \approx \$4046.55$$
+
+Account B (daily, $t=365$):
+$$P = 3000 \left(1+\frac{0.06}{365}\right)^{365 \times 5} \approx \$4049.48$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{exercise2sheet.png}
+\end{figure}
+
+Account B has the higher balance, by about \$2.93. This makes sense:
+the more frequently interest is compounded, the closer the balance
+gets to the continuous compounding limit, $P_0 e^{rt}$.
+\end{Answer}
