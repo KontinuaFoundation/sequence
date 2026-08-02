@@ -9,6 +9,7 @@ title_pattern = re.compile(r"chapter\{([^\}]+)\}")
 chapter_pattern = re.compile(
     r"chapter\}\{\\numberline \{([^\}]+)\}[^\}]+\}\{([0-9]+)\}"
 )
+page_count_pattern = re.compile(r"Output written on .*\((\d+) pages?,")
 
 _GREEN = "\033[92m"
 _RED = "\033[91m"
@@ -149,6 +150,11 @@ def gather_data(mod_dir, book_str, config):
     return (metadatas, topics)
 
 
+def page_count_from_log(log_path):
+    matches = page_count_pattern.findall(_read(log_path))
+    return int(matches[-1]) if matches else None
+
+
 def should_build_chapter(tex_path, pdf_path):
     if not os.path.exists(pdf_path):
         return True
@@ -210,7 +216,9 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
 
     if output_pdf_path.exists():
         shutil.move(output_pdf_path, final_pdf_path)
-        print(f"{final_pdf_path} built.")
+        page_count = page_count_from_log(log_path)
+        page_str = f"{page_count} pages" if page_count is not None else "unknown page count"
+        print(f"{final_pdf_path} built ({page_str}).")
         print_separator(success=True)
         return True
 

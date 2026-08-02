@@ -43,11 +43,11 @@ Now, the remaining question is how do rotors work?
 
 Recall our airplanes chapter; the wings are what create lift, and this is heavily dependent on the wings shape. On quadcopters, each rotor is made up of two or more \newterm{blades} attached to a central hub, and these blades are specifically designed to push air \emph{opposite} the direction the aircraft needs to go.
 
-FIXME diagram labeling blades
+[PLACEHOLDER: ISOMETRIC VIEW OF BLADE WITH LABELING]
 
 Each blade has a \newterm{root}, which connects to the hub, and a \newterm{tip} at its outer end. Along its length, the blade also has a \newterm{twist}, where the blade's angle gradually changes from root to tip, similar to the shape of a screw thread.
 
-FIXME diagram comparing screw to shape of blade with twist
+[PLACEHOLDER: SPLIT FIGURE OF BLADE TWIST COMPARED TO SCREW MECHANISM]
 
 The direction the air is pushed depends on which way the quadcopter goes; reversing the rotation of a rotor reverses the direction of the air pushed, and thus the direction of the quadcopter.
 
@@ -145,230 +145,222 @@ Rotation of the ahead about the center of gravity is called \newterm{yaw}. Inste
 
 
 \section{Helicopters}
-\subsection{Introduction}
-Single Rotor Quadcopter - Helicopter
 
-Instead of a fixed wing like on an airplane, the main rotor (one large rotor, compared to a quadcopter's four) rotates to produce lift.
+Instead of a fixed wing like on an airplane,  or four small rotors on a quadcopter, a \newterm{helicopter} generates its lift from a single, much larger \newterm{main rotor}. The physics is the same as before: the spinning blades push air downward, and Newton's Third Law pushes the aircraft up in response. However, a single big rotor introduces two new problems a quadcopter doesn't have to solve.
 
-\includegraphics[width=.75\textwidth]{torque.png}
+First, on a quadcopter, half the rotors spin clockwise and half spin counter-clockwise, so their reaction torques cancel out. A helicopter's main rotor only spins one way, so its reaction torque has nothing to cancel it. Without a fix, the fuselage would spin in the opposite direction of the rotor. Most helicopters solve this with a small \newterm{tail rotor} that pushes sideways at a proportional speed to counteract the twist (see Figure~\ref{fig:torqueOnHeli}).
 
+Second, a quadcopter changes direction by speeding up or slowing down individual rotors. A helicopter's main rotor spins at a nearly constant speed instead; direction and lift are controlled by changing the \newterm{pitch} of the blades as they spin, using controls called \newterm{collective} and \newterm{cyclic}. We'll cover the tail rotor first, then come back to how collective and cyclic control the main rotor.
 
-Sequence: Rotor/Tail, Show how the tail rotor works, then show how the control works for the main rotor
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{torque.png}
+    \caption{A helicopter uses one large rotor that rotates in one direction. A smaller tail rotor counteracts this torque.}
+    \label{fig:torqueOnHeli}
+\end{figure}
 
-\includegraphics[width=.75\textwidth]{tailless2.png}
+\subsection{Tail Rotor}
 
-\includegraphics[width=.75\textwidth]{tailless1.png}
+On a helicopter, the tail rotor spins vertically, pushing air horizontally to counteract the torque of the main rotor. The pilot controls the tail rotor with pedals, which change the pitch of the tail rotor blades. This changes how much air is pushed sideways, and thus how much torque is counteracted. 
 
-\includegraphics[width=.75\textwidth]{collectiveQuad.png}
+Let's imagine a helicopter with a main rotor that spins clockwise and \emph{no tail rotor}. Without a tail rotor, the fuselage would have a violent torque applied to it, and would spin counter-clockwise. There is nothing to counteract this torque, so the fuselage would spin faster and faster until the helicopter is destroyed or crashes.
 
-% \section{Image Asset Review (temporary)}
-% The following is every image currently in this chapter's asset folder, dropped in for review so we can see what each one renders as before deciding where (or whether) it belongs in the text.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tailless1.png}
+        \caption{A helicopter without a tail rotor experiences a net torque that spins the fuselage in the opposite direction of the main rotor.}
+        \label{fig:tailless1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tailless2.png}
+        \caption{The fuselage continues to rotate faster and faster unless a counter-torque is provided.}
+        \label{fig:tailless2}
+    \end{subfigure}
+    \caption{A helicopter becomes unbalanced without a tail rotor.}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{collective.png}
-%     \caption{\texttt{collective.png}}
-%     \label{fig:collective}
-% \end{figure}
+Because of this, we need a way to balance this torque. We add a rotor in the back of the helicopter that pushes air in the opposite direction the torque from the main rotor (see Figure~\ref{fig:tailRotorNeed}).
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{collective4Version.png}
-%     \caption{\texttt{collective4Version.png}}
-%     \label{fig:collective4Version}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{tailRotorNeed.png}
+    \caption{A tail rotor provides the counter-torque needed to keep the helicopter balanced and prevent violent movement.}
+    \label{fig:tailRotorNeed}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{collectiveQuad.png}
-%     \caption{\texttt{collectiveQuad.png}}
-%     \label{fig:collectiveQuad}
-% \end{figure}
-
-
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{cyclic1.png}
-%     \caption{\texttt{cyclic1.png}}
-%     \label{fig:cyclic1}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{cyclic2.png}
-%     \caption{\texttt{cyclic2.png}}
-%     \label{fig:cyclic2}
-% \end{figure}
+If the pilot wants to yaw left, they increase the pitch of the tail rotor blades, pushing more air to the right and counteracting more of the main rotor's torque. To yaw right, they decrease the pitch of the tail rotor blades, pushing less air to the right and allowing more of the main rotor's torque to spin the fuselage clockwise (see Figure \ref{fig:trailRotor}).
 
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterAbove1.png}
-%     \caption{\texttt{helicopterAbove1.png}}
-%     \label{fig:helicopterAbove1}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterAbove2.png}
-%     \caption{\texttt{helicopterAbove2.png}}
-%     \label{fig:helicopterAbove2}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterMovement-10.png}
-%     \caption{\texttt{helicopterMovement-10.png}}
-%     \label{fig:helicopterMovement-10}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterMovement-11.png}
-%     \caption{\texttt{helicopterMovement-11.png}}
-%     \label{fig:helicopterMovement-11}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterMovement-12.png}
-%     \caption{\texttt{helicopterMovement-12.png}}
-%     \label{fig:helicopterMovement-12}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{helicopterMovement-13.png}
-%     \caption{\texttt{helicopterMovement-13.png}}
-%     \label{fig:helicopterMovement-13}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso-36.png}
-%     \caption{\texttt{iso-36.png}}
-%     \label{fig:iso-36}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso-37.png}
-%     \caption{\texttt{iso-37.png}}
-%     \label{fig:iso-37}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso-38.png}
-%     \caption{\texttt{iso-38.png}}
-%     \label{fig:iso-38}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso-48.png}
-%     \caption{\texttt{iso-48.png}}
-%     \label{fig:iso-48}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso-48 2.png}
-%     \caption{\texttt{iso-48 2.png}}
-%     \label{fig:iso-48_2}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso.png}
-%     \caption{\texttt{iso.png}}
-%     \label{fig:iso}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{iso46.png}
-%     \caption{\texttt{iso46.png}}
-%     \label{fig:iso46}
-% \end{figure}
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{isoprocess.png}
-%     \caption{\texttt{isoprocess.png}}
-%     \label{fig:isoprocess}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{trailRotor.png}
+    \caption{The tail rotor changes thrust to control the helicopter's yaw.}
+    \label{fig:trailRotor}
+\end{figure}
 
 
+\subsection{Main Rotor Movement}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{mechanicalControl.png}
+    \caption{\texttt{mechanicalControl.png}}
+    \label{fig:mechanicalControl}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{mechanicalControl.png}
-%     \caption{\texttt{mechanicalControl.png}}
-%     \label{fig:mechanicalControl}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{mechanicalControlMovement.png}
+    \caption{\texttt{mechanicalControlMovement.png}}
+    \label{fig:mechanicalControlMovement}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{mechanicalControlMovement.png}
-%     \caption{\texttt{mechanicalControlMovement.png}}
-%     \label{fig:mechanicalControlMovement}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{mechanicalControlMovement2.png}
+    \caption{\texttt{mechanicalControlMovement2.png}}
+    \label{fig:mechanicalControlMovement2}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{mechanicalControlMovement2.png}
-%     \caption{\texttt{mechanicalControlMovement2.png}}
-%     \label{fig:mechanicalControlMovement2}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{collective.png}
+    \caption{\texttt{collective.png}}
+    \label{fig:collective}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{pitchChange.png}
-%     \caption{\texttt{pitchChange.png}}
-%     \label{fig:pitchChange}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{collective4Version.png}
+    \caption{\texttt{collective4Version.png}}
+    \label{fig:collective4Version}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{tailless1.png}
-%     \caption{\texttt{tailless1.png}}
-%     \label{fig:tailless1}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{collectiveQuad.png}
+    \caption{\texttt{collectiveQuad.png}}
+    \label{fig:collectiveQuad}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{tailless2.png}
-%     \caption{\texttt{tailless2.png}}
-%     \label{fig:tailless2}
-% \end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{tailRotorNeed.png}
-%     \caption{\texttt{tailRotorNeed.png}}
-%     \label{fig:tailRotorNeed}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{cyclic1.png}
+    \caption{\texttt{cyclic1.png}}
+    \label{fig:cyclic1}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{torque.png}
-%     \caption{\texttt{torque.png}}
-%     \label{fig:torque}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{cyclic2.png}
+    \caption{\texttt{cyclic2.png}}
+    \label{fig:cyclic2}
+\end{figure}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{trailRotor.png}
-%     \caption{\texttt{trailRotor.png}}
-%     \label{fig:trailRotor}
-% \end{figure}
+\subsection{Isometric Copter Views}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.75\textwidth]{verticalIso.png}
-%     \caption{\texttt{verticalIso.png}}
-%     \label{fig:verticalIso}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-36.png}
+    \caption{\texttt{iso-36.png}}
+    \label{fig:iso-36}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-37.png}
+    \caption{\texttt{iso-37.png}}
+    \label{fig:iso-37}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-38.png}
+    \caption{\texttt{iso-38.png}}
+    \label{fig:iso-38}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-48.png}
+    \caption{\texttt{iso-48.png}}
+    \label{fig:iso-48}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-48 2.png}
+    \caption{\texttt{iso-48 2.png}}
+    \label{fig:iso-48_2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso.png}
+    \caption{\texttt{iso.png}}
+    \label{fig:iso}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso46.png}
+    \caption{\texttt{iso46.png}}
+    \label{fig:iso46}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{isoprocess.png}
+    \caption{\texttt{isoprocess.png}}
+    \label{fig:isoprocess}
+\end{figure}
+
+
+
+\subsection{Copter Movement}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterAbove1.png}
+    \caption{\texttt{helicopterAbove1.png}}
+    \label{fig:helicopterAbove1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterAbove2.png}
+    \caption{\texttt{helicopterAbove2.png}}
+    \label{fig:helicopterAbove2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterMovement-10.png}
+    \caption{\texttt{helicopterMovement-10.png}}
+    \label{fig:helicopterMovement-10}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterMovement-11.png}
+    \caption{\texttt{helicopterMovement-11.png}}
+    \label{fig:helicopterMovement-11}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterMovement-12.png}
+    \caption{\texttt{helicopterMovement-12.png}}
+    \label{fig:helicopterMovement-12}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{helicopterMovement-13.png}
+    \caption{\texttt{helicopterMovement-13.png}}
+    \label{fig:helicopterMovement-13}
+\end{figure}
 
