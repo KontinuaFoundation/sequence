@@ -100,6 +100,9 @@ def build_book(book_id, config, draft, final_dir, header, footer):
             util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=1, total=total_passes)
             util.print_progress_bar(2, total_passes, prefix=prefix)
             shutil.move(output_pdf_file, final_pdf_path)
+            page_count = util.page_count_from_log(log_path)
+            page_str = f"{page_count} pages" if page_count is not None else "unknown page count"
+            print(f"{final_pdf_path} built ({page_str}).")
 
     util.print_separator(success=True)
     return final_pdf_path
@@ -226,6 +229,9 @@ def main():
             util.print_progress_bar(2, total_passes, prefix=prefix)
 
         shutil.move(output_pdf, final_file)
+        page_count = util.page_count_from_log(log_path)
+        page_str = f"{page_count} pages" if page_count is not None else "unknown page count"
+        print(f"{final_file} built ({page_str}).")
         util.print_separator(success=True)
 
         print(f"\nCreated:\n{final_file}")
