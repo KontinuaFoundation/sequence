@@ -1,11 +1,30 @@
-\chapter{Linked Lists}
+\chapter{Linked Lists and C++ transition}
 
-A linked list is a linear data structure where each element is a
-separate object, called a node. Each node holds its own data and the
-address of the next node, thus forming a chain-like structure.\index{linked list}
+\section{From C to C++}
+
+In this chapter we are going to transition from stand C programming to C++. Why C++? Because it is a more modern version of C++ that allows for a deeper insight into the structures that we put into the memory of the computer. C++ differs in that it allows for object-oriented programming, which is a programming paradigm that uses "objects" to represent data and methods. This allows for more complex data structures and algorithms to be implemented in a more organized and efficient manner. To do this, we will be utilizing \newterm{classes}, which we briefly covered in our Advanced Python chapter. In C++, classes are defined using the \texttt{struct} keyword.
+
+There are two additional keyword differences you should be aware of regarding C vs C++. The primary one is the usage of the keyword \newterm{new}, which does not exist in C. In C, we have \texttt{malloc()}, which frees up a given amount of memory in bytes, and \texttt{sizeof}, which returns the size in bytes of a data structure.
+\begin{minted}{C}
+    // C : what you already know
+    struct Car *n = malloc(sizeof(struct Car));
+\end{minted}
+C++ combines these two commands into one, called \texttt{new}.
+\begin{minted}{cpp}
+    // C++ : same thing, no sizeof, no cast
+    Car* n = new Car();
+\end{minted}
+
+Here is a helpful video on some of the deeper differences that we will not be covering: \url{https://www.youtube.com/watch?v=B_4x7WlQr7M}
+
+\section{Linked Lists}
+
+A \newterm{linked list} is a linear data structure where each element is a
+separate object, called a \newterm{node}. Each node holds its own data and the
+address of the next node, called a \newterm{successor}, thus forming a chain-like structure. 
+The first node in the list is called the \newterm{head}. The head is the only node you need to keep a direct reference to, since every other node can be reached by following successors from it. The last node, the one whose successor pointer is empty, is called the \newterm{tail}.
 
 A simple node in a linked list can be represented in C++ as follows:
-
 
 
 \begin{minted}{cpp}
@@ -15,11 +34,29 @@ struct Node {
 };
 \end{minted}
 
-\includegraphics[width=0.5\textwidth]{node.png}
+
+
+\begin{center}
+\begin{tikzpicture}
+  % Node box split into Data and Next fields
+  \draw[thick, rounded corners=6pt] (0,0) rectangle (4,1.6);
+  \draw[thick] (2,0) -- (2,1.6);
+
+  \node[above] at (1,1.6) {\textbf{Data}};
+  \node[above] at (3,1.6) {\textbf{Next}};
+
+  \node at (1,0.8) {``ABC123''};
+
+  \filldraw (2.6,0.8) circle (2pt);
+  \draw[thick,-stealth] (2.6,0.8) -- (4.4,0.8);
+
+  \node[below] at (2,-0.3) {\textbf{\Large Node}};
+\end{tikzpicture}
+\end{center}
 
 
 In this structure, 'data' is used to store the data and 'next' is a
-pointer that holds the address of the next Node in the list.
+pointer that holds the address of the next Node in the list. When a pointer has nothing to point to, we mark its field with the empty-set symbol $\emptyset$\index{null pointer} --- the mathematical symbol for ``nothing here.''
 
 
 
@@ -33,7 +70,29 @@ Node* second = new Node();
 Node* third = new Node();
 \end{minted}
 
-\includegraphics[width=.75\textwidth]{llexample-03.png}
+\begin{center}
+\resizebox{0.75\textwidth}{!}{%
+\begin{tikzpicture}[thick]
+  % head
+  \draw[rounded corners=4pt] (0,0) rectangle (2,1.2);
+  \draw (1.3,0) -- (1.3,1.2);
+  \node at (1.65,0.6) {\Large $\emptyset$};
+  \node at (1,-0.4) {\textbf{head}};
+
+  % second
+  \draw[rounded corners=4pt] (3,0) rectangle (5,1.2);
+  \draw (4.3,0) -- (4.3,1.2);
+  \node at (4.65,0.6) {\Large $\emptyset$};
+  \node at (4,-0.4) {\textbf{second}};
+
+  % third
+  \draw[rounded corners=4pt] (6,0) rectangle (8,1.2);
+  \draw (7.3,0) -- (7.3,1.2);
+  \node at (7.65,0.6) {\Large $\emptyset$};
+  \node at (7,-0.4) {\textbf{third}};
+\end{tikzpicture}%
+}
+\end{center}
 
 \begin{minted}{cpp}
 
@@ -43,17 +102,69 @@ second->data = 2;
 third->data = 3;
 \end{minted}
 
-\includegraphics[width=.75\textwidth]{llexample-04.png}
+\begin{center}
+\resizebox{0.75\textwidth}{!}{%
+\begin{tikzpicture}[thick]
+  % head
+  \draw[rounded corners=4pt] (0,0) rectangle (2,1.2);
+  \draw (1.3,0) -- (1.3,1.2);
+  \node at (0.65,0.6) {1};
+  \node at (1.65,0.6) {\Large $\emptyset$};
+  \node at (1,-0.4) {\textbf{head}};
+
+  % second
+  \draw[rounded corners=4pt] (3,0) rectangle (5,1.2);
+  \draw (4.3,0) -- (4.3,1.2);
+  \node at (3.65,0.6) {2};
+  \node at (4.65,0.6) {\Large $\emptyset$};
+  \node at (4,-0.4) {\textbf{second}};
+
+  % third
+  \draw[rounded corners=4pt] (6,0) rectangle (8,1.2);
+  \draw (7.3,0) -- (7.3,1.2);
+  \node at (6.65,0.6) {3};
+  \node at (7.65,0.6) {\Large $\emptyset$};
+  \node at (7,-0.4) {\textbf{third}};
+\end{tikzpicture}%
+}
+\end{center}
 
 \begin{minted}{cpp}
 // Link nodes
 head->next = second;
 second->next = third;
-third->next = nullptr;  // The last node points to null
+third->next = nullptr;  // The last node points to null, this is the TAIL
 \end{minted}
 
 
-\includegraphics[width=.75\textwidth]{llexample-05.png}
+\begin{center}
+\resizebox{0.75\textwidth}{!}{%
+\begin{tikzpicture}[thick]
+  % head (linked to second)
+  \draw[rounded corners=4pt] (0,0) rectangle (2,1.2);
+  \draw (1.3,0) -- (1.3,1.2);
+  \node at (0.65,0.6) {1};
+  \filldraw (1.65,0.6) circle (2pt);
+  \draw[-stealth] (1.65,0.6) -- (3,0.6);
+  \node at (1,-0.4) {\textbf{head}};
+
+  % second (linked to third)
+  \draw[rounded corners=4pt] (3,0) rectangle (5,1.2);
+  \draw (4.3,0) -- (4.3,1.2);
+  \node at (3.65,0.6) {2};
+  \filldraw (4.65,0.6) circle (2pt);
+  \draw[-stealth] (4.65,0.6) -- (6,0.6);
+  \node at (4,-0.4) {\textbf{second}};
+
+  % third (points to null)
+  \draw[rounded corners=4pt] (6,0) rectangle (8,1.2);
+  \draw (7.3,0) -- (7.3,1.2);
+  \node at (6.65,0.6) {3};
+  \node at (7.65,0.6) {\Large $\emptyset$};
+  \node at (7,-0.4) {\textbf{third}};
+\end{tikzpicture}%
+}
+\end{center}
 
 
 
@@ -61,4 +172,137 @@ In this example, we first create three nodes using the `new` keyword,
 which dynamically allocates memory. We then assign data to the nodes
 and link them using the 'next' pointer.
 
+\includegraphics[width=1\textwidth]{playlist.png}
+\includegraphics[width=1\textwidth]{playlistList.png}
 \includegraphics[width=1\textwidth]{playlistCombined.png}
+
+\section{Doubly Linked Lists}
+Now that we have established the basics of linked lists, we can move on to a more complex structure: the \newterm{doubly linked list}. Doubly linked lists are strong because each node now has two pointers: the same next pointer, and now, the \newterm{predecessor}, which we will call \texttt{prev}.
+
+\begin{minted}{cpp}
+struct DoublyNode {
+    int data;
+    DoublyNode* next;
+    DoublyNode* prev;
+};
+\end{minted}
+
+
+
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[thick]
+  % head (prev = null, next -> second)
+  \draw[rounded corners=4pt] (0,0) rectangle (3,1.2);
+  \draw (0.8,0) -- (0.8,1.2);
+  \draw (2.2,0) -- (2.2,1.2);
+  \node at (0.4,0.6) {\Large $\emptyset$};
+  \node at (1.5,0.6) {1};
+  \filldraw (2.6,0.75) circle (2pt);
+  \draw[-stealth] (2.6,0.75) -- (4.2,0.75);
+  \node at (1.5,-0.4) {\textbf{head}};
+
+  % second
+  \draw[rounded corners=4pt] (4.2,0) rectangle (7.2,1.2);
+  \draw (5.0,0) -- (5.0,1.2);
+  \draw (6.4,0) -- (6.4,1.2);
+  \filldraw (4.6,0.45) circle (2pt);
+  \draw[-stealth] (4.6,0.45) -- (3,0.45);
+  \node at (5.7,0.6) {2};
+  \filldraw (6.8,0.75) circle (2pt);
+  \draw[-stealth] (6.8,0.75) -- (8.4,0.75);
+  \node at (5.7,-0.4) {\textbf{second}};
+
+  % third
+  \draw[rounded corners=4pt] (8.4,0) rectangle (11.4,1.2);
+  \draw (9.2,0) -- (9.2,1.2);
+  \draw (10.6,0) -- (10.6,1.2);
+  \filldraw (8.8,0.45) circle (2pt);
+  \draw[-stealth] (8.8,0.45) -- (7.2,0.45);
+  \node at (9.9,0.6) {3};
+  \filldraw (11.0,0.75) circle (2pt);
+  \draw[-stealth] (11.0,0.75) -- (12.6,0.75);
+  \node at (9.9,-0.4) {\textbf{third}};
+
+  % tail (prev <- third, next = null)
+  \draw[rounded corners=4pt] (12.6,0) rectangle (15.6,1.2);
+  \draw (13.4,0) -- (13.4,1.2);
+  \draw (14.8,0) -- (14.8,1.2);
+  \filldraw (13.0,0.45) circle (2pt);
+  \draw[-stealth] (13.0,0.45) -- (11.4,0.45);
+  \node at (14.1,0.6) {4};
+  \node at (15.2,0.6) {\Large $\emptyset$};
+  \node at (14.1,-0.4) {\textbf{tail}};
+\end{tikzpicture}%
+}
+\end{center}
+
+Given this structure, we can traverse the entire list starting at the tail to the head or from the head to the tail. 
+
+Let's construct some code to analyze where the nodes would be in memory. We will create a doubly linked list with four nodes, and then we will print out the addresses of each node and their respective next and previous pointers.
+
+Write the following code for the doubly linked list. There is a full file in your digital resources, here is a snippet of the code to get you started.
+\begin{minted}{cpp}
+
+int main() {
+    // Create nodes
+    DoublyNode* head = new DoublyNode();
+    DoublyNode* second = new DoublyNode();
+    DoublyNode* third = new DoublyNode();
+    DoublyNode* tail = new DoublyNode();
+
+    // Assign data
+    head->data = 1;
+    second->data = 2;
+    third->data = 3;
+    tail->data = 4;
+
+    // Link nodes forward
+    head->next = second;
+    second->next = third;
+    third->next = tail;
+    tail->next = nullptr;   // tail has no successor
+
+    // Link nodes backward
+    head->prev = nullptr;   // head has no predecessor
+    second->prev = head;
+    third->prev = second;
+    tail->prev = third;
+
+    // Print the address of each node, and the addresses stored in its
+    // prev/next fields, so you can see both directions of the chain.
+    std::cout << "head   is at: " << head   << "   prev: " << head->prev   << " (nullptr)" << "   next: " << head->next   << std::endl;
+    std::cout << "second is at: " << second << "   prev: " << second->prev << "   next: " << second->next << std::endl;
+    std::cout << "third  is at: " << third  << "   prev: " << third->prev  << "   next: " << third->next  << std::endl;
+    std::cout << "tail   is at: " << tail   << "   prev: " << tail->prev   << "   next: " << tail->next   << " (nullptr)" << std::endl;
+
+    // Each DoublyNode takes up a fixed number of bytes in memory.
+    std::cout << "\nsizeof(DoublyNode) = " << sizeof(DoublyNode) << " bytes" << std::endl;
+
+    // Clean up the memory
+    delete head;
+    delete second;
+    delete third;
+    delete tail;
+
+    return 0;
+}
+\end{minted}
+
+When you run this, you'll get real addresses like these (yours specific addresses will differ!):
+
+\begin{minted}{text}
+head   is at: 0x100c9dca0   prev: 0 (nullptr)   next: 0x100c9dbc0
+second is at: 0x100c9dbc0   prev: 0x100c9dca0   next: 0x100c9dbe0
+third  is at: 0x100c9dbe0   prev: 0x100c9dbc0   next: 0x100c9dc00
+tail   is at: 0x100c9dc00   prev: 0x100c9dbe0   next: 0 (nullptr)
+
+sizeof(DoublyNode) = 24 bytes
+\end{minted}
+
+Computer memory is comprised of a very long string of bytes, and each byte has its own address. This line is a large, contiguous stream of ones and zeros when you get to the core of it. Often, programmers separate it into chunks of certain sizes so that we can make them look similar to grids of memory, like matrices. 
+
+Look closely at \texttt{second} and \texttt{third}: \texttt{0x100c9dbe0 - 0x100c9dbc0 = 0x20}, which is \textbf{32} in decimal, not 24 bytes like \texttt{sizeof(DoublyNode)} had provided. The same is true between \texttt{third} and \texttt{tail}. Why, then, is the a difference between the 32 stored bytes and 24 bytes we would expect our memory to take up?
+
+\texttt{DoublyNode} holds an \texttt{int} (4 bytes) plus two pointers (8 bytes each on a 64-bit machine), for 24 bytes total. But heap allocators don't hand out memory in exactly the size you ask for, they \emph{round each allocation up} to a boundary of 16 bytes. Since 24 isn't a multiple of 16, the allocator rounds it up to the next one: 32. Your struct only uses 24 of those bytes; the other 8 are allocator \newterm{padding} that \texttt{sizeof()} never shows you. This is why the command new combines \texttt{malloc} and \texttt{sizeof}, and then proceeds to calculate the next multiple of 16 bytes to allocate. 
