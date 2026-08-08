@@ -1,1 +1,252 @@
 \chapter{Priority Queues}
+
+As mentioned in the last chapter, you are going to make a priority
+queue for use with Dijkstra's Algorithm. Using it will look like this algorithm called a \newterm{priority queue}:
+
+\begin{minted}{python}
+import kpqueue
+
+myqueue = pqueue.PriorityQueue()
+myqueue.add(long_beach, 0) # Inserts first city and its cost
+myqueue.add(san_diego, 14) # Puts San Diego after Long Beach
+myqueue.add(los_angeles,12) # Inserts LA between Long Beach and San Diego
+current_city = myqueue.pop() # Returns first city (Long Beach) and removes it
+\end{minted}
+
+Now, if an item gets a new priority, we need to remove it and reinsert it in the new spot.
+\begin{minted}{python}
+myqueue.add(city_a, 16) # Puts it last in the queue
+myqueue.update(city_a, 16, 13) # Moves it to between LA and San Diego
+\end{minted}
+
+\section{A Naive Implementation of the Priority Queue}
+
+Create a file called \filename{kpqueue.py}. Let's do a simple
+implementation that stores the priority and the data as tuple. And we
+will keep it sorted by the priority.  If two tuples have the same
+priority, we will sort by the data.
+
+Type this in to \filename{kpqueue.py}:
+\begin{minted}{python}
+class PriorityQueue:
+    def __init__(self):
+        self.list = []
+
+    # Return and remove the first item
+    def pop(self):
+        if len(self.list) > 0:
+            return self.list.pop(0)
+        else:
+            return None
+
+    def __len__(self):
+        return len(self.list)
+
+    def update(self, value, old_priority, new_priority):
+        old_pair = (old_priority, value)
+        self.list.remove(old_pair)
+        self.add(value, new_priority)
+
+    def add(self, value, priority):
+        pair = (priority, value)
+        # Add it at the end
+        self.list.append(pair)
+        # Resort the list
+        self.list.sort()
+\end{minted}
+
+This will work fine, but it could be much more efficient:
+\begin{itemize}
+\item Every time we add a single element, we resort the whole list.
+\item The function \pyfunction{remove} is searching the list sequentially for the item to delete.
+\end{itemize}
+
+In a minute, we will revisit these inefficiencies and make them better.
+
+\section{Using the Priority Queue}
+
+We are going to change \filename{graph.py} to use the priority
+queue. While we are doing so, why don't we also shrink the memory
+footprint of our program a bit.
+
+Notice that as the algorithm is running, each node is in one of three states:
+\begin{itemize}
+\item Unseen: In the earlier implementation, these were the nodes with \pyvar{math.inf} as their cost.
+\item Seen, but not finalized: These are ``unvisited'', but don't have \pyvar{math.inf} as their cost.
+\item Finalized: These are the ``visited'' nodes --- we know that their cost won't decrease any more.
+\end{itemize}
+
+We can shrink the memory foot print by not putting the unseen into the
+dist dictionary at all. And instead of a separate set for
+``unvisited'', what if we moved finalized nodes and their distances
+into a separate dictionary?
+
+Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
+
+\begin{minted}{python}
+              # Visited nodes are already minimized, skip them
+                if v in finalized_dist:
+                    continue
+
+                # What is the cost to this neighbor?
+                alt = current_node_cost + edge.cost
+
+                # Is this the first time I am seeing the node?
+                if v not in seen_dist:
+
+                    # Insert into the seen_dict, prev, and priority queue
+                    seen_dist[v] = alt
+                    prev[v] = current_node
+                    pqueue.add(v, alt)
+
+                else: # v has been seen. Is this a cheaper route?
+                    old_dist = seen_dist[v]
+                    if alt < old_dist:
+                        # Update the seen_dict, prev, and priority queue
+                        seen_dist[v] = alt
+                        prev[v] = current_node
+                        pqueue.update(v, old_dist, alt)
+
+        return (finalized_dist, prev)
+\end{minted}
+
+This should be have exactly the same result, except for the unreachable nodes.
+If you have a graph that is not connected, there will be nodes that
+cannot be reached from the origin.  In the old version, these had a
+cost of \pyvar{math.inf}.  Now, they will just not be in the dictionary at all.  So, change \filename{cities.py} to deal with this:
+
+\begin{minted}{python}
+if nyc in cost_from_long_beach:
+    nyc_cost = cost_from_long_beach[nyc]
+    print(f"\n*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
+
+    path_to_nyc = graph.shortest_path(prev, nyc)
+    print(f"\n*** Cheapest path from Long Beach to NYC: {path_to_nyc} ***")
+else:
+    print("You can't get to NYC from Long Beach")
+\end{minted}
+
+If you run \filename{cities.py} now, it should behave exactly like the old version.
+
+However, there is a bug. It will rear its head if two cities with the same
+cost are in the priority queue together.  Change \filename{cities.py}
+so that Denver and Phoenix have the same cost:
+
+\begin{minted}{python}
+graph.WeightedEdge(12, long_beach, los_angeles)
+graph.WeightedEdge(19, los_angeles, denver)
+graph.WeightedEdge(19, los_angeles, phoenix)
+\end{minted}
+
+Now try running it.  You should get an error:
+
+\begin{minted}{python}
+TypeError: '<' not supported between instances of 'Node' and 'Node'
+\end{minted}
+
+What happened? The \pyfunction{loc\_for\_pair} method is comparing
+tuples made up of a \pytype{float} and a \pytype{Node}.  The
+\pytype{float} comes first in the tuple, so that is compared
+first. However, if the two tuples have the same priority, it then
+compares nodes.
+
+The error statement says, ``Nodes don't have a less-than method; I don't
+know how to compare them.''
+
+Each \pytype{Node} lives at an address in memory. You can get that
+address as a number using the \pyfunction{id} function. The ID is
+unique and constant over the life of the object. It is a rather
+arbitrary ordering, but it will work for this problem.  Add a method to
+your \pytype{Node} class:
+
+\begin{minted}{python}
+    # Nodes will be ordered by their location in memory
+    def __lt__(self, other):
+        return id(self) < id(other)
+\end{minted}
+
+Fixed.
+
+Now, let's make the priority queue more efficient.
+
+\section{Binary Search}
+
+The phone company in every town used to print a thing called a phone
+book. The names and phone numbers were arranged alphabetically.  As
+you might imagine, these books often had more than a thousand pages.
+
+If you were looking for ``John Jeffers'', you would not start at the
+first page and read sequentially until you reached his name.  You
+would open the book in the middle, and see a name like ``Mac Miller'',
+then think ``Jeffers comes before Miller''. You would then split
+the pages in your left hand in half and see a name like ``Hester
+Hamburg'' and think ``Jeffers comes after Hamburg''. You would then
+split the pages in your right hand, and continue on like this until you found the page
+with ``John Jeffers'' on it.
+% FIXME should time complexity be mentioned/
+That is binary search.\index{Binary Search}
+
+Binary Search is a search algorithm that finds the position of a target value within a sorted array. The binary search algorithm works by repeatedly dividing the search interval in half. If the target value is equal to the middle element of the array, the position is returned. If the target value is less than or greater than the middle element, the search continues in the lower or upper half of the array, respectively.
+
+\section{Algorithm}
+
+The binary search algorithm can be described as follows:
+%FIXME also more diagrams would be helpful here
+\begin{enumerate}
+\item If the array is empty, the search is unsuccessful, so return "Not Found".
+\item Otherwise, compare the target value to the middle element of the array.
+\item If the target value matches the middle element, return the middle index.
+\item If the target value is less than the middle element, repeat the search with the lower half of the array.
+\item If the target value is greater than the middle element, repeat the search with the upper half of the array.
+\item Repeat steps 2-5 until the target value is found or the array is exhausted.
+\end{enumerate}
+
+
+\begin{minted}{python}
+class PriorityQueue:
+    def __init__(self):
+        self.list = []
+
+    # Return and remove the first item
+    def pop(self):
+        if len(self.list) > 0:
+            return self.list.pop(0)
+        else:
+            return None
+
+    def __len__(self):
+        return len(self.list)
+
+    def add(self, value, priority):
+        pair = (priority, value)
+        i = self.loc_for_pair(pair)
+        self.list.insert(i, pair)
+
+    def update(self, value, old_priority, new_priority):
+        old_pair = (old_priority, value)
+        i = self.loc_for_pair(old_pair)
+        del self.list[i]
+        self.add(value, new_priority)
+
+    def loc_for_pair(self, pair):
+        # The range where it could be is [lower, upper)
+        # Start with the whole list
+        lower = 0
+        upper = len(self.list)
+
+        while upper > lower:
+            next_split = (upper + lower) // 2
+            v = self.list[next_split]
+            if pair < v:  # pair is to the left
+                upper = next_split
+            elif pair > v:  # pair is to the right
+                lower = next_split + 1
+            else: # Found pair!
+                return next_split
+        return lower
+\end{minted}
+
+If you try running it now, it should work perfectly.
+
+You now have a graph class that will find the cheapest path quickly,
+even if it has thousands of nodes with thousands of edges.
