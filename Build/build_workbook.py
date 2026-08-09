@@ -129,7 +129,7 @@ def main():
         mode = Mode("numbered")
 
         if args.index == "all":
-            book_nums = [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
+            book_nums = ["00"] + [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
             print("Building all workbooks")
         elif args.index.isdigit():
             book_nums = [str(args.index).zfill(2)]
