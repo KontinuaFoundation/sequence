@@ -285,6 +285,123 @@ The international standard that fixes these choices for every modern computer
 is called \newterm{IEEE 754}\index{IEEE 754}, and it is the subject of the next
 section.
 
+\section{The IEEE 754 Standard}
+
+In 1985, after years of debate, the Institute of Electrical
+and Electronics Engineers published the
+\newterm{IEEE 754 standard}\index{IEEE 754 standard}. It was accepted internationally
+in 1989, and it is still the standard used in virtually every computer, phone, and
+calculator you use today. 
+
+\subsection{Floats}
+
+If we are going to store a float in a fixed number of bits, how do we split those bits
+among the three parts: sign, significand, and exponent?
+
+For the sign, there are only two options, positive and negative, so a single bit
+handles it: 0 for positive, 1 for negative.
+
+That leaves $N - 1$ bits to split between the significand and the exponent. IEEE 754
+defines two standard ways to do this split, called
+\newterm{single precision}\index{single precision} and
+\newterm{double precision}\index{double precision}.
+
+\begin{center}
+\begin{tabular}{lccc}
+    \hline
+    & Total bits & Significand bits ($p$) & Exponent bits \\
+    \hline
+    Single precision & 32 & 23 & 8 \\
+    Double precision & 64 & 52 & 11 \\
+    \hline
+\end{tabular}
+\end{center}
+
+In both cases the layout is the same. The sign occupies the first bit, the significand
+fills the next $p$ bits, and the exponent takes the remaining bits. Double precision
+uses twice as many bits in total, which gives it both greater precision and a wider
+range of representable exponents.
+
+For single precision, the 8 exponent bits can represent integers up to $M = 127$, so
+the largest float in single precision is roughly $10^{38}$. Double precision is the standard used in modern computers. 
+
+\begin{Exercise}[title={Bit Allocation}, label={ex:bit-allocation}]
+A floating-point system uses $N = 16$ bits total. The sign takes 1 bit and the
+significand takes 10 bits.
+\begin{enumerate}
+    \item How many bits are left for the exponent?
+    \item If those exponent bits can represent integers from $-31$ to $32$, what is the
+    largest exponent $M$?
+    \item Would you expect this system to be more or less precise than single precision?
+    Why?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:bit-allocation}]
+\begin{enumerate}
+    \item $16 - 1 - 10 = 5$ bits for the exponent.
+    \item $M = 32$.
+    \item Less precise than single precision. Single precision has $p = 23$ significand
+    bits; this system has only $p = 10$, so it can store fewer digits and will produce
+    larger roundoff errors.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Machine Epsilon}
+
+The \newterm{machine epsilon}\index{machine epsilon} is commonly written as $u$. It measures the largest relative gap between a real number and
+its nearest float. In other words, it tells you the worst-case precision of your
+system.
+
+For a system that rounds to the nearest float, machine epsilon is
+\[
+    u = \frac{1}{2} \beta^{1-p},
+\]
+where $\beta$ is the base and $p$ is the precision. For IEEE 754 double precision,
+$\beta = 2$ and $p = 52$, giving $u \approx 2.22 \times 10^{-16}$. That means any
+real number is stored with a relative error no worse than about $2 \times 10^{-16}$ [correct punctuation]
+roughly 16 significant decimal digits of accuracy.
+
+If you have access to Python, you can check your machine epsilon directly:
+
+\begin{minted}{python}
+import sys
+print(sys.float_info.epsilon)   # double precision machine epsilon
+\end{minted}
+
+Every machine running IEEE 754 double precision should return the same value:
+\texttt{2.220446049250313e-16}.
+
+\begin{Exercise}[title={Machine Epsilon}, label={ex:machine}]
+A base-10 floating-point system has precision $p = 6$ and uses rounding.
+\begin{enumerate}
+    \item Compute machine epsilon $u$ for this system.
+    \item A real number $x$ is stored as a float $\tilde{x}$. Using your answer above,
+    what is the worst-case relative error $\frac{|\tilde{x} - x|}{|x|}$?
+    \item If $p$ were doubled to $p = 12$, how would $u$ change?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:machine}]
+\begin{enumerate}
+    \item $u = \frac{1}{2} \times 10^{1-6} = \frac{1}{2} \times 10^{-5} = 5 \times
+    10^{-6}$.
+    \item The worst-case relative error is $u = 5 \times 10^{-6}$, meaning about 6
+    significant digits of accuracy.
+    \item $u = \frac{1}{2} \times 10^{1-12} = 5 \times 10^{-12}$. Doubling the
+    precision shrinks machine epsilon by a factor of $10^6$.
+\end{enumerate}
+\end{Answer}
+
+\textbf{Good to know:} IEEE 754 has been updated since 1985. The current standard includes
+\newterm{quadruple precision}\index{quadruple precision} (128 bits) for applications
+that need the highest accuracy. This includes physics simulations and cryptographic
+computations. It can also define integer data types, \texttt{int8}, \texttt{int32}, and
+\texttt{int64}. These are used in situations where you only need whole numbers and want to avoid floating-point arithmetic entirely. 
+
+The existence of multiple precisions is a reminder that there is always a trade-off.
+More bits means more accuracy and a wider range, but also more memory and slower
+computation. Choosing the right precision for a given problem is the real engineering
+decision.
+
 
 
 
