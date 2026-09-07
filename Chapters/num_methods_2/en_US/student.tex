@@ -73,7 +73,7 @@ other.
 
 A positive value of $r$ indicates that as $x$ increases, $y$ also
 tends to increase. Taller fathers tend to have taller sons, so the
-scatterplot shows an upward trend and $r$ is positive.A negative value of $r$ indicates that as $x$ increases, $y$ tends
+scatterplot shows an upward trend and $r$ is positive. A negative value of $r$ indicates that as $x$ increases, $y$ tends
 to decrease. As a phone gets older, its battery life tends to
 decrease, so the scatterplot shows a downward trend and $r$ is
 negative.
@@ -141,7 +141,7 @@ Hours studied & Exam score & \\
 \hline
 Temperature & Hot drinks sold & \\
 \hline
-Shoe size & Intelligence & \\
+Shoe size & Number of pets owned & \\
 \hline
 Age of a car & Resale value & \\
 \hline
@@ -157,7 +157,7 @@ Hours studied & Exam score & Positive \\
 \hline
 Temperature & Hot drinks sold & Negative \\
 \hline
-Shoe size & Intelligence & Zero \\
+Shoe size & Number of pets owned & Zero \\
 \hline
 Age of a car & Resale value & Negative \\
 \hline
@@ -296,14 +296,14 @@ variables is linear.
     };
     \end{axis}
     \end{tikzpicture}
-    \caption{Scatterplot of father and son heights for a sample of 12 pairs.}
+    \caption{Scatterplot of father and son heights for a sample of 10 pairs.}
     \label{fig:fatherson}
 \end{figure}
 
 The scatterplot shows a linear trend, so it is appropriate to compute
 $r$. In practice, correlation coefficients are computed using a
 calculator or statistical software rather than by hand. For this
-dataset, the computed value is approximately $r = 0.96$.
+dataset, the computed value is approximately $r = 0.90$.
 
 \textbf{Computing $r$ in Excel}
 
@@ -311,13 +311,13 @@ Open your data in Excel or Google Sheets with the $x$ values in
 column A and the $y$ values in column B. To compute $r$ directly,
 use the built-in correlation function:
 
-\begin{minted}{python}
+\begin{minted}{text}
 =CORREL(A2:A11, B2:B11)
 \end{minted}
 
 This returns the correlation coefficient between the two columns
 instantly. For the father-son data, this should return approximately
-$0.96$.
+$0.90$.
 
 
 \textbf{Computing $r$ in Python}
@@ -336,14 +336,14 @@ print(r)
 \texttt{np.corrcoef()} returns a $2 \times 2$ matrix of correlation
 coefficients. The value at position \texttt{[0, 1]} is the
 correlation between $x$ and $y$. For this dataset, the output
-should be approximately \texttt{0.96}.
+should be approximately \texttt{0.90}.
 
 Try replacing the data with your own values and observe how $r$
 changes as the relationship between the two variables becomes
 stronger or weaker.
 
 What does this tell us? The sign is positive, so taller fathers tend
-to have taller sons. The value is $0.96$, which falls in the very
+to have taller sons. The value is $0.90$, which falls in the very
 strong range of our cutoff table. The points cluster tightly around
 a straight line, and the scatterplot confirms this.
 
@@ -366,7 +366,7 @@ to change.
 
 \end{Answer}
 
-section{Linear Regression}
+\section{Linear Regression}
 
 Suppose you wanted to predict a teacher's starting salary based on how many years
 of experience they have. You might expect that more experience leads to a higher
@@ -381,7 +381,7 @@ When one variable depends on or is explained by another, we call the variable be
 predicted the \newterm{dependent variable}\index{dependent variable}. The variable doing the
 explaining is the \newterm{independent variable}\index{independent variable}. In our example,
 starting salary is the response variable and years of experience is the independent
-variable, it would make little sense to say that a teacher's salary determines
+variable. It would make little sense to say that a teacher's salary determines
 how many years they have worked.
 
 The linear relation between two variables is described by the
@@ -409,6 +409,22 @@ The symbol $\hat{y}$ (read ``$y$-hat'') is the \newterm{predicted value}\index{p
 of $Y$ for a given value of $X$. Notice the difference in notation: $\alpha$ and
 $\beta$ are population parameters; $a$ and $b$ are their sample-based estimates.
 
+Here is a quick reference for the symbols introduced so far in this chapter:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Quantity} & \textbf{Population symbol} & \textbf{Sample symbol} \\
+\hline
+Correlation & $\rho$ & $r$ \\
+\hline
+Intercept & $\alpha$ & $a$ \\
+\hline
+Slope & $\beta$ & $b$ \\
+\hline
+\end{tabular}
+\end{center}
+
 %An example here would be good.
 
 
@@ -423,14 +439,17 @@ e = y - \hat{y}
 \]
 
 A positive residual means the observed value was higher than predicted; a negative
-residual means it was lower. Going back to our teachers: if the model predicts a
-starting salary of \$38{,}000 for a teacher with four years of experience, but that
-teacher actually earns \$40{,}500, the residual is $40{,}500 - 38{,}000 = 2{,}500$.
+residual means it was lower. From here on, salary will be expressed in thousands of
+dollars, so a value of $38$ means \$38{,}000; this is the same convention the data
+table will use later in this section. Going back to our teachers: if the model
+predicts a starting salary of $38$ for a teacher with four years of experience, but
+that teacher actually earns $40.5$, the residual is $40.5 - 38 = 2.5$, or \$2{,}500.
 This teacher earned \$2{,}500 more than the model expected.
 
 \begin{Exercise}[title={Computing a Residual}, label={ex:lr_residual}]
 A regression model predicts that a teacher with seven years of experience will have
-a starting salary of \$42{,}300. The teacher's actual starting salary is \$40{,}100.
+a starting salary of $42.3$ (in thousands of dollars). The teacher's actual starting
+salary is $40.1$.
 \begin{enumerate}
     \item Compute the residual.
     \item Was the teacher's salary over-predicted or under-predicted? Explain.
@@ -439,7 +458,7 @@ a starting salary of \$42{,}300. The teacher's actual starting salary is \$40{,}
 
 \begin{Answer}[ref={ex:lr_residual}]
 \begin{enumerate}
-    \item $e = 40{,}100 - 42{,}300 = -2{,}200$.
+    \item $e = 40.1 - 42.3 = -2.2$, or $-\$2{,}200$.
     \item The salary was over-predicted. The observed salary was \$2{,}200 less
     than the model expected.
 \end{enumerate}
@@ -610,6 +629,32 @@ experience and $\hat{y}$ is predicted starting salary in thousands of dollars:
     is a realistic case, so $X = 0$ is within the plausible range of the data.
 \end{enumerate}
 \end{Answer}
+
+\subsubsection{The Coefficient of Determination}
+
+Once you have a regression line, a natural question is how well it actually
+predicts $Y$. The \newterm{coefficient of determination}\index{coefficient of
+determination}, written $R^2$, answers this by measuring the proportion of the
+variation in $Y$ that is explained by its linear relationship with $X$.
+
+For a single predictor, $R^2$ is simply the square of the correlation
+coefficient:
+
+\[
+R^2 = r^2
+\]
+
+Because $r$ always falls between $-1$ and $+1$, $R^2$ always falls between $0$
+and $1$. An $R^2$ close to $1$ means the regression line accounts for nearly
+all of the variation in $Y$. An $R^2$ close to $0$ means the line explains
+almost none of it.
+
+$R^2$ is usually reported as a percentage. For example, a correlation of
+$r = 0.80$ gives $R^2 = 0.64$, so you would say that 64\% of the variation in
+$Y$ is explained by its linear relationship with $X$. The remaining
+$1 - R^2 = 36\%$ is left unexplained, due to other factors, natural
+variability, or measurement error.
+
 \subsubsection{Worked Example}
 
 A random sample of 10 teachers was selected from a large urban school district.
@@ -738,7 +783,7 @@ Using the regression equation $\hat{y} = 30.650 + 1.576x$:
 % [figure placeholder: scatterplot of experience vs. starting salary with the
 % least-squares regression line \hat{y} = 30.650 + 1.576x superimposed]
 
-textbf{Computing in Excel}
+\textbf{Computing in Excel}
 
 You do not need to compute the slope, intercept, and $R^2$ by hand every time.
 Excel can produce all of these values at once, along with a scatterplot showing
@@ -775,7 +820,7 @@ besides. The code below uses two libraries: \texttt{numpy} for the summary
 statistics and \texttt{scipy} for the regression, and \texttt{matplotlib} to
 draw the scatterplot with the line of best fit.
 
-\begin{verbatim}
+\begin{minted}{python}
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
@@ -804,7 +849,7 @@ plt.ylabel("Starting Salary ($1000s)")
 plt.title("Experience vs. Starting Salary")
 plt.legend()
 plt.show()
-\end{verbatim}
+\end{minted}
 
 Running this code produces the following output:
 
