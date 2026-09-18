@@ -183,3 +183,46 @@ Subtracting both sides from 540:
 $360^\circ$
 \end{Answer}
 
+
+\section{Is it an Equilateral, Isosceles, or Scalene Triangle with \textit{Python?}}
+
+You have now seen three ways to classify a triangle by its sides, and one rule that decides whether three lengths make a triangle at all. A short Python function can apply both ideas to any triple of numbers you hand it.
+
+\begin{minted}{python}
+def classify_triangle(a, b, c):
+    short1, short2, longest = sorted([a, b, c])
+    if short1 + short2 <= longest:
+        return "not a triangle"
+    if a == b == c:
+        return "equilateral"
+    if a == b or b == c or a == c:
+        return "isosceles"
+    return "scalene"
+\end{minted}
+
+Sorting the three lengths puts the two shortest sides first, no matter what order they were given in. The triangle inequality check then compares those two shortest sides against the longest one, exactly as stated earlier in this chapter: the length of one side must always be less than the sum of the other two. Once that check passes, the function looks for three equal sides, then two, and falls back to scalene if neither pattern matches.
+
+\begin{minted}{python}
+triangles = [(5, 5, 5), (5, 5, 8), (5, 12, 13), (2, 2, 5)]
+for sides in triangles:
+    print(sides, classify_triangle(*sides))
+\end{minted}
+
+This prints:
+
+\begin{verbatim}
+(5, 5, 5) equilateral
+(5, 5, 8) isosceles
+(5, 12, 13) scalene
+(2, 2, 5) not a triangle
+\end{verbatim}
+
+Notice the last line. $2 + 2 = 4$, which is not greater than $5$, so these three lengths cannot close into a triangle at all, and the function catches that before it ever checks for equal sides.
+
+\begin{Exercise}[title={Classifying Triangles}, label=classify_triangle_sides]
+Classify each of these triples by hand, then check your answers by running them through \mintinline{python}{classify_triangle}: $(7, 7, 10)$, $(9, 40, 41)$, and $(3, 4, 9)$.
+\end{Exercise}
+\begin{Answer}[ref=classify_triangle_sides]
+$(7, 7, 10)$: two sides match, so this is isosceles. $(9, 40, 41)$: $9 + 40 = 49 > 41$ and no two sides match, so this is scalene. $(3, 4, 9)$: $3 + 4 = 7$, which is less than $9$, so this is not a triangle.
+\end{Answer}
+
