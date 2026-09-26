@@ -1,0 +1,307 @@
+\chapter{Advanced SQL and Database Management}
+
+If you recall from our basic SQL chapters, we have the ability to create sets of rows and columns that represent data. We can represent a set of 1000 bikes, each with a respective price, status, brand, and id, in the form of rows (you may hear the term tuples) and columns (attributes). In this chapter, we will build out a larger database, with more than one table, but, here's the twist: we will find a way to link them together, so that data can be searched across tables. 
+
+
+\section{Keys}
+In the experimentation from our first chapter, you may have seen the term \newterm{primary key}. An attribute (or set of attributes) that can uniquely identify rows within a table are called a primary key. That may have just sounded like a set of buzzwords, so let's take a step back:
+
+Take for example the following table:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{StudentID} & \textbf{Email} & \textbf{SSN} & FirstName & LastName & EnrollmentDate \\
+\hline
+1001 & \textsf{alice@univ.edu} & 123-45-6789 & Alice & Smith & 2024-01-15 \\
+\hline
+1002 & \textsf{bob@univ.edu} & 987-65-4321 & Bob & Johnson & 2024-01-15 \\
+\hline
+1003 & \textsf{carol@univ.edu} & 555-55-5555 & Carol & Williams & 2024-02-01 \\
+\hline
+\end{tabular}
+\caption{STUDENT table demonstrating key types.}
+\label{tab:keys}
+\end{table}
+
+We can identify columns or combinations of columns that could be used to uniquely identify each row. We can identify pretty much infinite \newterm{super keys}, which are any set of attributes that uniquely identifies a row. What sets these apart is that they may include extraneous attributes that are not required for uniqueness. For example, in the STUDENT table, both \{StudentID\} and \{StudentID, Email\} are super keys, but the latter includes an unnecessary attribute for uniqueness. Keys that contain more than one attribute are called \newterm{composite keys}, and are represented in sequence with parentheses such as (StudentID, Email).
+
+A \newterm{candidate key} is a minimal super key, meaning it has no extraneous attributes. In our STUDENT table, \{StudentID\} and \{SSN\} are candidate keys because they uniquely identify each row and do not contain unnecessary attributes.
+
+From the candidate keys, a \newterm{primary key} is selected. By convention, the primary key is underlined. The primary key is the main candidate key chosen to uniquely identify each row in the table. In our STUDENT table, \{StudentID\} could be chosen as the primary key. Then, \{SSN\} would be considered an \newterm{alternate key}, which is a candidate key not selected as the primary key. The reason we select \{StudentID\} over \{SSN\} is that \{SSN\} has real-world representation, which we call a \newterm{natural key}. We do not want to conflate real world attributes with database management tools such as primary keys. 
+
+\textbf{A real world example}: What if we were using an email as the primary key? Then, if the email schema changes due to the business being bought out or renamed (this happened to one of our authors!), we are stuck! A change like \textsf{<firstinitial><lastname>@company.com} to \textsf{<firstname>.<lastname>@company2.com} would break the database. 
+
+This is why we introduce \newterm{surrogate keys}. Surrogate keys are keys with no real world meaning, often stable identifiers that do not change. This includes auto-incrementing integers, Universally Unique Identifiers (\newterm{UUIDs}), or Hex Codes that do not have the opportunity to change. In short, we prefer surrogate keys for primary keys to ensure stability and avoid issues with real-world attribute changes.
+
+In a few sections we will explore how foreign keys allow us to link tables together using these primary keys.
+
+
+% Idea of hierarchy of keys
+% foreign keys
+% composite keys
+\section{Normalization}
+With all of these key types, our tables can get pretty large. When this happens, we will want to normalize our database to ensure efficiency and reduce \textbf{redundancy}.
+
+We have a process called \newterm{normalization}, which involves organizing, reordering, and restructuring the columns and tables of a database to minimize redundancy and dependency. This can help
+\begin{itemize}
+    \item improve performance by reducing the amount of redundant data stored, as databases reach high volumes of data.
+    \item prevent anomalies, which are inconsistencies or errors that can occur when redundant data is updated, inserted, or deleted.
+    \item maintain data integrity
+\end{itemize}
+Ultimately, there is one primary goal of normalization:
+\begin{quote}
+    The table can only express one version of truth.
+\end{quote}
+
+\subsection{Functional Dependencies}
+Normalization rests on a single formal idea: the \newterm{functional dependency}. We say an attribute (or set of attributes) $Y$ is functionally dependent on attribute $X$, written $X \rightarrow Y$, if knowing the value of $X$ tells us exactly one corresponding value of $Y$. In other words, $X$ \newterm{determines} $Y$.
+
+For example, in our STUDENT table from earlier, \{StudentID\} $\rightarrow$ \{Email\}, since each StudentID corresponds to exactly one Email. This is exactly why \{StudentID\} can serve as a key: a candidate key is a minimal set of attributes that functionally determines every other attribute in the table.
+
+Two particular kinds of functional dependency will help us reason through the normal forms:
+\begin{itemize}
+    \item A \newterm{partial dependency} occurs when a non-key attribute depends on only part of a composite primary key, rather than the whole key.
+    \item A \newterm{transitive dependency} occurs when a non-key attribute depends on another non-key attribute, rather than depending directly on the primary key.
+\end{itemize}
+Removing partial dependencies brings a table to 2NF, and removing transitive dependencies brings a table to 3NF.
+
+Let's go through an example. In this book, we will only focus on the first three normal forms: 1NF, 2NF, and 3NF. There are videos in your digital resources that go deeper into the higher normal forms.
+
+Below is table representing an intentionally poorly designed database representing lab equipment at a university laboratory.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Equipment Checkout Log}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\underline{StudentID} & \underline{EquipmentID} & \underline{CheckoutDate} & StudentName & StudentEmail & StudentYear & EquipmentName & EquipmentLocation & LocationManager \\
+\hline
+1001 & E42, E55 & 2026-09-20 & Alex & alex@univ.edu & Junior & 3D Printer, Oscilloscope & Lab B, Lab A & Maria, David \\
+1002 & E42 & 2026-09-21 & Jordan & jordan@univ.edu & Senior & 3D Printer & Lab B & Maria \\
+% 1001 & E42 & 2026-09-20 & Alex & alex@univ.edu & Junior & 3D Printer & Lab B & Maria \\
+% 1002 & E42 & 2026-09-21 & Jordan & jordan@univ.edu & Senior & 3D Printer & Lab B & Maria \\
+% 1001 & E55 & 2026-09-22 & Alex & alex@univ.edu & Junior & Oscilloscope & Lab A & David \\
+\hline
+\end{tabular}%
+}
+\label{tab:equipment_orig}
+\end{table}
+
+\footnote{Notice how small the text had to get to render the entire table within the page width, this is also a clear indication that something is off!}
+\subsection{1NF}
+A database is in first normal form (1NF) if it meets the following criteria:
+\begin{itemize}
+    \item Each column contains atomic values (no repeating groups or arrays).
+    \item Each row is unique (no duplicate rows).
+\end{itemize}
+
+Notice how the table violates the first normal form (1NF) because it contains repeating groups and multiple values in a single column. In 1NF, each column should contain atomic values, and each row should be unique.
+Invalid attribute values include:
+\begin{itemize}
+    \item Multiple \texttt{EquipmentIDs} in a single cell (\{E42, E55\})
+    \item Multiple \texttt{EquipmentNames} in a single cell (\{3D Printer, Oscilloscope\})
+    \item Multiple \texttt{EquipmentLocations} in a single cell (\{Lab B, Lab A\})
+    \item Multiple \texttt{LocationManagers} in a single cell (\{Maria, David\})
+\end{itemize}
+
+To remedy this, we make a second row for student Alex:
+\begin{table}[h]
+\centering
+\small
+\caption{Equipment Checkout Log [1NF]}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+StudentID & EquipmentID & CheckoutDate & StudentName & StudentEmail & StudentYear & EquipmentName & EquipmentLocation & LocationManager \\
+\hline
+1001 & E42 & 2026-09-20 & Alex & alex@univ.edu & Junior & 3D Printer & Lab B & Maria \\
+1002 & E42 & 2026-09-21 & Jordan & jordan@univ.edu & Senior & 3D Printer & Lab B & Maria \\
+1001 & E55 & 2026-09-22 & Alex & alex@univ.edu & Junior & Oscilloscope & Lab A & David \\
+\hline
+\end{tabular}%
+}
+\label{tab:equipment_1nf}
+\end{table}
+Now our table conforms to the first normal form (1NF), with each column containing atomic values and each row being unique.
+\subsection{2NF}
+1NF was quite easy, now we move on to the second normal form (2NF), which requires the following:
+\begin{itemize}
+    \item The table is in 1NF.
+    \item No partial dependencies (no non-key attribute should depend on a part of a composite primary key).
+    \item All non-key attributes are fully functionally dependent on the primary key.
+\end{itemize}
+
+For demonstration purposes, lets add a fourth entry into our table:
+\begin{table}[h]
+\centering
+\small
+\caption{Equipment Checkout Log [Pre-2NF]}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\underline{StudentID} & \underline{EquipmentID} & \underline{CheckoutDate} & StudentName & StudentEmail & StudentYear & EquipmentName & EquipmentLocation & LocationManager \\
+\hline
+1001 & E42 & 2026-09-20 & Alex & alex@univ.edu & Junior & 3D Printer & Lab B & Maria \\
+1002 & E42 & 2026-09-21 & Jordan & jordan@univ.edu & Senior & 3D Printer & Lab B & Maria \\
+1001 & E55 & 2026-09-22 & Alex & alex@univ.edu & Junior & Oscilloscope & Lab A & David \\
+1001 & E74 & 2026-09-23 & Alex & alex@univ.edu & Junior & CNC Machine & Lab C & Larry \\
+\hline
+\end{tabular}%
+}
+\label{tab:equipment_pre_2nf}
+\end{table}
+
+We can establish that the primary key of this table is the combination of \{\texttt{StudentID}, \texttt{EquipmentID}, \texttt{CheckoutDate}\}, as each student can check out multiple pieces of equipment, and each piece of equipment can be checked out by multiple students.
+
+However, we have lots of repeated data in here:
+\begin{itemize}
+    \item Student information (name, email, year) is repeated for each piece of equipment they check out.
+    \item Equipment information (name, location, location manager) is repeated for each student who checks it out.
+\end{itemize}
+
+This redundancy indicates that our table is not in 2NF, as non-key attributes are partially dependent on the composite primary key. To achieve 2NF, we need to separate the student and equipment information into their own tables, leaving only the checkout details in the original table.
+
+The new schemas will look like this:
+\begin{center}
+\texttt{Student (\underline{StudentID}, StudentName, StudentEmail, StudentYear)}\\
+\texttt{Equipment (\underline{EquipmentID}, EquipmentName, EquipmentLocation, LocationManager)}\\
+\texttt{Checkout (\underline{StudentID}, \underline{EquipmentID}, \underline{CheckoutDate})}
+\end{center}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+{\underline{StudentID}} & {StudentName} & {StudentEmail} & {StudentYear} \\
+\hline
+1001 & Alex & alex@univ.edu & Junior \\
+\hline
+1002 & Jordan & jordan@univ.edu & Senior \\
+\hline
+\end{tabular}
+\caption{Student Table [2NF]}
+\label{tab:student_2nf}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+{\underline{EquipmentID}} & {EquipmentName} & {EquipmentLocation} & {LocationManager} \\
+\hline
+E42 & 3D Printer & Lab B & Maria \\
+\hline
+E55 & Oscilloscope & Lab A & David \\
+\hline
+E74 & CNC Machine & Lab C & Larry \\
+\hline
+\end{tabular}
+\caption{Equipment Table [2NF]}
+\label{tab:equipment_2nf}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\underline{StudentID} & \underline{EquipmentID} & \underline{CheckoutDate} \\
+\hline
+1001 & E42 & 2026-09-20 \\
+\hline
+1002 & E42 & 2026-09-21 \\
+\hline
+1001 & E55 & 2026-09-22 \\
+\hline
+1001 & E74 & 2026-09-23 \\
+\hline
+\end{tabular}
+\caption{Checkout Table [2NF]}
+\label{tab:checkout_2nf}
+\end{table}
+
+Notice how each table now has a single, clear primary key: \{StudentID\} for Student, \{EquipmentID\} for Equipment, and \{StudentID, EquipmentID\} for Checkout. Every non-key attribute is now fully dependent on its table's key, with no partial dependencies remaining. 2NF often splits up a table into multiple tables to remove partial dependencies and serves as a stepping stone to 3NF, which further eliminates transitive dependencies.
+
+\subsection{3NF}
+
+To transform a table from 2NF to 3NF, we need to meet the following conditions:
+\begin{itemize}
+\item The table must already be in 2NF (and, consequently, in 1NF).
+\item There should be no \newterm{transitive dependencies}, meaning non-key attributes should not depend on other non-key attributes.
+\end{itemize}
+Looking at our table, we see a transitive dependency:
+\[
+\texttt{EquipmentId}\rightarrow \texttt{EquipmentLocation} \rightarrow \texttt{LocationManager}
+\]
+These are all stored in the same table, which creates a transitive dependency that violates 3NF.
+
+We now must make a new table to remove this transitive dependency, ensuring that each non-key attribute depends only on the primary key of its table.
+
+\begin{center}
+    \texttt{Equipment (\underline{EquipmentID}, EquipmentName, EquipmentLocation)}\\
+    \texttt{Location (\underline{EquipmentLocation}, LocationManager)}
+\end{center}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+{\underline{EquipmentID}} & {EquipmentName} & {EquipmentLocation}  \\
+\hline
+E42 & 3D Printer & Lab B \\
+\hline
+E55 & Oscilloscope & Lab A \\
+\hline
+E74 & CNC Machine & Lab C \\
+\hline
+\end{tabular}
+\caption{Equipment Table [3NF]}
+\label{tab:equipment_3nf}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+{\underline{EquipmentLocation}} & {LocationManager}  \\
+\hline
+Lab B & Maria \\
+\hline
+Lab A & David \\
+\hline
+Lab C & Larry \\
+\hline
+\end{tabular}
+\caption{Location Table [3NF]}
+\label{tab:location_3nf}
+\end{table}
+
+FIXME exercise transform a full table up to 3NF
+\section{Entity-Relationship Diagram}
+FIXME Add an ER diagram for the above example with lab equip.
+% ER Diagrams with mermaid
+\begin{mermaid}
+erDiagram
+    %% One-to-one
+    PERSON ||--|| PASSPORT : "has (one to one)"
+
+    %% One-to-many
+    DEPARTMENT ||--o{ EMPLOYEE : "employs (one to many)"
+
+    %% Many-to-many
+    STUDENT {
+        int student_id PK
+        string name
+        string email
+    }
+    COURSE {
+        int course_id PK
+        string title
+    }
+    STUDENT }o--o{ COURSE : "enrolls_in (zero or many to zero or many)"
+\end{mermaid}
+\section{Relating Two Tables}
+% Formally address how two tables can be linked using foreign keys.
+% POTENTIALLY: RELATIONAL ALGEBRA?

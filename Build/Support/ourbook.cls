@@ -825,6 +825,10 @@
 \usepackage{pstricks}
 \usepackage{pst-electricfield}
 
+% Package mermaid for SQL_2 (ER Diagrams, standard)
+\usepackage{mermaid}
+
+% Minted package for syntax highlighting of code blocks
 \usepackage[cache=true,cachedir=minted-cache]{minted}
 \setminted{
     linenos,
