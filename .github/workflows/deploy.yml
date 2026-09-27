@@ -334,6 +334,14 @@ jobs:
           name: workbooks-build
           path: Build/Workbooks-en_US-Letter/
 
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies with Bun
+        run: bun install --frozen-lockfile
+
       - name: Concatenate chapters
         run: |
           set -euo pipefail
