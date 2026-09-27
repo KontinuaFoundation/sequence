@@ -1,0 +1,211 @@
+% mermaid.sty -- Embed Mermaid diagrams in LaTeX.
+%
+% Copyright (C) 2026 Ryoya Ando (https://ryoya9826.github.io/)
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mermaid}[2026/05/06 v1.0c Mermaid via Mermaid CLI / PDF]
+\RequirePackage{shellesc}
+\RequirePackage{graphicx}
+\RequirePackage{adjustbox}
+\RequirePackage{fancyvrb}
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{family=mermaid,prefix=mermaid@,setkeys=\kvsetkeys}
+\DeclareStringOption[]{Renderer}
+\ProcessKeyvalOptions*
+
+\newread\mermaid@login
+\def\mermaid@cmd{}
+\def\mermaid@xargs{}
+\AtEndOfPackage{%
+  \edef\mermaid@renderer@nonempty{\mermaid@Renderer}%
+  \ifx\mermaid@renderer@nonempty\@empty
+  \else
+    \let\mermaid@cmd\mermaid@Renderer
+  \fi
+}
+\newcommand{\MermaidRendererOptions}[1]{\def\mermaid@xargs{#1}}
+\def\mermaid@pdffit{-f}
+\newcommand{\MermaidNoPdfFit}{\def\mermaid@pdffit{}}
+\def\mermaid@graphicsopts{}
+\newcommand{\MermaidGraphicsOpts}[1]{\def\mermaid@graphicsopts{#1}}
+\def\mermaid@boxopts{max width=0.9\linewidth,center}
+\newcommand{\MermaidAdjustBoxOpts}[1]{\def\mermaid@boxopts{#1}}
+\def\mermaid@resolverenderer{%
+  \ifx\mermaid@cmd\@empty
+    \def\mermaid@resolvedrenderer{mmdc}%
+  \else
+    \let\mermaid@resolvedrenderer\mermaid@cmd
+  \fi
+}
+\def\mermaid@buildmergeargs{%
+  \ifx\mermaid@pdffit\@empty
+    \let\mermaid@mergeargs\mermaid@xargs
+  \else
+    \ifx\mermaid@xargs\@empty
+      \let\mermaid@mergeargs\mermaid@pdffit
+    \else
+      \edef\mermaid@mergeargs{\mermaid@pdffit\space\mermaid@xargs}%
+    \fi
+  \fi
+}
+\def\mermaid@log#1{\typeout{[mermaid] #1}}
+\def\mermaid@logcwd{%
+  \edef\mermaid@cwdfile{mermaid/mermaid-cwd-\the\c@mermaid@diag.txt}%
+  \ShellEscape{pwd > \mermaid@cwdfile}%
+  \openin\mermaid@login=\mermaid@cwdfile\relax
+  \ifeof\mermaid@login
+    \mermaid@log{cwd: (unavailable)}%
+  \else
+    \read\mermaid@login to \mermaid@cwdline
+    \closein\mermaid@login
+    \mermaid@log{cwd: \mermaid@cwdline}%
+  \fi
+}
+\def\mermaid@run#1#2{%
+  \mermaid@buildmergeargs
+  \mermaid@resolverenderer
+  \edef\mermaid@infile{#1}%
+  \edef\mermaid@outfile{#2}%
+  \edef\mermaid@stdout{mermaid/\jobname-mermaid-\the\c@mermaid@diag.out}%
+  \edef\mermaid@stderr{mermaid/\jobname-mermaid-\the\c@mermaid@diag.err}%
+  \ShellEscape{mkdir -p mermaid}%
+  \mermaid@log{----------}%
+  \mermaid@log{diagram \the\c@mermaid@diag: #1 -> #2}%
+  \mermaid@logcwd
+  \mermaid@log{renderer (resolved): \mermaid@resolvedrenderer}%
+  \ifx\mermaid@mergeargs\@empty\else
+    \mermaid@log{CLI extra args (incl. pdf-fit): \mermaid@mergeargs}%
+  \fi
+  \mermaid@log{full shell command: \mermaid@resolvedrenderer\space\mermaid@mergeargs\space -i "#1" -o "#2" >"\mermaid@stdout" 2>"\mermaid@stderr"}%
+  \ifcsname pdffilesize\endcsname
+    \IfFileExists{\mermaid@infile}{%
+      \mermaid@log{.mmd size (bytes): \pdffilesize{\mermaid@infile}}%
+    }{%
+      \mermaid@log{.mmd size (bytes): (missing)}%
+    }%
+  \else
+    \mermaid@log{.mmd size (bytes): unavailable (no pdffilesize on this engine)}%
+  \fi
+  \ifcsname pdfresettimer\endcsname\pdfresettimer\fi
+  \immediate\write18{if [ -e "\expandafter\detokenize\expandafter{\mermaid@outfile}" ] && [ "\expandafter\detokenize\expandafter{\mermaid@outfile}" -nt "\expandafter\detokenize\expandafter{\mermaid@infile}" ]; then :; else \mermaid@resolvedrenderer\space\mermaid@mergeargs\space -i "\expandafter\detokenize\expandafter{\mermaid@infile}" -o "\expandafter\detokenize\expandafter{\mermaid@outfile}" >"\expandafter\detokenize\expandafter{\mermaid@stdout}" 2>"\expandafter\detokenize\expandafter{\mermaid@stderr}"; fi}%
+  \ifcsname pdfelapsedtime\endcsname
+    \mermaid@log{timing: \the\pdfelapsedtime\space ms (pdfelapsedtime)}%
+  \else
+    \mermaid@log{timing: (pdfelapsedtime not available on this engine)}%
+  \fi
+  \IfFileExists{\mermaid@outfile}{%
+    \mermaid@log{renderer subprocess: finished (parsed as success)}%
+    \ifcsname pdffilesize\endcsname
+      \mermaid@log{output PDF size (bytes): \pdffilesize{\mermaid@outfile}}%
+    \else
+      \mermaid@log{output PDF size (bytes): unavailable}%
+    \fi
+    \mermaid@log{PDF header check: OK}%
+    \mermaid@log{----------}%
+  }{%
+    \mermaid@log{expected output PDF missing after write18 (exit status not checked)}%
+  }%
+}
+\newcount\c@mermaid@diag
+\c@mermaid@diag=\z@
+\def\mermaid@env@scanopt{%
+  \@ifnextchar[%]
+    {\mermaid@env@gotopt}%
+    {\mermaid@env@startenv{}}%
+}
+\def\mermaid@env@gotopt[#1]{\mermaid@env@startenv{#1}}
+\def\mermaid@env@startenv#1{%
+  \def\mermaid@envgraphicsopts{#1}%
+  \global\advance\c@mermaid@diag\@ne\relax
+  \edef\mermaid@in{mermaid/\jobname-mermaid-\the\c@mermaid@diag.mmd}%
+  \edef\mermaid@out{mermaid/\jobname-mermaid-\the\c@mermaid@diag.pdf}%
+  \ShellEscape{mkdir -p mermaid}%
+  \VerbatimOut{\mermaid@in}%
+}
+\newenvironment{mermaid}{%
+  \catcode`\^^M=\active
+  \mermaid@env@scanopt
+}{%
+  \endVerbatimOut
+  \mermaid@run{\mermaid@in}{\mermaid@out}%
+  \IfFileExists{\mermaid@out}{%
+    \begin{center}%
+      \bgroup
+      \ifx\mermaid@graphicsopts\@empty
+        \ifx\mermaid@envgraphicsopts\@empty
+          \def\mermaid@graphicsoptsmerged{}%
+        \else
+          \def\mermaid@graphicsoptsmerged{\mermaid@envgraphicsopts}%
+        \fi
+      \else
+        \ifx\mermaid@envgraphicsopts\@empty
+          \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts}%
+        \else
+          \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts,\mermaid@envgraphicsopts}%
+        \fi
+      \fi
+      \edef\mermaid@tmp{%
+        \egroup
+        \noexpand\adjustbox{\mermaid@boxopts}{%
+          \noexpand\includegraphics[\mermaid@graphicsoptsmerged]{\mermaid@out}%
+        }%
+      }%
+      \mermaid@tmp
+    \end{center}%
+  }{%
+    \PackageError{mermaid}{%
+      Output PDF was not produced. Check mermaid/\jobname-mermaid-\the\c@mermaid@diag.err for mmdc messages; %
+      ensure -shell-escape and Mermaid CLI.%
+    }{}%
+  }%
+}
+
+% New command: \mermaidfile{<filename>}
+\newcommand{\mermaidfile}[2][]{%
+  \begingroup
+    \edef\mermaid@in{#2}%
+    \def\mermaid@envgraphicsopts{#1}%
+    \global\advance\c@mermaid@diag\@ne\relax
+    \edef\mermaid@out{mermaid/\jobname-mermaid-\the\c@mermaid@diag.pdf}%
+    \ShellEscape{mkdir -p mermaid}%
+    \mermaid@run{\mermaid@in}{\mermaid@out}%
+    \IfFileExists{\mermaid@out}{%
+      \begin{center}%
+        \bgroup
+        \ifx\mermaid@graphicsopts\@empty
+          \ifx\mermaid@envgraphicsopts\@empty
+            \def\mermaid@graphicsoptsmerged{}%
+          \else
+            \def\mermaid@graphicsoptsmerged{\mermaid@envgraphicsopts}%
+          \fi
+        \else
+          \ifx\mermaid@envgraphicsopts\@empty
+            \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts}%
+          \else
+            \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts,\mermaid@envgraphicsopts}%
+          \fi
+        \fi
+        \edef\mermaid@tmp{%
+          \egroup
+          \noexpand\adjustbox{\mermaid@boxopts}{%
+            \noexpand\includegraphics[\mermaid@graphicsoptsmerged]{\mermaid@out}%
+          }%
+        }%
+        \mermaid@tmp
+      \end{center}%
+    }{%
+      \PackageError{mermaid}{%
+        Output PDF was not produced. Check mermaid/\jobname-mermaid-\the\c@mermaid@diag.err for mmdc messages; %
+        ensure -shell-escape and Mermaid CLI.%
+      }{}%
+    }%
+  \endgroup
+}
+\endinput

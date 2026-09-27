@@ -57,6 +57,9 @@ jobs:
             fonts-open-sans \
             python3-pygments
           sudo npm install -g @mermaid-js/mermaid-cli
+          TEXMFHOME="$(kpsewhich -var-value TEXMFHOME)"
+          mkdir -p "$TEXMFHOME/tex/latex/mermaid"
+          cp Build/Support/mermaid.sty "$TEXMFHOME/tex/latex/mermaid/"
           sudo mkdir -p /usr/share/fonts/truetype/kontinua
           sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
           sudo fc-cache -fv
@@ -71,6 +74,7 @@ jobs:
           which kpsewhich
           kpsewhich minted.sty
           kpsewhich algpseudocode.sty
+          kpsewhich mermaid.sty
 
       - name: Prepare build config
         run: python3 Build/create_user_config.py
