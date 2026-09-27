@@ -826,6 +826,10 @@
 \usepackage{pst-electricfield}
 
 % Package mermaid for SQL_2 (ER Diagrams, standard)
+% mermaid loads adjustbox/trimclip, which \newcommand's \clipbox. PSTricks < 3.21
+% (TeX Live 2023 in CI) also defines \clipbox; newer PSTricks renamed it to
+% \psclipbox. Drop the old PSTricks name so adjustbox's \clipbox wins.
+\let\clipbox\relax
 \usepackage{mermaid}
 
 % Minted package for syntax highlighting of code blocks
