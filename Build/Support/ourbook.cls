@@ -831,6 +831,8 @@
 % \psclipbox. Drop the old PSTricks name so adjustbox's \clipbox wins.
 \let\clipbox\relax
 \usepackage{mermaid}
+% Builds run from Build/Intermediate; --no-sandbox lets headless Chrome start on CI runners.
+\MermaidRendererOptions{-p ../Support/puppeteer-config.json}
 
 % Minted package for syntax highlighting of code blocks
 \usepackage[cache=true,cachedir=minted-cache]{minted}
