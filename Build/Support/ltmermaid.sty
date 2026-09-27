@@ -1,0 +1,383 @@
+% ltmermaid.sty -- Embed Mermaid diagrams in LaTeX (LuaLaTeX).
+%
+% Copyright (C) 2026 Ryoya Ando (https://ryoya9826.github.io/)
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ltmermaid}[2026/05/06 v1.0c Mermaid via Mermaid CLI / PDF]
+\RequirePackage{ifluatex}
+\ifluatex\else
+  \PackageError{ltmermaid}{This package requires LuaLaTeX (lualatex).}{}
+  \expandafter\endinput
+\fi
+\RequirePackage{graphicx}
+\RequirePackage{adjustbox}
+\RequirePackage{fancyvrb}
+\RequirePackage{luacode}
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{family=mermaid,prefix=mermaid@,setkeys=\kvsetkeys}
+\DeclareStringOption[]{Renderer}
+\ProcessKeyvalOptions*
+\begin{luacode*}
+mermaid_cli = mermaid_cli or {}
+mermaid_cli.default_renderer = "mmdc"
+local lfs = require("lfs")
+local function shq(p)
+  return "'" .. string.gsub(p, "'", "'\\''") .. "'"
+end
+local function abspath(rel)
+  rel = (rel or ""):gsub("\\", "/")
+  if rel == "" then return rel end
+  if string.match(rel, "^/") or string.match(rel, "^[A-Za-z]:[\\/]") then
+    return rel
+  end
+  local cwd = (lfs.currentdir()):gsub("\\", "/")
+  if string.sub(cwd, -1) == "/" then
+    return cwd .. rel
+  end
+  return cwd .. "/" .. rel
+end
+local function ensure_dir(path)
+  path = path:gsub("\\", "/")
+  local attrs = lfs.attributes(path)
+  if attrs and attrs.mode == "directory" then
+    return
+  end
+  local parent = path:match("^(.*)/[^/]+$")
+  if parent and parent ~= "" then
+    ensure_dir(parent)
+  end
+  local ok, err = lfs.mkdir(path)
+  if not ok and lfs.attributes(path, "mode") ~= "directory" then
+    tex.error("ltmermaid: cannot create directory (" .. tostring(err) .. "): " .. path)
+  end
+end
+local function mermaid_root_abs()
+  local out = os.getenv("TEXMF_OUTPUT_DIRECTORY")
+  if out and out ~= "" then
+    out = out:gsub("\\", "/"):gsub("/$", "")
+    if not string.match(out, "^/") and not string.match(out, "^[A-Za-z]:[\\/]") then
+      out = abspath(out)
+    end
+    return out .. "/mermaid"
+  end
+  return abspath("mermaid")
+end
+function mermaid_cli.ensure_mermaid_root()
+  if mermaid_cli._root_ready then
+    return
+  end
+  ensure_dir(mermaid_root_abs())
+  mermaid_cli._root_ready = true
+end
+function mermaid_cli.path_for_diag(n, ext)
+  mermaid_cli.ensure_mermaid_root()
+  n = tonumber(n)
+  local name = tex.jobname .. "-mermaid-" .. tostring(n) .. "." .. ext
+  return "mermaid/" .. name
+end
+function mermaid_cli.resolve_path(rel)
+  rel = (rel or ""):gsub("\\", "/")
+  if string.match(rel, "^/") or string.match(rel, "^[A-Za-z]:[\\/]") then
+    return rel
+  end
+  local fname = rel:match("^mermaid/(.+)$")
+  if fname then
+    return mermaid_root_abs() .. "/" .. fname
+  end
+  return abspath(rel)
+end
+local function resolve_renderer(tex_cmd)
+  if tex_cmd ~= nil and tex_cmd ~= "" then
+    return tex_cmd
+  end
+  return mermaid_cli.default_renderer
+end
+local function resolve_extra_args(tex_args)
+  if tex_args ~= nil and tex_args ~= "" then
+    return tex_args
+  end
+  return ""
+end
+local function interpret_execute_result(a, b, c)
+  if a == nil then
+    return "spawn_failed", nil
+  end
+  if a == true then
+    if b == "exit" and type(c) == "number" then
+      if c == 0 then
+        return "ok", 0
+      end
+      return "exit", c
+    end
+    return "ok", 0
+  end
+  if a == false then
+    if b == "exit" and type(c) == "number" then
+      return "exit", c
+    end
+    return "exit", c or 1
+  end
+  if type(a) == "number" then
+    if a == 0 then
+      return "ok", 0
+    end
+    local exitcode = math.floor(a / 256) % 256
+    if exitcode == 0 then
+      exitcode = a % 256
+    end
+    return "exit", exitcode
+  end
+  return "unknown", nil
+end
+local function mermaid_log(msg)
+  local line = "[ltmermaid] " .. msg
+  texio.write_nl("log", line)
+  texio.write_nl("term", line)
+end
+local function file_size_bytes(path)
+  local sz = lfs.attributes(path, "size")
+  if type(sz) == "number" then
+    return tostring(sz)
+  end
+  return "(missing)"
+end
+local function diagram_index_from_rel(rel)
+  rel = (rel or ""):gsub("\\", "/")
+  return rel:match("%-mermaid%-(%d+)%.")
+end
+local function renderer_uses_npx(renderer)
+  if not renderer or renderer == "" then
+    return false
+  end
+  renderer = renderer:match("^%s*(.-)%s*$") or ""
+  if string.match(renderer, "^npx%s") then
+    return true
+  end
+  if string.find(renderer, "%snpx%s", 1, true) then
+    return true
+  end
+  return false
+end
+local function output_pdf_missing(renderer, out_abs)
+  local msg = "ltmermaid: PDF was not produced: " .. out_abs
+  if renderer_uses_npx(renderer) then
+    msg = msg .. " (possible npx -y fetch failure, network issue, or missing Chromium setup)."
+  else
+    msg = msg .. " (check mmdc failure, Chromium setup, or Mermaid syntax errors)."
+  end
+  tex.error(msg)
+end
+local function output_up_to_date(in_abs, out_abs)
+  local inf_attr = lfs.attributes(in_abs)
+  local out_attr = lfs.attributes(out_abs)
+  if inf_attr and out_attr and inf_attr.modification and out_attr.modification then
+    return out_attr.modification >= inf_attr.modification
+  end
+  return false
+end
+local function verify_pdf(path)
+  local f, err = io.open(path, "rb")
+  if not f then
+    tex.error("ltmermaid: cannot open PDF (" .. tostring(err) .. "): " .. path)
+    return
+  end
+  local head = f:read(5)
+  f:close()
+  if not head or string.len(head) < 4 or string.sub(head, 1, 4) ~= "%PDF" then
+    tex.error("ltmermaid: PDF is invalid or corrupt (check mmdc and Mermaid syntax). Path: " .. path)
+    return
+  end
+end
+function mermaid_cli.run(inf, outf, tex_cmd, tex_xargs, tex_pdffit)
+  local renderer = resolve_renderer(tex_cmd)
+  local xargs = resolve_extra_args(tex_xargs)
+  local fit = (tex_pdffit or ""):gsub("^%s+", ""):gsub("%s+$", "")
+  if fit ~= "" then
+    if string.match(xargs or "", "%S") then
+      xargs = fit .. " " .. xargs
+    else
+      xargs = fit
+    end
+  end
+  local inf_abs = mermaid_cli.resolve_path(inf)
+  local out_abs = mermaid_cli.resolve_path(outf)
+  if output_up_to_date(inf_abs, out_abs) then
+    mermaid_log("renderer skipped: output is newer than input")
+    return
+  end
+  local cmd = renderer
+  if string.match(xargs or "", "%S") then
+    cmd = cmd .. " " .. xargs
+  end
+  cmd = cmd .. " -i " .. shq(inf_abs) .. " -o " .. shq(out_abs)
+  local idx = diagram_index_from_rel(inf)
+  mermaid_log("----------")
+  mermaid_log("diagram " .. (idx or "?") .. ": " .. inf .. " -> " .. outf)
+  mermaid_log("cwd: " .. ((lfs.currentdir() or ""):gsub("\\", "/")))
+  mermaid_log("renderer (resolved): " .. renderer)
+  if string.match(xargs or "", "%S") then
+    mermaid_log("CLI extra args (incl. pdf-fit): " .. xargs)
+  end
+  mermaid_log("full shell command: " .. cmd)
+  mermaid_log(".mmd size (bytes): " .. file_size_bytes(inf_abs))
+  local t_clock0 = os.clock()
+  local t_wall0 = os.time()
+  local a, b, c = os.execute(cmd)
+  local d_clock = os.clock() - t_clock0
+  local d_wall = os.time() - t_wall0
+  mermaid_log(string.format(
+    "timing: wall ~= %d s (os.time), lua_cpu = %.3f s (os.clock; often small while waiting on CLI)",
+    d_wall,
+    d_clock
+  ))
+  local status, exitcode = interpret_execute_result(a, b, c)
+  if status == "ok" then
+    mermaid_log("renderer subprocess: finished (parsed as success)")
+  elseif status == "spawn_failed" then
+    local msg = "ltmermaid: could not run the renderer (check -shell-escape, PATH, and Renderer package option)."
+    if renderer_uses_npx(renderer) then
+      msg = msg .. " With npx, Node/npm must be on PATH."
+    end
+    tex.error(msg)
+    return
+  elseif status == "unknown" then
+    mermaid_log("os.execute return could not be parsed (a=" .. tostring(a) .. ", b=" .. tostring(b) .. ", c=" .. tostring(c) .. ")")
+    tex.error("ltmermaid: cannot interpret os.execute return value; check the renderer.")
+    return
+  elseif status == "exit" then
+    mermaid_log("renderer exit code: " .. tostring(exitcode))
+    local msg = "ltmermaid: renderer exited with code " .. tostring(exitcode) .. "."
+    if renderer_uses_npx(renderer) then
+      msg = msg .. " npx -y needs registry access; missing Chromium or syntax errors often yield exit 1."
+    end
+    tex.error(msg)
+    return
+  end
+  local out_mode = lfs.attributes(out_abs, "mode")
+  if out_mode ~= "file" then
+    mermaid_log("expected output PDF missing after successful os.execute (path not a file)")
+    output_pdf_missing(renderer, out_abs)
+    return
+  end
+  verify_pdf(out_abs)
+  mermaid_log("output PDF size (bytes): " .. file_size_bytes(out_abs))
+  mermaid_log("%PDF header check: OK")
+  mermaid_log("----------")
+end
+\end{luacode*}
+
+% New command: \mermaidfile[<graphics options>]{<filename>}
+\newcommand{\mermaidfile}[2][]{%
+  \begingroup
+    \def\mermaid@envgraphicsopts{#1}%
+    \ifx\mermaid@graphicsopts\@empty
+      \ifx\mermaid@envgraphicsopts\@empty
+        \def\mermaid@graphicsoptsmerged{}%
+      \else
+        \def\mermaid@graphicsoptsmerged{\mermaid@envgraphicsopts}%
+      \fi
+    \else
+      \ifx\mermaid@envgraphicsopts\@empty
+        \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts}%
+      \else
+        \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts,\mermaid@envgraphicsopts}%
+      \fi
+    \fi
+    \directlua{%
+      mermaid_cli.ensure_mermaid_root()
+      mermaid_cli._diag = (mermaid_cli._diag or 0) + 1
+      local inpath = \luastring{#2}
+      local outf = tex.jobname .. "-mermaid-" .. tostring(mermaid_cli._diag) .. ".pdf"
+      local outpath = "mermaid/" .. outf
+      mermaid_cli.run(inpath, outpath, \luastring{\mermaid@cmd}, \luastring{\mermaid@xargs}, \luastring{\mermaid@pdffit})
+      if lfs.attributes(outpath) then
+        tex.sprint("\\begin{center}\\adjustbox{" .. \luastring{\mermaid@boxopts} .. "}{\\includegraphics[" .. \luastring{\mermaid@graphicsoptsmerged} .. "]{" .. outpath .. "}}\\end{center}")
+      else
+        tex.error("ltmermaid: PDF was not produced: " .. outpath)
+      end
+    }%
+  \endgroup
+}
+\def\mermaid@cmd{}
+\def\mermaid@xargs{}
+\AtEndOfPackage{%
+  \edef\mermaid@renderer@nonempty{\mermaid@Renderer}%
+  \ifx\mermaid@renderer@nonempty\@empty
+  \else
+    \let\mermaid@cmd\mermaid@Renderer
+  \fi
+}
+\newcommand{\MermaidRendererOptions}[1]{\def\mermaid@xargs{#1}}
+\def\mermaid@pdffit{-f}
+\newcommand{\MermaidNoPdfFit}{\def\mermaid@pdffit{}}
+\def\mermaid@graphicsopts{}
+\newcommand{\MermaidGraphicsOpts}[1]{\def\mermaid@graphicsopts{#1}}
+\def\mermaid@boxopts{max width=0.9\linewidth,center}
+\newcommand{\MermaidAdjustBoxOpts}[1]{\def\mermaid@boxopts{#1}}
+\newcount\c@mermaid@diag
+\c@mermaid@diag=\z@
+\def\mermaid@run#1#2{%
+  \luaexec{%
+    mermaid_cli.run(%
+      \luastring{#1}, \luastring{#2},%
+      \luastring{\mermaid@cmd}, \luastring{\mermaid@xargs},%
+      \luastring{\mermaid@pdffit}%
+    )%
+  }%
+}
+
+\def\mermaid@env@scanopt{%
+  \@ifnextchar[%]
+    {\mermaid@env@gotopt}%
+    {\mermaid@env@startenv{}}%
+}
+\def\mermaid@env@gotopt[#1]{\mermaid@env@startenv{#1}}
+\def\mermaid@env@startenv#1{%
+  \def\mermaid@envgraphicsopts{#1}%
+  \global\advance\c@mermaid@diag\@ne\relax
+  \edef\mermaid@in{%
+    \directlua{tex.sprint(-2, mermaid_cli.path_for_diag(\the\c@mermaid@diag, "mmd"))}%
+  }%
+  \edef\mermaid@out{%
+    \directlua{tex.sprint(-2, mermaid_cli.path_for_diag(\the\c@mermaid@diag, "pdf"))}%
+  }%
+  \VerbatimOut{\mermaid@in}%
+}
+\newenvironment{mermaid}{%
+  \catcode`\^^M=\active
+  \mermaid@env@scanopt
+}{%
+  \endVerbatimOut
+  \mermaid@run{\mermaid@in}{\mermaid@out}%
+  \begin{center}%
+    \bgroup
+    \ifx\mermaid@graphicsopts\@empty
+      \ifx\mermaid@envgraphicsopts\@empty
+        \def\mermaid@graphicsoptsmerged{}%
+      \else
+        \def\mermaid@graphicsoptsmerged{\mermaid@envgraphicsopts}%
+      \fi
+    \else
+      \ifx\mermaid@envgraphicsopts\@empty
+        \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts}%
+      \else
+        \def\mermaid@graphicsoptsmerged{\mermaid@graphicsopts,\mermaid@envgraphicsopts}%
+      \fi
+    \fi
+    \edef\mermaid@tmp{%
+      \egroup
+      \noexpand\adjustbox{\mermaid@boxopts}{%
+        \noexpand\includegraphics[\mermaid@graphicsoptsmerged]{\mermaid@out}%
+      }%
+    }%
+    \mermaid@tmp
+  \end{center}%
+}
+\endinput
