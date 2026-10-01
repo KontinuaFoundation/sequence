@@ -302,8 +302,74 @@ erDiagram
     }
     STUDENT }o--o{ COURSE : "enrolls_in (zero or many to zero or many)"
 \end{mermaid}
+
+\section{Relational Algebra Basics}
 \section{Relating Two Tables}
 % Formally address how two tables can be linked using foreign keys.
-% POTENTIALLY: RELATIONAL ALGEBRA?
-% test change
-% test change two
+
+Now let's say we have two tables, \texttt{Equipment} and \texttt{Location}, and we want to relate them using a \newterm{foreign key}. The \texttt{Equipment} table has a column \texttt{EquipmentLocation} that references the primary key \texttt{EquipmentLocation} in the \texttt{Location} table. This allows us to link each piece of equipment to its corresponding location.
+
+Let's first create the \texttt{Equipment} table with a foreign key referencing the \texttt{Location} table.
+\begin{minted}{sql}
+CREATE TABLE Location (
+    EquipmentLocation VARCHAR(50) PRIMARY KEY,
+    LocationManager VARCHAR(50)
+);
+
+CREATE TABLE Equipment (
+    EquipmentID VARCHAR(50) PRIMARY KEY,
+    EquipmentName VARCHAR(50),
+    EquipmentLocation VARCHAR(50),
+    FOREIGN KEY (EquipmentLocation) REFERENCES Location(EquipmentLocation)
+);
+\end{minted}
+
+We \emph{constrain} the values in the \texttt{EquipmentLocation} column of the \texttt{Equipment} table to only those that exist in the \texttt{Location} table, ensuring referential integrity between the two tables.
+
+Using relational algebra, we can say that 
+% FIXME relational algebra not defined before here
+\[
+\pi_{\text{EquipmentLocation}}(\text{Equipment}) \subseteq \pi_{\text{EquipmentLocation}}(\text{Location})
+\]
+
+All values in the \texttt{EquipmentLocation} column of the \texttt{Equipment} table must exist in the \texttt{EquipmentLocation} column of the \texttt{Location} table. However, it does not guarantee that every location in the \texttt{Location} table has corresponding equipment in the \texttt{Equipment} table. For example, here are the two tables again, with altered data
+
+
+
+\begin{table}[H]
+\centering
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+{\underline{EquipmentLocation}} & {LocationManager} \\
+\hline
+Lab B & Maria \\
+\hline
+Lab A & David \\
+\hline
+Lab C & Larry \\
+\hline
+\end{tabular}
+\caption{Location Table}
+\label{tab:location_pk}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+{\underline{EquipmentID}} & {EquipmentName} & {EquipmentLocation} \\
+\hline
+E42 & 3D Printer & Lab B \\
+\hline
+E55 & Oscilloscope & Lab A \\
+\hline
+\end{tabular}
+\caption{Equipment Table}
+\label{tab:equipment_fk}
+\end{minipage}
+\end{table}
+
+Table constraints do not break when foreign key values are missing in the referencing table. For example, even though ``Lab C'' exists in the \texttt{Location} table, it does not appear in the \texttt{Equipment} table, and this is perfectly valid. 
+However, if we tried to insert a row into the \texttt{Equipment} table with an \texttt{EquipmentLocation} value that does not exist in the \texttt{Location} table (such as ``Lab D''), the database would reject it due to the foreign key constraint.
