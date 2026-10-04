@@ -18,7 +18,7 @@ one of the factors is zero. Here, we see that
 \begin{itemize}
 \item The factor $(5x)$ is zero when $x$ is zero.
 \item The factor $(x + 3)$ is zero when $x$ is -3.
-\item The factor$(x - 3)$ is zero when $x$ is 3.
+\item The factor $(x - 3)$ is zero when $x$ is 3.
 \end{itemize}
 So, looking at the factorization, you can see
 that $5x^3 - 45x$ is zero when $x$ is 0, -3, or 3. 
@@ -43,31 +43,47 @@ be the greatest common divisor of the coefficients of the terms.
 
 For example, what can you pull out of this polynomial?
 \begin{equation*}
-12x^100 + 30x^31 + 42x^17
+12x^{100} + 30x^{31} + 42x^{17}
 \end{equation*}
-The greatest common divisor of the coefficients (12, 30, and 42) is 6.  The least of the degrees of terms (100, 31, and 17) is 17.  So, you can pull out $6x^17$:
+The greatest common divisor of the coefficients (12, 30, and 42) is 6.  The least of the degrees of terms (100, 31, and 17) is 17.  So, you can pull out $6x^{17}$:
 \begin{equation*}
-12x^100 + 30x^31 + 42x^17 = (6x^17)(2x^83 + 5x^14 + 7)
+12x^{100} + 30x^{31} + 42x^{17} = (6x^{17})(2x^{83} + 5x^{14} + 7)
 \end{equation*}
 
 \begin{Exercise}[title={Factoring out the GCD monomial}, label=gcdmonomial]
-FIXME Exercise here
+Factor out the greatest common divisor monomial from each polynomial.
+\begin{enumerate}
+\item $18x^3 - 15x$
+\item $4x^3 - 12x^2 + 16x$
+\item $18x^{50} - 24x^{20} + 30x^{8}$
+\end{enumerate}
 \end{Exercise}
 \begin{Answer}[ref=gcdmonomial]
-  
+\begin{enumerate}
+\item The GCD of 18 and 15 is 3, and the least degree is 1, so
+  $18x^3 - 15x = (3x)(6x^2 - 5)$.
+\item The GCD of 4, 12, and 16 is 4, and the least degree is 1, so
+  $4x^3 - 12x^2 + 16x = (4x)(x^2 - 3x + 4)$.
+\item The GCD of 18, 24, and 30 is 6, and the least degree is 8, so
+  $18x^{50} - 24x^{20} + 30x^{8} = (6x^{8})(3x^{42} - 4x^{12} + 5)$.
+\end{enumerate}
 \end{Answer}
+% Items 1-2 adapted from OpenStax, Intermediate Algebra 2e, Ch. 6 Review
+% Exercises #343 and #345 (CC BY 4.0):
+% https://openstax.org/books/intermediate-algebra-2e/pages/6-review-exercises
+
 
 So, now you have the product of a monomial and a polynomial. If you
 are lucky, the polynomial part looks familiar, like the difference of
 squares or a row from Pascal's triangle.
 
-Often, you are trying factor a quadratic like $x^2 + 5x + 6$ in a pair
+Often, you are trying to factor a quadratic like $x^2 + 5x + 6$ in a pair
 of binomials. In this case, the result would be $(x + 3)(x + 2)$. Let's check that:
 \begin{equation*}
   (x + 3)(x + 2) = (x)(x) + (3)(x) + (2)(x) + (3)(2) = x^2 + 5x + 6
 \end{equation*}
 Notice that 3 and 2 multiply to 6 and add to 5. If you were trying to
-factor $x^2 + 5x + 6$, you would ask yourself''What are two numbers that
+factor $x^2 + 5x + 6$, you would ask yourself, ``What are two numbers that
 when multiplied equal 6 and when added equal 5?'' And you might
 guess wrong a couple of times. For example, you might say to yourself,
 ``Well, 6 times 1 is 6. Maybe those work. But 6 and 1 add 7. So those
@@ -80,8 +96,313 @@ something else.
 The numbers are sometimes negative. For example, $x^2 + 3x - 10$ factors into $(x + 5)(x - 2)$.
 
 \begin{Exercise}[title={Factoring quadratics}, label=factorquadratics]
-  
+Factor each quadratic into a pair of binomials.
+\begin{enumerate}
+\item $x^2 + 14x + 33$
+\item $x^2 - 16x + 60$
+\item $x^2 + 3x - 54$
+\item $x^2 - 3x - 10$
+\end{enumerate}
 \end{Exercise}
 \begin{Answer}[ref=factorquadratics]
-  
+\begin{enumerate}
+\item 3 and 11 multiply to 33 and add to 14, so
+  $x^2 + 14x + 33 = (x + 3)(x + 11)$.
+\item $-6$ and $-10$ multiply to 60 and add to $-16$, so
+  $x^2 - 16x + 60 = (x - 6)(x - 10)$.
+\item 9 and $-6$ multiply to $-54$ and add to 3, so
+  $x^2 + 3x - 54 = (x + 9)(x - 6)$.
+\item $-5$ and 2 multiply to $-10$ and add to $-3$, so
+  $x^2 - 3x - 10 = (x - 5)(x + 2)$.
+\end{enumerate}
 \end{Answer}
+% Adapted from OpenStax, Intermediate Algebra 2e, Ch. 6 Review Exercises
+% #355-358 (CC BY 4.0), variables changed to x:
+% https://openstax.org/books/intermediate-algebra-2e/pages/6-review-exercises
+
+\textbf{Computing in Python}
+
+Python can check a factorization for you. Start by writing the
+original polynomial and its factored form as two Python functions:
+
+\begin{minted}{python}
+def p(x):
+    return 5*x**3 - 45*x
+
+def f(x):
+    return (5*x)*(x + 3)*(x - 3)
+\end{minted}
+
+In Python, \mintinline{python}{**} means ``raised to the power of,'' and
+every multiplication needs a \mintinline{python}{*}. You have to write
+\mintinline{python}{5*x}, since \mintinline{python}{5x} is an error.
+
+First, confirm the roots we read off the factors:
+
+\begin{minted}{python}
+for x in [0, -3, 3, 1]:
+    print(x, p(x))
+\end{minted}
+
+\begin{minted}{text}
+0 0
+-3 0
+3 0
+1 -40
+\end{minted}
+
+The values 0, -3, and 3 all give zero, so they are roots. The value 1
+gives -40, so it is not a root.
+
+Next, check that \mintinline{python}{p} and \mintinline{python}{f} are
+the same polynomial. If the factorization is correct, the two functions
+give the same output for every $x$:
+
+\begin{minted}{python}
+for x in [0, 1, 2, 3]:
+    print(x, p(x), f(x), p(x) == f(x))
+\end{minted}
+
+\begin{minted}{text}
+0 0 0 True
+1 -40 -40 True
+2 -50 -50 True
+3 0 0 True
+\end{minted}
+
+Each line shows $x$, the value of the original, the value of the
+factored form, and whether they match. Every line says
+\mintinline{python}{True}.
+
+How many values of $x$ do you need to check? Here is a useful fact: if
+two polynomials of degree at most $n$ give the same value at $n + 1$ different
+values of $x$, they are the same polynomial. Our polynomial has degree
+3, so four matching values are enough.
+
+Matching at the roots alone can hide a mistake. Suppose you forgot the 5 when
+you pulled out $5x$:
+
+\begin{minted}{python}
+def g(x):
+    return x*(x + 3)*(x - 3)
+
+for x in [0, -3, 3, 1]:
+    print(x, p(x), g(x), p(x) == g(x))
+\end{minted}
+
+\begin{minted}{text}
+0 0 0 True
+-3 0 0 True
+3 0 0 True
+1 -40 -8 False
+\end{minted}
+
+The wrong factorization has the same roots, so it passes at 0, -3, and
+3. The value $x = 1$ catches the mistake.
+
+\begin{Exercise}[title={Predict the output}, label={ex:factoring_polynomials-python-1}]
+Without running the code, predict what this prints. Which of the two
+values of $x$ is a root?
+\begin{minted}{python}
+def q(x):
+    return x**2 + 3*x - 4
+
+print(q(2))
+print(q(-4))
+\end{minted}
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-1}]
+\begin{minted}{text}
+6
+0
+\end{minted}
+At $x = 2$: $4 + 6 - 4 = 6$. At $x = -4$: $16 - 12 - 4 = 0$. So $-4$ is
+a root and $2$ is not. This matches the factorization
+$x^2 + 3x - 4 = (x + 4)(x - 1)$.
+\end{Answer}
+
+\begin{Exercise}[title={Spot the sign error}, label={ex:factoring_polynomials-python-2}]
+A student claims that $x^2 + 3x - 10 = (x - 5)(x + 2)$ and runs this
+check:
+\begin{minted}{python}
+def a(x):
+    return x**2 + 3*x - 10
+
+def b(x):
+    return (x - 5)*(x + 2)
+
+for x in [0, 1, 2]:
+    print(x, a(x), b(x), a(x) == b(x))
+\end{minted}
+The output is:
+\begin{minted}{text}
+0 -10 -10 True
+1 -6 -12 False
+2 0 -12 False
+\end{minted}
+The first line says \mintinline{python}{True}. Why is the factorization
+still wrong? What is the correct factorization?
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-2}]
+At $x = 0$ both sides equal the constant term, $-10$, because $-5$ and
+$2$ do multiply to $-10$. A single match proves little here. The polynomial has
+degree 2, so all three values must match, and two of them fail. The
+numbers $-5$ and $2$ add to $-3$ instead of $3$, so the signs are
+swapped. The correct factorization is $(x + 5)(x - 2)$.
+\end{Answer}
+
+\begin{Exercise}[title={Spot the bug}, label={ex:factoring_polynomials-python-3}]
+A student wants to check that $x^2 + 5x + 6 = (x + 3)(x + 2)$, which we
+already know is correct, and writes:
+\begin{minted}{python}
+def c(x):
+    return x^2 + 5*x + 6
+
+def d(x):
+    return (x + 3)*(x + 2)
+
+for x in [0, 1, 2]:
+    print(x, c(x), d(x), c(x) == d(x))
+\end{minted}
+The output is:
+\begin{minted}{text}
+0 8 6 False
+1 12 12 True
+2 16 20 False
+\end{minted}
+The factorization is correct, so what went wrong?
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-3}]
+In Python, \mintinline{python}{^} does not mean ``to the power of.'' It is
+a different operator, so \mintinline{python}{c} computes something
+other than $x^2 + 5x + 6$. The fix is to write
+\mintinline{python}{x**2}. Notice that the bad version still matches at
+$x = 1$ by chance, which is another reason to check several values.
+\end{Answer}
+
+\begin{Exercise}[title={Factor, check, and find the roots}, label={ex:factoring_polynomials-python-4}]
+Factor $2x^3 - 6x^2 - 8x$ completely. Write the original polynomial and
+your factored form as two Python functions, and check that they match
+at enough values of $x$. Then use your factors to list the roots, and
+confirm that each one gives zero.
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-4}]
+Pull out $2x$ to get $(2x)(x^2 - 3x - 4)$. The numbers $-4$ and $1$
+multiply to $-4$ and add to $-3$, so
+$2x^3 - 6x^2 - 8x = (2x)(x + 1)(x - 4)$.
+\begin{minted}{python}
+def e(x):
+    return 2*x**3 - 6*x**2 - 8*x
+
+def h(x):
+    return (2*x)*(x + 1)*(x - 4)
+
+for x in [0, 1, 2, 3]:
+    print(x, e(x), h(x), e(x) == h(x))
+
+for r in [0, -1, 4]:
+    print(r, e(r))
+\end{minted}
+The polynomial has degree 3, so four values are enough, and all four
+lines say \mintinline{python}{True}. The roots are $0$, $-1$, and $4$,
+and each one prints $0$.
+\end{Answer}
+
+% Generated without source material; values verified computationally
+
+This last part is optional. It uses SymPy, a Python library for
+algebra. SymPy is a separate install, so you may need to run
+\mintinline{text}{python3 -m pip install sympy} first.
+
+\begin{minted}{python}
+from sympy import symbols, factor, expand
+
+x = symbols('x')
+print(factor(5*x**3 - 45*x))
+print(expand(5*x*(x + 3)*(x - 3)))
+\end{minted}
+
+\begin{minted}{text}
+5*x*(x - 3)*(x + 3)
+5*x**3 - 45*x
+\end{minted}
+
+The line \mintinline{python}{x = symbols('x')} makes \mintinline{python}{x}
+a \newterm{symbolic variable}\index{symbolic variable}: a letter that
+stands for any number, which is how $x$ works in algebra. Earlier in this
+section, \mintinline{python}{x} always held one number at a time. Here
+it holds no number at all.
+
+The function \mintinline{python}{factor} factors a polynomial, and
+\mintinline{python}{expand} multiplies the factors back out. SymPy lists
+$(x - 3)$ before $(x + 3)$; the order of the factors does not change
+the product.
+
+SymPy also tells you when a polynomial cannot be factored using
+integers:
+
+\begin{minted}{python}
+print(factor(x**2 + 1))
+\end{minted}
+
+\begin{minted}{text}
+x**2 + 1
+\end{minted}
+
+SymPy returns the polynomial unchanged, so $x^2 + 1$ has no factors
+with integer coefficients.
+
+SymPy can factor every polynomial in this chapter in one line, which
+means it can also skip the thinking this chapter is teaching. Use it
+after you factor by hand, to check your answer.
+
+If you get stuck on a problem, open
+\mintinline{text}{factor_hint.py}, type your polynomial
+on the line that starts with \mintinline{python}{polynomial =}, and run
+the file. It first shows a hint: the polynomial with its greatest common
+factor pulled out, found with SymPy's \mintinline{python}{factor_terms}.
+Try to finish the problem from there. When you press Enter, the file
+shows the full factorization.
+
+\begin{Exercise}[title={Predict what SymPy prints}, label={ex:factoring_polynomials-python-5}]
+Without running the code, predict the output.
+\begin{minted}{python}
+from sympy import symbols, factor
+
+x = symbols('x')
+print(factor(x**2 - 9))
+\end{minted}
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-5}]
+\begin{minted}{text}
+(x - 3)*(x + 3)
+\end{minted}
+The polynomial $x^2 - 9$ is a difference of squares, so it factors into
+$(x - 3)(x + 3)$.
+\end{Answer}
+
+\begin{Exercise}[title={Factor by hand, then check with SymPy}, label={ex:factoring_polynomials-python-6}]
+Factor $3x^2 + 12x - 15$ completely by hand. Then use
+\mintinline{python}{expand} to multiply your factors back out, and use
+\mintinline{python}{factor} to compare your answer with SymPy's.
+\end{Exercise}
+\begin{Answer}[ref={ex:factoring_polynomials-python-6}]
+Pull out 3 to get $3(x^2 + 4x - 5)$. The numbers $5$ and $-1$ multiply
+to $-5$ and add to $4$, so $3x^2 + 12x - 15 = 3(x + 5)(x - 1)$.
+\begin{minted}{python}
+from sympy import symbols, factor, expand
+
+x = symbols('x')
+print(expand(3*(x + 5)*(x - 1)))
+print(factor(3*x**2 + 12*x - 15))
+\end{minted}
+\begin{minted}{text}
+3*x**2 + 12*x - 15
+3*(x - 1)*(x + 5)
+\end{minted}
+Expanding gives back the original polynomial, and SymPy's factors match
+yours with the binomials in a different order.
+\end{Answer}
+
+% SymPy add-on: factor() and expand() usage adapted from GeeksforGeeks, "Python | sympy.factor() method",
+% https://www.geeksforgeeks.org/python/python-sympy-factor-method/ ; outputs verified with SymPy

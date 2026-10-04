@@ -37,7 +37,9 @@ Only when $a=1$
 What does this mean?
 
 For any $b$ and $c$, the graph of $x^2 + bx + c$ is a parabola
-that goes up on each end. Its low point is at $x = -\frac{b}{2a}$. This is referred to as the vertex formula.\index{Vertex Formula}
+that goes up on each end. Its low point, the vertex, is at $x = -\frac{b}{2}$.
+For a quadratic with any value of $a$, the vertex is at $x = -\frac{b}{2a}$,
+which is called the vertex formula\index{vertex formula}.
 
 If there are no real roots ($b^2 - 4c < 0$), which means the
 parabola never gets low enough to cross the $x$-axis:
@@ -90,7 +92,7 @@ If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses
       xlabel={$x$},
       ylabel={$y$},
       ]
-      \addplot[no marks,sdkblue] expression[domain=-0.25:3.5,samples=100]{x^2 - 3*x + 1} node[above, xshift=-1cm] {$x^2 - 4x + 4$};
+      \addplot[no marks,sdkblue] expression[domain=-0.25:3.5,samples=100]{x^2 - 3*x + 1} node[above, xshift=-1cm] {$x^2 - 3x + 1$};
       \addplot[dashed,gray] coordinates {(1.5,-2)(1.5,1)};
     \end{axis}
   \end{tikzpicture}
@@ -114,11 +116,11 @@ If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses
 
   The roots of this are at
 
-  $$x = -\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2} = -\frac{-2.45}{2} \pm \frac{\sqrt{(-2.45)^2 - 4(-0.408)}}{2} = 1.22 \pm 1.36$$
+  $$x = -\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2} = -\frac{-2.45}{2} \pm \frac{\sqrt{(-2.45)^2 - 4(-0.408)}}{2} = 1.225 \pm 1.382$$
 
   We only care about the root after we release the hammer ($t > 0$).
 
-  $1.22 + 1.36 = 2.58$ seconds after releasing the hammer, it will hit the ground.
+  $1.225 + 1.382 \approx 2.61$ seconds after releasing the hammer, it will hit the ground.
 
   
 \end{Answer}
@@ -136,16 +138,54 @@ $ax^2 + bx + c = 0$ when
 \end{equation*}
 
 \end{mdframed}
-%FIXME there should be more after this, and an example
+
+This formula works for any quadratic equation, including ones where $a$ is
+not 1. Recall the equation from the start of this chapter,
+$6x^2 + 8x - 12 = 0$. Here $a = 6$, $b = 8$, and $c = -12$. Substitute these
+into the formula:
+\begin{equation*}
+  x = \frac{-8 \pm \sqrt{8^2 - 4(6)(-12)}}{2(6)}
+    = \frac{-8 \pm \sqrt{64 + 288}}{12}
+    = \frac{-8 \pm \sqrt{352}}{12}
+\end{equation*}
+Since $\sqrt{352} \approx 18.762$, the $+$ gives
+$x \approx \frac{10.762}{12} \approx 0.897$, and the $-$ gives
+$x \approx \frac{-26.762}{12} \approx -2.230$.
+
+Watch the signs. Since $c = -12$, the term $-4ac$ becomes
+$-4(6)(-12) = +288$, so the number under the square root grows.
+
+Earlier, you divided this equation by 6 to get $x^2 + \frac{4}{3}x - 2 = 0$.
+The formula for $a = 1$ gives the same roots: with $b = \frac{4}{3}$ and
+$c = -2$, $-\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2}$ also comes out to
+$x \approx 0.897$ and $x \approx -2.230$. Use whichever form is easier for
+the numbers in front of you.
+
+The formula also answers the question at the start of this chapter. For
+$72x^2 - 12x + 1.2 = 0$, the number under the square root is
+$(-12)^2 - 4(72)(1.2) = 144 - 345.6 = -201.6$. No real number is the square
+root of a negative number, so this equation has no real solutions.
 
 
 \section{Factoring Quadratics}
 
-%FIXME intro section on quadratics, may need some editing and expansion
+The quadratic formula always works, but the arithmetic can get heavy,
+especially without a calculator. For some quadratics, factoring is faster.
 
-Sometimes, the quadratic gets a bit clunky and hard so solve, especially without a calculator. That's when factoring quadratics becomes a good tool to use as well.
+Factoring rewrites a quadratic as a product of two simpler expressions. For
+example, $x^2 + 5x + 6$ can be written as $(x + 2)(x + 3)$. Expanding the
+product gives back the original: $x^2 + 3x + 2x + 6 = x^2 + 5x + 6$.
 
-Factoring quadratics is a way to separate a quadratic, usually in the form $x^2 + bx + c$ where $(a=1)$, into two multiplied equations in the form $(px + q)(rx + s) = 0$. Solving these for x also gives the roots of the equation. 
+The factored form makes the roots easy to read because of the
+\newterm{zero product property}\index{zero product property}: if two numbers
+multiply to zero, at least one of them must be zero. So
+$(x + 2)(x + 3) = 0$ means $x + 2 = 0$ or $x + 3 = 0$, which gives $x = -2$
+or $x = -3$. These are the same roots the quadratic formula gives, found
+without a square root.
+
+Most quadratics you factor by hand have $a = 1$, in the form
+$x^2 + bx + c$. Certain quadratics with $a \neq 1$ also factor, using the
+AC method below.
 
 \subsection*{Types of Factoring Techniques}
 
@@ -167,14 +207,14 @@ Factoring quadratics is a way to separate a quadratic, usually in the form $x^2 
   \]
 
   \item Factoring Trinomials: \( a \neq 1 \) \\
-  Use the "AC method":
+  Use the ``AC method'':
   \begin{enumerate}
     \item Multiply \( a \times c \)
     \item Find two numbers that multiply to \( ac \) and add to \( b \)
     \item Split the middle term and factor by grouping
   \end{enumerate}
   \[
-  6x^2 + 11x + 4 = 6x^2 + 3x + 8x + 4 = (3x + 2)(2x + 2)
+  6x^2 + 11x + 4 = 6x^2 + 3x + 8x + 4 = 3x(2x + 1) + 4(2x + 1) = (3x + 4)(2x + 1)
   \]
 
   \item Special Cases:
@@ -193,7 +233,7 @@ Factoring quadratics is a way to separate a quadratic, usually in the form $x^2 
 \begin{itemize}
   \item Always factor out the GCF first.
   \item Check your result by expanding (FOIL). The inverse of factoring is expanding using the FOIL method.
-  \item Not all quadratics are factorable over real integers.
+  \item Some quadratics cannot be factored using integers. For those, use the quadratic formula.
 \end{itemize}
 
 

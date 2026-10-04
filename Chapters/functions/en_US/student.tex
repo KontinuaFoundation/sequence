@@ -446,6 +446,153 @@ the exponent, just prefix it with a caret symbol: ``x\^{}2''.)
 
 \includegraphics[width=0.85\textwidth]{Desmos.png}
 
+\textbf{Computing in Python}
+
+Python can draw the same graph. The listing below uses two libraries:
+NumPy, which builds lists of numbers called \newterm{arrays}\index{array},
+and Matplotlib, which plots them.
+
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2 - x - 6
+
+x = np.linspace(-5, 6, 200)
+y = f(x)
+
+plt.plot(x, y)
+plt.axhline(0, color="black", linewidth=0.8)
+plt.axvline(0, color="black", linewidth=0.8)
+plt.grid(True)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("y = x^2 - x - 6")
+plt.show()
+\end{minted}
+
+The \mintinline{python}{def} line packages the rule $x^2 - x - 6$ into a
+Python function named \mintinline{python}{f}. Calling
+\mintinline{python}{f(3)} runs 3 through the machine, the same way $f(3)$
+does on paper. The call \mintinline{python}{np.linspace(-5, 6, 200)} creates
+200 evenly spaced $x$ values from $-5$ to $6$, and passing that whole array to
+\mintinline{python}{f} returns the 200 matching $y$ values at once.
+Matplotlib then draws a point at each $(x, y)$ pair and joins neighboring
+points with short line segments. With 200 points, each segment is short enough
+that the curve looks smooth. The calls \mintinline{python}{axhline} and
+\mintinline{python}{axvline} draw the $x$-axis and $y$-axis, and
+\mintinline{python}{plt.show()} opens the plot window.
+
+\begin{Exercise}[title={Reading values from f}, label={ex:functions-python-1}]
+  Add this line after the plot code:
+  \begin{minted}{python}
+print(f(0), f(3), f(-2))
+  \end{minted}
+  What does it print? What do the three outputs tell you about the graph?
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-1}]
+  It prints \mintinline{python}{-6 0 0}. The first value says the graph
+  crosses the $y$-axis at $(0, -6)$. The two zeros say $x = 3$ and $x = -2$
+  are the $x$-intercepts, the points where the parabola crosses the
+  $x$-axis. Both match the Desmos graph.
+\end{Answer}
+
+Desmos handles the asymptote of $\frac{1}{x}$ on its own. Matplotlib joins
+every pair of neighboring points, so the two branches of $\frac{1}{x}$ need
+separate arrays, one on each side of $x = 0$:
+
+\begin{minted}{python}
+x_left = np.linspace(-6, -0.15, 100)
+x_right = np.linspace(0.15, 6, 100)
+
+plt.plot(x_left, 1 / x_left, color="C0")
+plt.plot(x_right, 1 / x_right, color="C0")
+plt.axhline(0, color="black", linewidth=0.8)
+plt.axvline(0, color="black", linewidth=0.8)
+plt.ylim(-7, 7)
+plt.grid(True)
+plt.title("y = 1/x")
+plt.show()
+\end{minted}
+
+Both calls use \mintinline{python}{color="C0"}, Matplotlib's default blue,
+so the two branches read as one function. The call
+\mintinline{python}{plt.ylim(-7, 7)} fixes the visible $y$ range to match
+Figure~\ref{fig:graphed2}.
+
+\begin{Exercise}[title={The phantom line}, label={ex:functions-python-2}]
+  A student plots $\frac{1}{x}$ with a single array:
+  \begin{minted}{python}
+x = np.linspace(-6, 6, 100)
+plt.plot(x, 1 / x)
+plt.show()
+  \end{minted}
+  The graph shows a vertical line running up the $y$-axis. The function has
+  no value at $x = 0$. Where does the line come from?
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-2}]
+  This array skips 0. The two entries closest to it are $x \approx -0.0606$
+  and $x \approx 0.0606$, with $y \approx -16.5$ and $y \approx 16.5$.
+  Matplotlib connects neighbors, so it draws a nearly vertical segment from
+  $(-0.0606, -16.5)$ up to $(0.0606, 16.5)$. That segment belongs to neither
+  branch of the graph. Plotting each side of the asymptote separately
+  removes it. (With 101 points instead of 100, the array contains 0 exactly;
+  NumPy then warns \mintinline{python}{divide by zero} and stores
+  \mintinline{python}{inf} for that entry.)
+\end{Answer}
+
+The inverse figure from earlier in this chapter takes three plot calls: the
+function, its inverse, and the line $y = x$ that reflects one onto the other.
+
+\begin{minted}{python}
+def g(x):
+    return x**3
+
+def g_inv(x):
+    return np.cbrt(x)
+
+x = np.linspace(-3, 3, 200)
+
+plt.plot(x, g(x), label="g(x) = x^3")
+plt.plot(x, g_inv(x), linestyle="--", label="inverse")
+plt.plot(x, x, color="gray", linewidth=0.8, label="y = x")
+plt.xlim(-3.5, 3.5)
+plt.ylim(-3.5, 3.5)
+plt.gca().set_aspect("equal")
+plt.grid(True)
+plt.legend()
+plt.show()
+\end{minted}
+
+The function \mintinline{python}{np.cbrt} returns the cube root of every
+entry in an array. Setting the aspect to \mintinline{python}{"equal"} gives
+one unit the same length on both axes. Without it, the window stretches one
+axis and the reflection across $y = x$ looks lopsided. The
+\mintinline{python}{label} strings feed \mintinline{python}{plt.legend()},
+which prints the key in the corner.
+
+\begin{Exercise}[title={The missing half}, label={ex:functions-python-3}]
+  Replace \mintinline{python}{np.cbrt(x)} with
+  \mintinline{python}{x**(1/3)} and run the code again. The dashed curve now
+  appears only to the right of the $y$-axis, and Python prints the warning
+  \mintinline{python}{invalid value encountered in power}. Explain what
+  happened.
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-3}]
+  NumPy refuses to raise a negative decimal number to a fractional power, so
+  every negative entry of \mintinline{python}{x**(1/3)} becomes
+  \mintinline{python}{nan} (``not a number''). For example, it returns
+  \mintinline{python}{nan} for $(-8)^{1/3}$ even though the real cube root is
+  $-2$. Matplotlib skips \mintinline{python}{nan} points, which erases the
+  left half. The function \mintinline{python}{np.cbrt} accepts negative
+  inputs and returns $-2$ for $-8$. The TikZ version of
+  Figure~\ref{fig:inv1} solves the same problem by graphing the left half as
+  $-(-x)^{1/3}$.
+\end{Answer}
+
+% Generated without source material; values verified computationally
+
 \section{Even and Odd Functions}
 
 
@@ -504,6 +651,79 @@ On a graph, rotating the graph $180^\circ$ about the origin will yield the same 
 Some functions are neither even nor odd.
 
 For example, \( f(x) = x^3 + 1 \) does not satisfy either condition.
+\textbf{Computing in Python}
+
+A plot can test for symmetry. Draw $h(x)$, $h(-x)$, and $-h(-x)$ on one set
+of axes. When the $h(-x)$ curve lies on top of $h(x)$, the function is even.
+A match between $-h(-x)$ and $h(x)$ means the function is odd.
+
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def h(x):
+    return x**3 + 1
+
+x = np.linspace(-2, 2, 200)
+
+plt.plot(x, h(x), label="h(x)")
+plt.plot(x, h(-x), linestyle="--", label="h(-x)")
+plt.plot(x, -h(-x), linestyle=":", label="-h(-x)")
+plt.grid(True)
+plt.legend()
+plt.show()
+\end{minted}
+
+Writing \mintinline{python}{h(-x)} negates every entry of the array before
+it reaches \mintinline{python}{h}, and the extra minus sign in
+\mintinline{python}{-h(-x)} negates every output afterward. For
+$h(x) = x^3 + 1$, the dashed and dotted curves both separate from the solid
+one, so $x^3 + 1$ is neither even nor odd.
+
+The function \mintinline{python}{np.allclose(a, b)} turns the visual check
+into a yes or no answer. It returns \mintinline{python}{True} when two arrays
+agree at every entry, allowing for tiny rounding errors:
+
+\begin{minted}{python}
+print(np.allclose(h(-x), h(x)))   # even test
+print(np.allclose(-h(-x), h(x)))  # odd test
+\end{minted}
+
+Both lines print \mintinline{python}{False} for $h(x) = x^3 + 1$.
+
+\begin{Exercise}[title={One input is enough}, label={ex:functions-python-4}]
+  Predict the output, then run it:
+  \begin{minted}{python}
+print(h(1), h(-1), -h(-1))
+  \end{minted}
+  How do these three numbers show that $h$ is neither even nor odd?
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-4}]
+  It prints \mintinline{python}{2 0 0}. An even function needs
+  $h(-1) = h(1)$, but $0 \neq 2$. Oddness requires $-h(-1) = h(1)$, which
+  fails for the same reason. A single input that breaks a definition is enough
+  to rule it out.
+\end{Answer}
+
+\begin{Exercise}[title={Swap the function}, label={ex:functions-python-5}]
+  Change the body of \mintinline{python}{h} to
+  \mintinline{python}{return np.abs(x)} and run the plot and both
+  \mintinline{python}{allclose} tests. Then change it to
+  \mintinline{python}{return x**3} and run everything again. For each
+  version, which curve lands on top of the solid one, and what do the tests
+  print?
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-5}]
+  For \mintinline{python}{np.abs(x)}, the dashed $h(-x)$ curve lies exactly
+  on the solid curve, and the tests print \mintinline{python}{True} then
+  \mintinline{python}{False}: $|x|$ is even. With
+  \mintinline{python}{x**3}, the dotted $-h(-x)$ curve lies on the solid
+  curve, and the tests print \mintinline{python}{False} then
+  \mintinline{python}{True}: $x^3$ is odd.
+\end{Answer}
+
+% Generated without source material; values verified computationally
+
 \section{Piecewise Functions}
 Another type of function that will be integral to your mathematics career are \newterm{piecewise functions}.\index{piecewise functions} A piecewise function is one defined by two different equations. You chose which function to evaluate dependent on the domain. Let's look at a simple example:
 \begin{equation*}
@@ -820,6 +1040,121 @@ This creates an impossible and thus invalid piecewise function, as at $x=4$, $f(
   \end{cases}
 \end{equation*}
 Then our value at $x=4$ is equal to $10.2$.
+
+\textbf{Computing in Python}
+
+Matplotlib draws a piecewise graph one piece at a time. Here is $g(x)$ from
+earlier in this section, with its open and closed circles:
+
+\begin{minted}{python}
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+
+x_left = np.linspace(-2, 0, 100)
+x_right = np.linspace(0, 2, 100)
+
+plt.plot(x_left, x_left**2 + 1, color="C0")
+plt.plot(x_right, x_right**2, color="C0")
+plt.plot(0, 0, "o", color="C0")                           # closed circle
+plt.plot(0, 1, "o", color="C0", markerfacecolor="white")  # open circle
+plt.grid(True)
+plt.title("piecewise g(x)")
+plt.show()
+\end{minted}
+
+Each piece gets its own array covering only its part of the domain. A single
+array across the whole domain would join the two pieces with a vertical
+segment at $x = 0$, the same phantom line that appears with $\frac{1}{x}$.
+The format string \mintinline{python}{"o"} draws one round marker, and
+\mintinline{python}{markerfacecolor="white"} hollows it out into an open
+circle.
+
+Plotting shows the shape. Evaluating the function at a particular input
+takes \mintinline{python}{if} and \mintinline{python}{elif}, with one
+condition for each row of the cases. This is the function from
+Exercise~\ref{ex:pw_3_case}:
+
+\begin{minted}{python}
+def p(x):
+    if -5 <= x < -1:
+        return x + 2
+    elif -1 <= x <= 2:
+        return x**2
+    elif 2 < x <= 5:
+        return 3 - x
+    return None
+
+for x in range(-5, 6):
+    print(x, p(x))
+\end{minted}
+
+Python accepts chained comparisons such as \mintinline{python}{-5 <= x < -1},
+written exactly in math notation. It checks the conditions from top to bottom
+and returns from the first one that is true. An input outside every case,
+such as \mintinline{python}{p(6)}, reaches the last line and returns
+\mintinline{python}{None}, Python's value for ``nothing.'' That matches the
+function being undefined there. The call \mintinline{python}{range(-5, 6)}
+produces the integers from $-5$ up to $5$; the stop value 6 is left out.
+
+\begin{Exercise}[title={Checking the table}, label={ex:functions-python-6}]
+  Run the loop above. Compare its output with the table in the answer to
+  Exercise~\ref{ex:pw_3_case}. Which case does Python use at $x = -1$ and at
+  $x = 2$?
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-6}]
+  The outputs for $x = -5, -4, \ldots, 5$ are
+  $-3, -2, -1, 0, 1, 0, 1, 4, 0, -1, -2$, matching the table. At $x = -1$
+  the first condition fails ($-1 < -1$ is false), so Python uses $x^2$ and
+  returns 1. At $x = 2$ the second condition includes 2, so Python returns
+  $2^2 = 4$. Both are the closed circles on the graph.
+\end{Answer}
+
+\begin{Exercise}[title={The case that never runs}, label={ex:functions-python-7}]
+  A student codes the revised function from the end of this section:
+  \begin{minted}{python}
+def q(x):
+    if x >= 0:
+        return x**2
+    elif x == 4:
+        return 10.2
+  \end{minted}
+  The call \mintinline{python}{q(4)} returns \mintinline{python}{16}
+  instead of \mintinline{python}{10.2}. Find the error and fix it.
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-7}]
+  The input 4 satisfies \mintinline{python}{x >= 0}, so Python returns
+  $4^2 = 16$ and never reaches the \mintinline{python}{elif}. Python does
+  not flag overlapping cases; it takes the first match. Putting the special
+  case first fixes it:
+  \begin{minted}{python}
+def q(x):
+    if x == 4:
+        return 10.2
+    elif x >= 0:
+        return x**2
+  \end{minted}
+  Now \mintinline{python}{q(4)} returns \mintinline{python}{10.2} and
+  \mintinline{python}{q(3)} returns \mintinline{python}{9}. Ordering the
+  checks this way does the same job as the condition $x \ge 0,\; x \ne 4$ in
+  the revised definition.
+\end{Answer}
+
+\begin{Exercise}[title={Floor and ceiling in Python}, label={ex:functions-python-8}]
+  Python's \mintinline{python}{math} module provides
+  \mintinline{python}{math.floor} and \mintinline{python}{math.ceil}.
+  Predict the output:
+  \begin{minted}{python}
+print(math.floor(-2.5), math.ceil(-2.5), math.ceil(8.00001), math.floor(7))
+  \end{minted}
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-8}]
+  It prints \mintinline{python}{-3 -2 9 7}. Flooring $-2.5$ moves down to
+  $-3$, the greatest integer less than or equal to $-2.5$; rounding toward
+  zero would give $-2$, which is wrong here. Its ceiling is $-2$. An input of
+  $8.00001$ rises to 9, and an integer such as 7 comes back unchanged.
+\end{Answer}
+
 
 \section{Summary}
 This chapter talked about functions. Functions take in an input and spit out an output, like a magician putting a banana in a hat and releasing a white bunny. However, this is not magic, but math. Each input is given exactly one output. Not all functions have equations that are defined for all real numbers.
