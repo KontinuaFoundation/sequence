@@ -1,4 +1,4 @@
-"""Generate the statistical tables for the stat_tables chapter.
+"""Generate the statistical tables for the Statistical Tables chapter.
 
 Writes three LaTeX snippets (z_table.tex, t_table.tex, chi_table.tex) in the
 same style as the chi-square chapter: table[H] + tabular + \\hline.
