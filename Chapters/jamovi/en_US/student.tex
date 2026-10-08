@@ -1,3 +1,256 @@
-
 \chapter{Data Analysis with jamovi}
 
+A student club surveyed 100 classmates about sleep, screen time, breakfast, and a short quiz. The club wants to know what the answers show. This chapter introduces Jamovi, which is a free software that does the data analysis calculations for you.
+
+\section{Getting Started with jamovi}
+
+\newterm{jamovi}\index{jamovi} is a free statistics program. You choose an analysis from a menu, tick a few boxes, and the results appear right away.
+
+You can use jamovi in two ways:
+\begin{itemize}
+    \item In a web browser, at \url{https://cloud.jamovi.org}, with a free Guest account. Nothing needs to be installed.
+    \item On your own computer, by downloading it from \url{https://www.jamovi.org}. This version works without the internet.
+\end{itemize}
+
+The jamovi window has three parts:
+\begin{itemize}
+    \item On the left, the \newterm{spreadsheet}\index{spreadsheet} holds the data. Each row is one person or thing, and each column is one variable.
+    \item Across the top, the \newterm{analysis ribbon}\index{analysis ribbon} lists the analyses you can run.
+    \item The \newterm{results panel}\index{results panel} on the right shows tables and graphs.
+\end{itemize}
+
+% [figure placeholder: jamovi window with the three parts labeled]
+
+To try it, open an example dataset. Click the menu icon (three lines) in the top-left corner, then choose Open, Data Library, Examples, and Tooth Growth. On the Analyses tab, click Exploration, then Descriptives, and move \texttt{len} into the Variables box. A table of statistics appears without pressing any Run button.
+
+% [C: confirm this menu path in the current jamovi Cloud interface before publication]
+
+\begin{Exercise}[title={Which Part of the Window?}, label={ex:jamovi-regions}]
+Name the part of the window you would use for each task: spreadsheet, analysis ribbon, or results panel.
+
+\begin{center}
+\begin{tabular}{|p{8cm}|p{4cm}|}
+\hline
+Task & Part \\
+\hline
+Fix a number that was typed wrong & \\
+\hline
+Choose an analysis & \\
+\hline
+Read the mean & \\
+\hline
+\end{tabular}
+\end{center}
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-regions}]
+\begin{center}
+\begin{tabular}{|p{8cm}|p{4cm}|}
+\hline
+Task & Part \\
+\hline
+Fix a number that was typed wrong & Spreadsheet \\
+\hline
+Choose an analysis & Analysis ribbon \\
+\hline
+Read the mean & Results panel \\
+\hline
+\end{tabular}
+\end{center}
+\end{Answer}
+
+\section{Setting Up Your Data}
+
+Find \texttt{student\_survey.csv} in your digital resources. Click the menu icon, choose Open, then Browse, and select the file. In jamovi Cloud, you may need to upload it first.
+
+% [C: confirm the Cloud upload and open steps in the current interface ]
+
+\begin{center}
+\begin{tabular}{|l|p{9cm}|}
+\hline
+Column & What it records \\
+\hline
+\texttt{student\_id} & A code number for each student \\
+\hline
+\texttt{travel} & How the student gets to school: Walk, Cycle, Bus, or Car \\
+\hline
+\texttt{breakfast} & Whether the student ate breakfast: Yes or No \\
+\hline
+\texttt{screen\_time} & Hours on screens per day \\
+\hline
+\texttt{sleep\_hours} & Hours of sleep per night \\
+\hline
+\texttt{sleep\_quality} & The student's sleep rating: Poor, Fair, or Good \\
+\hline
+\texttt{quiz\_score} & Score on a 20-point quiz \\
+\hline
+\end{tabular}
+\end{center}
+
+jamovi gives each column a \newterm{measure type}\index{measure type}, which tells it what kind of data the column holds:
+\begin{itemize}
+    \item Nominal: categories with no order, such as travel method
+    \item Ordinal: categories with an order, such as Poor, Fair, Good
+    \item Continuous: measured numbers, such as hours of sleep
+    \item ID: labels for each case, such as a student code
+\end{itemize}
+
+jamovi guesses these types when it opens a file, and it can guess wrong. To fix one, double-click the column name and pick the correct type.
+
+Two cells in \texttt{sleep\_hours} are empty because those students skipped the question. jamovi treats empty cells as \newterm{missing values}\index{missing values} and leaves them out of calculations.
+
+\begin{Exercise}[title={Measure Types}, label={ex:jamovi-measure-types}]
+Give the correct measure type for each column.
+
+\begin{center}
+\begin{tabular}{|l|p{4cm}|}
+\hline
+Column & Measure type \\
+\hline
+\texttt{student\_id} & \\
+\hline
+\texttt{breakfast} & \\
+\hline
+\texttt{sleep\_hours} & \\
+\hline
+\texttt{sleep\_quality} & \\
+\hline
+\end{tabular}
+\end{center}
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-measure-types}]
+\begin{center}
+\begin{tabular}{|l|p{4cm}|}
+\hline
+Column & Measure type \\
+\hline
+\texttt{student\_id} & ID \\
+\hline
+\texttt{breakfast} & Nominal \\
+\hline
+\texttt{sleep\_hours} & Continuous \\
+\hline
+\texttt{sleep\_quality} & Ordinal \\
+\hline
+\end{tabular}
+\end{center}
+\end{Answer}
+
+\section{Describing Data}
+
+Click Exploration, then Descriptives. Move \texttt{quiz\_score} and \texttt{sleep\_hours} into the Variables box.
+
+\begin{center}
+\begin{tabular}{|l|r|r|}
+\hline
+ & \texttt{quiz\_score} & \texttt{sleep\_hours} \\
+\hline
+N & 100 & 98 \\
+\hline
+Missing & 0 & 2 \\
+\hline
+Mean & 12.40 & 7.51 \\
+\hline
+Median & 12 & 7.60 \\
+\hline
+Standard deviation & 3.35 & 0.99 \\
+\hline
+Minimum & 4 & 4.5 \\
+\hline
+Maximum & 20 & 9.8 \\
+\hline
+\end{tabular}
+\end{center}
+
+The average quiz score was 12.4 out of 20. Students slept 7.51 hours a night on average.
+
+To compare groups, move a category into the Split by box. To draw a graph, open Plots and tick Histogram or Box plot. For a category such as \texttt{travel}, tick Frequency tables to count how many students are in each group.
+
+% [figure placeholder: box plots of quiz_score split by breakfast]
+
+\begin{Exercise}[title={Breakfast and Quiz Scores}, label={ex:jamovi-split}]
+Put \texttt{quiz\_score} in the Variables box and \texttt{breakfast} in the Split by box.
+\begin{enumerate}
+\item What is the median quiz score for each group?
+\item Which group did better?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-split}]
+\begin{enumerate}
+\item Breakfast: 13 points. No breakfast: 11 points.
+\item Students who ate breakfast had the higher median score.
+\end{enumerate}
+\end{Answer}
+
+\section{Comparing Two Groups}
+
+Students who ate breakfast averaged 13.28 on the quiz, and students who skipped it averaged 11.03. A t-test checks whether a gap this large could be due to chance.
+
+Click T-Tests, then Independent Samples T-Test. Move \texttt{quiz\_score} into Dependent Variables and \texttt{breakfast} into Grouping Variable. Under Tests, tick Welch's and untick Student's. Welch's version is the safer choice because it does not require the two groups to have the same spread.
+
+% [figure placeholder: t-test options panel with Welch's ticked]
+
+jamovi reports $t = -3.40$ and $p = 0.001$. A small $p$-value, below 0.05, means the gap is unlikely to be due to chance alone.
+
+The negative sign appears because jamovi subtracts the Yes group from the No group. The breakfast group still scored higher.
+
+These data come from a survey, so they show a link between breakfast and quiz scores. They cannot show that breakfast causes higher scores.
+
+\begin{Exercise}[title={Reading the t-Test}, label={ex:jamovi-ttest}]
+\begin{enumerate}
+\item Is $p = 0.001$ below 0.05?
+\item Write one sentence explaining what the test shows.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-ttest}]
+\begin{enumerate}
+\item Yes.
+\item Students who ate breakfast scored higher on the quiz, and the difference is too large to blame on chance alone.
+\end{enumerate}
+\end{Answer}
+
+\section{Looking at Relationships}
+
+Does more screen time go with less sleep? Click Exploration, then Scatterplot. Put \texttt{screen\_time} on the X-Axis and \texttt{sleep\_hours} on the Y-Axis.
+% [C: confirm the Scatterplot item appears under Exploration in the current Cloud version]
+
+% [figure placeholder: scatterplot of sleep_hours against screen_time]
+
+The points slope downward: more screen time goes with less sleep.
+
+Click Regression, then Correlation Matrix, and add both variables. The \newterm{correlation}\index{correlation} $r$ runs from $-1$ to $1$ and measures how closely the points follow a straight line. Here $r = -0.70$, a strong negative relationship.
+
+For a line of best fit, open Regression, then Linear Regression. Put \texttt{sleep\_hours} in Dependent Variable and \texttt{screen\_time} in Covariates. jamovi gives the line
+\[
+\widehat{\text{sleep}} = 9.55 - 0.44 \times \text{screen time}
+\]
+Each extra hour of screen time goes with about 0.44 fewer hours of sleep.
+
+\begin{Exercise}[title={Making a Prediction}, label={ex:jamovi-predict}]
+Use the line to predict the sleep of a student with 6 hours of screen time.
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-predict}]
+$9.55 - 0.44 \times 6 = 6.91$ hours of sleep.
+\end{Answer}
+
+\section{Saving Your Work}
+
+Click the menu icon and choose Save As. jamovi saves an \newterm{.omv file}\index{.omv file}, which keeps your data and results together. In jamovi Cloud, download a copy to your own device before closing the tab.
+% [C: confirm current Guest plan file-retention behavior in jamovi Cloud before publication]
+
+To put a table or graph in a report, right-click it and choose Copy, then paste it into your document.
+
+\begin{Exercise}[title={Saving Choices}, label={ex:jamovi-saving}]
+\begin{enumerate}
+\item Which file type keeps both your data and your results?
+\item How do you move a table into a report?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:jamovi-saving}]
+\begin{enumerate}
+\item An .omv file.
+\item Right-click the table, choose Copy, and paste it into the report.
+\end{enumerate}
+\end{Answer}
+
+
+With jamovi you can open data, set it up, describe it, test it, and save your results, all without writing code. Because it is free and runs in a browser, you can use it on almost any device.
