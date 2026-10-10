@@ -330,4 +330,31 @@ Power & $y = a \cdot x^b$ & $\log(y)$ vs. $\log(x)$ & $\log(x)$
 
 When you are unsure which model fits, try both transformations and compare. Graph $\log(y)$ against $x$: if that looks straight, the relationship is exponential. If it still curves, graph $\log(y)$ against $\log(x)$ instead; if that straightens out, it is a power model. Whichever transformation gives the higher $r^2$ with no leftover pattern in the residuals is the one that matches the data.
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        box/.style={draw=kontinuablue, rounded corners, align=center, minimum width=3.6cm, minimum height=1cm, font=\small},
+        ->, >=stealth, thick
+    ]
+        \node[box] (start) at (0,4) {Scatterplot is curved};
+        \node[box] (step1) at (0,2.6) {Graph $\log(y)$ vs. $x$};
+        \node[box] (q1) at (0,1.2) {Does it look straight?};
+        \node[box] (exp) at (-3.2,-0.2) {Exponential model\\$y = a \cdot b^x$};
+        \node[box] (step2) at (3.2,-0.2) {Graph $\log(y)$ vs. $\log(x)$};
+        \node[box] (q2) at (3.2,-1.6) {Does it look straight?};
+        \node[box] (pow) at (0,-3) {Power model\\$y = a \cdot x^b$};
+        \node[box, draw=red] (neither) at (6.4,-3) {Try a different model};
+
+        \draw (start) -- (step1);
+        \draw (step1) -- (q1);
+        \draw (q1) -- node[above left, font=\footnotesize] {yes} (exp);
+        \draw (q1) -- node[above right, font=\footnotesize] {no} (step2);
+        \draw (step2) -- (q2);
+        \draw (q2) -- node[below left, font=\footnotesize] {yes} (pow);
+        \draw (q2) -- node[right, font=\footnotesize] {no} (neither);
+    \end{tikzpicture}
+    \caption{Deciding between an exponential and a power model.}
+    \label{fig:choosingTransform}
+\end{figure}
+
 These two transformations show up often outside the classroom: population growth tends to follow an exponential pattern, while relationships like body mass and metabolic rate, or a planet's distance from the sun and its orbital period, tend to follow a power model.
