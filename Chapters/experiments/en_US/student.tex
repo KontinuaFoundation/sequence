@@ -2,7 +2,7 @@
 
 \section{Planning and Conducting Experiments}
 
-Surveys tell you what people think or report. Experiments tell you what actually causes what. 
+Surveys tell you what people think or report. Well-designed experiments can show what causes what. 
 The distinction  determines what conclusions you are entitled to draw when the 
 data comes in.
 
@@ -10,7 +10,7 @@ data comes in.
 
 The defining question is whether the researcher assigns the conditions being studied or simply observes them as they exist.
 
-In an \newterm{observational study}\index{observational study}, the researcher collects data on subjects without intervening. 
+In an \newterm{observational study}\index{observational study}, the researcher collects data on \newterm{subjects}\index{subjects}, the people or things being studied, without intervening. 
 The variables of interest already exist in the subjects; the researcher records what is there. A sociologist who tracks the grades 
 and sleep hours of university students over a semester, without changing anyone's sleep schedule, is conducting an observational study.
 
@@ -26,11 +26,29 @@ entirely. This uninvited third variable is called a
 one whose effect on the 
 response cannot be separated from the effect of the variable you are actually studying.
 
-% FIXME image/illustration needed
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    var/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=2.6cm},
+    conf/.style={draw=sdkblue, thick, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=1cm, text width=2.6cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick},
+    assoc/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, sdkblue, thick, dashed}
+]
+\node[var] (sleep) {Hours of sleep\\(explanatory)};
+\node[var, right=4cm of sleep] (grades) {Grades\\(response)};
+\node[conf, above=1.4cm of $(sleep)!0.5!(grades)$] (load) {Course load\\(confounding)};
+
+\draw[assoc] (sleep) -- node[below, font=\footnotesize, text=sdkblue] {observed association} (grades);
+\draw[flow] (load) -- (sleep);
+\draw[flow] (load) -- (grades);
+\end{tikzpicture}
+\caption{A confounding variable affects both the explanatory and response variables, so the observed association cannot be attributed to sleep alone.}
+\label{fig:confounding}
+\end{figure}
 
 In the observational sleep study, students who sleep more might also exercise more, eat better, or have lower course loads. 
-Any of these could be responsible for better grades. There is no way to figure out which effects correlate to 
-which behaviours. 
+Any of these could be responsible for better grades. The data give no way to tell whether sleep or one of these other factors explains the difference. 
 
 There are situations where an experiment is unethical or impossible: you cannot randomly assign people to smoke for twenty years, 
 or randomly select cities to experience floods. In these cases, observational data is all we have, and conclusions must be drawn 
@@ -73,21 +91,45 @@ A historian finds that cities with more libraries per capita had higher literacy
 
 Experiments have their own vocabulary. These terms build on each other, so it helps to learn them in order.
 
-% FIXME image/illustration needed
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    lvl/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.7cm, text width=2.4cm},
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=2.4cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=2.4cm},
+    grp/.style={draw=sdkblue, dashed, rounded corners=4pt, inner sep=6pt},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[unit] (units) {Experimental\\units (students)};
+
+\node[lvl, right=1.6cm of units, yshift=1.35cm] (l1) {Classical};
+\node[lvl, below=0.2cm of l1] (l2) {Jazz};
+\node[lvl, below=0.2cm of l2] (l3) {Afrobeat};
+\node[lvl, below=0.2cm of l3, fill=white] (l4) {No music\\(control group)};
+\node[grp, fit=(l1) (l4), label={[sdkblue, font=\small, align=center]above:Factor: type of music\\levels = treatments}] (factor) {};
+
+\node[proc, right=1.6cm of factor] (resp) {Response variable\\(typing speed)};
+
+\draw[flow] (units) -- node[above, font=\footnotesize, text=sdkblue] {assigned} (factor);
+\draw[flow] (factor) -- node[above, font=\footnotesize, text=sdkblue] {measure} (resp);
+\end{tikzpicture}
+\caption{The parts of a one-factor experiment on background music and typing speed.}
+\label{fig:vocab}
+\end{figure}
 
 \begin{description}
     \item[\newterm{Explanatory variable}\index{explanatory variable}] Also called the independent variable. The variable 
-    whose effect on the response is being studied. In a study of whether LoFi music affects study focus, the type of content 
-    being studied is the explanatory variable.
+    whose effect on the response is being studied. In a study of whether background music affects typing speed, the type of music is the explanatory variable.
 
     \item[\newterm{Response variable}\index{response variable}] Also called the dependent variable. The outcome being measured. 
-    In a study of whether background music affects study typing speed, the typing speed is the response variable.
+    In the same study, typing speed is the response variable.
 
     \item[\newterm{Experimental unit}\index{experimental unit}] The smallest unit to which a treatment is applied. In a study of 
     plants, each plant is an experimental unit. In a study of people, each person is an experimental unit.
 
     \item[\newterm{Factor}\index{factor}] A variable whose effect on the response is of interest. Factors can be qualitative 
-    (type of music: classical, jazz, Afrobeat) or quantitative (temperature in degrees Kelvin).
+    (type of music: classical, jazz, Afrobeat) or quantitative (temperature in degrees Celsius).
 
     \item[\newterm{Levels}\index{levels}] The specific values of a factor used in the experiment. If the factor is type of music 
     with three options, there are three levels.
@@ -107,18 +149,42 @@ Experiments have their own vocabulary. These terms build on each other, so it he
 
 A well-designed experiment rests on three principles. 
 
-% FIXME image/illustration needed
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    head/.style={draw=sdkblue, thick, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=3.4cm},
+    body/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1.4cm, text width=3.4cm},
+    top/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=0.8cm, text width=4cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[head] (rand) {Randomization};
+\node[head, left=0.5cm of rand] (ctrl) {Control};
+\node[head, right=0.5cm of rand] (rep) {Replication};
+
+\node[body, below=0.15cm of ctrl] (ctrlb) {Keep conditions equal\\except the treatment};
+\node[body, below=0.15cm of rand] (randb) {Use chance to assign units to groups};
+\node[body, below=0.15cm of rep] (repb) {Use enough units in each group};
+
+\node[top, above=1cm of rand] (exp) {Well-designed experiment};
+
+\foreach \p in {ctrl,rand,rep} {
+    \draw[flow] (exp.south) -- (\p.north);
+}
+\end{tikzpicture}
+\caption{The three principles of experimental design.}
+\label{fig:principles}
+\end{figure}
 
 \newterm{Control}\index{control!in experiments} means keeping everything the same for all groups except the treatment. It is not just having a control group. Control helps make sure the treatment is the only real difference.
 
 \newterm{Randomization}\index{randomization} means using chance to place experimental units into groups. It helps keep the groups fair and spreads unknown factors across all groups.
 
-A \newterm{lurking variable}\index{lurking variable} is something that can affect the response but is not part of the experiment.
-
 \newterm{Replication}\index{replication} means including enough experimental units in each group so that chance variation 
-among individuals does not swamp the treatment effect. If a new training method is tested on only two employees per group, 
-a single unusually high or low performer could dominate the group's result. With 30 employees per group, individual extremes 
-average out.
+among individuals does not hide the treatment effect. If a new training method is tested on only two employees per group, 
+a single unusually high or low performer could dominate the group's result. With 30 employees per group, individual extremes average out.
+
+Randomization also protects against a \newterm{lurking variable}\index{lurking variable}: a variable that affects the response but is not measured or included in the study. A lurking variable becomes a confounding variable when it is also linked to the explanatory variable, so that its effect cannot be separated from the effect of the treatment. Random assignment spreads lurking variables across all groups by chance, which keeps them from lining up with one treatment.
 
 \begin{Exercise}[title={Applying the Three Principles}, label={ex:three-principles}]
 A horticulture researcher wants to test whether exposing seedlings to classical music for two hours per day increases their 
@@ -149,37 +215,27 @@ the study.
 
 \subsection{Blinding}
 
-When subjects know which treatment they are receiving, their behavior or reported experience may 
-change in ways that have nothing to do with the treatment itself. When the person measuring outcomes 
-knows which group a subject belongs to, their assessments may be influenced a little. Both of these are 
-sources of bias that blinding is designed to prevent.
+Subjects who know their treatment may behave or report differently because of that knowledge. The person measuring outcomes faces the same risk, since knowing a subject's group can sway their judgment, often without their awareness. Blinding prevents both kinds of bias.
 
 In a \newterm{single-blind experiment}\index{single-blind experiment}, either the subjects do not 
 know which treatment they received, or the person measuring outcomes does not know, but not both. 
 
-In a \newterm{double-blind experiment}\index{double-blind experiment}, neither the subjects nor the 
-evaluators know the treatment assignments. Double-blind experiments are preferred when feasible because 
-they eliminate bias from both sources simultaneously.
+In a \newterm{double-blind experiment}\index{double-blind experiment}, neither the subjects nor the people measuring outcomes know the treatment assignments. Double-blind experiments are preferred whenever possible because they remove bias from both sources at once.
 
 Double-blinding is not always possible. 
 If subjects can easily identify their treatment condition from its appearance or 
 feel, blinding them is impossible. A study comparing two different workout splits cannot prevent 
-participants from knowing which one they are following. In such cases, the best available design is 
-to blind the evaluators, even if the subjects cannot be blinded.
+participants from knowing which one they are following. In such cases, the best available design blinds the people measuring outcomes, even though the subjects know their treatment.
 
 \subsection{Random Selection vs. Random Assignment}
 
-What you are allowed to conclude from the results depends on two choices made at the design stage: 
-whether subjects were randomly assigned to treatments, and whether subjects were randomly selected 
-from a larger population. These are two separate decisions, and they lead to two separate types of conclusions.
+Two design choices decide what you may conclude: (1) Were subjects randomly assigned to treatments? (2) Were they randomly selected from a larger population? These are separate decisions, and each one supports a different type of conclusion.
 
 \newterm{Random assignment}\index{random assignment} of treatments is what allows you to conclude that a
  treatment caused an observed difference. When treatments are assigned by chance, any pre-existing differences 
- among subjects are distributed randomly across groups. If one group then performs meaningfully better than 
- another, the only systematic explanation is the treatment itself. A difference large enough to be unlikely 
+ among subjects are distributed randomly across groups. If one group then performs meaningfully better than another, the treatment is the only consistent explanation left. A difference large enough to be unlikely 
  due to chance alone is called \newterm{statistically significant}\index{statistically significant}. 
- Statistically significant differences between treatment groups are evidence that the treatment caused 
- the effect.
+ For example, suppose a noisy-room group scores 8 points lower than a quiet-room group, and random assignment alone would rarely produce a gap that large. The gap is then statistically significant. Statistically significant differences between treatment groups are evidence that the treatment caused the effect.
 
 \newterm{Random selection}\index{random selection} of subjects from a population is what allows you to 
 generalize conclusions beyond the people in your study. If subjects were randomly drawn from a well-defined 
@@ -189,7 +245,7 @@ selected, the conclusions apply only to the subjects in the study, or to others 
 These two ideas operate independently. An experiment can have one, both, or neither. The table below summarizes what each combination allows.
 
 \begin{center}
-\begin{tabular}{|p{0.22\textwidth}|p{0.22\textwidth}|p{0.22\textwidth}|p{0.22\textwidth}|}
+\begin{tabular}{|p{0.22\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|}
 \hline
  & \textbf{Random assignment: Yes} & \textbf{Random assignment: No} \\
 \hline
@@ -200,7 +256,7 @@ These two ideas operate independently. An experiment can have one, both, or neit
 \end{tabular}
 \end{center}
 
-Remember: These two are not interchangeable! However, you need both to make a causal claim that applies to a broader population.
+Remember: the two are separate ideas, and a causal claim about a broader population needs both.
 
 \begin{Exercise}[title={Random Assignment vs. Random Selection}, label={ex:assign-vs-select}]
 For each study, answer three questions: (1) Was there random assignment? (2) Was there random selection? (3) What conclusions are justified?
@@ -212,18 +268,18 @@ For each study, answer three questions: (1) Was there random assignment? (2) Was
 
     \item A school district randomly selects 10 of its 60 elementary schools to pilot a new reading curriculum. All students in those 10 schools use the new curriculum; the remaining 50 schools continue with the standard curriculum. At year end, students in the pilot schools score significantly higher on a standardized reading test.
 
-    \item Nike recruits 80 volunteers through social media and randomly assigns 40 to a new training app and 40 to a standard printed workout plan. After 12 weeks, the app group shows significantly greater improvement in endurance.
+    \item A fitness company recruits 80 volunteers through social media and randomly assigns 40 to a new training app and 40 to a standard printed workout plan. After 12 weeks, the app group shows significantly greater improvement in endurance.
 \end{enumerate}
 \end{Exercise}
 \begin{Answer}[ref={ex:assign-vs-select}]
 \begin{enumerate} 
     \item (1) Yes, random assignment. (2) No, volunteers are self-selected. Conclusion: the noisy room likely caused lower comprehension scores, but this result cannot be generalized to all university students or beyond. Volunteers may differ from the broader student population in ways that affect how noise impacts their reading.
 
-    \item (1) No random assignment because the researcher observed existing behavior. They did not observe an assigned treatment. (2) Yes, random selection from voter rolls. Conclusion: the association between exercise and lower stress can be generalized to the adult population of the city. We cannot conclude that exercise caused lower stress because no treatment was assigned. A confounding variable such as income or work conditions could explain both.
+    \item (1) No random assignment. The researchers observed existing behavior and imposed no treatment. (2) Yes, random selection from voter rolls. Conclusion: the association between exercise and lower stress can be generalized to the adult population of the city. We cannot conclude that exercise caused lower stress because no treatment was assigned. A confounding variable such as income or work conditions could explain both.
 
-    \item (1) No random assignment of individual students to the curriculum because schools were the units assigned rather than students. The assignment was at the school level. (2) Yes, random selection of schools from the district. Conclusion: results can be generalized to the district's elementary schools. The random assignment of schools to curricula supports a causal claim at the school level, but student-level confounding (differences in which students attend which schools) is a concern worth noting.
+    \item (1) Yes, random assignment at the school level. The district used chance to decide which 10 of its 60 schools received the new curriculum, so the schools are the experimental units. Students were not individually assigned. (2) No random selection from a larger population. Every elementary school in the district took part, so the study covers the district's schools and makes no attempt to sample from other districts. Conclusion: the new curriculum likely caused the higher scores in this district's elementary schools. The result cannot be extended to schools in other districts.
 
-    \item (1) Yes, random assignment to app or printed plan. (2) No, volunteers are recruited through social media. Conclusion: the app likely caused greater endurance improvement compared to the printed plan. However, this result cannot be generalized to all people interested in fitness, as social media recruits may be younger, more comfortable with mobile phones and social media in general, or more motivated than the broader population.
+    \item (1) Yes, random assignment to app or printed plan. (2) No, volunteers are recruited through social media. Conclusion: the app likely caused greater endurance improvement compared to the printed plan. However, this result cannot be generalized to all people interested in fitness. Social media recruits may be younger, more comfortable with mobile apps, or more motivated than the broader population.
 \end{enumerate}
 \end{Answer}
 
@@ -231,7 +287,7 @@ For each study, answer three questions: (1) Was there random assignment? (2) Was
 
 \section{Experimental Designs}
 
-There are three experimental designs you should be able to recognize, describe, and distinguish from one another. Each one handles variability among experimental units differently.
+There are three experimental designs you should be able to recognize, describe, and distinguish from one another. Each one handles \newterm{variability}\index{variability}, the natural differences among experimental units, in its own way.
 
 \subsection{Completely Randomized Design}
 
@@ -247,9 +303,38 @@ Suppose an agricultural research station wants to compare the yield of three var
     \item Compare average yields across the three groups.
 \end{enumerate}
 
-% FIXME Figure/Illustration needed
-% [figure placeholder: completely randomized design diagram 90 available plots randomly assigned to Group 1 (variety 1), Group 2 (variety 2), Group 3 (variety 3), all leading to Measure & Compare yield]
-%\caption{Schematic diagram of a completely randomized experiment.}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=2.2cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=2.2cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=2cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[unit] (plots) {90 available\\plots};
+\node[proc, right=0.8cm of plots] (rand) {Random\\assignment};
+
+\node[unit, right=1.2cm of rand] (g2) {Group 2\\30 plots};
+\node[unit, above=0.5cm of g2] (g1) {Group 1\\30 plots};
+\node[unit, below=0.5cm of g2] (g3) {Group 3\\30 plots};
+
+\node[trt, right=0.6cm of g1] (v1) {Variety 1};
+\node[trt, right=0.6cm of g2] (v2) {Variety 2};
+\node[trt, right=0.6cm of g3] (v3) {Variety 3};
+
+\node[proc, right=1.2cm of v2] (cmp) {Measure and\\compare yield};
+
+\draw[flow] (plots) -- (rand);
+\foreach \i in {1,2,3} {
+    \draw[flow] (rand.east) -- (g\i.west);
+    \draw[flow] (g\i) -- (v\i);
+    \draw[flow] (v\i.east) -- (cmp.west);
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a completely randomized experiment.}
+\label{fig:crd}
+\end{figure}
 
 
 This design works well when the experimental units are reasonably similar to begin with. If the 90 plots varied dramatically in soil quality, however, randomization might not perfectly balance soil quality across the three groups, particularly with a smaller experiment. This is the motivation for blocking.
@@ -275,9 +360,9 @@ A sports science department wants to test whether three different warm-up routin
 
 When experimental units differ in some important, identifiable way before the experiment begins, a completely randomized design may leave a large amount of unexplained variability in the results. A more efficient approach is to group similar units into blocks before assigning treatments.
 
-In a \newterm{randomized block design}\index{randomized block design}, experimental units are first divided into homogeneous groups called blocks. Within each block, all treatments are randomly assigned. Because units within a block are similar to each other, the comparison between treatments within a block is cleaner than a comparison that mixes unlike units together. The blocking factor is a variable known to affect the response that the researcher controls for by separating units before randomization.
+In a \newterm{randomized block design}\index{randomized block design}, experimental units are first divided into groups of similar units called blocks. Within each block, all treatments are randomly assigned. Because units within a block are similar to each other, the comparison between treatments within a block is cleaner than a comparison that mixes unlike units together. The blocking factor is a variable known to affect the response that the researcher controls for by separating units before randomization.
 
-Returning to the wheat experiment: suppose the research station has two distinct soil zones, sandy soil in the northern half of the available land and clay soil in the southern half. Soil type is known to affect yield. If the three varieties are distributed randomly across all 90 plots without regard to soil type, differences in soil quality may obscure or exaggerate differences between varieties. The solution is to block on soil type.
+Return to the wheat experiment. Suppose the research station has two soil zones: sandy soil in the northern half of the land and clay soil in the southern half. Soil type is known to affect yield. If the three varieties are distributed randomly across all 90 plots without regard to soil type, differences in soil quality may obscure or exaggerate differences between varieties. The solution is to block on soil type.
 
 \begin{enumerate}
     \item Divide the 90 plots into two blocks: 45 sandy-soil plots and 45 clay-soil plots.
@@ -287,11 +372,56 @@ Returning to the wheat experiment: suppose the research station has two distinct
     \item Compare yields within each block, then examine how results differ across soil types.
 \end{enumerate}
 
-% FIXME Figure/Illustration needed
-% [figure placeholder: randomized block design diagram, 90 plots separated into Sandy soil block (randomly assigned to V1, V2, V3) and Clay soil block (randomly assigned to V1, V2, V3), both leading to Measure & Compare]
-% caption{Schematic diagram of a randomized block design.}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.9cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.5cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    blk/.style={draw=sdkblue, dashed, rounded corners=4pt, inner sep=6pt},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+% Sandy soil block
+\node[proc] (srand) {Random\\assignment};
+\node[unit, right=1cm of srand] (sg2) {Group 2\\15 plots};
+\node[unit, above=0.3cm of sg2] (sg1) {Group 1\\15 plots};
+\node[unit, below=0.3cm of sg2] (sg3) {Group 3\\15 plots};
+\node[trt, right=0.5cm of sg1] (sv1) {Variety 1};
+\node[trt, right=0.5cm of sg2] (sv2) {Variety 2};
+\node[trt, right=0.5cm of sg3] (sv3) {Variety 3};
+\node[proc, right=0.9cm of sv2] (scmp) {Compare\\yields};
+\node[blk, fit=(srand) (sg1) (sg3) (sv1) (sv3) (scmp), label={[sdkblue, font=\small]above:Sandy soil block (45 plots)}] (sandy) {};
 
-Notice that results must be compared within blocks. Comparing a variety 1 plot on sandy soil to a variety 2 plot on clay soil would confound the variety effect with the soil effect. The whole point of blocking is to make comparisons fair by ensuring the only difference within each comparison is the treatment.
+% Clay soil block
+\node[proc, below=3.6cm of srand] (crand) {Random\\assignment};
+\node[unit, right=1cm of crand] (cg2) {Group 2\\15 plots};
+\node[unit, above=0.3cm of cg2] (cg1) {Group 1\\15 plots};
+\node[unit, below=0.3cm of cg2] (cg3) {Group 3\\15 plots};
+\node[trt, right=0.5cm of cg1] (cv1) {Variety 1};
+\node[trt, right=0.5cm of cg2] (cv2) {Variety 2};
+\node[trt, right=0.5cm of cg3] (cv3) {Variety 3};
+\node[proc, right=0.9cm of cv2] (ccmp) {Compare\\yields};
+\node[blk, fit=(crand) (cg1) (cg3) (cv1) (cv3) (ccmp), label={[sdkblue, font=\small]above:Clay soil block (45 plots)}] (clay) {};
+
+% Source of units
+\node[unit, text width=1.6cm, minimum height=1cm] at ($(srand)!0.5!(crand) + (-2.6,0)$) (plots) {90 available\\plots};
+
+\draw[flow] (plots.east) -- (srand.west);
+\draw[flow] (plots.east) -- (crand.west);
+\foreach \b in {s,c} {
+    \foreach \i in {1,2,3} {
+        \draw[flow] (\b rand.east) -- (\b g\i.west);
+        \draw[flow] (\b g\i) -- (\b v\i);
+        \draw[flow] (\b v\i.east) -- (\b cmp.west);
+    }
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a randomized block design.}
+\label{fig:rbd}
+\end{figure}
+
+Notice that results must be compared within blocks. Comparing a variety 1 plot on sandy soil to a variety 2 plot on clay soil would mix up the variety effect with the soil effect. The whole point of blocking is to make comparisons fair by ensuring the only difference within each comparison is the treatment.
 
 A good blocking variable is one you can observe before the experiment begins and one you expect to affect the response. In the wheat experiment, soil type is visible and known to matter. In a study of a new study-skills program, prior academic performance would be a natural blocking variable. The rule: block on what you can see and control; randomize against what you cannot.
 
@@ -324,9 +454,41 @@ In the second version, each subject serves as their own pair, receiving both tre
 
 Consider a study testing whether caffeine affects short-term memory performance. Each participant completes a memory task twice: once after consuming a caffeinated drink, and once after consuming an identical-looking decaffeinated drink. The order is randomly determined for each participant. This is a matched-pairs design because each participant's caffeinated performance is paired with their own decaffeinated performance. Comparing one participant's caffeinated score to a different participant's decaffeinated score would not be effective.
 
-% FIXME Figure/Illustration needed
-%figure placeholder: matched-pairs diagram — participants randomly assigned order → condition 1 (caffeinated or decaf first) → washout period → condition 2 → Compare within each participant]
-%{Schematic diagram of a matched-pairs design (repeated measures version).}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.7cm},
+    wash/.style={draw=sdkblue, dashed, fill=white, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.5cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[unit] (people) {Participants};
+\node[proc, right=0.6cm of people] (rand) {Random\\order};
+
+\node[trt, above right=0.4cm and 1cm of rand] (a1) {Caffeinated\\drink};
+\node[wash, right=0.5cm of a1] (aw) {Washout\\period};
+\node[trt, right=0.5cm of aw] (a2) {Decaf\\drink};
+
+\node[trt, below right=0.4cm and 1cm of rand] (b1) {Decaf\\drink};
+\node[wash, right=0.5cm of b1] (bw) {Washout\\period};
+\node[trt, right=0.5cm of bw] (b2) {Caffeinated\\drink};
+
+\node[proc, text width=2.4cm, right=1cm of $(a2.east)!0.5!(b2.east)$, anchor=west] (cmp) {Compare each\\participant's\\two scores};
+
+\draw[flow] (people) -- (rand);
+\draw[flow] (rand.east) -- (a1.west);
+\draw[flow] (rand.east) -- (b1.west);
+\foreach \r in {a,b} {
+    \draw[flow] (\r 1) -- (\r w);
+    \draw[flow] (\r w) -- (\r 2);
+    \draw[flow] (\r 2.east) -- (cmp.west);
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a matched-pairs design (repeated measures version).}
+\label{fig:mp}
+\end{figure}
 
 
 \begin{Exercise}[title={Matched Pairs or Randomized Block?}, label={ex:mp-block}]
@@ -351,36 +513,44 @@ Classify each study as a matched-pairs design or a randomized block design with 
 
 Knowing what each experimental design is called is not enough. The AP exam regularly asks you to justify why a particular design is appropriate for a given situation. That requires understanding what problem each design solves and when those problems arise.
 
-The starting point is always the completely randomized design. It is the simplest structure, and when experimental units are reasonably similar to one another, it is the right choice. Random assignment distributes any pre-existing differences among units across treatment groups by chance, and with enough units, those differences tend to balance out. If you have no strong reason to believe that a particular characteristic of the units will systematically affect the response, a completely randomized design is appropriate. 
+The starting point is always the completely randomized design. It is the simplest structure, and when experimental units are reasonably similar to one another, it is the right choice. Random assignment spreads pre-existing differences among units across the treatment groups by chance. With enough units, those differences tend to balance out. If you have no strong reason to expect a particular characteristic of the units to consistently affect the response, use a completely randomized design. 
 
-The case for blocking arises when you can identify, before the experiment begins, a characteristic of the experimental units that you expect to affect the response variable. The problem with ignoring such a characteristic is that it introduces extra variability into your results: units in the same treatment group will differ from one another in ways that have nothing to do with the treatment, making it harder to detect a real treatment effect. Blocking solves this by grouping similar units together first, so that the comparison between treatments is made within groups of units that are alike in the relevant way. This reduces variability within treatment comparisons and makes the experiment more sensitive.
+Blocking makes sense when, before the experiment begins, you can identify a characteristic of the units that you expect to affect the response. Ignoring such a characteristic adds extra variability to your results. Units in the same treatment group will differ in ways unrelated to the treatment, and those differences make a real treatment effect harder to detect. Blocking solves this by grouping similar units first. Treatments are then compared within groups of units that are alike in the relevant way, which reduces variability and makes the experiment more sensitive.
 
 To decide whether to block, ask yourself: is there a variable I can observe right now, before any treatment is applied, that I expect to affect how units respond? If yes, and if it is practical to measure and group by that variable, block on it.
 
-Matched pairs is the right choice when there are exactly two treatments and you can either pair units that are very similar on some relevant characteristic, or give both treatments to the same unit. Because each unit in a pair is as similar as possible to the other, the within-pair comparison is very clean. If each unit can receive both treatments (with a washout period between them), individual differences disappear entirely from the comparison.
+Use matched pairs when there are exactly two treatments. Either pair up units that match on a relevant characteristic, or give both treatments to each unit. Because the two units in a pair are as similar as possible, the within-pair comparison is very clean. When each unit receives both treatments (with a washout period between them), individual differences drop out of the comparison entirely.
+
+A design justification on the AP exam names the design, the variable it accounts for, and why that variable matters. Here is a model for the wheat experiment:
+
+\begin{quote}
+Use a randomized block design, blocking on soil type. Soil type can be observed before planting, and it is expected to affect yield. Comparing the three varieties within each soil type removes soil-related variability from the comparison, so a difference in yield is easier to attribute to the variety.
+\end{quote}
+
+The same three parts work for any design: name it, name the variable it handles, and explain how handling that variable makes the treatment comparison fairer.
 
 \begin{Exercise}[title={Justifying a Design Choice}, label={ex:design-choice}]
 For each situation, recommend a design (completely randomized, randomized block, or matched pairs) and write a clear justification that explains why that design is more appropriate than the alternatives.
 
 \begin{enumerate} 
-    \item Dell Technologies wants to test whether a new user interface reduces the time it takes to complete a standard task, compared to the existing interface. They have 80 volunteers available, all of whom are regular users of neither interface and have similar levels of computing experience.
+    \item A software company wants to test whether a new user interface reduces the time it takes to complete a standard task, compared to the existing interface. It has 80 volunteers available. None of them have used either interface, and all have similar levels of computing experience.
 
     \item A sleep research lab wants to compare the effect of two room temperatures (cool vs. warm) on sleep quality. They have 40 adult volunteers. Each person's natural sleep patterns vary night to night, but researchers expect consistent individual differences in baseline sleep quality across people.
 
     \item Bluewave School District wants to compare three different formats for a professional development workshop (in-person, hybrid, and fully online) on teachers' reported confidence in teaching a new curriculum. The district's teaching staff includes both primary school teachers and secondary school teachers, and prior research suggests that these two groups respond very differently to professional development formats.
 
-    \item Rhode Cosmetics wants to test whether a new moisturizer reduces skin dryness compared to a standard moisturizer. They recruit 50 volunteers and note that participants' baseline skin dryness varies widely.
+    \item A skincare company wants to test whether a new moisturizer reduces skin dryness compared to a standard moisturizer. They recruit 50 volunteers and note that participants' baseline skin dryness varies widely.
 \end{enumerate}
 \end{Exercise}
 \begin{Answer}[ref={ex:design-choice}]
 \begin{enumerate} 
-    \item Completely randomized design. The volunteers are similar in relevant ways (comparable computing experience, no prior exposure to either interface). There is no identified variable that would systematically affect how they respond to one interface versus the other. Randomly assign 40 volunteers to the new interface and 40 to the existing interface.
+    \item Completely randomized design. The volunteers are similar in relevant ways (comparable computing experience, no prior exposure to either interface). There is no identified variable that would consistently affect how they respond to one interface versus the other. Randomly assign 40 volunteers to the new interface and 40 to the existing interface.
 
     \item Matched pairs (repeated measures). Each participant has their own baseline sleep patterns that differ from others. Using each person as their own pair eliminates individual differences in baseline sleep quality from the comparison. Randomly determine which temperature each volunteer experiences first, include a washout night between conditions, then compare each person's cool-night and warm-night sleep quality directly.
 
     \item Randomized block design, blocking on school level (primary vs. secondary). Prior research indicates that the two groups respond differently to professional development formats. If teachers are randomly assigned to workshop formats without blocking, differences in how primary and secondary teachers respond could mask or distort the true effect of format. Block by school level and randomly assign teachers to the three formats within each block.
 
-    \item Randomized block design or matched pairs, blocking on baseline skin dryness level. Because baseline dryness varies widely, a participant who starts very dry might show a large reduction regardless of which moisturizer they use. Grouping participants by baseline dryness (for example, low, medium, high) and assigning both moisturizers within each group removes this variability from the comparison. Alternatively, if each participant can use each moisturizer on separate occasions, a matched-pairs repeated measures design would control individual differences even more completely.
+    \item Randomized block design or matched pairs, blocking on baseline skin dryness level. Because baseline dryness varies widely, a participant who starts very dry might show a large reduction regardless of which moisturizer they use. Grouping participants by baseline dryness (for example, low, medium, high) and assigning both moisturizers within each group removes this variability from the comparison. Alternatively, if each participant can use each moisturizer on separate occasions, a matched-pairs repeated measures design would control individual differences even more completely. Both designs earn credit here because each one accounts for baseline dryness; the matched-pairs version is stronger when repeated use is practical.
 \end{enumerate}
 \end{Answer}
 
