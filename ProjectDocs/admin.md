@@ -6,6 +6,8 @@ For those working on draft workbooks, run the following actions occasionally:
 - [ ] Copy the output in `Build/Resources-en_US` and replace everything in [kontinuafoundation.github.io](https://github.com/KontinuaFoundation/kontinuafoundation.github.io). 
 
 For concatenating book chapters into book_00:
-```cd ../Chapters && cat book_{01..36}.txt > book_00.txt && cd ../Build```
+```cd ../Chapters && awk '{ printf "%s%s", (NR > 1 ? "\n" : ""), $0 }' book_{01..36}.txt > book_00.txt && cd ../Build```
+
+(The `book_NN.txt` files have no trailing newline, so don't use `cat` here: it would fuse the last chapter of one book with the first chapter of the next.)
 
 All of these steps have been automated in `Build/deploy_to_kontinua.py`

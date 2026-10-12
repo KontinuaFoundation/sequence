@@ -72,11 +72,30 @@ jobs:
         run: |
           set -euo pipefail
           cd Chapters
-          : > book_00.txt
-          for i in $(seq -w 1 36); do
-            cat "book_$i.txt" >> book_00.txt
+          # book_NN.txt files have no trailing newline, so join the lines with an
+          # explicit newline (and none after the last line) instead of using cat.
+          awk '{ printf "%s%s", (NR > 1 ? "\n" : ""), $0 }' $(seq -w 1 36 | sed 's/.*/book_&.txt/') > book_00.txt
+
+      - name: Validate chapter lists
+        run: |
+          set -euo pipefail
+          cd Chapters
+          # duplicate id checks
+          grep -hv '^\s*\(#\|$\)' book_{01..36}.txt | tr -d '\r' | sort | uniq -d | sed 's/^/duplicate id: /' | tee dups.txt
+          [ ! -s dups.txt ]
+          #  Missing directory check
+          for id in $(grep -hv '^\s*\(#\|$\)' book_{01..36}.txt | tr -d '\r'); do
+            [ -d "$id" ] || { echo "missing chapter dir: $id"; exit 1; }
           done
-          
+
+      - name: Check book_00.txt is up to date
+        run: |
+          git diff --exit-code -- Chapters/book_00.txt || {
+            echo "::error file=Chapters/book_00.txt::book_00.txt is stale. Regenerate it from book_01..36 and commit."
+            exit 1
+          }
+
+
       - name: Detect changed chapter IDs
         id: detect
         shell: bash
@@ -121,7 +140,7 @@ jobs:
             fi
 
             if [[ "$file" =~ ^Chapters/book_[0-9]{2}\.txt$ && -f "$file" ]]; then
-              while IFS= read -r line; do
+              while IFS= read -r line || [[ -n "$line" ]]; do
                 chapter_id="$(echo "$line" | xargs)"
                 if [[ -n "$chapter_id" && ! "$chapter_id" =~ ^# ]]; then
                   chapters["$chapter_id"]=1
@@ -135,7 +154,7 @@ jobs:
 
             workbook_id="$(basename "$book_file" .txt)"
 
-            while IFS= read -r line; do
+            while IFS= read -r line || [[ -n "$line" ]]; do
               chapter_id="$(echo "$line" | xargs)"
 
               [[ -z "$chapter_id" ]] && continue
