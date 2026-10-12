@@ -13,6 +13,7 @@ page_count_pattern = re.compile(r"Output written on .*\((\d+) pages?,")
 
 _GREEN = "\033[92m"
 _RED = "\033[91m"
+_CYAN = "\033[96m"
 _RESET = "\033[0m"
 
 
@@ -218,11 +219,11 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
         shutil.move(output_pdf_path, final_pdf_path)
         page_count = page_count_from_log(log_path)
         page_str = f"{page_count} pages" if page_count is not None else "unknown page count"
-        print(f"{final_pdf_path} built ({page_str}).")
+        print(f"{_GREEN}{final_pdf_path} {_RESET} built at {_CYAN}{time.strftime('%d %b %Y %H:%M:%S')}{_RESET} ({page_str})")
         print_separator(success=True)
         return True
 
-    print(f"Build of {final_pdf_path} Failed (see {log_path} for details)")
+    print(f"Build of {final_pdf_path} Failed at {time.strftime('%d %b %Y %H:%M:%S')} (see {log_path} for details)")
     print_separator(success=False)
     return False
 
