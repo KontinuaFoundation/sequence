@@ -233,7 +233,7 @@ To transform a table from 2NF to 3NF, we need to meet the following conditions:
 \end{itemize}
 Looking at our table, we see a transitive dependency:
 \[
-\texttt{EquipmentId}\rightarrow \texttt{EquipmentLocation} \rightarrow \texttt{LocationManager}
+\texttt{EquipmentID}\rightarrow \texttt{EquipmentLocation} \rightarrow \texttt{LocationManager}
 \]
 These are all stored in the same table, which creates a transitive dependency that violates 3NF.
 
@@ -280,30 +280,99 @@ Lab C & Larry \\
 
 FIXME exercise transform a full table up to 3NF
 \section{Entity-Relationship Diagram}
-FIXME Add an ER diagram for the above example with lab equip.
-% ER Diagrams with mermaid
-\begin{mermaid}
+Now that we have normalized our tables, we can create an \newterm{entity-relationship diagram} to visually represent the relationships between the tables. Often, this process may even clear up further FDs or issues with the database design.\index{ER diagram|see{entity-relationship diagram}}
+
+To do this, we will introduce a new programming language called \newterm{Mermaid}, which allows us to create diagrams directly within \LaTeX documents. It is a text-based diagramming tool that is universally used in other software that supports Mermaid syntax, such as GitHub, Obsidian, and Notion.
+
+Using our normalized tables, we can create an ER diagram to visualize the relationships between them.
+
+We can say that our \underline{\texttt{EquipmentLocation}} requires having a \texttt{LocationManager}, and (for the sake of our database), each \texttt{LocationManager} is responsible for managing a unique location. Therefore, we can say that 
+\texttt{LocationManager} and \texttt{EquipmentLocation} have a \newterm{one-to-one relationship}.
+
+We have added the mermaid diagram in Figure~\ref{fig:one-to-one}, but here is the mermaid syntax for it:
+
+\begin{minted}{text}
 erDiagram
-    %% One-to-one
-    PERSON ||--|| PASSPORT : "has (one to one)"
+    EQUIPMENT_LOCATION ||--|| LOCATION_MANAGER : "has (one to one)"
+\end{minted}
 
-    %% One-to-many
-    DEPARTMENT ||--o{ EMPLOYEE : "employs (one to many)"
 
-    %% Many-to-many
-    STUDENT {
-        int student_id PK
-        string name
-        string email
-    }
-    COURSE {
-        int course_id PK
-        string title
-    }
-    STUDENT }o--o{ COURSE : "enrolls_in (zero or many to zero or many)"
+How about when it comes to a Lab Location and Lab Equipment? Well, a Location that is recently built could have zero pieces of equipment associated with it, while an existing location might have one or more pieces of equipment. However, a given piece of equipment will always be associated with exactly one location, even if there are multiple of that piece of equipment in other locations (think: multiple 3D printers in different labs).
+
+This scenario represents a \newterm{zero-to-many relationship} between the \texttt{Location} and \texttt{Equipment} tables (see Figure~\ref{fig:zero-to-many}).
+
+
+\begin{minted}{text}
+erDiagram
+    Location ||--o{ Equipment : "has (zero to many)"
+\end{minted}    
+
+A student can check out many pieces of equipment, and a piece of equipment can be checked out by many students (see Figure~\ref{fig:many-to-many}). This is the relationship behind the whole Checkout table from the 2NF split. We did this so that we could accurately track which student has checked out which piece (or pieces of equipment).
+
+\begin{minted}{text}
+erDiagram
+    STUDENT }o--o{ EQUIPMENT : checks_out
+    STUDENT ||--o{ CHECKOUT : "checks_out (one to many)"
+    EQUIPMENT ||--o{ CHECKOUT : "checked_out_by (one to many)"
+    
+\end{minted}
+
+% ER Diagrams with mermaid
+\begin{figure}[H]
+    \centering
+    \MermaidAdjustBoxOpts{max width=\linewidth,center}
+    \captionsetup[subfigure]{font=footnotesize}
+    \begin{subfigure}[b]{0.286\textwidth}
+        \centering
+        \begin{mermaid}
+erDiagram
+    EQUIPMENT_LOCATION ||--|| LOCATION_MANAGER : "has (one to one)"
 \end{mermaid}
+        \caption{One-to-one}
+        \label{fig:one-to-one}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.196\textwidth}
+        \centering
+        \begin{mermaid}
+erDiagram
+    Location ||--o{ Equipment : "has (zero to many)"
+\end{mermaid}
+        \caption{Zero-to-many}
+        \label{fig:zero-to-many}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.478\textwidth}
+        \centering
+        \begin{mermaid}
+erDiagram
+    STUDENT }o--o{ EQUIPMENT : "checks_out (zero or many to zero or many)"
+    STUDENT ||--o{ CHECKOUT : "checks_out (one to many)"
+    EQUIPMENT ||--o{ CHECKOUT : "checked_out_by (one to many)"
+\end{mermaid}
+        \caption{Many-to-many, resolved through \texttt{Checkout}}
+        \label{fig:many-to-many}
+    \end{subfigure}
+    \caption{ER diagrams for the three relationship types in the lab equipment database.}
+    \label{fig:relationship-types}
+\end{figure}
 
 \section{Relational Algebra Basics}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+        Relational Algebra & SQL \\ \hline
+        $\pi$ & \mintinline{sql}{SELECT} \\ \hline
+        $\times$ & \mintinline{sql}{,} or \mintinline{sql}{CROSS JOIN} \\ \hline
+        $\bowtie_{\theta}$ & \mintinline{sql}{INNER JOIN <table> ON <condition>} \\ \hline
+        $\sigma$ & \mintinline{sql}{WHERE} \\ \hline
+        $\tau$ & \mintinline{sql}{ORDER BY} \\ \hline
+        $\cup$ & \mintinline{sql}{UNION} \\ \hline
+        $-$ & \mintinline{sql}{EXCEPT} \\ \hline
+        $\cap$ & \mintinline{sql}{INTERSECT} \\ \hline
+    \end{tabular}
+\end{table}
 \section{Relating Two Tables}
 % Formally address how two tables can be linked using foreign keys.
 
@@ -313,13 +382,13 @@ Let's first create the \texttt{Equipment} table with a foreign key referencing t
 \begin{minted}{sql}
 CREATE TABLE Location (
     EquipmentLocation VARCHAR(50) PRIMARY KEY,
-    LocationManager VARCHAR(50)
+    LocationManager VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE Equipment (
     EquipmentID VARCHAR(50) PRIMARY KEY,
     EquipmentName VARCHAR(50),
-    EquipmentLocation VARCHAR(50),
+    EquipmentLocation VARCHAR(50) NOT NULL, -- the not null constraint ensures that every piece of equipment must have a location
     FOREIGN KEY (EquipmentLocation) REFERENCES Location(EquipmentLocation)
 );
 \end{minted}
