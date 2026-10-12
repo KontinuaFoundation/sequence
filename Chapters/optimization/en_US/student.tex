@@ -1,5 +1,15 @@
 \chapter{Optimization}
 
+% Kontinua palette for TikZ figures
+\definecolor{kgBlue}{HTML}{005992}
+\definecolor{kgDarkGray}{HTML}{C2C1C0}
+\definecolor{kgLightGray}{HTML}{D8D8D8}
+\definecolor{kgRed}{HTML}{DD5041}
+\definecolor{kgSkyBlue}{HTML}{53A7DC}
+\definecolor{kgYellow}{HTML}{F0B358}
+\definecolor{kgGreen}{HTML}{4B9751}
+\definecolor{kgBrown}{HTML}{90582F}
+
 Optimization is a branch of mathematics that involves finding the best
 solution from all feasible solutions. In the field of operations
 research, optimization plays a crucial role. Whether it is minimizing
@@ -13,10 +23,46 @@ This is usually referred to as the critical point! \index{critical point}
 
 At a critical point where the derivative is zero, the graph of the
 function has a horizontal tangent line. At such a point, the function
-may be reaching a peak or a valley.
+may be reaching a peak or a valley (Figure~\ref{fig:duck-hiker}).
 
-Not every critical point corresponds to a maximum or minimum. Some
-critical points may instead be points of inflection. This is when the second derivative of the point is also equal to zero! You will see this in a few examples!
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{duck_hiker.png}
+\caption{Each duck sits where $f'(x) = 0$: at a maximum, at a minimum, and at a point that is neither.}
+\label{fig:duck-hiker}
+\end{figure}
+
+Most critical points correspond to a maximum or minimum, and some are
+points of inflection instead (Figure~\ref{fig:critical-point-types}). This is when the second derivative of the point is also equal to zero! You will see this in a few examples!
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1cm, y=1cm]
+\begin{scope}[xshift=0cm]
+\draw[->, kgDarkGray] (-1.4,0) -- (1.5,0) node[right, black] {$x$};
+\draw[kgBlue, thick] plot[domain=-1.2:1.2, samples=60] (\x, {1 - 0.9*(\x)^2});
+\draw[kgRed, thick] (-0.6,1) -- (0.6,1);
+\fill[kgBlue] (0,1) circle (1.8pt);
+\node[align=center] at (0,-1.55) {relative maximum\\$f''(c)<0$};
+\end{scope}
+\begin{scope}[xshift=4cm]
+\draw[->, kgDarkGray] (-1.4,0) -- (1.5,0) node[right, black] {$x$};
+\draw[kgBlue, thick] plot[domain=-1.2:1.2, samples=60] (\x, {-0.3 + 0.9*(\x)^2});
+\draw[kgRed, thick] (-0.6,-0.3) -- (0.6,-0.3);
+\fill[kgBlue] (0,-0.3) circle (1.8pt);
+\node[align=center] at (0,-1.55) {relative minimum\\$f''(c)>0$};
+\end{scope}
+\begin{scope}[xshift=8cm]
+\draw[->, kgDarkGray] (-1.4,0) -- (1.5,0) node[right, black] {$x$};
+\draw[kgBlue, thick] plot[domain=-1.2:1.2, samples=60] (\x, {0.35 + 0.7*(\x)^3});
+\draw[kgRed, thick] (-0.6,0.35) -- (0.6,0.35);
+\fill[kgBlue] (0,0.35) circle (1.8pt);
+\node[align=center] at (0,-1.55) {neither\\$f''(c)=0$};
+\end{scope}
+\end{tikzpicture}
+\caption{At a critical point $x=c$ the tangent line is horizontal, and the graph may have a maximum, a minimum, or neither.}
+\label{fig:critical-point-types}
+\end{figure}
 
 %A standard form of an optimization problem is:
 %
@@ -74,7 +120,29 @@ An absolute maximum or minimum can occur either at a critical point or
 at an endpoint of the interval.
 
 For this reason, when solving optimization problems on a restricted
-domain, it is important to test both critical points and endpoints.
+domain, it is important to test both critical points and endpoints (Figure~\ref{fig:closed-interval-extrema}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1.3cm, y=0.5cm]
+\draw[->] (0,0) -- (4.8,0) node[right] {$x$};
+\draw[->] (0,0) -- (0,8.6) node[above] {$y$};
+\foreach \t in {1,2,3,4} \draw (\t,0.12) -- (\t,-0.12) node[below] {\t};
+\foreach \t in {2,4,6,8} \draw (0.06,\t) -- (-0.06,\t) node[left] {\t};
+\draw[dashed, kgDarkGray] (0.5,0) -- (0.5,4.125) (4.25,0) -- (4.25,7.641);
+\draw[kgBlue, thick] plot[domain=0.5:4.25, samples=80] (\x, {(\x)^3 - 6*(\x)^2 + 9*\x + 1});
+\fill[kgBlue] (0.5,4.125) circle (1.8pt) (4.25,7.641) circle (1.8pt);
+\fill[kgRed] (1,5) circle (1.8pt) (3,1) circle (1.8pt);
+\node[align=center, font=\small] (rmax) at (1.6,7.4) {relative\\maximum};
+\draw[dashed] (rmax) -- (1,5.15);
+\node[align=center, font=\small] (rmin) at (1.5,1.4) {relative and\\absolute minimum};
+\draw[dashed] (rmin.east) -- (2.93,1.05);
+\node[align=center, font=\small] (amax) at (3.15,7.9) {absolute maximum\\at an endpoint};
+\draw[dashed] (amax) -- (4.25,7.641);
+\end{tikzpicture}
+\caption{On the interval $0.5 \le x \le 4.25$, the absolute maximum occurs at an endpoint and the absolute minimum occurs at a critical point.}
+\label{fig:closed-interval-extrema}
+\end{figure}
 
 \section{The Second Derivative Test}
 
@@ -252,7 +320,43 @@ C(6) = 2(6)^2 - 24(6) + 100 = 28.
 \]
 
 Therefore, the cost is minimized when 6 units are produced, and the
-minimum cost is \$28.
+minimum cost is \$28 (Figure~\ref{fig:cost-minimum}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.5cm, y=0.04cm]
+\draw[->] (0,0) -- (12.8,0) node[right] {$x$ (units)};
+\draw[->] (0,0) -- (0,110) node[above] {$C(x)$ (dollars)};
+\foreach \t in {2,4,6,8,10,12} \draw (\t,2) -- (\t,-2) node[below] {\t};
+\foreach \t in {20,40,60,80,100} \draw (0.12,\t) -- (-0.12,\t) node[left] {\t};
+\draw[kgBlue, thick] plot[domain=0:12, samples=60] (\x, {2*(\x)^2 - 24*\x + 100});
+\draw[kgRed, thick] (4.5,28) -- (7.5,28);
+\draw[dashed, kgDarkGray] (6,0) -- (6,28);
+\fill[kgBlue] (6,28) circle (1.8pt);
+\node[font=\small] (lab) at (9.6,14) {minimum at $(6,\,28)$};
+\draw[dashed] (lab.west) -- (6.15,27);
+\end{tikzpicture}
+\caption{The cost function $C(x) = 2x^2 - 24x + 100$ reaches its minimum value of \$28 at $x = 6$ units.}
+\label{fig:cost-minimum}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=0.75cm, y=0.75cm]
+\fill[kgDarkGray] (-0.6,3) rectangle (6.6,3.35);
+\node[font=\small] at (3,3.6) {wall (no fencing)};
+\fill[kgGreen!15] (0,0) rectangle (6,3);
+\draw[kgBlue, line width=2pt] (0,3) -- (0,0) -- (6,0) -- (6,3);
+\node at (3,1.5) {$A = xy$};
+\node[below] at (3,0) {$x$};
+\node[left] at (0,1.5) {$y$};
+\node[right] at (6,1.5) {$y$};
+\node[font=\small, kgBlue] (fl) at (8.3,0.9) {fencing: $x + 2y = 60$};
+\draw[dashed] (fl.west) -- (6,0.9);
+\end{tikzpicture}
+\caption{The enclosure uses the wall as one side, so fencing covers one side of length $x$ and two sides of length $y$.}
+\label{fig:fence-enclosure}
+\end{figure}
 
 \begin{Exercise}[label = optimization2]
 A rectangular enclosure is to be built using 60 units of fencing. Three
@@ -260,10 +364,9 @@ sides of the enclosure require fencing, while the fourth side is along
 a wall and does not require fencing.
 
 Let $x$ represent the length of the side parallel to the wall and $y$
-represent the width of the enclosure.
+represent the width of the enclosure (Figure~\ref{fig:fence-enclosure}).
 
-Find the dimensions of the enclosure that minimize the amount of fencing
-used.
+Find the dimensions of the enclosure that maximize the enclosed area.
 \end{Exercise}
 
 \begin{Answer}[ref=optimization2]
@@ -444,7 +547,7 @@ this happens using the second derivative test.
 
 \item Change the objective function to
 \[
-f(x) = x^3 - 3x.
+f(x) = x^3.
 \]
 Run the script. What does the script report for the classification?
 Explain why the second derivative test is inconclusive in this case.
@@ -484,21 +587,20 @@ f''(x) = 2.
 Since $f''(3) > 0$, the function is concave up at the critical point,
 so the critical point is a minimum.
 
-\item For $f(x) = x^3 - 3x$,
+\item For $f(x) = x^3$,
 
 \[
-f'(x) = 3x^2 - 3 = 3(x^2 - 1).
+f'(x) = 3x^2.
 \]
-Setting $f'(x)=0$ gives $x^2 - 1 = 0$, so $x = -1$ and $x = 1$.
+Setting $f'(x)=0$ gives $x = 0$.
 
 \[
 f''(x) = 6x.
 \]
-At $x = -1$, $f''(-1) = -6 < 0$, so there is a local maximum at $x=-1$.
-At $x = 1$, $f''(1) = 6 > 0$, so there is a local minimum at $x=1$.
-
-The second derivative test is not inconclusive for this function at the
-critical points, because $f''(-1)$ and $f''(1)$ are not zero.
+Since $f''(0) = 0$, the second derivative test gives no classification,
+and the script reports the point as inconclusive. The graph shows that
+$f$ increases on both sides of $x = 0$, so this critical point is
+neither a maximum nor a minimum (Figure~\ref{fig:critical-point-types}).
 
 \item For a quadratic function of the form $f(x) = ax^2 + bx + c$ with
 $a \neq 0$, there is exactly one critical point at
