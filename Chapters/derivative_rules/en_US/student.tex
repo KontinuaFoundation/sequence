@@ -1,9 +1,59 @@
 \chapter{Rules for Finding Derivatives}
 
+% Kontinua palette for TikZ figures
+\definecolor{kgBlue}{HTML}{005992}      % Kontinua Blue, primary
+\definecolor{kgDarkGray}{HTML}{C2C1C0}
+\definecolor{kgLightGray}{HTML}{D8D8D8}
+\definecolor{kgRed}{HTML}{DD5041}
+\definecolor{kgSkyBlue}{HTML}{53A7DC}
+\definecolor{kgYellow}{HTML}{F0B358}
+\definecolor{kgGreen}{HTML}{4B9751}
+\definecolor{kgBrown}{HTML}{90582F}
+
 
 Derivatives play a key role in calculus, providing us with a means of
-calculating rates of change and the slopes of curves. In this chapter, we present
+calculating rates of change and the slopes of curves (Figure~\ref{fig:tangent-line}). In this chapter, we present
 some common rules used to calculate derivatives.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1.25cm, y=1cm,
+  declare function={
+    f(\x)  = 0.25*(\x)^3 - 1.5*(\x)^2 + 2.25*(\x) + 1.5;
+    fp(\x) = 0.75*(\x)^2 - 3*(\x) + 2.25;
+  }]
+  % point of tangency: change \tA to move it
+  \pgfmathsetmacro{\tA}{3.6}
+  \pgfmathsetmacro{\fA}{f(\tA)}
+  \pgfmathsetmacro{\mA}{fp(\tA)}
+  % tangent line endpoints and call-out target
+  \pgfmathsetmacro{\xL}{\tA - 1.25}
+  \pgfmathsetmacro{\xR}{\tA + 1.15}
+  \pgfmathsetmacro{\yL}{\fA + \mA*(\xL - \tA)}
+  \pgfmathsetmacro{\yR}{\fA + \mA*(\xR - \tA)}
+  \pgfmathsetmacro{\xC}{\tA + 0.7}
+  \pgfmathsetmacro{\yC}{\fA + \mA*(\xC - \tA)}
+  % axes
+  \draw[thin, ->] (-0.4,0) -- (5.2,0) node[right] {$x$};
+  \draw[thin, ->] (0,-0.3) -- (0,4.9) node[above] {$y$};
+  % guide lines to the point of tangency
+  \draw[dashed, kgDarkGray!80!black] (\tA,0) -- (\tA,\fA) -- (0,\fA);
+  \node[below] at (\tA,0) {$a$};
+  \node[left] at (0,\fA) {$f(a)$};
+  % curve
+  \draw[kgBlue, line width=1.2pt] plot[domain=-0.25:4.55, samples=80] (\x, {f(\x)});
+  \node[kgBlue, above left] at (4.45,{f(4.45)}) {$y = f(x)$};
+  % tangent line
+  \draw[kgRed, line width=1.2pt] (\xL,\yL) -- (\xR,\yR);
+  \node[kgRed, right, align=left] (lab) at (\xR + 0.1, \fA - 0.27) {tangent line\\slope $f'(a)$};
+  \draw[dashed] (lab.west) -- (\xC,\yC);
+  % point of tangency
+  \fill (\tA,\fA) circle (2pt);
+  \node[above left] at (\tA,\fA) {$(a, f(a))$};
+\end{tikzpicture}
+\caption{The tangent line touches the curve $y = f(x)$ at the point $(a, f(a))$ and has slope $f'(a)$.}
+\label{fig:tangent-line}
+\end{figure}
 
 \section{Constant Rule}
 
@@ -221,9 +271,9 @@ If $f$ is the function given, find $f'$.
     tangent line, we need a point. We know the tangent line touches 
     $f(x)$ at $x = -3$, so the tangent line must pass through the 
     point $(-3, f(-3))$. $$f(-3) = \sqrt{25-(-3)^2} = 4$$ We use $m = 
-    \frac{3}{4}$ and the coordinate point $(x_1, y_1) = (-3, 16)$ to 
+    \frac{3}{4}$ and the coordinate point $(x_1, y_1) = (-3, 4)$ to 
     complete the equation $y - y_1 = m(x - x_1)$ 
-    $$y-16 = \frac{3}{4}(x+3)$$
+    $$y-4 = \frac{3}{4}(x+3)$$
 \end{Answer}
 
 \begin{Exercise}
