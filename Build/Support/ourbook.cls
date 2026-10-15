@@ -848,6 +848,22 @@
 \global\mdfdefinestyle{important}{%
   linecolor=sdkblue,linewidth=1pt % leftmargin=1cm,rightmargin=1cm
 }
+% translation box for sql 2 (used for exercises and explanations of SQL queries)
+% Usage:
+%   \begin{translation}
+%     \request{Which labs have no equipment?}
+%     \algebra{\pi_{\text{Loc}}(\text{Location}) - \pi_{\text{Loc}}(\text{Equipment})}
+%     \sqlrow
+%     \begin{minted}{sql}
+%     ...
+%     \end{minted}
+%   \end{translation}
+\newenvironment{translation}
+  {\begin{mdframed}[style=important]\setminted{linenos=false,frame=none}}
+  {\end{mdframed}}
+\newcommand{\request}[1]{\noindent\textbf{Request:} #1\par\smallskip}
+\newcommand{\algebra}[1]{\noindent\textbf{Algebra:} $\displaystyle #1$\par\smallskip}
+\newcommand{\sqlrow}{\noindent\textbf{SQL:}\par\nopagebreak}
 
 
 
