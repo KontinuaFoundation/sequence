@@ -278,7 +278,6 @@ Lab C & Larry \\
 \label{tab:location_3nf}
 \end{table}
 
-FIXME exercise transform a full table up to 3NF
 \section{Entity-Relationship Diagram}
 Now that we have normalized our tables, we can create an \newterm{entity-relationship diagram} to visually represent the relationships between the tables. Often, this process may even clear up further FDs or issues with the database design.\index{ER diagram|see{entity-relationship diagram}}
 
@@ -358,21 +357,47 @@ erDiagram
 \end{figure}
 
 \section{Relational Algebra Basics}
+We have previously talked about set theory and binary operations such as \textit{and}, \textit{or}, and \textit{not}. We can also apply those to data tables using \newterm{relational algebra}.
+
+To begin, let's use our normalized equipment table (\ref{tab:equipment_3nf}) to demonstrate some basic relational algebra operations. We are going to fill it with some more data, however, to demonstrate the operations more clearly (see Table~\ref{tab:equipment_expanded}).
+
 \begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|}
-    \hline
-        Relational Algebra & SQL \\ \hline
-        $\pi$ & \mintinline{sql}{SELECT} \\ \hline
-        $\times$ & \mintinline{sql}{,} or \mintinline{sql}{CROSS JOIN} \\ \hline
-        $\bowtie_{\theta}$ & \mintinline{sql}{INNER JOIN <table> ON <condition>} \\ \hline
-        $\sigma$ & \mintinline{sql}{WHERE} \\ \hline
-        $\tau$ & \mintinline{sql}{ORDER BY} \\ \hline
-        $\cup$ & \mintinline{sql}{UNION} \\ \hline
-        $-$ & \mintinline{sql}{EXCEPT} \\ \hline
-        $\cap$ & \mintinline{sql}{INTERSECT} \\ \hline
-    \end{tabular}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+{\underline{EquipmentID}} & {EquipmentName} & {EquipmentLocation}  \\
+\hline
+E42 & 3D Printer & Lab B \\
+\hline
+E55 & Oscilloscope & Lab A \\
+\hline
+E74 & CNC Machine & Lab C \\
+\hline
+\end{tabular}
+\caption{Equipment Table [3NF]}
+\label{tab:equipment_expanded}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|l|l|}
+        \hline
+            Relational Algebra & SQL \\ \hline
+            $\pi$ & \mintinline{sql}{SELECT} \\ \hline
+            $\times$ & \mintinline{sql}{,} or \mintinline{sql}{CROSS JOIN} \\ \hline
+            $\bowtie_{\theta}$ & \mintinline{sql}{INNER JOIN <table> ON <condition>} \\ \hline
+            $\sigma$ & \mintinline{sql}{WHERE} \\ \hline
+            $\tau$ & \mintinline{sql}{ORDER BY} \\ \hline
+            $\cup$ & \mintinline{sql}{UNION} \\ \hline
+            $-$ & \mintinline{sql}{EXCEPT} \\ \hline
+            $\cap$ & \mintinline{sql}{INTERSECT} \\ \hline
+        \end{tabular}
+    \end{table}
+    \label{tab:rel_alg_sql}
+\end{figure}
+
 \section{Relating Two Tables}
 % Formally address how two tables can be linked using foreign keys.
 
@@ -442,3 +467,20 @@ E55 & Oscilloscope & Lab A \\
 
 Table constraints do not break when foreign key values are missing in the referencing table. For example, even though ``Lab C'' exists in the \texttt{Location} table, it does not appear in the \texttt{Equipment} table, and this is perfectly valid. 
 However, if we tried to insert a row into the \texttt{Equipment} table with an \texttt{EquipmentLocation} value that does not exist in the \texttt{Location} table (such as ``Lab D''), the database would reject it due to the foreign key constraint.
+
+\section{Advanced Queries}
+
+\begin{translation}
+  \request{Which labs have no equipment?}
+  \algebra{\pi_{\text{EquipmentLocation}}(\text{Location}) - \pi_{\text{EquipmentLocation}}(\text{Equipment})}
+  \sqlrow
+\begin{minted}{sql}
+SELECT EquipmentLocation FROM Location
+EXCEPT
+SELECT EquipmentLocation FROM Equipment;
+\end{minted}
+\end{translation}
+
+\section{Exercises}
+FIXME exercise transform a full table up to 3NF
+Multiple translation fill in the blanks, going between sql english and adv rel alg
