@@ -693,8 +693,8 @@ From the data, we have $n = 10$ pairs of measurements. Using a calculator or
 software, we can obtain the following summary statistics:
 
 \[
-\bar{X} = 4.6, \quad \bar{Y} = 37.9, \quad S_x = 3.169, \quad S_y = 5.013,
-\quad r = 0.9964
+\bar{X} = 4.6, \quad \bar{Y} = 37.9, \quad S_x = 3.204, \quad S_y = 5.384,
+\quad r = 0.9957
 \]
 
 \begin{Exercise}[title={Slope, Intercept, and the Regression Equation},
@@ -711,23 +711,23 @@ Using the summary statistics above:
 \begin{enumerate}
     \item
     \[
-    b = r\left(\frac{S_y}{S_x}\right) = 0.9964\left(\frac{5.013}{3.169}\right)
-    \approx 1.576
+    b = r\left(\frac{S_y}{S_x}\right) = 0.9957\left(\frac{5.384}{3.204}\right)
+    \approx 1.673
     \]
     For every additional year of teaching experience, the predicted starting
-    salary increases by \$1{,}576, on average.
+    salary increases by \$1{,}673, on average.
 
     \item
     \[
-    a = \bar{Y} - b\bar{X} = 37.9 - 1.576(4.6) \approx 30.650
+    a = \bar{Y} - b\bar{X} = 37.9 - 1.673(4.6) \approx 30.204
     \]
     The predicted starting salary for a teacher with no prior experience is
-    \$30{,}650. Since $X = 0$ represents a newly hired teacher with no experience,
+    \$30{,}204. Since $X = 0$ represents a newly hired teacher with no experience,
     this interpretation is meaningful in context.
 
     \item The equation of the least-squares regression line is:
     \[
-    \hat{y} = 30.650 + 1.576x
+    \hat{y} = 30.204 + 1.673x
     \]
     where $x$ is years of experience and $\hat{y}$ is the predicted starting
     salary in thousands of dollars.
@@ -735,7 +735,7 @@ Using the summary statistics above:
 \end{Answer}
 
 \begin{Exercise}[title={Prediction, Residuals, and $R^2$}, label={ex:lr_worked2}]
-Using the regression equation $\hat{y} = 30.650 + 1.576x$:
+Using the regression equation $\hat{y} = 30.204 + 1.673x$:
 \begin{enumerate}
     \item Predict the starting salary for a teacher with 5 years of experience.
     \item The teacher in the sample with 8 years of experience has an actual
@@ -751,37 +751,41 @@ Using the regression equation $\hat{y} = 30.650 + 1.576x$:
 \begin{enumerate}
     \item
     \[
-    \hat{y} = 30.650 + 1.576(5) = 30.650 + 7.880 = 38.530
+    \hat{y} = 30.204 + 1.673(5) = 30.204 + 8.365 = 38.569
     \]
     The predicted starting salary for a teacher with 5 years of experience
-    is \$38{,}530.
+    is \$38{,}569.
 
     \item
     \[
-    \hat{y} = 30.650 + 1.576(8) = 30.650 + 12.608 = 43.258
+    \hat{y} = 30.204 + 1.673(8) = 30.204 + 13.384 = 43.588
     \]
     \[
-    e = y - \hat{y} = 43 - 43.258 = -0.258
+    e = y - \hat{y} = 43 - 43.588 = -0.588
     \]
-    The residual is $-\$258$. The teacher's actual starting salary was \$258
+    The residual is $-\$588$. The teacher's actual starting salary was \$588
     less than the model predicted. The salary was slightly over-predicted.
 
     \item
     \[
-    R^2 = r^2 = (0.9964)^2 \approx 0.9928
+    R^2 = r^2 = (0.9957)^2 \approx 0.9914
     \]
-    About 99.28\% of the variation in starting salaries is explained by the
+    About 99.14\% of the variation in starting salaries is explained by the
     linear relationship with years of experience. This is an exceptionally
     strong fit.
 
-    \item About $100 - 99.28 = 0.72\%$ of the variation is unexplained. This
+    \item About $100 - 99.14 = 0.86\%$ of the variation is unexplained. This
     is very small, but it may be due to factors such as the teacher's level
     of education, the subject area taught, or the specific school within the
     district.
 \end{enumerate}
 \end{Answer}
-% [figure placeholder: scatterplot of experience vs. starting salary with the
-% least-squares regression line \hat{y} = 30.650 + 1.576x superimposed]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.56\textwidth]{nm2_scatter_lsrl.png}
+    \caption{Experience and starting salary for the 10 sampled teachers, with the least-squares regression line $\hat{y} = 30.204 + 1.673x$.}
+    \label{fig:nm2-scatter-lsrl}
+\end{figure}
 
 \textbf{Computing in Excel}
 
@@ -798,8 +802,12 @@ then insert a scatterplot using \textbf{Insert} $\to$ \textbf{Chart} $\to$
 \textbf{Display R-squared value on chart}. Excel will draw the line of best fit
 and print the equation and $R^2$ directly on the chart.
 
-% [screenshot placeholder: Excel scatterplot with regression line, equation
-% \hat{y} = 30.650 + 1.576x, and R^2 = 0.9928 displayed on chart]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\textwidth]{nm2_excel_trendline.png}
+    \caption{Excel scatterplot with a linear trendline, its equation, and $R^2$ displayed on the chart.}
+    \label{fig:nm2-excel-trendline}
+\end{figure}
 
 To get the full regression output, use the \textbf{Data Analysis} Toolpak. Go to \textbf{Data}
 $\to$ \textbf{Data Analysis} $\to$ \textbf{Regression}. Set the Input Y Range
@@ -810,8 +818,12 @@ full regression table in a new sheet. The values you need are in the
 and the row labelled \textbf{Experience} gives you $b$. The $R^2$ value appears
 near the top of the output under \textbf{R Square}.
 
-% [screenshot placeholder: Excel Data Analysis regression output table showing
-% Intercept = 30.650, Experience coefficient = 1.576, R Square = 0.9928]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{nm2_regression_output.png}
+    \caption{Excel Data Analysis regression output for the teacher data. The highlighted cells give $R^2$, the intercept $a$, and the slope $b$.}
+    \label{fig:nm2-regression-output}
+\end{figure}
 
 \textbf{Computing in Python}
 
@@ -867,11 +879,8 @@ R-squared:     0.9915
   \label{fig:teachersamplepython}
 \end{figure}
 
-These match the values we computed by hand exactly. The \texttt{stats.linregress}
+These match the values we computed by hand, up to rounding. The \texttt{stats.linregress}
 function does all the heavy lifting! It returns the slope, intercept,
 correlation coefficient $r$, a p-value, and the standard error of the slope in
 one line. For now, focus on the first four outputs. The p-value and standard
 error will become important when we study inference for regression later!
-
-% [screenshot placeholder: matplotlib scatterplot output showing data points
-% in blue and regression line in red with equation displayed in legend]
