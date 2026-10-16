@@ -1,4 +1,13 @@
 \chapter{Differentiating Polynomials}
+% Kontinua palette for TikZ figures
+\definecolor{kgBlue}{HTML}{005992}      % Kontinua Blue, primary
+\definecolor{kgDarkGray}{HTML}{C2C1C0}
+\definecolor{kgLightGray}{HTML}{D8D8D8}
+\definecolor{kgRed}{HTML}{DD5041}
+\definecolor{kgSkyBlue}{HTML}{53A7DC}
+\definecolor{kgYellow}{HTML}{F0B358}
+\definecolor{kgGreen}{HTML}{4B9751}
+\definecolor{kgBrown}{HTML}{90582F}
 
 If you had a function that gave you the height of an object, it would
 be handy to be able to figure out a function that gave you the
@@ -46,7 +55,37 @@ of the original polynomial. (Unless, of course, the degree of the
 original is already zero.)
 
 Now, if you know that a position is given by a polynomial, you can
-differentiate it to find the object's velocity at any time.
+differentiate it to find the object's velocity at any time
+(Figure~\ref{fig:tangent-line}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1.9cm, y=0.12cm]
+% axes (vertical axis starts at 200 m, marked with a break)
+\draw[->] (0,0) -- (3.45,0) node[right] {$t$ (s)};
+\draw (0,0) -- (0,1.5);
+\draw (-0.06,2.0) -- (0.06,2.8) (-0.06,3.0) -- (0.06,3.8);
+\draw[->] (0,3.3) -- (0,42) node[above] {$h(t)$ (m)};
+\foreach \t in {1,2,3} \draw (\t,0.6) -- (\t,-0.6) node[below] {\t};
+\foreach \v in {10,20,30,40} \draw (0.04,\v) -- (-0.04,\v) node[left] {\pgfmathparse{int(\v+200)}\pgfmathresult};
+\node[below left] at (0,0) {200};
+% curve h(t) = 2t^3 - 5t^2 + 9t + 200, drawn as h(t) - 200
+\draw[kgBlue, thick] plot[domain=0:3.2, samples=80] (\x, {2*(\x)^3 - 5*(\x)^2 + 9*\x});
+\node[kgBlue, left] at (3.0,41) {$h(t)$};
+% tangent line at t = 2: slope h'(2) = 13
+\draw[kgRed, thick] plot[domain=1.15:3.1] (\x, {14 + 13*(\x - 2)});
+% slope triangle: run 1 s, rise 13 m
+\draw[kgGreen, thick] (2,14) -- (3,14) -- (3,27);
+\node[below, kgGreen] at (2.5,14) {$1$ s};
+\node[right, kgGreen] at (3,20.5) {$13$ m};
+% point of tangency
+\draw[dashed, kgDarkGray!60!black] (2,0) -- (2,14);
+\fill[kgBlue] (2,14) circle (2pt);
+\node[kgRed, right, align=left, font=\small] at (3.1,28.3) {tangent line\\slope $h'(2) = 13$ m/s};
+\end{tikzpicture}
+\caption{The tangent line to $h(t) = 2t^3 - 5t^2 + 9t + 200$ at $t = 2$ has slope $h'(2) = 13$, the vertical velocity of the quadcopter in meters per second at that moment.}
+\label{fig:tangent-line}
+\end{figure}
 
 The same trick works for acceleration: Let's say you know a function
 that gives an object's velocity. To find its acceleration at any time,
