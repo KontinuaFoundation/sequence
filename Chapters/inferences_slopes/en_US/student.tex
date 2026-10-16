@@ -112,7 +112,12 @@ Watch the argument order: for both \texttt{SLOPE} and \texttt{INTERCEPT}, the kn
 
 % Exercise 3 gave you $\bar{x}$, $\bar{y}$, $s_x$, $s_y$, and $r$ directly rather than raw data, since with only five summary numbers, computing $b_1 = r\frac{s_y}{s_x}$ by hand is just as fast as opening a spreadsheet. \texttt{SLOPE} and \texttt{INTERCEPT} need the original data columns to work; if you had the original $6$ temperature and battery-life pairs instead, entering them into two columns and applying \texttt{SLOPE} and \texttt{INTERCEPT} directly would skip the $r$, $s_x$, $s_y$ step entirely.
 
-% [placeholder: spreadsheet with screen time / sleep duration columns and SLOPE, INTERCEPT, CORREL formula results]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.84\textwidth]{slope_sheet_coef.png}
+    \caption{Spreadsheet layout for the sleep study: data in columns A and B, with each formula beside the result it returns in column D.}
+    \label{fig:slope-sheet-coef}
+\end{figure}
 
 
 
@@ -234,7 +239,12 @@ The regression output table above, including $s_{b_1}$, can be generated directl
 
 \texttt{LINEST} is the same idea as \texttt{SLOPE} and \texttt{INTERCEPT} from Section 1, but it returns the standard errors in the same step, so you never have to hunt for $s_{b_1}$ separately. The argument order is the same gotcha as before: known $y$'s first, known $x$'s second.
 
-% [Screenshot placeholder: LINEST array output, T.INV.2T critical value, and CI computation for the sleep study data]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{slope_sheet_ci.png}
+    \caption{\texttt{LINEST} output in D2:E3 and the 90\% confidence interval for the slope built from it in column G.}
+    \label{fig:slope-sheet-ci}
+\end{figure}
 
 \section{Conditions for Inference on the Slope}
 
@@ -462,7 +472,12 @@ Continuing from the \texttt{LINEST} output in Section 2 (cell D2 for $b_1$, cell
 
 \texttt{T.DIST} assumes a lower-tail test by default; for $H_a: \beta_1 > 0$, use \texttt{=1-T.DIST(t,df,TRUE)} or the equivalent \texttt{=T.DIST.RT(t,df)} instead, since you need the upper tail.
 
-% [Screenshot placeholder: T.DIST and T.DIST.2T formulas computing the one-sided p-value for the sleep study]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.97\textwidth]{slope_sheet_test.png}
+    \caption{Test statistic and one-sided $P$-value for the sleep study, computed from the \texttt{LINEST} output in D2:E3.}
+    \label{fig:slope-sheet-test}
+\end{figure}
 
 \textbf{Computing in Python}
 
