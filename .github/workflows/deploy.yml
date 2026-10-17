@@ -408,6 +408,11 @@ jobs:
         id: ts
         run: echo "ts=$(date -u +'%Y-%m-%d %H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
+      # The full deploy brings the whole site up to this commit. ci.yml reads this
+      # file to know what the live site was last built from.
+      - name: Record deployed commit
+        run: echo "${{ github.sha }}" > resources/deployed-sha.txt
+
       - name: Deploy to kontinuafoundation.github.io
         uses: JamesIves/github-pages-deploy-action@v4
         with:
