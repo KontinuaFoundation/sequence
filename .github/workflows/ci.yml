@@ -141,6 +141,8 @@ jobs:
           echo "Changed files considered for chapter rebuild:"
           echo "$changed_files"
           
+          # Gap 2: the ids in a book list, trimmed, with comments and blank lines
+          # dropped, so a list can be compared before and after a change.
           list_ids() {
             local line id
             while IFS= read -r line || [[ -n "$line" ]]; do
@@ -169,6 +171,7 @@ jobs:
               continue
             fi
 
+            # Gap 2: stop a book-list edit from rebuilding every chapter and workbook.
             # book_00.txt is derived from book_01..36 (the "Check book_00.txt is up
             # to date" step keeps it in sync) and must never drive a build: it
             # would mark every chapter and every workbook as changed.
@@ -595,6 +598,20 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r Build/requirements.txt
+
+      - name: Fetch live graph.json
+        run: |
+          set -euo pipefail
+          mkdir -p Build/Workbooks-en_US-Letter
+          TEMP_GRAPH="/tmp/graph.json.tmp"
+          rm -f "$TEMP_GRAPH"
+          if curl -fsSL "https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/public/graph.json" -o "$TEMP_GRAPH" 2>/dev/null \
+            && python3 -c "import json; json.load(open('$TEMP_GRAPH'))" 2>/dev/null; then
+            mv "$TEMP_GRAPH" Build/Workbooks-en_US-Letter/graph.json
+          else
+            echo "No usable live graph.json; the layout will be generated fresh"
+          fi
+
 
       - name: Build indexes
         run: |

@@ -222,6 +222,13 @@ jobs:
           key: ${{ runner.os }}-pip-${{ github.job }}-${{
             hashFiles('Build/requirements.txt') }}
 
+      - name: Collect book_00 index files (for global index)
+      # note. they do not need a second or third pass. the toc and idx files are correct on a first pass.
+      # note: only transfered once per week or upon workflow dispatch, so the index files are not needed for a daily build.
+        run: |
+          set -euo pipefail
+          cp Build/Intermediate/workbook-00.idx Build/Intermediate/workbook-00.toc Build/Intermediate/workbook-00.ind Build/Workbooks-en_US-Letter/
+
       - name: Upload workbooks artifact
         uses: actions/upload-artifact@v4
         with:
@@ -300,6 +307,19 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r Build/requirements.txt
+          
+      - name: Fetch live graph.json
+        run: |
+          set -euo pipefail
+          mkdir -p Build/Workbooks-en_US-Letter
+          TEMP_GRAPH="/tmp/graph.json.tmp"
+          rm -f "$TEMP_GRAPH"
+          if curl -fsSL "https://raw.githubusercontent.com/KontinuaFoundation/kontinuafoundation.github.io/main/public/graph.json" -o "$TEMP_GRAPH" 2>/dev/null \
+            && python3 -c "import json; json.load(open('$TEMP_GRAPH'))" 2>/dev/null; then
+            mv "$TEMP_GRAPH" Build/Workbooks-en_US-Letter/graph.json
+          else
+            echo "No usable live graph.json; the layout will be generated fresh"
+          fi
 
       - name: Gather resources and build index
         shell: bash

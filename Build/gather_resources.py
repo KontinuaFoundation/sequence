@@ -84,7 +84,7 @@ def _fetch_youtube_oembed_title(url):
         + "&format=json"
     )
     try:
-        response = urllib.request.urlopen(urllib.request.Request(oembed))
+        response = urllib.request.urlopen(urllib.request.Request(oembed),  timeout=30)
         return json.loads(response.read()).get("title")
     except Exception:
         return None
@@ -110,7 +110,7 @@ def fetch_title_for_url(url, max_retries=5, base_wait=10, max_wait=120):
     for attempt in range(max_retries):
         req = urllib.request.Request(url, headers=headers)
         try:
-            response = urllib.request.urlopen(req)
+            response = urllib.request.urlopen(req, timeout=30)
         except urllib.error.HTTPError as e:
             if e.code == 429:
                 retry_after = e.headers.get("Retry-After")
@@ -131,7 +131,7 @@ def fetch_title_for_url(url, max_retries=5, base_wait=10, max_wait=120):
                 print("\n\tread failed. Waiting 10 seconds and trying again")
                 time.sleep(10)
                 try:
-                    response = urllib.request.urlopen(req)
+                    response = urllib.request.urlopen(req, timeout=30)
                 except urllib.error.HTTPError as e:
                     if e.code == 429:
                         wait_time = min(base_wait * (2 ** attempt), max_wait)

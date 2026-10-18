@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 from enum import Enum
 import time
+from datetime import datetime
 
 import util
 
@@ -30,13 +31,13 @@ class Mode(str, Enum):
 #         "Usage:\n"
 #         "  python3 build_workbook.py <i>\n"
 #         "Options:\n"
-#        f"  <i>   required, the integer number of the workbook to build between 00-{vol_count}.\n"
+#        f"  <i>   required, the integer number of the workbook to build between 00-{VOL_COUNT}.\n"
 #        f"        Alternatively, python3 build_workbook.py all\n"
 #         "OR\n"
 #         "Usage:\n"
-#         "  python3 build_workbook.py --c chapters=\"<chapters>\"\n"
-#         "  --c   Enables custom workbook book build. Must be followed by a sequence of chapters separated by commas\n"
-#         "  python3 build_workbook.py --c chapters=circles,circular,circular_2,oscillations"
+#         "  python3 build_workbook.py --chapters <chapters>\n"
+#         "  --chapters   Enables custom workbook build. Must be followed by chapter ids separated by commas\n"
+#         "  python3 build_workbook.py --chapters circles,circular,circular_2,oscillations"
 #     )
 #     sys.exit(1)
 
@@ -145,9 +146,12 @@ def build_book(book_id, config, draft, final_dir, header, footer):
 
 
 def main():
-    print(ROOT_DIR)
     args = parse_args()
     mode= None
+    # for if one wants to build a custom workbook with specific chapters, 
+    # or if one wants to build a numbered workbook with a specific index
+    # called by --chapters <comma-separated list of chapters>
+    
     if args.chapters:
         mode = Mode("custom")
         chapters = [c.strip() for c in args.chapters.split(",")]
@@ -270,4 +274,10 @@ def main():
         print("\n".join(f" {c}" for c in chapters))
         print("\n")
 if __name__ == "__main__":
-    main()
+    start = datetime.now()
+    t0 = time.perf_counter()
+    print(f"Start: {start:%Y-%m-%d %H:%M:%S}")
+    try:
+        main()
+    finally:
+        print(f"End:   {datetime.now():%Y-%m-%d %H:%M:%S} ({time.perf_counter() - t0:.2f} s)")

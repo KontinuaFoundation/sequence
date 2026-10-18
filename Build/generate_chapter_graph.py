@@ -10,13 +10,21 @@ from graphviz import Digraph
 import util
 
 import random
+import time
+from datetime import datetime
+
 
 def random_position():
+    """
+    Generates random positions for graph nodes
+    """
     return {
         "x": random.uniform(-70, 70),
         "y": random.uniform(-70, 70),
     }
+    
 def parse_args():
+    
     parser = argparse.ArgumentParser(
         description="Build graph.json and optional graph image from workbook metadata."
     )
@@ -38,7 +46,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    vol_count = 36
+    VOL_COUNT = 36
     cfg_path = Path("user.cfg")
 
     if not cfg_path.exists():
@@ -47,7 +55,7 @@ def main():
     with cfg_path.open("r") as f:
         config = json.load(f)
 
-    book_nums = [str(x).zfill(2) for x in range(1, vol_count + 1)]
+    book_nums = [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
     books_metadata = []
     owners = {}
     graph = defaultdict(set)
@@ -137,6 +145,11 @@ def main():
         dot.render("graph", format="png", view=True)
         print("Saved graph.png")
 
-
 if __name__ == "__main__":
-    main()
+    start = datetime.now()
+    t0 = time.perf_counter()
+    print(f"Start: {start:%Y-%m-%d %H:%M:%S}")
+    try:
+        main()
+    finally:
+        print(f"End:   {datetime.now():%Y-%m-%d %H:%M:%S} ({time.perf_counter() - t0:.2f} s)")
