@@ -6,11 +6,14 @@ import argparse
 from pathlib import Path
 from enum import Enum
 import time
+from datetime import datetime
 
 import util
 
 mod_dir = "../../Chapters"
 VOL_COUNT = 36
+MAX_PASSES = 4
+STABILITY_EXTNS = [".aux", ".toc", ".out", ".idx"]
 
 BUILD_DIR = Path.cwd() 
 ROOT_DIR = BUILD_DIR.parent
@@ -28,13 +31,13 @@ class Mode(str, Enum):
 #         "Usage:\n"
 #         "  python3 build_workbook.py <i>\n"
 #         "Options:\n"
-#        f"  <i>   required, the integer number of the workbook to build between 00-{vol_count}.\n"
+#        f"  <i>   required, the integer number of the workbook to build between 00-{VOL_COUNT}.\n"
 #        f"        Alternatively, python3 build_workbook.py all\n"
 #         "OR\n"
 #         "Usage:\n"
-#         "  python3 build_workbook.py --c chapters=\"<chapters>\"\n"
-#         "  --c   Enables custom workbook book build. Must be followed by a sequence of chapters separated by commas\n"
-#         "  python3 build_workbook.py --c chapters=circles,circular,circular_2,oscillations"
+#         "  python3 build_workbook.py --chapters <chapters>\n"
+#         "  --chapters   Enables custom workbook build. Must be followed by chapter ids separated by commas\n"
+#         "  python3 build_workbook.py --chapters circles,circular,circular_2,oscillations"
 #     )
 #     sys.exit(1)
 
@@ -57,6 +60,41 @@ def parse_args():
     )
 
     return parser.parse_args()
+
+def _aux_state(jobname):
+    state = {}
+    for ext in STABILITY_EXTNS:
+        path = INTERMEDIATE_DIR / f"{jobname}{ext}"
+        if path.exists():
+            state[ext] = path.read_bytes()
+        else:
+            state[ext] = None
+    return state
+
+# Pass 1: the files go from nothing to something, but pass 1 is below min_passes (2), so it continues.
+# Pass 2: the .toc page numbers change, so it continues.
+# Pass 3: nothing changes, so it stops after 3 passes.
+def run_latex_passes(cmd, log_f, jobname, prefix, min_passes, max_passes=MAX_PASSES):
+    passes = 0
+    while True:
+        # 1. snapshot the 4 aux files
+        before = _aux_state(jobname)
+        # 2. run LaTeX
+        rc = util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix,
+                                   current=passes, total=max(3, passes + 1))
+        passes += 1
+        # 3. LaTeX failed: stop, report failure
+        if rc != 0:                                    
+            print()
+            return passes, False
+         # 4. safety cap
+        if passes >= max_passes:                      
+            break
+        if passes >= min_passes and _aux_state(jobname) == before:   # 5. nothing changed: done
+            break
+    util.print_progress_bar(passes, passes, prefix=prefix)
+    return passes, True
+
 
 
 def build_book(book_id, config, draft, final_dir, header, footer):
@@ -82,23 +120,22 @@ def build_book(book_id, config, draft, final_dir, header, footer):
         out.write(footer)
 
     log_path = INTERMEDIATE_DIR / f"workbook-{book_id}.log"
-    total_passes = 1 if draft else 2
     prefix = f"Building workbook-{book_id}"
 
     cmd = [tool, "-halt-on-error", "-synctex=1", "-shell-escape", output_tex_file.name]
 
     with log_path.open("w") as log_f:
-        rc = util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=0, total=total_passes)
-        util.print_progress_bar(1, total_passes, prefix=prefix)
+        if draft:
+            passes, ok = run_latex_passes(cmd, log_f, output_tex_file.stem, prefix, min_passes=1, max_passes=1)
+        else:
+            passes, ok = run_latex_passes(cmd, log_f, output_tex_file.stem, prefix, min_passes=2)
 
-        if rc != 0 or not output_pdf_file.exists():
+        if not ok or not output_pdf_file.exists():
             print(f"Build failed for {final_pdf_path} (see {log_path} for details)")
             util.print_separator(success=False)
             return None
 
         if not draft:
-            util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=1, total=total_passes)
-            util.print_progress_bar(2, total_passes, prefix=prefix)
             shutil.move(output_pdf_file, final_pdf_path)
             page_count = util.page_count_from_log(log_path)
             page_str = f"{page_count} pages" if page_count is not None else "unknown page count"
@@ -109,9 +146,12 @@ def build_book(book_id, config, draft, final_dir, header, footer):
 
 
 def main():
-    print(ROOT_DIR)
     args = parse_args()
     mode= None
+    # for if one wants to build a custom workbook with specific chapters, 
+    # or if one wants to build a numbered workbook with a specific index
+    # called by --chapters <comma-separated list of chapters>
+    
     if args.chapters:
         mode = Mode("custom")
         chapters = [c.strip() for c in args.chapters.split(",")]
@@ -211,22 +251,17 @@ def main():
             out.write(footer)
 
         log_path = INTERMEDIATE_DIR / f"{output_tex.stem}.log"
-        total_passes = 2
         prefix = f"Building {output_tex.stem}"
 
         cmd = [config["LatexExecutable"], "-halt-on-error", "-synctex=1", "-shell-escape", str(output_tex)]
 
         with log_path.open("w") as log_f:
-            rc = util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=0, total=total_passes)
-            util.print_progress_bar(1, total_passes, prefix=prefix)
+            _passes, ok = run_latex_passes(cmd, log_f, output_tex.stem, prefix, min_passes=2)
 
-            if rc != 0 or not output_pdf.exists():
+            if not ok or not output_pdf.exists():
                 print(f"Build failed for {final_file} (see {log_path} for details)")
                 util.print_separator(success=False)
                 sys.exit(1)
-
-            util.run_with_spinner(cmd, INTERMEDIATE_DIR, log_f, prefix=prefix, current=1, total=total_passes)
-            util.print_progress_bar(2, total_passes, prefix=prefix)
 
         shutil.move(output_pdf, final_file)
         page_count = util.page_count_from_log(log_path)
@@ -239,4 +274,10 @@ def main():
         print("\n".join(f" {c}" for c in chapters))
         print("\n")
 if __name__ == "__main__":
-    main()
+    start = datetime.now()
+    t0 = time.perf_counter()
+    print(f"Start: {start:%Y-%m-%d %H:%M:%S}")
+    try:
+        main()
+    finally:
+        print(f"End:   {datetime.now():%Y-%m-%d %H:%M:%S} ({time.perf_counter() - t0:.2f} s)")
