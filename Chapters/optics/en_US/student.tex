@@ -8,8 +8,30 @@
 No object reflects every photon, but a mirror is pretty close. Let us
 talk about reflections in a mirror.\index{mirror}
 
-\subsection{Reflection}
-%FIXME talk about how mirrors work, light why they are reflective?
+\section{Reflection}
+A mirror is a sheet of glass with a thin layer of metal, usually silver or
+aluminum, on its back. Metals contain many electrons that are free to move.
+When light reaches the metal, these electrons vibrate and send nearly all of
+the light back out.
+
+The smoothness of the surface decides what you see. On a mirror, the metal
+layer is so flat that every ray in a parallel beam meets it at the same angle
+and leaves in the same direction. This is called
+\newterm{specular reflection}\index{reflection!specular}, and it is why a
+mirror shows a clear image. Paper and painted walls reflect light too, but
+their surfaces are covered in tiny bumps that face many directions. Each ray
+leaves at a different angle, which is called
+\newterm{diffuse reflection}\index{reflection!diffuse}
+(Figure~\ref{fig:refl-specular-diffuse}). You can see a wall clearly, yet you
+cannot see your face in it.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{refl_specular_diffuse.png}
+    \caption{Parallel rays leave a smooth surface in one direction (specular reflection) and leave a rough surface in many directions (diffuse reflection).}
+    \label{fig:refl-specular-diffuse}
+\end{figure}
+
 When a beam of light hits a mirror, it bounces off the mirror at the same
 angle it approached from. That is, if it approaches nearly
 perpendicular to the mirror, it departs nearly perpendicular to the
@@ -385,7 +407,7 @@ The standard ellipsoids are centered at the origin and aligned with the three ax
 
 \begin{mdframed}[style=important, frametitle={Equation for a Standard Ellipsoid}]
 
-  To be precise, a standard ellipse is the set of points $(x, y, z)$ that
+  To be precise, a standard ellipsoid is the set of points $(x, y, z)$ that
   satisfy the equation
 
   $$\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2}= 1$$
@@ -393,37 +415,9 @@ The standard ellipsoids are centered at the origin and aligned with the three ax
 
   Note that $(a,0,0), (0, b,0), (0,0,c)$ are all part of the
   set. The complete set looks like this:
-  %FIXME figure
-  % \begin{figure}[H]
-  %     \centering
-  \begin{tikzpicture}[scale=2.0]
-    \begin{axis}[
-        view={35}{15},
-        unit vector ratio=1 1 1,
-        ticks = none,
-        axis lines=middle,
-        ymin=-4.0,
-        ymax=4.0,
-        xmin=-3.5,
-        xmax=3.5,
-        zmin=-1.5,
-        zmax=1.5,
-        x axis line style=<->,
-        y axis line style=<->,
-        z axis line style=<->,
-        clip=false
-      ]
-      \addplot3[samples y=0,domain=0:360,smooth,dashed,sdkblue]({3*cos(x)}, {2*sin(x)},0);
-      \addplot3[surf,shader=interp,domain=0:360,y domain=0:180, opacity=0.5,
-        colormap={blackwhite}{color=(black) color=(black!30)}] ({3 * sin(y) * cos(x)},
-      {2*sin(y)* sin(x)},{1*cos(y)});
-      \addplot3[samples y=0,domain=0:360,smooth,sdkblue](0, {2*sin(x)},{1*cos(x)});
-      \addplot3[samples y=0,domain=0:180,smooth]({3* cos(x)}, 0,{1*sin(x)});
-    \end{axis}
-  \end{tikzpicture}
-  %     \caption{Ellipsoid creation}
-  %     \label{fig:ellipsoid}
-  % \end{figure}
+  \begin{center}
+    \includegraphics[width=0.5\linewidth]{refl_ellipsoid.png}
+  \end{center}
 
   The volume bounded by this ellipsoid is
 
@@ -470,14 +464,14 @@ Like an ellipse, prolate spheroids have two focal points.
 
 \end{mdframed}
 
-\begin{Exercise}[title={Volume of Ruby Ball}, label=rugby_ball]
+\begin{Exercise}[title={Volume of a Rugby Ball}, label=rugby_ball]
 
   Some jokesters once thought it would be fun to make something that looked like a rugby ball, but made out of lead.
 
   A rugby ball is about 30 cm long and has a circumference of 60 cm at
   its midpoint. A cubic centimeter of lead has a mass of 11.34 grams.
 
-  How much would a solid (not hollow) lead ruby ball weigh?
+  How much would a solid (not hollow) lead rugby ball weigh?
 
 \end{Exercise}
 \begin{Answer}[ref=rugby_ball]
@@ -501,7 +495,6 @@ $$y = a x^2 + b x + c$$
 
 If $a$ is not zero, the graph of a quadratic is a curved line called a
 \newterm{parabola}\index{parabola}. The first parabola that most mathematicians think of is the graph of $y = x^2$:
-% FIXME make into figure
 
 \begin{tikzpicture}
   \draw[sdkblue,<->] (-2.0, 0) -- (2.0, 0) node[right] {$x$};
@@ -509,33 +502,30 @@ If $a$ is not zero, the graph of a quadratic is a curved line called a
   \draw[domain=-1.9:1.9,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
   \draw (1.1, 1) node [anchor=west] {$y = x^2$};
 \end{tikzpicture}
-Every parabola has a \newterm{focus} and a \newterm{directix}\index{directrix}. The
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.36\textwidth]{refl_parabola_basic.png}
+    \caption{The graph of $y = x^2$ is a parabola with its vertex at the origin.}
+    \label{fig:refl-parabola-basic}
+\end{figure}
+Every parabola has a \newterm{focus} and a \newterm{directrix}. The
 focus is a point on the parabola's axis of symmetry. The directrix is
 a line perpendicular to the axis of symmetry. Every point on the
 parabola is equal distance from the focus and the directrix.
 
 For the graph of $y = x^2$, the focus is the point $(0, \frac{1}{4})$. The directrix is the line $y = -\frac{1}{4}$:
 
-\begin{tikzpicture}
-  \coordinate (f) at (0, 1/4);
-  \coordinate (p) at (1.25,1.5625);
-  \coordinate (pd) at (1.25,-1/4);
-  \draw[sdkblue,<->] (-2.5, 0) -- (2.5, 0) node[right] {$x$};
-  \draw[sdkblue,<->] (0, -1) -- (0, 5) node[above] {$y$};
-  \draw[domain=-2.2:2.2,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
-  \draw (2, 4) node [anchor=west] {$y = x^2$};
-  \filldraw (f) circle (2pt);
-  \filldraw  (p) circle (1pt);
-  \filldraw  (pd) circle (1pt);
-  \draw [dashed, thin] (f) -- (p) -- (pd);
-  \draw [dashed, <->, thick] (-2.5, -1/4) -- (2.5, -1/4);
-  \draw (1.25, -0.05) -- (1.45,-0.05) -- (1.45, -1/4);
-\end{tikzpicture}
-% FIXME make into figure
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\textwidth]{refl_focus_directrix.png}
+    \caption{Every point $P$ on $y = x^2$ is the same distance $d$ from the focus $\left(0, \frac{1}{4}\right)$ and from the directrix $y = -\frac{1}{4}$.}
+    \label{fig:refl-focus-directrix}
+\end{figure}
 
 
 For example, the point $(1,1)$ is on this parabola. It is 5/4 from the
-directorix. How far is it from the focus?  1 horizontally and 3/4 vertically.
+directrix. How far is it from the focus?  1 horizontally and 3/4 vertically.
 
 $$\sqrt{1^2 + \left( \frac{3}{4} \right)^2} = \frac{5}{4}$$
 
@@ -553,73 +543,33 @@ $$y = \frac{a}{4} x^2$$
 
 where $a > 0$. If $a$ is small, the parabola opens wider.
 
-\begin{tikzpicture}
-  \coordinate (f) at (0, 1/4);
-  \draw[sdkblue,<->,thin] (-2.5, 0) -- (2.5, 0) node[right] {$x$};
-  \draw[sdkblue,->,thin] (0, 0) -- (0, 2.5) node[above] {$y$};
-  \draw[sdkblue, domain=-1.5:1.5, samples=300, variable=\x, <->,thick]  plot (\x,{\x*\x})
-  node [anchor=south] {$a = 4$};
-  \draw[domain=-2.2:2.2,samples=300,variable=\x,<->,thick]  plot (\x,{0.125*\x*\x})
-  node [anchor=west] {$a = 0.5$};
-\end{tikzpicture}
-% FIXME make into figure
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.57\textwidth]{refl_parabola_widths.png}
+    \caption{A smaller value of $a$ gives a wider parabola.}
+    \label{fig:refl-parabola-widths}
+\end{figure}
 
-The focus is at $(0, \frac{1}{a})$ and the directorix is the line $y = -\frac{1}{a}$.
+The focus is at $(0, \frac{1}{a})$ and the directrix is the line $y = -\frac{1}{a}$.
 
-\begin{tikzpicture}
-  \coordinate (f1) at (0, 1/4);
-  \coordinate (p1) at (1, 1);
-  \coordinate (p1d) at (1, -0.25);
-  \coordinate (f2) at (0, 2);
-  \coordinate (p2) at (-1.5, 0.28125);
-  \coordinate (p2d) at (-1.5, -2);
-  \draw[sdkblue,<->,thin] (-2.5, 0) -- (2.5, 0);
-  \draw[sdkblue,<->,thin] (0, -2.5) -- (0, 2.5);
-  \draw[sdkblue, domain=-1.5:1.5, samples=300, variable=\x, <->, thick]  plot (\x,{\x*\x})
-  node [anchor=south] {$a = 4$};
-  \filldraw [sdkblue] (f1) circle (2pt);
-  \filldraw [sdkblue] (p1) circle (1pt);
-  \filldraw [sdkblue] (p1d) circle (1pt);
-  \draw [sdkblue,dashed, thick] (-2.5, -0.25)--(2.5, -0.25) node [anchor=west]{$y=-\frac{1}{4}$};
-  \draw [sdkblue,thin,dashed] (f1) -- (p1) -- (p1d);
-  \draw[domain=-2.2:2.2,samples=300,variable=\x,<->, thick]  plot (\x,{0.125*\x*\x})
-  node [anchor=west] {$a = 0.5$};
-  \filldraw  (f2) circle (2pt) node [anchor=west] {$(0,2)$};
-  \filldraw  (p2) circle (1pt);
-  \filldraw  (p2d) circle (1pt);
-  \draw [dashed, thick] (-2.5, -2)--(2.5, -2) node [anchor=west]{$y=-2$};;
-  \draw [thin,dashed] (f2) -- (p2) -- (p2d);
-\end{tikzpicture}
-% FIXME make into figure
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{refl_two_foci.png}
+    \caption{Each parabola has its own focus and directrix: $\left(0, \frac{1}{4}\right)$ and $y = -\frac{1}{4}$ for $a = 4$, and $(0, 2)$ and $y = -2$ for $a = 0.5$.}
+    \label{fig:refl-two-foci}
+\end{figure}
 
 \subsubsection{Reflective Property of a Parabola}
 
 Assume you have a parabola-shaped mirror. A beam of light shot from
 the focus will bounce off the mirror in the direction of the axis of
 symmetry:
-%FIXME figure
-\begin{tikzpicture}
-  \coordinate (f2) at (0, 2);
-  \coordinate (p1) at (1, 0.125);
-  \coordinate (p1d) at (1, 3);
-  \coordinate (p2) at (-1.5, 0.28125);
-  \coordinate (p2d) at (-1.5, 3);
-  \coordinate (p3) at (2, 0.5);
-  \coordinate (p3d) at (2, 3);
-  \coordinate (p4) at (-0.5, 0.03125);
-  \coordinate (p4d) at (-0.5, 3);
-  \draw[sdkblue,thick] (0, 0) -- (0, 2.0);
-  \draw[domain=-2.2:2.2,samples=300,variable=\x,<->, thick]  plot (\x,{0.125*\x*\x});
-  \filldraw  (f2) circle (2pt);
-  \filldraw  (p1) circle (1pt);
-  \draw [thin,dashed,->] (f2) -- (p1) -- (p1d);
-  \filldraw  (p2) circle (1pt);
-  \draw [thin,dashed,->] (f2) -- (p2) -- (p2d);
-  \filldraw  (p3) circle (1pt);
-  \draw [thin,dashed,->] (f2) -- (p3) -- (p3d);
-  \filldraw  (p4) circle (1pt);
-  \draw [thin,dashed,->] (f2) -- (p4) -- (p4d);
-\end{tikzpicture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\textwidth]{refl_parabolic_mirror.png}
+    \caption{Light leaving the focus of a parabolic mirror reflects parallel to the axis of symmetry.}
+    \label{fig:refl-parabolic-mirror}
+\end{figure}
 
 This is why your flashlight has a parabolic mirror. The lightbulb is
 at the focus, so any photons that hit the mirror are redirected
