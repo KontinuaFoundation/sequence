@@ -1,13 +1,11 @@
 # Flight — Notes
 
 ## Summary
-Merged from `airplanes`, `rotorcraft`, `rocketry`. Each source keeps its own section, under the chapter title.
+Airplanes, rotorcraft, and rocketry.
 
-## Merge history
-- `airplanes` is now section 1.
-- `rotorcraft` is now section 2.
-- `rocketry` is now section 3.
+## Changes in this pass
+- Added a worked lift example (15,000 N) and an exercise on doubling the speed (60,000 N).
+- Removed the last contraction from the prose.
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Labels were duplicated across sources and renamed with a _2 or _3 suffix. Check every \ref to those labels.
+## Open items
+- Fixed the last contraction and two grammar errors ("rotors needs" and "can we can determine").

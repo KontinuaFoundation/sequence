@@ -101,9 +101,7 @@ divided by the total number of customers.
 Suppose we have a PDF that describes processing time for electronic 
 transactions, $f(t)$, where $t$ is processing time and $f(t)$ is the 
 probability that an individual transaction takes a particular amount of time, 
-$t$. Electronic transactions are fast, and we can assume no transaction takes 
-longer than 2 seconds, so we restrict the domain of $f(t)$ to $0 \leq t \leq 
-2$. We can divide the PDF into intervals of width $\Delta t$ (see figure 
+$t$. Electronic transactions are fast, and we can assume no transaction takes longer than 250 milliseconds, so we restrict the domain of $f(t)$ to $0 \leq t \leq 250$. We can divide the PDF into intervals of width $\Delta t$ (see figure 
 \ref{fig:mean}). 
 
 \begin{figure}[H]
@@ -146,7 +144,7 @@ $$\text{mean processing time} = \sum_{i = 1}^n \overline{t}_i f(\overline{
 t}_i) \Delta t$$
 
 Taking the limit as $n \to \infty$, the sum becomes an integral:
-$$\text{mean processing time} = \int_0^2 t \cdot f(t)\,dt$$
+$$\text{mean processing time} = \int_0^{250} t \cdot f(t)\,dt$$
 
 Recall that we use $\mu$ to represent the mean. Therefore, for a general PDF, 
 $f(x)$, the mean is given by:
@@ -186,33 +184,14 @@ What is the mean time between infection and the onset of symptoms?
 \end{Exercise}
 
 \begin{Answer}[ref = symptoms]
-$$\mu = \int_{-\infty}^{\infty} tf(t)\,dt = \frac{1}{595} \int_{0}^{120} t^2 
-e^{-0.04t}\,dt$$
+$$\mu = \int_{-\infty}^{\infty} tf(t)\,dt = \frac{1}{595} \int_{0}^{120} t^2 e^{-0.04t}\,dt$$
 
-Applying integration by parts, we set $f = t^2$ and $dg = e^{-0.04t}dt$, which 
-means $df = 2t\text{ }dt$ and $g = -25e^{-0.04t}$. Substituting, 
-$$\frac{1}{595} \int_{0}^{120} t^2 e^{-0.04t}\,dt = \left[ \frac{-25t^2 
-e^{-0.04t}}{595} \right]_{t = 0}^{t = 120} - \int_{0}^{120} \frac{-50te^{-0.04t
-}}{595}\,dt$$
-$$= -\frac{72000 e^{-4.8}}{119} + \frac{10}{119} \int_0^{120} t e^{-0.04t}\,dt$$
+Integrate by parts twice, or use the antiderivative
+$$\int t^2 e^{-at}\,dt = -e^{-at}\left(\frac{t^2}{a} + \frac{2t}{a^2} + \frac{2}{a^3}\right)$$
+with $a = 0.04$. Evaluating from $0$ to $120$ gives
+$$\mu = \frac{1}{595}\left(31250 - 541250\,e^{-4.8}\right) = \frac{6250 - 108250\,e^{-4.8}}{119} \approx 45.04$$
 
-We apply integration by parts again to evaluate the integral. Let $f = t$ and 
-$dg = e^{-0.04t} dt$, which means $df = dt$ and $g = -25e^{-0.04t}$. 
-Substituting:
-$$\mu = -\frac{72000 e^{-4.8}}{119} + \left( \frac{10}{119} \right) \left[ 
-\left( -25te^{-0.04t} \right)_{t = 0}^{t = 120} - \int_0^{120} -25e^{-0.04t}
-\,dt \right]$$
-$$= -\frac{72000e^{-4.8}}{119} + \left( \frac{10}{119} \right) \left[ -25(120)
-e^{-4.8} + \int_0^{120} 25e^{-0.04t}\,dt \right]$$
-$$= -\frac{72000e^{-4.8}}{119} - \frac{30000e^{-4.8}}{119} + \frac{250}{119} 
-\int_0^{120} e^{-0.04t}\,dt$$
-$$= -\frac{6000e^{-4.8}}{7} + \frac{250}{119} \left[ -25e^{-0.04t} \right]_{
-t = 0}^{t = 120}$$
-$$= -\frac{6000 e^{-4.8}}{119} - \frac{6250}{119} \left[e^{-0.04t} \right]_{
-t = 0}^{t = 120} = -\frac{6000e^{-4.8}}{119} - \frac{6250}{119}e^{-4.8} + 
-\frac{6250}{119}e^{-1} \approx 45.035$$
-
-Therefore, the mean time until the onset of symptoms is approximately 45 hours. 
+Therefore, the mean time until the onset of symptoms is approximately 45 hours.
 \end{Answer}
 
 \section{Expected Values for Two Variables}
@@ -262,7 +241,7 @@ Applying integration by parts:
 $$\mu_y = \frac{1}{2} \left[(-2)ye^{-0.5y}|_{y = 0}^{y = \infty} - \int_0^{
 \infty} (-2)e^{-0.5y}\,dy \right]$$
 $$= \left[-ye^{-0.5y} \right]_{y = 0}^{y = \infty} + (-2)e^{-0.5y}|_{y = 0}^{y 
-= \infty} = (-2) \left( e^{-infty} - e^0 \right) = -2(0 - 1) = 2$$
+= \infty} = (-2) \left( e^{-\infty} - e^0 \right) = -2(0 - 1) = 2$$
 
 Therefore, the expected value of $X$ is 5 and of $Y$ is 2. 
 

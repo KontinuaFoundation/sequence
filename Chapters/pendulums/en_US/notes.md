@@ -1,12 +1,10 @@
-# Pendulums and Alternating Current — Notes
+# Pendulums — Notes
 
 ## Summary
-Split from `oscillations`. This part covers: Pendulums, Alternating Current, Summary.
+Pendulum motion, with a short note on alternating current.
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Added a worked period example (1 m pendulum: 2.01 s) and an exercise (0.25 m: 1.00 s).
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers for this part were not assigned. Add any that belong here.
+## Open items
+- The chapter also covers alternating current, which is covered in `ac`. Consider removing the duplicate section.

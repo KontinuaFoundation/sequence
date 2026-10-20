@@ -1,12 +1,11 @@
-# Functions and Their Graphs — Notes
+# Functions — Notes
 
 ## Summary
-Split from `functions`. This part covers: Graphs of Functions, Can this be expressed as a function?, Graphing Calculators, Even and Odd Functions, Piecewise Functions, Summary.
+Graphs of functions, the vertical line test, graphing calculators, even and odd functions, and piecewise functions.
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Added a worked example that evaluates f(x) = x^2 - 1, and an exercise that solves 2x + 5 = 11.
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers stayed with the first part. Move any that belong here.
+## Open items
+- The chapter is long (about 4,500 words). Consider splitting piecewise functions into their own chapter.

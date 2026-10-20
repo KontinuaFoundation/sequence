@@ -1,25 +1,16 @@
 # Data Tables in SQL — Notes
 
 ## Summary
-Introduces SQL with sqlite: opening bikes.db, .schema, SELECT with WHERE, DISTINCT, UPDATE, INSERT, and DELETE, then a short Python script (report.py) that runs a query through the sqlite3 module.
+Introduces relational databases and SQL with the sqlite command-line tool and the bikes.db file. It covers .schema, SELECT (all columns, chosen columns, WHERE with AND and OR, DISTINCT), UPDATE, INSERT, and DELETE. It ends with a short Python program that runs a query with the sqlite3 library. It has an exercise with an answer.
 
-## Strengths
-- Each sqlite example is shown with the real output, and the outputs match bikes.db (1,000 rows, the schema, the first five rows, the GT-after-2009 query).
-- Clear progression from reading to changing data.
+## Changes in this pass
+- Made the price threshold consistent at $330 in the exercise, its answer, and the Python example.
+- Removed the leftover "(FIXME)" from the asterisk sentence.
+- Changed "dataframe" to "table," since this is a database, not pandas.
+- Removed an unused datetime line from the Python example (datetime was used without an import).
+- Changed the Python listing's language tag from SQL to Python.
 
-## Weaknesses
-- **Exercise mismatch:** the question asks for Trek bikes over $300, but the answer and report.py use `purchase_price > 330`. At $300 the query returns 22 rows, not 5.
-- **Python bug:** report.py calls `datetime.date.today()` but never imports `datetime`, so it raises NameError. The `today` variable is unused.
-- **Wrong highlighting:** the Python script is set in `minted{sql}`, not `minted{python}`.
-- **Leftover placeholder:** the text reads "The asterisk (FIXME) used above".
-- **Wording:** "from the dataframe" should be "from the table".
-- **Raw URL:** the Obsidian Dataview footnote gives a bare URL.
-- **Stray comment:** a `%` note at the end proposes a sql_2 chapter, which now exists.
-
-## Index entries added
-relational database, WHERE, DISTINCT, UPDATE, INSERT, DELETE, sqlite3 (Python library).
-
-## Editor to-do
-- Change the answer and report.py threshold to match the question ($300), or change the question.
-- Import datetime (or remove the unused line) and set the code to Python.
-- Replace the FIXME and remove the stray comment.
+## Open items
+- The chapter needs a second exercise, for example an UPDATE or a query with AND and OR.
+- The Python sample output was generated from the original data. Re-run it against the current bikes.db before publishing.
+- A comment at the end says a second SQL chapter is planned. `sql_2` is that chapter, so the comment can be removed.

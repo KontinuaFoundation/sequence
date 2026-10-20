@@ -1,14 +1,11 @@
-# Inverses and Transformations — Notes
+# Inverses Transformations — Notes
 
 ## Summary
-Merged from `functions_inverses`, `transforms`. Each source keeps its own section, under the chapter title.
+Inverse functions and how transformations change a graph.
 
-## Merge history
-- `functions_inverses` is now section 1.
-- `transforms` is now section 2.
+## Changes in this pass
+- Added a worked inverse example (f(x) = 2x + 1) with a check, and an exercise (the inverse of a cube).
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
-
-- Label `fig:example` was duplicated between the two sources; the second copy is now `fig:example_2`. Check its references.
+## Open items
+- Add a worked example of a shift or a reflection.

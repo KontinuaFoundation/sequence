@@ -1,15 +1,14 @@
 # Polynomials I: Basics and Operations — Notes
 
 ## Summary
-Merged from `polynomials_intro`, `add_subtract_polynomials`, `multiplying_polynomials`, `pymultpoly`, `common_products_polynomials`. Each source keeps its own section, under the chapter title.
+Introduces polynomials (degree, leading coefficient, and standard form), adding and subtracting them (including a Python version), multiplying monomials and polynomials (including Python), and common products (difference of squares, powers of binomials, and Pascal's triangle). It has fifteen exercises with answers.
 
-## Merge history
-- `polynomials_intro` is now section 1.
-- `add_subtract_polynomials` is now section 2.
-- `multiplying_polynomials` is now section 3.
-- `pymultpoly` is now section 4.
-- `common_products_polynomials` is now section 5.
+## Changes in this pass
+- Fixed the product (3x^2)(5x^3 - 2x + 3). The correct result is 15x^5 - 6x^3 + 9x^2. The old answer had the wrong exponent and constant term.
+- Fixed the binomial expansion of (x + pi)^5. The old answer had the wrong terms in x^2, x, and the constant. The correct expansion is x^5 + 5 pi x^4 + 10 pi^2 x^3 + 10 pi^3 x^2 + 5 pi^4 x + pi^5.
+- Replaced three visible "FIXME: Diagram" notes with text. The coefficient rows of the two example polynomials are now written out, and the addition is shown term by term.
+- Replaced the note about two references to one list with a sentence.
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Verify the remaining answers (for example, the standard-form example) against the questions.
+- Add a worked example for multiplying two binomials.

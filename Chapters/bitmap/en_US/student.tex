@@ -1,6 +1,6 @@
 \chapter{Bitmaps}\label{chap:bitmaps}
 %OVERALL NOTE: This chapter is an introduction to bitmaps, following the hexbinary chapter. It assumes C++ knowledge, way may cause an issue with the learning curve. 
-Let's talk about another image format: the Bitmap. The Bitmap, denoted with file type \index{BMP file format}\mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
+Let us talk about another image format: the Bitmap. The Bitmap, denoted with file type \index{BMP file format}\mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
 
 Bitmaps are uncompressed, meaning they can take up a lot of storage space compared to other image formats like JPEG or PNG. However, they are simple to read and write in code, making them useful for certain applications where image quality is more important than file size.
 
@@ -32,14 +32,14 @@ When creating or manipulating bitmap images in code, you can directly set the co
 
 \section{Bitmap Structure}
 \index{bitmaps!structure of}
-When traversing a bitmap, it's important to understand its structure. A bitmap file typically consists of a header followed by the pixel data. The header contains metadata about the image, such as its width, height, and color depth. The pixel data is stored in a grid format, with each pixel represented by its color value.
+When traversing a bitmap, it is important to understand its structure. A bitmap file typically consists of a header followed by the pixel data. The header contains metadata about the image, such as its width, height, and color depth. The pixel data is stored in a grid format, with each pixel represented by its color value.
 
 In a $24$-bit bitmap, each pixel is represented by $3$ bytes (one byte for each color component). The pixel data is usually stored in a bottom-up order, meaning the first row of pixel data corresponds to the bottom row of the image.
 
 \subsection{Bitmap Headers}\index{BITMAPINFOHEADER}
 The bitmap header is typically constructed with a file section and info section. Following those comes the pixel data, represented as bytes.
 \begin{minted}{text}
-| File Header (?) | Info Header (usually 40 bytes) | Pixel Data (rowSize*height) |
+| File Header (14 bytes) | Info Header (usually 40 bytes) | Pixel Data (rowSize*height) |
 \end{minted}
 
 \begin{minted}{cpp}
@@ -50,32 +50,32 @@ struct BITMAPFILEHEADER
     DWORD bfSize; //specifies the size in bytes of the bitmap file
     WORD bfReserved1; //reserved; must be 0
     WORD bfReserved2; //reserved; must be 0
-    DWORD bfOffBits; //species the offset in bytes from the bitmapfileheader to the bitmap bits
+    DWORD bfOffBits; //specifies the offset in bytes from the bitmapfileheader to the bitmap bits
 };
 struct BITMAPINFOHEADER
 {
     DWORD biSize; //specifies the number of bytes required by the struct
     LONG biWidth; //specifies width in pixels
-    LONG biHeight; //species height in pixels
+    LONG biHeight; //specifies height in pixels
     WORD biPlanes; //specifies the number of color planes, must be 1
     WORD biBitCount; //specifies the number of bit per pixel
     DWORD biCompression;//specifies the type of compression
     DWORD biSizeImage; //size of image in bytes
     LONG biXPelsPerMeter; //number of pixels per meter in x axis
     LONG biYPelsPerMeter; //number of pixels per meter in y axis
-    DWORD biClrUsed; //number of colors used by th ebitmap
+    DWORD biClrUsed; //number of colors used by the bitmap
     DWORD biClrImportant; //number of colors that are important
 };
 \end{minted}
 
-You can refer to \href{https://en.wikipedia.org/wiki/BMP_file_format}{the BMP file format specification} and \href{https://en.wikipedia.org/wiki/Bitmap}{the bitmap article} for more information. Let's create variables to hold important fields:
+You can refer to \href{https://en.wikipedia.org/wiki/BMP_file_format}{the BMP file format specification} and \href{https://en.wikipedia.org/wiki/Bitmap}{the bitmap article} for more information. Let us create variables to hold important fields:
 \begin{itemize}
     \item \mintinline{cpp}|int w = bih.biWidth;| - width of the image in pixels
     \item \mintinline{cpp}|int h = bih.biHeight;| - height of the image in pixels
     \item \mintinline{cpp}|int size = bih.biSizeImage;| - the total size of the pixel data in bytes
     \item Note that we create \mintinline{cpp}|bytesPerPixel = 3| - the number of bytes per pixel ($3$ for $24$-bit RGB)
 \end{itemize}
-Let's also preemptively build a pixel structure that can contain the information of an individual value at coordinate $(x,y)$:
+Let us also preemptively build a pixel structure that can contain the information of an individual value at coordinate $(x,y)$:
 \begin{minted}{cpp}
 struct PIXEL
 {
@@ -94,7 +94,7 @@ Because bitmap pixels do not always naturally fill a multiple of four bytes—es
 
 This means that if the width of the image (in bytes) is not a multiple of $4$, we need to add padding bytes at the end of each row to ensure proper alignment. Padding, then, is extra bytes added to the end of each row of pixels so that the row size is a multiple of 4 bytes.\index{padding}
 
-Let's look at an example. If we create a $4$ pixel bitmap, it takes up
+Let us look at an example. If we create a $4$ pixel bitmap, it takes up
 $$4 \text{ pixels} \times 3 \text{ bytes} = 12 \text{ bytes}$$
 The memory looks something like
 \begin{minted}{text}
@@ -155,7 +155,7 @@ int offset = y * rowSize + x * bytesPerPixel;
 \end{minted}
 This formula will come in handy later in our code!
 
-Let's write the full code for bitmap analysis. Starting with store the bitmap that our program reads into a memory allocated array, we can load our bitmap into a file, and read all the file information from it. We also can then utilize our equations \texttt{rowSize} and \texttt{idx} to get the individual pixel at $(x,y) \in (w,h)$. 
+Let us write the full code for bitmap analysis. Starting with store the bitmap that our program reads into a memory allocated array, we can load our bitmap into a file, and read all the file information from it. We also can then utilize our equations \texttt{rowSize} and \texttt{idx} to get the individual pixel at $(x,y) \in (w,h)$. 
 \begin{minted}{cpp}
 // program arguments: ./bitmap_reader inputname.bmp outputname.bmp
 if (argc !=3) return 1;
@@ -239,6 +239,14 @@ Note that we search our data array at \texttt{idx} to locate the blue component,
 \item The order is fixed by the BMP format
 \end{itemize}
 
+Finally, write the swapped pixel data to the output file and release memory:
+\begin{minted}{cpp}
+fwrite(out, size, 1, outfile);
+fclose(outfile);
+free(data);
+free(out);
+\end{minted}
+
 After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp output.bmp| and \mintinline{bash}|./bitmap_reader gradient.bmp output.bmp| produces the following outputs (see Figures~\ref{fig:gradientRedBlueSwap} and \ref{cowRedBlueSwap}):
 
 % Duplicates of each bmp made into pngs for inclusion in chapter
@@ -277,16 +285,16 @@ After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp ou
         \caption{Output bitmap.}
         \label{fig:cow2}
     \end{subfigure}
-    \caption{Running \texttt{bitmap\_reader.cpp} on a gradient, swapping red and blue channels.}
+    \caption{Running \texttt{bitmap\_reader.cpp} on the cow, swapping red and blue channels.}
     \label{fig:cow-comparison}
 \end{figure}
 
-The entire base code for swapping the red and blue channels is in your Digital Resources, as well as a basic copy paste input-output bitmap. A lot of this stays the same of other pixel-based modifications, such as the next Exercise.
+The entire base code for swapping the red and blue channels is in your Digital Resources, as well as a basic copy paste input-output bitmap. A lot of this stays the same for other pixel-based modifications, such as the next Exercise.
 
 \begin{Exercise}[title=Eliminate the Green component, label=bitmapsExercise1]
 Now try it yourself:
 
-Alter both \texttt{cow.bmp} and \texttt{gradient.bmp} such that the green channel is eliminated. Keep the red and blue channels the same (don't swap them).
+Alter both \texttt{cow.bmp} and \texttt{gradient.bmp} such that the green channel is eliminated. Keep the red and blue channels the same (do not swap them).
 \end{Exercise}
 \begin{Answer}[ref=bitmapsExercise1]
 The only thing that changes in our for loop is the writing of the output pixel.
@@ -337,9 +345,9 @@ Visually, the image often takes on a magenta or purplish tint (see Figures~\ref{
 
 \section{Creating a Bitmap with C++}
 
-What if we aren't given an input file? Can we create a bitmap?
+What if we are not given an input file? Can we create a bitmap?
 
-Of course, let's create a simple 3x3 bitmap of the following colors:
+Of course, let us create a simple 3x3 bitmap of the following colors:
 \begin{minted}{text}
 [ Red ] [ White ] [ White ]
 [ Black ] [ Blue ] [ White ]
@@ -349,7 +357,7 @@ Although the image is conceptually two-dimensional, the bitmap file stores its p
 
 There are, however, a few constraints:
 \begin{itemize}
-    \item 14-bit file header
+    \item 14-byte file header
     \item 40-byte info header 
     \item pixel data with required row padding
 \end{itemize}
@@ -360,7 +368,7 @@ There are, however, a few constraints:
 \textbf{Calculations}:
 \begin{itemize}
     \item Each pixel $= 3 \texttt{ bytes}$
-    \item Row $= 3 \texttt{ pixels} \times 3 \texttt{ bytes per pixel} = 9 \texttt{ pixels}$
+    \item Row $= 3 \texttt{ pixels} \times 3 \texttt{ bytes per pixel} = 9 \texttt{ bytes}$
     \item  $3 \texttt{ padding bytes} \implies 12 \texttt{ bytes per row}$
     \item $12 \texttt{ bytes} \times 3 \texttt{ rows} = 36 \texttt{ bytes}$
 \end{itemize}
@@ -420,13 +428,14 @@ At this point, the file contains only metadata. No pixel values have been writte
 Recall that bitmap pixel data is stored bottom-up, meaning the first row written corresponds to the bottom row of the image.
 \begin{minted}{text}
 Memory order:
-Row 2 (bottom)
-Row 1
-Row 0 (top)
+Row 3 (bottom)
+Row 2
+Row 1 (top)
 \end{minted}
 
-Let's write the third row first:
+Let us write the third row first:
 \begin{minted}{cpp}
+uint8_t row[rowSize] = {0}; // padding bytes stay 0
 // ROW 3 (bottom)
 // Black      Black         Green 
 row[0] = 0;   row[1] = 0;   row[2] = 0;     // Black
@@ -454,9 +463,10 @@ row[0] = 0;   row[1] = 0;   row[2] = 255;   // Red
 row[3] = 255; row[4] = 255; row[5] = 255;   // White
 row[6] = 255; row[7] = 255; row[8] = 255;   // White
 fwrite(row, rowSize, 1, f);
+fclose(f);
 \end{minted}
 
-And that's it! The compiler automatically converts the 255s to $\texttt{0xFF}$. Close the file and run the program, and you get an extremely small output. Enlarge the output and you get:
+And that is it! The compiler automatically converts the 255s to $\texttt{0xFF}$. Close the file and run the program, and you get an extremely small output. Enlarge the output and you get:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{custom_made.png}
@@ -502,7 +512,7 @@ Answer the following questions before writing any code:
 
 Remember that we need to write the rows bottom-up, so the second row is written first followed by the first row.
 
-Let's establish the colors needed. Remember that we need to swap to BGR order:
+Let us establish the colors needed. Remember that we need to swap to BGR order:
 \begin{itemize}
     \item Black = (0, 0, 0)
     \item Red = (0, 0, 255)
@@ -615,7 +625,7 @@ int main(int argc, char const *argv[])
 \section{Connection to transformations}
 What if alter the pixel values in a more complex way? For example, instead of altering the colors themselves, we alter the pixel positions. This is what is called a transformation, and is a fundamental concept in computer graphics. A transformation is a mathematical operation that changes the position, size, or orientation of an object in a graphical space. In the context of bitmaps, transformations can be applied to the pixel data to achieve various effects, such as rotation, scaling, translation, and shearing.
 
-What if you took a selfie, but then wanted to mirror it horizontally, to get a more representation of your face? This is a common transformation called a \index{horizontal flip}horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
+What if you took a selfie, but then wanted to mirror it horizontally, to get a view of your face like the one in a mirror? This is a common transformation called a \index{horizontal flip}horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
 
 Since we are storing our pixel data as $(x,y)$ coordinates, we can easily apply transformations by manipulating these coordinates. For an image with width $w$ and height $h$, the horizontal flip transformation can be expressed mathematically as:
 $$x' = w - 1 - x,\qquad y' = y$$
@@ -625,11 +635,11 @@ This operation does not change the pixel values themselves, but instead sets the
 Without having to learn too much linear algebra, we can express this as a simple function: If we have a pixel coordinate expressed as a simple vector $\mathbf{p} = \vecb{x\\y}$, we can define a transformation function $T$ that takes this pixel coordinate and maps it to a new coordinate $\mathbf{p'}$:
 $$\mathbf{p'} = T\mathbf{p}$$
 
-In this case, the transformation function $T$ is a matrix that encodes the horizontal flip operation that obeys matrix multiplication. We have not talked about this yet, and it is a difficult concept to understand without having introduced linear algebra or matrices. So, we will not go into the details of how to construct this matrix, but just know that a horizontal flip can represented as:
+In this case, the transformation function $T$ is a matrix that encodes the horizontal flip operation that obeys matrix multiplication. We have not talked about this yet, and it is a difficult concept to understand without having introduced linear algebra or matrices. So, we will not go into the details of how to construct this matrix, but just know that a horizontal flip can be represented as:
 $$T = \begin{bmatrix}-1 & 0 \\ 0 & 1\end{bmatrix}$$
-This matrix, when multiplied with the pixel coordinate vector $\mathbf{p}$, will yield the new coordinate $\mathbf{p'}$ that corresponds to the horizontally flipped position of the original pixel. Specifically, the $-1$ in the first row of the matrix indicates that the x-coordinate is inverted (flipped), while the $1$ in the second row indicates that the y-coordinate remains unchanged.
+This matrix, when multiplied with the pixel coordinate vector $\mathbf{p}$, will yield the new coordinate $\mathbf{p'}$ that corresponds to the horizontally flipped position of the original pixel. Specifically, the $-1$ in the first row of the matrix indicates that the x-coordinate is inverted (flipped), while the $1$ in the second row indicates that the y-coordinate remains unchanged. This matrix sends $x$ to $-x$, which puts the image on the wrong side of the origin. To keep the flipped image inside the frame, we must also shift each x-coordinate by $w - 1$. A shift is not a linear transformation, so this matrix alone cannot do the whole job.
 
-Let's do this with code! The only thing that changes in our for loop is the calculation of the output pixel's position. Instead of writing to the same index, we write to the flipped index:
+Let us do this with code! The only thing that changes in our for loop is the calculation of the output pixel's position. Instead of writing to the same index, we write to the flipped index:
 \begin{minted}{cpp}
 for (int y = 0; y < h; y++)
 {

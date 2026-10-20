@@ -5,7 +5,7 @@
 A \emph{library} is a collection of pre-written code that provides additional
 functionality without requiring you to write everything from scratch. Python
 includes many built-in libraries that can be used to perform common tasks such as
-mathematical calculations, data handling, and visualization. You'll often find that code you are seeking can be found through an open-source library which already exists.
+mathematical calculations, data handling, and visualization. You will often find that code you are seeking can be found through an open-source library which already exists.
 
 To use a library, it must first be imported.
 
@@ -53,7 +53,7 @@ import matplotlib.pyplot as plt
 \end{minted}
 
 \subsection{A simple line graph}
-A line plot is ideal for showing how a value changes over time or across an ordered variable. Let's create \texttt{line.py} 
+A line plot is ideal for showing how a value changes over time or across an ordered variable. Let us create \texttt{line.py} 
 
 \begin{minted}{python}
 import matplotlib.pyplot as plt # the matplotlib library, which we will call using plt
@@ -80,7 +80,7 @@ Running \mintinline{bash}|python3 line.py| will open a new \emph{interactive win
 \end{figure}
 
 \subsection{Labels, legends, and grids}
-A plot is more useful when it clearly communicates what each element represents. Let's add on to \texttt{line.py} by creating \texttt{lineTwoOutputs.py} and adding labels, a legend, and another set of data. 
+A plot is more useful when it clearly communicates what each element represents. Let us add on to \texttt{line.py} by creating \texttt{lineTwoOutputs.py} and adding labels, a legend, and another set of data. 
 
 
 \begin{minipage}[t]{0.44\textwidth}
@@ -106,7 +106,7 @@ plt.show()
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{lineTwoOutputs.png}
-    \caption{$y=x^2$ and $y=x^3$ on the same graphed.}
+    \caption{$y=x^2$ and $y=x^3$ on the same graph.}
     \label{fig:lineTwoOutputs}
 \end{figure}
 \end{minipage}
@@ -170,6 +170,8 @@ plt.show()
         
 \end{minipage}
 
+\textbf{Worked example: reading a histogram.} The histogram above splits the 15 values into 5 bins of equal width, from 4 to 12. Each bin is about 1.6 units wide. The counts are $3, 4, 2, 4, 2$, which add up to $15$. Matplotlib chooses the bin edges for you. The tallest bars show where the values cluster.
+
 \subsection{The object-oriented approach (recommended)}
 Matplotlib has two main styles:
 \begin{itemize}
@@ -209,3 +211,22 @@ plt.show()
     \caption{The two plots, generated side by side.}
     \label{fig:lineOOP}
 \end{figure}
+
+\begin{Exercise}[title={A Line Plot}, label=pyl_line]
+Write a program that plots $y = 2x$ for $x = 0, 1, 2, 3, 4$. Add a title and axis labels.
+\end{Exercise}
+\begin{Answer}[ref=pyl_line]
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+x = [0, 1, 2, 3, 4]
+y = [2 * v for v in x]
+
+plt.plot(x, y)
+plt.title("y = 2x")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.show()
+\end{minted}
+The program runs with matplotlib installed. The plot is a straight line through $(0, 0)$ and $(4, 8)$.
+\end{Answer}

@@ -1,24 +1,13 @@
 # Implicit Differentiation — Notes
 
 ## Summary
-Derives dy/dx = −F_x/F_y, checks it against the circle x² + y² = r² two ways, introduces the Folium of Descartes (x³ + y³ = 3xy), finds its tangent at (2, 2) and its horizontal tangent point, and gives two AP-style practice problems (arcsin x = ln y; a second derivative with a point classification).
+Explains implicit differentiation for equations that are not solved for y, using the Folium of Descartes as the main example. It covers the second derivative implicitly, and has a worked example on a circle and three exercises with answers.
 
-## Strengths
-- The circle derivation (dy/dx = −x/y) is correct both ways.
-- The tangent at (2, 2) (slope −1, y − 2 = −(x − 2)) and the horizontal-tangent point (2^{1/3}, 2^{2/3}) ≈ (1.26, 1.59) are correct.
-- The second-derivative classification of (−1, −1) (local max) and (1, −5) (neither) is correct.
+## Changes in this pass
+- Checked both exercise answers. The derivative of arcsin x = ln y is y/sqrt(1 - x^2), and the second derivative of dy/dx = x^2 + y at (-1, -1) is -2, which makes the point a local maximum. Both are correct.
+- Corrected a typo, "d^y/dx^2," to d^2y/dx^2.
+- Added a worked circle example (x^2 + y^2 = 25 has slope -3/4 at (3, 4)) and an exercise at (-4, 3) with answer 4/3.
 
-## Weaknesses
-- **Wrong part (a):** the problem asks for x³ + y³ = 6xy, but the solution differentiates 3xy and solves the 3xy version.
-- **Typo in the horizontal-tangent step:** the denominator is written "y + 2 − x", which should be y² − x.
-- **Wrong formula:** "1/(2 ± √(r² − x²))" should be 1/(2(±√(r² − x²))).
-- **Typo:** "d^y/dx²" should be d²y/dx².
-- **Stray footnote:** the footnote on the d/dx form ("is the same as y′ said as...") is informal.
-
-## Index entries added
-circle!implicit equation, Folium of Descartes, chain rule!implicit, tangent line!implicit, horizontal tangent, second derivative!implicit, differential equation!implicit.
-
-## Editor to-do
-- Correct the 6xy versus 3xy mismatch and the y + 2 − x denominator.
-- Fix the derivative-of-the-circle formula and the d^y notation.
-
+## Open items
+- The chapter's Folium of Descartes example is long. Add one worked slope calculation on the folium itself.
+- The historical note on Descartes and Fermat should be checked against a reliable source before publication.

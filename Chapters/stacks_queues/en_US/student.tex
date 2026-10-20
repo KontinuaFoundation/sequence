@@ -6,7 +6,7 @@ A \index{stack}\newterm{stack} is a linear data structure that only allows acces
 
 Data comes off in the reverse order it went on: the last thing pushed onto the stack is the first thing popped off. This ordering is called \index{LIFO}\newterm{LIFO}, for ``last in, first out.'' 
 
-You have already seen a stack in a previous workbook, even if it wasn't called one: the call stack from the Introduction to C chapter behaves exactly this way, with each function call pushing a new frame on top and returning popping it back off.
+You have already seen a stack in a previous workbook, even if it was not called one: the call stack from the Introduction to C chapter behaves exactly this way, with each function call pushing a new frame on top and returning popping it back off.
 
 We can think of this like a stack of books: you can only access the book on top, and you can only see the cover of the top book. If you want to get to a book underneath, you have to remove the books above it first.
 \begin{center}
@@ -137,7 +137,7 @@ demonstrates both overflow and underflow, is in your digital resources. In this 
 
 \subsection{Linked-List Stack}\index{stack!linked-list}
 
-\index{stack overflow}The array-based stack has one real weakness: \texttt{CAPACITY} is fixed at compile time. If you don't know in advance how much data you'll be pushing, you either waste memory reserving more than you need, or you risk overflow. A stack built on the \texttt{Node} type from the Linked Lists chapter has no limit, since it grows and shrinks on the heap as needed. The downside is that each element takes more memory, since it has to store a pointer to the next node.
+\index{stack overflow}The array-based stack has one real weakness: \texttt{CAPACITY} is fixed at compile time. If you do not know in advance how much data you will be pushing, you either waste memory reserving more than you need, or you risk overflow. A stack built on the \texttt{Node} type from the Linked Lists chapter has no limit, since it grows and shrinks on the heap as needed. The downside is that each element takes more memory, since it has to store a pointer to the next node.
 
 \begin{minted}{cpp}
 struct Node {
@@ -206,7 +206,7 @@ int pop(LinkedStack& s) {
 }
 \end{minted}
 
-Both \texttt{push} and \texttt{pop} still run in constant time (we will cover this in a future chapter), same as the array version, since neither one has to walk the list. But unlike the array version, \texttt{pop} here calls \texttt{delete} on the old top node; if it didn't, the node would sit on the heap forever.
+Both \texttt{push} and \texttt{pop} still run in constant time (we will cover this in a future chapter), same as the array version, since neither one has to walk the list. But unlike the array version, \texttt{pop} here calls \texttt{delete} on the old top node; if it did not, the node would sit on the heap forever.
 
 The full version of this file is in your digital resource!
 
@@ -224,67 +224,128 @@ Memory per element & Just the value & Value + one pointer \\
 \end{tabular}
 \end{center}
 
-If you know a safe upper bound on how much data you'll ever hold, the array version is the most efficient* choice. If you don't, the linked version is safer, since it will never overflow.
+If you know a safe upper bound on how much data you will ever hold, the array version is the most efficient choice. If you do not, the linked version is safer, since it will never overflow.
 
 
 \section{Queues}
 
-\index{queue}Imagine you are at a concert. You are arriving at around 1pm, but the line has been growing since about 3am that same day (wow!). Naturally, by way of timing, the people who arrived earliest are going to be able to enter the venue first, while the people you arrive closest to the show time will enter the venue last. 
+\index{queue}Imagine you are at a concert. You are arriving at around 1pm, but the line has been growing since about 3am that same day (wow!). Naturally, by way of timing, the people who arrived earliest are going to be able to enter the venue first, while the people you arrive closest to the show time will enter the venue last.
 
 Assuming supplements like VIP packages or fast-track lines are not of concern here, we can summarize this type of line in a similar phrase: \textbf{First In, First Out}. The first people to arrive in the line are the first people out of the line, and, subsequently, into the venue. We call this way of organizing data \index{FIFO}\newterm{FIFO}.
 
-Similar to stacks, we only need a handful of operations to build a queue.
-
-[placeholder: people in line image (maybe)]
-
-Every stack, no matter how it is built underneath, supports the same handful of operations:
+Similar to stacks, we only need a handful of operations to build a queue. Every queue, no matter how it is built underneath, supports these operations:
 
 \begin{itemize}
-    \item \index{enqueue}\texttt{enqueue(value)} put a new value at the front of the queue. You may see this as \texttt{enq}
-    \item \index{dequeue}\texttt{dequeue()} remove and return the value at the front of the queue. You may see this as \texttt{deq}
-    \item \index{peek}\texttt{peek()} look at the value on front of the queue
+    \item \index{enqueue}\texttt{enqueue(value)} put a new value at the back of the queue. You may see this as \texttt{enq}.
+    \item \index{dequeue}\texttt{dequeue()} remove and return the value at the front of the queue. You may see this as \texttt{deq}.
+    \item \index{peek}\texttt{peek()} look at the value at the front of the queue, without removing it.
     \item \texttt{isEmpty()} true if the queue has nothing in it.
 \end{itemize}
 
-Similarly, again, to stacks, we can implement this two ways: a fixed-array based method and a linked-list method. Both have benefits and tradeoffs. 
-
+Similarly to stacks, we can implement a queue two ways: a fixed-size array and a linked list. Both have benefits and tradeoffs.
 
 \subsection{Array-Based Queue}\index{queue!array-based}
-We can build a queue with an array, there is the same major constraint as with stacks: we need to know the size of the queue in advance. 
+We can build a queue with an array. As with stacks, we must know the capacity in advance. The queue needs two numbers: \texttt{front}, the index of the value that leaves next, and \texttt{count}, the number of values stored. The back of the queue is always at index \texttt{front + count}, taken modulo the capacity.
 
 \begin{minted}{cpp}
 const int CAPACITY = 5;
 
 struct ArrayQueue {
     int data[CAPACITY];
-    int front;   // index of the front element; -1 means empty
-    int count = 0; // for ensuring we don't exceed CAPACITY
-
+    int front = 0;   // index of the front element
+    int count = 0;   // number of elements in the queue
 };
 
-bool enqueue(Queue& q, int value) {
+bool isEmpty(const ArrayQueue& q) {
+    return q.count == 0;
+}
+
+bool isFull(const ArrayQueue& q) {
+    return q.count == CAPACITY;
+}
+
+bool enqueue(ArrayQueue& q, int value) {
     if (isFull(q)) return false;
-    int back = (q.front + q.count) % MAX;  // wraps around
+    int back = (q.front + q.count) % CAPACITY;  // wraps around
     q.data[back] = value;
     q.count++;
     return true;
 }
 
-bool dequeue(Queue& q, int& out) {
+bool dequeue(ArrayQueue& q, int& out) {
     if (isEmpty(q)) return false;
     out = q.data[q.front];
-    q.front = (q.front + 1) % MAX;         // wraps around
+    q.front = (q.front + 1) % CAPACITY;        // wraps around
     q.count--;
     return true;
 }
 
-bool peek(const Queue& q, int& out) {
+bool peek(const ArrayQueue& q, int& out) {
     if (isEmpty(q)) return false;
     out = q.data[q.front];
     return true;
 }
 \end{minted}
 
-TODO: Explain why we need to wrap around the array (circular array) and how it is done. Simplify above code.
+The \texttt{\%} operator makes the array circular. When \texttt{front} or the back index passes the last slot, it wraps around to index 0. Without wrapping, the queue would seem full at the end of the array, even when the slots at the start are empty after several dequeues. Every operation here takes constant time, $O(1)$.
+
+\begin{Exercise}[title={Tracing a Circular Queue}, label=queue1]
+An \texttt{ArrayQueue} has \texttt{CAPACITY} equal to 4 and starts empty. Perform these operations in order: \texttt{enqueue(1)}, \texttt{enqueue(2)}, \texttt{enqueue(3)}, \texttt{dequeue()}, \texttt{dequeue()}, \texttt{enqueue(4)}, \texttt{enqueue(5)}. What are \texttt{front} and \texttt{count} at the end, and which values are in the queue, in order?
+\end{Exercise}
+\begin{Answer}[ref=queue1]
+The table below shows \texttt{front} and \texttt{count} after each step. The values that the queue holds are in brackets.
+\begin{center}
+\begin{tabular}{|l|c|c|l|}
+\hline
+Operation & \texttt{front} & \texttt{count} & Back index \\
+\hline
+\texttt{enqueue(1)} & 0 & 1 & 0 \\
+\texttt{enqueue(2)} & 0 & 2 & 1 \\
+\texttt{enqueue(3)} & 0 & 3 & 2 \\
+\texttt{dequeue()} returns 1 & 1 & 2 & -- \\
+\texttt{dequeue()} returns 2 & 2 & 1 & -- \\
+\texttt{enqueue(4)} & 2 & 2 & $(2 + 1) \bmod 4 = 3$ \\
+\texttt{enqueue(5)} & 2 & 3 & $(2 + 2) \bmod 4 = 0$ \\
+\hline
+\end{tabular}
+\end{center}
+At the end, \texttt{front} is 2 and \texttt{count} is 3. The queue holds 3, 4, and 5, in that order. The value 5 wraps around to index 0.
+\end{Answer}
 
 \subsection{Linked-List Queue}\index{queue!linked-list}
+A linked queue needs two pointers. \texttt{front} points to the first node, where values leave. \texttt{back} points to the last node, where new values arrive. The \texttt{back} pointer lets \texttt{enqueue} add to the end without walking the list.
+
+\begin{minted}{cpp}
+struct LinkedQueue {
+    Node* front = nullptr;   // nullptr means empty
+    Node* back = nullptr;
+};
+
+bool isEmpty(const LinkedQueue& q) {
+    return q.front == nullptr;
+}
+
+void enqueue(LinkedQueue& q, int value) {
+    Node* n = new Node();
+    n->data = value;
+    n->next = nullptr;
+    if (q.back == nullptr) {    // empty queue: the new node is both front and back
+        q.front = n;
+    } else {
+        q.back->next = n;       // link after the old back
+    }
+    q.back = n;
+}
+
+bool dequeue(LinkedQueue& q, int& out) {
+    if (isEmpty(q)) return false;
+    Node* oldFront = q.front;
+    out = oldFront->data;
+    q.front = oldFront->next;
+    if (q.front == nullptr) q.back = nullptr;   // the queue is now empty
+    delete oldFront;
+    return true;
+}
+\end{minted}
+
+Both \texttt{enqueue} and \texttt{dequeue} run in constant time, like the array version. Unlike the array version, the linked queue has no capacity limit. It grows and shrinks on the heap, and \texttt{dequeue} calls \texttt{delete} on the old front node so that the memory is released.

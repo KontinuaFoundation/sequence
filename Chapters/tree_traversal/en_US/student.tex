@@ -13,9 +13,9 @@ This chapter will discuss \index{breadth-first search}\newterm{breadth-first sea
 
 Alternatively, there is \index{depth-first search}\newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
 
-While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires you do have a preselected node a your \emph{start node}.
+While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires that you have a preselected node as your \emph{start node}.
 \section{BFS}
-Let's look at running BFS on a tree. Starting out with this tree:
+Let us look at running BFS on a tree. Starting out with this tree:
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[
@@ -148,7 +148,7 @@ The steps are fairly simple:
 \end{enumerate}
 
 
-There are 3 orders in which we can traverse/search the deepest tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
+There are 3 orders in which we can traverse the whole tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
 
 
 However, these orders essentially perform the same basic three tasks,
@@ -206,7 +206,7 @@ The in-order traversal of our original tree becomes
 
 The previous sections (pre-order, in-order, and post-order) describe \emph{when} a node is visited during a depth-first traversal.
 
-The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
+The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. The right child is pushed first, so the left child is popped first. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
 \begin{algorithm}
     \caption{Depth-First Search (DFS) - Iterative on a Tree}
     \begin{algorithmic}
@@ -216,11 +216,11 @@ The following algorithm instead describes the general \emph{mechanism} of depth-
         \While{$S$ is not empty}
         \State node $=$ \Call{Pop}{$S$}
         \State visit(node)\Comment{V}
-        \If{node.left $\neq$ null}
-        \State \Call{Push}{$S$, node.left}\Comment{L}
-        \EndIf
         \If{node.right $\neq$ null}
         \State \Call{Push}{$S$, node.right}\Comment{R}
+        \EndIf
+        \If{node.left $\neq$ null}
+        \State \Call{Push}{$S$, node.left}\Comment{L}
         \EndIf
         \EndWhile
         \EndProcedure
@@ -230,7 +230,7 @@ The following algorithm instead describes the general \emph{mechanism} of depth-
 DFS is particularly useful for solving problems like connected-component detection in graphs and maze-solving.
 
 \section{Recursive vs Iterative Traversal}
-As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let's look at DFS recursively.
+As we have established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let us look at DFS recursively.
 
 Importantly, they do not change the traversal order (pre-, in-, post-order); they only change how the traversal is implemented.
 

@@ -1,21 +1,19 @@
 # Statistical Tables — Notes
 
 ## Summary
-Reproduces the standard normal, t, and chi-square tables, explains how to read them (areas, inverse lookups, t-table bounds for P-values), and includes exercises with answers.
+Collects the standard normal table (negative and positive z), the t table (critical values by df and tail probability, with df = ∞ as z*), and the chi-square table (critical values by df and tail probability). It explains how to read each one, gives a figure for each distribution, and includes exercises on z-areas, backward lookup of z, t* for two confidence levels, a P-value bound from the t table, and a chi-square critical value and bound. The tables and exercise answers were checked against standard values.
 
-## Strengths
-- Spot-checked table entries are correct: Φ(1.37) = 0.9147, Φ(−0.84) = 0.2005, Φ(−1.25) = 0.1056, the t-values for df = 24 (2.064) and df = 15 (2.249 and 2.602), and the chi-square value for df = 12 at 0.05 (21.026).
-- The bounds in the worked answers are right, and the chi-square P-value estimate (0.0439) is correct.
-- The rule for using the next smaller df gives a conservative (wider) interval, which is correctly explained.
+## Changes in this pass
+- None to the tables. The exercises and their answers were checked.
 
-## Weaknesses
-- **Unverified claim:** the opening says the tables "match the exam versions" on the AP formula sheet. I did not check this.
-- **Odd label:** the negative-z table ends with "$-0.0$."
-- **Exam-specific note:** the inverse-lookup example (z ≈ 1.28) rounds to the nearest table entry, which should be stated as a convention.
+## Checked and correct
+- P(Z ≤ 1.37) = 0.9147. P(Z ≤ −0.84) = 0.2005, so P(Z > −0.84) = 0.7995. P(−1.25 < Z < 0.60) = 0.7257 − 0.1056 = 0.6201.
+- The area 0.90 gives z ≈ 1.28.
+- t* = 2.064 for 95% with df = 24. For 99% with df = 40 (used for df = 45), t* = 2.704. The exact df = 45 value is 2.690.
+- t = 2.30 with df = 15 lies between tail probabilities 0.01 and 0.02.
+- Chi-square df = 12 at 0.05: 21.026. df = 4 with χ² = 9.80 lies between tail probabilities 0.025 and 0.05.
 
-## Index entries added
-standard normal table, standard normal table rules, t table, t table reading, chi-square table.
-
-## Editor to-do
-- Confirm the formula-sheet claim against the current exam material.
-- Fix the −0.0 label and check the figure labels.
+## Open items
+- The opening paragraph says the layouts "match the exam versions" and that practice carries over to test day. This claim depends on the current AP formula sheet and should be confirmed before publication.
+- The figure for the chi-square table uses a different shape scale than the t figure. This is intentional but could confuse readers.
+- The table of negative z values is labeled "−0.0" in its last row. Some editions use "0.0" in the positive table only.

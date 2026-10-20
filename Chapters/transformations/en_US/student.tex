@@ -12,7 +12,7 @@ We can change our input vector $\vec{x}$, which directly affects the output vari
 Recall our subspace diagram; the matrix $A$, which is size $m\times n$, takes the input vectors $\vec{x} \in \mathbb R^n$, and transforms them to the output $\vec{b} \in \mathbb R^m$.
 
 
-The transformation $T$ is said to map from the reals of $n$ to the reals of $m$, such that: $T: \mathbb R^{n}\to \mathbb R^m$
+The transformation $T$ maps $\mathbb R^n$ to $\mathbb R^m$, written as $T: \mathbb R^{n}\to \mathbb R^m$
 \begin{itemize}
     \item $\mathbb R^n$ is called the \index{domain}\textbf{domain}
     \item $\mathbb R^m$ is called the \index{codomain}\textbf{codomain}
@@ -66,7 +66,7 @@ The transformation $T$ is said to map from the reals of $n$ to the reals of $m$,
     \label{fig:transformationDiagram-transformations}
 \end{figure}
 
-Let's call the transformation $T$, such that 
+Let us call the transformation $T$, such that 
 $$T : \mathbb R^n \to \mathbb R^m$$
 
 We can rewrite our transformation with matrix $A$ 
@@ -78,10 +78,10 @@ Consequently, the column space of $A$ represents the full set of possible output
 \subsection{The Identity Transformation}
 For this chapter, we will restrict our transformations to $\mathbb R^2 \rightarrow \mathbb R^2$, such that our matrix is $2 \times 2$. This will help calculations be simpler and also will allow us to make easy to follow transformation diagrams. 
 
-Let's take the simplest transformation; the \emph{identity transformation}\index{identity transformation}. Take the matrix:
+Let us take the simplest transformation; the \emph{identity transformation}\index{identity transformation}. Take the matrix:
 $$I = \begin{bmatrix}1 & 0 \\ 0 & 1\end{bmatrix}$$
 
-Every vector in the subspace of $\mathbb R^n$ \textbf{stays where it is}.
+Every vector in $\mathbb R^n$ \textbf{stays where it is}.
 \begin{itemize}
     \item $e_1$ stays $e_1$
     \item $e_2$ stays $e_2$
@@ -91,7 +91,7 @@ Every vector in the subspace of $\mathbb R^n$ \textbf{stays where it is}.
 
 Under the identity transformation, nothing moves. We still get something very important out of this: the vector $\vecb{1 \\ 1}$ can be written as a combination of the basis vectors:
 $$\vecb{1 \\ 1} = 1\vec e_1 + 1\vec e_2$$
-When a linear transformation is applied, the way a vector is built from the basis vectors does not change, but \emph{rather the direction of the basis vectors}.
+When a linear transformation is applied, the way a vector is built from the basis vectors does not change, but \emph{the directions of the basis vectors} can change.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -128,10 +128,8 @@ Linear transformations preserve linear combinations while \emph{altering the dir
 
 In the next example, we will apply a non-identity matrix and observe how transforming the basis vectors reshapes the entire space. Each figure will show a grid of points in $\mathbb R^2$ alongside the resulting transformed points after applying the matrix transformation. We encourage you to play with the python script \texttt{transforms.py} to see how different matrices affect the transformation. Also, we will limit our view to a square region from $(-2, -2)$ to $(2, 2)$ and only use $2 \times 2$ matrices for simplicity.
 
-\subsection{Scaling and Shearing}\index{shear}
-\index{scaling}
-\section{Scaling}
-Now, let's try scaling up and down the basis vectors. Consider the matrix:
+\section{Scaling and Shearing}\index{shear}\index{scaling}
+Now, let us try scaling up and down the basis vectors. Consider the matrix:
 \[A = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\]
 This matrix will scale both the $e_1$ and $e_2$ vectors by a factor of 2, effectively doubling their lengths.
 
@@ -160,8 +158,8 @@ This tells us that the transformation $A$ is a scaling transformation, which str
 This, as expected, shrinks the house by a factor of $\frac{1}{2}$ in both directions.
 
 
-Now, let's try scaling up \emph{only one} of the basis vectors. Consider the matrix:
-\[A_{\textrm{rightward shear}} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\]
+Now, let us try scaling up \emph{only one} of the basis vectors. Consider the matrix:
+\[A_{\textrm{vertical scaling}} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\]
 
 This matrix will scale the $e_1$ vector by a factor of 1 (no change) and the $e_2$ vector by a factor of 2 (doubling its length).
 
@@ -173,7 +171,7 @@ Applying this transformation to the basis vectors produces this result:
     \label{fig:e2scaled}
 \end{figure}
 
-Applying this transformation to our house:
+A shear slides one side of a shape while the other side stays fixed. The matrix $\begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}$ is a shear: it keeps $\vec e_1$ fixed and sends $\vec e_2$ to $(2, 1)$. Applying this shear to our house gives:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{house_shear_k2.0.png}
@@ -182,7 +180,7 @@ Applying this transformation to our house:
 \end{figure}
 \section{Reflections} 
 \index{reflections}
-How would we do reflections across a given axis? Let's think about what happens to each point. Reflecting individual points is the same as reflecting the basis vectors, since every point is a linear combination of the basis vectors.
+How would we do reflections across a given axis? Let us think about what happens to each point. Reflecting individual points is the same as reflecting the basis vectors, since every point is a linear combination of the basis vectors.
 
 \subsection{Reflection across the x-axis}
 For a reflection across the x-axis, the y-values of each point change sign, while the x-values stay the same. $$(x, y) \mapsto (x, -y)$$ 
@@ -231,14 +229,14 @@ Notice that it is similar to the effect of a selfie, where the left and right si
 Note that the red house is still upright, but the left and right sides are flipped. This makes sense, since the y-values of the points are unchanged, while the x-values flip signs.
 
 \subsection{Reflection across the lines $y=x$ and $y=-x$}
-As we have seen, there are two standard lines important for inverse functions: $y=x$ and $y=-x$. We can also reflect across these lines.
+Two other useful lines are $y=x$ and $y=-x$. We can also reflect across these lines.
 
 The line $y=x$ is the line where the x and y values are equal. When we reflect across this line, the x and y values swap places. As a function of points, this is
 $$(x, y) \;\mapsto\; (y, x)$$
 Since each point swaps places, the basis vectors also swap places. $e_1$ becomes $e_2$, while $e_2$ becomes $e_1$. This allows us to rewrite a matrix for this transformation:
 \[A_{y=x} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}\]
 
-Let's look at our house picture, reflected across the line $y=x$. Notice that the house is flipped across the line, such that the roof is now on the bottom and the door is on top.
+Let us look at our house picture, reflected across the line $y=x$. Notice that the house is flipped across the line, such that the roof is now on the bottom and the door is on top.
 
 \begin{figure}[H]
     \centering
@@ -283,19 +281,23 @@ Not only do the x and y values swap places, but they also flip signs. This means
 % Note for future writers: I am not doing y=mx reflections as they are more complex and I am already hitting a complexity limit for linear alg.
 \section{Rotations}\index{rotation matrix}
 
-Those past four transformations (\ref{fig:house_reflection_x_axis}, \ref{fig:house_reflection_y_axis}, \ref{fig:house_reflection_y_equals_x_axis}, \ref{fig:house_reflection_y_equals_neg_x_axis}) all had something similar %fixme
+The four reflections above each flip the house across a line.
 
-What if we want to rotate our house? We can also do this with a matrix transformation. It may look similar to the reflections, but it is not the same. Let's track our basis vectors to see where they end up:
-$$\vecb{1\\0}\mapsto\vecb{0\\1}, \qquad \vecb{0\\1}\mapsto\vecb{-1\\0}$$
+What if we want to rotate our house, like turning the hands of a clock? We can also do this with a matrix transformation. It may look similar to the reflections, but it is not the same. Let us track our basis vectors to see where they end up:
+$$\vecb{1\\0}\mapsto\vecb{0\\-1}, \qquad \vecb{0\\1}\mapsto\vecb{1\\0}$$
 
 From this, we can write the matrix for a $90^\circ$ rotation clockwise:
 \[A_{90^\circ}^{\textrm{cw}} = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}\]
 
 What about a $90^\circ$ rotation counterclockwise? We can track our basis vectors again:
-$$\vecb{1\\0}\mapsto\vecb{0\\-1}, \qquad \vecb{0\\1}\mapsto\vecb{1\\0}$$
+$$\vecb{1\\0}\mapsto\vecb{0\\1}, \qquad \vecb{0\\1}\mapsto\vecb{-1\\0}$$
 
 And so the matrix for a $90^\circ$ rotation counterclockwise is:
 \[A_{90^\circ}^{\textrm{ccw}} = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\]
+
+\textbf{Worked example.} Apply the counterclockwise matrix to the point $(2, 1)$:
+$$\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} -1 \\ 2 \end{bmatrix}$$
+The point moves to $(-1, 2)$, a quarter turn counterclockwise.
 
 However, we have learned trigonometric functions that result in these values. We know that at $90^\circ$, $\cos(90^\circ) = 0$ and $\sin(90^\circ) = 1$. So we could say:
 \[A_{90^\circ}^{\textrm{cw}} = \begin{bmatrix} \cos(90^\circ) & \sin(90^\circ) \\ -\sin(90^\circ) & \cos(90^\circ) \end{bmatrix}\]
@@ -305,13 +307,13 @@ For a counterclockwise rotation of $90^\circ$, we have:
 \[A_{90^\circ}^{\textrm{ccw}} = \begin{bmatrix} \cos(90^\circ) & -\sin(90^\circ) \\ \sin(90^\circ) & \cos(90^\circ) \end{bmatrix}\]
 
 But, we can generalize this to any angle $\theta$ instead of just $90^\circ$. For a clockwise rotation by $\theta$, we have:
-\[A_{\theta}^{\textrm{cw}} = \begin{bmatrix} \cos(\theta) & \sin(\theta) \\ -\sin(\theta) & \       cos(\theta) \end{bmatrix}\]
+\[A_{\theta}^{\textrm{cw}} = \begin{bmatrix} \cos(\theta) & \sin(\theta) \\ -\sin(\theta) & \cos(\theta) \end{bmatrix}\]
 And for a counterclockwise rotation by $\theta$, we have:
 \[A_{\theta}^{\textrm{ccw}} = \begin{bmatrix} \cos(\theta) & -\sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix}\]
 
 Note how similar they are! The only difference is the sign of the sine values. Sine is an odd function, which means that $\sin(-\theta) = -\sin(\theta)$, so the sign of the sine values determines the direction of rotation.
 
-Let's see what happens when we apply a $30^\circ$ clockwise and counterclockwise rotation to our house. We can calculate the matrix for this transformation using the cosine and sine values for $30^\circ$:
+Let us see what happens when we apply a $30^\circ$ clockwise and counterclockwise rotation to our house. We can calculate the matrix for this transformation using the cosine and sine values for $30^\circ$:
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{\textwidth}
@@ -334,7 +336,7 @@ Let's see what happens when we apply a $30^\circ$ clockwise and counterclockwise
 % Writers note: Not talked about is applying multiple transformations in sequence, which would be a good follow up topic. I feel like it is not necessary for our linear algebra foundation, but could be a good extension. Again, this is a high school level text. - Arjan Ellingson
 
 \section{What if I want to undo my transform?}\index{inverse transformation}
-We have talked about how to apply a plethora transformations, but what if we want to undo a transformation? For example, if we have a house that is reflected across the rotated $30^\circ$ clockwise (\ref{fig:30degcw}), how do we get it back to its original position?
+We have talked about how to apply many transformations, but what if we want to undo a transformation? For example, if we rotate a house $30^\circ$ clockwise (\ref{fig:30degcw}), how do we get it back to its original position?
 
 This question brings us back to the application of those \textit{inverse matrices} that we learned about in the previous chapters. If we have a transformation represented by a matrix $A$, then the inverse transformation is represented by the inverse matrix $A^{-1}$. Applying $A^{-1}$ to the transformed house will return it to its original position.
 
@@ -353,9 +355,9 @@ Any larger matrices can get convoluted, so we use gaussian elimination to find t
 
 The inverse transformation of our $30^\circ$ clockwise rotation is going to be 
 \begin{align*}
-A^{-1}_{30^\circ\textrm{cw}} &= \frac{1}{\cos(30^\circ)\cos(30^\circ) - (-\sin(30^\circ))\sin(30^\circ)}\begin{bmatrix}\cos(30^\circ) & \sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
-&= \frac{1}{\cos^2(30^\circ) + \sin^2(30^\circ)}\begin{bmatrix}\cos(30^\circ) & \sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
-&= \frac{1}{1}\begin{bmatrix}\cos(30^\circ) & \sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
+A^{-1}_{30^\circ\textrm{cw}} &= \frac{1}{\cos(30^\circ)\cos(30^\circ) - (-\sin(30^\circ))\sin(30^\circ)}\begin{bmatrix}\cos(30^\circ) & -\sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
+&= \frac{1}{\cos^2(30^\circ) + \sin^2(30^\circ)}\begin{bmatrix}\cos(30^\circ) & -\sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
+&= \frac{1}{1}\begin{bmatrix}\cos(30^\circ) & -\sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix} \\
 &= \begin{bmatrix}\cos(30^\circ) & -\sin(30^\circ) \\ \sin(30^\circ) & \cos(30^\circ) \end{bmatrix}
 \end{align*}
 Notice that this is the same as the matrix for a $30^\circ$ counterclockwise rotation! This makes sense, since a $30^\circ$ counterclockwise rotation would undo a $30^\circ$ clockwise rotation.
@@ -418,4 +420,4 @@ We want to look at these transformation as effects on directions. Specifically, 
     \item Stretches and scalings also have the property that they stretch or shrink certain directions while keeping others unchanged. For example, a scaling transformation that stretches the x-direction while keeping the y-direction unchanged will preserve the y-direction while stretching the x-direction.
 \end{itemize}
 
-For some transformations, there exist special directions along which vectors are simply scaled. In studying linear transformations, it is natural to ask whether there exist directions that remain unchanged, except for cardinal scaling of its length. Before reading the next chapter, try to find a nonzero vector whose direction is \emph{unchanged} by each transformation. Not every transformation will have such a vector, but some will. 
+For some transformations, there exist special directions along which vectors are simply scaled. In studying linear transformations, it is natural to ask whether there exist directions that remain unchanged, except for scaling of its length. Before reading the next chapter, try to find a nonzero vector whose direction is \emph{unchanged} by each transformation. Not every transformation will have such a vector, but some will. 

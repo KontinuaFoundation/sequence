@@ -1,12 +1,12 @@
 # Limits and Continuity — Notes
 
 ## Summary
-Split from `limits`. This part covers: Introduction to Limits, Limits of Asymptotes, Continuity.
+Introduces limits (one-sided limits, limits that do not exist, and limits at infinity), limits of asymptotes, and continuity, with a practice section on continuity. It has seven exercises with answers.
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Checked the one-sided limits and limits at infinity: the logarithm, exponential, arctangent, and logistic limits are correct.
+- Fixed the continuity answers, which wrote \lim{x \to a} without the subscript underscore, so the limits would not render.
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers stayed with the first part. Move any that belong here.
+## Open items
+- The continuity answers (the "never true" items) were not checked against their statements. Compare them with the questions.
+- Add a worked example of a limit that does not exist, with both one-sided limits shown.

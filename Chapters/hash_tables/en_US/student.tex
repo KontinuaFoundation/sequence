@@ -6,14 +6,16 @@ can map keys to values. It uses a hash function to compute an index
 into an array of buckets or slots, from which the desired value can be
 found.\index{hash table}
 
+Think about a school locker room. Each student has a locker number, and that number comes from a rule, such as the last two digits of the student ID. To find your locker, you do not search every row. You apply the rule and go straight to the right locker. A hash table works the same way.
+
 \section{Structure of a Hash Table}
 
-A hash table is composed of an array (the 'table') and a hash
+A hash table is composed of an array (the ``table'') and a hash
 function. The array has a predetermined size, and each location (or
-'bucket') in the array can hold an item (or several items if
+``bucket'') in the array can hold an item (or several items if
 collisions occur, as will be discussed later). The hash function is a
 function that takes a key as input and returns an integer, which is
-then used as an index into the array.\index{hash function}
+then used as an index into the array. In this chapter, we will use the simple hash function $h(k) = k \bmod 5$ for a table with 5 slots.\index{hash function}
 
 \section{Inserting and Retrieving Data}
 
@@ -24,6 +26,8 @@ corresponding value is then stored at that index.
 When retrieving the value associated with a key, the hash function is
 applied to the key to compute the array index, and the value is
 retrieved from that index.
+
+Python's \texttt{dict} is a hash table, so the same idea is behind the dictionaries you already use.
 
 \section{Handling Collisions}
 
@@ -36,12 +40,39 @@ collisions:\index{collisions in hash tables}
       each array element contains a linked list of all the key-value
       pairs that hash to the same index. When a collision occurs, a
       new key-value pair is added to the end of the list.
-    \item \textbf{Open Addressing (or Linear Probing)}\index{open addressing}\index{linear probing}: In this
-      method, if a collision occurs, we move to the next available
-      slot in the array and store the key-value pair there. When
+    \item \textbf{Open Addressing}\index{open addressing}: In this
+      method, if a collision occurs, we look for another open slot in the array and store the key-value pair there. One simple version is \textbf{linear probing}\index{linear probing}, which checks the next slot, then the one after that, and so on, wrapping around to the start of the array. When
       looking up a key, we keep checking slots until we find the key
       or reach an empty slot.
 \end{itemize}
+
+\begin{Exercise}[title={Chaining with a Hash Function}, label=hash1]
+Use $h(k) = k \bmod 5$ and chaining. Insert the keys 12, 7, 17, and 3, in that order. Show the contents of each bucket, 0 through 4.
+\end{Exercise}
+\begin{Answer}[ref=hash1]
+$12 \bmod 5 = 2$, $7 \bmod 5 = 2$, $17 \bmod 5 = 2$, and $3 \bmod 5 = 3$. The buckets are:
+\begin{itemize}
+    \item Bucket 0: empty
+    \item Bucket 1: empty
+    \item Bucket 2: 12, 7, 17 (a chain of three keys)
+    \item Bucket 3: 3
+    \item Bucket 4: empty
+\end{itemize}
+Three keys collide in bucket 2. Looking up 17 means checking the chain in bucket 2 until we reach it.
+\end{Answer}
+
+\begin{Exercise}[title={Linear Probing}, label=hash2]
+Use $h(k) = k \bmod 5$ and linear probing in an array of 5 slots. Insert the keys 12, 7, 17, and 3, in that order. Show the contents of slots 0 through 4.
+\end{Exercise}
+\begin{Answer}[ref=hash2]
+\begin{itemize}
+    \item Insert 12: $h = 2$, and slot 2 is empty. Store 12 in slot 2.
+    \item Insert 7: $h = 2$, which is taken. Try slot 3, which is empty. Store 7 in slot 3.
+    \item Insert 17: $h = 2$, slot 2 is taken, slot 3 is taken, and slot 4 is empty. Store 17 in slot 4.
+    \item Insert 3: $h = 3$, slot 3 is taken, slot 4 is taken, and slot 0 is empty (wrapping around). Store 3 in slot 0.
+\end{itemize}
+The final table is: slot 0 holds 3, slot 1 is empty, slot 2 holds 12, slot 3 holds 7, and slot 4 holds 17.
+\end{Answer}
 
 \section{Time Complexity}\index{hash tables!time complexity}
 
@@ -55,3 +86,9 @@ Using good hash functions and collision resolution strategies can
 minimize this issue and allow us to take advantage of the hash table's
 efficient average-case performance.
 
+\begin{Exercise}[title={Worst Case}, label=hash3]
+Suppose a hash function sends every key to bucket 0. Using chaining, how long does it take to look up a key that was inserted last, if there are $n$ keys in the table? Why does this show that the worst case is $O(n)$?
+\end{Exercise}
+\begin{Answer}[ref=hash3]
+Every key is in the same chain, so the lookup must check each of the $n$ keys in turn. The last key is found only after $n$ checks, which is $O(n)$. A good hash function spreads the keys across many buckets, so each chain stays short.
+\end{Answer}

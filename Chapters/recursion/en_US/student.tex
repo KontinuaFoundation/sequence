@@ -1,7 +1,7 @@
 \chapter{Recursion}
 
 \section{What Recursion Means}\index{recursion}
-A \index{recursion}\newterm{recursive} function is a function that calls itself.
+A \index{recursion}\newterm{recursive} function is a function that calls itself. Think of Russian nesting dolls. To find the smallest doll, you open the big doll, then open the next one, and so on, until you reach a doll that does not open.
 Many problems can be split into a smaller copy of the same problem. Recursion
 solves the big problem by solving the smaller one and then combining the answers.
 
@@ -139,6 +139,13 @@ def total(items):
     return items[0] + total(items[1:])
 \end{minted}
 The base case is the empty list, whose sum is 0.
+\end{Answer}
+
+\begin{Exercise}[label=rec4, title=Counting calls]
+How many calls does \texttt{fib(5)} make in total? Use the formula that the number of calls for \texttt{fib(n)} is $2F(n+1) - 1$, where $F$ is the Fibonacci sequence, and check the answer by counting the calls.
+\end{Exercise}
+\begin{Answer}[ref=rec4]
+$F(6) = 8$, so the formula gives $2 \cdot 8 - 1 = 15$ calls. Counting: \texttt{fib(5)} calls \texttt{fib(4)} and \texttt{fib(3)}, and so on. The total is 15, which matches the formula.
 \end{Answer}
 
 \begin{Exercise}[label=rec3, title=Missing base case]

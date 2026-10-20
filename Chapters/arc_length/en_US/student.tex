@@ -18,7 +18,7 @@ the perimeter of the polygon (the sum of the lengths of the sides)
 gets closer to the circumference of the circle (see figure 
 \ref{fig:circles}). 
 
-Now, it's easy to find the length of a polygon: 
+Now, it is easy to find the length of a polygon: 
 just add up the length of the line segments! Using this, we can find 
 the length of a curve by approximating it as many short lines and 
 adding up the lengths of those lines. 
@@ -172,8 +172,8 @@ Suppose you have a vector-valued function, $f(t) = [x(t), y(t)]$. A
 common example might be an artillery shell shot at an angle. For a 
 shell shot with an initial velocity $v_o$ at angle $\theta$ from the 
 ground, its position can be described with the vector-valued function 
-$f(t) = [v_o\cos{\theta}(t), v_o\sin{\theta}(t) - 4.9t^2]$. (A 
-concrete example where $v_o = 12 \frac{m}{s}$ and $\theta = 30^o$ is 
+$f(t) = [v_o\cos{\theta}\,t, v_o\sin{\theta}\,t - 4.9t^2]$. (A 
+concrete example where $v_o = 12 \frac{m}{s}$ and $\theta = 30^\circ$ is 
 shown in figure \ref{fig:shell}.)
 
 \begin{figure}[H]
@@ -197,14 +197,13 @@ $$L = \int_a^b \sqrt{1+(\frac{dy}{dx})^2}\,dx =
 Moving the $\frac{dx}{dt}$ under the square root, we see that
 $$L = \int_a^b \sqrt{(\frac{dx}{dt})^2 + (\frac{dy}{dt})^2}\,dt$$\\
 which is equivalent to 
-$$L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\,dx$$\footnote{Note that this is similar to distance formula, just applied at every $dx$ along the curve. Zooming in on a small piece of the curve, it looks like a straight line, and seems as if the distance formula is being applied.}
+$$L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\,dt$$\footnote{Note that this is similar to distance formula, just applied at every $dx$ along the curve. Zooming in on a small piece of the curve, it looks like a straight line, and seems as if the distance formula is being applied.}
 
 \section{Applications in Physics}
 When we take the integral of a velocity function, we get the 
 \index{displacement}\textit{displacement}. For example, if you drove to school and home 
 again, your displacement would be zero. However, the \index{distance traveled}\textit{distance} 
-you traveled is not zero! We can use the arc length formula to find 
-the total distance traveled. (Remember, that if $x(t)$ is the object's 
+you traveled is not zero! Distance counts every movement, so it is the integral of the speed, $\int_a^b |v(t)|\,dt$. (Remember, that if $x(t)$ is the object's 
 position, then its velocity is given by $x'(t)$.)
 
 Suppose a block is attached to a spring on a frictionless horizontal 
@@ -221,8 +220,8 @@ $$=\frac{0.16}{9}[\cos{27} - \cos{0}] = \frac{(0.16)(-0.29 - 1)}{9}
 = -0.0229 m$$
 
 The position function and displacement are shown in figure 
-\ref{fig:block}. To find the total distance traveled, we need to find 
-the length of the curve. Before we do so, take a minute to mentally 
+\ref{fig:block}. To find the total distance traveled, we need to add up the 
+speed over time. Before we do so, take a minute to mentally 
 predict: Will the distance be more or less than the displacement?
 
 \begin{figure}[H]
@@ -244,21 +243,14 @@ predict: Will the distance be more or less than the displacement?
             \end{axis}
 	\end{tikzpicture}
     \caption{The position of the block with displacement shown. The 
-    distance traveled is the total length of the curve.}
+    total distance traveled counts every back-and-forth movement.}
     \label{fig:block}
 \end{figure}
 
-Recalling that the distance traveled by an object is 
-$\int_a^b \sqrt{1+[x'(t)]^2}\,dt = \int_a^b \sqrt{1 + [v(t)]^2}\,dt$, 
-we can write an integral to determine the total distance traveled by the block:
-$$\int_0^3 \sqrt{1 + [-0.16\sin{9t}]^2}\,dt$$.
+The distance traveled is $\int_a^b |v(t)|\,dt$, so for the block we need
+$$\int_0^3 \left|-0.16\sin{9t}\right|\,dt$$.
 
-Unfortunately, we do not know an antiderivative for this integral, and 
-$u$-substitution won't help us. However, for definite integrals, 
-calculators such as a TI-89 or Wolfram Alpha can easily use Riemann 
-sums to determine the value of the integral to a high precision. Using 
-such a tool, we find that the total distance traveled by the block is 
-$\approx$ 3.019 meters. Did you predict that the distance would be 
+The absolute value makes this integral piecewise, so we split it at each zero of $\sin{9t}$. Each piece is a simple sine integral. Adding them up gives a total distance of about $0.307$ meters. A calculator with Riemann sums gives the same value. Did you predict that the distance would be 
 greater than the displacement?
 
 \section{Practice}
@@ -304,11 +296,11 @@ $$\frac{18}{9} = \frac{16 + 9C}{9}$$
 $$18 = 16 + 9C$$ 
 $$2 = 9C$$ 
 $$C = \frac{2}{9}$$\\ 
-Therefore, $f(x) = \frac{2}{3}(3x + 4)^{3 / 2} + \frac{2}{9}$. To find 
+Therefore, $f(x) = \frac{2}{9}(3x + 4)^{3 / 2} + \frac{2}{9}$. To find 
 the coordinate point where $s(x) = 3$, we first note that the 
 antiderivative of $\sqrt{3t + 5}$ is $\frac{2}{9}(3t + 5)^{3 / 2} + C$. 
 Therefore, $s(x) = \frac{2}{9}(3x + 5)^{3 / 2} - \frac{2}{9}(5)^{3 / 2}$. 
-Setting $s(x) = 3$ and solving for $x$, we find that $x = 1.159$
+Setting $s(x) = 3$ and solving for $x$, we find that $x = 1.159$. The point on $f$ is $(1.159, 4.766)$.
 \end{Answer}
 
 \begin{Exercise}[label=length3]

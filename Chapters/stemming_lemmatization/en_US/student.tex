@@ -3,13 +3,14 @@
 \index{stemming}
 \index{lemmatization}
 
-Stemming and lemmatization are two fundamental techniques in \index{natural language processing}natural language processing that are used to prepare text data. They help in reducing \index{inflectional forms}inflectional forms of a word to a common base form. 
+Stemming and lemmatization are two fundamental techniques in \index{natural language processing}natural language processing that are used to prepare text data. They help in reducing \index{inflectional forms}inflectional forms of a word to a common base form. Think about searching your phone for a song. If you type "running," you probably want songs that say "run" too. These techniques make that kind of search work.
+
 
 \subsection{Stemming}
 
 Stemming is the process of reducing a word to its \index{stem}word stem (its basic form). For example, a stemming algorithm would reduce the words "jumping", "jumped", and "jumps" to the stem "jump".
 
-It's important to note that stemming may not always lead to actual words. For example, the stem of the word "running" could be "run" depending on the stemming algorithm used.
+It is important to note that stemming may not always lead to actual words. For example, a common stemmer turns "studies" and "studying" into "studi", which is not a word. The stem only needs to group related words together.
 
 Stemming is generally simpler and faster than lemmatization, but it is also less precise.
 
@@ -18,6 +19,15 @@ Stemming is generally simpler and faster than lemmatization, but it is also less
 Lemmatization, on the other hand, reduces words to their base or root form, which is linguistically correct. For example, "running" and "runs" are both changed to "run".
 
 Lemmatization uses a more complex approach to achieve this. It considers the \index{morphological analysis}morphological analysis of the words and requires detailed dictionaries, which the algorithm can look through to link the form back to its lemma.
+
+\textbf{Worked example.} Take the word "studies." A stemmer might return "studi". A lemmatizer that knows "studies" is a form of the verb "study" returns "study". The lemmatizer gives a real word, and the stemmer gives a stem that is easier to compute.
+
+\begin{Exercise}[label=stem1, title=Stem or lemma?]
+For each pair of words, say whether a stemmer would likely give them the same stem, and whether a lemmatizer would give them the same lemma: (a) "happy" and "happiness"; (b) "better" and "good".
+\end{Exercise}
+\begin{Answer}[ref=stem1]
+(a) A stemmer such as Porter's often maps both to "happi", so they match. A lemmatizer keeps "happiness" as its own noun and "happy" as an adjective, so they do not match. (b) A stemmer does not link "better" to "good", because the spelling is too different. A lemmatizer that knows irregular forms can map "better" to "good".
+\end{Answer}
 
 \subsection{Applications}
 \index{stemming!applications of}

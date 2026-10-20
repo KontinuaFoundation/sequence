@@ -69,18 +69,18 @@ The coordinates follow a system of latitude and then longitude (in the majority 
 \begin{itemize}
   \item \textbf{London, England}: $51^\circ$ N $0^\circ$ W
   \item \textbf{New York City, New York, USA}: $40^\circ$ N $74^\circ$ W
-  \item \textbf{Sydney, New South Whales, Australia}: $33^\circ$ S $150^\circ$ E
+  \item \textbf{Sydney, New South Wales, Australia}: $33^\circ$ S $150^\circ$ E
   \item \textbf{Rio de Janeiro, Brazil}: $22^\circ$ S $43^\circ$ W
 \end{itemize}
 
 These coordinates may be broken down further into minute and second components as well, for further geometric accuracy.
-\index{minutes and seconds}Each degree ($^\circ$) is divided into 60 minutes ($'$). Each minute ($'$) is divided into 60 seconds ($"$). Just like in time. Note some do not
+\index{minutes and seconds}Each degree ($^\circ$) is divided into 60 minutes ($'$). Each minute ($'$) is divided into 60 seconds ($"$). Just like in time. Some sources write these in decimal degrees instead.
 
 \begin{itemize}
-  \item \textbf{London, England}: $51^\circ$ 30` 26" N $0^\circ$ 7` 39" W
-  \item \textbf{New York City, New York, USA}: $40^\circ$ 42` 46" N $74^\circ$ 0` 22" W
-  \item \textbf{Sydney, New South Whales, Australia}: $33^\circ$ 52` 0" S $150^\circ$ 12` 0" E
-  \item \textbf{Rio de Janeiro, Brazil}: $22^\circ$ 54` 0" S $43^\circ$ 12` 0" W
+  \item \textbf{London, England}: $51^\circ$ 30$'$ 26$''$ N $0^\circ$ 7$'$ 39$''$ W
+  \item \textbf{New York City, New York, USA}: $40^\circ$ 42$'$ 46$''$ N $74^\circ$ 0$'$ 22$''$ W
+  \item \textbf{Sydney, New South Wales, Australia}: $33^\circ$ 52$'$ 0$''$ S $150^\circ$ 12$'$ 0$''$ E
+  \item \textbf{Rio de Janeiro, Brazil}: $22^\circ$ 54$'$ 0$''$ S $43^\circ$ 12$'$ 0$''$ W
 \end{itemize}
 
 \subsection{Nautical Mile}
@@ -113,7 +113,7 @@ which we represent as a sphere for simplicity. See Figure~\ref{fig:haversine} \i
 In its basic form, the haversine formula is as follows:
 %FIXME I feel like this section may need more clarification if the formula is important.
 
-The angle found using haversine $\text{haversine}(\theta) = sin^2\left(\frac{\theta}{2}\right)$:
+The angle found using haversine $\text{haversine}(\theta) = \sin^2\left(\frac{\theta}{2}\right)$:
 
 \[
 a = \sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)
@@ -185,7 +185,7 @@ if len(data["results"]) > 0:
     longitude = data["results"][0]["geometry"]["location"]["lng"]
     print(latitude, longitude)
 else:
-    print(f"Could not find the latitude and longitude .")
+    print("Could not find the latitude and longitude.")
     
 \end{minted}
 
@@ -224,7 +224,7 @@ if len(data["results"]) > 0:
     address = data["results"][0]["formatted_address"]
     print(address)
 else:
-    print(f"Could not find the address")
+    print("Could not find the address")
 
 \end{minted}
 
@@ -238,7 +238,7 @@ annotated map using Plotly in Python.\index{plotly}
 
 To begin, you need to install Plotly. In Python, you can do this via pip:
 
-\begin{minted}{python}
+\begin{minted}{shell}
 pip install plotly
 \end{minted}
 
@@ -273,9 +273,9 @@ fig.show()
 \end{minted}
 This code creates a world map and \index{geographic coordinates}places a text annotation at the
 geographic coordinates for Ottawa. Then, the plotly is opened in your browser using a localhost IP address. 
-The `\index{Scattergeo}go.Scattergeo` function is
+The \texttt{\index{Scattergeo}go.Scattergeo} function is
 used to define the geographical scatter plot (i.e., the annotation),
-while the `update\_layout` function is used to define the appearance
+while the \texttt{update\_layout} function is used to define the appearance
 and the properties of the map itself.
 
 In this example, you can replace the latitude, longitude, and text

@@ -1,25 +1,21 @@
 # Introduction to Markov Chains — Notes
 
 ## Summary
-Introduces the Markov property with a weather chain (Sunny/Rainy), state diagrams, transition matrices and P^k, steady-state distributions via eigenvalue 1, PageRank with damping, and hidden Markov models for illness and part-of-speech tagging. Includes exercises with answers.
+Introduces the Markov property with a weather example, state diagrams and transition matrices, a hot dog stand exercise (state diagram and a 3-visit path sum of 0.3705), multi-step transitions with matrix powers (a chemical example with P³), steady-state distributions, and applications: PageRank, hidden Markov models, and part-of-speech tagging.
+
+## Changes in this pass
+- Made the eigen-exercise matrix row-stochastic (each row sums to 1), matching the chapter's convention. The steady-state equation is now written as π P = π. The answer π = (1 − q, 1 − p) and the value 4/11 ≈ 0.364 are unchanged.
+- Fixed the HMM text: it said T but showed S.
+- Replaced a garbled dynamic-programming sentence.
+- Replaced "Adverb" with "Adjective" in the NLP example (the tag set has no adverb).
+- Replaced a Unicode ∣ inside math mode with \mid.
+- Fixed "was curious," "only square matrices are possible," and a repeated Law of Large Numbers reference.
 
 ## Strengths
-- The weather and hot-dog examples are clear, and the state diagrams match their matrices.
-- The hot-dog returns exercise is correct: P(I→R in two steps) = 0.24 and P(N→I in three steps) = 0.3705, both checked by enumeration.
-- The chemical exercise is correct (P³ entries 0.112, 0.888, 0.111, 0.889).
-- The steady-state exercise is correct: the eigenvector (1−q, 1−p), giving 4/11 ≈ 0.364 at p = 0.3, q = 0.6. The NLP answer (0.5 × 0.2 = 0.10) is also right.
+- The hot dog answers are correct: P(R | I, R, N) = 0.30, the two-step I → R probability is 0.24, and the three-step N → I probability is 0.3705.
+- The chemical example's P² and P³ are correct, and P(Green | Blue) after three steps is 0.111.
+- The NLP exercise answer 0.10 is correct.
 
-## Weaknesses
-- **Wrong statement:** "Probability Distribution after k steps = P^k" is wrong. A distribution is π₀Pᵏ, and Pᵏ is the transition matrix.
-- **Misattributed theorem:** convergence of Pᵏ is attributed to the Law of Large Numbers, which is the wrong result.
-- **Name mismatch:** the text says "transition matrix T" and "emission matrix E," but the HMM display names the transition matrix S.
-- **Adjective vs adverb:** the state set has Adjective, but the example path uses Adverb.
-- **Garbled sentence:** the Viterbi/Forward paragraph says dynamic programming is "a method that programming similar to excel processing."
-- **Typos:** "curious about," "an regular customer," and "only possible square matrices."
-
-## Index entries added
-Markov property, Markov chain, state space, transition matrix, steady-state distribution, PageRank, hidden Markov model, emission matrix.
-
-## Editor to-do
-- Correct the Pᵏ distribution statement and the LLN attribution.
-- Fix the S/T naming, the Adverb/Adjective mismatch, and the garbled sentence.
+## Open items
+- The PageRank section describes the modified matrix without a worked numerical example.
+- The text uses P(Verb | Noun) = 0.6 as an example, and the NLP exercise uses 0.5 from its own training data. This is fine, but the two numbers may confuse readers.

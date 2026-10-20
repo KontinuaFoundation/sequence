@@ -4,6 +4,8 @@ Matplotlib is a comprehensive library for creating static, animated,
 and interactive visualizations in Python. It is highly useful for
 presenting data in a more intuitive and easy-to-understand manner.\index{matplotlib}
 
+You have probably graphed functions in algebra class by plotting points on a grid. Matplotlib does the same job for us, and it draws the grid, the points, and the labels.
+
 In order to use Matplotlib, you must first import it, typically using
 the following line of code:
 
@@ -11,8 +13,7 @@ the following line of code:
 import matplotlib.pyplot as plt
 \end{minted}
 
-Let's create a simple \index{line plot}line plot. Suppose we have a list of numbers and
-we want to visualize their distribution:
+Let us create a simple \index{line plot}line plot. Suppose we want to plot how $y$ changes as $x$ changes:
 
 \begin{minted}{python}
 x = [1, 2, 3, 4, 5]
@@ -22,9 +23,19 @@ plt.plot(x, y)
 plt.show()
 \end{minted}
 
-Here, `x` and `y` are the coordinates of the points. The `plt.plot`
-function plots y versus x as lines and/or markers. The `plt.show`
+Here, \texttt{x} and \texttt{y} are the coordinates of the points. The \texttt{plt.plot}
+function plots y versus x as lines and/or markers. The \texttt{plt.show}
 function then displays the figure.
+
+A plot is easier to read with labels and a title:
+
+\begin{minted}{python}
+plt.plot(x, y)
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Squares of the First Five Numbers")
+plt.show()
+\end{minted}
 
 Creating a \index{bar plot}bar plot follows a similar approach:
 
@@ -36,9 +47,34 @@ plt.bar(labels, values)
 plt.show()
 \end{minted}
 
-Here, `labels` are the categories we are plotting, and `values` are
-the respective sizes of those categories. The `plt.bar` function
+Here, \texttt{labels} are the categories we are plotting, and \texttt{values} are
+the respective sizes of those categories. The \texttt{plt.bar} function
 creates a bar plot.
+
+\begin{Exercise}[title={Cubes}, label=mpl1]
+Plot the numbers 1 through 5 against their cubes. Label the axes and give the plot a title.
+\end{Exercise}
+\begin{Answer}[ref=mpl1]
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [1, 8, 27, 64, 125]
+
+plt.plot(x, y)
+plt.xlabel("x")
+plt.ylabel("x cubed")
+plt.title("Cubes of the First Five Numbers")
+plt.show()
+\end{minted}
+\end{Answer}
+
+\begin{Exercise}[title={Votes}, label=mpl2]
+Change the bar plot example so that the categories are the names of five of your favorite foods, and the values are the number of votes each food got in a class survey. Use your own numbers.
+\end{Exercise}
+\begin{Answer}[ref=mpl2]
+Replace the \texttt{labels} and \texttt{values} lists with your own data. For example, \texttt{labels = ["Pizza", "Tacos", "Ramen", "Salad", "Pasta"]} and \texttt{values = [12, 9, 7, 4, 10]}. Then call \texttt{plt.bar(labels, values)} and \texttt{plt.show()}, as in the example above.
+\end{Answer}
 
 Matplotlib provides a variety of other plot types and customization
 options --- everything from \index{scatter plot}scatter plots and \index{histogram}histograms to custom line

@@ -36,7 +36,7 @@ You might be inclined to skip this example because the computations are lengthy.
 
 After you read through this example, you will see how to use Python to compute SVD. Next, you will see an example of using SVD for image compression. Finally, you will be given an exercise to compute the SVD. For this, you will need to write your own Python script.
 
-Let's find the SVD for matrix $A$. Recall that we want to find $U$. $\Sigma$, and $V^T$ such that:
+Let us find the SVD for matrix $A$. Recall that we want to find $U$. $\Sigma$, and $V^T$ such that:
 
 \begin{equation}
 A = U \Sigma V^T
@@ -112,8 +112,7 @@ $$(11−10)x_1 +x_2 =0 $$
 $$x_1 = -x_2$$
 We will set $$x_1$$ to 1 and get this eigenvector:
 $$\left[ 1,-1 \right]$$
-For $$ \lambda = 10$$:
-$$(11−12)x_1 +x_2 =0  $$
+For $$ \\lambda = 12$$:\1x_1 +x_2 =0  $$
 $$x_1 = x_2 $$
 We will set $$x_1$$ to 1 and get this eigenvector:
 $$\left[ 1,1 \right]$$
@@ -124,14 +123,14 @@ $$
 1 & -1 
 \end{bmatrix}
 $$
-Next, you need to apply the Gram-Schmidt process to the column vectors. After that, you will have $U$, the $m \times m$ matrix whose columns are eigenvectors of $AA^T$. These are the left singular vectors of $A$. After you apply Gram-Schmidt, you should end up with:
+Next, normalize the eigenvectors. They are already orthogonal, so Gram-Schmidt only needs to scale each one to length 1. After that, you will have $U$, the $m \times m$ matrix whose columns are eigenvectors of $AA^T$. These are the left singular vectors of $A$. After you apply Gram-Schmidt, you should end up with:
 $$
 U = \begin{bmatrix}
 1/\sqrt{2} & 1/\sqrt{2} \\
 1/\sqrt{2} & -1/\sqrt{2} 
 \end{bmatrix}
 $$
-The process for calculating $V$ is the same as the calculation for $U$, except:
+The process for calculating $V$ is the same as the calculation for $U$, except that we use $A^TA$:
 $$V = A^TA$$ 
 $$A^TA = 
 \begin{bmatrix}
@@ -150,7 +149,7 @@ $$A^TA =
 2 & 4 & 2
 \end{bmatrix}
 $$
-After applying the process we applied to solve for U, you get:
+Normalizing the eigenvectors of $A^TA$ in the same way gives:
 $$
 V = \begin{bmatrix}
 1/\sqrt{6} & 2/\sqrt{5} & 1/\sqrt{30} \\
@@ -169,24 +168,24 @@ V_T =
 $$
 You have only to calculate $\Sigma$, a diagonal matrix that is the same size as $A$. The diagonal contains the singular values of $A$, arranged in descending order. These are the square roots of the eigenvalues of both $A^TA$ and $AA^T$.
 
-Because the non-zero eigenvalues of U are the same as V, let's use the eigenvalues we calculate for U, 10 and 12. Note that $\Sigma$ will not be of the correct dimension to reconstruct the original matrix unless we add a column. By adding a zero column you'll be able to multiply between $U$ and $V$:
+Because the nonzero eigenvalues of $AA^T$ and $A^TA$ are the same, we use the eigenvalues 10 and 12 that we found for $AA^T$. Note that $\Sigma$ will not be of the correct dimension to reconstruct the original matrix unless we add a column. By adding a zero column you will be able to multiply between $U$ and $V$:
 $$
 \Sigma = 
 \begin{bmatrix}
 \sqrt{12} & 0 & 0\\
- 0 & \sqrt{12} & 0 
+ 0 & \\sqrt{10} & 0 
 \end{bmatrix}
 $$
 You can check your work by multiplying the decomposed matrices. This should return the original matrix.
 $$A = U\Sigma V^T $$
 $$ = 
-U = \begin{bmatrix}
+\begin{bmatrix}
 1/\sqrt{2} & 1/\sqrt{2} \\
 1/\sqrt{2} & -1/\sqrt{2} 
 \end{bmatrix}
 \begin{bmatrix}
 \sqrt{12} & 0 & 0\\
- 0 & \sqrt{12}  & 0 
+ 0 & \\sqrt{10} & 0 
 \end{bmatrix}
 \begin{bmatrix}
 1/\sqrt{6} & 2/\sqrt{6} & 1/\sqrt{6} \\
@@ -215,7 +214,7 @@ $$
 
 \section{Singular Value Decomposition with Python}
 \index{svd!python script for}
-Create a file called \filename{vectors\_decomposition.py} and enter this code:
+This code uses SciPy, which you can install with \texttt{pip install scipy}. Create a file called \filename{vectors\_decomposition.py} and enter this code:
 
 \begin{minted}{python}
 # Singular-value decomposition
@@ -256,9 +255,9 @@ print(A_Rebuilt)
 \section{Sign Ambiguity}\index{sign ambiguity}
 You might notice that at times, the absolute values in the $U$ and $V^T$ matrices are correct, but that the signs vary from what you see as the answer. For example, when you compare a manually calculated SVD with one done in Python the signs might not agree. Both decompositions of $A$ are valid. Both decompositions will satisfy:
 $$A = U \Sigma V^T$$
-Note that the $S$ diagonal values will always be positive. 
+Note that the $S$ diagonal values are always nonnegative. 
 
-The sign ambiguity has implications. For example, when using SVD to compress data, if some of the signs are flipped, the data can have artifacts. At this point in your education, you don't need to concern yourself with it, except when you are comparing SVD results for the same matrix.
+The sign ambiguity has implications. For example, when using SVD to compress data, if some of the signs are flipped, the data can have artifacts. At this point in your education, you do not need to concern yourself with it, except when you are comparing SVD results for the same matrix.
 
 \begin{Exercise}[title={Single Value Decomposition}, label=svd]
 Modify your Python code to calculate SVD for the matrix in the worked out example. Did you arrive at the same answer? Keep in mind that Python will compute square roots and present fractions as decimal. Take a look at the signs for the values in the $U$ and $V^T$ matrices. Are they the same, or is this an example of sign ambiguity? 
@@ -281,16 +280,24 @@ $$V^T =
 $$
 \end{Answer}
 
+\begin{Exercise}[title={Singular Values of a Simple Matrix}, label=svd2]
+Find the singular values of $B = \begin{bmatrix} 0 & 3 \\ 0 & 4 \end{bmatrix}$. Start by finding the eigenvalues of $BB^T$. Then take their square roots.
+\end{Exercise}
+\begin{Answer}[ref=svd2]
+$$BB^T = \begin{bmatrix} 0 & 3 \\ 0 & 4 \end{bmatrix}\begin{bmatrix} 0 & 0 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 9 & 12 \\ 12 & 16 \end{bmatrix}$$
+The characteristic equation is $\lambda^2 - 25\lambda = 0$, so $\lambda = 25$ or $\lambda = 0$. The singular values are $\sqrt{25} = 5$ and $\sqrt{0} = 0$. Check: the sum of the squares of the singular values equals the sum of the squares of all entries of $B$, which is $9 + 16 = 25$.
+\end{Answer}
+
 \section{SVD Applied to Image Compression}\index{image compression}
-This image consists of a grid of 20 by 10 pixels, each of which is either black or white.
+This image is a grid of 20 pixels across and 10 pixels down, each of which is either black or white.
 
 \includegraphics[width=0.4\textwidth]{imagecompress.png}
 
-It is a simple image that has only two types of columns--ideal for data compression. A row is either the first pattern or the second.
+It is a simple image that has only two types of rows, which makes it ideal for data compression. A row is either the first pattern or the second. Think of a striped shirt. Once you know the stripe pattern, you only need to describe the stripes, not every thread.
 
 \includegraphics[width=0.4\textwidth]{rows.png}
 
-We can represent the data as a 20 by 10 matrix whose 200 entries are either 0 for black or 1 for white. 
+We can represent the data as a 10 by 20 matrix whose 200 entries are either 0 for black or 1 for white. 
 $$
 \begin{bmatrix}
 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0\\
@@ -309,7 +316,7 @@ When you perform an SVD on this matrix, there are only two non-zero singular val
 $$
 A = U_1 S_1 V_1 + U_2 S_2 V_2
 $$
-This means there are two $u$ vectors, each with 20 entries, two $v$ vectors each with 10 entries, and two singular values. Add those up: 2*20 + 2*10 + 2 = 62. This implies that the image can be represented by 62 values instead of 200. If you look back at the image, you can see that there are many dependent columns and very few independent ones. 
+This means there are two $u$ vectors, each with 10 entries, two $v$ vectors each with 20 entries, and two singular values. Add those up: 2*10 + 2*20 + 2 = 62. This implies that the image can be represented by 62 values instead of 200. If you look back at the image, you can see that there are many dependent rows and very few independent ones. 
 
 This is a simple image and a small pixel matrix, but it should give you a sense of how SVD can decompose an image in a way that identifies how much of the image is redundant, and therefore can be compressed.
 

@@ -1,6 +1,6 @@
 \chapter{Change of Variables}\index{change of variables}
 
-Let's say that we are making ice spheres by filling water into balloons, and we tell you that the radius of the ice spheres is normally distributed with a mean
+Let us say that we are making ice spheres by filling water into balloons, and we tell you that the radius of the ice spheres is normally distributed with a mean
 of 0.7 cm and a standard deviation of 0.08 cm. You can then draw the probability distribution and cumulative distribution for that:
 
 \begin{figure}[H]
@@ -12,14 +12,14 @@ of 0.7 cm and a standard deviation of 0.08 cm. You can then draw the probability
 
 This includes lines indicating the mean and two standard deviations on each side.
 
-Now, let's say we ask you what the cumulative distribution is for the \emph{mass} of the balloons. A cubic centimeter of ice weighs about a gram, so if you know
+Now, let us say we ask you what the cumulative distribution is for the \emph{mass} of the balloons. A cubic centimeter of ice weighs about a gram, so if you know
 the radius of a particular ice sphere, it is easy to compute the mass of it:
 
 $$m = \frac{4}{3} \pi r^3$$
 
-So, for example, if a sphere has a radius of 5cm, its mass in grams is $\frac{4 \pi (0.7^3)}{3} \approx 1.44$ g.
+So, for example, a sphere with the mean radius of 0.7 cm has a mass in grams of $\frac{4 \pi (0.7^3)}{3} \approx 1.44$ g.
 
-Thinking about the graph of the cumulative distribution, if half the balloons have a radius less than 5 cm, then half of the balloons have a mass less than 523.6 g. For each point on the cumulative graph, we can use the radius of that point to compute the corresponding mass --- \index{cumulative distribution function!change of variables}the CDF gets stretched out:
+Thinking about the graph of the cumulative distribution, if half the balloons have a radius less than 0.7 cm (the median), then half of the balloons have a mass less than 1.44 g. For each point on the cumulative graph, we can use the radius of that point to compute the corresponding mass --- \index{cumulative distribution function!change of variables}the CDF gets stretched out:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{cdf_after.png}
@@ -34,7 +34,7 @@ $$H(m) = F(g(m))$$
 
 In this case, $F$ is the cumulative function for the normal distribution, with mean $0.7$ and standard deviation of $0.08$. $g$ maps the mass to the radius:
 
-$$g(m) =\left(\sqrt[3]{\frac{3}{4 \pi}}\right) x^{\frac{1}{3}}$$
+$$g(m) =\left(\sqrt[3]{\frac{3}{4 \pi}}\right) m^{\frac{1}{3}}$$
 
 \section{Making a Probability Density Function}\index{probability density function!change of variables}
 
@@ -62,7 +62,7 @@ $$F'(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma
 
 where $\mu = 0.7$ and $\sigma = 0.08$.
 
-We've already said that 
+We have already said that 
 
 $$g(m) = \left(\sqrt[3]{\frac{3}{4 \pi}}\right) m^{\frac{1}{3}}$$
 
@@ -128,7 +128,7 @@ dg_values = d_radius_for_mass(m_values)
 # What is F'(g(m))g'(m)?
 pdf_values = norm.pdf(r_values, loc=MEAN_RADIUS, scale=STD_RADIUS) * dg_values
 
-# Sanity check: It should integrate to a little less then 1.0
+# Sanity check: It should integrate to a little less than 1.0
 dx = (MAX_MASS - MIN_MASS)/N
 area_under_curve = pdf_values.sum() * dx
 print(f"Integral from {MIN_MASS:.2f} to {MAX_MASS:.2f}: {area_under_curve:.3f}")
@@ -175,20 +175,59 @@ fig.savefig("pdf.png")
 The last case (mass and radius) is relatively straightforward, because the function $g$ is always increasing. What if we have a change of variables where 
 $g$ is decreasing? For example, $V= IR$ so $\frac{V}{R} = I$.
 
-Let's say that you work at a lightbulb factory and you sample the lightbulbs to see what their resistance is. You find the resistances of the lightbulbs are normally distributed with a mean of 24 ohms and a standard deviation of 3 ohms. The voltage will be exactly 12 volts. What is the PDF of the currents that will pass through the lightbulbs?
+Let us say that you work at a lightbulb factory and you sample the lightbulbs to see what their resistance is. You find the resistances of the lightbulbs are normally distributed with a mean of 24 ohms and a standard deviation of 3 ohms. The voltage will be exactly 12 volts. What is the PDF of the currents that will pass through the lightbulbs?
 
 $$I = \frac{12}{R}$$
 
 so 
 
-$$g(x) = \frac{12}{x}$$
+$$g(i) = \frac{12}{i}$$
 
-is the function that will convert the current to resistance. Taking the derivative, we get:
+is the function that converts a current $i$ into a resistance $R = g(i)$. Taking the derivative with respect to $i$, we get:
 
-$$g'(i) = -\frac{12}{x^2}$$
+$$g'(i) = -\frac{12}{i^2}$$
 
 
-FIXME finish this section with graphs and code. 
+Because $g$ is decreasing, a larger current means a smaller resistance. So the cumulative distribution for the current is
+$$H(i) = P(I \leq i) = P\left(R \geq g(i)\right) = 1 - F(g(i))$$
+where $F$ is the cumulative distribution for the resistance. Taking the derivative with the chain rule gives
+$$H'(i) = -F'(g(i))\,g'(i) = F'(g(i))\left| g'(i) \right|$$
+The minus sign disappears when we use $\left| g'(i) \right|$, because a probability density cannot be negative.
+
+For the lightbulbs, $F'$ is the normal density with mean 24 and standard deviation 3. So the density of the current is
+$$h(i) = \frac{1}{3\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{12/i - 24}{3}\right)^2} \cdot \frac{12}{i^2}$$
+
+Here is the code to compute this density:
+
+\begin{minted}{python}
+from scipy.stats import norm
+
+VOLTAGE = 12
+MEAN_R = 24
+STD_R = 3
+
+def pdf_current(i):
+  r = VOLTAGE / i
+  return norm.pdf(r, loc=MEAN_R, scale=STD_R) * VOLTAGE / i**2
+
+print(f"{pdf_current(0.5):.3f}")
+\end{minted}
+
+This prints $6.383$. The density peaks near 0.49 A, a little below the current at the mean resistance (12/24 = 0.5 A), because of the $\frac{12}{i^2}$ factor.
+
+\textbf{Example}: What is the probability that a bulb carries more than 0.6 A?
+
+\textbf{Solution}: A current above 0.6 A means $\frac{12}{R} > 0.6$, which is the same as $R < 20$. So
+$$P(I > 0.6) = P(R < 20) = \Phi\left(\frac{20 - 24}{3}\right) = \Phi\left(-\frac{4}{3}\right) \approx 0.091$$
+About 9.1\% of the bulbs carry more than 0.6 A. (We can also get this from the code above: \texttt{norm.cdf(20, loc=24, scale=3)} gives 0.091.)
+
+\begin{Exercise}[label = changevar1]
+Using the lightbulb example, find the probability that a bulb carries less than 0.4 A.
+\end{Exercise}
+
+\begin{Answer}[ref = changevar1]
+A current below 0.4 A means $\frac{12}{R} < 0.4$, which is the same as $R > 30$. So $P(I < 0.4) = P(R > 30) = 1 - \Phi\left(\frac{30 - 24}{3}\right) = 1 - \Phi(2) \approx 0.023$. About 2.3\% of the bulbs carry less than 0.4 A.
+\end{Answer} 
 
 
 

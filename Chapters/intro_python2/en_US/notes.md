@@ -1,12 +1,13 @@
 # Advanced Python Syntax — Notes
 
 ## Summary
-Split from `intro_python2`. This part covers: Where did we leave off?, Functions, Classes and More Basic Object-Oriented Programming, Errors, Recursive Functions.
+Builds on the first Python chapter. It covers functions (defining, parameters and arguments, return values, and scope), classes and object-oriented basics (creating objects, __init__, attributes, methods, and printing objects), and errors (syntax errors, exceptions, and try-except).
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Added a worked example in the return-values section. The output was run and checked: 12, then 5.0.
+- Removed contractions (none were left).
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers stayed with the first part. Move any that belong here.
+## Open items
+- The chapter's section "Where did we leave off?" should link to the first Python chapter.
+- The classes section could use one worked example with an object that stores two values.
+- The chapter now has the libraries material in `python_libraries`. Check that the links between the two chapters match.

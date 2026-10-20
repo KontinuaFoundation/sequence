@@ -29,7 +29,7 @@ Trees are one of the most versatile and widely used data structures in computer 
 \end{wrapfigure}
 % \includegraphics[width=0.75\textwidth]{parentChild.png}
 % \includegraphics[width=0.75\textwidth]{rootLeaves.png}
-Trees are a subset of Graphs, a data structure comprised of nodes and edges. Graphs can be converted into trees by adding the following two constraints:
+Trees are a special kind of graph, a data structure comprised of nodes and edges. A tree is a graph with two properties:
 \begin{itemize}
   \item The graph is connected, such that there exists a path between every pair of nodes
   \item The graph is acyclic; no cycles exist in the graph
@@ -93,12 +93,10 @@ Some more relevant terminology you may encounter in the context of trees:
   \item \newterm{Descendant}: A node that lies on the path from a given node to a leaf. This is done by repeatedly traversing from a parent node to a child node until a leaf is reached.
 \end{itemize}
 
-FIXME tree proof
-
 \section{Binary Trees and Binary Search Trees}\index{binary search tree}\index{binary tree}
 The most common type of tree is the \newterm{binary tree}, where each node has \emph{at most} two children, referred to as the \newterm{left child} and the \newterm{right child}. Binary trees are widely used in various applications, including expression parsing, binary search trees, and heaps.
 
-Let's put this practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page.
+Let us put this idea into practice. Recall our binary search implementation from the recursion chapter. Given a chosen word and a sorted list of words, such as a dictionary, we can find the page of the chosen word by repeatedly dividing the available pages in half and comparing the elements on the page to the chosen word. This is much easier than, for example, going through every single page and checking if the word is on that page.
 
 
 \begin{wrapfigure}[25]{r}{0.55\textwidth}
@@ -132,19 +130,25 @@ Similar to binary search, we can find any word in the tree by starting at the ro
 
 What if we want to insert into a binary search tree? We must complete four actions:
 \begin{itemize}
-  \item Find the correct location for the new node. % FIXME is it always a leaf?
+  \item Find the correct location for the new node.
   \item Create and insert the node at that location,
   \item Connect it to its respective parent(s).
   \item Ensure the BST properties are maintained.
 \end{itemize}
 
-Let's say, on our tree above, we want to add \texttt{orange} to the tree. Because of alphabetical sorting, 
+The new node is always a leaf. We find its location the same way we search: at each node, go left if the new word comes first alphabetically, and go right if it comes later.
 
-FIXME expand on addition, removal, and search of binary trees
-FIXME add exercise of a similar dictionary tree with more words, have student add and remove words, and search for words
+Let us say, on our tree above, we want to add \texttt{orange} to the tree. \texttt{orange} comes after \texttt{mango}, so we go right to \texttt{pear}. \texttt{orange} comes before \texttt{pear}, so we go left to \texttt{peach}. \texttt{orange} comes before \texttt{peach}, and \texttt{peach} has no left child. So we make \texttt{orange} the left child of \texttt{peach}.
+
+\begin{Exercise}[title={Insert into a Search Tree}, label={ex:bst_insert}]
+Using the tree in Figure~\ref{fig:bst1}, insert \texttt{kiwi}. Write the sequence of words you compare \texttt{kiwi} with, and say where the new node goes.
+\end{Exercise}
+\begin{Answer}[ref={ex:bst_insert}]
+\texttt{kiwi} comes before \texttt{mango}, so go left to \texttt{apple}. \texttt{kiwi} comes after \texttt{apple}, so go right to \texttt{banana}. \texttt{kiwi} comes after \texttt{banana}, and \texttt{banana} has no right child. So \texttt{kiwi} becomes the right child of \texttt{banana}.
+\end{Answer}
 
 \section{File Structures and File System Hierarchies}\index{file system!hierarchy}
-Computers, since their first creation in the 1980s, have needed a way to store and organize data. Prior to computers, many systems of organization were used to store physical data, such as filing cabinets, libraries, and warehouses.
+Computers have always needed a way to store and organize data. Prior to computers, many systems of organization were used to store physical data, such as filing cabinets, libraries, and warehouses.
 
 These systems often had a hierarchical structure, with a top-level category that branched out into subcategories, with these subcategories further branching out into more specific categories, and so on.
 
@@ -157,12 +161,12 @@ With the development of the computer, sorting these types of hierarchical data b
 This structure naturally fits into the tree data structure:
 \begin{itemize}
   \item The \textbf{root} of the tree is the top-level directory (\texttt{/} on Linux/Unix\footnote{There is a very helpful video in Linux File Systems in your digital resources. Check it out!} systems or \texttt{C:\textbackslash} on Windows).
-  \item A \textbf{node} is naturally fits the idea of either \emph{directories nodes} or \emph{files nodes}.
+  \item A \textbf{node} naturally fits the idea of either \emph{directories nodes} or \emph{files nodes}.
   \item A \textbf{directory node} may have children, where its children are subdirectories or files.
   \item A \textbf{file node} is a \textbf{leaf}, meaning it has no children.
 \end{itemize}
 
-The \textbf{path} to a file describes the unique sequence of directories from the root to that file. Test again test again test again
+The \textbf{path} to a file describes the unique sequence of directories from the root to that file.
 
 \subsection*{Example}
 A small file system might look like:

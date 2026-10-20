@@ -1,25 +1,20 @@
 # Buoyancy — Notes
 
 ## Summary
-Introduces buoyancy as the upward force equal to the weight of displaced fluid. It works a box-sinking equilibrium problem (8.3 cm), explains hydrostatic pressure (p = dgh) as the source of the buoyant force, works a hydrostatic pressure exercise on Mars, and finishes with density effects (saltwater, oil, grease fires).
+Explains why objects float or sink. It covers the buoyant force and equilibrium, Archimedes' principle, hydrostatic pressure (with the reason buoyant force comes from pressure differences), and the role of density in floating. It has one worked example and two exercises with answers.
 
-## Strengths
-- Starts from familiar boats and balloons, which makes the ideas accessible.
-- The box exercise is a clean application of the "displaced mass equals boat mass" idea.
-- Explains where buoyant force physically comes from (pressure difference) rather than just stating it.
+## Changes in this pass
+- Rewrote the opening paragraph.
+- Defined displaced fluid and displaced volume (this replaces the earlier FIXME, which asked for a definition of displacement).
+- Named Archimedes' principle in the text.
+- Corrected the density of olive oil from kg per square meter to kg per cubic meter.
+- Added a worked example: the fraction of a wooden block that is underwater (0.5).
+- Removed contractions from the prose.
 
-## Weaknesses
-- **Wrong units:** olive oil density is "900 kg per square meter"; it should be kg per cubic meter.
-- **Unclear phrasing:** "buoyancy concerns the ways in which liquids and gasses interact with gravity" is vague; "gasses" should be "gases."
-- **Missing content:** Archimedes' principle is named in an ADD comment but not stated; displacement and velocity are used without definition (a FIXME notes this).
-- **Gap:** no buoyancy exercise on the fluid-density or floating-object side (for example, what fraction of an iceberg is submerged).
-- **Unfinished:** three ADD/FIXME comments remain in the source.
-- **Weak transition:** the density section jumps from pressure to examples without a clear rule.
+## Checked
+- The box sinks 0.083 m (8.3 cm) before reaching equilibrium. This matches the answer.
+- The hydrostatic pressure at 5 m in olive oil on Mars is 16,744.5 Pa, which matches the answer.
 
-## Index entries added
-buoyancy (chapter), buoyant force, hydrostatic pressure, density, pascal. (Existing: equilibrium.)
-
-## Editor to-do
-- Fix the olive oil units.
-- State Archimedes' principle and define displacement.
-- Add a floating-object exercise.
+## Open items
+- The removed FIXME asked for action and reaction pairs. Newton's third law is covered in `forces_motion`, so add a link there.
+- Add an exercise on the helium balloon (the air displaced weighs more than the balloon and its gas).

@@ -9,10 +9,9 @@ if you put all your vectors together in a matrix and take the determinant of
 that matrix, the result will tell you if all the vectors are independent or 
 not. For a 2D matrix, the \index{parallelogram area}determinant is the area of the parallelogram defined 
 by the column vectors. For a 3D matrix, the determinant is the volume of the 
-parallelepiped (a six-dimensional figure formed by six parallelograms, such as 
-a cube).\footnote{Note that determinants can only be found for square, $n \times n$ matrices.} \index{determinant}
+parallelepiped (a three-dimensional box formed by six parallelograms, such as a cube).\footnote{Note that determinants can only be found for square, $n \times n$ matrices.} \index{determinant}
 
-Let's plot the parallelogram for this matrix (see figure \ref{fig:twos}):
+Think about a rectangle on graph paper. Its area is base times height. The determinant gives the area of a parallelogram in the same way. Let us plot the parallelogram for this matrix (see figure \ref{fig:twos}):
 $$
 \begin{bmatrix}
 2 & 0  \\
@@ -64,7 +63,7 @@ For the matrix plotted above, the determinant is $(2*2)-(0*0)$. You can also
 see that 4.0 is the area, base (2) times height (2).
 
 You can use the determinant to see what happens to a shape when it goes 
-through a linear transformation. Let's scale the 2 by 2 matrix by 4:
+through a linear transformation. Let us scale the 2 by 2 matrix by 4:
 $$
 \begin{bmatrix}
 8 & 0  \\
@@ -186,7 +185,7 @@ you notice a pattern?
 In fact, scaling an $n \times n$ matrix by a constant factor, $c$, changes the 
 determinant of that $n \times n$ matrix by a factor of $c^n$. 
 
-What happens if the columns of a matrix are not independent? Let's plot this 
+What happens if the columns of a matrix are not independent? Let us plot this 
 matrix (see figure \ref{fig:zero_det}):
 $$
 \begin{bmatrix}
@@ -307,7 +306,7 @@ area of this parallelogram?
     \end{bmatrix} \right) = 0 \cdot 0 - \left( -5 \cdot -2 \right) = 0 - 10 = 
     -10$$
 
-    We will discuss this unusual response in a future chapter. 
+    The sign is negative because the second column is a clockwise turn from the first, so the orientation is reversed. The area is $|-10| = 10$. We will discuss orientation in a future chapter. 
 \end{enumerate}
 \end{Answer}
 \index{determinant!n by n}
@@ -346,7 +345,7 @@ The determinant of a 3 by 3 matrix is found by
 \]
 
 
-\index{Sarrus rule}A trick for this is rewriting the matrix as a $3 \times 5$ augmented matrix with the first 2 columns after the third column:
+\index{Sarrus rule}A trick for this is rewriting the matrix as a $3 \times 5$ matrix, with copies of the first 2 columns placed after the third column:
 $$B=\begin{bmatrix}
 a & b & c & a & b \\
 d & e & f & d & e \\
@@ -382,7 +381,7 @@ g & h & i & g & h
 $$\operatorname{det}(B) = (a \cdot e \cdot i) + (b \cdot f \cdot g) + (c \cdot d \cdot h) - \left[{(c \cdot e \cdot g) + (a \cdot f \cdot h) + (b \cdot d \cdot i)}\right]$$
 Note that this is the same multiplication as above, just formatted differently.
 \end{mdframed}
-As you can see, this involves a recursive process of breaking a larger matrix into a smaller $2 \times 2$ matrix.
+Each term in this formula multiplies an entry by the determinant of a smaller $2 \times 2$ matrix. The next section extends this idea to larger matrices.
 
 For our purposes, we simply want to first check to see if 
 a matrix contains linearly independent rows and columns before using our 
@@ -390,9 +389,9 @@ Python code to solve.
 
 
 \section{Determinants in Python}
-Modify your code so that is uses the $np.linalg.det()$ function. If the 
+Modify your code so that it uses the $np.linalg.det()$ function. If the 
 determinant is not zero, then you can call the $np.linalg.solve()$ function. 
-Your code should look like this:
+In this snippet, $D$ is the coefficient matrix and $\vec{e}$ is the right-hand side. Your code should look like this:
 \begin{minted}{python}
 # Are the rows and columns independent? 
 # Equivalently, is the determinant 0?
@@ -403,7 +402,7 @@ else:
     print("Rows and columns are dependent.")
 \end{minted}
 
-How does this work below the hood? Let's also write a recursive python function that finds our determinant:
+How does this work under the hood? Let us also write a recursive python function that finds our determinant:
 
 There are two base cases:
 \begin{itemize}
@@ -420,7 +419,7 @@ We do this as follows:
     \item For each entry in that row:
     \begin{itemize}
         \item Remove the row and column containing that entry.
-        \item This creates a smaller matrix, called a \emph{minor}, which are submatrices. Recall what we did above for our $3\times 3$ determinant definition. \index{minor matrix}
+        \item This creates a smaller submatrix, called a \emph{minor}. Recall what we did above for our $3\times 3$ determinant definition. \index{minor matrix}
     \end{itemize}
     \item Compute the determinant of that smaller matrix.
     \item Multiply the original entry (where the row and column lines originate from), the determinant of its minor, and an alternating sign $+, -, +, \dots$.
@@ -454,7 +453,7 @@ def recursive_determinant(matrix):
         for row in matrix[1:]:
             # remove column col and store as new_row
             new_row = row[:col]+row[col+1:]
-            # apprend new row to the minor matrix
+            # append new row to the minor matrix
             minor.append(new_row)
     
         sign = (-1) ** col #exponential for alternating sign
@@ -462,7 +461,7 @@ def recursive_determinant(matrix):
     return det
 \end{minted}
 
-We implemented our known base case, and recursively reduce our array until it fits a known base case. This is exactly how numpy's \mintinline{python}|np.linalg.det()| works.
+We implemented our known base case, and recursively reduce our array until it fits a known base case. NumPy's \mintinline{python}|np.linalg.det()| uses a faster method called LU decomposition, but it gives the same answer as this recursion.
 \section{Inverse Matrices}
 Now that we have talked about determinants, we can talk about Inverse Matrices. \index{inverse matrix}
 The idea of a matrix inverse is a natural generalization of the multiplicative inverse of a real number. 
@@ -490,7 +489,6 @@ When such a matrix \( B \) exists, it is denoted by \( A^{-1} \), and is said to
 
 It is important to note that not every matrix has an inverse. 
 In particular, only \emph{square matrices} can be invertible, and even among square matrices, an inverse may fail to exist.
-\subsection{Existence of Square Matrices}
 \subsection*{Existence of the Inverse}
 
 A square matrix \( A \) has an inverse if and only if its determinant is nonzero:
@@ -524,7 +522,7 @@ d & -b \\
 -c & a
 \end{bmatrix}$$
 
-Note that we multiply by the a new matrix has $a$ and $d$ swapped, and $b$ and $c$ switch signs. Finally, we divide by the determinant of the original $A$. 
+Note that the new matrix has $a$ and $d$ swapped, and $b$ and $c$ change signs. Finally, we multiply by $\frac{1}{ad - bc}$, the reciprocal of the determinant of the original $A$. 
 \end{mdframed}
 
 This formula is valid only when the determinant of \(A\) is nonzero. 
@@ -533,6 +531,12 @@ Recall that the determinant of a \(2 \times 2\) matrix is
 \det(A) = ad - bc.
 \]
 If \(ad - bc = 0\), then \(A\) is singular and has no inverse.
+
+\textbf{Worked example: 2 by 2 inverse.} Find the inverse of $A = \begin{bmatrix} 3 & 1 \\ 5 & 2 \end{bmatrix}$.
+
+\textbf{Solution:} First, $\det(A) = 3 \cdot 2 - 1 \cdot 5 = 1$. Swap $a$ and $d$, and change the signs of $b$ and $c$:
+$$\begin{bmatrix} 2 & -1 \\ -5 & 3 \end{bmatrix}$$
+Dividing by $\det(A) = 1$ leaves $A^{-1} = \begin{bmatrix} 2 & -1 \\ -5 & 3 \end{bmatrix}$. To check, $AA^{-1} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$.
 
 \begin{Exercise}[title={$2 \times 2$ Practice}, label={ex:inverse1}]
 Find the inverse of the matrix of
@@ -598,7 +602,7 @@ $$\begin{array}{c} \det A
 -2\begin{vmatrix}0&1\\[4pt]2&-3\end{vmatrix}
 -2\begin{vmatrix}0&1\\[4pt]2&4\end{vmatrix}
 =1(-3-4)-2(0-2)-2(0-2)=-7+4+4=1 \end{array}$$
-Since $\det(A) \ne 0$, $A$ must have an inverse. We find it's inverse by the augmented matrix method:
+Since $\det(A) \ne 0$, $A$ must have an inverse. We find the inverse with the augmented matrix method:
 \begin{align*}
 \left[\begin{array}{ccc|ccc}
 1 & 2 & -2 & 1 & 0 & 0\\
@@ -697,7 +701,7 @@ So the rows are \emph{linearly dependent}, meaning the matrix has rank $1$, and 
 The augmented matrix row-reduction method not only provides a way to compute inverses, but also offers another criterion for invertibility: 
 a matrix is invertible if and only if it can be row-reduced to the identity matrix.
 \subsection{Relation to $A\vec{x} = \vec{b}$}\index{linear system!inverse solution}
-An inverse matrix is not only for square matrices, but also for systems of equations and our fundamental linear algebra equation $A\vec{x}=\vec{b}$. Let's look at an example.
+An inverse matrix is also a tool for solving systems of equations, such as our fundamental equation $A\vec{x}=\vec{b}$. Let us look at an example.
 
 Given
 $$\begin{array}{c} A =
@@ -729,12 +733,12 @@ x_1 + x_2 = 3
 
 Checking that an inverse matrix first exists, we have
 $$\det(A) = 2(1) - 1(1) = 1 \neq 0$$
-So we know an inverse matrix exists! To find $A^{-1}$
+So we know an inverse matrix exists! To find $A^{-1}$:
 $$A^{-1} = 1\begin{bmatrix}d&-b\\-c&a\end{bmatrix}
 =
 \begin{bmatrix}1&-1\\-1&2\end{bmatrix}$$
 
-Here is the fun part! Let's do some computational equivalences:
+Here is the fun part! Let us do some computational equivalences:
 \begin{align}
 A\vec{x} &= \vec{b} \notag\\
 A^{-1}(A\vec{x}) &= A^{-1}\vec{b} \notag\\
@@ -742,7 +746,7 @@ I\vec{x} &= A^{-1}\vec{b} \notag\\
 \vec{x} &= A^{-1}\vec{b} \label{eq:inv_fundamental}
 \end{align}
 
-Equation~\eqref{eq:inv_fundamental} show that, by only multiplying by the matrix equivalent of $1$, the identity matrix $I$, we can state that $\vec{x}=A^{-1}\vec{b}$.
+Equation~\eqref{eq:inv_fundamental} shows that, by only multiplying by the matrix equivalent of $1$, the identity matrix $I$, we can state that $\vec{x}=A^{-1}\vec{b}$.
 Since we have both $A^{-1}$ and $\vec{b}$, we can find $\vec{x}$:
 $$\begin{array}{c} x =
 \begin{bmatrix}
@@ -759,10 +763,10 @@ $$\begin{array}{c} x =
 1
 \end{bmatrix} \end{array}$$
 
-Geometrically, this did a very simple operation. We used the fact that $A$ vectors transforms $\vec{x}$ into $\vec{b}$. Then we noted that $A^{-1}$ undoes that transformation, recovering our original $\vec{x}$ by finding $A^{-1} \vec{b}$. 
-This may be hard to visualize, so don't worry if it is hard to grasp immediately. We will review it again in a following chapter.
+Geometrically, this did a very simple operation. We used the fact that the matrix $A$ transforms $\vec{x}$ into $\vec{b}$. Then we noted that $A^{-1}$ undoes that transformation, recovering our original $\vec{x}$ by finding $A^{-1} \vec{b}$. 
+This may be hard to visualize, so do not worry if it is hard to grasp immediately. We will review it again in a following chapter.
 \subsection{Matrix Inverse using NumPy}
-We can use our Python library NumPy to find inverses a lot easier using the \mintinline{python3}|np.linalg.inv| function to find the inverse of a given array.
+We can use our Python library NumPy to find inverses much more easily using the \mintinline{python3}|np.linalg.inv| function to find the inverse of a given array.
 \begin{minted}{python}
 import numpy as np
 
@@ -780,12 +784,13 @@ This outputs
 
 If given a matrix that is \emph{linearly dependent}, NumPy will raise an exception:
 \begin{minted}{python}
-raise LinAlgError("Singular matrix")
-numpy.linalg.LinAlgError: Singular matrix
+B = np.array([[2, 4],
+              [1, 2]])
+np.linalg.inv(B)
 \end{minted}
-letting us know that the inverse does not exist.
+The last line reports the error, which tells us that the inverse does not exist.
 
-To improve our code, we check for the determinant of the matrix beforehand. In this code, we introduce a tolerance as computers handle numbers near zero as very small but non-zero digits.
+To improve our code, we check for the determinant of the matrix beforehand. In this code, we use a tolerance because computers store numbers close to zero only approximately.
 \begin{minted}{python}
 import numpy as np
 
@@ -819,7 +824,7 @@ The determinant of a matrix provides a powerful geometric and algebraic descript
 In two dimensions, the determinant of a \(2 \times 2\) matrix represents the signed area of the parallelogram formed by the images of the standard basis vectors. 
 In higher dimensions, the determinant represents signed volume.
 
-Further, if a matrix \(A\) multiplies a region in space, then \(|\det(A)|\) describes the factor by which areas or volumes are scaled, noting the sign and absolute value of the determinant as a scalar.
+Further, the absolute value \(|\det(A)|\) is the factor by which a matrix scales areas or volumes. The sign of \(\det(A)\) tells us whether the matrix flips orientation.
 
 The inverse of a matrix \emph{reverses the effect of the original matrix}.
 If \(A\) is invertible, then multiplying by \(A^{-1}\) restores any vector to its original position:

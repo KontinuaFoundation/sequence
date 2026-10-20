@@ -52,6 +52,15 @@ you ran a bike rental shop, each bicycle's status would be ``available'',
 be allowed.  We often call these columns \newterm{categorical}\index{categorical variable}.
 
 \section{pandas}
+\textbf{Worked example: a DataFrame.}
+\begin{minted}{python}
+import pandas as pd
+
+scores = pd.DataFrame({"name": ["Ana", "Ben", "Cy"], "score": [88, 92, 75]})
+print(scores["score"].mean())
+\end{minted}
+The output is \mintinline{text}{85.0}. The column is selected with square brackets, and \mintinline{python}{mean()} averages it.
+
 
 \index{pandas}
 The Python community works with tables of data \emph{very} often, so it
@@ -61,7 +70,7 @@ tables of data.
 When working with tables, you sometimes need to go through them
 row-by-row. However, for large datasets, this is very slow. pandas
 makes it easy (and very fast) to say things like ``Delete every row
-that doesn't have a value for height'' instead of requiring you to
+that does not have a value for height'' instead of requiring you to
 step through the whole table.
 
 In pandas, there are two datatypes that you use a lot:
@@ -86,7 +95,7 @@ for ``Comma-Separated Values''.)
 
 \section{Reading a CSV with pandas}
 
-Let's make a program that reads \filename{bikes.csv} into a pandas
+Let us make a program that reads \filename{bikes.csv} into a pandas
 dataframe.  Create a file called \filename{report.py} in the same
 folder as \filename{bikes.csv}.
 
@@ -97,7 +106,7 @@ series.
 
 If you ask a dataframe for its shape, it returns a tuple containing
 the number of rows and the number of columns. To confirm that we have
-actually read the data in, let's print those numbers.  Add these lines
+actually read the data in, let us print those numbers.  Add these lines
 to \filename{report.py}:
 
 \begin{minted}{python}
@@ -125,7 +134,7 @@ not included in the shape.
 
 \section{Looking at a Series}
 
-Let's get the lowest, the highest, and the mean purchase price of the
+Let us get the lowest, the highest, and the mean purchase price of the
 bikes.  The purchase price is a series, and you can ask the dataframe
 for it. Add these lines to the end of your program:
 
@@ -204,7 +213,7 @@ Notice that the data coming back is actually another series.
 The last line says that the name (the value for the index column) for
 this row is 5636248.  In pandas, we usually use this to locate
 particular rows.  For example, there is a row with \texttt{bike\_id}
-equal to 2969341. Let's ask for one entry from the 
+equal to 2969341. Let us ask for one entry from the 
 
 \begin{minted}{python}
 print("\n*** Some Bike ***")
@@ -273,7 +282,7 @@ When you use \pyfunction{loc} with this sort of mask, you are saying
 ``Give me all the rows for which the mask is True.''  So, the
 assignment only happens in the one problematic row.
 
-Let's get rid of the mask variable and do the same for turning \texttt{Flat tire} into \texttt{Broken}:
+Let us get rid of the mask variable and do the same for turning \texttt{Flat tire} into \texttt{Broken}:
 
 \begin{minted}{python}
 df.loc[df['status'] == 'Available', 'status'] = 'available'
@@ -304,7 +313,7 @@ missing_ids = list(df[missing_mask].index)
 print(f"These bikes have no status:{missing_ids}")
 \end{minted}
 
-However, let's just keep the rows where the status is not null:
+However, let us just keep the rows where the status is not null:
 \begin{minted}{python}
 missing_mask = df['status'].isnull()
 df = df[~missing_mask]
@@ -320,7 +329,7 @@ Run the program and open \filename{bikes2.csv} in a text editor.
 
 \section{Derived columns}
 
-Let's say that you want to add a column with age of the bicycle in days:
+Let us say that you want to add a column with age of the bicycle in days:
 \begin{minted}{python}
 bike_id,brand,size,purchase_price,purchase_date,status,age_in_days
 5636248,GT,57,277.99,1986-09-07,available,13061
@@ -352,7 +361,12 @@ df['age_in_days'] = df['purchase_date'].apply(lambda d: (today - d).days)
 
 When you run this, the new \filename{bikes.csv} will have an \texttt{age\_by\_date} column.
 
-
-
-
-
+\begin{Exercise}[title={Highest Score}, label=pd1]
+Using the \texttt{scores} DataFrame above, write code that prints the highest score.
+\end{Exercise}
+\begin{Answer}[ref=pd1]
+\begin{minted}{python}
+print(scores["score"].max())
+\end{minted}
+The output is \mintinline{text}{92}.
+\end{Answer}

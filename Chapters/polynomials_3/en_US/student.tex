@@ -2,6 +2,9 @@
 
 
 \section{Graphing Polynomials}
+
+\textbf{Worked example: roots from a graph.} The polynomial $p(x) = x^3 - x = x(x-1)(x+1)$ has roots at $x = -1$, $0$, and $1$. These are the points where the graph crosses the $x$-axis.
+
 \index{polynomial!sketching graphs}Polynomials are used to solve real-world problems! To do this, we need to know what these polynomials look like on a graph. You have many tools you can use to sketch out graphs. These graphs are simple visuals that help to evaluate several different points on the plot. 
 
 For instance, you can determine:
@@ -46,7 +49,7 @@ For example, if you wanted to graph the polynomial $f(x) = -x^3 -x^2 +
 \end{itemize}
 
 So, right away, we know two roots: $x = 0$ and $x = 2$. Are there
-others? We won't know until we factor the polynomial:
+others? We will not know until we factor the polynomial:
 \begin{multline*}
   -x^3 -x^2 + 6x \\
   = (-1x)(x^2 + x - 6) \\
@@ -102,7 +105,7 @@ The graph we are working on has a leading term of $-1x^3$. The degree is odd, th
 
 
 \section{Interpolating with Polynomials}
-Let's say someone on a distant planet records video of a hammer being
+Let us say someone on a distant planet records video of a hammer being
 thrown up into the air.  They send you three random frames of the
 hammer in flight. Each frame has a timestamp, and you can clearly see
 how high the hammer is in each one. Can you create a 2nd degree
@@ -115,7 +118,7 @@ through all three points?
 The answer is yes.  In fact, \index{polynomial!through given points}given any $n$ points\footnote{$n=2$ will result in a line in slope intercept point, and $n=1$ is a single point}, there is exactly
 one $n-1$ degree polynomial that passes through all the points.
 
-There are a lot of variables floating around. Let's make it concrete:
+There are a lot of variables floating around. Let us make it concrete:
 The photos are taken at $t = 2$ seconds, $t = 3$ seconds, and $t = 4$
 seconds. In those photos, the height of the hammer is $5m$, $7m$, and
 $6m$. So, we want our polynomial to pass through these points: (2, 5),
@@ -129,7 +132,7 @@ $6m$. So, we want our polynomial to pass through these points: (2, 5),
 \end{figure}
 
 
-How can you find that polynomial? Let's do it in small steps. Can you
+How can you find that polynomial? Let us do it in small steps. Can you
 create a 2nd degree polynomial that is not zero at $t = 2$, but is zero
 at $t = 3$ and $t = 4$? Yes, you can: $(x - 3)(x - 4)$ has
 exactly two roots at $t = 3$ and $t = 4$.  The value of this polynomial at
@@ -218,7 +221,7 @@ all of them? Just what you would expect:
 \end{equation*}
 
 That would be tedious for a person to compute, but computers are perfect for this
-stuff. Let's create a \index{from\_points method}method that creates instances of Polynomial
+stuff. Let us create a \index{from\_points method}method that creates instances of Polynomial
 using interpolation.\footnote{Note that other textbooks or resources may refer to this as \textit{Lagrange Polynomial Interpolation}.}\index{Lagrange interpolation}
 
 \subsection{Interpolating polynomials in python}\index{interpolation!in Python}
@@ -287,3 +290,10 @@ It should look like this:
     \caption{5 point interpolation of points.}
     \label{fig:fiveinterp}
 \end{figure}
+
+\begin{Exercise}[title={Interpolating a Line}, label=poly3_1]
+Find the polynomial of degree at most $1$ through the points $(0, 1)$ and $(2, 5)$.
+\end{Exercise}
+\begin{Answer}[ref=poly3_1]
+The slope is $\frac{5-1}{2-0} = 2$ and the intercept is $1$, so $p(x) = 2x + 1$.
+\end{Answer}

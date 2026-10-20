@@ -2,13 +2,13 @@
 
 With all the computing power available today, you would think no problem would be too difficult to tackle. However, this is not the case. There is a category of problems called NP (nondeterministic polynomial time) whose solution is easy to verify, but whose computation is difficult to perform. This is because there is no straightforward algorithm and any brute-force method would take too much time. For these problems, all we can do is to develop an efficient algorithm that can find a solution in a reasonable amount of time. While the solution might not be the most optimal, the goal is to find the best solution possible in a short time. 
 
-As you learn more about optimization techniques, you will come across many efficiency algorithms that have been used throughout the years. In the 1990s, the field of optimization changed with the discovery that algorithms based on  semidefinite positive matrices can achieve a higher efficiency than seen in the past. Today, there is an entire field of programming called Semidefinite Programming that is based on the use of semidefinite positive matrices.
+As you learn more about optimization techniques, you will come across many efficiency algorithms that have been used throughout the years. In the 1990s, the field of optimization changed with the discovery that algorithms based on positive semidefinite matrices can achieve a higher efficiency than seen in the past. Today, there is an entire field of programming called Semidefinite Programming that is based on the use of semidefinite positive matrices.
 
 First we will take a look at what some of the NP problems are. Next, we will describe the intuition behind semidefinite positive matrices. We will take a look at one NP problem, then introduce the Python module to use for solving these problems. 
 
 \section{NP Problems}\index{NP problems}
 
-In the world of mathematics, easy problems are referred to as P, or polynomial time, problems. In simple terms, this means the problem can be solved quickly, and it is easy to verify that the solution is correct. Addition, subtraction, division, multiplication, square roots, and matrix-vector multiplication are just a few examples. NP problems, as stated in the introduction, can’t be computed in a reasonable amount of time, but solutions are usually easy to verify. The game of Sudoku is one such example. It is easy to verify a correct solution, but writing a generalized algorithm to solve any Sudoku game is an NP problem. 
+In the world of mathematics, easy problems are referred to as P, or polynomial time, problems. In simple terms, this means the problem can be solved quickly, and it is easy to verify that the solution is correct. Addition, subtraction, division, multiplication, square roots, and matrix-vector multiplication are just a few examples. No fast general algorithm is known for NP problems, but their solutions are usually easy to verify. The game of Sudoku is one such example. It is easy to verify a correct solution, but writing a generalized algorithm to solve any Sudoku game is an NP problem. 
 
 NP problems show up in many other situations, such as:
 \begin{itemize}
@@ -35,7 +35,7 @@ When neural networks were first being developed to recognize things (faces, lett
 
 \section{Positive Definite and Semidefinite Matrices}\index{positive definite matrix}\index{positive semidefinite matrix}
 
-Unlike matrices that are defined by their content (such as identity matrix, zero matrix, and diagonal matrix), positive definite and semidefinite matrices are characterized by the result they produce. They have an analog in the scalar world, so let's first look at that. Let's take the scalars $a$ and $b$ and treat them as vectors. $ab$ is then the dot product. If $a >0$, then $ab$ will take on the sign of $b$. If $a < 0$, then $ab$ will have the opposite sign of $b$. If you look at this in a graph, you can see that in the first case, $ab$ stays on the same side of the origin, but in the second case, $ab$ flips
+Unlike matrices that are defined by their content (such as identity matrix, zero matrix, and diagonal matrix), positive definite and semidefinite matrices are characterized by the result they produce. They have an analog in the scalar world, so let us first look at that. Let us take the scalars $a$ and $b$ and treat them as vectors. $ab$ is then the dot product. If $a >0$, then $ab$ will take on the sign of $b$. If $a < 0$, then $ab$ will have the opposite sign of $b$. If you look at this in a graph, you can see that in the first case, $ab$ stays on the same side of the origin, but in the second case, $ab$ flips
 
 For $a = [2], b = [4]$ 
 
@@ -53,11 +53,11 @@ For $a = [3], b = [-4]$. the result of multiplication flips a to the other side 
 \draw[black, ultra thick,->] (0,-1) -- (-8,-1);
 \end{tikzpicture}
 
-The notion of “staying on the same side” is positive definite. The notion of flipping is negative definite. Positive definite means that $x > 0$, so the result is a positive number. \index{positive semidefinite matrix!non-negative result}Positive semidefinite means that $x >= 0$, so the result is a non-negative number. 
+The notion of “staying on the same side” is positive definite. The notion of flipping is negative definite. Positive definite means that $x^{T}Ax > 0$ for every nonzero $x$, so the result is a positive number. \index{positive semidefinite matrix!non-negative result}Positive semidefinite means that $x^{T}Ax \geq 0$ for every $x$, so the result is a non-negative number. 
 
 If you can formulate a problem as a positive semidefinite matrix, then you automatically constrain the result to the “same side.”  This constraint results in higher algorithmic efficiency.
 
-Let's look at the formal definition:
+Let us look at the formal definition:
 
 A matrix is positive definite if, and only if:
 $$x^{T}Ax > 0, x,  x \neq 0$$
@@ -76,7 +76,7 @@ $$
 \end{bmatrix}
 \geq 0
 $$
-For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a positive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an \index{elliptope}elliptope. This shape guarantees an optimal solution.
+For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a positive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an \index{elliptope}elliptope. This shape describes exactly the choices that give a valid semidefinite matrix, so optimizing over it is easier.
 
 \begin{figure}[H]
     \centering
@@ -86,10 +86,14 @@ For what values of $a, b, c$ is this matrix positive semidefinite? If you iterat
 \end{figure}
 
 \section{Identifying and Constructing a Positive Semidefinite Matrix}\index{positive semidefinite matrix!constructing}
-In the last section, you saw that being symmetric does not guarantee a positive semidefinite matrix. You also saw that a matrix of positive values does not guarantee a positive semidefinite matrix. The only way to check for positive semidefinite is to calculate the eigenvalues, which you learned in a previous workbook.
+In the last section, you saw that being symmetric does not guarantee a positive semidefinite matrix. You also saw that a matrix of positive values does not guarantee a positive semidefinite matrix. One way to check for positive semidefinite is to calculate the eigenvalues, which you learned in the previous chapters.
 
 A surefire way to construct a positive semidefinite matrix is:
 $$AA^{T}$$
+
+\textbf{Worked example:} Is $\begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$ positive definite?
+
+\textbf{Solution:} The characteristic equation is $(2 - \lambda)^2 - 1 = 0$, which is $\lambda^2 - 4\lambda + 3 = 0$. So $\lambda = 1$ or $\lambda = 3$. Both eigenvalues are positive, so the matrix is positive definite.
 
 \begin{Exercise}[title={Figuring out if a matrix is positive semidefinite}, label=pos-matrix-01]
 Is this matrix positive definite? Show your work.
@@ -102,26 +106,26 @@ $$
 \end{Exercise}
 
 \begin{Answer}[ref=pos-matrix-01]
-Yes. Its eigenvalues are $$2,2$$
+No. The characteristic equation is $\lambda^2 - 2\lambda - 4 = 0$, so $\lambda = 1 \pm \sqrt{5}$. The eigenvalues are about $3.24$ and $-1.24$. A negative eigenvalue means the matrix is not positive semidefinite either.
 \end{Answer}
   
 \begin{Exercise}[title={Creating a positive semidefinite matrix}, label=pos-matrix-02]
-Using any 3 by 3 matrix, create a positive semidefinite matrix.Then show it is positive semidefinite by calculating its eigenvalues.  You can either compute this by hand or using Python.  In either case, show your work.
+Using any 3 by 3 matrix, create a positive semidefinite matrix. Then show it is positive semidefinite by calculating its eigenvalues.  You can either compute this by hand or using Python.  In either case, show your work.
 \end{Exercise}
 
 \begin{Answer}[ref=pos-matrix-02]
-The answer depends on the 3 by 3 matrix you chose.
+One answer: take $A = \begin{bmatrix} 1 & 2 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix}$. Then $AA^T = \begin{bmatrix} 5 & 2 & 0 \\ 2 & 1 & 0 \\ 0 & 0 & 9 \end{bmatrix}$. Its eigenvalues are $9$ and $3 \pm 2\sqrt{2}$ (about $5.83$ and $0.17$). All are nonnegative, so $AA^T$ is positive semidefinite.
 \end{Answer}
 
 \section{The Max Cut Problem}
 \index{Max Cut}\index{relaxation!semidefinite}
-A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. (If you could find one, you would be eligible to win a huge prize from the Clay Mathematics Institute!) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a \index{Goemans-Williamson technique}technique developed by mathematicians Michel Goemans and David Williamson. 
+A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You cannot cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. No fast algorithm is known that always gives an exact solution. (Finding such an algorithm would settle the P versus NP question, which carries a prize of one million dollars from the Clay Mathematics Institute.) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a \index{Goemans-Williamson technique}technique developed by mathematicians Michel Goemans and David Williamson. 
 
-You won't see all the complete details here, as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
+You will not see all the complete details here, as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
 
 Take this simple graph of five nodes and six edges. Each node in the graph will take on one of two values (1 or -1) to show which set they fall into after a cut is made. For any two connected nodes, $x_i\cdot x_j = 1$ if $x_i = x_j$ and $-1$ otherwise.
 
-If you randomly assign $1$ and $-1$ to the nodes, the chance of making the max cut is $0.5$. By using semidefinite programming, you can achieve an algorithmic efficiency of $0.87$. 
+If you randomly assign $1$ and $-1$ to the nodes, on average half of the edges are cut. By using semidefinite programming, you can guarantee a cut that is at least about $0.878$ of the best possible cut, on average. 
 
 The Goemans-Williamson technique can be used for any optimization problem where the variables take on the values of $1$ and $-1$.
 
@@ -185,7 +189,7 @@ x^{i}\in R^n \to x^{i}\in \{ -1,1 \}
 $$
 Goemans-Williamson leveraged the fact that the end point of a unit vector is on a sphere. They generated a random plane to bisect the sphere. A vector on one side of the plane is assigned the value of $1$ and a vector on the other side a value of $-1$.
 
-You can then assign the scalar values to the nodes and make the cut accordingly. This particular cut will be 5, as shown.
+You can then assign the scalar values to the nodes and make the cut accordingly. The best possible cut for this graph is 5, because the triangle of nodes 1, 3, and 4 can contribute at most two cut edges. The rounding step can find a cut of this size, as shown.
 
 \begin{figure}[H]
     \centering
@@ -196,6 +200,7 @@ You can then assign the scalar values to the nodes and make the cut accordingly.
 
 \section{The Max Cut Problem Solved in Python}
 \index{Max Cut!python script for }
+This code uses the \texttt{cvxpy} and \texttt{scipy} modules, which you can install with \texttt{pip install cvxpy scipy}.
 \begin{minted}{python}
 # MaxCut Problem
 import numpy as np
@@ -222,13 +227,13 @@ constraints += [
 ]
 
 # Set the objective function
-objective = sum(05.*(1 - X[i,j]) for (i,j)in edges)
+objective = sum(0.5*(1 - X[i,j]) for (i,j)in edges)
 
 # Set up the problem to maximize using the objective function and
 # keeping within the set constraints
 prob = cp.Problem(cp.Maximize(objective), constraints)
 
-# Returns a positive semidefinite matrix
+# Solve the problem and print the optimal value of the objective
 print(prob.solve())
 
 # To get the vectors, take square root of the matrix

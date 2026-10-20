@@ -1,16 +1,11 @@
-# Exponentials and Logarithms — Notes
+# Exponentials Logarithms — Notes
 
 ## Summary
-Merged from `exponents_review`, `logs`, `exponential_decay`, `compound_interest`. Each source keeps its own section, under the chapter title.
+Exponents, logarithms, exponential decay, compound interest, exponential and power models, and choosing a transformation.
 
-## Merge history
-- `exponents_review` is now section 1.
-- `logs` is now section 2.
-- `exponential_decay` is now section 3.
-- `compound_interest` is now section 4.
+## Changes in this pass
+- Added a worked example of exponents and logarithms (2^10 = 1024, log base 2 of 1024 = 10) and an exercise (3^x = 81).
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
-
-- Merged in from `log_transform`: exponential models, power models, and choosing a transformation are now the last three sections.
+## Open items
+- The chapter is long (about 4,800 words). Consider splitting the models sections into their own chapter.

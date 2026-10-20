@@ -1,25 +1,16 @@
-# Advanced SQL and Database Management — Notes
+# Relational Databases and Normalization — Notes
 
 ## Summary
-Covers keys (primary, super, candidate, composite, alternate, natural, surrogate), normalization to 1NF, 2NF, and 3NF using a lab-equipment checkout table, then ER diagrams in Mermaid, relational algebra with its SQL equivalents, foreign keys with referential integrity, and an EXCEPT query.
+Covers keys, normalization (1NF, 2NF, 3NF, with functional dependencies), entity-relationship diagrams (drawn with mermaid), relational algebra basics, relating two tables with foreign keys, and advanced queries (translating a question into relational algebra and then into SQL). It has exercises with answers.
 
-## Strengths
-- The 1NF → 2NF → 3NF progression is correct and each step shows the decomposed tables.
-- The functional-dependency definitions and the transitive-dependency chain (EquipmentID → EquipmentLocation → LocationManager) are accurate.
-- The ER diagram section ties the one-to-one, zero-to-many, and many-to-many cases to the tables.
+## Changes in this pass
+- Defined relational algebra before it is used (the symbols pi and subset), and removed the FIXME.
+- Replaced the placeholder 3NF exercise with a real exercise and answer (split Orders into Orders and Customers).
+- Replaced the "fill in the blanks" placeholder with an exercise (equipment in Lab A, answer: Oscilloscope).
 
-## Weaknesses
-- **Incomplete candidate keys:** Email could also be a candidate key (it is unique in the sample rows), but the text lists only StudentID and SSN.
-- **Unsupported claim:** "Hex Codes that do not have the opportunity to change" is not a property of hex codes.
-- **Duplicate caption:** the expanded relational-algebra table reuses "Equipment Table [3NF]".
-- **Possibly stale FIXME:** "relational algebra not defined before here" — the Relational Algebra Basics section comes earlier, so check whether it is still needed.
-- **Placeholder exercises:** "FIXME exercise transform a full table up to 3NF" and "Multiple translation fill in the blanks" are not real exercises.
-- **Leftover comments:** "Formally address..." and an outline comment remain in the source.
+## Not compiled
+- This chapter uses mermaid diagrams, which do not compile in the current toolchain. Compile checks were skipped by request.
 
-## Index entries added
-primary key, super key, candidate key, surrogate key, normalization, functional dependency, partial dependency, transitive dependency, relational algebra, foreign key, Mermaid.
-
-## Editor to-do
-- Add Email as a candidate key and correct the caption.
-- Write the two exercises (3NF transformation and SQL/algebra translation).
-- Remove the stale FIXME and leftover comments; fix the hex-code claim.
+## Open items
+- Check the mermaid diagram syntax when the toolchain is fixed.
+- The advanced-queries section has one translation example. Add one more, for a join.

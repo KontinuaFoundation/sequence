@@ -197,7 +197,7 @@ Bakersfield via San Diego.  Because the new route is cheaper, you
 change the price to the lower value.
 
 (What does it mean that a node is ``visited''?  If a node is marked
-visited, it is marked with a price that won't get any smaller.)
+visited, it is marked with a price that will not get any smaller.)
 
 You continue visiting the cheapest unvisited node until all the
 nodes have been visited.  Then you know every node has been marked
@@ -262,6 +262,15 @@ Los Angeles $\rightarrow$ Bakersfield is not chosen because it does not give the
 
 The tree that is generated is called a \index{predecessor tree}\newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
 \end{Answer}
+\begin{Exercise}[title={Dijkstra's Algorithm by Hand}, label={ex:dijk2}]
+Run Dijkstra's algorithm from $A$ on this weighted undirected graph: $A$–$B$ costs 2, $A$–$C$ costs 5, $B$–$C$ costs 1, $C$–$D$ costs 2, and $B$–$D$ costs 6. Give the final cost to each node, and the cheapest path from $A$ to $D$.
+\end{Exercise}
+\begin{Answer}[ref={ex:dijk2}]
+Start with $A = 0$. Visit $A$: $B$ is 2 and $C$ is 5. Visit $B$ (cost 2): through $B$, $C$ becomes $2 + 1 = 3$, which is less than 5, so $C = 3$. Also $D = 2 + 6 = 8$. Visit $C$ (cost 3): through $C$, $D$ becomes $3 + 2 = 5$, which is less than 8, so $D = 5$. Visit $D$.
+
+The costs are $A = 0$, $B = 2$, $C = 3$, and $D = 5$. The cheapest path to $D$ is $A \rightarrow B \rightarrow C \rightarrow D$.
+\end{Answer}
+
 \subsection{Implementation}
 
 We do not actually want to sully our graph objects with the three additional pieces of information we need:
@@ -276,7 +285,7 @@ So, we will keep them in collections external to the graph.
 
 For example, to keep track of the \pyvar{dist}, we will have a
 \pyvar{dist} dictionary. Each node will be a key, the current minimal
-cost will be the value.  If the node hasn't received even a first
+cost will be the value.  If the node has not received even a first
 cost, we will put in infinity as the cost.
 
 (After the algorithm is run, if the cost of a node is still infinity,
@@ -345,7 +354,7 @@ Each time we visit a node, we have a decision to make:
 \[
 \text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
 \]
-This action, the core foundation of Dijkstra's, is done in lines 16-21. In Dijkstra's, the node with the minimum tentative distance can also be finalized, provided all edge weights are non-negative. Nodes left at infinity are not reachable from the chosen root node. 
+This action, the core foundation of Dijkstra's, is the last part of the loop above. In Dijkstra's, the node with the minimum tentative distance can also be finalized, provided all edge weights are non-negative. Nodes left at infinity are not reachable from the chosen root node. 
 
 Append some code to your \filename{cities.py} that tests this method:
 
@@ -416,7 +425,7 @@ if nyc_cost < math.inf:
     print(f"*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
 
     path_to_nyc = graph.shortest_path(prev, nyc)
-    print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc ***}")
+    print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc} ***")
 else:
     print("You can't get to NYC from Long Beach")
 \end{minted}
@@ -426,7 +435,7 @@ This should look like this:
 *** Cheapest path from Long Beach to NYC: [(node:Long Beach, edges:1),
 (node:Los Angeles, edges:3), (node:Denver, edges:3), (node:Cleveland, edges:4),
 (node:New York City, edges:3)] ***
-\end{text}
+\end{minted}
 
 % \subsection{Making it faster}
 

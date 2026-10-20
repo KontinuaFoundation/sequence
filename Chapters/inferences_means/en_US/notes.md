@@ -1,23 +1,19 @@
 # Statistical Inferences for Means — Notes
 
 ## Summary
-Covers the t-distribution, conditions, matched pairs, one-mean and two-mean intervals and tests (Welch approximation), Excel's CONFIDENCE.T, error types, and a procedure-selection flowchart.
+Introduces the t-distribution and its degrees of freedom, conditions for inference about a mean, matched pairs, the t-interval for one mean (streaming watch time: (43.75, 51.85) minutes), interpretation, the t-test for one mean, a two-sample t-interval and test with Welch degrees of freedom, procedure selection, and common errors. Ends with an Excel walkthrough.
+
+## Changes in this pass
+- Corrected the df = 100 critical value: 1.660 for 90% confidence (1.984 is the 95% value).
+- Qualified the claim that a CI and test always agree: it holds for a two-sided test at α = 1 − confidence level.
+- Fixed "TTesting" to "Testing."
+- Clarified that the unpooled two-sample interval is the safe default, instead of asserting what the AP CED includes.
 
 ## Strengths
-- Most numbers check out: t* values (2.064, 2.069, 2.602, 1.796, 1.699, 1.740), the watch-time interval, and the battery interval (0.23, 2.57).
-- I recomputed the one-sided and two-sided p-values with numerical integration; they match (0.0465, 0.0158, 0.0043, 0.0383, 0.0020, 0.278).
-- The interpretation section correctly explains the confidence level as a property of the method, not a probability for μ.
+- All the worked intervals and tests are correct: t* values (2.064, 2.069, 2.602, 1.796, 1.699), the streaming interval, the bakery test (p ≈ 0.278), the streaming test (p ≈ 0.0465), the two-sample interval (−15.57, −3.23), and the store test (p ≈ 0.038).
+- Interpretation of confidence (about the method, not the probability of μ) is correct.
+- The Excel CONFIDENCE.T and T.INV.2T directions are correct.
 
-## Weaknesses
-- **Wrong t* value:** "At df = 100, t* = 1.984" is the 95% value. The 90% value is 1.660.
-- **Overgeneralized claim:** "A confidence interval and a significance test on the same data will always agree" holds only for a two-sided test against a matching two-sided interval. The paired example compares a one-sided test to a 90% two-sided interval.
-- **Broken cross-reference:** the battery-justification answer uses ref={ex:justify}, but the exercise label is ex:means-justify.
-- **Unverified claim:** the pooled-variance answer says the current AP Statistics CED omits pooled procedures. I did not check this.
-- **Typo:** "TTesting."
-
-## Index entries added
-conditions for inference, standard error, Type I error, Type II error, power, Welch-Satterthwaite approximation, two-sample t-interval, hypothesis test (two-sample), confidence interval interpretation.
-
-## Editor to-do
-- Fix the paired-data direction in the answer and the test narrative.
-- Correct the df = 100 value and the cross-reference, and narrow the "always agree" claim.
+## Open items
+- The two-sample df values are Welch approximations; the text gives them as technology output. The example df ≈ 33 is consistent with the Welch formula.
+- The flowchart comment in the source ("Verify cfigure environment") should be removed.

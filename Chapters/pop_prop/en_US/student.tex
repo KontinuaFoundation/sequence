@@ -1,6 +1,6 @@
 \chapter{Population Proportion Statistics}
 
-Let's say that you are trying to get a candidate elected. The candidate asks you, "What proportion of the voting population is going to vote for me?" 
+Let us say that you are trying to get a candidate elected. The candidate asks you, "What proportion of the voting population is going to vote for me?" 
 So, you go out and ask a random sample of 12 voters. 11 say that they are going to vote for your candidate. What can you tell the candidate?
 
 \section{Sample Probabilities from Population Proportion}
@@ -8,8 +8,8 @@ So, you go out and ask a random sample of 12 voters. 11 say that they are going 
 To address these sorts of questions (and there are a lot of them), we start with the opposite question: If we knew what the proportion was in the 
 entire population, what sort of results should we expect in a random sample of just 12?
 
-For example, let's say that 62\% of the entire population plans to vote for your candidate. You ask 12 people, "Will you vote for my candidate?" How many will say "Yes"? You don't know --- it depends
-on the sample. For example, there is some chance that you will just happen to choose all 12 from the 48\% of the population that does not plan to vote for your candidate.
+For example, let us say that 62\% of the entire population plans to vote for your candidate. You ask 12 people, "Will you vote for my candidate?" How many will say "Yes"? You do not know --- it depends
+on the sample. For example, there is some chance that you will just happen to choose all 12 from the 38\% of the population that does not plan to vote for your candidate.
 
 We can compute the probability of each outcome using the \index{binomial distribution}binomial distribution. Let $r$ be the probability that a random person will say, "I plan to vote for your candidate." Let $n$ be the number of people 
 you ask. The probability that exactly $k$ people will say, "I plan to vote for your candidate" is given by:
@@ -73,7 +73,7 @@ So, you decide to plot out the likelihood of this outcome for every possible val
     \label{fig:likelihood_dist}
 \end{figure}
 
-This looks very similar to a probability distribution, but \emph{it is not}. The area under the curve does not integrate to 1.0 --- it is significantly less. This is a called a \index{likelihood}\newterm{likelihood}.
+This looks very similar to a probability distribution, but \emph{it is not}. The area under the curve is about 0.077 (exactly 1/13), not 1.0. This is called a \index{likelihood}\newterm{likelihood}.
 
 However, it still tells us something, right? The \index{maximum likelihood estimator}maximum likelihood estimator is $9/12 = 0.75$.
 
@@ -85,7 +85,7 @@ $$p(r|k) = \frac{p(k | r) p(r)}{\int_{r = 0}^{1} p(k | r) p(r) dr}$$
 
 In other words, given that we had $k$ positive responses, what is the probability that the proportion of the population that will vote for your candidate is $r$?  The numerator of the fraction is the likelihood scaled up or down by our prior belief about the value of $r$.  What is the denominator of the fraction? For this to be a probability distribution, we need it to integrate to 1. This is taken care of by the denominator.
 
-Let's say we have no prior belief about the value of $r$.  That is, $p(r)$ is the continuous uniform distribution between 0 and 1; thus, $p(r) = 1$ for all possible values of $r$. Our formula becomes:
+Let us say we have no prior belief about the value of $r$.  That is, $p(r)$ is the continuous uniform distribution between 0 and 1; thus, $p(r) = 1$ for all possible values of $r$. Our formula becomes:
 
 $$p(r|k) = \frac{p(k | r)}{\int_{r = 0}^{1} p(k | r) dr}$$
 
@@ -127,7 +127,6 @@ When you make your report to your candidate, they will look at your probability 
 Once again, there will be a long silence, followed by a simple question: "Can you give me a number?" Here is the Python code:
 
 \begin{minted}{python}
-import numpy as np
 from scipy.stats import beta
 
 # Constants
@@ -146,6 +145,14 @@ This will give you:
 \begin{minted}{python}
 I'm 95.39% sure you will win.
 \end{minted}
+
+\begin{Exercise}[label = popprop1]
+Your candidate's team asks 20 voters, and 15 say they will vote for the candidate. Using a uniform prior, what is the probability that at least half of the population will vote for the candidate? Give your answer as a percent.
+\end{Exercise}
+
+\begin{Answer}[ref = popprop1]
+With $k = 15$ and $n = 20$, the posterior is a beta distribution with $a = k + 1 = 16$ and $b = n - k + 1 = 6$. Change $K = 15$ and $N = 20$ in the Python code above. The probability that $r > 0.5$ is about $0.9867$, so the answer is about 98.67\%.
+\end{Answer}
 
 
 

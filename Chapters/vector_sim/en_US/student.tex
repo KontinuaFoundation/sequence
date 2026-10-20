@@ -7,6 +7,9 @@ In this chapter, you are going to simulate two moons that, as they wandered thro
 in each other's gravity well.   We will assume there are no other forces acting upon the moons.
 
 \section{Force, Acceleration, Velocity, and Position}
+
+\textbf{Worked example: one step of a simulation.} A particle has position $x = 0$ and velocity $v = 2$ m/s. With time step $\Delta t = 0.5$ s, the next position is $x + v\,\Delta t = 0 + 2(0.5) = 1$ m.
+
 \index{gravitation}
 We talked about the magnitude of a gravitational attraction between two masses:
 
@@ -217,7 +220,7 @@ When you run it, your \filename{plotmoons.png} should look like this:
     \label{fig:plotmoons_01}
 \end{figure}
 
-It is nifty to see the paths,  but we don't know where each moon was at a particular time.  In fact, it is difficult to figure out which end of each curve was the beginning and which was the ending.
+It is nifty to see the paths,  but we do not know where each moon was at a particular time.  In fact, it is difficult to figure out which end of each curve was the beginning and which was the ending.
 
 What if we added some lines and labels every 300 steps to put a sense of time into the plot?  Add one more constant after the import statements:
 \begin{minted}{python}
@@ -256,7 +259,7 @@ When you run it,  your plot should look like this:
 
 Now you can get a feel for what happened.  The moons were attracted to each other by gravity and started to circle each other. The heavier moon accelerates less quickly,  so it makes a smaller loop.
 
-Maybe we will get a better feel for what is happening if we look at more time. Let's increase it to 400 days. Change the relevant constant:
+Maybe we will get a better feel for what is happening if we look at more time. Let us increase it to 400 days. Change the relevant constant:
 
 \begin{minted}{python}
 MAX_TIME = 400 * SEC_PER_DAY # 100 days
@@ -285,7 +288,7 @@ cm_position = (m1["mass"] * m1["position"] + m2["mass"] * m2["position"]) / tm
 cm_velocity = (m1["mass"] * m1["velocity"] + m2["mass"] * m2["velocity"]) / tm
 \end{minted}
 
-Let's record the center of mass for each time.   Before the loop starts,  create a list to hold them:
+Let us record the center of mass for each time.   Before the loop starts,  create a list to hold them:
 
 \begin{minted}{python}
 cm_log = []
@@ -304,7 +307,7 @@ Anywhere later in the loop (after you update the positions of the moon),  update
     cm_position = cm_position + cm_velocity * TIME_STEP
 \end{minted}
 
-Now, let's look at the positions of the moons relative to the center of mass.   Before you do any plotting,  
+Now, let us look at the positions of the moons relative to the center of mass.   Before you do any plotting,  
 convert the list to a numpy array and subtract it from the positions:
 
 \begin{minted}{python}
@@ -562,3 +565,10 @@ If we run that simulation for 100 days, we get a plot like this:
 \end{figure}
 
 Visibly, you can see this is very different from the two-body problem that just traced ellipses around the center of mass.
+
+\begin{Exercise}[title={Another Step}, label=vs1]
+A particle at $x = 1$ m has velocity $v = -3$ m/s. With $\Delta t = 0.1$ s, what is the next position?
+\end{Exercise}
+\begin{Answer}[ref=vs1]
+$x = 1 + (-3)(0.1) = 0.7$ m.
+\end{Answer}

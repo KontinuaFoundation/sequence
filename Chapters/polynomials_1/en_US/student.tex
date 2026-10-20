@@ -164,7 +164,7 @@ degree of the leading term.\index{standard form!polynomial}
   $4^3 - (3)(4^2) + (10)(4) - 12 = 64 - 48 + 40 - 12$. So $y = 44$ 
 \end{Answer}
 
-We would be remiss in our duties if we didn't mention one more thing
+We would be remiss in our duties if we did not mention one more thing
 about polynomials: Mathematicians have defined a polynomial to be a sum
 of a \emph{finite} number of monomials.
 
@@ -173,7 +173,7 @@ like this:
 \begin{equation*}
 1 + \frac{1}{2}x + \frac{1}{4}x^2 + \frac{1}{8}x^3 + \frac{1}{16}x^4 + \ldots
 \end{equation*}
-This is an example of an \index{infinite series}\emph{infinite series}, which we don't consider
+This is an example of an \index{infinite series}\emph{infinite series}, which we do not consider
 polynomials. Infinite series are interesting and useful, but we 
 will not discuss them in detail until later in the course.
 
@@ -206,7 +206,7 @@ polynomial, then simplify by \index{like terms}combining terms with the same deg
 
 Notice that in the second question, the degree 1 term disappears completely: $(-x) + x = 0$
 
-One more tricky thing can happen --- sometimes the coefficients don't add nicely.  For example:
+One more tricky thing can happen --- sometimes the coefficients do not add nicely.  For example:
 \begin{equation*}
   \pi x^2 - 3 x^2 = (\pi - 3) x^2
 \end{equation*}
@@ -242,10 +242,9 @@ As a reminder, in our Python code, we are representing a \index{polynomial!list 
 with a list of coefficients.  The first coefficient is the constant
 term. The last coefficient is the leading coefficient. So, we can
 imagine $-5x^3 + 3x^2 - 4x + 9$ and $2x^3 +4x^2 - 9$ would look
-like this: \textit{FIXME: Diagram here}
+like this, with one column for each degree and its coefficient in that column. The first polynomial is $(-5, 3, -4, 9)$, and the second is $(2, 4, 0, -9)$, where the $0$ marks the missing $x$ term.
 
-To add the two polynomials then, we sum the coefficients for each degree.
-\textit{FIXME: Diagram here}
+To add the two polynomials then, we sum the coefficients for each degree. Here the sum is $(-5+2,\ 3+4,\ -4+0,\ 9-9) = (-3, 7, -4, 0)$, which is $-3x^3 + 7x^2 - 4x$.
 
 Create a file called \filename{add\_polynomials.py}, and type in the following: 
 \begin{minted}{python}
@@ -432,7 +431,7 @@ Multiply these monomials:
 \Question $(2x)(3x^2)(5x^7 + 2x)$
 \end{Exercise}
 \begin{Answer}[ref=multmonopoly]
-  $(3x^2)(5x^3 - 2x + 3) = 15x^6 - 6x^3 + 6x^2$
+  $(3x^2)(5x^3 - 2x + 3) = 15x^5 - 6x^3 + 9x^2$
 
   $(2x)(4x^9 - 1) = 8x^{10} - 2x$
 
@@ -522,7 +521,7 @@ you should work with that as $4x^2 + (-5)x + (-3)$.
 \end{Answer}
 
 \begin{Exercise}[title={Observations}, label=obsmultpoly]
-  Let's say you have two polynomials, $p_1$ and $p_2$.  $p_1$ has degree
+  Let us say you have two polynomials, $p_1$ and $p_2$.  $p_1$ has degree
   23.  $p_2$ has degree 12.  What is the \index{degree!of a product}degree of their product?
 \end{Exercise}
 \begin{Answer}[ref=obsmultpoly]
@@ -589,7 +588,7 @@ def multiply_polynomials(a, b):
 \end{minted}
 It will return a list of coefficients.
 
-In an exercise in the last chapter, you were asked `` Let's say I have
+In an exercise in the last chapter, you were asked `` Let us say I have
 two polynomials, $p_1$ and $p_2$.  $p_1$ has degree 23.  $p_2$ has
 degree 12.  What is the degree of their product?'' The answer was $23 +
 12 = 35$.
@@ -661,7 +660,7 @@ steps through the entire polynomial $b$.
 
 \index{aliasing}\section{Something surprising about lists}
 
-You can imagine that you might want to create two very similar polynomials. Let's say polynomial $c$ is $x^2 + 2x + 1$ and polynomial $d$ is $x^2 -2x + 1$.  You might think you are very clever to just alter that degree 1 coefficient like this:
+You can imagine that you might want to create two very similar polynomials. Let us say polynomial $c$ is $x^2 + 2x + 1$ and polynomial $d$ is $x^2 -2x + 1$.  You might think you are very clever to just alter that degree 1 coefficient like this:
 \begin{minted}{python}
 c = [1.0, 2.0, 1.0]
 d = c
@@ -671,8 +670,7 @@ d[1] = -2.0
 If you printed out $c$, you would get $[1.0, -2.0, 1.0]$.  Why? You
 assigned two variables ($c$ and $d$) to the \emph{the same list}.  So,
 when you use one reference ($d$) to change the list, you see the
-change if you look at the list from either reference. \emph{FIXME:
-  Diagram of two references to the same list here.}
+change if you look at the list from either reference. Both names point to the same list in memory, so a change made through one name is visible through the other.
 
 To create two separate lists, you would need \index{list!copy} to explicitly make a copy:
 \begin{minted}{python}
@@ -696,7 +694,7 @@ distributive property to expand that to $(3x)(3x) + (3x)(7) + (-7)(3x) + (-7)(7)
 Two of the terms cancel each other, so this is $(3x)^2 - (7)^2$. This would simplify to $9x^2 - 49$
 
 You will see this pattern often. Anytime you see $(a + b)(a - b)$, you should immediately
-recognize it equals $a^2 - b^2$. (Note that the order doesn't matter: $(a - b)(a + b)$ also equals $a^2 - b^2$.)
+recognize it equals $a^2 - b^2$. (Note that the order does not matter: $(a - b)(a + b)$ also equals $a^2 - b^2$.)
 
 Working the other way is important too. Any time you see $a^2 - b^2$,
 that you should recognize that you can change that into the product
@@ -756,7 +754,7 @@ is $-\sqrt{5}$. The second factor is zero only when $x$ is
 $\sqrt{5}$. Those are the only two roots of this
 polynomial.
 
-Let's check that result. $\sqrt{5}$ is a little more than 2.2.  Using
+Let us check that result. $\sqrt{5}$ is a little more than 2.2.  Using
 your Python code, you can graph the polynomial:
 
 % original code has it as poly.py, but got errors using that
@@ -884,7 +882,7 @@ This is said ``n choose k''. \index{combinatorics} For example, in $(a + b)^4$, 
     \Question{What is $(x + \pi)^5$?}
 \end{Exercise}
 \begin{Answer}[ref=pascalbinomial]
-  $(x + \pi)^5 = x^5 + 5\pi x^4 + 10\pi^2 x^3 + 10 \pi^3 + x^2 + 5 \pi^2 x + \pi^5$
+  $(x + \pi)^5 = x^5 + 5\pi x^4 + 10\pi^2 x^3 + 10\pi^3 x^2 + 5\pi^4 x + \pi^5$
 \end{Answer}
 
 \begin{Exercise}[title={Coding Pascal's Triangle}, label={ex:pascalrow}]

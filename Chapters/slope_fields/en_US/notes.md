@@ -1,22 +1,16 @@
 # Slope Fields — Notes
 
 ## Summary
-Introduces slope fields for y′ = x + y, sketches a solution through (1, 0), and applies a linear RL-type circuit (V = L dI/dt + RI) to get dI/dt = 15 − 3I with equilibrium I = 5 and I(t) = 5 − 5e^(−3t). Ends with a practice exercise for y′ = x + y².
+Introduces slope fields for y' = f(x, y): drawing ticks, filling in y' = 0 on y = −x for y' = x + y, sketching a solution through (1, 0), and an RL circuit example (dI/dt = 15 − 3I, equilibrium I = 5, solution I = 5 − 5e^{−3t}). Ends with a practice exercise for y' = x + y².
+
+## Changes in this pass
+- Fixed the spelling of Kirchhoff's law.
+- Reworded "the slope will be the same of all values of t" to "the slope is the same for all values of t at a given I."
 
 ## Strengths
-- The construction of the slope field step by step (isoclines at y = −x) is clear and correct.
-- The circuit derivation is correct: 4 dI/dt + 12I = 60 gives dI/dt = 15 − 3I, and the solution fits I(0) = 0.
-- The autonomous-equation idea is explained well.
+- The solution sketch for y' = x + y through (1, 0) is correct: y = −x − 1 + 2e^{x−1}.
+- The circuit equation is correct (V = L dI/dt + RI, giving dI/dt = 15 − 3I), with the equilibrium at 5 A.
+- The field and sketch are consistent with the equilibrium.
 
-## Weaknesses
-- **Typo:** "Kirchoff" should be "Kirchhoff" (used correctly elsewhere).
-- **Typo:** "\addplot[red, thick,, domain" has a double comma.
-- **Duplicate figures:** three or four slope-field figures repeat the same long block of draw commands, which makes the source hard to maintain.
-- **Unverified answer:** the practice-problem answer curve through (0, 0) is hand-drawn and not checked against the field.
-
-## Index entries added
-direction field, inductor, Ohm's law, Kirchhoff's law, slope field (sketching solutions). The chapter already had slope field.
-
-## Editor to-do
-- Fix the typos.
-- Factor the repeated slope-field code into one reusable definition.
+## Open items
+- The slope-field figures are hand-coded tick lists. Consider generating them with Python so they are accurate.

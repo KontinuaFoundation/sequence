@@ -1,12 +1,10 @@
 # Experimental Designs — Notes
 
 ## Summary
-Split from `experiments`. This part covers: Experimental Designs.
+Covers experimental designs: completely randomized designs, randomized block designs, matched pairs, and how to choose among them. It has four exercises with answers.
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Reviewed the four exercise answers. Each one identifies the design (completely randomized, randomized block, matched pairs) and gives a reason. The reasoning is consistent with the definitions in the chapter.
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers for this part were not assigned. Add any that belong here.
+## Open items
+- Add a worked example that draws the random assignment for a small study (for example, 12 volunteers in 3 groups).

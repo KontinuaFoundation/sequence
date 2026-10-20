@@ -1,23 +1,17 @@
 # Stemming and Lemmatization — Notes
 
 ## Summary
-Defines stemming (crude reduction to a stem, which may not be a real word) and lemmatization (reduction to a dictionary base form using morphological analysis). Compares speed and accuracy and lists uses in search and NLP.
+Defines stemming (reduce words to a stem, which may not be a word) and lemmatization (reduce words to a dictionary base form), compares them, and notes their use in search, machine learning, and text prediction. Now has a worked example and an exercise on stems and lemmas.
+
+## Changes in this pass
+- Added a search-your-phone picture to the opening.
+- Replaced the example in the stemming section (the stem of "running" depends on the algorithm) with "studies" and "studying" becoming "studi" (not a word).
+- Added a worked example comparing the stem and lemma of "studies."
+- Added an exercise on "happy" / "happiness" and "better" / "good," with an answer.
 
 ## Strengths
-- The jumping/jumped/jumps example is good for showing stemming.
-- The running and runs examples show the difference between the two methods.
-- Speed versus precision is a useful way to pick between them.
+- The core distinction (a stem may not be a word; a lemma is always a dictionary form) is correct and clearly stated.
+- The claim that lemmatization needs dictionaries and morphology is accurate.
 
-## Weaknesses
-- **No code:** there is no example using a library such as NLTK or spaCy.
-- **No exercise:** nothing for students to try.
-- **Unclear wording:** "the stem of the word 'running' could be 'run' depending on the algorithm" is hard to follow, since "run" is also the lemma.
-- **Vague applications:** "algorithmic searches" and "baseline programs for autofill" are unclear.
-- **Internal note in source:** line 2 is a LaTeX comment about moving the chapter to book 29 and should be removed or moved to the book file.
-
-## Index entries added
-stem, inflectional forms, morphological analysis, natural language processing, text normalization.
-
-## Editor to-do
-- Add a short code example and an exercise.
-- Clarify the "running" stem example and the applications sentence.
+## Open items
+- The exact stems depend on the stemmer. The chapter says so, but the "studi" example is for the Porter stemmer.

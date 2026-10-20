@@ -69,7 +69,7 @@ sqlite> SELECT * FROM bike;
 \end{minted}
 The semicolon is not part of SQL, but it tells sqlite that you are done writing a command and that it should be executed.
 
-SQL lets you choose which columns you would like to see. The asterisk (FIXME) used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the dataframe:
+SQL lets you choose which columns you would like to see. The asterisk used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the table:
 \begin{minted}{sql}
 sqlite> SELECT bike_id, brand FROM bike;
 4997391|GT
@@ -139,7 +139,7 @@ To get out of sqlite, type \texttt{.exit}.
 
 \begin{Exercise}[title={SQL Query}, label=sql_where]
  Execute an SQL query that returns the \texttt{bike\_id} (no other
- columns) of every Trek bike that cost more than \$300.
+ columns) of every Trek bike that cost more than \$330.
 \end{Exercise}
 \begin{Answer}[ref=sql_where]
 \begin{minted}{sql}
@@ -152,11 +152,11 @@ SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
 The people behind sqlite created a library for Python that lets you
 execute SQL and fetch the results from inside a python program.
 
-Let's create a simple program that fetches and displays the bike ID
-and purchase date of every Trek bike that cost more than \$300.
+Let us create a simple program that fetches and displays the bike ID
+and purchase date of every Trek bike that cost more than \$330.
 
 Create a file called \filename{report.py}:
-\begin{minted}{sql}
+\begin{minted}{python}
 import sqlite3 as db
 
 con = db.connect('bikes.db')
@@ -165,7 +165,6 @@ cur = con.cursor()
 cur.execute("SELECT bike_id, purchase_date FROM bike WHERE purchase_price > 330 AND brand='Trek'")
 rows = cur.fetchall()
 
-today = datetime.date.today()
 for row in rows:
   print(f"Bike {row[0]}, purchased {row[1]}")
 

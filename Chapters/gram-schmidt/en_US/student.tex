@@ -4,23 +4,23 @@ The Gram-Schmidt Process is a method use to transform a set of linearly independ
 
 \index{Gram-Schmidt!history}The process was named after two mathematicians: Jørgen Pedersen Gram, a Danish actuary mathematician, and Erhard Schmidt, a German mathematician. The men developed the orthogonalization process independently. Gram introduced the process in 1883, whereas Schmidt did his work in 1907.  It was not named the Gram-Schmidt process until sometime later, after both mathematicians became well known in the mathematical community.
 
-In the last chapter, you learned how to calculate a projection of one vector on another. Given two vectors, $u$ and $v$, the projection separates $u$ into the part that is orthogonal to $v$ and the part that has a dependency with $v$. The Gram-Schmidt Process builds on the notion of projections to iteratively strip away dependencies between vectors until the vectors that remain are orthogonal. If there happens to be a vector that is a linear combination of the others, that vector will be reduced to the zero vector. The vectors that remain define a new basis for space spanned by the original set of vectors. 
+In the last chapter, you learned how to calculate a projection of one vector on another. Given two vectors, $u$ and $v$, the projection separates $u$ into the part that is orthogonal to $v$ and the part that lies along $v$. The Gram-Schmidt Process builds on the notion of projections to iteratively strip away dependencies between vectors until the vectors that remain are orthogonal. If there happens to be a vector that is a linear combination of the others, that vector will be reduced to the zero vector. The vectors that remain define a new basis for space spanned by the original set of vectors. 
 
 \index{Gram-Schmidt!applications}Gram-Schmidt has many practical applications in science and engineering, such as:
 \begin{enumerate}
-\item In signal processing, it can represent an audio signal with fewer components making it easier to isolate and remove noise. 
+\item In numerical computing, it helps solve least-squares problems, such as fitting a line to noisy data points.
 \item In statistics and data analysis, it can reduce the complexity of a dataset so that it is easier to see which aspects or features contribute to the analysis. 
 \end{enumerate}
 
 \section{The Process}\index{Gram-Schmidt!procedure}
 
-The Gram-Schmidt Process orthonormalizes a set of vectors in an inner product space, most commonly the Euclidean space
+The Gram-Schmidt Process orthogonalizes a set of vectors in an inner product space, most commonly the Euclidean space
 $\mathbb{R}^n$. The process takes a finite, linearly independent set
 $S = \{v_1, v_2, \ldots, v_k\}$ for $k \leq n$, and generates an
 orthogonal set $S' = \{u_1, u_2, \ldots, u_k\}$ that spans the same
 k-dimensional subspace of $\mathbb{R}^n$ as $S$.\index{Gram-Schmidt Process}
 
-Let's look at how the process works. Given a set of vectors $S = \{v_1, v_2, \ldots, v_k\}$, the Gram-Schmidt Process is as follows:
+Let us look at how the process works. Given a set of vectors $S = \{v_1, v_2, \ldots, v_k\}$, the Gram-Schmidt Process is as follows:
 
 \begin{enumerate}
     \item Let $u_1 = v_1$.
@@ -73,9 +73,9 @@ The third vector for the orthogonal subspace is a projection onto $v_1$ and $v_2
 $$v_3 = x_3 - \frac{x_3v_1}{v_1v_1} v_1 - \frac{x_3v_2}{v_2v_2} v_2$$
 
 Substitute the values:
-$$v_3 = (5,2,0) - \frac{(5,2,0)(1,2,-2)}{(1,2,-2)(1,2,-2)} (1,2,-2) - \frac{(5,2,0)(1,0,-4)}{(1,0,-4)(1,0,-4)} (1,0,-4)$$
-$$v_3 =  (5,2,0)  - (9/9) (1,2,-2) -  (-4/8)(1,0,-4)$$
-$$v_3 =  (5,2,0) - (1,2,-2) + (1/2)(1,0,-4)$$
+$$v_3 = (5,2,0) - \frac{(5,2,0)\cdot(1,2,-2)}{(1,2,-2)\cdot(1,2,-2)} (1,2,-2) - \frac{(5,2,0)\cdot(0,-2,-2)}{(0,-2,-2)\cdot(0,-2,-2)} (0,-2,-2)$$
+$$v_3 =  (5,2,0)  - (9/9) (1,2,-2) -  (-4/8)(0,-2,-2)$$
+$$v_3 =  (5,2,0) - (1,2,-2) + (1/2)(0,-2,-2)$$
 $$v_3  = (5,2,0 ) - (1,2,-2) + (0,-1,-1)$$
 $$v_3 = (4, -1, 1)$$
 
@@ -97,16 +97,19 @@ $$v_3 = (0.94, -0.24,  0.24 ) $$
 	  The second vector of the subspace is a projection of $x_2$ onto $v_1$.
 	  $$v_2 = x_2 - \frac{x_2v_1}{v_1v_1} v_1$$
 	  Substitute the values:
-	  $$v_2 =  (0, 1, 1)  - \frac{(0,1, 1)(1,1,1)}{(1,1,1)(1,1,-1)}  (1, 1, 1)$$
+	  $$v_2 =  (0, 1, 1)  - \frac{(0,1, 1)(1,1,1)}{(1,1,1)\cdot(1,1,1)}  (1, 1, 1)$$
 	  $$v_2 =  (0, 1, 1)  - (2/3) (1, 1, 1) $$
 	  $$v_2 =  (-2/3, 1/3, 1/3)$$
-	  Normalize:
-	  $$v_1 = v_1/\sqrt{|v_1|} $$
-	  $$v_1 = (1, 1, 1 )/\sqrt{|v_1|} $$
-	  $$v_1 = (0.577, 0.577, 0.577)  $$  
-	  $$v_2 = v_2/\sqrt{|v_2|} $$
-	  $$v_2 = (0, 1, 1) \sqrt{|v_2|} $$
-	  $$v_2 =  (-0.816,  0.408,  0.408) $$
+	  Normalize each vector by dividing by its length. Since $\|v_1\| = \sqrt{3}$, we get $v_1' = \frac{1}{\sqrt{3}}(1, 1, 1) \approx (0.577, 0.577, 0.577)$. Since $\|v_2\| = \frac{\sqrt{6}}{3} \approx 0.816$, we get $v_2' \approx (-0.816, 0.408, 0.408)$.
+\end{Answer}
+
+\begin{Exercise}[title={Gram-Schmidt with Two Vectors}, label=gram_schmidt2]
+    Apply the Gram-Schmidt Process to $x_1 = (1, 0, 1)$ and $x_2 = (1, 1, 0)$. Check that your two vectors are orthogonal.
+\end{Exercise}
+\begin{Answer}[ref=gram_schmidt2]
+	Let $v_1 = x_1 = (1, 0, 1)$. Then $x_2 \cdot v_1 = 1$ and $v_1 \cdot v_1 = 2$, so
+	$$v_2 = (1, 1, 0) - \frac{1}{2}(1, 0, 1) = \left(\frac{1}{2}, 1, -\frac{1}{2}\right)$$
+	Multiplying by 2 gives the same direction without fractions: $(1, 2, -1)$. Check: $(1, 0, 1) \cdot (1, 2, -1) = 1 - 1 = 0$.
 \end{Answer}
 
 \section{The Gram-Schmidt Process in Python}
@@ -129,7 +132,7 @@ print("v1 = ",v1)
 v2 = x2 - (np.dot(x2,v1)/np.dot(v1,v1))*v1
 print("v2 = ", v2)
 
-# v3 = x3 - (the projection of x3 on v1) - (the projection of x3 on v3)
+# v3 = x3 - (the projection of x3 on v1) - (the projection of x3 on v2)
 v3 = x3 - (np.dot(x3,v1)/np.dot(v1,v1))*v1 - (np.dot(x3,v2)/np.dot(v2,v2))*v2
 print("v3 =", v3)
 

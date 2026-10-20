@@ -4,7 +4,7 @@ Today was a \texttt{Sunny} day. However, I would like to know if it will be \tex
 
 How can I predict the weather? In this case, we are trying to determine values of \emph{uncertainty}. We are uncertain of the weather the next day, or even, the weather in the next 5 days. How many days previously do I need to know the weather to make an accurate prediction?
 
-This is the question that Russian mathematician Andrey Markov curious about:
+This is the question that Russian mathematician Andrey Markov was curious about:
 \begin{quote}
     How much history of a state do you need to predict a current state?
 \end{quote}
@@ -258,7 +258,7 @@ where $P^k_{ij}$ is the entry in row $i$ and column $j$ of the matrix $P^k$. Thi
 \[
     \text{Probability Distribution after $k$ steps} = P^{k}
 \]
-Note that this is only possible square matrices, which means the number of states must be the same for the current and next state. This is a common assumption in Markov chains, as it allows us to model processes where the set of possible states does not change over time.
+Note that only square matrices are possible here, which means the number of states must be the same for the current and next state. This is a common assumption in Markov chains, as it allows us to model processes where the set of possible states does not change over time.
 \begin{Exercise}[title={Chemical Change}, label={ex:markov_3}]
     A chemical changes colors approximately every 30 minutes. The state space of this chemical is $\mathcal{S} = \{\text{Green}, \text{Blue}\}$.
 
@@ -306,7 +306,7 @@ Note that this is only possible square matrices, which means the number of state
     So $$P^3_{\text{Blue},\text{Green}} = P(X_{n+3}=\text{Green}\mid X_n=\text{Blue})=0.111$$, which means that if the chemical is currently blue, there is an 11.1\% chance it will be green after 90 minutes.
 \end{Answer}
 \section{Steady State Distribution}
-For many Markov chains, these probabilities eventually stabilize (recall \textbf{Law of Large Numbers}, $P^k$ as $k \rightarrow \infty$) as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \index{steady-state distribution}\newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
+For many Markov chains, these probabilities eventually stabilize as $k \rightarrow \infty$. This is related to the \textbf{Law of Large Numbers}: over many transitions, the long-run behavior settles down. That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \index{steady-state distribution}\newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
 
 A steady-state distribution has a special property: applying the transition matrix does not change it. If $\mathbf{x}$ is a steady-state vector and $P$ is the transition matrix, then
 
@@ -320,11 +320,10 @@ The following example illustrates how eigenvectors can be used to determine the 
 
 \begin{Exercise}[title={Markov Chain in the form of Transition Matrix}, label={ex:transition_eigen}]
     \textit{This question is taken from an IB practice exam.}
-    A Markov Chain has two possible states, \texttt{A} and \texttt{B}. The transition matrix $P$ is given by:
+    A Markov Chain has two possible states, \texttt{A} and \texttt{B}. The transition matrix $P$ is given by (each row sums to 1):
     $$\begin{array}{c} P=
             \begin{bmatrix}
-                p   & 1-q \\
-                1-p & q
+                p & 1-p \\ 1-q & q
             \end{bmatrix}\end{array}$$
     Given one of the eigenvalues is $1$.
     \begin{enumerate}
@@ -337,14 +336,9 @@ The following example illustrates how eigenvectors can be used to determine the 
 \begin{Answer}[ref={ex:transition_eigen}]
 
     \begin{enumerate}
-        \item We want to solve for $P\mathbf{x}=\mathbf{x}$. Let $\begin{array}{c} \mathbf{x}=
-                      \begin{bmatrix}
-                          x \\
-                          y
-                      \end{bmatrix}\end{array}$. Then we have
+        \item A steady-state distribution is a row vector $\pi = (x, y)$ with $\pi P = \pi$. Then we have
               $$\begin{bmatrix}
-                      p   & 1-q \\
-                      1-p & q
+                      p & 1-p \\ 1-q & q
                   \end{bmatrix}
                   \begin{bmatrix}
                       x \\
@@ -355,17 +349,14 @@ The following example illustrates how eigenvectors can be used to determine the 
                       x \\
                       y
                   \end{bmatrix}$$
-              Then this gives us the following system of equations:
+              This gives us the following system of equations:
               \begin{align*}
                   px+(1-q)y & =x \\
                   (1-p)x+qy & =y
               \end{align*}
-              $$x=1-q, \qquad y=1-p$$
-              Therefore, the eigenvector corresponding to the eigenvalue $1$ is
-              $$\begin{bmatrix}
-                      1-q \\
-                      1-p
-                  \end{bmatrix}$$
+              The first equation gives $(1-q)y = (1-p)x$, so $x = 1-q$ and $y = 1-p$ (up to scaling).
+              Therefore, the vector that solves $\pi P = \pi$ (up to scaling) is
+              $$\begin{bmatrix} 1-q & 1-p \end{bmatrix}$$
 
         \item Normalizing it gives us $(1-q)+(1-p)=2-p-q$. Therefore, the steady-state distribution is
               $$\begin{bmatrix}
@@ -403,7 +394,7 @@ Assume you have a patient in a hospital with two possible states: $\mathcal{S} =
 
 For each state change observation (for this example, lets say once a day), you need both the transition matrix and the \index{emission matrix}\newterm{emission matrix}. We will define the transition matrix $T$ and emission matrix $E$ as follows:
 % sick | healthy
-\[S = \begin{bmatrix}
+\[T = \begin{bmatrix}
         0.8 & 0.2 \\ % sick
         0.3 & 0.7 % healthy
     \end{bmatrix}, \qquad
@@ -447,7 +438,7 @@ while another is
 The goal of an HMM is to infer the most likely hidden state sequence that generated the observed emissions.
 
 % omitting since I believe it is not relevant to an intro chapter on such.
-While we won't discuss them in this book, there are algorithms such as the Forward and Viterbi algorithms that can track and guess that most likely future state given the states available, or most likely emissions given a set of states. These use \emph{dynamic programming}, a method that programming similar to excel processing.
+While we will not discuss them in this book, there are algorithms such as the Forward and Viterbi algorithms that can track and guess that most likely future state given the states available, or most likely emissions given a set of states. These use \emph{dynamic programming}, a method that breaks a problem into smaller overlapping pieces and stores the results.
 
 \subsection{Natural Language Processing}
 Another strong use of HMM is the basics of Natural Language Processing, and ultimately, predictive AI text, such as recommended words above your phone's keyboard.
@@ -460,9 +451,9 @@ The observations are the words themselves:
 
 $$\mathcal{O}=\{\text{dog},\text{runs},\text{fast},\dots \}$$
 
-Suppose we are given the sentence \texttt{dog runs fast}. The observations are known, but the hidden states are not. One possible hidden-state sequence is
+Suppose we are given the sentence \texttt{dog runs fast}. The observations are known, but the hidden states are not. One possible hidden-state sequence, with \texttt{fast} as an adjective, is
 
-$$\texttt{Noun}\rightarrow \texttt{Verb}\rightarrow \texttt{Adverb}$$
+$$\texttt{Noun}\rightarrow \texttt{Verb}\rightarrow \texttt{Adjective}$$
 
 The transition matrix models how likely one grammatical tag is to follow another. For example,
 
@@ -470,7 +461,7 @@ $$P(\text{Verb} \,| \,\text{Noun})=0.6$$
 
 might represent that verbs frequently follow nouns in the natural spoken language. The emission matrix models how likely a word is to be generated by a particular tag. For example,
 
-$$P(\texttt{dog}∣\text{Noun})=0.4,
+$$P(\texttt{dog} \mid \text{Noun})=0.4,
 P(\texttt{runs}∣\text{Verb})=0.5$$
 
 \begin{Exercise}[title={NLP Exercise}, label={ex:nlp}]

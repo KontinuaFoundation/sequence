@@ -1,25 +1,12 @@
 # Introduction to Electricity — Notes
 
 ## Summary
-A first tour of electricity: electrons in conductors and insulators, coulombs, amps, voltage, resistance, Ohm's law, power (P = IV = I²R = V²/R), and capacitors (C = Q/V, U = ½CV², with a defibrillator example and an RC discharge). It covers circuit symbols, a flashlight circuit, portable-charger ratings, RMS for speaker power, and mains AC safety.
+Introduces electric current and the battery as an electron pump, units, capacitors, circuit diagrams, Ohm's law and resistance, power in watts, RMS voltage, and electrical safety. It has a worked example on current and power and two exercises with answers.
 
-## Strengths
-- Real-world anchors (flashlight, circuit breaker, defibrillator, portable charger) make abstract units concrete.
-- Shows the same power formulas in several forms and ties capacitor discharge to exponential decay.
-- The safety section gives concrete current thresholds.
+## Changes in this pass
+- Added a worked example (a 4-ohm resistor on a 12 V battery: 3 A and 36 W).
+- Added two exercises with answers: the resistance of a 60 W bulb on 120 V (0.5 A, 240 ohms), and the voltage and power for a 10-ohm resistor carrying 2 A (20 V, 40 W). All values were checked.
 
-## Weaknesses
-- **Direction of current:** "the battery pushes the electrons from the positive end to the negative end" is backwards for electrons.
-- **Inconsistent circuit:** the flashlight diagram labels the lamp 1 Ω, the symbol table says 3 Ω, and 3 V / 1 A implies 3 Ω.
-- **Wrong quantity:** "165 W ... the maximum amount of voltage it can deliver" should say power.
-- **Formula error:** P = I_rms R should be P = I_rms² R.
-- **Dubious footnote:** the "0.1010 μF smartphone" figure and the SUV stereo claim are unsourced.
-- **Typos:** "an medical defibrillator," "similar how," "it's length," "in given by some Ω," "potential charge is Q = CV" (use "stored charge").
-- **Unclear:** "electromagnetic potential" is used as a synonym for voltage without explanation.
-
-## Index entries added
-electrical conductor, electrical insulator, superconductor, capacitance, alternating current, circuit diagram, RC circuit. (Existing entries kept.)
-
-## Editor to-do
-- Fix the electron direction, the lamp resistance, and the P = I²R formula.
-- Source or remove the footnote figures.
+## Open items
+- The circuit diagrams section should be linked to the later `dc_circuits` chapter.
+- The safety section should be checked for current, accurate guidance.

@@ -1,26 +1,17 @@
-# Mass, Weight, and Gravity — Notes
+# Mass and Weight — Notes
 
 ## Summary
-Distinguishes mass (amount of matter, scalar, location-independent) from weight (gravitational force, vector). It derives F = mg from Newton's Law of Universal Gravitation, works gravity and spacecraft exercises, introduces the gravitational field, and covers center of mass in 1D (seesaw) and a preview of 2D/3D integrals.
+Explains the difference between mass (the amount of matter, a scalar that does not depend on location) and weight (the force of gravity, a vector). It derives F = mg from Newton's Law of Universal Gravitation and introduces the gravitational field strength $g$. It ends with center of mass in one dimension (a seesaw) and a preview of two- and three-dimensional center of mass with integrals. The gravity sections were moved to `forces_motion`.
 
-## Strengths
-- The mass-versus-weight table and the "same mass, different weight on the Moon" framing directly address the most common confusion.
-- The derivation from the universal law to F = mg is a clear, step-by-step model for students.
-- Seesaw exercise connects center of mass to a familiar object.
+## Changes in this pass
+- Removed contractions.
+- Corrected the Moon example: the weight on the Moon is one-sixth of the weight on Earth, not one-fifth.
+- Corrected the coin answer to about 2.0 g (0.00202 kg).
+- Corrected the seesaw answer to −13⅓ cm (the figure uses centimeters).
+- Replaced "gravitational constant" for $g$ with "gravitational field strength," and separated it from $G$.
+- Added a worked example (an astronaut's weight on Earth and the Moon).
 
-## Weaknesses
-- **Numerical errors:** the spacecraft answer should be about 272 N, not 6.1 × 10⁶ N (distance of 100,000 km was entered as 10⁵ m). The coin answer should be 2.0 g (0.002 kg), not 0.002 g. The seesaw answer is −13⅓ **cm**, not m.
-- **Inconsistent fractions:** the potato weighs "one-fifth" on the Moon in one place, but the text gives 1/6.
-- **Wrong term:** g = 9.8 m/s² is called "the gravitational constant"; it is the gravitational field strength (G is the constant).
-- **Formula error:** the 1D center-of-mass denominator ends in "m_n," not "+ m_n."
-- **Dimension mismatch:** the 2D integral uses dV, not dA.
-- **Typos:** "convert between pounds in kilograms," "it's acceleration," "above figure below," "the Earth" missing words, "some the 3d boundary," "to balanced."
-
-## Index entries added
-mass, weight, scalar, vector, Newton's Law of Universal Gravitation, gravitational constant, gravitational field, vector field, gravitational field strength, weight ! of an object. Existing "center of mass" entry was lowercased to match.
-
-## Editor to-do
-- Correct the three numerical answers and the cm/m units.
-- Fix the 1/6 vs. one-fifth inconsistency and the formula typo.
-
-- Gravity (Mass and Gravity, Gravitational Field) moved to `forces_motion` as a section. This chapter now covers mass, weight, and center of mass. Its weight section uses the gravity law from `forces_motion`.
+## Open items
+- The spacecraft exercise listed in earlier notes is not in the file, so it is not discussed here.
+- The center-of-mass section uses integrals before they are taught. The preview box is intentional, but a note to the reader would help.
+- The text uses the seesaw example in one dimension, so the first exercises are straightforward. Add an exercise on a two-dimensional center of mass once that topic is taught.

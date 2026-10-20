@@ -1,21 +1,13 @@
 # Related Rates — Notes
 
 ## Summary
-Gives a seven-step procedure for related-rates problems and one worked example: a boy cycling toward a rising balloon, using z² = x² + y² and differentiating in time.
+Gives seven steps for solving related-rates problems and works an example with a boy and a rising balloon (the distance between them decreases at about 0.93 m/s). It has one exercise with an answer (a sliding ladder).
 
-## Strengths
-- The seven steps are clear and in a logical order.
-- The setup of the balloon example is correct: dx/dt = −15 m/s, dy/dt = 5 m/s, x = 40, y = 100.
+## Changes in this pass
+- Finished the balloon example. The distance rate is about -0.93 m/s, which I checked from z = sqrt(40^2 + 100^2).
+- Added a sliding-ladder exercise (answer: the top falls at 0.75 m/s). The answer was checked.
+- Fixed a stray "/" in Step 7 and "a calculated" to "calculated."
 
-## Weaknesses
-- **Missing answer:** the example stops after the setup. Substituting gives z = √11600 ≈ 107.7 m and dz/dt = (40·(−15) + 100·5)/107.7 ≈ −0.93 m/s, so the example should be finished.
-- **Typos:** "Create a concluding statement/" (stray slash); "what you have a calculated".
-- **Thin content:** only one example, and the text says practice is in the digital resources, so the chapter cannot be used alone.
-
-## Index entries added
-related rates!steps, implicit differentiation!related rates, Pythagorean theorem, related rates!example.
-
-## Editor to-do
-- Finish the balloon example with the numerical answer.
-- Add at least one more worked example.
-
+## Open items
+- The chapter is short (about 600 words). Add a second worked example, for example a conical tank.
+- Check the sample problem's wording, which runs long.

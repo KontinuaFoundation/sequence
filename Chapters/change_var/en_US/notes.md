@@ -1,22 +1,22 @@
 # Change of Variables — Notes
 
 ## Summary
-Transforms a normal distribution of ice-sphere radius into the distribution of mass via H(m) = F(g(m)), derives the density with the chain rule, and begins a decreasing example (lightbulb current I = 12/R). The decreasing-case section is unfinished.
+Transforms a normal distribution of ice-sphere radius into the distribution of mass via H(m) = F(g(m)), derives the density with the chain rule (with code), and then handles a decreasing transformation: the current I = 12/R for normally distributed resistance. It gives the density of the current, a worked probability (P(I > 0.6 A) ≈ 9.1%), and one exercise (P(I < 0.4 A) ≈ 2.3%).
 
-## Strengths
-- The chain-rule derivation is correct: H′(m) = F′(g(m))g′(m).
-- The code matches the math: g(m), the derivative, and the pdf-times-derivative all check out.
-- The lightbulb setup is a good second example that shows a decreasing transformation.
+## Changes in this pass
+- Fixed the example radius. The mass 1.44 g belongs to the mean radius 0.7 cm. A 5 cm sphere has a mass of 523.6 g, and this is no longer mixed in with the mean.
+- Fixed the median statement. The median radius is 0.7 cm, so the median mass is 1.44 g.
+- Fixed g(m) to use m, not x, in the radius-from-mass formula.
+- Fixed "then" to "than" in the sanity-check comment.
+- Replaced the FIXME with the decreasing-function derivation. H(i) = 1 − F(g(i)), and the density is F′(g(i))|g′(i)|. The absolute value handles the sign of g′.
+- Added the lightbulb density h(i) and a short Python function, which prints 6.383 at i = 0.5 A.
+- Added a worked example (P(I > 0.6) = Φ(−4/3) ≈ 0.091) and an exercise (P(I < 0.4) ≈ 0.023).
 
-## Weaknesses
-- **Wrong example radius:** "a sphere has a radius of 5 cm, its mass is 4π(0.7³)/3 ≈ 1.44 g" mixes the 5 cm radius with the 0.7 cm mean. With r = 5 cm, the mass is 523.6 g.
-- **Wrong reasoning:** "if half the balloons have a radius less than 5 cm" should refer to the median, which is 0.7 cm, giving a median mass of about 1.44 g.
-- **Direction and variables:** "g(x) = 12/x is the function that will convert the current to resistance" is backwards, since g maps resistance to current. The derivative uses i and x interchangeably.
-- **Unfinished section:** "FIXME finish this section with graphs and code." The lightbulb PDF is never derived.
+## Checked and correct
+- g′(m) = (1/3)(3/(4π))^{1/3} m^{−2/3} and the chain-rule derivation.
+- Mass at r = 5 cm: 4π(125)/3 ≈ 523.6 g.
+- The density at i = 0.5 A is 6.383. The density peaks near 0.49 A (checked numerically).
 
-## Index entries added
-change of variables, change of variables (decreasing function), chain rule, cumulative distribution function (change of variables), probability density function (change of variables).
-
-## Editor to-do
-- Fix the 5 cm examples and the g direction, and use one variable name.
-- Finish the decreasing-case section with the PDF, graph, and code.
+## Open items
+- The first section's figures (before.png, cdf_after.png, pdf.png, and the others) are image files and were not checked here.
+- The chapter does not have a high school link. The ice-sphere opening is a lab-like example, which may be enough.

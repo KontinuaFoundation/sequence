@@ -29,31 +29,31 @@ was possible to write the $n^{th}$ partial sum, $s_n$, in terms of $n$. For
 example, we determined that the $n^{th}$ partial sum of $\sum_{i = 1}^n 
 \frac{1}{2^i}$ is $s_n = 1 - \frac{1}{2^n}$. However, it is not always possible 
 to do this. How can we estimate the value of an infinite series in cases where 
-we can't explicitly write $s_n$ in terms of $n$? \index{Integral Test}
+we cannot explicitly write $s_n$ in terms of $n$? \index{Integral Test}
 
 Consider the series $\sum_{i = 1}^\infty \frac{1}{i^2}$. The first few terms 
 are:
-$$\sum_{i = 1}^\infty \frac{1}{2^i} = \frac{1}{1^2} + \frac{1}{2^2} + 
+$$\sum_{i = 1}^\infty \frac{1}{i^2} = \frac{1}{1^2} + \frac{1}{2^2} + 
 \frac{1}{3^2} + \frac{1}{4^2} + \frac{1}{5^2} + \cdots$$
 
-The series is decreasing, but is it convergent? Let's plot this series on an 
+The series is decreasing, but is it convergent? Let us plot this series on an 
 $xy$-plane (see figure \ref{fig:invsquare1}). 
 
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -0.25, xmax = 6, axis lines = center, xlabel = $i$, 
-        ymin = 0, ymax = 1.25, ytick = \empty, ylabel=$\frac{1}{2^i}$]
+        ymin = 0, ymax = 1.25, ytick = \empty, ylabel=$\frac{1}{i^2}$]
         \foreach \n in {1,...,5}{
         \addplot[red, mark=*]({\n}, {1/(\n)^2});
         }
         \end{axis}
     \end{tikzpicture}
-    \caption{The first 5 terms of $\sum_{i = 1}^\infty \frac{1}{2^i}$}
+    \caption{The first 5 terms of $\sum_{i = 1}^\infty \frac{1}{i^2}$}
     \label{fig:invsquare1}
 \end{figure}
 
-We can overlay the function $y = \frac{1}{2^x}$ (figure \ref{fig:invsquare2}). 
+We can overlay the function $y = \frac{1}{x^2}$ (figure \ref{fig:invsquare2}). 
 We can draw rectangles of width 1 and height $\frac{1}{x^2}$ (see figure 
 \ref{fig:invsquare3}). The area of the first $n$ rectangles is equal to the 
 $n^{th}$ partial sum. 
@@ -62,14 +62,14 @@ $n^{th}$ partial sum.
     \centering
     \begin{tikzpicture}
         \begin{axis}[xmin = -0.25, xmax = 6, axis lines = center, 
-        xlabel = $i$, ymin = 0, ymax = 1.25, ytick = \empty, ylabel=$\frac{1}{2^i}$]
+        xlabel = $i$, ymin = 0, ymax = 1.25, ytick = \empty, ylabel=$\frac{1}{i^2}$]
         \foreach \n in {1,...,5}{
         \addplot[red, mark=*]({\n}, {1/(\n)^2});
         }
         \addplot[blue, domain = 0.7:6] {1/x^2};
         \end{axis}
     \end{tikzpicture}
-    \caption{The first 5 terms of $\sum_{i = 1}^\infty \frac{1}{2^i}$ lie on 
+    \caption{The first 5 terms of $\sum_{i = 1}^\infty \frac{1}{i^2}$ lie on
     the curve $y = \frac{1}{x^2}$}
     \label{fig:invsquare2}
 \end{figure}
@@ -79,7 +79,7 @@ $n^{th}$ partial sum.
     \begin{tikzpicture}
         \begin{axis}[xmin = -0.25, xmax = 6, axis lines = center, xlabel = $i$, 
         ymin = 0, ymax = 1.25, ytick = \empty, width = 1.5*\axisdefaultwidth, 
-        height = \axisdefaultheight, ylabel=$\frac{1}{2^i}$]
+        height = \axisdefaultheight, ylabel=$\frac{1}{i^2}$]
         \foreach \n in {1,...,5}{
         \addplot[red, mark=*]({\n}, {1/(\n)^2});
         }
@@ -104,17 +104,17 @@ $n^{th}$ partial sum.
         \draw[-latex](4.5, 0.45) -- (4.5, 0.01);
         \end{axis}
     \end{tikzpicture}
-    \caption{The partial sum $\sum_{i=1}^{n=5} \frac{1}{2^i}$ is equal to the 
+    \caption{The partial sum $\sum_{i=1}^{n=5} \frac{1}{i^2}$ is equal to the
     area of the rectangles}
     \label{fig:invsquare3}
 \end{figure}
 
 This should remind you of a Riemann sum. Since the total area of the rectangles 
 is less than the area under the curve, we can state:
-$$\sum_{i = 1}^\infty \frac{1}{2^i} < \int_0^\infty \frac{1}{x^2}\,dx$$
+$$\sum_{i = 2}^\infty \frac{1}{i^2} < \int_1^\infty \frac{1}{x^2}\,dx$$
 
-We can exclude the first rectangle and also state that: 
-$$\sum_{i = 1}^\infty \frac{1}{2^i}< 1 + \int_1^\infty \frac{1}{x^2}\,dx$$
+The first rectangle has area 1. Adding it to the bound gives:
+$$\sum_{i = 1}^\infty \frac{1}{i^2}< 1 + \int_1^\infty \frac{1}{x^2}\,dx$$
 
 We can evaluate this integral:
 $$\int_1^\infty \frac{1}{x^2}\,dx = \lim_{t \to \infty} \left[ \int_1^t 
@@ -123,17 +123,17 @@ $$ = \lim_{t \to \infty} \frac{-1}{x}|_{x=1}^t = \lim_{t \to \infty} \left(
 \frac{-1}{t} \right) - \frac{-1}{1} = 0 - (-1) = 1$$
 
 Therefore:
-$$\sum_{i = 1}^\infty \frac{1}{2^i}< 1 + 1 = 2$$
+$$\sum_{i = 1}^\infty \frac{1}{i^2}< 1 + 1 = 2$$
 
-This means the series $\sum_{i = 1}^\infty \frac{1}{2^i}$ is bounded above. 
+This means the series $\sum_{i = 1}^\infty \frac{1}{i^2}$ is bounded above. 
 Since the series is also monotonic (each term is positive, so the value of the 
 sum increases as $n$ increases), we can state that the sum is convergent! 
 
-Let's look at a divergent example: $\sum_{i = 1}^\infty \frac{1}{\sqrt{x}}$. 
+Let us look at a divergent example: $\sum_{i = 1}^\infty \frac{1}{\sqrt{i}}$.
 Again, we will make a visual, but this time we will draw rectangles that lie 
 above the curve $y = \frac{1}{\sqrt{x}}$ (see figure \ref{fig:invroot}). In 
-this case, $\sum_{i = 1}^\infty \frac{1}{\sqrt{x}}> \int_1^\infty 
-\frac{1}{\sqrt{x}}\,dx$. Let's evaluate the integral:
+this case, $\sum_{i = 1}^\infty \frac{1}{\sqrt{i}}> \int_1^\infty
+\frac{1}{\sqrt{x}}\,dx$. Let us evaluate the integral:
 $$\int_1^\infty \frac{1}{\sqrt{x}}\,dx = \lim_{t \to \infty} \left[ \int_1^t 
 \frac{1}{\sqrt{x}}\,dx \right] $$
 $$= \lim_{t \to \infty} \left[ 2 \sqrt{x} \right]_{x=1}^t= \lim_{t \to \infty} 
@@ -179,10 +179,10 @@ a monotonic decreasing series is not convergent!
 This leads us to the \textbf{Integral Test}. If $f$ is a continuous, positive, 
 decreasing function on the interval $x \in [1, \infty)$ and $a_n = f(n)$, then 
 the series $\sum_{n=1}^\infty a_n$ converges if and only if $\int_1^\infty 
-f(x)\,dx$ is convergent. Subsequently, if $\int_1^\infty f(x)\,dx$ is 
+f(x)\,dx$ is convergent. If $\int_1^\infty f(x)\,dx$ is
 divergent, then the series is also divergent.
 \end{mdframed}
-\textbf{Example}: Is the series $\sum_{i = 1}^\infty \frac{1}{n^2 + 1}$ 
+\textbf{Example}: Is the series $\sum_{n = 1}^\infty \frac{1}{n^2 + 1}$
 convergent or divergent?
 
 \textbf{Solution}: To apply the integral test, we define $f(x) = 
@@ -215,16 +215,16 @@ $\int_1^\infty 2x^{-3}\,dx = \lim_{t \to \infty} \int_1^t 2x^{-3}\,dx = \lim_{t
 \to \infty} \left[-x^{-2} \right]_{x = 1}^t = \lim_{t \to \infty} ( -t^{-2}) - 
 -(1)^{-2} = 0 + 1 = 1$. Since the integral $\int_1^\infty 2x^{-3}\,dx$ converges, 
 the series $\sum_{n = 1}^\infty 2n^{-3}$ is also convergent.
-\item The function $\frac{5}{3x+1}$ is positive and decreasing for $x \in [1, 
+\item The function $\frac{5}{3x-1}$ is positive and decreasing for $x \in [1, 
 \infty)$. $\int_1^\infty \frac{5}{3x-1}\,dx = \lim_{t \to \infty} \int_1^t 
 \frac{5}{3x-1}\,dx$ Using u-substitution to evaluate the integral, we set $u = 
 3x-1$ and find that $du = 3dx \rightarrow dx = \frac{du}{3}$. Substituting, 
 $\int_1^t \frac{5}{3x-1}\,dx = \int_{x=1}^{x=t} \frac{5}{3}\frac{1}{u}\,du$. 
 Evaluating the integral, $\int_{x=1}^{x=t} \frac{5}{3}\frac{1}{u}\,du = 
-\frac{5}{3}\ln{u}|_{x = 1}^{x =t} = \frac{5}{3}\ln{3x+1}|_{1}^t$. Substituting 
+\frac{5}{3}\ln{u}|_{x = 1}^{x =t} = \frac{5}{3}\ln{3x-1}|_{1}^t$. Substituting 
 this back into the limit, $\int_1^\infty \frac{5}{3x-1}\,dx = \lim_{t \to 
-\infty} \frac{5}{3}\ln{3x+1}|_{1}^t = \lim_{t \to \infty} [ \frac{5}{3} 
-\ln{3t+1} ] - \frac{5}{3}\ln{4} = \infty - \frac{5}{3}\ln{4} = \infty$. 
+\infty} \frac{5}{3}\ln{3x-1}|_{1}^t =\lim_{t \to \infty} [ \frac{5}{3} 
+\ln{3t-1} ] - \frac{5}{3}\ln{2} = \infty$. 
 Therefore, the integral $\int_1^\infty \frac{5}{3x-1}\,dx$ is divergent and so 
 is the series $\sum_{n = 1}^\infty \frac{5}{3n-1}$.
 \item The function $\frac{x}{3x^2 + 1}$ is positive and decreasing for $x\in 
@@ -281,8 +281,7 @@ the $n^{th}$ partial sum, often represented as $s_n$, is $s_n = a_1 + a_2 +
 s_n$.\index{remainder estimate for series} Expanding $s$ and $s_n$, we see that:
 $$R_n = \left[ a_1 + a_2 + \cdots + a_{n-1} + a_n + a_{n+1} + \cdots \right] - 
 \left[ a_1 + a_2 + \cdots + a_{n-1} + a_{n} \right]$$
-$$R_n = [a_1 - a_1] + [a_2 - a_2] + \cdots + [a_{n-1} - a_{n-1}] + [a_n - a_n] 
-+ a_{n-1} + a_{n-2} + \cdots$$
+The terms $a_1$ through $a_n$ cancel, so only the tail is left.
 $$R_n = a_{n+1} + a_{n+2} + a_{n+3} + \cdots$$
 
 Just like the integral test, suppose there is some continuous, positive, 
@@ -415,8 +414,8 @@ $\frac{\pi^4}{90}$. Compare your estimate with the actual value.
 \item $R_{10} \leq \int_{10}^\infty \frac{1}{x^4}\,dx = \frac{-1}{3x^3}|_
 {x=10}^\infty = \lim_{x \to \infty} \frac{-1}{3x^3} - \frac{-1}{3 \cdot 10^3} 
 = \frac{1}{3000} = 0.000333$. Therefore, the error is less than 0.000333. 
-\item Given $s_{10} \approx 1.082037$, we can say that $1.082037 + \int_{n+1}^
-\infty \frac{1}{x^4}\,dx \leq s \leq 1.082037 + \int_{n}^{\infty} \frac{1}{x^4}
+\item Given $s_{10} \approx 1.082037$, we can say that $1.082037 + \int_{11}^
+\infty \frac{1}{x^4}\,dx \leq s \leq 1.082037 + \int_{10}^{\infty} \frac{1}{x^4}
 \,dx$. Using a calculator to evaluate each integral, we see that: $1.082037 + 
 0.000250 \leq s \leq 1.082037 + 0.000333$ and therefore the sum is between 
 1.082287 and 1.082370. 
@@ -435,7 +434,7 @@ to a known convergent or divergent series. Take the series $\sum_{n=1}^\infty
 \frac{1}{3^n + 3}$. This is similar to $\sum_{n=1}^\infty \frac{1}{3^n}$, 
 which is a geometric series that converges to $\frac{1}{2}$. Notice that:
 $$\frac{1}{3^n + 3} < \frac{1}{3^n}$$
-Which implies that 
+This implies that
 $$\sum_{n=1}^\infty \frac{1}{3^n + 3} < \Sigma_{n=1}^\infty \frac{1}{3^n}$$
 
 Since $\sum_{n=1}^\infty \frac{1}{3^n}$ is convergent, it follows that 
@@ -512,16 +511,16 @@ $\sum_{n=1}^\infty \frac{1}{n}$ diverges, then $\sum_{n=1}^\infty \frac{2
 \subsection{The Limit Comparison Test}
 \index{Limit Comparison Test}Consider the series $\sum_{n=1}^\infty 
 \frac{1}{2^n - 1}$. We may want to compare this to the convergent series $\sum_
-{n=1}^\infty \frac{1}{2^n}$. The direct comparison test isn't helpful here, 
+{n=1}^\infty \frac{1}{2^n}$. The direct comparison test is not helpful here, 
 since $\frac{1}{2^n - 1} > \frac{1}{2^n}$, so $\sum_{n=1}^\infty \frac{1}{2^n}$ 
-doesn't put a cap on $\sum_{n=1}^\infty \frac{1}{2^n - 1}$ like our earlier 
+does not put a cap on $\sum_{n=1}^\infty \frac{1}{2^n - 1}$ like our earlier 
 example (see figure \ref{fig:compare1}). In a case such as this, we can use 
 the \textbf{Limit Comparison Test}, which states that:\\
 If $\sum a_n$ and $\sum b_n$ are series with positive terms and $\lim_{n \to 
 \infty} \frac{a_n}{b_n} = c > 0$, then either both series converge or both 
 series diverge.
 
-Let's apply this to the series $\sum_{n=1}^\infty \frac{1}{2^n - 1}$. We know 
+Let us apply this to the series $\sum_{n=1}^\infty \frac{1}{2^n - 1}$. We know 
 that $\sum_{n=1}^\infty \frac{1}{2^n}$ converges, since it is a geometric 
 series with $r < 1$. 
 $$\lim_{n \to \infty} \frac{\frac{1}{2^n - 1}}{\frac{1}{2^n}} = \lim_{n \to 
@@ -550,7 +549,7 @@ to the convergent $p$-series $\sum_{n=1}^\infty \frac{1}{n^{3/2}}$.
 \textbf{Example}: Is $\sum_{n=1}^\infty \frac{\sqrt{n^3 + 1}}{3n^3 + 4n^2 + 2}$ 
 convergent or divergent?
 
-\textbf{Solution}: We have already determine that we should compare this 
+\textbf{Solution}: We have already determined that we should compare this 
 series to $\sum_{n=1}^\infty \frac{1}{n^{3/2}}$. To apply the limit test, 
 we need to evaluate
 $$\lim_{n \to \infty} \frac{\frac{\sqrt{n^3 + 1}}{3n^3 + 4n^2 + 2}}{\frac{1}{n^
@@ -576,7 +575,7 @@ following series are convergent or divergent.
 \begin{Answer}[ref = comp1]
 \begin{enumerate}
 \item This is similar to $\sum_{n=1}^\infty \frac{1}{n}$, which is divergent. 
-Unfortunately, $\frac{1}{n} > \frac{1}{\sqrt{n^2 + 1}}$, so we can't use the 
+Unfortunately, $\frac{1}{n} > \frac{1}{\sqrt{n^2 + 1}}$, so we cannot use the 
 direct comparison test. We will try the limit comparison test:
 $$\lim_{n \to \infty} \left( \frac{\frac{1}{\sqrt{n^2 + 1}}}{\frac{1}{n}} 
 \right) = \lim_{n \to \infty} \left( \frac{1}{\sqrt{n^2 + 1}} \cdot \frac{n}{1} 
@@ -586,7 +585,7 @@ Therefore, since $\sum_{n=1}^\infty \frac{1}{n}$ diverges, so does $\sum_
 {n=1}^\infty \frac{1}{\sqrt{n^2 + 1}}$.
 \item This series is similar to the convergent geometric series $\sum_{n=1}^
 \infty \left( \frac{9}{10} \right)^n$. Given that:
-$$\left( \frac{9}{10} \right) = \frac{9^n}{10^n} < \frac{9^n}{3 + 10^n}$$
+$$\frac{9^n}{3 + 10^n} < \frac{9^n}{10^n} = \left( \frac{9}{10} \right)^n$$
 Since $\frac{9^n}{3 + 10^n} < \left( \frac{9}{10} \right)^n$ and $\sum_{n=1}
 ^\infty \left( \frac{9}{10} \right)^n$ is convergent, by the direct comparison 
 test, $\sum_{n=1}^\infty \frac{9^n}{3 + 10^n}$ is also convergent. 

@@ -1,12 +1,10 @@
-# Polynomials III: Graphing and Interpolation — Notes
+# Polynomials 3 — Notes
 
 ## Summary
-Merged from `graphs_polynomials`, `interpolating_polynomials`. Each source keeps its own section, under the chapter title.
+Graphing polynomials and interpolating with polynomials.
 
-## Merge history
-- `graphs_polynomials` is now section 1.
-- `interpolating_polynomials` is now section 2.
+## Changes in this pass
+- Added a worked example on roots from a factored polynomial (x^3 - x has roots -1, 0, 1) and an exercise (interpolating a line through (0, 1) and (2, 5)).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Add a worked example of interpolation with three points.

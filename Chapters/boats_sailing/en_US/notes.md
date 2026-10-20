@@ -1,12 +1,11 @@
-# Boats and Sailing — Notes
+# Boats Sailing — Notes
 
 ## Summary
-Merged from `boats`, `sailing`. Each source keeps its own section, under the chapter title.
+Boat hulls and sailboats.
 
-## Merge history
-- `boats` is now section 1.
-- `sailing` is now section 2.
+## Changes in this pass
+- Added a worked hull-speed example (a 16 ft boat: about 5.4 knots) and an exercise (36 ft: about 8.0 knots). The hull-speed formula is a rule of thumb, and the text says so.
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Add an exercise on the sailing forces, and check the rule of thumb's source.

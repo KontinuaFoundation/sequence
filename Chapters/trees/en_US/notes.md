@@ -1,26 +1,21 @@
 # Trees — Notes
 
 ## Summary
-Defines trees (nodes, edges, root, siblings, n−1 edges, forests), depth, height, levels, ancestors and descendants, and binary search trees with a seven-word dictionary example. Applies trees to file-system directories and works a path and depth exercise.
+Defines trees (root, edges, siblings, leaves, depth, height, subtrees), explains why a tree has n − 1 edges, introduces binary search trees with a seven-word example, shows insertion, and applies trees to file-system hierarchies with a path exercise.
+
+## Changes in this pass
+- Fixed the definition of a tree. A tree is a connected graph with no cycles. The old text said graphs are "converted" into trees by adding constraints.
+- Corrected the claim that computers date from the 1980s.
+- Removed the stray "Test again test again test again" and fixed "A node is naturally fits."
+- Finished the insertion example: orange goes to the left of peach. Added a note that a new node is always a leaf, and an exercise (insert kiwi, which becomes the right child of banana).
+- Removed the FIXME notes for the tree proof, the insertion explanation, and the exercise that is now written.
 
 ## Strengths
-- The n−1 edge argument is clear and correct.
-- The BST example is correct: seven words, mango as root, height 2.
-- The file-system tree maps cleanly to the concept, and the depth exercise (4) is correct.
+- The depth, height, and leaf definitions match Figure 2 (height 3, leaves are the grandchildren level).
+- The seven-word binary search tree satisfies the search-tree ordering at every node.
+- The file-system path exercise is correct: ./Documents/Projects/project2/data.csv has depth 4.
 
-## Weaknesses
-- **Incomplete sections:** the proof, BST insert, search, and delete, plus the red-black, AVL, B-tree, trie, and suffix-tree sections, are FIXME placeholders. The BST insertion text ends mid-sentence ("Because of alphabetical sorting,").
-- **Factual error:** "Computers, since their first creation in the 1980s" is wrong. Computers predate the 1980s.
-- **Stray text:** "Test again test again test again" appears in the directory section.
-- **Typos:** "Let's put this practice," "A node is naturally fits," "in anywhere on your computer's memory."
-- **Unclear sentence:** "Moving from one node to the next is the recursive step that minimizes the size."
-- **Figure label:** "Depth = 2" is drawn on the brace from root to a leaf, so it reads as the tree's depth. The height label is correct.
-- **Wording:** "Graphs can be converted into trees by adding ... constraints" should say restricting or imposing constraints.
-- **Cross-reference:** "our binary search implementation from the recursion chapter" is not checked.
-
-## Index entries added
-tree, root, depth, height of a tree, subtree, binary search tree, binary tree, directory, file system hierarchy.
-
-## Editor to-do
-- Fill the FIXME sections, starting with BST operations.
-- Correct the 1980s claim and the stray text.
+## Open items
+- Two sections are still placeholders: "Red-Black Trees and AVL Trees" and "B-Trees, Tries, and Suffix Trees." Write them or remove them.
+- The chapter does not cover deletion or search in a binary search tree in detail.
+- The "Advanced Python Syntax" reference (in the next chapter) should be checked against the book list.

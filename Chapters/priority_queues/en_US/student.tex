@@ -1,16 +1,15 @@
 \chapter{Priority Queues}
 
-As mentioned in the last chapter, you are going to make a priority
-queue for use with \index{Dijkstra's algorithm}Dijkstra's Algorithm. Using it will look like this algorithm called a \index{priority queue}\newterm{priority queue}:
+You are going to make a \index{priority queue}\newterm{priority queue} for use with \index{Dijkstra's algorithm}Dijkstra's Algorithm, which finds the cheapest route through a weighted graph. Using it will look like this:
 
 \begin{minted}{python}
 import kpqueue
 
-myqueue = pqueue.PriorityQueue()
+myqueue = kpqueue.PriorityQueue()
 myqueue.add(long_beach, 0) # Inserts first city and its cost
 myqueue.add(san_diego, 14) # Puts San Diego after Long Beach
 myqueue.add(los_angeles,12) # Inserts LA between Long Beach and San Diego
-current_city = myqueue.pop() # Returns first city (Long Beach) and removes it
+current_city = myqueue.pop() # Returns (0, long_beach), the pair with the lowest cost, and removes it
 \end{minted}
 
 Now, if an item gets a new priority, we need to remove it and reinsert it in the new spot.
@@ -21,7 +20,7 @@ myqueue.update(city_a, 16, 13) # Moves it to between LA and San Diego
 
 \section{A Naive Implementation of the Priority Queue}\index{priority queue!naive implementation}
 
-Create a file called \filename{kpqueue.py}. Let's do a simple
+Create a file called \filename{kpqueue.py}. Let us do a simple
 implementation that stores the priority and the data as tuple. And we
 will keep it sorted by the priority.  If two tuples have the same
 priority, we will sort by the data.
@@ -66,14 +65,14 @@ In a minute, we will revisit these inefficiencies and make them better.
 \section{Using the Priority Queue}\index{priority queue!in graph search}
 
 We are going to change \filename{graph.py} to use the priority
-queue. While we are doing so, why don't we also shrink the memory
+queue. While we are doing so, why do not we also shrink the memory
 footprint of our program a bit.
 
 Notice that as the algorithm is running, each node is in one of three states:
 \begin{itemize}
 \item Unseen: In the earlier implementation, these were the nodes with \pyvar{math.inf} as their cost.
-\item Seen, but not finalized: These are ``unvisited'', but don't have \pyvar{math.inf} as their cost.
-\item Finalized: These are the ``visited'' nodes --- we know that their cost won't decrease any more.
+\item Seen, but not finalized: These are ``unvisited'', but do not have \pyvar{math.inf} as their cost.
+\item Finalized: These are the ``visited'' nodes --- we know that their cost will not decrease any more.
 \end{itemize}
 
 We can shrink the memory foot print by not putting the unseen into the
@@ -81,7 +80,7 @@ dist dictionary at all. And instead of a separate set for
 ``unvisited'', what if we moved finalized nodes and their distances
 into a separate dictionary?
 
-Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
+Rewrite the search loop in the shortest-path function in \filename{graph.py}:
 
 \begin{minted}{python}
               # Visited nodes are already minimized, skip them
@@ -110,7 +109,7 @@ Rewrite the \pyfunction{cost\_from\_node} function in \filename{graph.py}:
         return (finalized_dist, prev)
 \end{minted}
 
-This should be have exactly the same result, except for the unreachable nodes.
+This should have exactly the same result, except for the unreachable nodes.
 If you have a graph that is not connected, there will be nodes that
 cannot be reached from the origin.  In the old version, these had a
 cost of \pyvar{math.inf}.  Now, they will just not be in the dictionary at all.  So, change \filename{cities.py} to deal with this:
@@ -150,7 +149,7 @@ tuples made up of a \pytype{float} and a \pytype{Node}.  The
 first. However, if the two tuples have the same priority, it then
 compares nodes.
 
-The error statement says, ``Nodes don't have a less-than method; I don't
+The error statement says, ``Nodes do not have a less-than method; I do not
 know how to compare them.''
 
 Each \pytype{Node} lives at an address in memory. You can get that
@@ -167,7 +166,7 @@ your \pytype{Node} class:
 
 Fixed.
 
-Now, let's make the priority queue more efficient.\index{priority queue!binary search insertion}
+Now, let us make the priority queue more efficient.\index{priority queue!binary search insertion}
 
 \section{Binary Search}
 
@@ -184,7 +183,7 @@ Hamburg'' and think ``Jeffers comes after Hamburg''. You would then
 split the pages in your right hand, and continue on like this until you found the page
 with ``John Jeffers'' on it.
 % FIXME should time complexity be mentioned/
-That is binary search.\index{Binary Search}
+That is binary search.\index{Binary Search} Each step cuts the search range in half, so searching a list of $n$ items takes about $\log_2 n$ steps. A list of 1000 items needs about 10 steps, instead of up to 1000.
 
 Binary Search is a search algorithm that finds the position of a target value within a sorted array. The binary search algorithm works by repeatedly dividing the search interval in half. If the target value is equal to the middle element of the array, the position is returned. If the target value is less than or greater than the middle element, the search continues in the lower or upper half of the array, respectively.
 
@@ -245,6 +244,22 @@ class PriorityQueue:
                 return next_split
         return lower
 \end{minted}
+
+\textbf{Worked example:} Use binary search to find 56 in the sorted list $[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]$, which has indices 0 through 9.
+
+\textbf{Solution:} Start with \texttt{lower = 0} and \texttt{upper = 10}.
+\begin{enumerate}
+\item \texttt{next\_split = 5}, and the value there is 23. Since $56 > 23$, set \texttt{lower = 6}.
+\item \texttt{next\_split = 8}, and the value there is 72. Since $56 < 72$, set \texttt{upper = 8}.
+\item \texttt{next\_split = 7}, and the value there is 56. Found it at index 7.
+\end{enumerate}
+
+\begin{Exercise}[title={Binary Search Steps}, label=bsearch1]
+Use the same list, $[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]$, and the same method. Find 38. List each value that the search checks, and give the index of 38.
+\end{Exercise}
+\begin{Answer}[ref=bsearch1]
+The search checks 23 (index 5), then 72 (index 8), then 56 (index 7), then 38 (index 6). The index of 38 is 6.
+\end{Answer}
 
 If you try running it now, it should work perfectly.
 

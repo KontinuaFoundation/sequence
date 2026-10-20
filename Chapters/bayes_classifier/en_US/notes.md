@@ -1,25 +1,25 @@
 # Bayesian Classifiers — Notes
 
 ## Summary
-Builds a fish classifier for trout, bass, and catfish. Covers priors from counts, naive Bayes with per-trait normal densities, and a multivariate Gaussian with covariance. The worked example for a 16-inch, 2.1 kg fish gives P(bass | observation) ≈ 0.71 (naive) and 0.68 (multivariate).
+Builds a fish classifier for trout, bass, and catfish. It starts from the prior (121, 154, and 25 out of 300), uses naive Bayes with a normal density for each trait, and then uses a multivariate Gaussian with a covariance matrix. The worked example for a 16-inch, 2.1 kg fish gives P(bass | observation) ≈ 0.714 (naive) and 0.682 (multivariate). It ends with two exercises: a 13-inch, 1.9 kg fish (trout, ≈ 0.95) and an explanation of why the catfish posterior is nearly 0.
 
-## Strengths
-- The priors are correct (121, 154, and 25 out of 300).
-- The univariate densities and the multivariate densities (0.04578 for trout, 0.07732 for bass) match a recomputation.
-- The posterior values (0.286/0.714 naive; 0.318/0.682 multivariate) match the joint probabilities.
+## Changes in this pass
+- Fixed the catfish weight density. It was listed as 0.01. With μ = 3.42 and σ² = 0.0724, the density at 2.1 kg is about 8.3 × 10⁻⁶.
+- Fixed the catfish joint probability in the naive table. It was 0.00001; it is now ≈ 0 (about 2 × 10⁻⁷).
+- Fixed the final example. It said 19 inches, but the numbers are for 16 inches.
+- Replaced "length and width" with "length and weight" (three places). The second trait is weight.
+- Fixed the mean formula sum index (from d to n), and the variance formula (x_i − μ)².
+- The covariance formula now divides by n − 1, which matches the diagonal values in the table. The text now says so, and notes that numpy's default does the same.
+- "given the breed" → "given the species"; "::" → ":"; removed a stray comma in the trout covariance matrix.
+- Added two exercises (13 inches, 1.9 kg → trout ≈ 0.948; catfish posterior nearly 0 despite an 8.3% prior).
 
-## Weaknesses
-- **Wrong probability:** p(W = 2.1 | catfish) is listed as 0.01. Using μ = 3.42 and σ² = 0.072, the density is about 8 × 10⁻⁶.
-- **Wrong length in the final example:** the closing paragraph says "19 inches long," but the numbers computed are for 16 inches.
-- **Mislabeled variable:** the text says "length and width" throughout, but the second trait is weight.
-- **Inconsistent variance:** the univariate σ² uses 1/n, while the covariance diagonal uses n−1 (the ratio is exactly n/(n−1)). The text formulas show 1/n for both.
-- **Wrong index:** the mean formula sums to d, but it should sum to n.
-- **Wrong term:** "conditionally independent given the breed" should be species.
-- **Typos:** "generalization of the normal distribution::" has a double colon.
+## Checked and correct
+- Priors: 0.403, 0.513, 0.083.
+- Naive per-trait densities: trout 0.0546 and 0.7607; bass 0.1418 and 0.5753; catfish 0.2516 for length.
+- Naive joint probabilities: trout 0.016763 and bass 0.041886. Posteriors: 0.286 (trout) and 0.714 (bass).
+- Multivariate likelihoods: trout 0.04578, bass 0.07732, catfish ≈ 4.3 × 10⁻⁶. Joint probabilities: 0.01847 and 0.03969. Sum 0.0582. Posteriors: 0.318 (trout) and 0.682 (bass).
 
-## Index entries added
-Bayesian classifier, prior probability, naive Bayes, conditional independence, multivariate Gaussian distribution, covariance matrix, maximum likelihood estimator.
-
-## Editor to-do
-- Fix the catfish density, the 19-inch sentence, and "width."
-- Use one variance normalization everywhere and fix the sum index.
+## Open items
+- The multivariate catfish likelihood is shown as 0.000001. The computed value is about 4 × 10⁻⁶; a more exact figure would be better.
+- The data and code (make_data.py, 1_scatter_fish.py, 2_univariates.py, 4_indep_density.png, 5_full.png) are referenced but not in this chapter directory. They were not checked.
+- The chapter uses "height" language in the scatter-plot intro ("length and width (respectively)") that the figures may still reflect. Check the figure labels.

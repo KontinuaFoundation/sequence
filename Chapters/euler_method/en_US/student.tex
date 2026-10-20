@@ -1,8 +1,8 @@
 \chapter{Euler's Method}
 \index{Euler's method}
 How do computers approximate the solution to a differential equation that 
-cannot be explicitly solved? Let's consider the differential equation 
-$$\frac{dy}{dx} = x + y \text{ with initial condition } y(0) = 1$$.
+cannot be explicitly solved? Let us consider the differential equation 
+$\frac{dy}{dx} = x + y$ with initial condition $y(0) = 1$.
 
 This means the solution passes through the point (0, 1). Additionally, the 
 slope of the solution is $\frac{dy}{dx} = 0 + 1 = 1$ at that point. This means 
@@ -27,7 +27,7 @@ approximation grows.
 \end{figure}
 
 How can we make a better approximation? Suppose we stop the first 
-approximation at $x = 1.5$, re-evaluate $\frac{dy}{dx}$, and use that to make 
+approximation at $x = 0.5$, re-evaluate $\frac{dy}{dx}$, and use that to make 
 a second linear approximation. When $x = 0.5$, $L(x) = 0.5 + 1 = 1.5$. Taking 
 the point $(0.5, 1.5)$, then $\frac{dy}{dx} = 0.5 + 1.5 = 2$. We can then 
 write a second linear approximation, $L_2(x) = 2(x - 0.5) + 1.5 = 2x - 1 + 1.5 
@@ -82,6 +82,8 @@ solution on a \index{slope field}slope field. One begins at the given initial va
 a short step in the direction indicated by the slope field. You adjust the 
 slope of your approximation based on the value of the slope field at the end 
 of each step. 
+
+Think of a car with a speedometer that updates only every few seconds. Between readings, you assume the speed stays the same. Euler's method works the same way.
 
 For a first-order differential equation, let $\frac{dy}{dx} = F(x, y)$ and 
 $y(x_0) = y_0$. If we have step size $h$, then our successive $x$-values are 
@@ -144,7 +146,7 @@ n & $x_n$ & $y_n$ & $F(x_n, y_n)$ \\\hline
 \end{tabular}
 \end{center}
 
-Therefore, $y(1) \approx 3.4696$.
+Therefore, $y(1) \approx 3.465$. The exact solution is $y = 3e^x - 2x - 2$, which gives $y(1) \approx 4.155$. Euler's method is low here because the solution curves upward, and a straight-line step falls below a curve that bends up.
 
 \textbf{Example}: This problem was originally presented as a no-calculator, 
 multiple-choice question on the 2012 AP Calculus BC exam. Let $y = f(x)$ be 
@@ -202,11 +204,11 @@ When the switch is first closed, there is no charge (that is, $Q(0) = 0$). If th
 \end{Exercise}
 
 \begin{Answer}[ref = eulercircuit]
-Substituting the given values, we find that $(5)\frac{dQ}{dT} + \frac{1}{0.05}Q = 60$. Solving for $\frac{dQ}{dt}$:
+Substituting the given values, we find that $(5)\frac{dQ}{dt} + \frac{1}{0.05}Q = 60$. Solving for $\frac{dQ}{dt}$:
 $$(5) \frac{dQ}{dt} + (20)Q = 60$$
 $$\frac{dQ}{dt} + 4Q = 12$$
 $$\frac{dQ}{dt} = 12 - 4Q$$
-We also know that $Q(0) = 0$. Using Euler's method with step size $h = 0.1$, $Q(0.1) \approx Q(0) + h \left[12 - 4Q(0) \right] = 0 + 0.1 \left[12 - 4(0) \right] = 1.2$. And $Q(0.2) \approx Q(0.1) + h \left[12 - 4Q(0.1) \right] = 1.2 + 0.1 \left[12 - 4(1.2) \right] = 1.92$. And $Q(0.3) \approx Q(0.2) + h \left[12 - 4Q(0.2) \right] = 1.92 + 0.1 \left[ 12 - 4(1.92) \right] = 2.352$. And $Q(0.4) \approx Q(0.3) + h \left[12 - 4Q(0.3) \right] = 2.352 + 0.1 \left[ 12 - 4(2.352) \right] = 2.6112$. And finally, $Q(0.5) \approx Q(0.4) + h \left[12 - 4Q(0.4) \right] = 2.6112 + 0.1 \left[12 - 4(2.6112) \right] = 2.76672$. Because we are finding a charge, the unit it Coulombs (C), so our final answer is $Q(0.5) \approx 2.77 C$.
+We also know that $Q(0) = 0$. Using Euler's method with step size $h = 0.1$, $Q(0.1) \approx Q(0) + h \left[12 - 4Q(0) \right] = 0 + 0.1 \left[12 - 4(0) \right] = 1.2$. And $Q(0.2) \approx Q(0.1) + h \left[12 - 4Q(0.1) \right] = 1.2 + 0.1 \left[12 - 4(1.2) \right] = 1.92$. And $Q(0.3) \approx Q(0.2) + h \left[12 - 4Q(0.2) \right] = 1.92 + 0.1 \left[ 12 - 4(1.92) \right] = 2.352$. And $Q(0.4) \approx Q(0.3) + h \left[12 - 4Q(0.3) \right] = 2.352 + 0.1 \left[ 12 - 4(2.352) \right] = 2.6112$. And finally, $Q(0.5) \approx Q(0.4) + h \left[12 - 4Q(0.4) \right] = 2.6112 + 0.1 \left[12 - 4(2.6112) \right] = 2.76672$. Because we are finding a charge, the unit is coulombs (C), so our approximate answer is $Q(0.5) \approx 2.77 C$. The exact solution is $Q(t) = 3(1 - e^{-4t})$, which gives $Q(0.5) \approx 2.59 C$. Euler's method is high here because the charge curve bends downward, and the straight-line steps stay above it.
 \end{Answer}
 
 \begin{Exercise}[label = euler1]

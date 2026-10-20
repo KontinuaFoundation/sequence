@@ -1,13 +1,11 @@
 # Vectors — Notes
 
 ## Summary
-Merged from `vectors`, `dot`, `cross`. Each source keeps its own section, under the chapter title.
+Vectors, the dot product, and the cross product.
 
-## Merge history
-- `vectors` is now section 1.
-- `dot` is now section 2.
-- `cross` is now section 3.
+## Changes in this pass
+- No changes in this pass beyond checking the prose.
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Check the cross-product exercise answers against a second calculation.

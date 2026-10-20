@@ -3,12 +3,14 @@
 \section{Bootstrap Aggregating}\index{bagging}
 \newterm{Bagging}, short for bootstrap aggregating, reduces the variance of a model by training many versions of it and combining
 their predictions. Each version is trained on a \newterm{bootstrap sample}: $n$ points drawn from the original $n$ points
-\emph{with replacement}. For regression, the predictions are averaged. For classification, the predictions are combined by a vote.
+\emph{with replacement}. For regression, the predictions are averaged. For classification, the predictions are combined by a vote. Think of asking several friends for restaurant suggestions and going with the most popular choice.
 
 \section{Why Bootstrap Samples Repeat}
 Sampling with replacement means some points appear more than once and others not at all. A given point is missed by one draw with
 probability $1 - \frac{1}{n}$, so it is missed by all $n$ draws with probability $(1 - \frac{1}{n})^n$. For large $n$ this approaches
 $\frac{1}{e} \approx 0.368$. So about $1 - \frac{1}{e} \approx 63.2\%$ of the distinct original points appear in each bootstrap sample.
+
+\textbf{Example}: For $n = 10$ points, a given point is missed by all 10 draws with probability $(0.9)^{10} \approx 0.349$. So about $65\%$ of the distinct points appear in each bootstrap sample.
 
 \section{Random Forests}\index{random forest}
 A \newterm{random forest} is bagging with one more change. When a tree considers a split, it may use only a random subset of $k$ features.

@@ -1,10 +1,10 @@
 \chapter{Advanced SQL and Database Management}
 
-If you recall from our basic SQL chapters, we have the ability to create sets of rows and columns that represent data. We can represent a set of 1000 bikes, each with a respective price, status, brand, and id, in the form of rows (you may hear the term tuples) and columns (attributes). In this chapter, we will build out a larger database, with more than one table, but, here's the twist: we will find a way to link them together, so that data can be searched across tables. 
+If you recall from our basic SQL chapters, we have the ability to create sets of rows and columns that represent data. We can represent a set of 1000 bikes, each with a respective price, status, brand, and id, in the form of rows (you may hear the term tuples) and columns (attributes). In this chapter, we will build out a larger database, with more than one table, but, here is the twist: we will find a way to link them together, so that data can be searched across tables. 
 
 
 \section{Keys}
-In the experimentation from our first chapter, you may have seen the term \newterm{primary key}\index{primary key}. An attribute (or set of attributes) that can uniquely identify rows within a table are called a primary key. That may have just sounded like a set of buzzwords, so let's take a step back:
+In the experimentation from our first chapter, you may have seen the term \newterm{primary key}\index{primary key}. An attribute (or set of attributes) that can uniquely identify rows within a table are called a primary key. That may have just sounded like a set of buzzwords, so let us take a step back:
 
 Take for example the following table:
 \begin{table}[h]
@@ -66,7 +66,7 @@ Two particular kinds of functional dependency will help us reason through the no
 \end{itemize}
 Removing partial dependencies brings a table to 2NF, and removing transitive dependencies brings a table to 3NF.
 
-Let's go through an example. In this book, we will only focus on the first three normal forms: 1NF, 2NF, and 3NF. There are videos in your digital resources that go deeper into the higher normal forms.
+Let us go through an example. In this book, we will only focus on the first three normal forms: 1NF, 2NF, and 3NF. There are videos in your digital resources that go deeper into the higher normal forms.
 
 Below is table representing an intentionally poorly designed database representing lab equipment at a university laboratory.
 
@@ -359,7 +359,7 @@ erDiagram
 \section{Relational Algebra Basics}
 We have previously talked about set theory and binary operations such as \textit{and}, \textit{or}, and \textit{not}. We can also apply those to data tables using \newterm{relational algebra}\index{relational algebra}.
 
-To begin, let's use our normalized equipment table (\ref{tab:equipment_3nf}) to demonstrate some basic relational algebra operations. We are going to fill it with some more data, however, to demonstrate the operations more clearly (see Table~\ref{tab:equipment_expanded}).
+To begin, let us use our normalized equipment table (\ref{tab:equipment_3nf}) to demonstrate some basic relational algebra operations. We are going to fill it with some more data, however, to demonstrate the operations more clearly (see Table~\ref{tab:equipment_expanded}).
 
 \begin{table}[H]
 \centering
@@ -401,9 +401,9 @@ E74 & CNC Machine & Lab C \\
 \section{Relating Two Tables}
 % Formally address how two tables can be linked using foreign keys.
 
-Now let's say we have two tables, \texttt{Equipment} and \texttt{Location}, and we want to relate them using a \newterm{foreign key}\index{foreign key}. The \texttt{Equipment} table has a column \texttt{EquipmentLocation} that references the primary key \texttt{EquipmentLocation} in the \texttt{Location} table. This allows us to link each piece of equipment to its corresponding location.
+Now let us say we have two tables, \texttt{Equipment} and \texttt{Location}, and we want to relate them using a \newterm{foreign key}\index{foreign key}. The \texttt{Equipment} table has a column \texttt{EquipmentLocation} that references the primary key \texttt{EquipmentLocation} in the \texttt{Location} table. This allows us to link each piece of equipment to its corresponding location.
 
-Let's first create the \texttt{Equipment} table with a foreign key referencing the \texttt{Location} table.
+Let us first create the \texttt{Equipment} table with a foreign key referencing the \texttt{Location} table.
 \begin{minted}{sql}
 CREATE TABLE Location (
     EquipmentLocation VARCHAR(50) PRIMARY KEY,
@@ -420,8 +420,7 @@ CREATE TABLE Equipment (
 
 We \emph{constrain} the values in the \texttt{EquipmentLocation} column of the \texttt{Equipment} table to only those that exist in the \texttt{Location} table, ensuring referential integrity between the two tables.
 
-Using relational algebra, we can say that 
-% FIXME relational algebra not defined before here
+Relational algebra is a notation for operations on tables. The symbol $\pi$ keeps only the listed columns, and the symbol $\subseteq$ means that every value on the left appears on the right. Using relational algebra, we can say that
 \[
 \pi_{\text{EquipmentLocation}}(\text{Equipment}) \subseteq \pi_{\text{EquipmentLocation}}(\text{Location})
 \]
@@ -482,5 +481,19 @@ SELECT EquipmentLocation FROM Equipment;
 \end{translation}
 
 \section{Exercises}
-FIXME exercise transform a full table up to 3NF
-Multiple translation fill in the blanks, going between sql english and adv rel alg
+\begin{Exercise}[title={Normalize to 3NF}, label=sql2_3nf]
+A table \texttt{Orders(OrderID, CustomerID, CustomerCity)} has the functional dependencies $\text{OrderID} \to \text{CustomerID}$ and $\text{CustomerID} \to \text{CustomerCity}$. Decompose it into tables that are in 3NF.
+\end{Exercise}
+\begin{Answer}[ref=sql2_3nf]
+The city depends on the customer, not on the order, so it is a transitive dependency. Split the table into \texttt{Orders(OrderID, CustomerID)} and \texttt{Customers(CustomerID, CustomerCity)}. Each non-key column now depends only on the key of its own table.
+\end{Answer}
+
+\begin{Exercise}[title={Translate to SQL}, label=sql2_translate]
+Using the \texttt{Equipment} table above, write an SQL query that returns the names of the equipment in Lab A.
+\end{Exercise}
+\begin{Answer}[ref=sql2_translate]
+\begin{minted}{sql}
+SELECT EquipmentName FROM Equipment WHERE EquipmentLocation = 'Lab A';
+\end{minted}
+The result is \texttt{Oscilloscope}, the equipment with ID E55.
+\end{Answer}

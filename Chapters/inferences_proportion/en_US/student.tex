@@ -31,9 +31,12 @@ A wider interval is more likely to capture the true value, but it also
 tells you less. This tradeoff between confidence and precision runs through
 everything in this chapter.
 
-% PLACEHOLDER: Conditions for Inference, random sampling, 10% condition
-% (independence), and large counts condition
-% (n\hat{p} >= 10 and n(1-\hat{p}) >= 10). Add notes/drafts here.
+Before we build an interval, we check three conditions:
+\begin{itemize}
+\item \textbf{Random:} the sample comes from a random sample or a randomized experiment.
+\item \textbf{10\% condition:} the sample is no more than 10\% of the population, so the individuals are roughly independent.
+\item \textbf{Large counts:} $n\hat{p} \geq 10$ and $n(1-\hat{p}) \geq 10$, so the sampling distribution is close to normal.
+\end{itemize}
 
 \section{Constructing a Confidence Interval for a Proportion}\index{confidence interval!for a proportion}
 
@@ -65,9 +68,18 @@ width of a useful interval, called the margin of error, depends on how large
 a sample the council collects. Larger samples produce narrower, more
 informative intervals for the same confidence level.
 
-% [PLACEHOLDER: General confidence interval formula for a proportion.
+A confidence interval for a population proportion $p$ has the form
+$$\hat{p} \pm z^* \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$$
+where $\hat{p}$ is the sample proportion, $n$ is the sample size, and the square root term is the standard error. The margin of error is $z^*$ times the standard error.
 
-% [PLACEHOLDER: Sample size formula (solving for n).
+\begin{mdframed}[frametitle = {Example}, style = important]
+The council surveys $n = 200$ residents and finds that 120 support the bike lanes, so $\hat{p} = \frac{120}{200} = 0.60$. For 95\% confidence, $z^* = 1.96$. The standard error is $\sqrt{\frac{0.6(0.4)}{200}} \approx 0.0346$, and the margin of error is $1.96(0.0346) \approx 0.068$. The 95\% confidence interval is $0.60 \pm 0.068$, or $(0.532, 0.668)$. We are 95\% confident that between 53.2\% and 66.8\% of residents support the bike lanes.
+\end{mdframed}
+
+To plan a sample size, we solve the margin-of-error formula for $n$. Using the conservative guess $p^* = 0.5$ (which makes the standard error as large as possible), the sample size needed for a margin of error $E$ is
+$$n = \left(\frac{z^*}{E}\right)^2 p^*(1 - p^*)$$
+
+For example, to get a margin of error of 0.03 at 95\% confidence, the council needs $n = \left(\frac{1.96}{0.03}\right)^2(0.5)(0.5) \approx 1067.1$, so it should survey at least 1068 residents.
 
 This is why \index{sample size!planning}sample size planning matters just as much as the confidence
 level. A researcher who wants a useful interval has to think ahead about how
@@ -75,20 +87,36 @@ much data collecting that precision will require.
 
 \textbf{Computing in Excel}
 
-% [Excel walkthrough placeholder: compute z* using NORM.S.INV(0.975),
-%   construct the confidence interval using cell formulas for p-hat,
-%   the standard error, and the margin of error, and compute required
-%   sample size using the solved-for-n formula above. Add screenshots
-%   and step-by-step instructions here once ready. ]
+Put the counts in cells: $n$ in \texttt{B1} (200) and the number supporting in \texttt{B2} (120). Then use these formulas:
+\begin{itemize}
+\item $\hat{p}$: \texttt{=B2/B1}, which gives 0.60.
+\item $z^*$: \texttt{=NORM.S.INV(0.975)}, which gives 1.96.
+\item Margin of error: \texttt{=B4*SQRT(B3*(1-B3)/B1)}, where \texttt{B3} holds $\hat{p}$ and \texttt{B4} holds $z^*$. This gives about 0.068.
+\item Interval: \texttt{=B3-B5} and \texttt{=B3+B5}, which give 0.532 and 0.668.
+\end{itemize}
 
 \textbf{Computing in Python}
 
-% [PLACEHOLDER: Python walkthrough using scipy.stats.norm.ppf() to find
-%   z*, statsmodels.stats.proportion.proportion_confint() to construct
-%   the confidence interval directly from counts, and a short function or
-%   manual calculation to solve for required sample size given a target
-%   margin of error. Add code, output, and interpretation here once
-%   notes/drafts are available. ]
+The \texttt{scipy} library finds $z^*$, and the \texttt{statsmodels} library builds the interval from the counts:
+\begin{minted}{python}
+from scipy.stats import norm
+from statsmodels.stats.proportion import proportion_confint
+
+z_star = norm.ppf(0.975)                  # 1.96
+low, high = proportion_confint(120, 200, alpha=0.05, method="normal")
+print(f"z* = {z_star:.2f}")
+print(f"95% CI: ({low:.3f}, {high:.3f})")  # about (0.532, 0.668)
+\end{minted}
+
+To plan a sample size, a short function solves the formula above:
+\begin{minted}{python}
+import math
+
+def sample_size(margin, z_star=1.96, p_star=0.5):
+    return math.ceil((z_star / margin) ** 2 * p_star * (1 - p_star))
+
+print(sample_size(0.03))  # 1068
+\end{minted}
 
 
 \section{Inference: Tests of Significance}

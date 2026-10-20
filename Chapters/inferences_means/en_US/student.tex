@@ -22,7 +22,7 @@ The $t$-distribution is continuous, symmetric, and centered at 0, but shorter an
 
 The critical value $t^*$ replaces $z^*$ and is read from a $t$-table using both $df$ and the tail area.
 
-For $n = 18$ ($df = 17$), a 90 percent confidence level gives $t^* = 1.740$, versus $z^* = 1.645$ for a known-$\sigma$ case. At $df = 100$, $t^* = 1.984$, much closer to $z^*$.
+For $n = 18$ ($df = 17$), a 90 percent confidence level gives $t^* = 1.740$, versus $z^* = 1.645$ for a known-$\sigma$ case. At $df = 100$, $t^* = 1.660$, much closer to $z^* = 1.645$.
 
 \begin{Exercise}[title={Reading the $t$-Table}, label={ex:means-tdist-critical}]
 A logistics company samples $n = 25$ delivery times and wants to construct a 95 percent confidence interval for the true mean delivery time. State the degrees of freedom, and find $t^*$.
@@ -195,7 +195,7 @@ t = \dfrac{44.6 - 42}{1.497} \approx 1.737
 \]
 p-value $\approx 0.0465$. Since $0.0465 < 0.05$, reject $H_0$: sufficient evidence that mean session watch time increased above 42 minutes. A smaller p-value is stronger evidence against $H_0$ than one just under $\alpha$.
 
-Matched-pairs example: call-handling time, $\bar{d} = -3.2$ minutes, $s_d = 4.5$ minutes, $n = 12$. Testing $H_0: \mu_d = 0$ against $H_a: \mu_d < 0$ gives $df = 11$, $t \approx -2.463$, p-value $\approx 0.0157$. At $\alpha = 0.05$, reject $H_0$: sufficient evidence the training program decreased average call-handling time. A confidence interval and a significance test on the same data will always agree.
+Matched-pairs example: call-handling time, $\bar{d} = -3.2$ minutes, $s_d = 4.5$ minutes, $n = 12$. Testing $H_0: \mu_d = 0$ against $H_a: \mu_d < 0$ gives $df = 11$, $t \approx -2.463$, p-value $\approx 0.0157$. At $\alpha = 0.05$, reject $H_0$: sufficient evidence the training program decreased average call-handling time. For a two-sided test at $\alpha$ equal to 1 minus the confidence level, the interval and the test always agree.
  
 \begin{Exercise}[title={Setting Up and Testing a Claim}, label={ex:means-test-bakery}]
 A bakery's recipe is supposed to produce loaves with a mean weight of 500 grams. A random sample of $n = 16$ loaves has $\bar{x} = 498.2$ grams and $s = 6.4$ grams, with no strong skew or outliers in the sample. At $\alpha = 0.05$, is there sufficient evidence that the true mean loaf weight differs from 500 grams?
@@ -271,14 +271,14 @@ A student compares two independent samples with visibly different spreads, one s
 \end{Exercise}
 
 \begin{Answer}[ref={ex:pooling-error}]
-Pooling assumes the two population standard deviations are equal, $\sigma_1 = \sigma_2$. Here, the two samples show clearly different spreads, which is evidence against that assumption, not for it. Even setting that aside, the current AP Statistics CED does not include the pooled, equal-variances procedure at all, only the unpooled two-sample $t$-interval using $\sqrt{s_1^2/n_1 + s_2^2/n_2}$ with technology-computed degrees of freedom. The student should use the unpooled formula regardless of how similar or different the spreads look.
+Pooling assumes the two population standard deviations are equal, $\sigma_1 = \sigma_2$. Here, the two samples show clearly different spreads, which is evidence against that assumption, not for it. Even when the spreads look similar, the unpooled two-sample $t$-interval using $\sqrt{s_1^2/n_1 + s_2^2/n_2}$, with technology-computed degrees of freedom, is the safe default, because it does not require equal spreads.
 \end{Answer}
 
 \section{Significance Tests for a Difference in Two Means, and Selecting the Right Procedure}
 
 \subsection{Setting Up and Carrying Out the Test}\index{hypothesis test!two-sample}
 
-TTesting a claim about $\mu_1 - \mu_2$ follows the same four-step process, usually $H_0: \mu_1 - \mu_2 = 0$, with $H_a: \mu_1 - \mu_2 < 0$, $> 0$, or $\neq 0$.
+Testing a claim about $\mu_1 - \mu_2$ follows the same four-step process, usually $H_0: \mu_1 - \mu_2 = 0$, with $H_a: \mu_1 - \mu_2 < 0$, $> 0$, or $\neq 0$.
 
 \[
 t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}
@@ -293,7 +293,7 @@ $SE = 3.032$ (from Section 4), so
 \[
 t = \dfrac{35.2 - 44.6}{3.032} \approx -3.100
 \]
-$df \approx 33$, one-sided p-value $\approx 0.00196$. Reject $H_0$: convincing evidence paid-tier subscribers watch more per session on average. A test and a confidence interval on the same data will always agree.
+$df \approx 33$, one-sided p-value $\approx 0.00196$. Reject $H_0$: convincing evidence paid-tier subscribers watch more per session on average. For the matching two-sided test, the test and the interval always agree.
 
 \begin{Exercise}[title={Running a Two-Sample Test}, label={ex:means-test2-run}]
 Two store locations track customer wait times. Store 1: $n_1 = 22$, $\bar{x}_1 = 8.3$ minutes, $s_1 = 2.1$ minutes. Store 2: $n_2 = 25$, $\bar{x}_2 = 9.6$ minutes, $s_2 = 2.8$ minutes. The samples are independent, and conditions for inference are satisfied. Test, at $\alpha = 0.05$, whether Store 1's mean wait time is shorter. Technology gives $df \approx 44$.

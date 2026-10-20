@@ -1,24 +1,21 @@
 # Priority Queues — Notes
 
 ## Summary
-Builds a priority queue for Dijkstra's algorithm in two stages: a naive sorted-list version, then a binary-search insertion version. Shows how graph.py changes to use it, how a TypeError arises from tied priorities, and how defining Node.__lt__ fixes it. Ends with a binary search explanation using a phone-book analogy.
+Builds a priority queue for Dijkstra's algorithm: a naive sorted-list version, changes to the graph search to use it, the fix for ties with __lt__ based on id(), and a faster version using binary search for insertion. Ends with a working binary search explanation.
+
+## Changes in this pass
+- Removed the claim that Dijkstra's algorithm was covered in the last chapter. The chapter now introduces it briefly.
+- Fixed the import: `import kpqueue` now matches `kpqueue.PriorityQueue()`.
+- Corrected the comment on pop(): it returns the (cost, city) pair.
+- Named the correct function for the search-loop rewrite (the loop in the shortest-path function, not cost_from_node).
+- Fixed "should be have" to "should have".
+- Explained why binary search takes about log₂ n steps (addresses the old FIXME on time complexity).
+- Added a worked example (binary search for 56 in a sorted list of 10 values) and an unworked exercise (search for 38; answer index 6, checking 23, 72, 56, 38).
 
 ## Strengths
-- The phone-book analogy makes binary search intuitive.
-- The naive-to-efficient progression shows why the change matters.
-- The tie-breaking bug is shown with a reproducible example and a fix.
+- The naive version, the update method, and the binary-search insertion code are correct.
+- The phone-book picture of binary search is a good everyday link.
+- The TypeError message shown matches Python 3.
 
-## Weaknesses
-- **Module name mismatch:** the import is `kpqueue` but the code calls `pqueue.PriorityQueue()`.
-- **Wrong reference:** the TypeError explanation names `loc_for_pair`, which does not exist until the later section. In the naive version, the error comes from `list.sort()`.
-- **Typo:** "This should be have exactly the same result."
-- **Duplicate code:** the PriorityQueue class is repeated in full in the binary-search section.
-- **FIXME:** the binary search section has a time-complexity FIXME that is unaddressed.
-- **Inefficiency left unmeasured:** pop() uses list.pop(0), which is O(n). The chapter does not mention it.
-
-## Index entries added
-priority queue (and naive implementation, graph search, binary search insertion), Dijkstra's algorithm, binary search algorithm, TypeError.
-
-## Editor to-do
-- Fix the import name and the loc_for_pair reference.
-- Address the time-complexity FIXME and the pop(0) cost.
+## Open items
+- The chapter uses cities.py and graph.py from earlier code. Say where those files come from if this chapter is read alone.

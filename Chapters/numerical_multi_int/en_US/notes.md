@@ -1,20 +1,20 @@
 # Numerical Double Integration — Notes
 
 ## Summary
-Revisits the snail distribution and asks for the probability that a snail's mass is in [3, 4] g and diameter in [1.5, 2.0] cm. Presents the double integral, the Riemann-sum idea extended to two dimensions, and a Python midpoint sum that gives 7.8316%.
+Revisits the snail distribution and asks for the probability that a snail's mass is in [3, 4] g and diameter in [1.5, 2.0] cm. Presents the double integral, explains why it has no closed form, extends the Riemann-sum idea to two dimensions with figures, and gives a Python midpoint sum that gives 7.8316%.
 
-## Strengths
-- The Python result (7.8316%) reproduces when rerun.
-- The motivation (no closed-form antiderivative) and the 2D Riemann-sum figures are clear.
+## Changes in this pass
+- Made the mean match the code. The text now gives μ = (4.36 g, 2.35 cm), which rounds the value used in the code (4.3556, 2.3527).
+- Replaced "no one has ever been able to find the antiderivative" with the accurate statement that the multivariable normal density has no elementary antiderivative.
+- Stated that the code uses a midpoint Riemann sum (the 1D figure still shows right endpoints, which is a separate picture).
+- Renamed the variable `sum` to `total` in the Python code, so it no longer shadows the built-in `sum`.
+- Fixed the inequality signs in the rectangle description (`<=` to `\leq`).
 
-## Weaknesses
-- **Mean mismatch:** the text gives the snail mean as (4.25 g, 2.35 cm), but the code uses (4.3556, 2.3527). The 4.25 figure appears in the earlier chapter, so the two should agree.
-- **Overstatement:** "no one has ever been able to find the antiderivative" overstates. The multivariate normal has no elementary antiderivative, but the claim should be limited to that case.
-- **Method mismatch:** the text describes right-endpoint Riemann sums, but the code uses midpoints.
-- **Odd setting:** "a snail off the floor of the ocean" does not match the earlier snail data, which has no location.
-## Index entries added
-multivariate normal distribution, Riemann sum, Riemann sum (two dimensions), numerical integration, numerical integration (python), double integral.
+## Checked and correct
+- The probability 7.8316% is what the midpoint sum returns with 100 × 100 slices.
+- The covariance matrix in the text matches the one in the code.
 
-## Editor to-do
-- Reconcile the mean vector and the covariance precision with the earlier chapter.
-- Say which sum (left, right, or midpoint) the code uses.
+## Open items
+- The earlier multivariate normal chapter should use the same mean. It was not reopened in this pass; check whether it shows 4.25 or 4.36.
+- The opening sentence says "a snail off the floor of the ocean." This is a whimsical setting, not something the data supports. It can stay or be removed.
+- The Riemann-sum figure uses right endpoints. The code uses midpoints. A brief caption note would make the difference clear.

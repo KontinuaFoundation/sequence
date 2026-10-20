@@ -2,7 +2,7 @@
 \section{Introduction}
 
 
-Let's talk about \newterm{proofs}. In mathematics, a proof shows that a new statement aligns with all true statements which have come before it. A proof is a sequence of statements that starts with some assumptions and ends with a new, unproven conclusion. If the conclusion is true, then we say the proof is \newterm{valid}.\index{proofs}
+Let us talk about \newterm{proofs}. In mathematics, a proof shows that a new statement aligns with all true statements which have come before it. A proof is a sequence of statements that starts with some assumptions and ends with a new, unproven conclusion. If the conclusion is true, then we say the proof is \newterm{valid}.\index{proofs}
 
 In mathematics, a proof shows that a new statement aligns with all true statements which have come before it.
 
@@ -32,7 +32,7 @@ The easiest of proof is a \textbf{Trivial Proof}\index{trivial proof}.  If we kn
 \end{theorem}
 
 \begin{proof}
-    Let $P$ be the statement ``The sky is blue'' and $Q$ be the statement ``$2 + 2 = 4$''. Since $Q$ is always 1true, the implication $P \implies Q$ is true regardless of the truth value of $P$.
+    Let $P$ be the statement ``The sky is blue'' and $Q$ be the statement ``$2 + 2 = 4$''. Since $Q$ is always true, the implication $P \implies Q$ is true regardless of the truth value of $P$.
 
     This follows directly from the definition of logical implication (or can be verified via a truth table), where an implication is true whenever the consequent is true.
 \end{proof}
@@ -41,7 +41,7 @@ The easiest of proof is a \textbf{Trivial Proof}\index{trivial proof}.  If we kn
 \section{Direct Proof}
 A \textbf{Direct Proof}\index{direct proof} involves assuming the hypothesis ($P$) is true and then showing that the conclusion ($Q$) must also be true. This is done sequentially using logical deductions, equivalences, and previously established definitions.
 
-To walk through an example, let's first define even and odd numbers.
+To walk through an example, let us first define even and odd numbers.
 \begin{mdframed}[frametitle = {Even and Odd Numbers}, style = important]\index{even}\index{odd}
     We say an integer $n$ is \newterm{even} if there exists an integer $k$ such that $n = 2k$.
 
@@ -73,7 +73,7 @@ The structure is generally as follows:
     \item Conclude the statement holds in the general case.
 \end{enumerate}
 
-Let's prove the following statement using a proof by cases:
+Let us prove the following statement using a proof by cases:
 \begin{theorem}
     For any integer $n$, $n^2$ is even or odd.
 \end{theorem}
@@ -199,12 +199,12 @@ In general, there are 5 steps to this proof structure:
 \begin{enumerate}
     \item Define a specific proposition in the form of \textit{$P(n)$ works correctly for all valid inputs of size $n$}. This is often given to you.
     \item Define a \textit{base case}. Just as in recursive definitions, proofs by induction us a \index{base case}base case as an ``exit condition'', or a start point to build off of. The base case proves that the proposition works for the smallest input size, which is usually $n=0$ or $n=1$. We call this $P(0)$.
-    \item Define an \newterm{inductive hypothesis}\index{inductive hypothesis}. Here, we assume the proposition remains correct for size $k$, some integer $k\ge 0$. We don't actually prove anything yet!
+    \item Define an \newterm{inductive hypothesis}\index{inductive hypothesis}. Here, we assume the proposition remains correct for size $k$, some integer $k\ge 0$. We do not actually prove anything yet!
     \item \newterm{Inductive Step}. Using the inductive hypothesis, prove $P(k+1)$, which states that proposition is correct for size $k+1$. Note here, that most times, the inductive step reduces the problem to a smaller, already proved case size. We say that proving $P(k+1)$ is recursively defined by $P(k)$.
-    \item Conclude the proof by stating \textit{By the Principle of Mathematical Induction, the proposition holds for all $n \ge P(0)$}, where $P(0)$ is the base case size. This step is optional but good practice.
+    \item Conclude the proof by stating \textit{By the Principle of Mathematical Induction, the proposition holds for all $n \ge n_0$}, where $n_0$ is the base case size. This step is optional but good practice.
 \end{enumerate}
 
-Let's look at an example to clear things up!
+Let us look at an example to clear things up!
 \begin{theorem}
     For all integers $n \ge 4$, $2^n < n!$. Equivalently, for all integers $n \ge 0$, $2^{n+4} < (n+4)!$.
 \end{theorem}
@@ -217,10 +217,23 @@ Let's look at an example to clear things up!
     \paragraph{Inductive Hypothesis.}
     Suppose for some $k\in \mathbb{Z}_{\ge 4},\, 2^k < k!$.
     \paragraph{Inductive Step.}
-    We want to show $P(k+1)$, such that $2^{k+1} < (k+1)$. Let $n=k+1$. Then we have $$2^{k+1} = 2 \cdot 2^k$$ By the hypothesis, $$2 \cdot 2^k < 2 \cdot k!$$. Since $k\ge 4$, $k+1 < 2$, making $$2\cdot k! < (k+1)k! = (k+1)!$$. Therefore, by the PMI, the proposition holds for all $n\ge 4$.
+    We want to show $P(k+1)$, which says $2^{k+1} < (k+1)!$. We have $$2^{k+1} = 2 \cdot 2^k$$ By the hypothesis, $2 \cdot 2^k < 2 \cdot k!$. Since $k \ge 4$, we have $2 < k+1$, so $$2 \cdot k! < (k+1) \cdot k! = (k+1)!$$ Therefore $2^{k+1} < (k+1)!$. By the Principle of Mathematical Induction, the proposition holds for all $n \ge 4$.
 \end{proof}
-% ADD: in book exercise
+
 % https://en.wikipedia.org/wiki/Mathematical_induction#Sum_of_consecutive_natural_numbers
+
+\begin{Exercise}[title={Sum of the First n Integers}, label=proof_sum]
+Prove by induction that $1 + 2 + \cdots + n = \frac{n(n+1)}{2}$ for all integers $n \ge 1$.
+\end{Exercise}
+\begin{Answer}[ref=proof_sum]
+\textbf{Base case.} For $n = 1$, the left side is $1$ and the right side is $\frac{1 \cdot 2}{2} = 1$.
+
+\textbf{Inductive hypothesis.} Assume $1 + 2 + \cdots + k = \frac{k(k+1)}{2}$ for some $k \ge 1$.
+
+\textbf{Inductive step.} Add $k+1$ to both sides: $1 + 2 + \cdots + k + (k+1) = \frac{k(k+1)}{2} + (k+1) = \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k+2)}{2}$. This is the formula for $n = k+1$.
+
+By the Principle of Mathematical Induction, the formula holds for all $n \ge 1$.
+\end{Answer}
 
 \section{Summary}
 In this chapter we talked about mathematical proofs. A proof is a logical argument that starts at a proposition and leads to a conclusion $P\implies Q$.

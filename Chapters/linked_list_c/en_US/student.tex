@@ -2,7 +2,7 @@
 
 \section{From C to C++}
 
-In this chapter we are going to transition from stand C programming to C++. Why C++? Because it is a more modern version of C++ that allows for a deeper insight into the structures that we put into the memory of the computer. C++ differs in that it allows for object-oriented programming, which is a programming paradigm that uses "objects" to represent data and methods. This allows for more complex data structures and algorithms to be implemented in a more organized and efficient manner. To do this, we will be utilizing \index{classes!C++}\newterm{classes}, which we briefly covered in our Advanced Python chapter. In C++, classes are defined using the \texttt{struct} keyword.
+In this chapter we are going to transition from standard C programming to C++. Why C++? Because C++ extends C with features that give a deeper insight into the structures that we put into the memory of the computer. C++ differs in that it allows for object-oriented programming, which is a programming paradigm that uses "objects" to represent data and methods. This allows for more complex data structures and algorithms to be implemented in a more organized and efficient manner. To do this, we will be utilizing \index{classes!C++}\newterm{classes}, which we briefly covered in our Advanced Python chapter. In C++, you can define a class with the \texttt{struct} keyword, which works much like \texttt{class}.
 
 There are two additional keyword differences you should be aware of regarding C vs C++. The primary one is the usage of the keyword \index{new operator}\newterm{new}, which does not exist in C. In C, we have \texttt{malloc()}, which allocates a given number of bytes on the heap and returns a pointer to them, and \texttt{sizeof}, which returns the size in bytes of a data structure.
 \begin{minted}{C}
@@ -177,7 +177,7 @@ and link them using the 'next' pointer.
 \includegraphics[width=1\textwidth]{playlistCombined.png}
 
 \section{Doubly Linked Lists}
-Now that we have established the basics of linked lists, we can move on to a more complex structure: the \index{doubly linked list}\newterm{doubly linked list}. Doubly linked lists are strong because each node now has two pointers: the same next pointer, and now, the \index{predecessor node}\newterm{predecessor}, which we will call \texttt{prev}.
+Now that we have established the basics of linked lists, we can move on to a more complex structure: the \index{doubly linked list}\newterm{doubly linked list}. Doubly linked lists are useful because each node now has two pointers: the same next pointer, and now, the \index{predecessor node}\newterm{predecessor}, which we will call \texttt{prev}.
 
 \begin{minted}{cpp}
 struct DoublyNode {
@@ -240,10 +240,11 @@ struct DoublyNode {
 
 Given this structure, we can traverse the entire list starting at the tail to the head or from the head to the tail. 
 
-Let's construct some code to analyze where the nodes would be in memory. We will create a doubly linked list with four nodes, and then we will print out the addresses of each node and their respective next and previous pointers.
+Let us construct some code to analyze where the nodes would be in memory. We will create a doubly linked list with four nodes, and then we will print out the addresses of each node and their respective next and previous pointers.
 
 Write the following code for the doubly linked list. There is a full file in your digital resources, here is a snippet of the code to get you started.
 \begin{minted}{cpp}
+#include <iostream>
 
 int main() {
     // Create nodes
@@ -290,7 +291,7 @@ int main() {
 }
 \end{minted}
 
-When you run this, you'll get real addresses like these (yours specific addresses will differ!):
+When you run this, you will get real addresses like these (yours specific addresses will differ!):
 
 \begin{minted}{text}
 head   is at: 0x100c9dca0   prev: 0 (nullptr)   next: 0x100c9dbc0
@@ -303,10 +304,10 @@ sizeof(DoublyNode) = 24 bytes
 
 Computer memory is comprised of a very long string of bytes, and each byte has its own address. This line is a large, contiguous stream of ones and zeros when you get to the core of it. Often, programmers separate it into chunks of certain sizes so that we can make them look similar to grids of memory, like matrices. 
 
-Look closely at \texttt{second} and \texttt{third}: \texttt{0x100c9dbe0 - 0x100c9dbc0 = 0x20}, which is \textbf{32} in decimal, not 24 bytes like \texttt{sizeof(DoublyNode)} had provided. The same is true between \texttt{third} and \texttt{tail}. Why, then, is the a difference between the 32 stored bytes and 24 bytes we would expect our memory to take up?
+Look closely at \texttt{second} and \texttt{third}: \texttt{0x100c9dbe0 - 0x100c9dbc0 = 0x20}, which is \textbf{32} in decimal, not 24 bytes like \texttt{sizeof(DoublyNode)} had provided. The same is true between \texttt{third} and \texttt{tail}. Why, then, is there a difference between the 32 stored bytes and 24 bytes we would expect our memory to take up?
 
-\texttt{DoublyNode} holds an \texttt{int} (4 bytes), 4 bytes of \index{struct padding}padding so that the pointers are aligned to 8 bytes, and two pointers (8 bytes each on a 64-bit machine), for 24 bytes total. \texttt{malloc} does not hand out memory in exactly the size you ask for: the allocator \emph{rounds each allocation up}, and here it gives 32 bytes. Your struct only uses 24 of those bytes; the other 8 are allocator \index{memory!padding}\newterm{padding} that \texttt{sizeof()} never shows you. The command \texttt{new} combines \texttt{malloc} and \texttt{sizeof} so that you do not have to compute the size yourself. 
+\texttt{DoublyNode} holds an \texttt{int} (4 bytes), 4 bytes of \index{struct padding}padding so that the pointers are aligned to 8 bytes, and two pointers (8 bytes each on a 64-bit machine), for 24 bytes total. \texttt{malloc} does not hand out memory in exactly the size you ask for: the allocator \emph{rounds each allocation up}, and in this run it gives 32 bytes. Your struct only uses 24 of those bytes; the other 8 are allocator \index{memory!padding}\newterm{padding} that \texttt{sizeof()} never shows you. The command \texttt{new} combines \texttt{malloc} and \texttt{sizeof} so that you do not have to compute the size yourself. 
 
 Compare this to the \texttt{Node} struct from the previous section, which has one pointer and one integer. The pointer and integer take 12 bytes, but the compiler adds 4 bytes of padding so that the struct's size is a multiple of its 8-byte alignment, and \texttt{sizeof(Node)} is 16. This is why the addresses of the nodes in a linked list are not always exactly the size of the struct apart from each other. The addresses, too, may not always be consecutive.
 
-Alternatively, comparing this to data structures in Python like Lists, we can see that Python's lists are more like arrays than linked lists. Python's lists are implemented as dynamic arrays, which means that they are contiguous blocks of memory that can grow and shrink in size. This allows for fast access to elements by index, but can be less efficient for inserting or deleting elements in the middle of the list, as it may require shifting elements around in memory. In contrast, linked lists allow for efficient insertion and deletion of elements at any position in the list, but require more memory overhead (like temporary variables) due to the additional pointers needed to link the nodes together.
+Alternatively, comparing this to data structures in Python like Lists, we can see that Python's lists are more like arrays than linked lists. Python's lists are implemented as dynamic arrays, which means that they are contiguous blocks of memory that can grow and shrink in size. This allows for fast access to elements by index, but can be less efficient for inserting or deleting elements in the middle of the list, as it may require shifting elements around in memory. In contrast, linked lists allow for efficient insertion and deletion of elements at any position in the list, but require more memory overhead for the extra pointers needed to link the nodes together.

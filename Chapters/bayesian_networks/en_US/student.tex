@@ -7,8 +7,8 @@ directly influences $B$. Each node has a \newterm{conditional probability table}
 each combination of its parents' values.
 
 \section{A Small Network}
-Let $R$ be ``it rained'' and $W$ be ``the grass is wet,'' with the arrow $R \to W$. The network needs two numbers
-for $R$ and two conditional probabilities for $W$:
+Let $R$ be ``it rained'' and $W$ be ``the grass is wet,'' with the arrow $R \to W$. The network needs one number
+for $R$ (since $P(\neg R) = 0.8$) and two conditional probabilities for $W$:
 $$P(R) = 0.2, \qquad P(W \mid R) = 0.9, \qquad P(W \mid \neg R) = 0.1$$
 
 \section{Inference}\index{Bayesian network!inference}
@@ -16,7 +16,7 @@ A Bayesian network answers questions about unknown variables given observed ones
 \begin{itemize}
 \item \textbf{Prediction} (causal): given a cause, how likely is the effect? Here, $P(W \mid R) = 0.9$.
 \item \textbf{Diagnosis} (evidential): given an effect, how likely is the cause? This needs Bayes' rule.
-\item \textbf{Explaining away}: if two causes can produce the same effect, observing one cause lowers the probability of the other.
+\item \textbf{Explaining away}: if two causes can produce the same effect, observing one cause lowers the probability of the other. For example, a wet lawn could come from rain or from a sprinkler. If you learn that the sprinkler was on, rain becomes less likely.
 \end{itemize}
 
 For the diagnosis question, first find the total probability of wet grass:
@@ -30,7 +30,7 @@ Learning has two parts. \newterm{Parameter learning} estimates the CPT entries f
 combination appears. \newterm{Structure learning} chooses the arrows, and it is harder because many structures
 fit the same data. Expert knowledge is often used to choose the structure.
 
-\begin{Exercise}[label=bn1, title=Compute a posterior]
+\begin{Exercise}[label=bn1, title=Compute a total probability]
 Using the network above, find $P(W)$ if $P(R)$ is changed to $0.5$, with the same conditional probabilities.
 \end{Exercise}
 \begin{Answer}[ref=bn1]

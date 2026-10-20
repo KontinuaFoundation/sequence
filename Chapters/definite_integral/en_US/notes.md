@@ -1,24 +1,19 @@
 # Definite Integrals — Notes
 
 ## Summary
-Defines the definite integral as the limit of Riemann sums, explains signed area, proves the a = b case, and covers the constant-multiple, sum/difference, adjacent-interval, bounding, and reversed-limit properties. Applies integrals to displacement (10 − 8 = 2 m), work and kinetic energy (1 J, 0.816 m/s), and impulse, then gives practice problems.
+Defines the definite integral as a limit of Riemann sums, works net area with signs, the properties of integrals (a = b, constants, scaling, sums and differences, adjacent intervals, bounds, reversed limits), applies them to velocity displacement and to work and impulse, and gives five practice exercises (including two AP-style questions).
+
+## Changes in this pass
+- Fixed the answer's sum, which wrote f(x) where f(x_i) belongs.
+- Changed the oscillating velocity from sin(πx) to sin(πt), matching the time variable in the text.
+- Fixed "over the for" to "over the interval."
+- Fixed "axisj" and a missing "0" in the exercise answer (∫₄⁷ f(x) dx = 0).
+- Fixed "x-axis" formatting in the answer.
 
 ## Strengths
-- The displacement example is correct: the positive area is 10 m and the negative area is 8 m, so displacement is 2 m.
-- The box example is correct: W = ∫₀² 0.5x dx = 1 J, and v = √(2/3) ≈ 0.816 m/s.
-- The practice answers are correct: ∫₀¹(5 − 6x²) dx = 3, the AP 2012 table-based answers (0, 27.5, and B), and ∫₋₁⁹ g = 2.5.
-- The reversed-limits proof is clean.
+- The velocity exercise values are correct: positive area 10 m, negative area 8 m, net displacement 2 m.
+- The work example is correct: the work done is 1 J, and v ≈ 0.816 m/s.
+- The AP-style answers are correct: 6 + (−6) = 0 for defint3, 27.5 for defint4, and (B) for defint5.
 
-## Weaknesses
-- **Index typo:** \index{definite integra;} should read "definite integral."
-- **Wrong variable:** v(t) = sin(πx) mixes t and x.
-- **Answer notation:** the exercise answer writes f(x) where f(x_i) is meant inside the sum.
-- **Weak argument:** the a = b argument takes lim (b − a)·lim f/n, which is a 0·∞ form, so it does not prove the result rigorously. The width argument (Δx = 0) is enough.
-- **Typos:** "over the for a ≤ x ≤ b," "axisj," a stray "=" in the B-case explanation, and "$x-axis$" in math mode.
-
-## Index entries added
-definite integral (corrected entry), net area, displacement (from velocity), work (integral), impulse, reversed limits, bounds estimate.
-
-## Editor to-do
-- Fix the index typo and the t/x variable.
-- Replace the a = b argument with a width-based proof, and fix the typos.
+## Open items
+- The Definition section's claim about the limit is standard; the proof of the a = b property is heuristic. A short formal argument would be cleaner.

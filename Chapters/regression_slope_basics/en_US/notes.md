@@ -1,12 +1,16 @@
 # Regression Basics for the Slope — Notes
 
 ## Summary
-Split from `inferences_slopes`. This part covers: The Regression Model and Why We Need Inference for the Slope.
+Introduces the population regression model Y = β₀ + β₁X + ε, the difference between parameters and statistics, the least-squares formulas b₁ = r·s_y/s_x and b₀ = ȳ − b₁x̄, and a sleep study with eight teenagers (b₁ = −0.165, b₀ = 8.25). Ends with a spreadsheet walkthrough (SLOPE, INTERCEPT, CORREL, STDEV.S).
 
-## Split history
-- Sections are kept as written. Images are copied to each part that uses them.
+## Changes in this pass
+- Corrected s_y to 0.473 in the summary statistics. The old 0.47 rounded too far to reproduce b₁ = −0.165 from r = −0.854 (verified: S_xy = −6.925, S_xx = 42, S_yy = 1.567).
 
-## Editor to-do
-- Check that the opening paragraph reads correctly as a standalone chapter.
-- Check the references (\ref) that point across the two parts.
-- Covers stayed with the first part. Move any that belong here.
+## Strengths
+- All summary values are correct: x̄ = 5.5, ȳ ≈ 7.34, s_x = 2.45, s_y = 0.473, r = −0.854, b₁ = −0.165, b₀ = 8.25.
+- The Excel results match the hand calculations: SLOPE = −0.1649, INTERCEPT = 8.2506, CORREL = −0.8536, and STDEV.S values 2.4495 and 0.4732.
+- The distinction between parameters (β) and statistics (b) is clear.
+
+## Open items
+- The chapter ends after the spreadsheet walkthrough. The inference for the slope (the t-interval and test) is covered in the next chapter.
+- Some exercises are commented out in the source (the spot-the-error and computing exercises). Decide whether to restore them.

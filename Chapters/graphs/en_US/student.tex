@@ -1,6 +1,9 @@
 \chapter{Introduction to Graphs}
 
 \section{Introduction}
+
+\textbf{Worked example: shortest path.} In a graph with edges $A$--$B$ of cost $3$, $B$--$C$ of cost $4$, and $A$--$C$ of cost $9$, the path $A \to B \to C$ costs $3 + 4 = 7$. That is cheaper than the direct edge, which costs $9$.
+
 Some data is easier to work with if we imagine it as a set of connections. When we say \newterm{graph} in this chapter, we are referring to set of data defined by a collection of \newterm{nodes}\index{node} (you may also hear vertex) and connected by \newterm{edges}\index{edge}. For example, on some
 social networks, each user can follow any number of other users. We
 can think of each user as a node, and the edge points from the user who
@@ -23,7 +26,7 @@ follows to the user they follow:
   \label{fig:following}
 \end{figure}
 
-Following is a \newterm{directed} relationship: Fred232 follows SSontag, but SSontag doesn't
+Following is a \newterm{directed} relationship: Fred232 follows SSontag, but SSontag does not
 follow Fred232. So we would say that this is a \newterm{directed graph}
 with four nodes and three edges.\index{graph!directed}
 
@@ -98,7 +101,7 @@ other node by following edges. Is this graph connected?\index{graph!connected}
   \label{fig:notconnected}
 \end{figure}
 
-This graph is \textit{not} connected! You can't follow edges from San Diego to Seattle. However, you could identify two \index{connected component}\newterm{connected components}, \index{subgraph}\newterm{subgraphs} of a graph that remain connected.
+This graph is \textit{not} connected! You cannot follow edges from San Diego to Seattle. However, you could identify two \index{connected component}\newterm{connected components}, \index{subgraph}\newterm{subgraphs} of a graph that remain connected.
 \begin{itemize}
   \item San Diego, Los Angeles, San Francisco
   \item Portland, Seattle, Spokane
@@ -106,7 +109,7 @@ This graph is \textit{not} connected! You can't follow edges from San Diego to S
 
 Connectivity is defined as, for all pairs of nodes in that graph, there
 exists a path between them. A subgraph is much simpler than a connected
-component, it's only requirement is to contain a subset of at least one
+component, it is only requirement is to contain a subset of at least one
 node and, optionally, edges to go between nodes. Note that you cannot
 have a subgraph that contains a single node and an edge, because the
 edge would not be able to connect to anything else.
@@ -215,7 +218,7 @@ train line between the depots has a cost. What is the cheapest path?
 When edges have costs like this, we call the \newterm{weighted edges}, which forms a \index{weighted graph}\newterm{weighted graph}. In weighted graphs, the \emph{degree} of a node is split into the \newterm{in-degree} and \newterm{out-degree} of nodes. The in-degree identifies the incoming edges that originate from other nodes, and out-degree is the amount of edges going out of that node.
 
 The graphs that you see here are really small, so finding efficient
-paths isn't difficult --- you could just try all of them! However, in
+paths is not difficult --- you could just try all of them! However, in
 many computer programs, we are working with \emph{millions} of nodes and
 edges. Efficient graph algorithms are \textit{really} important.
 
@@ -342,7 +345,7 @@ class Graph:
     return f"(Graph:{self.nodes})"
 \end{minted}
 This is a graph class that handles undirected weighted graphs.
-Now, let's create some instances of \pytype{Node} and
+Now, let us create some instances of \pytype{Node} and
 \pytype{WeightedEdge} and wire them together. Create another file in
 the same directory called \filename{cities.py}. Put in this code:
 
@@ -400,3 +403,10 @@ You should see some rather unexciting output:
 \end{minted}
 
 But do not worry; we will make it more exciting in the next chapter!
+
+\begin{Exercise}[title={Cheapest Route}, label=graph1]
+Edges $A$--$B$ cost $2$, $B$--$D$ cost $5$, $A$--$C$ cost $4$, and $C$--$D$ cost $3$. What is the cheapest route from $A$ to $D$, and what does it cost?
+\end{Exercise}
+\begin{Answer}[ref=graph1]
+Route $A \to C \to D$ costs $4 + 3 = 7$. Route $A \to B \to D$ costs $2 + 5 = 7$. Both routes tie at $7$.
+\end{Answer}

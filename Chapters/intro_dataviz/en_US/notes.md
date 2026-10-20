@@ -1,24 +1,16 @@
 # Introduction to Data Visualization — Notes
 
 ## Summary
-Covers variable types and descriptive methods, then bar charts, line graphs, pie charts, dotplots (with a spreadsheet stacking formula), stemplots, histograms, cumulative frequency plots, and scatter plots. Most sections give step-by-step "how to make" lists and a Python or spreadsheet version.
+Covers the types of variables and the main ways to display data: bar charts, line graphs, pie charts, dotplots, stemplots, histograms, and cumulative frequency plots for one variable, then scatter plots for two. Most sections give "how to make" steps and a Python or spreadsheet version. It is a long chapter with worked examples and two exercises.
 
-## Strengths
-- Clear "How to Make" lists for each chart type.
-- The housing stemplot shows how to split stems into two rows.
-- The lemonade scatter plot poses a real correlation question.
+## Changes in this pass
+- Fixed the housing stemplot: the leaves 55 and 59 (values 255 and 259) moved to the 50–99 row.
+- Added two exercises with answers.
+- Rewrote the correlation sentence. The coefficient is calculated from the data, not read from a best-fit line. Correlation is not the same as proportionality, and it does not show cause.
+- Removed contractions from the prose.
 
-## Weaknesses
-- **Misplaced leaves:** in the housing stemplot, stem-2 leaves 55 and 59 are in the top (00–49) row. They belong in the bottom (50–99) row.
-- **Inconsistent data:** the cumulative frequency plot ends at n = 80, but the histogram counts sum to 45. Its value of 57 at 450 implies observations the histogram does not show.
-- **Wrong concept:** "Drawing a best-fit line ... will give you a correlation coefficient." The coefficient is calculated from the data.
-- **Empty sections:** "When to use a Pie Chart," "Make a Pie Chart in Python," the stem-plot spreadsheet and Python headings, and "Boxplot" have no content.
-- **Typos:** "ookie sold," "º C" (should be °C), and a mismatched quote in "hotter days?''"
-
-## Index entries added
-categorical variable, quantitative variable, stemplot, histogram, cumulative frequency plot, correlation coefficient. (Existing entries kept.)
-
-## Editor to-do
-- Move leaves 55 and 59 to the 50–99 row.
-- Reconcile the cumulative frequency data with the histogram.
-- Fill in the empty sections or remove the headings.
+## Open items
+- Two exercises so far (choosing a display, and reading a stemplot). Add one on reading a histogram.
+- The cumulative frequency plot ends at n = 80, but the histogram counts add to 45. Check the counts against each other before the plot is used as an example.
+- Several headings have no content ("When to use a Pie Chart," "Make a Pie Chart in Python," and "Boxplot"). Fill them in or remove them.
+- Fix the typos listed earlier ("ookie sold," "º C," and the mismatched quote in "hotter days?").

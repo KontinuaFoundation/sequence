@@ -1,21 +1,13 @@
-# Applying Numerical Methods to Bivariate Data — Notes
+# Relationships in Data — Notes
 
 ## Summary
-Moves from scatterplots to numbers: Pearson's r (range, sign for direction, cutoffs for strength), a linear regression model with residuals and the least-squares line (b = r·S_y/S_x, a = Ȳ − bX̄), interpretation of slope and intercept, and R² = r², then a worked 10-teacher example with Excel and Python. The numbers check out: the teacher summary statistics, r = 0.9957, b = 1.673, a = 30.20, and R² = 0.9915 all recompute.
+Covers scatter plots, the correlation coefficient r (its range, its sign, and why it is not a measure of slope), and linear regression: the least-squares line, its slope and intercept, interpreting them in context, R-squared, and Python and Excel output. It has eleven exercises with answers and one worked example.
 
-## Strengths
-- Each formula is followed by an interpretation, and the "on average" phrasing is explained.
-- The 10-teacher example runs from summary statistics through residuals and R² in one thread.
-- Excel and Python both produce the same values, which helps students check their work.
+## Changes in this pass
+- Checked the regression values. The chapter's teacher data (means 4.6 and 37.9, standard deviations 3.204 and 5.384, r = 0.9957) gives a slope of 1.673 and an intercept of 30.20, which match the chapter. The residual at x = 8 is consistent with the equation.
+- Checked the correlation example (x-bar = 6, y-bar = 44, S_x = 3.2, S_y = 5.8, r = 0.91 gives slope 1.649 and intercept 34.10). These match the chapter's values to rounding.
+- Checked the R-squared example (r = 0.80 gives R-squared = 0.64).
 
-## Weaknesses
-- **Empty exercise and answer:** "Interpreting a Computed r" has only "%Insert exercise" and "%Insert answer" placeholders.
-- **Empty section:** "Review of Scatter Plots" has no content.
-- **Rounding:** the Python output shows intercept 30.203, while the text uses 30.204 (from the rounded slope).
-
-## Index entries added
-correlation!direction, correlation!strength. (Existing entries kept.)
-
-## Editor to-do
-- Write the empty exercise and answer, or remove them.
-- Remove the empty "Review of Scatter Plots" heading.
+## Open items
+- The chapter does not state the rule for the sample standard deviation. Add a sentence that the summary values use n - 1.
+- Check the Python and Excel output listings against current versions.

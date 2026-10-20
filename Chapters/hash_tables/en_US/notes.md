@@ -1,22 +1,17 @@
 # Hash Tables — Notes
 
 ## Summary
-Defines a hash table as an associative array built on a hash function and an array of buckets. Covers structure, insert and retrieve, two collision strategies (chaining and open addressing), and time complexity: O(1) average, O(n) worst case.
+Introduces hash tables as a way to map keys to values with a hash function, explains buckets, chaining and open addressing with linear probing, and gives the O(1) average and O(n) worst-case time bounds. Uses a school-locker picture and the hash function h(k) = k mod 5.
+
+## Changes in this pass
+- Expanded the chapter from a short description to a worked-through topic.
+- Added the locker-room picture and noted that Python's dict is a hash table.
+- Added three exercises with answers: chaining with keys 12, 7, 17, 3 (bucket 2 holds three keys); linear probing with the same keys (final slots 3, _, 12, 7, 17); and the worst case where every key hashes to bucket 0.
+- Corrected the label "Open Addressing (or Linear Probing)". Linear probing is one kind of open addressing.
 
 ## Strengths
-- Clear, short definitions of each part (table, bucket, hash function).
-- Both collision methods are described with their lookup steps.
-- The O(1) versus O(n) distinction is stated correctly.
+- The complexity bounds are correct.
+- The worked traces match the rules, including wrap-around in linear probing.
 
-## Weaknesses
-- **Conflated terms:** "Open Addressing (or Linear Probing)" treats linear probing as a synonym. Linear probing is one probing scheme within open addressing.
-- **No example:** there is no worked insert, lookup, or collision example with numbers.
-- **Missing topics:** load factor and resizing are not mentioned, and resizing is what keeps the average case O(1).
-- **Vague wording:** "several items if collisions occur, as will be discussed later" points forward without a reference.
-
-## Index entries added
-hash map, associative array, chaining, open addressing, linear probing, hash tables!time complexity, key-value pair. The chapter already had hash table, hash function, and collisions in hash tables.
-
-## Editor to-do
-- Separate linear probing from open addressing and add a numeric example.
-- Add load factor and resizing.
+## Open items
+- The chapter does not include Python code for a hash table. A short example would help, since the rest of the book uses Python.

@@ -1,25 +1,13 @@
 # The Greek Alphabet — Notes
 
 ## Summary
-A reference chapter. It gives a two-column table of the Greek alphabet with pronunciations, a table of Greek letters with their common meanings in math and physics (π, θ, Δ, Σ, λ, μ, ρ, ω, Ω), and examples showing letters as constants and variables (A = πr², Δx = vΔt + ½aΔt², λ = c/f).
+A reference chapter. It gives the Greek alphabet with pronunciations, lists the Greek symbols used most often in math and physics, and shows how Greek letters act as constants or variables in equations. It has two worked examples and one exercise.
 
-## Strengths
-- Handy reference that students will return to.
-- Examples show the difference between constants and variables in familiar formulas.
-- Pairs each letter with a meaning, which is what students actually need.
+## Changes in this pass
+- Fixed "there area" to "the area."
+- Added two worked examples: the wavelength of a 100 MHz radio wave, and a distance under constant acceleration (32 m).
+- Added one exercise (frequency from wavelength, answer 6.00 × 10⁸ Hz).
 
-## Weaknesses
-- **Overloaded symbols:** μ is listed as "coefficient of friction, mean, or micro-" and Ω as ohms. Students will meet μ and ρ in many meanings; the table should say where each is used.
-- **Typos:** "there area of a circle" should be "the area."
-- **Pronunciation:** "Chi ('Kai')" and "Psi ('Sigh')" are hard to read as written; consider IPA or a simple audio link.
-- **Ambiguous phrasing:** "Generally, we will define the Greek letters when providing an equation" is vague; say which letters are defined in this book.
-- **Missing:** no capital-letter note (e.g., Δ vs. Δ-like Delta in Σ, Ω; no mention of the lowercase/capital distinction in equations).
-- **Missing forward link:** λ = c/f is promised for "later" without a chapter reference.
-
-## Index entries added
-Greek alphabet, pi, theta, wavelength, angular velocity, ohm, summation. (Each added to its table row.)
-
-## Editor to-do
-- Fix the "area" typo.
-- Add chapter cross-references for each symbol.
-- Clarify μ and ρ usages.
+## Open items
+- Add a second exercise on the equation for position under constant acceleration.
+- Check the pronunciation column for chi and psi. The text uses the pronunciations "Kai" and "Sigh," which are informal; consider the standard forms.

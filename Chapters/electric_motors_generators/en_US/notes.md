@@ -1,18 +1,10 @@
-# Electric Motors and Generators — Notes
+# Electric Motors Generators — Notes
 
 ## Summary
-Describes the DC brushed motor (armature, commutator, brushes), notes other motor types, and explains the generator as the reverse process: mechanical rotation induces current, with examples from hydro, wind, and steam plants.
+Basic electric motor and basic electric generator.
 
-## Strengths
-- The commutator explanation is clear: it reverses the current each half turn to keep rotation in one direction.
-- The generator section ties back to induction and to real power plants.
+## Changes in this pass
+- Added a worked power example (2 A at 120 V gives 240 W) and an exercise (5 A gives 600 W).
 
-## Weaknesses
-- **Missing diagram:** a TODO asks for a motor graphic. The generator figure cannot stand in for it.
-- **Thin physics:** no force or torque equation for the motor, and no emf equation for the generator. Both are deferred to "another chapter."
-
-## Index entries added
-brushed motor, armature, commutator, electric generator. (Existing: Electric Motor, Electric Motor ! Generator.)
-
-## Editor to-do
-- Add the motor diagram and the torque/emf equations, or reference the chapters where they appear.
+## Open items
+- The chapter is short (about 500 words). Add a worked example of a generator's output and the link to induction.

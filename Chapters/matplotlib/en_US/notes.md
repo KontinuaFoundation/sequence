@@ -1,21 +1,18 @@
 # Making Plots with matplotlib — Notes
 
 ## Summary
-Introduces matplotlib's pyplot module with a line plot of y = x² and a bar plot of labeled categories, and points to the documentation for scatter plots and histograms.
+Introduces matplotlib with a line plot, labels and a title, and a bar plot, then points to the documentation for other plot types.
+
+## Changes in this pass
+- Rewrote the opening so the line plot shows how y changes with x (the old text said "distribution," which a line plot does not show).
+- Added a high-school link: graphing functions by plotting points.
+- Added the labels and title step to the line-plot example.
+- Replaced backticks with \texttt, and put each example in its own code block.
+- Added two exercises with answers: a cube plot with labels and a title, and a bar plot with the student's own votes.
 
 ## Strengths
-- Short, runnable examples with clear explanations of plot and bar.
-- The import convention is correct.
+- The code examples use the standard pyplot API (plot, bar, xlabel, ylabel, title, show).
 
-## Weaknesses
-- **Misleading description:** the line plot is described as showing "their distribution," but y = x² is a function, not a distribution.
-- **Missing elements:** no axis labels or titles are shown.
-- **Quotes:** backticks are used for code names in prose.
-- **No exercise:** students do not practice any plotting.
-
-## Index entries added
-line plot, bar plot, scatter plot, histogram.
-
-## Editor to-do
-- Fix the "distribution" wording and add labels and titles.
-- Add a short exercise, such as plotting a histogram of random data.
+## Open items
+- The examples have not been run here. Run them to confirm the figures look as described.
+- The chapter does not cover scatter plots or histograms. The chapter only points to the documentation for them.

@@ -1,21 +1,17 @@
 # Conditional Probability — Notes
 
 ## Summary
-Uses a 644-student vaccination and virus table to build joint probabilities, marginalization, the complement rule, conditional probability, and the chain rule of probability.
+Uses a 644-student vaccine table to introduce joint and marginal probabilities, the complement rule for a five-student group, conditional probability p(T₋ | V₂) = 8/11, and the chain rule for probability.
+
+## Changes in this pass
+- Changed "If a child is chosen" to "If a student is chosen."
+- Added parentheses around the fraction (8/11)^5 ≈ 0.203.
+- Added an unworked exercise: p(V₁ | T₊) = 9/55 and p(T₊ | V₁) = 9/28, which shows the two conditional probabilities differ.
 
 ## Strengths
-- The vaccine story builds the concepts in a logical order.
-- The joint-probability table percentages are correct (13.7%, 5.6%, 14.9%, 14.3%, 11.8%, 39.8%).
-- The conditional probability p(T− | V₂) = 8/11 ≈ 72.7% is correct, and the chain rule examples are correct.
+- All table values are correct: the counts sum to 644, the percentages are correct (13.7%, 5.6%, and so on), and the marginals are 0.342 and 0.658.
+- p(T₋ | V₂) = 256/352 = 8/11 ≈ 72.7%, and the five-student answers (0.124 and 87.6%; 0.203 and 79.7%) are correct.
+- The chain-rule example is clearly explained.
 
-## Weaknesses
-- **Rounding:** 1 − 0.2035 ≈ 79.7%, not 79.6%.
-- **Unstated assumption:** the five-student calculations treat the students as independent, which should be stated.
-- **Wording:** "a child is chosen" should say student; "a 34.2% that" is missing "chance."
-- **Notation:** p(T_{-} is missing a closing parenthesis.
-
-## Index entries added
-chain rule of probability, marginal probability, conditional probability notation, complement rule. The chapter already had conditional probability and marginalizing.
-
-## Editor to-do
-- State the independence assumption and fix the rounding.
+## Open items
+- The chapter could use a worked example for the chain rule with numbers.
