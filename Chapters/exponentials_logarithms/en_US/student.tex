@@ -1,0 +1,842 @@
+\chapter{Exponentials and Logarithms}
+
+
+\section{Exponents}
+Let's take quick look at exponents. Ancient scientists started coming up
+with a lot of formulas that involved multiplying the same number
+several times. For example, if they knew that a sphere was $r$
+centimeters in radius, its volume in milliliters was
+
+$$V = \frac{4}{3} \times \pi \times r \times r \times r$$
+
+They did two things to make the notation less messy. First, they
+decided that if two numbers were written next to each other, the
+reader would assume that meant ``multiply them''. Second, they came
+up with the exponent, a little number that was lifted off the
+baseline of the text, that meant ``multiply it by itself''. For
+example $5^3$ was the same as $5 \times 5 \times 5$.\index{exponents}
+
+Now, the formula for the volume of a sphere is written
+
+$$V = \frac{4}{3} \pi r^3$$
+
+Tidy, right? In an exponent expression like this, we say that $r$ is
+\index{exponents!base}\textit{the base} and $3$ is \index{exponent}\textit{the exponent}.
+
+\subsection{Identities for Exponents}
+
+What about exponents of exponents?  What is $\left(5^3\right)^2$?
+
+$$\left(5^3\right)^2 = (5 \times 5 \times 5)^2 = (5 \times 5 \times 5)(5 \times 5 \times 5) = 5^6$$
+
+In general, for any $a$, $b$, and $c$:
+
+$$\left(a^b\right)^c = a^{(bc)}$$
+
+If you have $\left( 5^3 \right) \left(5^4 \right)$, that is just $5 \times 5 \times 5 \times 5 \times 5 \times 5 \times 5$ or $5^7$
+
+\index{exponents!product rule}The general rule is that for any $a$, $b$, and $c$
+
+$$\left(a^b\right)\left(a^c\right) = a^{(b + c)}$$
+
+Mathematicians \textit{love} this rule, so we keep extending the idea
+of exponents to keep this rule true. For example, at some point,
+someone asked ``What about $5^0$?'' According to the rule, $5^{2}$
+must equal $5^{(2 + 0)}$ which must equal
+$\left(5^2\right)\left(5^0\right)$.  Thus, $5^2$ must be 1. So
+mathematicians declared ``Anything to the power of 0 is 1''.\index{exponents!zero}
+
+We don't typically assume that $0^0 = 1$. It is just too
+weird. So, we say that for any $a$ not equal to zero,
+
+$$a^0 = 1$$
+
+What about $5^{(-2)}$?  By our beloved rule, we know that
+$\left(5^{-2}\right)\left(5^5\right)$ must be equal to $5^3$, right?
+So $5^{-2}$ must be equal to $\frac{1}{5^2}$.\index{exponents!negative}
+
+We say that for any $a$ not equal to zero and any $b$,
+
+$$a^{-b} = \frac{1}{a^{b}}$$
+
+This makes dividing one exponential expression by another (with the same base) easy:
+
+$$\frac{a^b}{a^c} = a^{(b-c)}$$
+
+We often say ``cancel out'' for this. Here, we can ``cancel out'' $x^2$:
+
+$$\frac{x^5}{x^2} = x^3$$
+
+What about $5^{\frac{1}{3}}$? By the beloved rule, we know that $5^{\frac{1}{3}}5^{\frac{1}{3}}5^{\frac{1}{3}}$ must equal $5^1$. \index{nth root}Thus, $5^{\frac{1}{3}} = \sqrt[3]{5}$.\index{exponents!fractions}
+
+We say that for any $a$ and $b$ not equal to zero and any $c$ greater than zero,
+
+\[
+\large {a^{\frac{b}{c}}} = \left(\sqrt[c]{a}\right)^{b}=\left(\sqrt[c]{a^b}\right)
+\]
+
+Before you go on to the exercises, note that the beloved rule demands a common base.
+\begin{itemize}
+\item We can combine these: $\left(5^2\right)\left(5^4\right) = 5^6$
+\item We cannot combine: $\left(5^2\right)\left(3^5\right)$
+\end{itemize}
+
+With that said, we note for any $a$,$b$, and $c$:
+
+$$\left(ab\right)^c = \left(a^c\right) \left(b^c\right)$$
+
+So, for example, if we were asked to simplify
+$\left(3^4\right)\left(6^2\right)$, we would note that $6 = 2 \times
+3$, so
+
+$$\left(3^4\right)\left(6^2\right) = \left(3^4\right)\left(3^2\right)\left(2^2\right)  = \left(3^6\right)\left(2^2\right)$$
+
+
+If these ideas are new to you (or maybe you are just having trouble remembering them),
+watch the Khan Academy's \textbf{Intro to rational exponents} video at
+\url{https://youtu.be/lZfXc4nHooo}.
+
+%https://www.pinterest.com/pin/800796377464592621/
+% This could be made into a latex table
+
+
+\section{Logarithms}
+After the world created exponents, it needed the opposite. We
+could talk about the quantity $? = 2^3$, that is, ``What is the
+product of 2 multiplied by itself three times?''  We needed some way
+to talk about $2^? = 8$, that is, ``2 to the what is 8?'' This is why we
+developed the logarithm.\index{logarithm} \index{log}
+
+Here is an example:
+
+$$\log_{2}8 = 3$$
+
+In English, you would say, ``The logarithm base 2 of 8 is 3.''
+
+The base (2, in this case) can be any positive number. The argument
+(8, in this case) can also be any positive number.
+
+Try this one: What is the logarithm base 2 of 1/16?
+
+You know that $2^{-4} = \frac{1}{16}$, so $\log_{2} \frac{1}{16} = -4$.
+
+\subsection{Logarithms in Python}
+
+Most calculators have pretty limited logarithm capabilities, but
+python has a nice \pyfunction{log} function that lets you specify both
+the argument and the base. Start python, import the math module, and try taking a few logarithms:\index{log!in python}
+
+\begin{minted}{python}
+>>> import math
+>>> math.log(8,2)
+3.0
+>>> math.log(1/16, 2)
+-4.0
+\end{minted}
+
+Let's say that a friend offers you 5\% interest per year on your
+investment for as long as you want. You wonder, ``How many years
+before my investment is 100 times as large?'' You can solve this problem with logarithms:
+
+\begin{minted}{python}
+>>> math.log(100, 1.05)
+94.3872656381287
+\end{minted}
+
+If you leave your investment with your friend for 94.4 years, the
+investment will be worth 100 times what you put in.
+
+\subsection{Logarithm Identities}
+
+The logarithm is defined this way:\index{logarithm!identities}
+
+$$\log_b a = c \iff b^c = a$$
+
+Notice that the logarithm of 1 is always zero, and $\log_b b = 1$.
+
+\index{logarithm!product rule}The logarithm of a product:
+
+$$\log_b a c = \log_b a + \log_b c$$
+
+This follows from the fact that $b^{a + c} = b^a b^c$. What about a \index{logarithm!quotient rule}quotient?
+
+$$\log_b \frac{a}{c} = \log_b a - \log_b c$$
+
+Exponents?
+
+$$\log_b \left(a^c\right) = c \log_b a$$
+
+Notice that because logs and exponents are the opposite of each other, they can cancel each other out:
+
+$$b^{\log_b a} = a$$
+
+and
+
+$$\log_b \left(b^a\right) = a$$
+
+\subsection{Changing Bases}
+
+We mentioned that most calculators have pretty limited logarithm
+capabilities. Most calculators don't allow you to specify what base
+you want to work with. All scientific calculators have a button for
+``log base 10''.  So, you need to know how to use that button to get
+logarithms for other bases. Here is the change-of-base identity:\index{logarithm!change of base}
+
+$$\log_b a = \frac {\log_c a}{\log_c b}$$
+
+For example, if you wanted to find $\log_2 8$, you would ask the
+calculator for $\log_{10} 8$, then divide that by $\log_{10} 2$.
+You should get 3.
+
+\subsection{Natural Logarithm}
+
+When you learn about circles, you are told that the circumference of a
+circle is about 3.141592653589793 times its diameter.  Because we use
+this unwieldy number a lot, we give it a name: We say ``The
+circumference of a circle is $\pi$ times its diameter.''
+
+There is a second unwieldy number that we will eventually use a great deal in
+solving problems. It is about 2.718281828459045 (but the digits
+actually go on forever, just like $\pi$). We call this number $e$. (We are
+not going to talk about why $e$ is special quite yet, but we will soon.)\index{e}\index{logarithm!natural}
+
+Most calculators have a button labeled ``ln''. That is the
+\textit{natural logarithm} button. It takes the log in base $e$.\index{ln}
+
+Similarly, in python, if you don't specify a base, the logarithm is done in base $e$:
+
+\begin{minted}{python}
+>>> math.log(10)
+2.302585092994046
+>>> math.log(math.e)
+1.0
+\end{minted}
+
+\subsection{Logarithms in Spreadsheets}
+
+\index{logarithm!in spreadsheets}Spreadsheets have three log functions:
+\begin{itemize}
+\item \pyfunction{LOG} takes both the argument and the base. \pyfunction{LOG(8,2)} returns 3.
+\item \pyfunction{LOG10} takes just the argument and uses 10 as the base.
+\item \pyfunction{LN} takes just the argument and uses $e$ as the base.
+\end{itemize}
+
+Here is a plot from a spreadsheet of a graph of $y = LOG(x, 2)$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{log_graph.png}
+    \caption{A graph of log base 2.}
+    \label{fig:log_graph}
+\end{figure}
+
+Spreadsheets also have the \index{exponential function}function \pyfunction{EXP(x)}, which returns
+$e^x$.  For example, \pyfunction{EXP(2)} returns 7.38905609893065.
+
+
+\section{Exponential Decay}
+In a previous chapter, we saw that an investment of $P$ getting
+\index{compound interest}compound interest with an annual interest rate of $r$, grows
+exponentially. At the end of year $t$, your balance would be
+
+$$P\left(1 + r\right)^t$$
+
+\index{exponential growth}Because $r$ is positive, this number grows as time passes. You get a
+nice exponential growth curve that looks something like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{exponential_growth.png}
+    \caption{A diagram showing (exponential) compound interest.}
+    \label{fig:exponential_growth}
+\end{figure}
+
+This is \$30 invested with a 10\% annual interest rate. So, the formula
+for the balance after $t$ years would be
+
+$$(30)(1.1)^t$$
+
+What if $r$ were negative? This would be \textit{exponential decay}.
+
+\subsection{Radioactive Decay}
+
+Until around 1970, there were companies making watches whose faces and
+hands were coated with radioactive paint. The paint usually contained
+radium. When a radium atom decays, it gives off some energy, loses two
+protons and two neutrons, and becomes a different element
+(radon). Some of the energy given off is visible light. Thus, these
+watches glow in the dark.\index{radioactive decay}
+
+How many of the radium atoms in the paint decay each century? About 4.24\%.
+
+Notice the quantity of atoms lost is proportional to the number of
+atoms you have. This is exponential decay. If we assume that we start
+with a million radium atoms, the number of atoms decreases over time like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{radium_decay.png}
+    \caption{A diagram showing the decay and half life of radium.}
+    \label{fig:radium_decay}
+\end{figure}
+ 
+\begin{itemize}
+\item We start with 1,000,000 atoms.
+\item At 16 centuries, we have only 500,000 (half as many) left.
+\item 16 centuries after that, we have only 250,000 (half again) left.
+\item 16 centuries after that, we have only 125,000 (half again) left.
+\end{itemize}
+
+A nuclear chemist would say that radium has a \textit{half-life} of
+1,600 years; its lifespan decreases by half its original amount every 1,600 years. Note that this means that if you bought a watch with
+glowing hands in 1960, it will be glowing half as brightly in the year
+3560.\index{half-life}
+
+How do we calculate the amount of radium left at the end of century
+$t$? If you start with $P$ atoms, at the end of the $t$-th century, you
+will have
+
+$$P\left(1 - 0.0424\right)^t$$
+
+This is exponential decay.\index{exponential decay}
+% \includegraphics[width=0.7\textwidth]{radium_decay.png} INCLUDED Twice
+
+\subsection{Model Exponential Decay}
+
+Let's say you get hired to run a company with 480,000
+employees. Each year, $1/8$ of your employees leave the company for
+one reason or another (retirement, quitting, etc.). For some reason, you never
+hire any new employees.
+
+Make a spreadsheet that indicates how many of the original 480,000
+employees will still be around at the end of each year for the next 12. Next, make a
+bar graph from that data.
+
+%FIXME finish this chapter?
+
+
+\section{Compound Interest}
+When you loan money to someone, you typically charge them some sort of
+interest. The most common loan of this sort is what the bank calls a
+``savings account''.  Any money you put in the account is loaned to
+the bank. The bank then lends it to someone else, who pays interest to
+the bank. The bank gives some of that interest to you.
+% Diagram needed
+However, what if you leave the interest in your account? And you start
+making \textit{interest on the interest}? This is known as
+\textit{compound interest}.\index{compound interest}
+
+\subsection{An example with annual interest payments}
+
+Let's say that you put \$1000 in a savings account that pays 6\%
+interest every year. How much money would you have after 12 years?
+Let's make a spreadsheet.
+
+\includegraphics[width=0.4\textwidth]{StartInterest.png}
+
+Create a new spreadsheet and edit the cells to look like this.  All
+the cells in rows 1 - 4 are just values: just type in what you
+see.
+
+The fifth row is all formulas:
+
+\begin{tabular}{c | c | c}
+  After year & Interest & Balance \\
+  \hline 
+  = A4 + 1 & = B\$1 * C4 & = C4 + B5 \\
+\end{tabular}
+
+The interest rate field should be formatted as a percentage. One thing
+to know when dealing with percentages in the spreadsheet: If the field
+says ``600\%'', its value is 6. 
+
+The cells in the Interest and Balance column should be formatted as currency.
+
+You are about to make several copies of the cells in the fifth row,
+so make sure they look right.
+
+Click on A5 and shift-click on C5 to select all three cells. Drag the
+lower-right corner down to fill the rows 6 - 15.
+
+\includegraphics[width=0.5\textwidth]{CopiedCellsInterest.png}
+
+Look at the numbers.  The first interest payment is \$60, but the last
+is \$113.90. Your balance has more than doubled!
+
+\subsection{Exponential Growth}
+
+We figured this out numerically by repeatedly multiplying the balance
+by the interest rate. What if you wanted to know what the balance
+would be $n$ years after investing $P_0$ dollars with an annual interest
+rate of $r$? (Note that $r$ in our example would be 0.06, not 6.0.)
+
+Each year, the balance is multiplied by $1 + r$, so after one year,
+$P_0$ would become $P_0 \times (1 + r)$.  The next year you would multiply
+this number by $(1 + r)$ again: $P_0 \times (1 + r) \times (1 + r)$. The
+next year? $P_0 \times (1 + r) \times (1 + r) \times (1 + r)$ See the
+pattern? $P_n$ is this balance after $n$ years, then
+\begin{equation}
+  P_n = P_0 (1+r)^n
+  \label{eq:compound}
+\end{equation}
+
+\ref{eq:compound} is referred to as the standard \newterm{compound interest formula}\index{compound interest formula}. 
+Because $n$ is an exponent, we call this \textit{exponential growth}.
+There are few things as terrifying to a scientist as
+the phrase ``The population is undergoing exponential growth''.\index{exponential growth}
+
+If the \index{principal}principal is not compounded annually, we can modify the equation to account for that by changing $n$.
+
+$$n = m t$$
+
+Where $t$ is the frequency of the compounding, called the period: (1: annually, 12: monthly, 52: weekly, 365: daily), and $m$ is the number of periods. 
+This equation becomes
+$$P_n = P_0 (1+\frac{r}{n})^{nt}$$
+We will see these two terms pop up in other areas of the curriculum like circular motion and waves.
+% Diagram/ Explain
+
+\subsection{Sensitivity to interest rate}
+
+For most people, the first surprising thing about compound interest is
+how quickly your money grows after a few years.  The second thing that
+is surprising is how much difference a small change in the percentage
+rate makes.
+
+Let's add another set of columns that shows what happens to your money
+if you convince the bank to pay you 8\% instead of 6\%.
+
+Copy everything from columns B and C:
+
+\includegraphics[width=0.6\textwidth]{CopyForSecondInterest.png}
+
+Now edit the second interest rate to be 8\%:
+
+\includegraphics[width=0.6\textwidth]{AtBiggerInterestRate.png}
+
+\subsection{Continuous Compound Interest}
+Let's say, hypothetically, that we compound interest on a given balance for an \emph{indefinite} amount of time. Then, we take the formula $$P_n = P_0 (1+\frac{r}{n})^{nt}$$
+
+What if we divide our time period into infinite chunks? This would mean splitting our $n$ into much smaller pieces. We can use calculus notation to find the limit of this:
+\begin{equation*}
+  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{r}{n})^{nt}
+\end{equation*}
+we can create a variable $x=\frac{n}{r}$. We do this so that we eliminate some other dummy variables. Now we have
+\begin{equation*}
+  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{1}{x})^{xrt}
+\end{equation*}
+as we can eliminate $n$ with $n=xr$.
+
+Now we can isolate parts of our compound interest equation into the limit, and extract variables out.
+
+\begin{equation*}
+  P_0 \left(\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}\right)^{rt}
+\end{equation*}
+
+
+Fun math fact: $\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}$ is equal to the mathematical constant $e$. We are going to dive into this in the \emph{logs} chapter! For now, just understand that it is a constant in mathematics that describes many growth or decay values. With that, we can simplify the equation as the \index{continuous compounding}continuous compound interest equation (\ref{eq:continuous_compound})
+\begin{equation}\label{eq:continuous_compound}
+  P_0e^{rt}
+\end{equation}
+
+\subsection{Practice Exercises}
+
+\begin{Exercise}[label=compoundinterest1]
+You deposit \$1500 into a savings account that pays an annual interest
+rate of 5\%, compounded annually. What is the balance after 8 years?
+
+Note: you can also use excel or google sheets built in function \texttt{=FV()}.
+\end{Exercise}
+
+\begin{Answer}[ref=compoundinterest1]
+Using \ref{eq:compound} with $P_0 = 1500$, $r = 0.05$, and $n = 8$:
+$$P_8 = 1500 (1+0.05)^8 = 1500 (1.05)^8 \approx \$2216.18$$
+
+Alternatively, in Sheets/Excel, we can use \texttt{=FV(0.05, 8, 0, -1500)} to say that we want the \newterm{future value}\index{future value} of 1500 deposited (hence, negative), after 8 years compounded once per year.
+\end{Answer}
+
+\begin{Exercise}[label=compoundinterest2]
+A bank offers two savings accounts, both with a stated annual interest
+rate of 6\%. Account A compounds monthly ($t = 12$) and Account B
+compounds daily ($t = 365$). If you deposit \$3000 into each account,
+which account has the higher balance after 5 years, and by how much?
+
+Create two columns in Excel/Sheets showing the balance after each year
+for each account, using \$3000 as the principal. Start with year 0 for the
+initial deposit, then fill in years 1 through 5 using the compound
+interest formula for monthly and daily compounding.
+\end{Exercise}
+
+\begin{Answer}[ref=compoundinterest2]
+Using $P_n = P_0 (1+\frac{r}{n})^{nt}$ with $P_0 = 3000$, $r = 0.06$, and $n = 5$ years:
+
+Account A (monthly, $t=12$):
+$$P = 3000 \left(1+\frac{0.06}{12}\right)^{12 \times 5} \approx \$4046.55$$
+
+Account B (daily, $t=365$):
+$$P = 3000 \left(1+\frac{0.06}{365}\right)^{365 \times 5} \approx \$4049.48$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{exercise2sheet.png}
+\end{figure}
+
+Account B has the higher balance, by about \$2.93. This makes sense:
+the more frequently interest is compounded, the closer the balance
+gets to the continuous compounding limit, $P_0 e^{rt}$.
+\end{Answer}
+
+\definecolor{kontinuablue}{HTML}{005892}
+
+Certain relationships between two variables do not run in a straight line. Populations grow exponentially. Radioactive substances decay exponentially. When you try to fit a straight line to data like this, you may get a regression line, but the \textit{line of best fit} will be wrong or non-existent. Logarithm models can straighten out curved relationships, allowing you to use linear regression techniques on data that is not linear in its raw form.
+
+\section{Exponential Models}
+
+A content creator posts a video and tracks how many views it gets each day:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccccc}
+Day ($x$) & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Views, thousands ($y$) & 4.2 & 8.3 & 17.4 & 34.1 & 77.8 & 161.8 & 337.5
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=-0.5,xmax=6.5,
+            ymin=0,ymax=370,
+            xlabel={Day},
+            ylabel={Views (thousands)},
+        ]
+        \addplot[only marks, mark size=2pt, kontinuablue] coordinates {(0,4.2)(1,8.3)(2,17.4)(3,34.1)(4,77.8)(5,161.8)(6,337.5)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Daily views after posting. The curve bends upward instead of running straight.}
+    \label{fig:viewsRaw}
+\end{figure}
+
+A straight line fit to this data anyway would give $r^2 \approx 0.75$. That is not high enough to trust, and the residuals confirm it: the line misses low on both ends and high through the middle, a curved pattern rather than random scatter.
+
+This would follow an exponential model, $y = a \cdot b^x$, where $a$ is the starting count and $b$ is the daily growth factor. Therefore:
+\[
+\log(y) = \log(a \cdot b^x) = \log(a) + x\log(b)
+\]
+
+$\log(a)$ and $\log(b)$ are both constants, so the right side is linear in $x$, with slope $\log(b)$ and intercept $\log(a)$. Graph $\log(y)$ against $x$ instead of $y$ against $x$, and a genuine exponential relationship becomes a line. This is a \newterm{logarithmic transformation}\index{logarithmic transformation}: the data does not change, only the scale you graph it on.
+
+Apply that here:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccccc}
+Day ($x$) & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Views, thousands ($y$) & 4.2 & 8.3 & 17.4 & 34.1 & 77.8 & 161.8 & 337.5 \\
+$\log_{10}(y)$ & 0.623 & 0.919 & 1.241 & 1.533 & 1.891 & 2.209 & 2.528
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=-0.5,xmax=6.5,
+            ymin=0.5,ymax=2.7,
+            xlabel={Day},
+            ylabel={$\log_{10}(\text{Views})$},
+        ]
+        \addplot[only marks, mark size=2pt, kontinuablue] coordinates {(0,0.623)(1,0.919)(2,1.241)(3,1.533)(4,1.891)(5,2.209)(6,2.528)};
+        \addplot[kontinuablue, domain=0:6, samples=2] {0.3195*x + 0.6050};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The same data after a logarithmic transformation. The points now fall along a line.}
+    \label{fig:viewsLog}
+\end{figure}
+
+Regressing $\log_{10}(y)$ on $x$ gives $\log_{10}(\hat{y}) = 0.3195x + 0.6050$, with $r = 0.9997$ and $r^2 = 0.9995$.
+
+Slope $= \log_{10}(b) = 0.3195$, so $b = 10^{0.3195} \approx 2.087$. Intercept $= \log_{10}(a) = 0.6050$, so $a = 10^{0.6050} \approx 4.027$. That gives:
+\[
+\hat{y} = 4.027 \cdot (2.087)^x
+\]
+
+To predict, work in the transformed scale first, then convert back. At $x = 9$: $\log_{10}(\hat{y}) = 0.3195(9) + 0.6050 = 3.481$, so $\hat{y} \approx 10^{3.481} \approx 3{,}022$ thousand views.
+
+\begin{itemize}
+    \item If $y = a \cdot b^x$, then $\log(y) = \log(a) + x\log(b)$, linear in $x$.
+    \item Graphing $\log(y)$ against $x$ turns a genuine exponential relationship into a line.
+    \item The transformed slope equals $\log(b)$; the transformed intercept equals $\log(a)$.
+    \item To predict $y$, find $\log(\hat{y})$ from the linear model first, then raise 10 to that power.
+\end{itemize}
+
+\textbf{Computing in Python}
+
+Here is the video views example again, this time in Python:
+
+\begin{minted}{python}
+import numpy as np
+import statsmodels.api as sm
+
+day = np.array([0, 1, 2, 3, 4, 5, 6])
+views = np.array([4.2, 8.3, 17.4, 34.1, 77.8, 161.8, 337.5])
+
+# Fit the raw model: views as a linear function of day
+X = sm.add_constant(day)
+raw_model = sm.OLS(views, X).fit()
+print(raw_model.params)
+print("R-squared:", raw_model.rsquared)
+print(raw_model.resid)
+\end{minted}
+
+This gives an intercept of $-54.91$, a slope of $48.83$, and $R^2 \approx 0.750$. 
+
+% [figure placeholder: residuals-vs-fitted-values scatter for the raw model, showing a bowed pattern]
+
+Apply the log transform and refit:
+
+\begin{minted}{python}
+# Apply a natural log transform to the response variable
+log_views = np.log(views)
+
+log_model = sm.OLS(log_views, X).fit()
+print(log_model.params)
+print("R-squared:", log_model.rsquared)
+print(log_model.resid)
+\end{minted}
+
+Now the intercept is near $1.393$, the slope near $0.7356$, and $R^2 \approx 0.9995$. 
+
+% [figure placeholder: residuals-vs-fitted-values scatter for the log-transformed model]
+
+One detail changes between the by-hand work and the code: \mintinline{python}{np.log()} is the natural logarithm, not $\log_{10}$. Natural log pairs with \mintinline{python}{np.exp()} instead, so the transformed slope and intercept convert back a little differently:
+
+\begin{minted}{python}
+slope = log_model.params[1]
+intercept = log_model.params[0]
+
+growth_factor = np.exp(slope)
+percent_growth = (growth_factor - 1) * 100
+starting_views = np.exp(intercept)
+
+print(f"Growth factor per day: {growth_factor:.3f}")
+print(f"Percent growth per day: {percent_growth:.1f}%")
+print(f"Estimated starting views: {starting_views:.1f} thousand")
+\end{minted}
+
+This gives a growth factor of about $2.087$, a growth rate of $108.7$ percent per day, and $4{,}027$ thousand views. 
+
+\begin{Exercise}[title={Medication Concentration}, label=med_decay]
+
+A patient takes a single dose of medication. A nurse measures the concentration remaining in the bloodstream every hour:
+
+\begin{table}[H]
+\begin{tabular}{c|c}
+Hours ($x$) & Concentration, mg/L ($y$) \\
+\hline
+0 & 80.9 \\
+1 & 65.1 \\
+2 & 57.1 \\
+3 & 43.8 \\
+4 & 36.3 \\
+5 & 30.8 \\
+6 & 23.8
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+    \item Find $\log_{10}(y)$ for each hour.
+    \item Regressing $\log_{10}(y)$ on $x$ gives $\log_{10}(\hat{y}) = -0.0872x + 1.9108$, with $r = -0.9979$. Use this to write the exponential model $\hat{y} = a \cdot b^x$.
+    \item Predict the concentration at $x = 9$ hours. Is this interpolation or extrapolation?
+\end{enumerate}
+
+\end{Exercise}
+\begin{Answer}[ref=med_decay]
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccccc}
+Hours ($x$) & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+$\log_{10}(y)$ & 1.908 & 1.814 & 1.757 & 1.641 & 1.560 & 1.489 & 1.377
+\end{tabular}
+\end{table}
+
+Slope $= \log_{10}(b) = -0.0872$, so $b = 10^{-0.0872} \approx 0.818$. Intercept $= \log_{10}(a) = 1.9108$, so $a = 10^{1.9108} \approx 81.43$. The model is:
+\[
+\hat{y} = 81.43 \cdot (0.818)^x
+\]
+
+The concentration starts around 81.43 mg/L and multiplies by about 0.818 each hour, dropping roughly 18 percent per hour.
+
+At $x = 9$: $\log_{10}(\hat{y}) = -0.0872(9) + 1.9108 = 1.126$, so $\hat{y} \approx 10^{1.126} \approx 13.37$ mg/L. The data only covers hours 0 through 6, so $x = 9$ is extrapolation.
+
+\end{Answer}
+
+\section{Power Models}
+
+Unlike exponential growth, certain curved relationships do not grow by a constant factor at every step. A marine biologist measures the length and weight of several fish from the same species:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccccc}
+Length, cm ($x$) & 10 & 15 & 20 & 25 & 30 & 35 & 40 \\
+\hline
+Weight, g ($y$) & 15.7 & 53.9 & 135.5 & 244.0 & 461.4 & 668.0 & 1068.6
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=5,xmax=45,
+            ymin=0,ymax=1150,
+            xlabel={Length (cm)},
+            ylabel={Weight (g)},
+        ]
+        \addplot[only marks, mark size=2pt, kontinuablue] coordinates {(10,15.7)(15,53.9)(20,135.5)(25,244.0)(30,461.4)(35,668.0)(40,1068.6)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Fish weight against length. The curve bends upward, following a growth pattern distinct from exponential growth.}
+    \label{fig:fishRaw}
+\end{figure}
+
+A straight line fit to this data yields $r^2 \approx 0.900$. Graphing $\log(y)$ against $x$, the same fix used in the last section, straightens the curve only slightly and leaves a pattern in the residuals. This relationship does not grow by a constant factor at every step the way the exponential model does; it grows by a constant power of $x$ instead.
+
+This kind of relationship follows a power model, $y = a \cdot x^b$. Take the logarithm of both sides:
+\[
+\log(y) = \log(a \cdot x^b) = \log(a) + b\log(x)
+\]
+
+Apply that to the fish data:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccccc}
+Length, cm ($x$) & 10 & 15 & 20 & 25 & 30 & 35 & 40 \\
+\hline
+Weight, g ($y$) & 15.7 & 53.9 & 135.5 & 244.0 & 461.4 & 668.0 & 1068.6 \\
+$\log_{10}(x)$ & 1.000 & 1.176 & 1.301 & 1.398 & 1.477 & 1.544 & 1.602 \\
+$\log_{10}(y)$ & 1.196 & 1.732 & 2.132 & 2.387 & 2.664 & 2.825 & 3.029
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmin=0.9,xmax=1.7,
+            ymin=1.0,ymax=3.2,
+            xlabel={$\log_{10}(\text{Length})$},
+            ylabel={$\log_{10}(\text{Weight})$},
+        ]
+        \addplot[only marks, mark size=2pt, kontinuablue] coordinates {(1.000,1.196)(1.176,1.732)(1.301,2.132)(1.398,2.387)(1.477,2.664)(1.544,2.825)(1.602,3.029)};
+        \addplot[kontinuablue, domain=0.9:1.7, samples=2] {3.0258*x - 1.8251};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The fish data after a log-log transformation. Both axes are logarithms, and the points fall along a line.}
+    \label{fig:fishLog}
+\end{figure}
+
+Regressing $\log_{10}(y)$ on $\log_{10}(x)$ gives $\log_{10}(\hat{y}) = 3.0258\log_{10}(x) - 1.8251$, with $r = 0.9997$ and $r^2 = 0.9993$, a much tighter fit than the raw linear attempt.
+
+The slope is $b$ itself, so $b \approx 3.026$. The intercept is $\log_{10}(a)$, so $a = 10^{-1.8251} \approx 0.01496$. That gives:
+\[
+\hat{y} = 0.01496 \cdot x^{3.026}
+\]
+
+An exponent close to 3 reflects real biology: fish grow in three dimensions at once, so weight scales close to the cube of length.
+
+At $x = 45$ cm: $\log_{10}(\hat{y}) = 3.0258\log_{10}(45) - 1.8251 = 3.177$, so $\hat{y} \approx 10^{3.177} \approx 1{,}503.9$ g.
+
+\begin{itemize}
+    \item If $y = a \cdot x^b$, then $\log(y) = \log(a) + b\log(x)$, linear in $\log(x)$.
+    \item Graphing $\log(y)$ against $\log(x)$, a \newterm{log-log plot}\index{log-log plot}, turns a genuine power relationship into a line.
+    \item The transformed slope equals $b$ directly; the transformed intercept equals $\log(a)$.
+    \item To predict $y$, find $\log(x)$ first, use the linear model to get $\log(\hat{y})$, then raise 10 to that power.
+\end{itemize}
+
+\begin{Exercise}[title={Fall Time}, label=fall_time]
+
+A student drops a ball from different heights and times how long it takes to hit the ground:
+
+\begin{table}[H]
+\begin{tabular}{c|c}
+Height, m ($x$) & Fall time, s ($y$) \\
+\hline
+5 & 1.01 \\
+10 & 1.42 \\
+15 & 1.71 \\
+20 & 2.02 \\
+25 & 2.24 \\
+30 & 2.45 \\
+35 & 2.59
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+    \item Explain why the shape of this scatterplot points to a power model rather than an exponential one.
+    \item Regressing $\log_{10}(y)$ on $\log_{10}(x)$ gives $\log_{10}(\hat{y}) = 0.4908\log_{10}(x) - 0.3388$, with $r = 0.9996$. Use this to write the power model $\hat{y} = a \cdot x^b$.
+    \item Predict the fall time from a height of $50$ m.
+\end{enumerate}
+
+\end{Exercise}
+\begin{Answer}[ref=fall_time]
+
+The raw scatterplot rises quickly at first and then levels off, growing more slowly as height increases. Exponential growth does the opposite: it starts slow and accelerates. That mismatch in shape is the signal to try a power model instead.
+
+Slope $= b \approx 0.4908$. Intercept $= \log_{10}(a) = -0.3388$, so $a = 10^{-0.3388} \approx 0.4584$. The model is:
+\[
+\hat{y} = 0.4584 \cdot x^{0.4908}
+\]
+
+An exponent near 0.5 matches the physics: fall time under gravity is proportional to the square root of height, $t \propto \sqrt{h}$.
+
+At $x = 50$: $\log_{10}(50) \approx 1.699$, so $\log_{10}(\hat{y}) = 0.4908(1.699) - 0.3388 = 0.495$, giving $\hat{y} \approx 10^{0.495} \approx 3.13$ s.
+
+\end{Answer}
+
+\section{Choosing the Right Transformation}
+
+Both sections in this chapter start from the same move: something is curved, so take a logarithm and see if it straightens out. The two models call for a different logarithm, and mixing them up wastes time on a transformation that will not work.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l}
+Model & Equation & Transform & Linear in \\
+\hline
+Exponential & $y = a \cdot b^x$ & $\log(y)$ vs. $x$ & $x$ \\
+Power & $y = a \cdot x^b$ & $\log(y)$ vs. $\log(x)$ & $\log(x)$
+\end{tabular}
+\end{table}
+
+When you are unsure which model fits, try both transformations and compare. Graph $\log(y)$ against $x$: if that looks straight, the relationship is exponential. If it still curves, graph $\log(y)$ against $\log(x)$ instead; if that straightens out, it is a power model. Whichever transformation gives the higher $r^2$ with no leftover pattern in the residuals is the one that matches the data.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        box/.style={draw=kontinuablue, rounded corners, align=center, minimum width=3.6cm, minimum height=1cm, font=\small},
+        ->, >=stealth, thick
+    ]
+        \node[box] (start) at (0,4) {Scatterplot is curved};
+        \node[box] (step1) at (0,2.6) {Graph $\log(y)$ vs. $x$};
+        \node[box] (q1) at (0,1.2) {Does it look straight?};
+        \node[box] (exp) at (-3.2,-0.2) {Exponential model\\$y = a \cdot b^x$};
+        \node[box] (step2) at (3.2,-0.2) {Graph $\log(y)$ vs. $\log(x)$};
+        \node[box] (q2) at (3.2,-1.6) {Does it look straight?};
+        \node[box] (pow) at (0,-3) {Power model\\$y = a \cdot x^b$};
+        \node[box, draw=red] (neither) at (6.4,-3) {Try a different model};
+
+        \draw (start) -- (step1);
+        \draw (step1) -- (q1);
+        \draw (q1) -- node[above left, font=\footnotesize] {yes} (exp);
+        \draw (q1) -- node[above right, font=\footnotesize] {no} (step2);
+        \draw (step2) -- (q2);
+        \draw (q2) -- node[below left, font=\footnotesize] {yes} (pow);
+        \draw (q2) -- node[right, font=\footnotesize] {no} (neither);
+    \end{tikzpicture}
+    \caption{Deciding between an exponential and a power model.}
+    \label{fig:choosingTransform}
+\end{figure}
+
+These two transformations show up often outside the classroom: population growth tends to follow an exponential pattern, while relationships like body mass and metabolic rate, or a planet's distance from the sun and its orbital period, tend to follow a power model.

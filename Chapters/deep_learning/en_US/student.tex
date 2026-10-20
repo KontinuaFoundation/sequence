@@ -1,53 +1,42 @@
 \chapter{Deep Learning}
 
-Deep learning is a subfield of machine learning that focuses on
-algorithms inspired by the structure and function of the brain called
-artificial neural networks. While you may have encountered simple,
-shallow neural networks, deep learning involves neural networks with
-many layers, hence they are often referred to as "deep" neural
-networks.\index{deep learning}
+\section{Many Layers}\index{deep learning}
+A \newterm{deep} neural network has many hidden layers. Each layer applies a weighted sum followed by a nonlinear
+activation function, and each layer builds features from the layer before it. Early layers may detect simple
+patterns, and later layers combine them into more abstract ones.
 
-\section{Deep Learning}
+\section{The Chain Rule}\index{chain rule}
+Training a network requires derivatives of a loss through many nested functions. The \newterm{chain rule} gives the derivative of a
+composition: if $y = f(g(x))$, then
+$$\frac{dy}{dx} = f'(g(x)) \cdot g'(x)$$
+For example, let $y = \sin(x^2 + 1)$. Here $f(u) = \sin u$ and $g(x) = x^2 + 1$, so
+$$\frac{dy}{dx} = \cos(x^2 + 1) \cdot 2x$$
+At $x = 1.3$, this is $2(1.3)\cos(2.69) \approx -2.339$.
 
-Deep learning models learn to represent data by training on a large
-number of examples. Unlike shallow neural networks that have one or
-two layers of hidden nodes, deep networks can have tens or even
-hundreds of layers of hidden nodes. Each layer in these networks
-performs a nonlinear transformation of its inputs and is trained to
-extract increasingly abstract features with each additional layer.
+\section{Backpropagation}\index{backpropagation}
+\newterm{Backpropagation} applies the chain rule to every weight in the network. A forward pass computes the output and the loss. A
+backward pass then starts at the loss and moves toward the input, multiplying local derivatives and reusing the values computed in
+the forward pass. Each weight's gradient is the product of the derivatives along its path to the loss.
 
-\section{Chain Rule}
+Consider a single weight $w$ with prediction $\hat{y} = wx$ and loss $L = (\hat{y} - t)^2$. The chain rule gives
+$$\frac{\partial L}{\partial w} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial w} = 2(\hat{y} - t) \cdot x$$
+The gradient descent update from the chapter on gradient descent then moves $w$ against this gradient.
 
-In order to understand how these networks are trained, we need to
-revisit a fundamental concept from calculus, the chain rule. The chain
-rule is used for differentiating compositions of functions. It
-essentially says that the derivative of a composed function is the
-product of the derivatives of the composed functions.
+\section{Practical Points}
+Deep networks are trained with minibatches of examples, using stochastic gradient descent or a variant of it. Very deep networks can
+suffer from vanishing or exploding gradients, because products of many derivatives can shrink or grow rapidly. Modern activation functions
+and careful initialization reduce this problem.
 
-Suppose we have a function $y = f(g(x))$, then the derivative of $y$
-with respect to $x$ is:
+\begin{Exercise}[label=dl1, title=Apply the chain rule]
+Find $\frac{d}{dx}(3x - 1)^4$.
+\end{Exercise}
+\begin{Answer}[ref=dl1]
+$4(3x-1)^3 \cdot 3 = 12(3x-1)^3$.
+\end{Answer}
 
-\begin{equation}
-\frac{dy}{dx} = f'(g(x)) \cdot g'(x)
-\end{equation}
-
-This rule becomes indispensable when calculating the gradient of the
-loss function in a deep learning model with respect to the model
-parameters.
-
-\section{Backpropagation}
-
-Backpropagation is the method used to train deep learning models by
-calculating the gradient of the loss function with respect to each
-weight in the network. The name "backpropagation" comes from the fact
-that the calculation of the gradient proceeds backwards through the
-network, with the gradient of the final layer of weights being
-calculated first and the gradient of the first layer of weights being
-calculated last.
-
-Mathematically, backpropagation uses the chain rule to efficiently
-compute these gradients. Starting from the final layer, the chain rule
-is repeatedly applied to propagate the gradient backwards through the
-network, storing intermediate results as it goes along. Once the
-gradient has been calculated, the weights are updated using a gradient
-descent step.
+\begin{Exercise}[label=dl2, title=One gradient]
+A single weight has $\hat{y} = wx$ and $L = (\hat{y} - t)^2$. Find $\frac{\partial L}{\partial w}$ when $w = 2$, $x = 3$, and $t = 5$.
+\end{Exercise}
+\begin{Answer}[ref=dl2]
+$\hat{y} = 6$, so $\frac{\partial L}{\partial w} = 2(6 - 5)(3) = 6$.
+\end{Answer}

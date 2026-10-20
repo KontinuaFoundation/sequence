@@ -1,6 +1,6 @@
 \chapter{Singular Value Decomposition}
 
-In the previous chapter, you learned how to calculate eigenvalues and eigenvectors. However, not every matrix has them. For those matrices, singular values and singular vectors are analogous features. 
+In the previous chapter, you learned how to calculate eigenvalues and eigenvectors. However, not every matrix has them. For those matrices, \index{singular values}singular values and \index{singular vectors}singular vectors are analogous features. 
 
 Singular Value Decomposition (SVD) is a matrix factorization technique that breaks down a matrix into three matrices that represent the structure and properties of the original matrix. The decomposed matrices make calculations easier and provide insight into the original matrix. Essentially, SVD can transform a high dimension, highly variable set of data into a set of uncorrelated data points that reveal subgroupings that you might not have noticed in the original data. SVD tells us that a linear transformation can be thought of as a rotation, scaling, and another rotation.
 \index{singular value decomposition} \index{svd}
@@ -13,7 +13,7 @@ A = U \Sigma V^T
 \end{equation}
 
 \begin{itemize}
-\item $U$ is an orthogonal matrix whose size is $m \times m$. Its columns are the eigenvectors of $AA^T$. These are the left singular vectors of $A$. Because $U$ is orthogonal, $U^TU = I$.
+\item $U$ is an \index{orthogonal matrix}orthogonal matrix whose size is $m \times m$. Its columns are the eigenvectors of $AA^T$. These are the left singular vectors of $A$. Because $U$ is orthogonal, $U^TU = I$.
 \item $V$ is an orthogonal matrix whose size is $n \times n$ matrix. Its columns are the eigenvectors of $A^TA$. These are the right singular vectors of $A$. Because $V$ is orthogonal, $V^TV = I$.
 \item  $\Sigma$ is a diagonal matrix that is the same size as $A$. Its diagonal contains the singular values of $A$, arranged in descending order. These values are the square roots of the eigenvalues of both $A^TA$ and $AA^T$. 
 \end{itemize}
@@ -24,14 +24,14 @@ SVD has numerous applications:
 \begin{itemize}
 \item It is used in machine learning and data science to perform
   dimensionality reduction, particularly through a technique known as
-  Principal Component Analysis (PCA).
+  \index{principal component analysis}Principal Component Analysis (PCA).
 \item In numerical linear algebra, SVD is used to solve linear
   equations and compute matrix inverses in a more numerically stable
   way.
-\item It is used in image compression, where low-rank approximations of an image matrix provide a compressed version of the original image. 
+\item It is used in image compression, where \index{low-rank approximation}low-rank approximations of an image matrix provide a compressed version of the original image. 
 \end{itemize}
 
-\section{Calculating SVD Manually}
+\section{Calculating SVD Manually}\index{SVD!manual calculation}
 You might be inclined to skip this example because the computations are lengthy. Why would anyone do this when they can use a computing language, like Python, to calculate the SVD with essentially one command? We show this so you can understand what goes on "under the hood" when you compute SVD programmatically. 
 
 After you read through this example, you will see how to use Python to compute SVD. Next, you will see an example of using SVD for image compression. Finally, you will be given an exercise to compute the SVD. For this, you will need to write your own Python script.
@@ -253,7 +253,7 @@ print("Original matrix:")
 print(A_Rebuilt)
 \end{minted}
 
-\section{Sign Ambiguity}
+\section{Sign Ambiguity}\index{sign ambiguity}
 You might notice that at times, the absolute values in the $U$ and $V^T$ matrices are correct, but that the signs vary from what you see as the answer. For example, when you compare a manually calculated SVD with one done in Python the signs might not agree. Both decompositions of $A$ are valid. Both decompositions will satisfy:
 $$A = U \Sigma V^T$$
 Note that the $S$ diagonal values will always be positive. 
@@ -281,7 +281,7 @@ $$V^T =
 $$
 \end{Answer}
 
-\section{SVD Applied to Image Compression}
+\section{SVD Applied to Image Compression}\index{image compression}
 This image consists of a grid of 20 by 10 pixels, each of which is either black or white.
 
 \includegraphics[width=0.4\textwidth]{imagecompress.png}

@@ -12,7 +12,7 @@
 This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs). A lot of these are very advanced graph theory topics, so you won't be tested on too heavily of these topics. Many of these appear on AP/IB exams, or in advanced college level CS classes.
 \section{Adjacency Matrices}
 
-Recall that we can represent graphs as lists of data called adjacency lists. In code, this could look like the following:
+Recall that we can represent graphs as lists of data called \index{adjacency list}adjacency lists. In code, this could look like the following:
 \begin{itemize}
 	\item A: [B, C]
 	\item B: [A, D]
@@ -46,7 +46,7 @@ This represents the following graph
 	\label{fig:adjacency1}
 \end{figure}
 
-We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
+We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \index{adjacency matrix}\newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
 
 $$\begin{array}{c} A=
 		\begin{bmatrix}
@@ -185,7 +185,7 @@ FIXME https://github.com/KontinuaFoundation/sequence/issues/315
 \section{A* (A-star) Search Algorithm}
 % moved from shortest path to graph algorithms so that priority queues can be introduced first.
 
-The last shortest path we will discuss in this chapter is the \newterm{A-star Algorithm}, more commonly represented as \newterm{A* Algorithm}. In essence, it is an extension of Dijkstra's Algorithm in combination with a \emph{priority-based heuristic function}. A heuristic is an introduced estimated cost from any node to the goal.
+The last shortest path we will discuss in this chapter is the \index{A* search}\newterm{A-star Algorithm}, more commonly represented as \newterm{A* Algorithm}. In essence, it is an extension of Dijkstra's Algorithm in combination with a \emph{priority-based heuristic function}. A heuristic is an introduced estimated cost from any node to the goal.
 
 The key behind this implementation is the following function
 \[
@@ -194,7 +194,7 @@ The key behind this implementation is the following function
 where
 \begin{itemize}
 	\item $g(n)$: the cost of the path from the start node (usually $S$) to the current node $n$
-	\item $h(n)$: the \newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
+	\item $h(n)$: the \index{heuristic}\newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
 	\item $f(n) = g(n) + h(n)$: the estimated total cost of a path from $S$ to $E$ passing through node $n$
 \end{itemize}
 
@@ -237,7 +237,7 @@ which causes A* to reduce to to Dijkstra's algorithm. While this guarantees an o
 There is an important property that the Heuristic Function must satisfy:
 $$h(n) \leq \text{true remaining cost}$$
 
-When an admissible heuristic is used (such that $h(n) \leq \text{true remaining cost}$), A* is guaranteed to find an optimal path if one exists.
+When an \index{admissible heuristic}admissible heuristic is used (such that $h(n) \leq \text{true remaining cost}$), A* is guaranteed to find an optimal path if one exists.
 
 \subsection{The Total Estimated Distance $f(n)$ and Priority Queues}
 
@@ -306,7 +306,7 @@ Let's talk about Graph Isomorphism. To do this, we must first introduce the term
 		\item Bijective. Every element of the codomain is reached exactly once.
 	\end{enumerate}
 \end{Answer}
-Now, let's talk about \newterm{Isomorphism}. A \newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
+Now, let's talk about \newterm{Isomorphism}. A \index{graph isomorphism}\newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
 
 \begin{definition}[Graph Isomorphism]
 	Let $G=(V_G,E_G)$ and $H=(V_H,E_H)$ be graphs. An isomorphism from $G$ to $H$ is a bijection
@@ -463,7 +463,7 @@ This shows that every instance of the Clique problem can be transformed into an 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
 FIXME https://github.com/KontinuaFoundation/sequence/issues/312
 \section{Topological Sort and DAGs}
-Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
+Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \index{topological sort}\newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
 
 To do this, we are going to use Python's \texttt{Graphlib}, and its \texttt{TopologicalSorter} module.
 
@@ -575,7 +575,7 @@ This section will be a set of proofs or algorithm design problems for graph-rela
 
 \begin{mdframed}[frametitle = {Bipartite Graph}, style = important]
 
-A \newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitioned into two sets $(V = V_1 \cup V_2)$ and $(V_1 \cap V_2 = empty)$ such that there are no edges between vertices in the same set.
+A \index{bipartite graph}\newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitioned into two sets $(V = V_1 \cup V_2)$ and $(V_1 \cap V_2 = empty)$ such that there are no edges between vertices in the same set.
 FIXME Diagram
 \end{mdframed}
 
@@ -676,7 +676,7 @@ Run DFS on given graph $G$. Find a leaf, $l$ in the output DFS tree (sometimes c
 
 Sometimes, we may need to create new graphs as counterexamples to disprove a statement. Consider the following:
 \begin{theorem}
-An graph $G$ is \newterm{strongly connected} if every vertex is reachable from every other vertex.
+An graph $G$ is \index{strongly connected}\newterm{strongly connected} if every vertex is reachable from every other vertex.
 \end{theorem}
 Another way to say this is that a select vertex of the graph has a path to every other vertex on the graph. Often, this comes up in finding \emph{subgraphs} of graphs that are strongly connected, called \newterm{strongly connected components}.
 \begin{Exercise}[title={Strongly Connected Graphs}, label={ex:proofs_strongly_connected}]

@@ -12,7 +12,7 @@ A quantitative variable like this calls for the same two tools you already trust
 % Continuing example from Statistical Inferences for Proportions. edit to be more clear about this. 
 
 
-Suppose the streaming service now wants to know something different from Statistical Inferences for Proportions's conversion rate: how long, on average, a subscriber watches in a single sitting. A product analyst pulls a random sample of viewing sessions and calculates a sample mean watch time, $\bar{x}$. To turn that one number into a confidence interval or a significance test, you need the standard error of $\bar{x}$, and the standard error depends on the population standard deviation, $\sigma$. Here is the catch: nobody knows $\sigma$. The population's true spread in viewing habits is exactly the kind of thing you would need a census to pin down, and if you had a census, you would not need inference in the first place.
+Suppose the streaming service now wants to know something different from Statistical Inferences for Proportions's conversion rate: how long, on average, a subscriber watches in a single sitting. A product analyst pulls a random sample of viewing sessions and calculates a sample mean watch time, $\bar{x}$. To turn that one number into a confidence interval or a significance test, you need the \index{standard error}standard error of $\bar{x}$, and the standard error depends on the population standard deviation, $\sigma$. Here is the catch: nobody knows $\sigma$. The population's true spread in viewing habits is exactly the kind of thing you would need a census to pin down, and if you had a census, you would not need inference in the first place.
 
 \subsection{Meet the \texorpdfstring{$t$}{t}-Distribution}
 
@@ -32,7 +32,7 @@ A logistics company samples $n = 25$ delivery times and wants to construct a 95 
 $df = n - 1 = 24$. A 95 percent confidence interval splits the remaining 5 percent evenly between the two tails, leaving 2.5 percent, or $0.025$, in the upper tail. Reading the $t$-table at $df = 24$ and upper-tail area $0.025$ gives $t^* = 2.064$.
 \end{Answer}
 
-\subsection{Conditions for Inference about a Mean}
+\subsection{Conditions for Inference about a Mean}\index{conditions for inference}
 
 Two conditions must hold for a $t$-procedure to be valid.
 
@@ -109,7 +109,7 @@ A city transportation office samples $n = 16$ commute times and finds $\bar{x} =
 $df = 15$. A 98 percent confidence interval leaves 1 percent, or $0.01$, in each tail, giving $t^* = 2.602$. The standard error is $\dfrac{6.2}{\sqrt{16}} = 1.55$, so the margin of error is $2.602 \times 1.55 \approx 4.03$ minutes. The interval is $28.4 \pm 4.03 \Rightarrow (24.37,\ 32.43)$ minutes.
 \end{Answer}
  
-\subsection{Interpreting and Justifying the Interval}
+\subsection{Interpreting and Justifying the Interval}\index{confidence interval!interpretation}
  
 An interpretation references two things: the confidence level and the population. For the streaming service example: the analyst is 95 percent confident that the true mean watch time per session, across all sessions, falls between 43.75 and 51.85 minutes.
 
@@ -152,11 +152,11 @@ Both routes return the same margin of error, $4.054$, and the same interval, $(4
 % Insert screenshot: Excel worksheet showing the raw session data or summary statistics in columns A-B, the CONFIDENCE.T and/or manual T.INV.2T formulas in the formula bar, and the resulting interval bounds, update cell references above if layout differs
  
 \begin{Exercise}[title={A Matched-Pairs Interval}, label={ex:means-ci-paired}]
-A call center tests a new training program on $n = 12$ employees, recording each employee's average call-handling time before and after training. The sample of differences (before minus after) has $\bar{d} = -3.2$ minutes and $s_d = 4.5$ minutes. Conditions for inference on the differences are satisfied. Construct a 90 percent confidence interval for $\mu_d$, and state what it suggests about the training program.
+A call center tests a new training program on $n = 12$ employees, recording each employee's average call-handling time before and after training. The sample of differences (after minus before) has $\bar{d} = -3.2$ minutes and $s_d = 4.5$ minutes. Conditions for inference on the differences are satisfied. Construct a 90 percent confidence interval for $\mu_d$, and state what it suggests about the training program.
 \end{Exercise}
  
 \begin{Answer}[ref={ex:means-ci-paired}]
-This is matched pairs, so the sample is the twelve differences, and everything proceeds exactly as it did for a single mean. $df = 11$, and a 90 percent confidence interval leaves 5 percent in each tail, giving $t^* = 1.796$. The standard error is $\dfrac{4.5}{\sqrt{12}} \approx 1.299$, so the margin of error is $1.796 \times 1.299 \approx 2.33$ minutes. The interval is $-3.2 \pm 2.33 \Rightarrow (-5.53,\ -0.87)$ minutes. Because the entire interval is negative, and the differences were defined as before minus after, this suggests call-handling time decreased after training, by somewhere between about 0.87 and 5.53 minutes on average.
+This is matched pairs, so the sample is the twelve differences, and everything proceeds exactly as it did for a single mean. $df = 11$, and a 90 percent confidence interval leaves 5 percent in each tail, giving $t^* = 1.796$. The standard error is $\dfrac{4.5}{\sqrt{12}} \approx 1.299$, so the margin of error is $1.796 \times 1.299 \approx 2.33$ minutes. The interval is $-3.2 \pm 2.33 \Rightarrow (-5.53,\ -0.87)$ minutes. Because the entire interval is negative, and the differences were defined as after minus before, this suggests call-handling time decreased after training, by somewhere between about 0.87 and 5.53 minutes on average.
 \end{Answer}
  
 \begin{Exercise}[title={Spot the Error}, label={ex:means-ci-interp-error}]
@@ -225,7 +225,7 @@ Hypotheses are statements about the population parameter, $\mu$, never about the
 
 Every example so far has looked at one population at a time. Just as often, the real question is a comparison: not "what is the mean watch time," but "is the mean watch time different between two groups."
 
-\subsection{Two Independent Samples}
+\subsection{Two Independent Samples}\index{two-sample t-interval}
 
 Comparing average watch time between free-tier and paid-tier subscribers, two disjoint groups, means the samples are independent. Let $\mu_1, \mu_2$ be the true means. The parameter of interest is $\mu_1 - \mu_2$, point estimate $\bar{x}_1 - \bar{x}_2$.
 
@@ -236,7 +236,7 @@ SE = \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
 (\bar{x}_1 - \bar{x}_2) \pm t^* \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
 \]
 
-Degrees of freedom come from the Welch-Satterthwaite approximation: between $\min(n_1-1, n_2-1)$ and $n_1+n_2-2$.
+Degrees of freedom come from the \index{Welch-Satterthwaite approximation}Welch-Satterthwaite approximation: between $\min(n_1-1, n_2-1)$ and $n_1+n_2-2$.
 
 Conditions: both samples independently and randomly selected, each $n \leq 10\%$ of its population if sampling without replacement, and each sample free of strong skew/outliers or $n \geq 30$.
 
@@ -262,7 +262,7 @@ $SE = \sqrt{\dfrac{1.8^2}{15} + \dfrac{2.1^2}{17}} \approx 0.690$. With $df = 29
 Using the battery-life interval from the previous exercise, does the data provide convincing evidence that Model A's true mean battery life exceeds Model B's by more than one hour? Explain using the interval.
 \end{Exercise}
 
-\begin{Answer}[ref={ex:justify}]
+\begin{Answer}[ref={ex:means-justify}]
 No. The interval $(0.23, 2.57)$ does contain values above 1, but it also contains values below 1, so it does not provide convincing evidence that the difference exceeds one full hour specifically. The interval does support the weaker claim that Model A's mean battery life is greater than Model B's, since the entire interval is positive, just not the stronger one-hour claim.
 \end{Answer}
 
@@ -276,7 +276,7 @@ Pooling assumes the two population standard deviations are equal, $\sigma_1 = \s
 
 \section{Significance Tests for a Difference in Two Means, and Selecting the Right Procedure}
 
-\subsection{Setting Up and Carrying Out the Test}
+\subsection{Setting Up and Carrying Out the Test}\index{hypothesis test!two-sample}
 
 TTesting a claim about $\mu_1 - \mu_2$ follows the same four-step process, usually $H_0: \mu_1 - \mu_2 = 0$, with $H_a: \mu_1 - \mu_2 < 0$, $> 0$, or $\neq 0$.
 
@@ -345,7 +345,7 @@ Categorical or quantitative is usually obvious from the variable itself. Paired 
 
 \subsection{Common Errors}
 
-Type I error, Type II error, and power all carry over from the last chapter without any changes to their definitions, just a change in what the parameter is. A Type I error here means rejecting $H_0: \mu_1 = \mu_2$ when the two population means really are equal, concluding the streaming service's paid tier watches more when it actually does not. A Type II error means failing to reject $H_0$ when there really is a difference, missing a real effect. Power is still the probability of correctly detecting a real difference when one exists, and it still increases with a larger sample size, a larger true difference, or a higher significance level, exactly as it did for proportions.
+\index{Type I error}Type I error, \index{Type II error}Type II error, and \index{power}power all carry over from the last chapter without any changes to their definitions, just a change in what the parameter is. A Type I error here means rejecting $H_0: \mu_1 = \mu_2$ when the two population means really are equal, concluding the streaming service's paid tier watches more when it actually does not. A Type II error means failing to reject $H_0$ when there really is a difference, missing a real effect. Power is still the probability of correctly detecting a real difference when one exists, and it still increases with a larger sample size, a larger true difference, or a higher significance level, exactly as it did for proportions.
 
 \begin{Exercise}[title={Naming the Error}, label={ex:means-test2-error}]
 In the store wait-time test from the previous exercise, the data led to rejecting $H_0$ in favor of Store 1 having a shorter mean wait time. Suppose, unknown to the researcher, the two stores' true mean wait times are actually equal. What type of error, if any, occurred? Explain.

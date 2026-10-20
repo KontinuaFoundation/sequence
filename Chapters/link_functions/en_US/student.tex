@@ -1,61 +1,38 @@
 \chapter{Link Functions}
 
+\section{The Role of a Link}\index{link function}
+A link function $g$ connects the mean of the response, $\mu = E[Y]$, to the linear predictor $\eta$, so that $g(\mu) = \eta$.
+The link must map the allowed values of $\mu$ onto all real numbers, because $\eta$ can be any real number. The
+inverse link $\mu = g^{-1}(\eta)$ turns a prediction on the linear scale back into the scale of the response.
 
-In generalized linear models, the link function provides the
-relationship between the linear predictor and the mean of the
-distribution function. Different choices of link function can be used
-to model different types of relationships. Here are a few commonly
-used link functions:\index{link functions}
+\section{Common Links}
+\begin{itemize}
+\item \textbf{Identity}: $g(\mu) = \mu$. The response is normal, and the mean can be any real number. This is ordinary linear regression.
+\item \textbf{Log}: $g(\mu) = \ln \mu$. The mean must be positive, as for counts. The inverse is $\mu = e^{\eta}$.
+\item \textbf{Logit}: $g(\mu) = \ln\frac{\mu}{1 - \mu}$. The mean is a probability between 0 and 1, as for binary outcomes. The inverse is the logistic function.
+\item \textbf{Probit}: $g(\mu) = \Phi^{-1}(\mu)$, where $\Phi$ is the standard normal distribution function. It is another link for binary outcomes.
+\end{itemize}
 
-\begin{enumerate}
+\section{Working Through the Links}
+For a mean of $\mu = 0.8$, the logit is $\ln\frac{0.8}{0.2} = \ln 4 \approx 1.386$. The inverse logit of 1.386
+returns $\frac{e^{1.386}}{1 + e^{1.386}} = 0.8$. For a mean of $\mu = 10$, the log link is $\ln 10 \approx 2.303$, and
+the inverse gives $e^{2.303} = 10$.
 
-\item \textbf{Identity link:} The identity link function is the
-  simplest form of link function, where the response variable is
-  expected to be the linear combination of the predictors. This is the
-  default link function for Gaussian family distributions.\index{identity link function}
+\section{Choosing a Link}
+The link should respect the range of the response. Use the identity link for real-valued responses, the log link for
+positive or count responses, and the logit or probit link for probabilities. The choice affects how coefficients are
+interpreted. Under the log link, a coefficient multiplies the mean; under the logit link, it multiplies the odds.
 
-\[
-g(\mu) = \mu
-\]
+\begin{Exercise}[label=lf1, title=Logit value]
+Find the logit of $\mu = 0.25$.
+\end{Exercise}
+\begin{Answer}[ref=lf1]
+$\ln\frac{0.25}{0.75} = \ln\frac{1}{3} \approx -1.099$.
+\end{Answer}
 
-\item \textbf{Log link:} The log link function is used when modeling
-  positive data and count data. This link function is the default for
-  Poisson and exponential family distributions.\index{log link function}
-
-\[
-g(\mu) = \log(\mu)
-\]
-
-\item \textbf{Logit link:} The logit link function is often used when
-  modeling binary response data, and is the default link function for
-  binomial family distributions. It gives the log-odds, or the
-  logarithm of the odds $p/(1-p)$. \index{logit link function}
-
-\[
-g(\mu) = \log\left(\frac{\mu}{1-\mu}\right)
-\]
-
-\item \textbf{Probit link:} The probit link function is another common
-  choice for binary response data. It is based on the cumulative
-  distribution function of the standard normal distribution.\index{probit link function}
-
-\[
-g(\mu) = \Phi^{-1}(\mu)
-\]
-
-where $\Phi^{-1}(\cdot)$ is the inverse cumulative distribution
-function of the standard normal distribution.
-
-\item \textbf{Inverse link:} The inverse link function is often used
-  in modeling rates or times. It is the canonical (or default) link
-  function for the Gamma family distributions.
-
-\[
-g(\mu) = \mu^{-1}
-\]
-
-\end{enumerate}
-
-Different link functions can substantially impact the model's
-interpretation, so it's crucial to choose a link function that aligns
-with the nature of the data and the scientific question at hand.
+\begin{Exercise}[label=lf2, title=Interpret the log link]
+Under the log link, $\ln\mu = \beta_0 + \beta_1 x$. If $\beta_1 = 0.2$, by what factor does the mean change when $x$ increases by 1?
+\end{Exercise}
+\begin{Answer}[ref=lf2]
+The mean is multiplied by $e^{0.2} \approx 1.221$, an increase of about 22\%.
+\end{Answer}

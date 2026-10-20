@@ -7,11 +7,11 @@
 
 % FIXME adding stacks and queues as prereqs even though they dont exist yet
 
-Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \newterm{traversals} based on the order in which the nodes are visited.
+Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \index{tree traversal}\newterm{traversals} based on the order in which the nodes are visited.
 
-This chapter will discuss \newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \newterm{level-order}. Each level is traversed in sequential order.
+This chapter will discuss \index{breadth-first search}\newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \index{level-order traversal}\newterm{level-order}. Each level is traversed in sequential order.
 
-Alternatively, there is \newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
+Alternatively, there is \index{depth-first search}\newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
 
 While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires you do have a preselected node a your \emph{start node}.
 \section{BFS}
@@ -160,7 +160,7 @@ However, these orders essentially perform the same basic three tasks,
 
 The recursion terminates when we reach a leaf. At this point, the algorithm returns to the previous call, which is how \emph{backtracking} occurs. This backtracking is done via the stack we had mentioned previously.
 
-\subsection{Pre-order}
+\subsection{Pre-order}\index{pre-order traversal}
 In \texttt{pre-order} traversal, we visit the node \emph{before} exploring its subtrees.
 The order is:
 \[
@@ -174,7 +174,7 @@ Using our original tree, the pre-order results are:
 \begin{center}
     Alan, Brad, Dean, Emily, Connie, Faith, Gordon
 \end{center}
-\subsection{Post-order}
+\subsection{Post-order}\index{post-order traversal}
 In \texttt{post-order} traversal, we visit the node \emph{after} exploring both subtrees.
 The order is:
 \[
@@ -188,7 +188,7 @@ The post-order traversal of our original tree is
 \begin{center}
     Dean, Emily, Brad, Faith, Gordon, Connie, Alan
 \end{center}
-\subsection{In-order}
+\subsection{In-order}\index{in-order traversal}
 In \texttt{in-order} traversal, we visit the node \emph{between} exploring its subtrees.
 The order is:
 \[
@@ -234,7 +234,7 @@ As we've established, trees are recursively defined structures, and as such, our
 
 Importantly, they do not change the traversal order (pre-, in-, post-order); they only change how the traversal is implemented.
 
-A \newterm{recursive traversal} relies on the program's \emph{call stack} (recall from the Advanced Python Syntax chapter). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
+A \index{recursive traversal}\newterm{recursive traversal} relies on the program's \emph{call stack} (recall from the Advanced Python Syntax chapter). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
 
 \begin{Exercise}[title={Recursive DFS}, label={ex:recur_dfs}]
     Take a look at the Iterative DFS code above.

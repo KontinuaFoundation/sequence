@@ -1,4 +1,4 @@
-\chapter{Advanced Python Syntax and Libraries}
+\chapter{Advanced Python Syntax}
 \section{Where did we leave off?}
 In the previous Introduction to Python chapter, We started by installing Python and setting up VSCode, then practiced using the console (terminal) to execute \mintinline{python}{.py} files. Recall that runs code \textbf{sequentially}, one line at a time, and that output appears in the console.
 
@@ -88,7 +88,7 @@ Output:
 \end{minted}
 
 
-We can alter the function to expect a certain parameter type, such as integers, and return a specific type as well:
+We can alter the function to expect a certain parameter type\index{type hints}, such as integers, and return a specific type as well:
 \begin{minted}{python}
 def add(a: int, b: int) -> int:
     return a + b
@@ -387,220 +387,10 @@ class Book:
 \end{minted}
 \end{Answer}
 
-\section{Libraries}
-\index{libraries}
-A \emph{library} is a collection of pre-written code that provides additional
-functionality without requiring you to write everything from scratch. Python
-includes many built-in libraries that can be used to perform common tasks such as
-mathematical calculations, data handling, and visualization. You'll often find that code you are seeking can be found through an open-source library which already exists.
-
-To use a library, it must first be imported.
-
-\subsection{Importing Libraries}
-
-The simplest way to import a library is using the \mintinline{python}{import} keyword.
-
-\begin{minted}{python}
-import math
-print(math.sqrt(16))
-\end{minted}
-
-In this example, the \mintinline{python}{math} library provides access to mathematical
-functions such as square roots.
-
-It is also possible to import specific values or functions from a library.
-
-\begin{minted}{python}
-from math import pi
-print(pi)
-\end{minted}
-
-This allows direct access to \mintinline{python}{pi} without referencing the library name.
-
-\subsection{Summary}
-
-\begin{itemize}
-    \item Libraries extend Python's functionality
-    \item The \mintinline{python}{import} keyword is used to load libraries
-    \item Specific components can be imported directly when needed
-\end{itemize}
-
-\section{Matplotlib}
-Matplotlib is the most widely used plotting library in Python. It can produce simple charts quickly (line plots, scatter plots, bar charts, histograms) and also supports publication-quality figures with precise control over labels, legends, and layout. We will use it widely throughout this course to visualize data, create simulations for proving formulas, and experiment with datasets. 
-\index{matplotlib}\index{creating charts in python|see{matplotlib}}
-\subsection{Installing and importing}
-If you are working locally, you can install Matplotlib with:
-\begin{minted}{bash}
-pip install matplotlib
-\end{minted}
-
-In most scripts, you will import the plotting interface \texttt{pyplot}:
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-\end{minted}
-
-\subsection{A simple line graph}
-A line plot is ideal for showing how a value changes over time or across an ordered variable. Let's create \texttt{line.py} 
-
-\begin{minted}{python}
-import matplotlib.pyplot as plt # the matplotlib library, which we will call using plt
-
-# two lists containing values
-x = [0, 1, 2, 3, 4, 5]
-y = [0, 1, 4, 9, 16, 25]
-
-# a 2d plot, used for line graphs
-plt.plot(x, y)
-# add a title to our plot
-plt.title("A Simple Line Plot")
-# add axis labels
-plt.xlabel("x")
-plt.ylabel("y = x^2")
-plt.show() # pops up a new window
-\end{minted}
-Running \mintinline{bash}|python3 line.py| will open a new \emph{interactive window} in your computer, with the following image:
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{line.png}
-    \caption{The output of line.py.}
-    \label{fig:line}
-\end{figure}
-
-\subsection{Labels, legends, and grids}
-A plot is more useful when it clearly communicates what each element represents. Let's add on to \texttt{line.py} by creating \texttt{lineTwoOutputs.py} and adding labels, a legend, and another set of data. 
-
-
-\begin{minipage}[t]{0.44\textwidth}
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-
-x = [0, 1, 2, 3, 4, 5]
-y1 = [0, 1, 4, 9, 16, 25]
-y2 = [0, 1, 8, 27, 64, 125]
-
-plt.plot(x, y1, label="x^2")
-plt.plot(x, y2, label="x^3")
-
-plt.title("Two Functions on One Axes")
-plt.xlabel("x")
-plt.ylabel("value")
-plt.grid(True)
-plt.legend()
-plt.show()
-\end{minted}
-\end{minipage}
-\begin{minipage}[t]{0.54\textwidth}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{lineTwoOutputs.png}
-    \caption{$y=x^2$ and $y=x^3$ on the same graphed.}
-    \label{fig:lineTwoOutputs}
-\end{figure}
-\end{minipage}
-\subsection{Visualizing Relationships with scatter plots}
-Scatter plots are excellent for showing how two variables relate (for example, height and weight). 
-
-This very basic scatter plot shows the relationship between studying time and score.
-
-\begin{minipage}[t]{0.44\textwidth}
-    
-    \begin{minted}{python}
-    import matplotlib.pyplot as plt
-
-    hours = [1, 2, 3, 4, 5, 6]
-    scores = [55, 60, 66, 72, 78, 85]
-
-    plt.scatter(hours, scores)
-    plt.title("Study Time vs. Score")
-    plt.xlabel("hours studied")
-    plt.ylabel("score")
-    plt.show()
-    \end{minted}
-\end{minipage}
-\begin{minipage}[t]{0.54\textwidth}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{scatter.png}
-    \caption{A scatterplot generated by matplotlib from the given data.}
-    \label{fig:scatter}
-\end{figure}
-\end{minipage}
-
-
-\subsection{Histograms and Distributions}
-A histogram shows how values are distributed and how common different ranges are.
-
-\begin{minipage}[t]{0.44\textwidth}
-
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-# a set of data, for example maybe these are all test scores
-data = [4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 11, 12]
-
-# creates a histogram plot
-plt.hist(data, bins=5)
-plt.title("Histogram of Values")
-plt.xlabel("value")
-plt.ylabel("frequency")
-plt.show()
-\end{minted}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.54\textwidth}
-    
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{histogram.png}
-    \caption{A histogram of a set of data.}
-    \label{fig:histogram}
-\end{figure}
-        
-\end{minipage}
-
-\subsection{The object-oriented approach (recommended)}
-Matplotlib has two main styles:
-\begin{itemize}
-  \item \textbf{State-based} (using \texttt{plt.plot}, \texttt{plt.title}, \dots): quick and convenient.
-  \item \textbf{Object-oriented} (creating a \texttt{Figure} and \texttt{Axes}): more explicit and easier to scale.
-\end{itemize}
-
-For multi-plot layouts or different analysis of datasets, prefer the object-oriented approach:
-    
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-
-x = [0, 1, 2, 3, 4, 5]
-y1 = [0, 1, 4, 9, 16, 25]
-y2 = [0, 1, 8, 27, 64, 125]
-
-# two figures, side by side. axes becomes an indexable list
-fig, axes = plt.subplots(nrows=1, ncols=2)
-
-axes[0].plot(x, y1)
-axes[0].set_title("x^2")
-axes[0].set_xlabel("x")
-axes[0].set_ylabel("value")
-
-axes[1].plot(x, y2)
-axes[1].set_title("x^3")
-axes[1].set_xlabel("x")
-axes[1].set_ylabel("value")
-
-fig.suptitle("Two Subplots")
-fig.tight_layout()
-plt.show()
-\end{minted}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{lineOOP.png}
-    \caption{The two plots, generated side by side.}
-    \label{fig:lineOOP}
-\end{figure}
-
 \section{Errors}
 Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
 
-You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}. 
+You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}\index{exceptions}. 
 \begin{itemize}
     \item Syntax errors occur when your the formatting, or \newterm{syntax}. These errors can usually be found before your code is compiled.
     \item Runtime Errors, or \emph{Exceptions}, occur when operations in your code cause an invalid calculation, or attempt to do an invalid action. These can range anywhere from basic misnamed variables to imported libraries crashing from incorrect data.
@@ -660,7 +450,7 @@ Traceback (most recent call last):
 NameError: name 'x' is not defined
 \end{minted}
 
-You have encountered a \emph{NameError}, because \mintinline{python}{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \mintinline{python}{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
+You have encountered a \emph{NameError}\index{NameError}, because \mintinline{python}{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \mintinline{python}{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
 
 \subsection{Try-Except}
 \index{try-except}
@@ -702,7 +492,7 @@ Name two errors that could occur when this code is run. For each error, explain 
 \section{Recursive Functions}
 As we briefly mentioned in the proofs chapter, \newterm{recursion} is the process of having a given function call itself over an over. Imagine you are making a phone call, but you have the phone that you are speaking into as well as the phone you are calling. If you put them next to each other and say ``Hello!'', it will cause ``Hello!'' to be spoken by the phone speaker into the microphone phone infinitely, until you hang up on one of the phones.\index{recursion}
 
-A \newterm{recursive function} can be as simple as this
+A \newterm{recursive function}\index{recursive function} can be as simple as this
 \begin{minted}{python}
 def foo():
     # recursive call
@@ -715,7 +505,7 @@ However, doing this may cause you to get an error as follows
 \begin{minted}{python}
 RecursionError: maximum recursion depth exceeded
 \end{minted}
-What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case} or \newterm{base condition}.
+What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case}\index{base case} or \newterm{base condition}.
 A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let's look at the famous Fibonacci sequence.\index{fibonacci}
 
 The fibonacci sequence is a sequence of numbers where each term $F_n$ is defined by adding the previous two terms:
@@ -742,7 +532,7 @@ There is a much quicker and more efficient approach. Say we flip to approximatel
 
 We split that interval in half again and flip to page $768$. Suppose the first word there is \textit{gracious}. Since \textit{g} comes before \textit{k}, we know our word must be farther to the right, so we now restrict our search to pages $768$ through $1024$. We continue in this way, each time cutting the remaining search region in half and deciding whether to move left or right depending on alphabetical order.
 
-Eventually, we get to \textit{keyboardist} on page $980$. This method is much faster because every comparison eliminates about half of the remaining pages. Instead of checking pages one by one, we narrow the possibilities dramatically with each step. This process is a \newterm{divide-and-conquer} approach called \newterm{binary search}. Notice that at each step, we aren't actually doing one static action. We are reducing the possible page entries by half, and then recalling the same comparison on the function repeatedly until we reach our target. This is what makes our function a divide-and-conquer recursive algorithm. 
+Eventually, we get to \textit{keyboardist} on page $980$. This method is much faster because every comparison eliminates about half of the remaining pages. Instead of checking pages one by one, we narrow the possibilities dramatically with each step. This process is a \newterm{divide-and-conquer}\index{divide-and-conquer} approach called \newterm{binary search}\index{binary search}. Notice that at each step, we aren't actually doing one static action. We are reducing the possible page entries by half, and then recalling the same comparison on the function repeatedly until we reach our target. This is what makes our function a divide-and-conquer recursive algorithm. 
  %ADD: O notation?
 
 Let's look at what a binary search for a list looks like in python:

@@ -1,41 +1,45 @@
 \chapter{Multiple Logistic Regression}
 
-The simple logistic regression model, discussed in the last chapter,
-uses only one predictor variable, while multiple logistic regression,
-as the name implies, allows for more than one predictor variable.
+\section{More Than One Predictor}\index{logistic regression!multiple}
+\newterm{Multiple logistic regression} extends simple logistic regression to several predictors
+$x_1, \ldots, x_p$. The model for the log odds is
+$$\ln\left(\frac{P(Y = 1)}{1 - P(Y = 1)}\right) = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$$
+Equivalently,
+$$P(Y = 1 \mid x) = \frac{e^{\beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p}}{1 + e^{\beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p}}$$
 
-\section{Multiple Logistic Regression}
+\section{Interpreting the Coefficients}
+Each coefficient describes one predictor while the others are held constant. A one-unit increase in $x_i$
+multiplies the odds of $Y = 1$ by $e^{\beta_i}$.
 
-In multiple logistic regression, we want to model the relationship
-between a binary response variable and multiple predictor
-variables. Let $y$ be the binary response variable and $x_1, x_2, ...,
-x_p$ be $p$ predictor variables. The multiple logistic regression
-model has the form:
+\section{A Worked Example}
+Suppose a student's chance of passing an exam is modeled with hours studied $x_1$ and prior course
+completion $x_2$ (1 if yes, 0 if no), with $\beta_0 = -3$, $\beta_1 = 0.5$, and $\beta_2 = 1$. The linear predictor is
+$$\eta = -3 + 0.5 x_1 + x_2$$
+For a student who studies 4 hours and completed the prior course, $\eta = -3 + 2 + 1 = 0$, so
+$P(\text{pass}) = \frac{1}{1 + e^0} = 0.5$. For a student who studies 2 hours and did not complete the
+prior course, $\eta = -2$, so $P(\text{pass}) = \frac{1}{1 + e^{2}} \approx 0.119$. The odds ratio for
+hours studied is $e^{0.5} \approx 1.649$.
 
-\begin{equation*}
-\ln \left( \frac{P(Y=1|X)}{1-P(Y=1|X)} \right) = \beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_pX_p
-\end{equation*}
+\section{The Divide by 4 Rule}
+The coefficients can be used to estimate effects quickly. The logistic curve has slope $\frac{1}{4}$ at its midpoint,
+where $P = 0.5$. So near $P = 0.5$, a one-unit increase in $x_i$ changes the probability by about $\frac{\beta_i}{4}$.
+This is an approximation. It is most accurate when the probability is near 0.5 and the coefficient is small.
 
-where $P(Y=1|X)$ is the probability of the event $Y=1$ given the
-predictor variables, and $\beta_0, \beta_1, ..., \beta_p$ are the
-parameters of the model. This equation can also be rewritten in terms
-of the probability $P(Y=1|X)$:
+\section{Checking the Model}
+Compare models with and without a predictor using a likelihood ratio test or an information criterion. Check
+that predictors are not strongly correlated with each other, since correlated predictors make the individual
+coefficients unstable.
 
-\begin{equation*}
-P(Y=1|X) = \frac{e^{\beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_pX_p}}{1 + e^{\beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_pX_p}}
-\end{equation*}
+\begin{Exercise}[label=mlog1, title=Compute a probability]
+Using the model above, find $P(\text{pass})$ for a student who studies 6 hours and did not complete the prior course.
+\end{Exercise}
+\begin{Answer}[ref=mlog1]
+$\eta = -3 + 0.5(6) + 0 = 0$, so $P = 0.5$.
+\end{Answer}
 
-In this model, each one-unit increase in $X_i$ multiplies the odds of
-$Y=1$ by $e^{\beta_i}$, holding all other predictors constant.
-
-\section{Divide by 4 Rule}
-
-The "Divide by 4" rule is a rule of thumb for interpreting the
-coefficients in logistic regression. It says that for small values of
-$\beta_i$, a one-unit increase in $X_i$ will change the probability
-$P(Y=1|X)$ by approximately $\beta_i / 4$ at the average value of
-$X_i$.
-
-The rule arises from the derivative of the logistic function at its
-midpoint, and provides a useful and simple way to get an approximate
-sense of the effect size when interpreting the coefficients.
+\begin{Exercise}[label=mlog2, title=Odds ratio]
+In the same model, by what factor do the odds of passing change when a student completes the prior course, holding hours fixed?
+\end{Exercise}
+\begin{Answer}[ref=mlog2]
+The odds are multiplied by $e^{\beta_2} = e^{1} \approx 2.718$.
+\end{Answer}

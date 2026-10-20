@@ -1,56 +1,71 @@
 \chapter{Evaluating the Fit of a Linear Regression Model}
 
-The fit of a linear regression model can be evaluated using several
-statistical metrics. Three common ones include the residuals, the
-coefficient of determination (R-squared or $R^2$), and the root mean
-squared error (RMSE).
+\section{Residuals}\index{residual!plot}
+The residual for observation $i$ is $e_i = y_i - \hat{y}_i$, the observed value
+minus the predicted value. A \newterm{residual plot} graphs $e_i$ against $\hat{y}_i$
+or against $x_i$. If the line fits well, the residuals scatter randomly around
+zero with no clear pattern. A curve in the residual plot means a straight line is the wrong model.
 
-\section{Residuals}
+\section{Sums of Squares}
+Three sums of squares measure the variation in $y$:
+$$SS_{tot} = \sum (y_i - \bar{y})^2, \qquad SS_{res} = \sum (y_i - \hat{y}_i)^2, \qquad
+SS_{reg} = \sum (\hat{y}_i - \bar{y})^2$$
+Here $SS_{tot}$ is the total variation, $SS_{res}$ is the variation the line does not
+explain, and $SS_{reg}$ is the variation the line explains.
 
-Residuals are the differences between the observed and predicted
-values. For an observation $i$, the residual $e_i$ is calculated as\index{residual}
+\section{Coefficient of Determination}\index{R-squared}
+The coefficient of determination is
+$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}}$$
+It is the proportion of the variation in $y$ that the line explains. If the
+line fits perfectly, $SS_{res} = 0$ and $R^2 = 1$. If the line does no better than
+predicting $\bar{y}$ for every point, $SS_{res} = SS_{tot}$ and $R^2 = 0$.
 
-\[
-e_i = y_i - \hat{y}_i
-\]
+For a simple linear regression, $R^2$ is the square of the correlation $r$ between
+$x$ and $y$.
 
-where $y_i$ is the observed value and $\hat{y}_i$ is the predicted
-value. By plotting these residuals against the predicted values, we
-can visually inspect the model's fit. Ideally, the residuals should be
-randomly scattered around zero, and there should be no clear pattern
-in the residual plot.
+\subsection{Example}
+For the quiz data in the simple linear regression chapter, $SS_{res} = 0.107$ and
+$SS_{tot} = 39.708$. So
+$$R^2 = 1 - \frac{0.107}{39.708} \approx 0.997$$
+About 99.7\% of the variation in quiz scores is explained by hours of study.
+This is a very high value. In real data, $R^2$ is often much lower.
 
-\section{R-Squared ($R^2$)}
+\section{Root Mean Squared Error}\index{RMSE}\index{root mean squared error}
+The root mean squared error (RMSE) measures the typical size of a prediction error,
+in the units of $y$:
+$$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2} = \sqrt{\frac{SS_{res}}{n}}$$
+For the quiz data, $RMSE = \sqrt{0.107/5} \approx 0.146$ points. Some textbooks divide by
+$n - 2$ instead of $n$ when estimating error variance in regression. This chapter
+uses $n$ so that RMSE is the root of the average squared error.
 
-R-squared is a statistical measure that represents the proportion of
-the variance in the dependent variable that can be predicted from the
-independent variables. It provides a measure of how well the model's
-predictions fit the data. $R^2$ is calculated as \index{$R^2$}
+\section{Limits of These Measures}
+A high $R^2$ does not mean the model is correct. It can be high for a curved pattern
+fit with a line, or when a single extreme point drives the fit. Always look at the
+residual plot too. Also, $R^2$ never decreases when you add more predictors, so
+it cannot be used alone to compare models with different numbers of predictors.
 
-\[
-R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
-\]
+\begin{Exercise}[label=lr2_1, title=Compute R-squared]
+A regression has $SS_{res} = 25$ and $SS_{tot} = 100$. What is $R^2$, and what does it mean?
+\end{Exercise}
+\begin{Answer}[ref=lr2_1]
+$R^2 = 1 - \frac{25}{100} = 0.75$. The line explains 75\% of the variation in $y$.
+\end{Answer}
 
-where $SS_{res}$ is the sum of squares of residuals and $SS_{tot}$ is
-the total sum of squares. An $R^2$ value of 1 indicates a perfect fit,
-while an $R^2$ of 0 indicates that the model does not explain any of
-the variability of the response data around its mean.
+\begin{Exercise}[label=lr2_2, title=A model that predicts the mean]
+Explain why $R^2 = 0$ for a model that predicts $\bar{y}$ for every observation.
+\end{Exercise}
+\begin{Answer}[ref=lr2_2]
+Such a model has $\hat{y}_i = \bar{y}$, so $SS_{res} = \sum (y_i - \bar{y})^2 = SS_{tot}$.
+Then $R^2 = 1 - \frac{SS_{tot}}{SS_{tot}} = 0$.
+\end{Answer}
 
-\section{Root Mean Squared Error (RMSE)}
-
-RMSE is a frequently used measure of the differences between the
-values predicted by a model and the values actually observed. It's the
-square root of the average of squared differences between prediction
-and actual observation. RMSE is calculated as \index{RMSE} \index{Root
-  Mean Squared Error}
-
-\[
-RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
-\]
-
-A lower RMSE indicates a better fit to the data.
-
-It's important to note that these metrics should not be used in
-isolation to evaluate the model's fit. They should be used in
-combination along with the understanding of the underlying problem and
-domain knowledge.
+\begin{Exercise}[label=lr2_3, title=Compare two residual plots]
+A residual plot shows residuals that are large and positive for small $\hat{y}$,
+negative in the middle, and large and positive again for large $\hat{y}$. What does
+this suggest about the model?
+\end{Exercise}
+\begin{Answer}[ref=lr2_3]
+The pattern is curved, not random. A straight line does not describe the
+relationship, and a model with a curved term, or a transformation of the
+variables, would be a better choice.
+\end{Answer}

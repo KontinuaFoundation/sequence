@@ -4,7 +4,7 @@ If you recall from our basic SQL chapters, we have the ability to create sets of
 
 
 \section{Keys}
-In the experimentation from our first chapter, you may have seen the term \newterm{primary key}. An attribute (or set of attributes) that can uniquely identify rows within a table are called a primary key. That may have just sounded like a set of buzzwords, so let's take a step back:
+In the experimentation from our first chapter, you may have seen the term \newterm{primary key}\index{primary key}. An attribute (or set of attributes) that can uniquely identify rows within a table are called a primary key. That may have just sounded like a set of buzzwords, so let's take a step back:
 
 Take for example the following table:
 \begin{table}[h]
@@ -24,15 +24,15 @@ Take for example the following table:
 \label{tab:keys}
 \end{table}
 
-We can identify columns or combinations of columns that could be used to uniquely identify each row. We can identify pretty much infinite \newterm{super keys}, which are any set of attributes that uniquely identifies a row. What sets these apart is that they may include extraneous attributes that are not required for uniqueness. For example, in the STUDENT table, both \{StudentID\} and \{StudentID, Email\} are super keys, but the latter includes an unnecessary attribute for uniqueness. Keys that contain more than one attribute are called \newterm{composite keys}, and are represented in sequence with parentheses such as (StudentID, Email).
+We can identify columns or combinations of columns that could be used to uniquely identify each row. We can identify pretty much infinite \newterm{super keys}\index{super key}, which are any set of attributes that uniquely identifies a row. What sets these apart is that they may include extraneous attributes that are not required for uniqueness. For example, in the STUDENT table, both \{StudentID\} and \{StudentID, Email\} are super keys, but the latter includes an unnecessary attribute for uniqueness. Keys that contain more than one attribute are called \newterm{composite keys}, and are represented in sequence with parentheses such as (StudentID, Email).
 
-A \newterm{candidate key} is a minimal super key, meaning it has no extraneous attributes. In our STUDENT table, \{StudentID\} and \{SSN\} are candidate keys because they uniquely identify each row and do not contain unnecessary attributes.
+A \newterm{candidate key}\index{candidate key} is a minimal super key, meaning it has no extraneous attributes. In our STUDENT table, \{StudentID\} and \{SSN\} are candidate keys because they uniquely identify each row and do not contain unnecessary attributes.
 
 From the candidate keys, a \newterm{primary key} is selected. By convention, the primary key is underlined. The primary key is the main candidate key chosen to uniquely identify each row in the table. In our STUDENT table, \{StudentID\} could be chosen as the primary key. Then, \{SSN\} would be considered an \newterm{alternate key}, which is a candidate key not selected as the primary key. The reason we select \{StudentID\} over \{SSN\} is that \{SSN\} has real-world representation, which we call a \newterm{natural key}. We do not want to conflate real world attributes with database management tools such as primary keys. 
 
 \textbf{A real world example}: What if we were using an email as the primary key? Then, if the email schema changes due to the business being bought out or renamed (this happened to one of our authors!), we are stuck! A change like \textsf{<firstinitial><lastname>@company.com} to \textsf{<firstname>.<lastname>@company2.com} would break the database. 
 
-This is why we introduce \newterm{surrogate keys}. Surrogate keys are keys with no real world meaning, often stable identifiers that do not change. This includes auto-incrementing integers, Universally Unique Identifiers (\newterm{UUIDs}), or Hex Codes that do not have the opportunity to change. In short, we prefer surrogate keys for primary keys to ensure stability and avoid issues with real-world attribute changes.
+This is why we introduce \newterm{surrogate keys}\index{surrogate key}. Surrogate keys are keys with no real world meaning, often stable identifiers that do not change. This includes auto-incrementing integers, Universally Unique Identifiers (\newterm{UUIDs}), or Hex Codes that do not have the opportunity to change. In short, we prefer surrogate keys for primary keys to ensure stability and avoid issues with real-world attribute changes.
 
 In a few sections we will explore how foreign keys allow us to link tables together using these primary keys.
 
@@ -43,7 +43,7 @@ In a few sections we will explore how foreign keys allow us to link tables toget
 \section{Normalization}
 With all of these key types, our tables can get pretty large. When this happens, we will want to normalize our database to ensure efficiency and reduce \textbf{redundancy}.
 
-We have a process called \newterm{normalization}, which involves organizing, reordering, and restructuring the columns and tables of a database to minimize redundancy and dependency. This can help
+We have a process called \newterm{normalization}\index{normalization}, which involves organizing, reordering, and restructuring the columns and tables of a database to minimize redundancy and dependency. This can help
 \begin{itemize}
     \item improve performance by reducing the amount of redundant data stored, as databases reach high volumes of data.
     \item prevent anomalies, which are inconsistencies or errors that can occur when redundant data is updated, inserted, or deleted.
@@ -55,14 +55,14 @@ Ultimately, there is one primary goal of normalization:
 \end{quote}
 
 \subsection{Functional Dependencies}
-Normalization rests on a single formal idea: the \newterm{functional dependency}. We say an attribute (or set of attributes) $Y$ is functionally dependent on attribute $X$, written $X \rightarrow Y$, if knowing the value of $X$ tells us exactly one corresponding value of $Y$. In other words, $X$ \newterm{determines} $Y$.
+Normalization rests on a single formal idea: the \newterm{functional dependency}\index{functional dependency}. We say an attribute (or set of attributes) $Y$ is functionally dependent on attribute $X$, written $X \rightarrow Y$, if knowing the value of $X$ tells us exactly one corresponding value of $Y$. In other words, $X$ \newterm{determines} $Y$.
 
 For example, in our STUDENT table from earlier, \{StudentID\} $\rightarrow$ \{Email\}, since each StudentID corresponds to exactly one Email. This is exactly why \{StudentID\} can serve as a key: a candidate key is a minimal set of attributes that functionally determines every other attribute in the table.
 
 Two particular kinds of functional dependency will help us reason through the normal forms:
 \begin{itemize}
-    \item A \newterm{partial dependency} occurs when a non-key attribute depends on only part of a composite primary key, rather than the whole key.
-    \item A \newterm{transitive dependency} occurs when a non-key attribute depends on another non-key attribute, rather than depending directly on the primary key.
+    \item A \newterm{partial dependency}\index{partial dependency} occurs when a non-key attribute depends on only part of a composite primary key, rather than the whole key.
+    \item A \newterm{transitive dependency}\index{transitive dependency} occurs when a non-key attribute depends on another non-key attribute, rather than depending directly on the primary key.
 \end{itemize}
 Removing partial dependencies brings a table to 2NF, and removing transitive dependencies brings a table to 3NF.
 
@@ -281,7 +281,7 @@ Lab C & Larry \\
 \section{Entity-Relationship Diagram}
 Now that we have normalized our tables, we can create an \newterm{entity-relationship diagram} to visually represent the relationships between the tables. Often, this process may even clear up further FDs or issues with the database design.\index{ER diagram|see{entity-relationship diagram}}
 
-To do this, we will introduce a new programming language called \newterm{Mermaid}, which allows us to create diagrams directly within \LaTeX documents. It is a text-based diagramming tool that is universally used in other software that supports Mermaid syntax, such as GitHub, Obsidian, and Notion.
+To do this, we will introduce a new programming language called \newterm{Mermaid}\index{Mermaid}, which allows us to create diagrams directly within \LaTeX documents. It is a text-based diagramming tool that is universally used in other software that supports Mermaid syntax, such as GitHub, Obsidian, and Notion.
 
 Using our normalized tables, we can create an ER diagram to visualize the relationships between them.
 
@@ -357,7 +357,7 @@ erDiagram
 \end{figure}
 
 \section{Relational Algebra Basics}
-We have previously talked about set theory and binary operations such as \textit{and}, \textit{or}, and \textit{not}. We can also apply those to data tables using \newterm{relational algebra}.
+We have previously talked about set theory and binary operations such as \textit{and}, \textit{or}, and \textit{not}. We can also apply those to data tables using \newterm{relational algebra}\index{relational algebra}.
 
 To begin, let's use our normalized equipment table (\ref{tab:equipment_3nf}) to demonstrate some basic relational algebra operations. We are going to fill it with some more data, however, to demonstrate the operations more clearly (see Table~\ref{tab:equipment_expanded}).
 
@@ -401,7 +401,7 @@ E74 & CNC Machine & Lab C \\
 \section{Relating Two Tables}
 % Formally address how two tables can be linked using foreign keys.
 
-Now let's say we have two tables, \texttt{Equipment} and \texttt{Location}, and we want to relate them using a \newterm{foreign key}. The \texttt{Equipment} table has a column \texttt{EquipmentLocation} that references the primary key \texttt{EquipmentLocation} in the \texttt{Location} table. This allows us to link each piece of equipment to its corresponding location.
+Now let's say we have two tables, \texttt{Equipment} and \texttt{Location}, and we want to relate them using a \newterm{foreign key}\index{foreign key}. The \texttt{Equipment} table has a column \texttt{EquipmentLocation} that references the primary key \texttt{EquipmentLocation} in the \texttt{Location} table. This allows us to link each piece of equipment to its corresponding location.
 
 Let's first create the \texttt{Equipment} table with a foreign key referencing the \texttt{Location} table.
 \begin{minted}{sql}

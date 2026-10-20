@@ -1,55 +1,46 @@
 \chapter{Generalized Linear Models}
 
-In statistics, generalized linear models (GLMs) are a flexible
-generalization of ordinary linear regression models for response
-variables that are not normally distributed. If you're already
-familiar with multiple linear regression, you're well on your way to
-understanding GLMs.\index{GLMs} \index{generalized linear models}
+\section{Beyond the Normal Distribution}\index{generalized linear model}
+Ordinary linear regression assumes the response is normal, with a mean that is a linear function of the predictors.
+Many responses are not normal: counts, binary outcomes, and positive amounts all violate that assumption. A
+\newterm{generalized linear model} (GLM) keeps the linear predictor but allows other distributions for the response.
 
-\section{Components of a Generalized Linear Model}
-
-A GLM consists of three components:
-
+\section{Three Components}
+A GLM has three parts.
 \begin{enumerate}
-    \item A random component: This is a specification of the
-      probability distribution of the response variable (e.g., normal,
-      binomial, Poisson distributions, etc.). This differs from
-      ordinary linear regression, which assumes that the response
-      variable follows a normal distribution.
-    \item A systematic component: This is the linear predictor, a
-      linear combination of the explanatory variables, just as in
-      ordinary linear regression.
-    \item A link function: This is a function that connects the mean
-      of the response variable to the linear predictor. The choice of
-      link function depends on the nature of the response variable and
-      the range of its possible values.
+\item \textbf{Random component}: the distribution of the response, such as normal, binomial, or Poisson.
+\item \textbf{Systematic component}: the linear predictor $\eta = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p = X\boldsymbol{\beta}$.
+\item \textbf{Link function} $g$: a function that connects the mean of the response to the linear predictor,
+$$g(E[Y]) = \eta$$
 \end{enumerate}
 
-\section{Formulation of a Generalized Linear Model}
+\section{Choosing a Model}
+The distribution is chosen by the type of response. Counts often use a Poisson distribution, and yes-or-no
+outcomes use a binomial distribution. The link is then chosen so the mean stays in the allowed range. The
+\newterm{canonical} link for each distribution is a natural default. The chapter on link functions lists the common choices.
 
-The GLM can be formulated as follows:
+\section{A Worked Example}
+A Poisson model for the number of customers $Y$ per hour uses the log link. Suppose $\beta_0 = 0.5$ and $\beta_1 = 0.2$,
+and $x = 3$ is the number of staff on duty. Then
+$$\eta = 0.5 + 0.2(3) = 1.1$$
+The log link gives $\ln(E[Y]) = 1.1$, so the expected number of customers is $E[Y] = e^{1.1} \approx 3.004$.
+The log link keeps the mean positive, which is required for counts.
 
-\begin{equation}
-g(E(Y)) = \eta = X\beta
-\end{equation}
+\section{Fitting a GLM}
+Parameters are estimated by maximum likelihood, not least squares. Software iterates until the likelihood stops increasing.
+Logistic regression is the GLM with a binomial response and logit link, and ordinary linear regression is the GLM with a
+normal response and identity link.
 
-Here, $Y$ is the response variable, $X$ represents the matrix of
-explanatory variables, $\beta$ is the vector of parameters to be
-estimated, $\eta$ is the linear predictor, $E(Y)$ represents the
-expected value of $Y$, and $g(.)$ is the link function.
+\begin{Exercise}[label=glm1, title=Compute the mean]
+In the Poisson model above, what is the expected count when $x = 5$?
+\end{Exercise}
+\begin{Answer}[ref=glm1]
+$\eta = 0.5 + 0.2(5) = 1.5$, so $E[Y] = e^{1.5} \approx 4.48$.
+\end{Answer}
 
-\section{Fitting a Generalized Linear Model}
-
-The parameters $\beta$ in a GLM are typically estimated using maximum
-likelihood estimation (MLE). The specifics of this process depend on
-the probability distribution of the response variable and the link
-function.
-
-\section{Examples of Generalized Linear Models}
-
-Examples of GLMs include:
-
-\begin{itemize}
-    \item Logistic regression: This is a GLM with a binomial response variable and a logit link function.
-    \item Poisson regression: This is a GLM with a Poisson response variable and a log link function.
-\end{itemize}
+\begin{Exercise}[label=glm2, title=Name the model]
+A survey records whether each person voted (yes or no). Which GLM is appropriate, and what is its link?
+\end{Exercise}
+\begin{Answer}[ref=glm2]
+Logistic regression: a binomial response with the logit link.
+\end{Answer}

@@ -1,6 +1,6 @@
 \chapter{Bitmaps}\label{chap:bitmaps}
 %OVERALL NOTE: This chapter is an introduction to bitmaps, following the hexbinary chapter. It assumes C++ knowledge, way may cause an issue with the learning curve. 
-Let's talk about another image format: the Bitmap. The Bitmap, denoted with file type \mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
+Let's talk about another image format: the Bitmap. The Bitmap, denoted with file type \index{BMP file format}\mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
 
 Bitmaps are uncompressed, meaning they can take up a lot of storage space compared to other image formats like JPEG or PNG. However, they are simple to read and write in code, making them useful for certain applications where image quality is more important than file size.
 
@@ -36,7 +36,7 @@ When traversing a bitmap, it's important to understand its structure. A bitmap f
 
 In a $24$-bit bitmap, each pixel is represented by $3$ bytes (one byte for each color component). The pixel data is usually stored in a bottom-up order, meaning the first row of pixel data corresponds to the bottom row of the image.
 
-\subsection{Bitmap Headers}
+\subsection{Bitmap Headers}\index{BITMAPINFOHEADER}
 The bitmap header is typically constructed with a file section and info section. Following those comes the pixel data, represented as bytes.
 \begin{minted}{text}
 | File Header (?) | Info Header (usually 40 bytes) | Pixel Data (rowSize*height) |
@@ -86,7 +86,7 @@ struct PIXEL
 };
 \end{minted}
 \subsection{Padding}
-Remember that bytes are stored in a contiguous block of memory, as one long string of bytes. The computer does not inherently know where one row ends and the next begins (a concept called \textbf{row-major order})\footnote{In row-major order, 2D arrays like bitmaps are stored sequentially in memory, row by row. To review this concept, refer back to the Vectors and Matrices Chapter, which explains how matrices can be analyzed in row-major order.}. We need to calculate the starting index of each pixel based on its row and column position. But, there is an issue: each row of pixel data in a bitmap must be aligned to a $4$-byte boundary. 
+Remember that bytes are stored in a contiguous block of memory, as one long string of bytes. The computer does not inherently know where one row ends and the next begins (a concept called \index{row-major order}\textbf{row-major order})\footnote{In row-major order, 2D arrays like bitmaps are stored sequentially in memory, row by row. To review this concept, refer back to the Vectors and Matrices Chapter, which explains how matrices can be analyzed in row-major order.}. We need to calculate the starting index of each pixel based on its row and column position. But, there is an issue: each row of pixel data in a bitmap must be aligned to a $4$-byte boundary. 
 
 Padding exists in bitmap images to ensure that each row of pixel data is aligned to a 4-byte boundary in memory, which was a design choice made to improve performance and simplicity on early computer systems. Processors and hardware are more efficient when reading data that begins at predictable, aligned memory addresses, and forcing each row to occupy a size divisible by four bytes guarantees this alignment.
 
@@ -113,7 +113,7 @@ $9$ is not evenly divisible by $4$, so 3 bytes of memory must be added as paddin
 ... | ?? | ?? | [B G R] [B G R] [B G R] [ P ] [ P ] [ P ] | ?? | ?? | ...
 \end{minted}
 
-Note that we read the pixels in \texttt{B G R} order in memory, but hex colors are read usually to humans via \texttt{R G B} order. This gets into a concept called \emph{little endian}. Put simply in a \href{https://stackoverflow.com/questions/367449/what-exactly-is-bgr-color-space}{stack overflow post}:
+Note that we read the pixels in \index{BGR order}\texttt{B G R} order in memory, but hex colors are read usually to humans via \texttt{R G B} order. This gets into a concept called \index{little endian}\emph{little endian}. Put simply in a \href{https://stackoverflow.com/questions/367449/what-exactly-is-bgr-color-space}{stack overflow post}:
 \begin{quote}
     RGB is a byte-order. But a deliberate implementation choice of most vanilla Graphics libraries is that they treat colours as unsigned 32-bit integers internally, with the three (or four, as alpha is typically included) components packed into the integer.
 
@@ -269,7 +269,7 @@ After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp ou
         \centering
         \includegraphics[width=.95\textwidth]{cow.png}
         \caption{Input image of a highland cow.}
-        \label{fig:cow1}
+        \label{fig:cow1-bitmap}
     \end{subfigure}%
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
@@ -314,7 +314,7 @@ What is happening here?
 
 In an RGB image, each pixel's final color is the combination of red, green, and blue intensities. If the green value is removed, every pixel changes from (R,G,B) to (R,0,B). Colors that relied heavily on green—such as greens, yellows, and many skin tones—lose a major part of their intensity and appear much darker or shifted in hue. Pure green areas become black, yellow areas (red + green) become red, and cyan areas (green + blue) become blue.
 
-Visually, the image often takes on a magenta or purplish tint (see Figures~\ref{fig:cow_no_green} and \ref{fig:gradient_no_green}), because magenta is the combination of red and blue with no green. Overall brightness decreases, since green contributes significantly to the brightness in human vision. Refer to Figures~\ref{fig:cow1} and \ref{fig:grad1} for the original bitmaps.
+Visually, the image often takes on a magenta or purplish tint (see Figures~\ref{fig:cow_no_green} and \ref{fig:gradient_no_green}), because magenta is the combination of red and blue with no green. Overall brightness decreases, since green contributes significantly to the brightness in human vision. Refer to Figures~\ref{fig:cow1-bitmap} and \ref{fig:grad1} for the original bitmaps.
 
 \begin{figure}[H]
     \centering
@@ -391,7 +391,7 @@ struct BITMAPINFOHEADER {
 };
 #pragma pack(pop)
 \end{minted}
-These structures match the on-disk layout of a bitmap header exactly. The \texttt{\#pragma pack} directive ensures that no padding bytes are inserted by the compiler.
+These structures match the on-disk layout of a bitmap header exactly. The \index{pragma pack}\texttt{\#pragma pack} directive ensures that no padding bytes are inserted by the compiler.
 
 Recall that we can reuse our calculations from the first example to find rowsize and other variables, but this time, we define them instead of fetching them from the input:
 \begin{minted}{cpp}
@@ -615,7 +615,7 @@ int main(int argc, char const *argv[])
 \section{Connection to transformations}
 What if alter the pixel values in a more complex way? For example, instead of altering the colors themselves, we alter the pixel positions. This is what is called a transformation, and is a fundamental concept in computer graphics. A transformation is a mathematical operation that changes the position, size, or orientation of an object in a graphical space. In the context of bitmaps, transformations can be applied to the pixel data to achieve various effects, such as rotation, scaling, translation, and shearing.
 
-What if you took a selfie, but then wanted to mirror it horizontally, to get a more representation of your face? This is a common transformation called a horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
+What if you took a selfie, but then wanted to mirror it horizontally, to get a more representation of your face? This is a common transformation called a \index{horizontal flip}horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
 
 Since we are storing our pixel data as $(x,y)$ coordinates, we can easily apply transformations by manipulating these coordinates. For an image with width $w$ and height $h$, the horizontal flip transformation can be expressed mathematically as:
 $$x' = w - 1 - x,\qquad y' = y$$
@@ -652,7 +652,7 @@ for (int y = 0; y < h; y++)
 }
 \end{minted}
 
-Taking the input bitmap of the cow from \ref{fig:cow1} and running this code produces the horizontally flipped output in \ref{fig:cow_mirrored}.
+Taking the input bitmap of the cow from \ref{fig:cow1-bitmap} and running this code produces the horizontally flipped output in \ref{fig:cow_mirrored}.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
     \begin{center}

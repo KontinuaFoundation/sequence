@@ -56,7 +56,7 @@ Now we can sum across the columns and rows.
   & $V_0$ & $V_1$ & $V_2$ & sum \\
   \hline
   $T_{+}$ & 0.137 & 0.056 & 0.149 & $p(T_{+}) = 0.342$\\
-  $T_{-}$ & 0.143 & 0.118 & 0.398 & $p(T_{+}) = 0.547$\\
+  $T_{-}$ & 0.143 & 0.118 & 0.398 & $p(T_{-}) = 0.658$\\
   \hline
   sum & $p(V_0) = 0.280$ & $p(V_1) = 0.174$ & $p(V_2) = 0.547$ & 
 \end{tabular}
@@ -65,7 +65,7 @@ If a child is chosen randomly from the entire student body, there is
 a 34.2\% that the student has tested positive for the virus, and there is
 17.4\% chance that the student has one shot of the vaccine.
 
-This summing of the probabilities across one dimension is known as
+\index{marginal probability}This summing of the probabilities across one dimension is known as
 \textit{marginalizing}. Marginalization is just summing across all the
 variables that you don't care about. If you don't care who has the virus,
 just the probability that a student has not received even one shot of
@@ -77,13 +77,12 @@ study group together, what is the probability that \textit{none} of
 them has tested positive for the virus?''
 
 The chance that a randomly chosen student doesn't have the virus
-($p(T_{-}$) is 54.7\%.  This means the chance that 5 randomly chosen
-students don't have the virus is $0.547 \times 0.547 \times 0.547
-\times 0.547 \times 0.547 = 0.0489$ Thus, the probability of the
-opposite is $1.0 - 0.0489 = 0.951$
+($p(T_{-}$) is 65.8\%.  This means the chance that 5 randomly chosen
+students don't have the virus is $0.658^5 \approx 0.124$. \index{complement rule}Thus, the probability of the
+opposite is $1.0 - 0.124 = 0.876$
 
 The answer, then, is ``If you put 5 kids in a study group together,
-there is a 95.1 \% probability that at least one of them has the
+there is an 87.6 \% probability that at least one of them has the
 virus.''
 % KA: https://www.khanacademy.org/math/ap-statistics/probability-ap/stats-conditional-probability/v/testing-independence-from-experimental-data
 
@@ -97,7 +96,7 @@ This involves the idea of \textit{Conditional probability}.  You want
 to know the odds that a student doesn't have the virus, given that
 the student has had both shots of the vaccine.
 
-There is a mathematical notation for this:
+There is a mathematical notation for this:\index{conditional probability!notation}
 
 $$p(T_{-} | V_{2})$$
 
@@ -115,7 +114,7 @@ this way. Divide the probability that a randomly chosen student had a
 positive test \textit{and} both vaccination shots by the probability
 that a student had both vaccination shots:
 
-$$p(T_{-} | V_{2}) = \frac{p(T_{-} \text{ AND } V_{2})}{p(T_{-})} =  \frac{0.398}{0.547} \approx 72.7\%$$
+$$p(T_{-} | V_{2}) = \frac{p(T_{-} \text{ AND } V_{2})}{p(V_{2})} =  \frac{0.398}{0.547} \approx 72.7\%$$
 
 Notice that this is different from $p( V_{2} | T_{-})$, which is the
 probability that a student has had both vaccinations, given they
@@ -125,7 +124,7 @@ Back to the principal's question: ``If you have five students who have had
 both vaccinations, what is the probability that all of them tested
 negative for the virus?'' The probability that one student is virus-free
 is $\frac{8}{11}$, so the probability that five students are virus-free
-is $\frac{8}{11}^5 \approx 0.203$.  So, there is a $79.6\%$ chance
+is $\frac{8}{11}^5 \approx 0.203$.  So, there is a $79.7\%$ chance
 that at least one of the five has the virus.
 % KA: https://www.khanacademy.org/math/statistics-probability/probability-library/conditional-probability-independence/v/calculating-conditional-probability
 
@@ -145,7 +144,7 @@ and win the lottery is equal to the probability that you buy a ticket
 times the probability that you win, given that you have bought a ticket.
 (Here $A$ is ``win the lottery'' and $B$ is ``buy a ticket''.)
 
-This is known as \textit{The Chain Rule of Probability}.  We can
+This is known as \index{chain rule of probability}\textit{The Chain Rule of Probability}.  We can
 chain together as many events as we want: The probability that you are
 going to die in the car that you bought with your winnings from the
 lottery ticket you bought is:

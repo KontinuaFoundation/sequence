@@ -1,42 +1,58 @@
-\chapter{Introduction to Classification and Regression}
+\chapter{Classification and Regression}
 
+\section{Supervised Learning}\index{supervised learning}
+In \newterm{supervised learning}, we are given labeled examples: inputs $\mathbf{x}$ paired with the correct
+output $y$. The goal is a function $f$ that predicts $y$ for a new input. Everything in this unit is
+supervised learning.
 
-Classification and regression are two types of supervised learning
-methods in machine learning and statistics. In supervised learning,
-the goal is to learn a mapping function from inputs $\mathbf{x}$ to an
-output $y$, given a labeled set of input-output pairs.
+\section{Classification}\index{classification}
+In \newterm{classification}, the output $y$ is a category. If there are two categories, the problem is
+\newterm{binary}. An email filter that labels each message ``spam'' or ``not spam'' is a binary classifier.
+If there are more than two categories, the problem is \newterm{multi-class}. Identifying one of three
+iris species from petal and sepal measurements is multi-class.
 
-\section{Classification Systems}
+\section{Regression}\index{regression!supervised}
+In \newterm{regression}, the output $y$ is a number. Predicting the price of a house from its size
+and number of rooms is regression. The same features could support either task, depending on what is
+being predicted.
 
-In classification, the output $y$ is a categorical or discrete
-value. For example, if we are developing a system to predict whether
-an email is spam or not, $y$ can take two values: "spam" or "not
-spam". This is an example of a binary classification problem.\index{Classification}
+\section{Choosing Tools}
+Several methods appear in this unit. Linear regression predicts a number, and logistic regression predicts a
+probability for a binary category. Neural networks and decision trees can do either task. The table
+below summarizes the output type and a typical error measure.
 
-Classification problems that have more than two categories are known
-as multi-class classification problems. For example, predicting the
-species of an iris flower from a set of measurements of its petals and
-sepals is a multi-class classification problem, as there are three
-species of iris flowers.
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Task & Output & Typical error measure \\
+\hline
+Regression & a number & mean squared error \\
+\hline
+Binary classification & a probability, then a class & cross-entropy, accuracy, F1 \\
+\hline
+Multi-class classification & a class among several & accuracy, cross-entropy \\
+\hline
+\end{tabular}
+\end{center}
 
-\section{Regression Systems}
+\section{Measuring Performance}
+Regression is judged by how far predictions are from the true values, usually with mean squared error or
+mean absolute error. Classification uses the confusion matrix measures from the chapter on evaluating
+classifiers. A model should always be judged on data it was not trained on.
 
-In regression, the output $y$ is a continuous value. For example, if
-we are developing a system to predict the price of a house given
-features like its size, location, number of rooms, etc., the output is
-a continuous number which represents the price.\index{Regression}
+\begin{Exercise}[label=cr1, title=Name the task]
+For each task, say whether it is classification or regression, and whether it is binary or multi-class:
+(a) predicting tomorrow's temperature; (b) sorting a photo into cat, dog, or bird; (c) deciding whether a loan will default.
+\end{Exercise}
+\begin{Answer}[ref=cr1]
+(a) Regression, since temperature is a number. (b) Classification, multi-class, with three categories.
+(c) Classification, binary, since default is yes or no.
+\end{Answer}
 
-\section{Algorithms}
-
-There are many algorithms used to solve classification and regression
-problems, ranging from simple ones like linear regression for
-regression problems and logistic regression for binary classification
-problems, to more complex ones like neural networks, which can be used
-for both classification and regression problems.
-
-\section{Performance Metrics}
-
-Performance of classification and regression models is evaluated using
-different metrics. For classification, these include accuracy,
-precision, recall, and F1 score. For regression, common metrics
-include mean absolute error, mean squared error, and R-squared.
+\begin{Exercise}[label=cr2, title=Choose a measure]
+A model predicts house prices. Which error measure is appropriate, and why is accuracy not?
+\end{Exercise}
+\begin{Answer}[ref=cr2]
+Mean squared error (or mean absolute error). Accuracy requires an exact match, and two predicted prices
+are almost never exactly equal to the true price, so accuracy is not meaningful for a number.
+\end{Answer}

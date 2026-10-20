@@ -9,7 +9,7 @@ This is the question that Russian mathematician Andrey Markov curious about:
     How much history of a state do you need to predict a current state?
 \end{quote}
 
-His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states. Generally, this chapter will deal with \newterm{discrete-time Markov chains}, where the process evolves in discrete time steps. We will discuss continuous-time Markov chains in a later chapter.
+His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \index{Markov property}\newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states. Generally, this chapter will deal with \newterm{discrete-time Markov chains}, where the process evolves in discrete time steps. We will discuss continuous-time Markov chains in a later chapter.
 
 Suppose there are 3 days: Yesterday, Today, and Tomorrow. Information about Yesterday's weather does not provide any additional information about Tomorrow's weather once we know Today's weather.
 
@@ -21,7 +21,7 @@ $$
 
 While weather, in reality, is not perfectly Markovian, this property allows us to model and predict it using a simplified framework. In a Markov chain, we can represent the states (\texttt{Sunny}, \texttt{Rainy}, \texttt{Cloudy}) and the probabilities of transitioning from one state to another.
 
-Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Notice the special $S$ in the notation $\mathcal{S}$, which stands for \textit{state space}.
+Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \index{state space}\newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Notice the special $S$ in the notation $\mathcal{S}$, which stands for \textit{state space}.
 
 Based on historical observations, we might estimate the following probabilities:
 
@@ -32,7 +32,7 @@ Based on historical observations, we might estimate the following probabilities:
 
 These probabilities completely describe our Markov chain. Once we know today's weather, we can predict the probabilities for tomorrow's weather without needing to know what happened last week.
 
-The states and transitions probabilities can be represented using a \newterm{Markov chain}, also called a \newterm{state diagram},(which looks similar to a graph!):
+The states and transitions probabilities can be represented using a \index{Markov chain}\newterm{Markov chain}, also called a \newterm{state diagram},(which looks similar to a graph!):
 
 \begin{figure}[H]
     \centering
@@ -148,7 +148,7 @@ As the number of states increases, the Markov chain can become more complex. How
 
 \section{Transition Matrices}
 
-A \newterm{transition matrix} (also sometimes called a \newterm{stochastic matrix}) records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
+A \index{transition matrix}\newterm{transition matrix} (also sometimes called a \newterm{stochastic matrix}) records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
 
 A transition matrix $P$ for a Markov chain with $n$ states can be represented as follows:
 \[
@@ -306,7 +306,7 @@ Note that this is only possible square matrices, which means the number of state
     So $$P^3_{\text{Blue},\text{Green}} = P(X_{n+3}=\text{Green}\mid X_n=\text{Blue})=0.111$$, which means that if the chemical is currently blue, there is an 11.1\% chance it will be green after 90 minutes.
 \end{Answer}
 \section{Steady State Distribution}
-For many Markov chains, these probabilities eventually stabilize (recall \textbf{Law of Large Numbers}, $P^k$ as $k \rightarrow \infty$) as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
+For many Markov chains, these probabilities eventually stabilize (recall \textbf{Law of Large Numbers}, $P^k$ as $k \rightarrow \infty$) as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \index{steady-state distribution}\newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
 
 A steady-state distribution has a special property: applying the transition matrix does not change it. If $\mathbf{x}$ is a steady-state vector and $P$ is the transition matrix, then
 
@@ -379,7 +379,7 @@ The following example illustrates how eigenvectors can be used to determine the 
 \end{Answer}
 \section{Applications}
 % add a general application paragraph
-\subsection{PageRank}
+\subsection{PageRank}\index{PageRank}
 
 Imagine an individual browsing the internet. They start on a random webpage and click on links to navigate to other pages. The probability of moving from one webpage to another can be modeled as a Markov chain, where each webpage represents a state and the links between pages represent transitions with certain probabilities.
 
@@ -397,11 +397,11 @@ There may be an additional \newterm{damping factor} ($d$) that is introduced to 
 \]
 where $J$ is the all-ones matrix and $n$ is the number of pages. This ensures the resulting chain is irreducible and aperiodic, so the steady-state distribution exists and is unique.
 \subsection{Hidden Markov Models and NLP}
-\newterm{Hidden Markov Models} (HMMs) are an expanded version of a Markov Process. In addition to having probabilities about transition from state to state, it also has influencing \newterm{observations}, called \newterm{emissions}. An emission is a \emph{visible} output generated by those the states in play, often which are hidden or not visible.
+\index{hidden Markov model}\newterm{Hidden Markov Models} (HMMs) are an expanded version of a Markov Process. In addition to having probabilities about transition from state to state, it also has influencing \newterm{observations}, called \newterm{emissions}. An emission is a \emph{visible} output generated by those the states in play, often which are hidden or not visible.
 
 Assume you have a patient in a hospital with two possible states: $\mathcal{S} = \{\text{Sick}, \text{Healthy}\}$. You cannot know the exact state at a current time with certainty. However, you have three observable factors: $\mathcal{O} = \text{no fever}, \text{fever}, \text{cough}$. You may also see the emission states symbolized with $\mathcal{E}$.
 
-For each state change observation (for this example, lets say once a day), you need both the transition matrix and the \newterm{emission matrix}. We will define the transition matrix $T$ and emission matrix $E$ as follows:
+For each state change observation (for this example, lets say once a day), you need both the transition matrix and the \index{emission matrix}\newterm{emission matrix}. We will define the transition matrix $T$ and emission matrix $E$ as follows:
 % sick | healthy
 \[S = \begin{bmatrix}
         0.8 & 0.2 \\ % sick

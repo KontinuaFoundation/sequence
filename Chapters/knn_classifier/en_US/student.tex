@@ -1,49 +1,69 @@
 \chapter{The k-Nearest Neighbor Classifier}
 
-The k-nearest neighbors (k-NN) algorithm is a type of instance-based
-learning algorithm used for classification and regression. Given a
-new, unknown observation, k-NN algorithm searches through the entire
-dataset to find the `k` training examples that are closest to the new
-instance, and predicts the label based on these `k` nearest neighbors.\index{k-nearest neighbor}
+\section{The Idea}\index{k-nearest neighbor}
+The \newterm{k-nearest neighbor} (k-NN) classifier predicts the class of a new point
+from the points closest to it. It needs no model to be fit. It stores the training data,
+and does all its work when a prediction is requested. This is called \emph{instance-based} learning.
 
-\section{The k-NN Algorithm}
-
-The algorithm can be summarized as follows:
-
+\section{The Algorithm}
+To classify a new point $\mathbf{x}$:
 \begin{enumerate}
-    \item Given a new observation $\mathbf{x}$, compute the distance
-      between $\mathbf{x}$ and all points in the training set.
-    \item Identify the `k` points in the training data that are
-      closest to $\mathbf{x}$.
-    \item If k-NN is used for classification, output the most common
-      class among these `k` points as the prediction. If k-NN is used
-      for regression, output the average of the values of these `k`
-      points as the prediction.
+\item Compute the distance from $\mathbf{x}$ to every training point.
+\item Find the $k$ training points with the smallest distances.
+\item Predict the most common class among those $k$ points.
 \end{enumerate}
+For regression, step 3 is replaced by the average of the $k$ values.
 
-The distance between points can be calculated using various metrics,
-the most common one being the Euclidean distance:
+\section{Distance}\index{Euclidean distance}
+The usual distance is the Euclidean distance. For two points with $n$ features,
+$$d(\mathbf{x}, \mathbf{y}) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}$$
 
-\[
-d(\mathbf{x}, \mathbf{y}) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}
-\]
+\section{A Worked Example}
+Six labeled points are given in the plane:
+$$A: (1,1), \quad A: (2,1), \quad A: (4,1), \quad B: (2,3), \quad B: (5,4), \quad B: (6,5)$$
+Classify the new point $\mathbf{x} = (1, 2.5)$. The distances to the nearest points are:
+\begin{itemize}
+\item $(2,3)$, labeled B: $\sqrt{1^2 + 0.5^2} \approx 1.118$
+\item $(1,1)$, labeled A: $\sqrt{0^2 + 1.5^2} = 1.5$
+\item $(2,1)$, labeled A: $\sqrt{1^2 + 1.5^2} \approx 1.803$
+\end{itemize}
+With $k = 1$, the nearest point is labeled B, so the prediction is B. With $k = 3$, the three
+nearest points are B, A, and A, so the prediction is A. The choice of $k$ changed the answer.
 
-where $n$ is the number of features, and $x_i$ and $y_i$ are the
-corresponding features of $\mathbf{x}$ and $\mathbf{y}$.
+\section{Choosing $k$}
+A small $k$, such as 1, follows the training data closely. It can capture noise and overfit.
+A large $k$ averages over many points and can blur the boundary between classes, which is
+underfitting. The value of $k$ is chosen on a validation set, as described in the chapter on
+training, validation, and testing. An odd $k$ avoids ties in two-class problems.
 
-\section{Choosing the Right `k`}
+\section{Feature Scaling}\index{standardization!k-NN}
+Distance depends on the units of each feature. A feature measured in thousands dominates a
+feature measured in fractions. Standardize the features first, so that each has mean 0 and
+standard deviation 1, and compute the standardization from the training set alone.
 
-The choice of `k` has a significant impact on the k-NN algorithm. A
-small `k` (like 1) can capture a lot of noise and lead to overfitting,
-while a large `k` can smooth over many details and potentially lead to
-underfitting. Cross-validation is typically used to select an optimal
-`k`.
+\section{Cost}
+k-NN is simple to understand, but prediction is slow for large data sets. Every prediction
+computes the distance to every training point.
 
-\section{Considerations}
+\begin{Exercise}[label=knn1, title=One neighbor]
+Using the six points in the worked example, classify $\mathbf{x} = (1, 2.5)$ with $k = 1$.
+\end{Exercise}
+\begin{Answer}[ref=knn1]
+The nearest point is $(2,3)$, labeled B. The prediction is B.
+\end{Answer}
 
-Although the k-NN algorithm is simple to understand and implement, it
-can be computationally intensive for large datasets, as it requires
-computing the distance between every pair of points. Additionally,
-it's sensitive to the choice of the distance metric and the scale of
-the features.
+\begin{Exercise}[label=knn2, title=Three neighbors]
+Using the same point and $k = 3$, what is the prediction?
+\end{Exercise}
+\begin{Answer}[ref=knn2]
+The three nearest points are B, A, and A, so the prediction is A.
+\end{Answer}
 
+\begin{Exercise}[label=knn3, title=Why scale?]
+A data set has height in centimeters and income in dollars. Explain why the distances are dominated by income.
+\end{Exercise}
+\begin{Answer}[ref=knn3]
+Income values are in the tens of thousands, while heights are around 170. Differences in
+income are far larger in size, so they control the distance. Standardizing both features gives
+each the same influence.
+\end{Answer}

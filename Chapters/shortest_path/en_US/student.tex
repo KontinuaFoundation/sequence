@@ -1,4 +1,4 @@
-\chapter{Finding Shortest Paths}
+\chapter{Finding Shortest Paths}\index{shortest path}
 \section{Introduction — BFS revisited}
 
 We have seen BFS as a way to search graphs (or trees). It is a pretty simple process: 
@@ -9,7 +9,7 @@ We have seen BFS as a way to search graphs (or trees). It is a pretty simple pro
     \item keep going until either all nodes are marked \emph{visited} or a provided \emph{target node} is reached.
 \end{itemize}
 
-There is an issue here: what if the graph is weighted, and the paths are not equally weighted? For example, see this graph:
+There is an issue here: what if the \index{weighted graph}graph is weighted, and the paths are not equally weighted? For example, see this graph:
 \begin{figure}[H]
   \centering
 
@@ -36,9 +36,9 @@ There is an issue here: what if the graph is weighted, and the paths are not equ
 
 BFS, here, would prefer $A \rightarrow C$, since it has an edge count of $1$, whereas $A \rightarrow B \rightarrow C$ has an edge count of $2$. However, the true shortest path, by weight, is $A \rightarrow B \rightarrow C$, with a weight of $3$. 
 
-So BFS has a major limitation: it cannot handle weighted graphs. This is why we started it out on trees; typically trees do not have a set edge weight, so we were not limited by the order in which it expands. 
+So \index{BFS!limitations}BFS has a major limitation: it cannot handle weighted graphs. This is why we started it out on trees; typically trees do not have a set edge weight, so we were not limited by the order in which it expands. 
 
-To handle weighted graphs, we use a new algorithm that expands off of BFS, called \newterm{Dijkstra's Algorithm}. Dijkstra's Algorithm avoids the limitation of weights that BFS had by enqueueing the nodes in order of current shortest known distance.
+To handle weighted graphs, we use a new algorithm that expands off of BFS, called \index{Dijkstra's algorithm}\newterm{Dijkstra's Algorithm}. Dijkstra's Algorithm avoids the limitation of weights that BFS had by enqueueing the nodes in order of current shortest known distance.
 
 \section{Dijkstra's Algorithm}
 
@@ -184,7 +184,7 @@ marked with \$22.
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{step2.png}
 %     \caption{Marking each node with the cost to get to that city from the origin.}
-%     \label{fig:step2}
+%     \label{fig:step2-shortest_path-2}
 % \end{figure}
 
 Now, the cheapest unvisited node is San Diego, so you mark its
@@ -248,7 +248,7 @@ node.  This is easy to do as we execute the algorithm.
 
         \end{tikzpicture}
     \caption{Marking each node with a previous pointer.}
-    \label{fig:example}
+    \label{fig:example-shortest_path}
 \end{figure}
 
 Now, to figure out the cheapest route from Long Beach to Bakersfield,
@@ -260,7 +260,7 @@ Notice that the path between Los Angeles to Bakersfield is not used once we add 
 \begin{Answer}[ref={ex:deliv_1}]
 Los Angeles $\rightarrow$ Bakersfield is not chosen because it does not give the best known cost to Bakersfield. The \pyvar{prev} pointer for Bakersfield goes to San Diego instead, since $\mathdollar21 < \mathdollar22$.
 
-The tree that is generated is called a \newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
+The tree that is generated is called a \index{predecessor tree}\newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
 \end{Answer}
 \subsection{Implementation}
 
@@ -482,7 +482,7 @@ The algorithm works as follows:
     \item Repeat the previous step $|V| - 1$ times, where $|V|$ is the
       number of vertices in the graph.
     \item After the above steps, if you can still find a shorter path,
-      there exists a negative cycle.
+      there exists a \index{negative cycle}negative cycle.
 \end{enumerate}
 
 If the graph does not contain a negative cycle reachable from the

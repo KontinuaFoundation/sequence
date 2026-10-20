@@ -1,53 +1,52 @@
 \chapter{One-Hot Encoding}
 
-In machine learning and data analysis, it is common to encounter
-categorical variables. Categorical data refers to variables that
-contain label values rather than numeric values. Examples include
-color ("red", "blue", "green"), size ("small", "medium", "large"), or
-geographic designations (city names, country names, etc.). Most
-machine learning algorithms require numerical input and output
-variables. One-hot encoding is a process of converting categorical
-data into a format that could be provided to machine learning
-algorithms to improve prediction.\index{one-hot encoding}
+\section{Categorical Data}\index{categorical variable}
+A \newterm{categorical variable} takes values that are labels rather than numbers. Color (red, blue, green),
+size (small, medium, large), and city are categorical. Most learning algorithms need numbers as input, so
+categories must be converted first.
 
-\section{Why One-Hot Encoding?}
+\section{The Encoding}\index{one-hot encoding}
+\newterm{One-hot encoding} creates one binary column for each category. The column is 1 when the row has that
+category and 0 otherwise. A variable with $n$ categories becomes $n$ columns, and each row has exactly one 1.
 
-While some machine learning algorithms can work with categorical
-variables directly, many machine learning algorithms cannot operate on
-label data. They require all input variables and output variables to
-be numeric. Hence, categorical data needs to be converted to a
-numerical form. One-hot encoding is a popular method to transform
-categorical variables into a format that works better with
-classification and regression algorithms.
+For the variable \emph{color} with the values red, blue, and green:
 
-\section{How does One-Hot Encoding Work?}
-
-In one-hot encoding, for each unique value in the categorical
-variable, we create a new binary feature that takes a value of $1$ if
-the original feature value matches the unique value and $0$
-otherwise. If a categorical variable has $n$ unique values, we would
-create $n$ new features.
-
-For example, consider the categorical variable "color" with three
-categories: "red", "blue", and "green". The one-hot encoding process
-will result in three new features, namely "is\_red", "is\_blue", and
-"is\_green".
-
+\begin{center}
 \begin{tabular}{|c|c|c|c|}
-\textbf{Color} & \textbf{is\_red} & \textbf{is\_blue} & \textbf{is\_green} \\
+\hline
+Color & is\_red & is\_blue & is\_green \\
 \hline
 red & 1 & 0 & 0 \\
+\hline
 blue & 0 & 1 & 0 \\
+\hline
 green & 0 & 0 & 1 \\
+\hline
 red & 1 & 0 & 0 \\
 \hline
 \end{tabular}
+\end{center}
 
-This encoding helps to convey the information in the categorical
-variable to the learning algorithm effectively.
+\section{The Dummy Variable Trap}
+One column is redundant. If a row is not red, not blue, and not green, the category would have to be the
+fourth value, which does not exist. Dropping one column, such as is\_green, avoids this problem in linear and
+logistic regression. Keeping all $n$ columns is fine for many tree-based and neural network methods.
 
-However, it's worth noting that one-hot encoding can significantly
-increase the dimensionality of the data, which can be problematic for
-some models. Therefore, it is not always the best choice, and other
-encoding methods might be more suitable depending on the situation.
+\section{When to Use It}
+Use one-hot encoding for nominal categories, where the labels have no order. For ordered categories, such as
+small, medium, and large, an integer code that respects the order may be more appropriate.
 
+\begin{Exercise}[label=oh1, title=Encode a variable]
+Write the one-hot encoding of the sizes small, medium, large, small, using three columns in that order.
+\end{Exercise}
+\begin{Answer}[ref=oh1]
+$(1,0,0)$, $(0,1,0)$, $(0,0,1)$, $(1,0,0)$.
+\end{Answer}
+
+\begin{Exercise}[label=oh2, title=Dropping a column]
+A regression uses a color variable with three categories encoded as three columns. Why should one column be dropped?
+\end{Exercise}
+\begin{Answer}[ref=oh2]
+The three columns add up to 1 in every row, so they are linearly dependent with the intercept. This makes the
+coefficients unidentifiable. Dropping one column fixes this, and the dropped category becomes the baseline.
+\end{Answer}

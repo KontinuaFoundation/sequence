@@ -1,4 +1,4 @@
-\chapter{Bayesian Classifiers}
+\chapter{Bayesian Classifiers}\index{Bayesian classifier}
   
 You drop a net in several places in a lake.   You measure, weigh, and identify every fish to be one of the following: \texttt{trout}, \texttt{bass}, or \texttt{catfish}.  Here is a scatter plot of what you find:
 
@@ -10,7 +10,7 @@ The vertical and horizontal lines represent the mean length and width (respectiv
 
 You are writing a system that someone on the lake could use to identify their fish.
 
-\section{The Prior}
+\section{The Prior}\index{prior probability}
 
 Even before the person measures and weighs the fish,  they can make a decent guess at what any randomly selected fish is:
 
@@ -42,15 +42,15 @@ $$\frac{p(\text{F=trout} , \text{L=16}, \text{W=2.1}) }{p(\text{F=trout} , \text
 
 We can calculate the probability of all three possibilities (which will add up to 1.0).
 
-\section{Naive Bayes}
+\section{Naive Bayes}\index{naive Bayes}
 
-The assumption in naive Bayes is that the probability distributions of length and weight are conditionally independent given the breed of the fish.   That is:
+The assumption in naive Bayes is that the probability distributions of length and weight are \index{conditional independence}conditionally independent given the breed of the fish.   That is:
 
 $$p(\text{F=trout} , \text{L=16}, \text{W=2.1}) = p( \text{L=16} | \text{F=trout})  p( \text{W=2.1} | \text{F=trout})P(\text{F=trout})$$
 
 Within a particular species, things like length and weight, which represent the sum of a lot of genetic and environmental factors,  are often normally distributed.
 
-What if we assume that length has a normal distribution for each kind of fish?  What is the most likely estimator for the mean of each trait?  
+What if we assume that length has a normal distribution for each kind of fish?  \index{maximum likelihood estimator}What is the most likely estimator for the mean of each trait?  
 
 $$\mu = \frac{1}{n} \sum_{i=1}^{n} x_i$$
 
@@ -125,7 +125,7 @@ $F$=Catfish  &  $\approx 0$\\
 
 If you pull a random fish out of the lake and its length is 16 and its weight is 2.1, there is a 71.4\% chance that it is bass.  There is a 28.6\% chance it is a trout.
 
-\section{Using the multivariate Gaussian distribution}
+\section{Using the multivariate Gaussian distribution}\index{multivariate Gaussian distribution}
 
 Given the kind of fish, length and width are independent!?  That makes no sense.  Longer fish tend to be heavier, right?
 
@@ -147,7 +147,7 @@ When there is covariance,  the ovals can slant in any direction.
 
 If we discard the naive assumption,  we should get slightly more accurate results.
 
-The multivariate Gaussian distribution uses vectors and matrices.  The mean $\vec{\mu}$ is a vector of dimension $d$. The variance of each variable and its covariance with the other variables is captured in a $d \times d$ matrix called \textit{the covariance matrix} is usually called $\boldsymbol\Sigma$.  (Yes, this is also the symbol for summation.  This creates some confusion at times, but you can usually figure out which is intended by the context.)
+The multivariate Gaussian distribution uses vectors and matrices.  The mean $\vec{\mu}$ is a vector of dimension $d$. The variance of each variable and its covariance with the other variables is captured in a $d \times d$ matrix called \index{covariance matrix}\textit{the covariance matrix} is usually called $\boldsymbol\Sigma$.  (Yes, this is also the symbol for summation.  This creates some confusion at times, but you can usually figure out which is intended by the context.)
 
 When you know $\vec{\mu}$ and $\boldsymbol\Sigma$,  the probability density for any vector $\vec{x}$ is:
 

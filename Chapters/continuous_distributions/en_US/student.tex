@@ -1,0 +1,1264 @@
+\chapter{Continuous Distributions}
+
+
+\section{Continuous Probability Distributions}
+When we talked about the probability distribution of the sum of two dice,  we assigned a probability to each of the 11 possibilities:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{dice_histogram.png}
+    \caption{Rolling two dice probability distribution.}
+    \label{fig:example-continuous_distributions}
+\end{figure}
+
+The probabilities all added up to be 1.0. That is a way of saying ``100\% of the times you throw the dice,  the sum will be an integer between 2 and 12.''
+
+Now we need to talk about probabilities of properties that are continuous,  not discrete. For example, we might want to ask the question, ``If I randomly pick a cow from all the cows in the 
+world, what is the probability that it will weigh less than 597.34 kg?''  What does a probability distribution for a continuous variable look like?
+
+\subsection{Cumulative Distribution Function}
+
+Imagine that you live in ancient times. You buy, sell, and ship cows. A lot of people come into your office and brag about their cows: "Bessie is heavier than 99\% of the cows in 
+world!"  So, you need to develop some statistics on cow weights.
+
+You have ten cows. You weight them:
+
+\begin{tabular}{c|r}
+Cow & Mass in kg \\
+\hline
+Cow 1 & 580.22 \\
+Cow 2 & 540.07 \\
+Cow 3 & 538.20 \\
+Cow 4 & 512.39 \\
+Cow 5 & 589.75 \\
+Cow 6 & 456.91 \\
+Cow 7 & 583.09 \\
+Cow 8 & 493.56 \\
+Cow 9 & 489.97 \\
+Cow 10 & 704.15 \\
+\end{tabular}
+
+If someone comes into your shop and says, ``My Bessie is an astonishing 530 kg!'' it would be cool to have a list on the wall that would let you yell back, ``Half my cows are heavier than that, Silly!''  So, you sort the cows by weight. For each weight,  you say how many of your cows are lighter than that:
+
+\begin{tabular}{c|r}
+Proportion of cows lighter & Mass in kg \\
+\hline
+0.00 & 456.91 \\
+0.10 & 489.97 \\
+0.20 & 493.56 \\
+0.30 & 512.39 \\
+0.40 & 538.20 \\
+0.50 & 540.07 \\
+0.60 & 580.22 \\
+0.70 & 583.09 \\
+0.80 & 589.75 \\
+0.90 & 704.15 \\
+\end{tabular}
+
+In fact, for easy reference,  you make a plot:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cow_sample_cdf.png}
+    \caption{10 cow cumulative distribution function.}
+    \label{fig:10cdf}
+\end{figure}
+
+Now, for any weight, you can quickly look up what proportion of your cows are lighter (and, if you subtract that from 1,  what proportion of your cows are heavier).
+
+See how jagged that graph is?  That is because you only have the data for 10 cows. However, as the years pass and you weight thousands of cows, the plot will become smoother. Because it
+always accumulates more cows as you move from left to right, this is known as a \newterm{cumulative distribution function}, or CDF:\index{cumulative distribution function}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cow_cdf.png}
+    \caption{Cumulative distribution function for cow weights.}
+    \label{fig:cowcdf}
+\end{figure}
+
+A cumulative distribution function always starts at 0 and ends at 1. On that journey, it never decreases. Reading the graph tells you what proportion of the population is \emph{less than} any given value. If your data is normally distributed,  the CDF will look like an S-curve, being symmetric closer to the probability 0.5. 
+
+Let's say you want to know what proportion of cows weigh between 620 kg and 635 kg. Using the CDF, you could figure out that 77\% of all cows weigh less than 620 kg and 83\% of all cows 
+weigh less than 635 kg. Thus 6\% of all cows must weigh more than 620 kg and less than 635 kg.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cow_cdf_bounds.png}
+    \caption{Cumulative distribution function with bounds from 620 kg to 635 kg.}
+    \label{fig:cowcdfbounds}
+\end{figure}
+
+\subsection{Probability Density Function}
+\index{probability density function}
+The cumulative density function is handy,  but some of its information can be hard to see. For example, how would you answer the question, ``What is the most common weight of a cow?"  You would
+squint at the CDF and try to determine where it was steepest.
+
+To make these sorts of questions easier to answer,  we take the derivative of the CDF to get the \newterm{probability density function} (or PDF). For the cows,  it would look like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cow_pdf.png}
+    \caption{Probability density function for cow weights.}
+    \label{fig:cowpdf}
+\end{figure}
+
+Now you can easily see that the CDF was steepest at about 560 kg. We call the highest point on the PDF the \newterm{most likely estimator}. For example, you might say ``560 kg is the most likely estimator of cow mass.''  Sometimes we just say ``the MLE''. \index{MLE} \index{most likely estimator}
+
+Note that the MLE is often different from the mean or the median. In this case, for example,  the distribution is skewed right --- there are more cows that are heavier than the 
+MLE than there are cows that are lighter than the MLE. The MLE would be less than the mean or the median.
+
+Once again,  let's say you want to know what proportion of cows weight between 620 kg and 635 kg. This is more difficult with a PDF than it is with a CDF. With a PDF,  you have to find
+the area under the curve between $x=620$ and $x=635$. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cow_pdf_bounds.png}
+    \caption{Probability density function with the integral from 620 kg to 635 kg.}
+    \label{fig:cowpdfintegral}
+\end{figure}
+
+This is why it is called a "probability density" --- to get a true probability you need to multiply the density by the width of the region.
+
+What is the area under the entire curve?  If you integrated it, you would get the CDF. The CDF goes from 0 to 1.0.  The area under a PDF is \emph{always} 1.0.
+
+\subsection{The Continuous Uniform Distribution}\index{uniform distribution}
+
+The most simple continuous distribution is the uniform distribution between two numbers $a$ and $b$. The CDF is a straight line from zero at $a$ to 1 at $b$. For example,
+here is the CDF for the uniform distribution between 6 and 9:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{unif_cdf.png}
+    \caption{Cumulative distribution function for a uniform distribution between 6 and 9.}
+    \label{fig:example_2-continuous_distributions}
+\end{figure}
+
+That line goes from 0 to 1 over a distance of 3, so its slope is $\frac{1}{3}$ between 6 and  9 and zero everywhere else. Thus, the PDF (its derivative) looks like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{unif_pdf.png}
+    \caption{Probability density function for a uniform distribution from the continuous uniform distribution.}
+    \label{fig:example_3}
+\end{figure}
+
+So, we can write the probability distribution of a continuous uniform distribution between $a$ and $b$ as:
+
+  $p(x) = \begin{cases}
+  \frac{1}{b-a} & \text{for } a \le x \le b, \\[8pt]
+  0 & \text{for } x < a \ \text{ or } \ x > b.
+  \end{cases}$
+
+\index{probability density!versus probability}Notice that if $a$ and $b$ are less than 1 apart,  the value of $p(x)$ will be greater than 1. This is an important difference between a probability and a probability density: 
+\begin{itemize}
+\item A probability will always be in the interval $[0, 1]$. 
+\item A probability density will never be less than 0,  but can be much larger than 1.
+\end{itemize}
+
+That said, the probability density will always integrate to 1.
+
+Here is the PDF for a uniform distribution between 0.6 and 0.9:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{unif_pdf2.png}
+    \caption{Uniform probability density function.}
+    \label{fig:unif_pdf2}
+\end{figure}
+
+The mean and median of a uniform distribution between $a$ and $b$ is its midpoint:  $\frac{a+b}{2}$.
+
+The variance ($\sigma^2$) is $\frac{(b -a)^2}{12}$.
+
+\subsection{Continuous Distributions In Python}
+\index{cumulative distribution function!python}
+The SciPy library has functions that let a programmer work with a large collection of different probability distributions.
+
+For example,  if you wanted to work with a continuous uniform distribution between 6 and 9,  you would import the relevant
+functions like this:
+
+\begin{minted}{python}
+from scipy.stats import uniform
+\end{minted}
+
+Now, if you wanted a numpy array containing a sample of 300 numbers generated randomly from that distribution:
+
+\begin{minted}{python}
+samples = uniform.rvs(loc=6,  scale=3,  size=300)
+\end{minted}
+
+The \pyvar{loc} argument is $a$. The \pyvar{scale} argument is $b - a$.
+
+If you wanted to know the value of the probability density function at 8 and 10, you could use the \pyfunction{pdf} function:
+
+\begin{minted}{python}
+x_values = np.array([8, 10])
+p_values  = uniform.pdf(x_values,  loc=6,  scale=3)
+\end{minted}
+
+Now, \pyvar{p\_values} contains 0.33333 and 0.0.
+
+To get the value of the cumulative distribution function at those points,  you would use the \pyfunction{cdf} function:
+
+\begin{minted}{python}
+cdf_values = uniform.cdf(x_values,  loc=6,  scale=3)
+\end{minted}
+
+Now, \pyvar{cdf\_values} contains 0.666667 and 1.0.
+
+The \index{inverse CDF}inverse of the CDF is very useful.  It answers questions like ``\index{percentile}How heavy does a cow have to be to be in top 1\%?''
+
+\begin{minted}{python}
+bottom_top_percentiles = np.array([0.01,  0.99])
+boundaries = uniform.ppf(bottom_top_percentiles,  loc=6,  scale=3)
+\end{minted}
+
+Now, \pyvar{boundaries} contains 6.03 and 8.97.
+
+The SciPy library supplies these functions (\pyfunction{rvs}, \pyfunction{pdf},  \pyfunction{cdf}, and \pyfunction{ppf}) for over a hundred 
+common continuous probability distributions.  
+
+The common "bell curve" shaped distribution is called a \index{Gaussian distribution}Gaussian  or Normal distribution. It is described by its mean (the midpoint of the bell) and its standard deviation.  For the normal distribution,  the standard deviation is the distance you have to go from the mean to reach 68\% of the population. 
+We will talk a lot more about the normal distribution in other chapters,  but let's take this opportunity to plot the CDF and PDF of a normal distribution with a mean of 32 and a standard deviation of 8.
+
+Create a file called \filename{plot\_norm.py} and add the following lines:
+
+\begin{minted}{python}
+import numpy as np
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+
+# Constants
+MEAN = 32
+STD = 8
+
+# Plotting from the 0.5 percentile to the 99.5 percentile
+x_min = norm.ppf(0.005, loc=MEAN, scale=STD)
+x_max = norm.ppf(0.995, loc=MEAN, scale=STD)
+
+# Make 200 points between x_min and x_max
+x_values = np.linspace(x_min, x_max, 200)
+
+# Get CDF for each x value
+cdf_values = norm.cdf(x_values, loc=MEAN, scale=STD)
+
+# Get PDF for each x value
+pdf_values = norm.pdf(x_values, loc=MEAN, scale=STD)
+
+# What is the highest density?
+max_density = norm.pdf(MEAN, loc=MEAN, scale=STD)
+
+# Make a figure with two axes
+fig, axs = plt.subplots(nrows=2, sharex=True, figsize=(8, 8), dpi=200)
+axs[0].set_xlim(left=x_min, right=x_max)
+
+# Draw the CDF on the first axis
+axs[0].set_title("CDF of Normal Distribution (mean=32, std=8)")
+axs[0].set_ylim(bottom=0.0, top=1.0)
+axs[0].plot(x_values, cdf_values)
+
+# Draw the PDF on the second axis
+axs[1].set_title("PDF")
+axs[1].set_ylim(bottom=0.0, top=max_density * 1.1)
+axs[1].plot(x_values, pdf_values)
+
+# Add lines for mean,  mean-std, and mean+std
+axs[1].vlines(MEAN - STD, 0, max_density, "r", linestyle="dashed")
+axs[1].vlines(MEAN + STD, 0, max_density, "r", linestyle="dashed")
+
+# Save out the figure
+fig.savefig("norm_32_8.png")
+\end{minted}
+
+The resulting plot should look like this:
+
+\includegraphics[width=0.7\textwidth]{norm_32_8.png}
+
+What do those vertical lines mean?  An ornithologist might tell you, ``The wingspan of adult robins are normally distributed with a mean of 32 cm and a
+ standard deviation of 8 cm.''  This means 68\% of the population of adult robins would have wingspans between the two red lines.
+ 
+\begin{Exercise}[title={SciPy Stats}, label=scipy_ppf]
+
+Globally,  the height of adult women is approximately normally distributed. The mean is 164.7 cm. The standard deviation is 7.1 cm.
+
+Use Python and SciPy stats to answer these questions: 
+
+\begin{itemize}
+\item To be in the tallest decile (the top 10\%) of adult women,  how tall does one need to be? 
+
+\item What percentage of adult women are between 160 cm and 165 cm?
+
+\end{itemize}
+
+(In case you are wondering: For men the mean is 178.4 cm and the standard deviation is 7.6 cm.)
+
+\end{Exercise}
+\begin{Answer}[ref=scipy_ppf]
+
+\begin{minted}{python}
+from scipy.stats import norm
+
+# Constants
+MEAN = 164.7 
+STD = 7.1
+
+# What is the cutoff for the top decile?
+cutoff = norm.ppf(0.9, loc=MEAN, scale=STD);
+print(f"To be in the top 10 percent, you must be at least {cutoff:.2f} cm")
+
+# What proportion of women are between 160cm and 165cm?
+shorter_than_160 = norm.cdf(160, loc=MEAN, scale=STD)
+shorter_than_165 = norm.cdf(165, loc=MEAN, scale=STD)
+between = shorter_than_165 - shorter_than_160
+print(f"{between * 100.0:.2f}% of adult women are between 160 and 165 cm.")
+\end{minted}
+
+When run,  this will give you:
+
+\begin{minted}{python}
+> python3 women.py
+To be in the top 10 percent, you must be at least 173.80 cm
+26.29% of adult women are between 160 and 165 cm.
+\end{minted}
+
+\end{Answer}
+
+
+\section{The Normal Distribution}
+The Normal distribution, also known as the Gaussian distribution, is a
+type of continuous probability distribution for a real-valued random
+variable. It is one of the most important probability distributions in
+statistics due to its several unique properties and usefulness in many
+areas.\index{normal distribution}
+
+\subsection{Defining the Normal Distribution}\index{normal distribution!parameters}
+
+The Normal distribution is defined by its mean ($\mu$) and standard
+deviation ($\sigma$). The \index{probability density function}probability density function (pdf) of a
+Normal distribution is given by:
+
+\begin{equation*}
+f(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{equation*}
+
+where:
+\begin{itemize}
+\item $x$ is the point up to which the function is integrated,
+\item $\mu$ is the mean or expectation of the distribution,
+\item $\sigma$ is the standard deviation,
+\item $\sigma^2$ is the variance.
+\end{itemize}
+
+\subsection{Importance of the Normal Distribution}
+There are several reasons why the Normal distribution is crucial in statistics:
+
+\begin{itemize}
+\item \textbf{\index{central limit theorem}Central Limit Theorem:} One of the main reasons for the
+  importance of the Normal distribution is the Central Limit Theorem
+  (CLT). The CLT states that the distribution of the sum (or average)
+  of a large number of independent, identically distributed variables
+  approaches a Normal distribution, regardless of the shape of the
+  original distribution.
+
+\item \textbf{Symmetry:} The Normal distribution is symmetric, which
+  simplifies both the theoretical analysis and the interpretation of
+  statistical results.
+
+\item \textbf{Characterized by Two Parameters:} The Normal
+  distribution is fully characterized by its mean and standard
+  deviation. The mean determines the center of the distribution, and
+  the standard deviation determines the spread or girth of the
+  distribution.
+
+\item \textbf{Common in Nature:} Many natural phenomena follow a
+  Normal distribution. This includes characteristics like people's
+  heights or IQ scores, measurement errors in experiments, and many
+  others.
+\end{itemize}
+
+Given its properties, the Normal distribution serves as a foundation
+for many statistical procedures and concepts, including hypothesis
+testing, confidence intervals, and linear regression analysis.
+
+\subsubsection{Example}\index{normal distribution!example}
+
+A set of course grades is modeled by a normal distribution with mean $\mu = 75$
+and standard deviation $\sigma = 8$. Using a 90--80--70--60 grading scale,
+find the percentage of students who earned a B (scores from 80 to less than 90)
+using Excel and Python.
+
+\textbf{Solution}
+
+Let $X$ be a student's grade. Then
+\[
+X \sim N(75,8).
+\]
+
+A B corresponds to the interval $80 \le X < 90$, so we want
+\[
+P(80 \le X < 90).
+\]
+
+\index{NORM.DIST}Excel computes cumulative probabilities using
+
+\[
+\texttt{NORM.DIST(x, mean, standard\_dev, TRUE)}
+\]
+
+Therefore,
+\[
+P(80 \le X < 90)
+=
+P(X < 90) - P(X < 80).
+\]
+
+In Excel, enter:
+\[
+\texttt{=NORM.DIST(90,75,8,TRUE) - NORM.DIST(80,75,8,TRUE)}
+\]
+
+Excel returns approximately
+\[
+0.2356.
+\]
+
+So about $23.56\%$ of students earned a B.
+
+Now compute the same probability in Python.
+
+\begin{minted}{python}
+from scipy.stats import norm
+
+mu = 75
+sigma = 8
+
+probability = norm.cdf(90, mu, sigma) - norm.cdf(80, mu, sigma)
+
+print(probability)
+print(probability * 100)
+\end{minted}
+
+Python returns approximately
+
+\[
+0.2356
+\]
+
+which confirms the Excel result.
+
+Both Excel and Python are computing the same \index{cumulative distribution function}cumulative distribution function.
+
+\begin{Exercise}[label = normalt1]
+
+A batch of parts has diameters modeled by a normal distribution with mean
+$\mu = 10$ mm and standard deviation $\sigma = 2$ mm:
+\[
+X \sim N(10,2).
+\]
+A part is considered \emph{acceptable} if its diameter is between $6.72$ mm and
+$12.28$ mm.
+
+\begin{itemize}
+    \item[(a)] Write the probability statement that represents the fraction of acceptable parts.
+    \item[(b)] Use Excel to compute this probability using \texttt{NORM.DIST}.
+    \item[(c)] Convert your probability to a percentage.
+\end{itemize}
+
+\vspace{100mm}
+
+\end{Exercise}
+
+\begin{Answer}[ref = normalt1]
+
+\textbf{(a)} The fraction of acceptable parts is
+\[
+P(6.72 \le X \le 12.28).
+\]
+
+\textbf{(b)} Since \texttt{NORM.DIST(x, mean, sd, TRUE)} returns $P(X \le x)$,
+we compute
+\[
+P(6.72 \le X \le 12.28)=P(X \le 12.28)-P(X \le 6.72).
+\]
+
+In Excel, enter:
+\[
+\texttt{=NORM.DIST(12.28,10,2,TRUE) - NORM.DIST(6.72,10,2,TRUE)}.
+\]
+
+\textbf{(c)} Excel returns approximately $0.8224$, so the percentage acceptable is
+\[
+82.24\%.
+\]
+
+\end{Answer}
+
+
+\section{Multivariate Distributions}
+The world of probability and statistics doesn't limit itself to the
+study of single variables. Often, we are interested in the
+interconnections, relationships, and associations among several
+variables. In such a scenario, the univariate distributions that we
+have studied so far become inadequate. To comprehend the joint
+behavior of these variables and to uncover the underlying patterns of
+dependency, we must turn to the realm of multivariate distributions.
+
+This chapter aims to introduce the reader to the concept of \index{multivariate distribution}
+multivariate probability distributions. These are probability
+distributions that take into account and describe the behavior of more
+than one random variable. We will start our exploration with a
+discussion on the \index{joint distribution}joint probability mass and density functions. These
+functions extend the concepts of probability mass and density
+functions for one variable to the situation where we have multiple
+variables.
+
+Next, we will explore important properties of joint distributions,
+including the concept of \index{marginal distribution}marginal distribution and \index{conditional distribution}conditional
+distribution, which allow us to explore the probability of a subset of
+variables while conditioning on, or ignoring, other variables. We will
+also introduce the idea of \index{independence!random variables}independence of random variables in the
+multivariate context.
+
+Subsequently, we will discuss some commonly used multivariate
+distributions such as the \index{multivariate normal distribution}multivariate normal distribution, and the
+multivariate Bernoulli and binomial distributions. These specific
+distributions will provide us with practical tools for modelling
+multivariate data.
+
+Finally, we will delve into \index{covariance}covariance and \index{correlation}correlation, two key
+measures that give us a sense of how two variables change
+together. Understanding these measures is critical for capturing the
+relationships in multivariate data.
+
+
+\section{The Multivariate Normal Distribution}
+Let's say that you are gathering statistics on a species of snail. You have found 89 snails.
+Every snail has been weighted and had its shell measured. You have created a table like this:
+
+\begin{tabular}{ c c }
+Weight & Diameter \\
+\hline
+4.4769 grams & 2.2692 cm\\
+5.4755 grams & 2.1973 cm\\
+4.1183 grams & 2.52928 cm\\
+... & ... \\
+3.0522 grams & 1.7822 cm
+\end{tabular}
+
+
+You have been told that for any particular species of snail, the weight and shell diameter are typically normally distributed.
+So, you compute the mean of each:
+
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}$$
+
+Your snails have a mean mass off 4.25 grams and a mean shell diameter of 2.35 centimeters.
+Now you know where the center of each normal distribution will be.
+
+To know how wide each normal distribution is, you need to compute the variance:
+
+$$\sigma^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n}$$
+
+(Reminder: The standard deviation is the square root of $\sigma^2$)
+
+Plotting this data is shown in Figure~\ref{fig:pdfweight_diameter}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{separate.png}
+    \caption{Probability density functions of weight and diameter.}
+    \label{fig:pdfweight_diameter}
+\end{figure}
+
+Nice! However, then you think: "Hmm. Maybe the mass and the diameter of the shell are related. It seems like a heavy snail might tend to have a larger shell."  So, you make a scatter plot:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{scatter.png}
+    \caption{A scatter plot with weight of the snail horizontally and diameter of the shell on the y-axis.}
+    \label{fig:example_4}
+\end{figure}
+
+Sure enough, there is some \index{correlation}correlation between the mass of the snail and the diameter of its shell.
+
+There is a form of the normal distribution that can deal with multiple variables and their correlations.
+This is known as the \newterm{multivariate normal} or the \newterm{Gaussian distribution}. \index{multivariate normal distribution} \index{Gaussian distribution}
+
+In a multivariate normal distribution, the \index{mean vector}mean (often denoted $\boldsymbol\mu$) is a vector containing the mean of every variable.
+For your snails, $\boldsymbol\mu = \begin{bmatrix} 4.25, 2.35 \end{bmatrix}$.
+
+Just as in the single-variable normal distribution, measurements near the mean are what you are most likely to observe.
+In a single-variable normal distribution, the standard deviation tells us how fast that likelihood falls off as we move away from the mean.
+In multivariate normal distributions, we need something a little more expressive: a matrix.
+
+\subsection{The Covariance Matrix}
+
+We can think of the data as a list of vectors.
+For example, if we have $n$ snails and $d$ properties that we have measured, we would get a list like this:
+
+$$\begin{bmatrix}
+x_{1,1} & x_{1,2} & ... & x_{1,d} \\
+x_{2,1} & x_{2,2} & ... & x_{2,d} \\
+... & ... & &... \\
+x_{n,1} & x_{n,2} & ... & x_{b,d}\end{bmatrix}$$
+
+Each row represents one snail. Each column represents one property.
+
+Note that to make $\boldsymbol\mu$ (the mean vector), you just take the mean of each column of this data matrix. (For convenience, we will use $\boldsymbol\mu_i$ to refer to the mean of column $i$.)
+
+We usually use $\mathbf{\Sigma}$ (the uppercase Greek sigma) to represent a \index{covariance matrix}covariance matrix. $\mathbf{\Sigma}$ is a $d \times d$ matrix.
+The entries on the diagonal of $\mathbf{\Sigma}$ are just the variance of each property.
+So, we can calculate the entry at row $j$, column $j$ like this:
+
+$$\mathbf{\Sigma}_{j,j} = \frac{\sum_{i=1}^{n}(x_{i,j} - \boldsymbol\mu_j)^2}{n}$$
+
+(Yes, we are using $\mathbf{\Sigma}$ to represent both summation and the covariance matrix here.
+It can be confusing, but you will be able to tell from context how it is being used.)
+
+The other entries, $\Sigma_{j,k}$ where $j \neq k$, are the \newterm{covariance} between property $j$ and property $k$.
+If the covariance is a positive number, property $j$ and property $k$ are correlated. For example, in your snails, weight and diameter have a positive covariance: If the snail is heavier than average, it tends to have a diameter that is larger than average.
+
+If the covariance is a negative number, when property $j$ is greater than average, property $k$ tends to be less than average.
+For example, the number of times a restaurant mops the floor in a week has a negative covariance with how much bacteria lives on the floor.
+
+How do we compute the \index{covariance!formula}covariance?
+
+$$\mathbf{\Sigma}_{j,k} = \frac{\sum_{i=1}^{n}(x_{i,j} - \boldsymbol\mu_j)(x_{i,k} - \boldsymbol\mu_k)}{n}$$
+
+Note that $\mathbf{\Sigma}_{j,k} = \mathbf{\Sigma}_{k,j}$, so the matrix is symmetric.
+
+\subsubsection{Computing Mean and Covariance in Python}
+
+If you have a numpy array where each row represents one sample and each column represents one property, it is really easy to compute $\boldsymbol\mu$ and $\mathbf{\Sigma}$:
+
+\begin{minted}{python}
+# Read in the data matrix, each row represents one snail
+snails = ...
+
+# Compute mu
+mean_vector = snails.mean(axis=0)
+print(f"Mean = {mean_vector}")
+
+# Compute Sigma
+covariance_matrix = np.cov(snails, rowvar=False)
+print(f"Covariance = {covariance_matrix}")
+\end{minted}
+
+\subsection{Multivariate Normal Probability Density}
+
+Now that we have good estimates of $\boldsymbol\mu$ and $\mathbf{\Sigma}$, how can we compute the probability density?
+
+When you were working with just one variable, $x$, you computed the probability density using the mean $\mu$ and the variance $\sigma^2$ like this:
+
+\begin{equation*}
+p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+\end{equation*}
+
+The probability density function of a $d$-dimensional
+multivariate normal distribution with a mean of $\boldsymbol\mu$ and a covariance matrix of $\mathbf{\Sigma}$ is given by:
+
+\begin{equation*}
+p(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}\exp\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol\mu)^T\mathbf{\Sigma}^{-1}(\mathbf{x}-\boldsymbol\mu)\right)
+\end{equation*}
+
+If we draw lines to show where $\boldsymbol\mu$ is and contours to show lines of equal probability density, we get a plot shown in Figure~\ref{fig:contour_snail}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{contour.png}
+    \caption{Contour plot of the snail data.}
+    \label{fig:contour_snail}
+\end{figure}
+
+Or, we can do a 3D plot, as shown in Figure~\ref{fig:3d_snail}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{3d.png}
+    \caption{3D plot of the probability density function.}
+    \label{fig:3d_snail}
+\end{figure}
+
+A probability density always integrates to 1.0, so the volume under the surface must be 1.0.
+
+\subsubsection{Multivariate Normal Probability Density in Python}\index{multivariate normal!probability density}
+
+The scipy library has a class that represents the multivariate normal. Here is how you could compute the probability density for a particular snail:
+
+\begin{minted}{python}
+import numpy as np
+from scipy.stats import multivariate_normal
+
+...Compute mean_vector and covariance_matrix...
+
+# Get the probability density at [3 grams, 2 cm]
+x = np.array([3.0, 2.0])
+pd = multivariate_normal.pdf(x, mean=mean_vector, cov=covariance_matrix)
+print(f"The probability density at {x} is {pd}")
+\end{minted}
+
+Alternatively, maybe you would like to generate weights and diameters for a fictional population of 700 snails:
+
+\begin{minted}{python}
+new_snails = multivariate_normal.rvs(mean=mean_vector, cov=covariance_matrix, size=700)
+print(f"My fictional snails:\n{new_snails}")
+\end{minted}
+
+\section{Probability Density Functions}
+Recall from the chapter \textit{Continuous Probability Distributions} that for 
+a single variable, $X$, the likelihood that variable $X$ has a certain value, 
+$x$, is given by the probability distribution function (PDF), $f(x)$. 
+Additionally, the total area under a PDF is always 1. Mathematically, this is 
+because the PDF is the derivative of the cumulative density function (CDF), 
+which always starts at 0 and ends at 1. Logically, the area under the PDF from 
+$x = a$ to $x = b$ represents the likelihood that $X$ will be between $a$ and 
+$b$. 
+
+\begin{mdframed}[style = important, frametitle = {Probability that $X$ lies 
+between $a$ and $b$}]
+For a single variable, $X$, with a continuous density function, $f(x)$, the 
+probability that $X$ lies between $a$ and $b$ is given by:
+$$P( a \leq X \leq b) = \int_a^b f(x)\,dx$$
+\end{mdframed}
+
+Suppose that we know the PDF for human body mass and we wanted to know the 
+probability that a randomly-selected person has a body mass between 70 and 80 
+kgs. That probability would be represented by the integral of the PDF from $x 
+= 70$ to $x = 80$ (see figure \ref{fig:mass_PDF}). 
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[axis lines = center, xmin = 0, xmax = 120, ymin = 0, 
+        xlabel = mass (kg), ylabel = probability, clip = false]
+            \addplot[name path = A, blue, thick, domain = 70:80]{
+            (1/(10*sqrt(2*3.14159)))*(2.718)^(-1*(x - 72)^2/(2*10)^2)};
+            \addplot[name path = B, black, thin, domain = 70:80]{0};
+            \addplot[blue, thick, domain = 1:120, samples = 100] {
+            (1/(10*sqrt(2*3.14159)))*(2.718)^(-1*(x - 72)^2/(2*10)^2)};
+            \addplot[blue!30, opacity = 0.4] fill between [of = A and B];
+            \draw[black, thin, dashed] (70, 0) -- (70, 0.04);
+            \draw[latex-] (70, 0.035) -- (65, 0.04) node[left] {70 kg};
+            \draw[black, thin, dashed] (80, 0) -- (80, 0.035);
+            \draw[latex-] (80, 0.03) -- (90, 0.04) node[right] {80 kg};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The highlighted area is equal to the probability that a person 
+    has a mass between 70 and 80 kgs}
+    \label{fig:mass_PDF}
+\end{figure}
+
+If we expand that integral to include all possible masses, what would the 
+integral evaluate to? Since that would represent the probability that a random 
+person has mass (which all people do), the integral should be equal to 1. In 
+fact, the integral of a PDF over all possible values of the variable must be 
+equal to 1, since that represents the sum of all the probabilities that the 
+variable will hold all possible values. 
+
+\begin{mdframed}[style = important]
+For any probability density function, $f(x)$, the integral over the domain of 
+$x$ is always 1.
+$$\int_{-\infty}^{\infty} f(x)\,dx = 1$$
+\end{mdframed} 
+
+\textbf{Example}: Let $f(x) = kx(10-x)$ for $0 \leq x \leq 10$ and $0$ for all 
+other values of $x$. Find a value for $k$. Then find the probability that $x$ 
+lies between 7 and 10. 
+
+\textbf{Solution}: Since $f(x)$ is a PDF, we know that:
+$$\int_{-\infty}^{\infty} f(x)\,dx = 1$$
+
+Solving for $k$:
+$$1 = \int_{0}^{10} kx(10-x)\,dx = k\int_0^{10} 10x - x^2\,dx$$
+$$= k \left[5x^2 - \frac{1}{3}x^3 \right]_{x = 0}^{x = 10} = k\left[500 - 
+\frac{1000}{3} \right] = k \left( \frac{500}{3} \right) = 1$$
+
+Which implies that $k = \frac{3}{500} = 0.006$
+
+Therefore, in order to be a PDF, $f(x) = 0.006x(10-x)$ and we can find the 
+probability that $X$ lies between 7 and 10:
+$$P(7 \leq X \leq 10) = \int_7^{10} 0.006x(10 - x)\,dx$$
+$$= 0.006 \left[5x^2 - \frac{1}{3}x^3 \right]_{x = 7}^{x = 10} = 0.006 \left[ 
+5 \left(100 - 49 \right) - \frac{1}{3} \left(1000 - 343 \right) \right]$$
+$$= 0.006 \left[ 255 - \frac{657}{3} \right] = 0.006(36) = 0.216 = 21.6\%$$
+
+Therefore, there is a 21.6\% chance that $X$ lies between 7 and 10. 
+
+\begin{Exercise}[title = {Representing Probabilities as Integrals}, 
+label = rep_int]
+Let $f(t)$ be the probability density function for the time it takes you to 
+complete your weekly chores at home. Express the following probabilities as 
+integrals or state what the given integral represents in words. 
+\begin{enumerate}
+\item that you spend less than 15 minutes on your chores.
+\item that you spend between half an hour and an hour on your chores.
+\item that you spend more than 45 minutes on your chores. 
+\item $\int_{20}^{\infty} f(t)\,dt$
+\item $\int_{60}^{120} f(t)\,dt$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = rep_int]
+\begin{enumerate}
+\item $\int_0^{15} f(t)\,dt$
+\item $\int_{30}^{60} f(t)\,dt$
+\item $\int_{45}^{\infty} f(t)\,dt$
+\item the probability that you spend more than 20 minutes on your weekly 
+chores.
+\item the probability that you spend between 1 and 2 hours on your weekly 
+chores.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title = {Using PDFs to Find Probabilities}, label = int_pdf]
+For each $f(x)$, find $k$ such that $f(x)$ is a PDF. Then, find the requested 
+probability. 
+\begin{enumerate}
+\item $f(x) = 
+\begin{cases}
+\frac{ke^{2 - x}}{\left(1 + e^{2 - x} \right)^2},&-2 \leq x \leq 6\\
+0,&\text{otherwise}
+\end{cases}$, $P(X \geq 2)$
+\item $f(x) = \frac{k}{2 + 4x^2}$, $P(1 \leq X \leq 4)$
+\item $f(x) = k(6x - 3x^2)$ for $0 \leq x \leq 2$ and 0 otherwise, $P(X > 3/4)$
+\vspace{95mm}
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = int_pdf]
+\begin{enumerate}
+    \item We know that
+	$$1 = \int_{-\infty}^{\infty} f(x)\,dx = \int_{-2}^{6} \frac{ke^{2 - x}}{
+	\left( 1 + e^{2 - x} \right)^2}\,dx$$
+
+	Let $u = e^{2 - x}$, then $-du = e^{2 - x}dx$. Substituting:
+	$$= \int_{x = -2}^{x = 6} \frac{-k}{\left(1 + u \right)^2}\,du = k \left[
+	 \frac{1}{1 + u} \right]_{x = -2}^{x = 6} = k \left[ \frac{1}{1 + e^{2 - x}} 
+	 \right]_{x = -2}^{x = 6}$$
+	$$= k \left[ \frac{1}{1 + e^{-4}} - \frac{1}{1 + e^4} \right] = \frac{k \left(
+	e^4 - 1 \right)}{1 + e^4} = 1$$
+
+	Which implies that $k = \frac{1 + e^4}{e^4 - 1}$. Substituting for $k$, we 
+	find the probability that $X \geq 2$ is:
+	$$P(X \geq 2) = \frac{1 + e^4}{e^4 - 1} \int_2^6 \frac{e^{2 - x}}{\left( 1 + 
+	e^{2 - x} \right)^2}\,dx = \frac{1 + e^4}{e^4 - 1} \left[ \frac{1}{1 + e^{2 - 
+	x}} \right]_{x = 2}^{x = 6}$$
+	$$= \frac{1 + e^4}{e^4 - 1} \left( \frac{1}{1 + e^{-4}} - \frac{1}{1 + 1} 
+	\right) = \frac{1 + e^4}{e^4 - 1} \left(\frac{1}{1 + e^{-4}} - \frac{1}{2} 
+	\right) \approx 0.5$$
+
+	There is a 50\% chance the variable will be greater than 2. 
+
+    \item We know that:
+    $$1 = \int_{-\infty}^{\infty} \frac{k}{2 + 4x^2}\,dx = \frac{k}{2} \int_{-
+    \infty}^{\infty} \frac{1}{1 + 2x^2}\,dx$$
+    $$= \frac{k}{2} \left[ \frac{\arctan{(\sqrt{2}x)}}{\sqrt{2}} \right]_{x = -
+    \infty}^{x = \infty} = \frac{k}{2} \left[ \frac{\arctan{(\infty)}}{
+    \sqrt{2}} - \frac{\arctan{(-\infty)}}{\sqrt{2}} \right] $$
+    $$= \frac{k}{2} \left( \frac{\pi}{2\sqrt{2}} - \frac{-\pi}{2\sqrt{2}} 
+    \right) = \frac{k}{2} \left( \frac{\pi}{\sqrt{2}} \right) = \frac{\pi k}{2
+    \sqrt{2}} = 1$$
+
+    Which implies that $k = \frac{2\sqrt{2}}{\pi}$. Therefore $f(x) = \frac{
+    \sqrt{2}}{\pi \left(1 + 2x^2 \right)}$. Additionally, 
+    $$P(1 \leq X \leq 4) = \int_1^4 \frac{\sqrt{2}}{\pi \left(1 + 2x^2 \right)
+    }\,dx = \frac{\sqrt{2}}{\pi} \int_1^4 \frac{1}{1 + 2x^2}\,dx$$
+    $$= \frac{\sqrt{2}}{\pi} \left[ \frac{\arctan{(\sqrt{2}x)}}{\sqrt{2}} 
+    \right]_{x = 1}^{x = 4} = \frac{1}{\pi} \left[ \arctan{(4\sqrt{2})} - 
+    \arctan{(\sqrt{2})} \right] \approx \frac{0.441}{\pi} \approx 0.140 = 14\%$$
+
+    \item We know that:
+    $$1 = \int_{-\infty}^{\infty} k \left(6x - 3x^2 \right)\,dx = 3k \int_{0}^{
+    2} 2x - x^2\,dx$$
+    $$= 3k \left[x^2 - \frac{1}{3}x^3 \right]_{x = 0}^{x = 2} = 3k \left( 4 - 
+    \frac{8}{3} \right) = 3k \left( \frac{4}{3} \right) = 4k = 1$$
+
+    Which implies that $k = 1/4$. And therefore,
+    $$P(X > \frac{3}{4} ) = \int_{3/4}^2 \frac{6x - 3x^2}{4}\,dx = \frac{3}{4} 
+    \int_{3/4}^2 2x - x^2\,dx$$
+    $$= \frac{3}{4} \left[ x^2 - \frac{1}{3}x^3 \right]_{x = 3/4}^{x = 2} = 
+    \frac{3}{4} \left[ (2)^2 - \left( \frac{3}{4} \right)^2 - \frac{1}{3} 
+    \left( 2^3 - \left( \frac{3}{4} \right)^3 \right) \right]$$
+    $$= \frac{3}{4} \left( \frac{175}{192} \right) = \frac{175}{256} \approx 
+    68.4\%$$
+\end{enumerate}
+\end{Answer}
+
+\subsection{Exponential PDFs}
+There are two common PDFs used to model real-world probability distributions: 
+exponential and normal distributions. We address exponential PDFs in this 
+section and will discuss normal PDFs in the next. 
+
+The time it takes for a radioactive particle to decay, or a bank teller to 
+serve a customer, or a piece of equipment to fail are all commonly modeled 
+with exponentially decreasing PDFs. These take the form:
+$$f(t) = 
+\begin{cases}
+0,&\text{if }t<0\\
+ce^{-ct},&\text{if }t \geq 0
+\end{cases}$$
+
+\textbf{Example}: Carbon-14 has a half-life of 5700 years, and the probability 
+that a single particle will undergo decay after a given amount of time, $t$, 
+is given by:
+$$f(t) = 
+\begin{cases}
+    0,\text{ if}t<0\\
+    \frac{1}{5700}e^{-t/5700}&\text{if }t \geq 0
+\end{cases}$$
+
+Where $t$ is in years. Find the probability that a particle of carbon-14 
+decays before 5700 years. 
+
+\textbf{Solution}: 
+$$P(T \leq 5700) = \int_0^{5700} \frac{1}{5700} e^{-t/5700}\,dt$$
+$$= \frac{1}{5700} \left(-5700 \right) \left[e^{-t/5700} \right]_{t = 0}^{
+t = 5700}$$
+$$= -1 \left[ e^{-1} - e^{0} \right] = 1 - \frac{1}{e} \approx 63.5\%$$
+
+\subsection{Normal Distributions}
+Other natural phenomena, such as annual snowfall, height of individuals in a 
+population, or birth weight are best modeled with a normal distribution. 
+Professors often find that test scores are normally-distributed as well. 
+Normal distributions have three key properties:
+\begin{enumerate}
+\item unimodal - there is one "peak" on a graph of a normal distribution
+\item symmetric - there is an equal probability represented on either side of 
+the "peak"
+\item equal mean and median - the mean and median of a normal distribution are 
+the same
+\end{enumerate}
+
+An example normal distribution is shown in figure \ref{fig:normal_pdf}. Notice 
+that there is one peak and the graph is symmetric about that peak. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.2, 
+		axis lines = center, xlabel = $x$, ylabel = $y$]
+			\addplot[name path = A, blue, thick, fill = blue!30, opacity = 0.4, 
+			domain = 0:20, samples = 300] 
+			{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \draw[black, dashed] (10, 0) -- (10, 0.15) node[above] {mean = 10};
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:normal_pdf}
+    \caption{A normal distribution with a mean of 10 and a standard deviation 
+    of 3}
+\end{figure}
+
+Normal PDFs take the form:
+$$f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\left(x - \mu \right)/\left(2 
+\sigma^2 \right)}$$
+
+Where $\sigma$ is the \textit{standard deviation}\index{standard deviation} 
+and $\mu$ is the \textit{mean}\index{mean}. Recall that for a normal 
+distribution, the standard deviation is the distance you have to go from the 
+mean to reach 68\% of the population. That is, if you look at the population 
+within one standard deviation on either side of the mean, it represents 
+approximately 68\% of the total population (see figure \ref{fig:stddev}). The 
+lower $\sigma$ is, the narrower the distribution. The higher $\sigma$ is, the 
+wider the distribution (see figure \ref{fig:stddevs}). 
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.2, axis lines = 
+	center, xlabel = $x$, ylabel = $y$]
+		\addplot[blue, thick, domain = 0:20, samples = 300] 
+		{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \draw[red, dashed] (10, 0) -- (10, 0.15) node[above] {$\mu = 10$};
+            \draw[black, dashed] (7, 0) -- (7, 0.11) node[above] {$\mu - 
+            \sigma$};
+            \draw[black, dashed] (13, 0) -- (13, 0.11) node[above] {$\mu + 
+            \sigma$};
+            \addplot[name path = A, blue, thick, domain = 7:13, samples = 200]
+            {1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \addplot[name path = B, domain = 7:13]{0};
+            \addplot[fill = blue!30, opacity = 0.4] fill between [of = A and B];
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:stddev}
+    \caption{The shaded area represents approximately 68\% of the population}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+	\begin{axis}[xmin = -0.5, xmax = 20, ymin = 0, ymax = 0.3, axis lines = 
+	center, xlabel = $x$, ylabel = $y$]
+		\addplot[blue, thick, domain = 0:20, samples = 300] 
+		{1/(3*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*3^2))};
+            \addplot[red, thick, domain = 0:20, samples = 300] 
+            {1/(5*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*5^2))};
+            \addplot[orange, thick, domain = 0:20, samples = 300] 
+            {1/(1.5*sqrt(2*3.14159))*e^(-(x - 10)^2/(2*1.5^2))};
+            \node[orange] at (6, 0.15) {$\sigma = 1.5$};
+            \node[blue] at (5.5, 0.1) {$\sigma = 3$};
+            \node[red] at (3, 0.05) {$\sigma = 5$};
+            \draw[black, dashed] (10, 0) -- (10, 0.27) node[above] {$\mu = 10$};
+		\end{axis}
+	\end{tikzpicture}
+    \label{fig:stddevs}
+    \caption{Changing $\sigma$ affects the width of the distribution, but not 
+    its center}
+\end{figure}
+
+\textbf{Example}: Birth weights in the United States are normally distributed 
+with a mean of 7 lbs 6 oz and a standard deviation 1 lb 2 oz. Write a PDF to 
+represent this data. What percentage of US babies are born at less than 5 lbs? 
+Over 9 lbs?
+
+\textbf{Solution}: For simplicity, let's express everything in ounces. Recall 
+that there are 16 oz in a pound. Therefore, 
+$$\mu = 118\text{ oz}$$
+$$\sigma = 18\text{ oz}$$
+
+And we can write the PDF for US birth weight:
+$$f(x) = \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 \right)^2/\left(2 \left( 18 
+\right)^2 \right)}$$
+
+To find the percentage of babies with a birth weight below 5 lbs, we integrate 
+from 0 (since a baby must have some weight) to 80 oz (the equivalent of 5 lbs):
+$$P(X \leq 80) = \int_0^{80} \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 \right)^2/
+\left(2 \left( 18 \right)^2 \right)}\,dx$$
+
+Unfortunately for us, there is no anti-derivative to $e^{-x^2}$, so we cannot 
+evaluate the integral by hand. However, you can use a calculator or computer 
+to find the approximate value of the integral. Inputting the integral into a 
+calculator (such as a TI-89), we find that:
+$$P(X \leq 80) \approx 0.0174$$
+
+And therefore, approximately 1.74\% of US babies are born weighing less than 5 
+lbs. 
+
+To find the percentage of babies born weighing more than 9 lbs, we integrate 
+from 144 oz to infinity (obviously, babies are not born with infinite weight, 
+but this will do just fine for an approximation):
+$$P(X \geq 144) = \int_{144}^{\infty} \frac{1}{18\sqrt{2\pi}}e^{-\left(x - 118 
+\right)^2/\left(2 \left( 18 \right)^2 \right)}\,dx$$
+
+Again, using a calculator or computer, we find that:
+$$P(X \geq 144) \approx 0.0743$$
+
+And therefore approximately 7.43\% of US babies are born weighing more than 9 
+lbs. 
+
+\section{Joint Density Functions}
+Recall that you've learned about \textit{probability density functions} in a 
+previous chapter. For some variable, $X$, with probability density function 
+$f(x)$, the likelihood that $X$ lies between $a$ and $b$ is given by:
+$$P(a \leq X \leq b) = \int_a^b f(x)\,dx$$
+
+We can extend this to two random variables, $X$ and $Y$. A function that 
+describes the distribution of both variables is called a \textit{joint 
+density function}\index{joint density function}. In particular, the probability
+that $X$ and $Y$ lie in a region $D$ is:
+$$P((X, Y) \in D) = \iint_{\textit{D}} f(x,y)\,dA$$
+
+Where $f(x, y)$ is the two-variable joint density function. Just like with one 
+variable, all probabilities are positive and the sum of the probabilities of 
+all possibilities must be 1. Mathematically, 
+$$f(x, y) \geq 0$$
+$$\iint_{\mathbb{R}} f(x, y)\,dA = \int_{-\infty}^{\infty} \int_{-\infty}^{
+\infty} f(x, y)\,dx\,dy = 1$$
+
+\textbf{Example}: Suppose the joint density function for $X$ and $Y$ is given 
+by:
+$$f(x, y) = 
+\begin{cases}
+C(3x + y),& \text{if }0 \leq x \leq 15\text{, }0 \leq y \leq 15\\
+0,&\text{otherwise}
+\end{cases}
+$$
+
+where $C$ is a constant. Find the value of $C$ and the likelihood that $X \geq 
+Y$.
+
+\textbf{Solution}: To find $C$, we take advantage of the fact that the sum of 
+all probabilities is 1. Therefore,
+$$1 = \int_0^{15} \int_0^{15} C(3x + y)\,dx\,dy = \int_0^{15} C \left[ \frac{3
+}{2}x^2 + xy \right]_{x = 0}^{x = 15}\,dy$$
+$$= \int_0^{15} C \left[ \frac{675}{2} + 15y \right]\,dy = C \left[ \frac{675}{
+2}y + \frac{15}{2}y^2 \right]_{y = 0}^{y = 15}$$
+$$= C \left[ \frac{10125}{2} + \frac{3375}{2} \right] = 6750C = 1$$
+
+Which implies that $C = \frac{1}{6750}$.
+
+To find the probability that $X \geq Y$, we note that this is represented by 
+the region $R = \{(x, y)\text{ }|\text{ }0 \leq x \leq 15, 0 \leq y \leq x$. 
+Then the likelihood that $X \geq Y$ is given by:
+$$\frac{1}{6750} \int_0^{15} \int_0^x \left( 3x + y \right) \,dy\,dx = \frac{
+1}{6750} \int_0^{15} \left[ 3xy + \frac{1}{2}y^2 \right]_{y = 0}^{y = x}\,dx$$
+$$= \frac{1}{6750} \int_0^{15} \left(3x^2 + \frac{1}{2}x^2 \right)\,dx = \frac{
+1}{6750} \left( \frac{7}{2} \right) \int_0^{15} x^2\,dx$$
+$$= \frac{7}{13500} \left( \frac{1}{3} \right) \left[x^3 \right]_{x = 0}^{x = 
+15} = \frac{7}{13500} \left( \frac{1}{3} \right) 15^3 = \frac{7 \cdot 3375}{3 
+\cdot 13500} = \frac{7}{12}$$
+
+And this answer makes sense, as it is less than 1. 
+
+\begin{Exercise}[title = {Joint Density Functions}, label = joint]
+The joint density function for a pair of random variables, $X$ and $Y$ is
+$$f(x, y) = 
+\begin{cases}
+	ky(1 + 2x),& \text{if } 0 \leq x \leq 1\text{, }0 \leq y \leq 2\\
+	0,&\text{ otherwise}
+\end{cases}$$
+\begin{enumerate}
+\item Find the value of the constant, k.
+\item Find $P(X \leq \frac{1}{2}, Y \leq 1)$.
+\item Find $P(X + Y \geq 1)$.
+\end{enumerate}
+\vspace{70mm}
+\end{Exercise}
+
+\begin{Answer}[ref = joint]
+\begin{enumerate}
+    \item $$1 = \int_0^1 \int_0^2 ky\left(1 + 2x \right)\,dy\,dx = k \left[ 
+    \int_0^1 1 + 2x\,dx \right] \cdot \left[ \int_0^2 y \,dy \right]$$
+    $$= k \left[ \left(x + x^2 \right)_{x = 0}^{x = 1} \right] \cdot \left[ 
+    \frac{1}{2} \left( y^2 \right)_{y = 0}^{y = 2} \right] = k \left( 2 \right)
+    \left( \frac{1}{2} \right) \left(4 \right) = 4k$$
+
+    If $4k = 1$, then $k = 1/4$. 
+
+    \item $$P(X \leq \frac{1}{2}, Y \leq 1) = \int_0^{1/2} \int_0^1 \frac{1}{4}
+    y \left(1 + 2x \right)\,dy\,dx$$
+    $$= \frac{1}{4} \left[ \int_0^{1/2} \left(1 + 2x \right)\,dx \right] \cdot 
+    \left[ \int_0^1 y\,dy \right] = \frac{1}{4} \left[ \left(x + x^2 \right)_{
+    x = 0}^{x = 1/2} \right] \cdot \left[ \frac{1}{2} \left(y^2 \right)_{y = 0}
+    ^{y = 1} \right]$$
+    $$= \frac{1}{4} \left( \frac{1}{2} + \frac{1}{4} \right) \left( \frac{1}{2}
+    \right) \left( 1 \right) = \frac{3}{32}$$
+
+    \item If $X + Y \geq 1$, then $1 - X \leq Y \leq 2$ and 
+    $$P(X + Y \geq 1 ) = \int_0^1 \int_{1 - x}^2 \frac{1}{4} y \left(1 + 2x 
+    \right)\,dy\,dx$$
+    $$= \frac{1}{4} \int_0^1 \left(1 + 2x \right) \frac{1}{2} \left[y^2 \right]
+    _{y = 1 - x}^{y = 2}\,dx = \frac{1}{8} \int_0^1 \left(1 + 2x \right) \left(
+    2^2 - \left(1 - x \right)^2 \right)\,dx$$
+    $$= \frac{1}{8} \int_0^1 \left(1 + 2x \right) \left(3 + 2x - x^2 \right)\,
+    dx = \frac{1}{8} \int_0^1 3 + 8x + 3x^2 - 2x^3\,dx$$
+    $$= \frac{1}{8} \left[ 3x + 4x^2 + x^3 - \frac{1}{2}x^4 \right]_{x = 0}^{x 
+    = 1} = \frac{1}{8} \left[3 + 4 + 1 - \frac{1}{2} \right] = \frac{1}{8} 
+    \cdot \frac{15}{2} = \frac{15}{16}$$
+\end{enumerate}
+\end{Answer}
+
+Often, two variables are independent of each other. If both variables are 
+random, the joint density function for the two variables is the product of the 
+two individual probability distributions. For example, if the probability 
+distribution of an individual's height, $H$, is given by $f_1(h)$ and the 
+probability distribution of an individual's blood pressure, $B$, is given by 
+$f_2(b)$, then the joint probability function for height and blood pressure is 
+$$f(h, b) = f_1(h)f_2(b)$$
+
+\textbf{Example}: Sally is spending the day at Six Flags Over Georgia and is 
+looking forward to riding several roller coasters. The wait time for the Great 
+American Scream machine, $X$, is modeled by density 
+function
+$$f_1(x) = 
+\begin{cases}
+0,&\text{ if } x < 0\\
+\frac{1}{45}e^{-x/45},&\text{ if } x \geq 0
+\end{cases}$$
+
+And the wait time for the Georgia Scorcher, $Y$, is modeled by density function
+$$f_2(y) = 
+\begin{cases}
+0,&\text{ if } y < 0\\
+\frac{1}{30}e^{-y/30},&\text{ if } y \geq 0
+\end{cases}$$
+
+What is the probability that she spends less than 45 minutes total waiting for 
+the two rides?
+
+\textbf{Solution}: Since the variables are independent, the joint density 
+function for both wait times is:
+$$f(x, y) = f_1(x) f_2(y) = 
+\begin{cases}
+    \frac{1}{1350}e^{-x/45}e^{-y/30},& \text{ if } x \geq 0, y \geq 0\\
+    0,&\text{ otherwise}
+\end{cases}$$
+
+We want to know the probability that $X + Y < 45$, which is represented by the 
+region, $R$, shown below.
+
+\begin{center}
+   \begin{tikzpicture}
+    \draw[-latex] (-0.5, 0) -- (5, 0) node[right] {$x$};
+    \draw[-latex] (0, -0.5) -- (0, 5) node[above] {$y$};
+    \draw[blue, thick, fill = blue!30, opacity = 0.4] (0,0) -- (0, 4) -- (4, 0)
+     -- cycle;
+    \draw[fill = black] (0,0) circle (0.05cm) node[below, xshift = -0.45cm] {
+    $(0,0)$};
+    \draw[fill = black] (4, 0) circle (0.05cm) node[below] {$(45, 0)$};
+    \draw[fill = black] (0, 4) circle (0.05cm) node[left] {$(0, 45)$};
+    \draw[latex-] (2, 2) arc [start angle = 180, end angle = 90, x radius = 
+    0.5cm, y radius = 0.5cm] node[right] {$y = 45 - x$};
+    \node[] at (1, 1) {$R$};
+\end{tikzpicture}  
+\end{center}
+
+We can see that $R = \{(x, y)\text{ }|\text{ }0 \leq x \leq 45,\text{ }0 \leq 
+y \leq 45 - x$. Therefore, the probability that Sally's total wait time is less
+than 45 minutes is given by:
+$$P(X + Y < 45) = \frac{1}{1350} \int_0^{45} \int_0^{45 - x} e^{-x/45} e^{-y/30
+}\,dy\,dx$$
+$$= \frac{-30}{1350} \int_0^{45} \left(e^{-x/45} \right) \left[e^{-y/30} 
+\right]_{y = 0}^{y = 45 - x}\,dx$$
+$$= -\frac{1}{45} \int_0^{45} \left( e^{-x/45} \right) \left[ e^{(x - 45)/30} 
+- 1 \right]\,dx$$
+$$= -\frac{1}{45} \int_0^{45} e^{(x - 135)/90} - e^{-x/45}\,dx$$
+$$= -\frac{1}{45} \left[ 90e^{(x - 135)/90} + 45e^{-x/45} \right]_{x = 0}^{x = 
+45}$$
+$$= - \frac{1}{45} \left[ 90 \left( e^{(45 - 135)/90} - e^{(0 - 135)/90} 
+\right) + 45 \left(e^{-45/45} - e^{-0/45} \right) \right]$$
+$$= -\frac{1}{45} \left[90 \left( e^{-1} - e^{-3/2} \right) + 45 \left(e^{-1} 
+- 1 \right) \right]$$
+$$= -\frac{1}{45} \left[135e^{-1} - 90e^{-3/2} - 45 \right] = 1 + 2e^{-3/2} - 
+3e^{-1} \approx 0.343$$
+
+So, there is an approximately $34.3\%$ chance Sally will wait less than 45 
+minutes to ride both roller coasters. 
+
+\begin{Exercise}[title = {Snow Days}, label = snow]
+In order for it to snow, two conditions must be met: the temperature must be 
+low enough and the humidity must be high enough. The probability function for 
+the temperature, $T$, in Celsius on a winter day is given by:
+$$f_1(t) = 
+\begin{cases}
+    \frac{1}{80} \left[ \cos{\left( \frac{\pi t}{40} \right)} + 1 \right],& 
+    -40 \leq t \leq 40\\
+    0,&\text{otherwise}
+\end{cases}
+$$
+
+And the probability function for the humidity, $H$, in percent on the same 
+winter day is:
+$$f_2(h) = 
+\begin{cases}
+    \frac{100h - h^2}{500,000},& 0 \leq h \leq 100\\
+    0,&\text{otherwise}
+\end{cases}
+$$
+
+If the temperature must be below freezing and the humidity above 75\% for snow 
+to form, what is the probability it snows?
+\end{Exercise}
+
+\begin{Answer}[ref = snow]
+The joint density function for temperature and humidity is:
+$$f(t, h) = f_1(t)f_2(h) = \begin{cases}
+    \frac{100h - h^2}{400,000,000}\left[ \cos{\left( \frac{\pi t}{40} \right)} 
+    + 1 \right],& 0 \leq h \leq 100\text{, } -40 \leq t \leq 40\\
+    0,&\text{otherwise}
+\end{cases}$$
+
+And the probability that snow forms is given by:
+$$P(T \leq 0, 75 \leq H \leq 100) = \int_{-40}^{0} \int_{75}^{100} \frac{100h 
+- h^2}{400,000,000}\left[ \cos{\left( \frac{\pi t}{40} \right)} + 1 \right]\,dh
+\,dt$$
+$$= \int_{-40}^0 \left(\frac{\cos{ \left( \frac{\pi t}{40} \right)} + 1}{
+400,000,000} \right) \int_{75}^{100} \left(100h - h^2 \right)\,dh\,dt$$
+$$= \int_{-40}^0 \left(\frac{\cos{ \left( \frac{\pi t}{40} \right)} + 1}{
+400,000,000} \right) \left[ 50h^2 - \frac{h^3}{3} \right]_{h = 75}^{h = 100} 
+\,dt= \int_{-40}^0 \left(\frac{\cos{ \left( \frac{\pi t}{40} \right)} + 1}{
+400,000,000} \right) \left( \frac{78125}{3} \right)\,dt$$
+$$= \frac{1}{15360} \int_{-40}^0 \left[ \cos{ \left( \frac{\pi t}{40} \right)} 
++ 1 \right]\,dt = \frac{1}{15360} \left[ \left( \frac{40}{\pi} \right) \sin{ 
+\left( \frac{\pi t}{40} \right)} + t \right]_{t = -40}^{t = 0}$$
+$$= \frac{1}{15360} (40) = \frac{1}{384} \approx 0.0026$$
+
+So there is a 0.26\% chance it will snow. 
+\end{Answer}

@@ -1,39 +1,41 @@
-\chapter{Clustering using k-Means}
+\chapter{Clustering with k-Means}
 
-K-means is a popular unsupervised learning algorithm used for data
-clustering. The goal of k-means is to group data points into distinct
-non-overlapping subgroups, or clusters, based on their features.\index{k-Means Clustering}
+\section{Unsupervised Learning}\index{k-means clustering}
+In \newterm{unsupervised learning}, there are no labels. We look for structure in the inputs alone. \newterm{Clustering} groups
+the points so that points in the same group are close to each other. The \newterm{$k$-means} algorithm does this for a chosen number of groups $k$.
 
-\section{The K-Means Algorithm}
-
-Given a dataset $X = \{x_1, x_2, \ldots, x_N\}$, where each $x_i$ is a
-d-dimensional vector, and an integer $k$, the k-means clustering
-algorithm seeks to find $k$ cluster centroids $C = \{c_1, c_2, \ldots,
-c_k\}$ such that the distance from each data point to its nearest
-centroid is minimized.
-
-The k-means algorithm works as follows:
-
+\section{The Algorithm}
+Given points $x_1, \ldots, x_N$ and a number $k$, k-means seeks centroids $c_1, \ldots, c_k$ that minimize the total squared distance from
+each point to its nearest centroid. It alternates two steps.
 \begin{enumerate}
-    \item Initialize $k$ centroids randomly.
-    \item Assign each data point to the nearest centroid. This forms $k$ clusters.
-    \item For each cluster, update its centroid by computing the mean of all points in the cluster.
-    \item Repeat steps 2 and 3 until the centroids do not change significantly or a maximum number of iterations is reached.
+\item \textbf{Assign}: each point joins the cluster of its nearest centroid.
+\item \textbf{Update}: each centroid moves to the mean of the points assigned to it.
 \end{enumerate}
+Repeat until the assignments stop changing. The result depends on the starting centroids, so the algorithm is often run several times.
 
-The measure of distance typically used in k-means is the Euclidean
-distance. For two d-dimensional vectors $x = (x_1, \ldots, x_d)$ and
-$y = (y_1, \ldots, y_d)$, the Euclidean distance is defined as:
+\section{A Worked Example}
+Four points on a line are $1, 2, 6, 8$, and $k = 2$. Start with centroids $c_1 = 1$ and $c_2 = 6$.
+\begin{itemize}
+\item Assign: the points $1$ and $2$ are nearer $c_1$, and the points $6$ and $8$ are nearer $c_2$.
+\item Update: $c_1 = \frac{1 + 2}{2} = 1.5$ and $c_2 = \frac{6 + 8}{2} = 7$.
+\end{itemize}
+The next assignment is the same, so the algorithm stops with clusters $\{1, 2\}$ and $\{6, 8\}$.
 
-\begin{equation}
-d(x, y) = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + \ldots + (x_d - y_d)^2}
-\end{equation}
+\section{Choosing k}
+The number $k$ is not learned by the algorithm. The \newterm{elbow method} plots the total squared distance against $k$. The total always falls as $k$ grows,
+and the point where the decrease levels off is a common choice. Other methods, such as silhouette scores, compare how well separated the clusters are.
 
-\section{Choosing K}
+\begin{Exercise}[label=km1, title=One iteration]
+Using the four points $1, 2, 6, 8$ and starting centroids $c_1 = 2$ and $c_2 = 7$, find the assignments and the new centroids after one iteration.
+\end{Exercise}
+\begin{Answer}[ref=km1]
+Point $1$ is at distance 1 from $c_1 = 2$, and point $2$ is at distance 0. Points $6$ and $8$ are nearer $c_2 = 7$. So the clusters are
+$\{1, 2\}$ and $\{6, 8\}$. The new centroids are $1.5$ and $7$.
+\end{Answer}
 
-Choosing an appropriate value for $k$ is a significant aspect of the
-k-means algorithm. One common method is the Elbow Method, which
-involves plotting the explained variation as a function of the number
-of clusters, and picking the elbow of the curve as the number of
-clusters to use.
-
+\begin{Exercise}[label=km2, title=Why run it again?]
+Why is k-means usually run several times with different starting centroids?
+\end{Exercise}
+\begin{Answer}[ref=km2]
+The algorithm converges to a local minimum of the total squared distance, and different starting centroids can lead to different final clusters.
+\end{Answer}

@@ -1,6 +1,6 @@
 \chapter{Data tables in SQL}
 
-Most organizations keep their data as tables inside a relational
+\index{relational database}Most organizations keep their data as tables inside a relational
 database management system (compared to pandas, CSV, or spreadsheets). Developers talk to those systems using a
 language called SQL (``Structured Query Language'').
 \index{SQL}
@@ -79,7 +79,7 @@ sqlite> SELECT bike_id, brand FROM bike;
 ...
 \end{minted}
 
-Using WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
+Using \index{WHERE}WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
 \begin{minted}{sql}
 sqlite> SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';
 4997391|GT|57|269.61|2009-05-03|rented
@@ -91,7 +91,7 @@ sqlite> SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';
 3019205|GT|58|262.94|2009-08-22|available  
 \end{minted}
 
-Using DISTINCT, SQL lets you get just one copy of each value:
+Using \index{DISTINCT}DISTINCT, SQL lets you get just one copy of each value:
 \begin{minted}{sql}
 sqlite> SELECT DISTINCT status FROM bike;
 rented
@@ -106,7 +106,7 @@ Rented
 \end{minted}
 
 You can also edit these rows. For example, if you wanted every status
-that is \texttt{Busted} to be changed to \texttt{broken}, you can use an \verb|UPDATE| statement with a \verb|SET|:
+that is \texttt{Busted} to be changed to \texttt{broken}, you can use an \index{UPDATE}\verb|UPDATE| statement with a \verb|SET|:
 
 \begin{minted}{sql}
 sqlite> UPDATE bike SET status='broken' WHERE status='Busted';
@@ -120,7 +120,7 @@ out
 Rented
 \end{minted}
 
-You can insert new rows:
+You can \index{INSERT}insert new rows:
 \begin{minted}{sql}
 sqlite> INSERT INTO bike (bike_id, brand, size, purchase_price, purchase_date, status)
   ...> VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');
@@ -129,7 +129,7 @@ sqlite> SELECT * FROM bike WHERE bike_id = 1;
 \end{minted}
 Note that the bike\_id here must be \emph{unique}. 
 
-You can delete rows:
+You can \index{DELETE}delete rows:
 \begin{minted}{sql}
 sqlite> DELETE FROM bike WHERE bike_id = 1;
 sqlite> SELECT * FROM bike WHERE bike_id = 1;
@@ -147,7 +147,7 @@ SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
 \end{minted}
 \end{Answer}
 
-\section{Using SQL from Python}
+\section{Using SQL from Python}\index{sqlite3 (Python library)}
 
 The people behind sqlite created a library for Python that lets you
 execute SQL and fetch the results from inside a python program.

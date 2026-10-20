@@ -1,0 +1,193 @@
+\chapter{Sorting and Big-O Notation}
+
+\section{Why Sorting Matters}\index{sorting}
+Sorting a list is one of the most common things a program does. Phone books,
+search results, and leaderboards all depend on items being in order. Python
+already sorts for you:
+
+\begin{minted}{python}
+scores = [38, 27, 43, 3, 9, 82, 10]
+print(sorted(scores))  # [3, 9, 10, 27, 38, 43, 82]
+\end{minted}
+
+This chapter shows how sorting can be done by hand, using three simple
+algorithms. Then it introduces a way to measure how much work an algorithm
+does as the list grows: \index{Big-O notation}\newterm{Big-O notation}.
+
+\section{Selection Sort}\index{selection sort}
+Selection sort repeats one idea. Find the smallest item in the unsorted part
+of the list, and swap it into the next position at the front.
+
+\begin{minted}{python}
+def selection_sort(items):
+    items = list(items)
+    n = len(items)
+    for i in range(n - 1):
+        smallest = i
+        for j in range(i + 1, n):
+            if items[j] < items[smallest]:
+                smallest = j
+        items[i], items[smallest] = items[smallest], items[i]
+    return items
+
+print(selection_sort([5, 2, 9, 1, 5, 6]))  # [1, 2, 5, 5, 6, 9]
+\end{minted}
+
+The outer loop fixes one position per pass. The inner loop looks at every
+remaining item to find the smallest. Notice that the inner loop always runs to
+the end of the list, even if the list is already sorted.
+
+\section{Insertion Sort}\index{insertion sort}
+Insertion sort works the way many people sort a hand of playing cards. Take
+the next card, and slide it left past every larger card until it fits.
+
+\begin{minted}{python}
+def insertion_sort(items):
+    items = list(items)
+    for i in range(1, len(items)):
+        current = items[i]
+        j = i - 1
+        while j >= 0 and items[j] > current:
+            items[j + 1] = items[j]
+            j -= 1
+        items[j + 1] = current
+    return items
+
+print(insertion_sort([5, 2, 9, 1, 5, 6]))  # [1, 2, 5, 5, 6, 9]
+\end{minted}
+
+Insertion sort is fast when the list is almost sorted, because the inner loop
+stops early. When the list is in reverse order, it does the most work.
+
+\section{Merge Sort}\index{merge sort}
+Merge sort uses a different strategy: divide and conquer. Split the list in
+half, sort each half, and then merge the two sorted halves into one. A list of
+one item is already sorted, which is where the recursion stops.
+
+\begin{minted}{python}
+def merge_sort(items):
+    if len(items) <= 1:
+        return list(items)
+    mid = len(items) // 2
+    left = merge_sort(items[:mid])
+    right = merge_sort(items[mid:])
+    merged = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            merged.append(left[i]); i += 1
+        else:
+            merged.append(right[j]); j += 1
+    merged.extend(left[i:])
+    merged.extend(right[j:])
+    return merged
+
+print(merge_sort([38, 27, 43, 3, 9, 82, 10]))  # [3, 9, 10, 27, 38, 43, 82]
+\end{minted}
+
+\section{Big-O Notation}\index{Big-O notation!definition}
+We want to compare algorithms without timing them on one computer. Big-O
+notation describes how the number of steps grows as the input size $n$ grows.
+We count the steps in terms of $n$, and then keep only the term that grows
+fastest, dropping constants and smaller terms.
+
+We write $f(n) = O(g(n))$ when $f(n)$ is no larger than a constant multiple of
+$g(n)$ for all large enough $n$. Formally, there are constants $c > 0$ and
+$n_0$ such that $f(n) \leq c \cdot g(n)$ whenever $n \geq n_0$.
+
+For example, $f(n) = 3n^2 + 100n + 5$ is $O(n^2)$. With $c = 4$ and
+$n_0 = 101$, we have $3n^2 + 100n + 5 \leq 4n^2$. The $100n$ term matters for
+small $n$, but for large $n$ the $n^2$ term dominates.
+
+Here are the classes you will meet most often, from fastest to slowest:
+
+\begin{center}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+Notation & Name & Example \\
+\hline
+$O(1)$ & constant & reading one item from a list by its index \\
+\hline
+$O(\log n)$ & logarithmic & binary search on a sorted list \\
+\hline
+$O(n)$ & linear & checking every item once \\
+\hline
+$O(n \log n)$ & linearithmic & merge sort, and Python's \texttt{sorted()} in the worst case \\
+\hline
+$O(n^2)$ & quadratic & selection sort and insertion sort \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Comparing the Sorts}\index{sorting!comparison}
+Selection sort's inner loop runs $n - 1$, then $n - 2$, and so on down to 1
+times. That is a total of $\frac{n(n-1)}{2}$ comparisons, which is
+$O(n^2)$ in every case, even when the list is already sorted. Insertion sort
+can do far fewer comparisons on nearly sorted lists, but its worst case, a
+list in reverse order, also takes $\frac{n(n-1)}{2}$ comparisons, so it is also
+$O(n^2)$.
+
+Merge sort halves the list at each level of recursion, so there are about
+$\log_2 n$ levels. Each level does about $n$ work to merge. That gives
+$O(n \log n)$ work in every case.
+
+The table below shows the approximate number of steps for each class. The
+values are rounded.
+
+\begin{center}
+\begin{tabular}{|r|r|r|r|}
+\hline
+$n$ & $n$ & $n \log_2 n$ & $n^2$ \\
+\hline
+10 & 10 & 33 & 100 \\
+\hline
+100 & 100 & 664 & 10,000 \\
+\hline
+1,000 & 1,000 & 9,966 & 1,000,000 \\
+\hline
+1,000,000 & 1,000,000 & about 20,000,000 & 1,000,000,000,000 \\
+\hline
+\end{tabular}
+\end{center}
+
+When $n$ is a million, a quadratic algorithm does a trillion steps, while a
+linearithmic algorithm does about twenty million. That is why Big-O matters
+more than the exact count for large inputs.
+
+\begin{Exercise}[label=sorting1, title=Trace selection sort]
+Trace the first pass of selection sort on \texttt{[4, 1, 3]}. What is the list
+after the first pass? What is the final sorted list?
+\end{Exercise}
+\begin{Answer}[ref=sorting1]
+The first pass finds that 1 is the smallest item, and swaps it with the 4. The
+list becomes \texttt{[1, 4, 3]}. The second pass swaps 4 and 3, giving the
+final list \texttt{[1, 3, 4]}.
+\end{Answer}
+
+\begin{Exercise}[label=sorting2, title=Count the comparisons]
+How many comparisons does selection sort make on a list of 5 items, no matter
+what order the items are in?
+\end{Exercise}
+\begin{Answer}[ref=sorting2]
+$\frac{5 \cdot 4}{2} = 10$ comparisons.
+\end{Answer}
+
+\begin{Exercise}[label=sorting3, title=Prove a Big-O bound]
+Show that $f(n) = 3n^2 + 100n + 5$ is $O(n^2)$ by giving constants $c$ and
+$n_0$.
+\end{Exercise}
+\begin{Answer}[ref=sorting3]
+Take $c = 4$ and $n_0 = 101$. For $n \geq 101$, we have $100n + 5 \leq n^2$,
+because $n^2 - 100n - 5 = n(n - 100) - 5 \geq 101 \cdot 1 - 5 > 0$. So
+$3n^2 + 100n + 5 \leq 3n^2 + n^2 = 4n^2$.
+\end{Answer}
+
+\begin{Exercise}[label=sorting4, title=Which is faster?]
+A program takes $n \log_2 n$ steps and another takes $n^2$ steps. For
+$n = 1{,}000{,}000$, which one is faster, and roughly how many times faster is
+it?
+\end{Exercise}
+\begin{Answer}[ref=sorting4]
+The $n \log_2 n$ program is faster. It takes about $2 \times 10^7$ steps, while
+the $n^2$ program takes $10^{12}$ steps. The first is about 50,000 times faster.
+\end{Answer}

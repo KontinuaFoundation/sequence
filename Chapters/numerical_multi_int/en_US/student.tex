@@ -1,6 +1,6 @@
 \chapter{Numerical Double Integration}
 
-In an earlier chapter, we gave an example of the multivariate normal distribution: the mass and shell diameter of a population of snails.
+In an earlier chapter, we gave an example of the \index{multivariate normal distribution}multivariate normal distribution: the mass and shell diameter of a population of snails.
 
 Starting with a table of measurements, we estimated that the mean vector $\mu$ was $\begin{bmatrix}4.25 \text{g} & 2.35 \text{cm}\end{bmatrix}$.
 
@@ -30,7 +30,7 @@ p(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}\exp\left(-\frac{1}{2}
 Can you answer the following question? "If I pick a random snail off the floor of the ocean, what is the probability that its mass is between 3 and 4 grams
 and its diameter is between 1.5 and 2.0 centimeters?"
 
-If we think of the probability density as a surface, this question is really "What is the volume under the surface in the rectangular patch $3 <= x_1 <= 4$ and $1.5 <=x_2 <= 2.0$?"  Which you should recognize as a double integration problem:
+If we think of the probability density as a surface, this question is really "What is the volume under the surface in the rectangular patch $3 <= x_1 <= 4$ and $1.5 <=x_2 <= 2.0$?"  Which you should recognize as a \index{double integral}double integration problem:
 
 \begin{equation*}
 P = \int_{1.5}^{2.0} \int_{3}^4 \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}\exp\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol\mu)^T\mathbf{\Sigma}^{-1}(\mathbf{x}-\boldsymbol\mu)\right) dx_1 dx_2
@@ -38,12 +38,12 @@ P = \int_{1.5}^{2.0} \int_{3}^4 \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}\exp\l
 
 Sadly, however, no one has ever been able to find the antiderivative of the multivariable probability density function, so no one can solve this problem.
 
-Instead, we use Riemann sums to find an approximate solution.  This is known as \newterm{numerical integration}.
+Instead, we use \index{Riemann sum}Riemann sums to find an approximate solution.  This is known as \index{numerical integration}\newterm{numerical integration}.
 
 (After spending so much time learning the techniques for integration, it may be disappointing to hear this:
 For a lot of real-world problems, there is no way to find an antiderivative, so we end up doing numerical integration much more often than most people realize.)
 
-\section{Riemann Sums on 2-Dimensional Domains}
+\section{Riemann Sums on 2-Dimensional Domains}\index{Riemann sum!two dimensions}
 
 When doing Riemann sums on function that takes a single real number, you summed the area of the rectangles under the function to approximate the integral:
 
@@ -64,7 +64,7 @@ When doing Riemann sums on function that takes a single real number, you summed 
 	\end{axis}
 \end{tikzpicture}
 \caption{A representative function divided into $n$ rectangles of equal width, with rectangle height determined by the right endpoint of the subinterval}
-\label{fig:rectangles}
+\label{fig:rectangles-numerical_multi_int}
 \end{figure}
 
 Here you are finding the volume under a function that takes two variables (the probability density is based on the mass and diameter of the shell).
@@ -95,7 +95,7 @@ Here you are finding the volume under a function that takes two variables (the p
         \draw[dashed] (1, 4, 0) -- (1, 4, 2.5);
     \end{tikzpicture}
     \caption{The probability is the volume under a surface for a region}
-    \label{fig:surface}
+    \label{fig:surface-numerical_multi_int}
 \end{figure}
 
 To do the Riemann sum, we can break the range of the mass into $n_1$ equally sized intervals and the range of the diameter into $n_2$ equally sized intervals.
@@ -170,10 +170,10 @@ Now you will be calculating the volume of rectangular solids and summing up thos
 
     \end{tikzpicture}
     \caption{Riemann Sum}
-    \label{fig:surface}
+    \label{fig:surface-numerical_multi_int-2}
 \end{figure}
 
-\section{Numerical Integration in Python}
+\section{Numerical Integration in Python}\index{numerical integration!python}
 
 Here's the code:
 

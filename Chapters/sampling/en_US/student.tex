@@ -22,7 +22,7 @@ you will probably be tested on this.
     \item[\newterm{population}\index{population}] The entire group of individuals or items that 
     you want to learn about. The population is defined by the question you are asking.
 
-    \item[\newterm{frame}\index{frame}] Also called a sampling frame. A list of all the members 
+    \item[\newterm{frame}\index{frame}] Also called a \index{sampling frame}sampling frame. A list of all the members 
     of the population from which a sample will be drawn. The frame is usually close to the population, 
     but the two are not always identical. A school's enrollment database, a city's voter registration list, 
     and a company's customer records are all examples of frames.
@@ -31,7 +31,7 @@ you will probably be tested on this.
     You collect data from the sample and use it to draw conclusions about the population.
 
     \item[\newterm{sample survey}\index{sample survey}] The process of collecting information from a 
-    sample. The information gathered is then used to make inferences about population parameters.
+    sample. The information gathered is then used to make inferences about \index{population parameter}population parameters.
 
     \item[\newterm{census}\index{census}] The process of collecting information from every member of the population 
     rather than just a sample. A census gives complete information, but it comes at a cost.
@@ -197,10 +197,10 @@ To get an SRS, you need a real random method.
 \end{figure}
 
 \begin{itemize}
-    \item Assign every member of the population a number. Use a random number table, entering at any random point and reading 
+    \item Assign every member of the population a number. Use a \index{random number table}random number table, entering at any random point and reading 
     numbers sequentially. Select members whose numbers appear, skipping values outside your range and any repeats, until you have 
     the sample size you need.
-    \item Use a calculator. On a TI-84, \texttt{MATH} $\to$ \texttt{PRB} $\to$ \texttt{5:randInt(} generates random integers. 
+    \item Use a calculator. On a \index{TI-84!randInt}TI-84, \texttt{MATH} $\to$ \texttt{PRB} $\to$ \texttt{5:randInt(} generates random integers. 
     The command \texttt{randInt(1,500,30)} produces 30 random integers between 1 and 500. Ignore repeats.
     \item Use a physical randomization device. Write each member's identifier on an identical slip of paper, mix thoroughly in a 
     container, and draw without looking until the sample is complete.
@@ -513,7 +513,7 @@ in those cities.
 everyone inside those.
 
 
-In \newterm{quota sampling}, a non-probability sampling method where researchers select participants until predefined quotas 
+In \newterm{quota sampling}\index{quota sampling}, a \index{non-probability sampling}non-probability sampling method where researchers select participants until predefined quotas 
 for certain groups 
 (ie: age, gender, ethnicity) are filled. The sample is structured to reflect specific population characteristics, but participants 
 are not chosen randomly. 
@@ -559,6 +559,15 @@ A film festival puts all 900 registered attendee names in a database and uses so
     \item \textbf{Water utility:} Systematic sampling. Random start followed by every 25th unit.
     \item \textbf{Film festival:} Simple random sample. Every possible group of 90 attendees is equally likely.
 \end{itemize}
+
+\textbf{Python comparison.} Your runs will differ, because each run draws new random samples. The answers below describe what the code produces. For the data set created with seed 42, the true mean is 79.7, and the grade means are 70.3 (9th), 76.5 (10th), and 92.4 (11th).
+\begin{enumerate}
+    \item \textbf{SRS.} An SRS of 9 students usually includes all three grades, but not always. For a given grade, the chance that none of its 10 students is chosen is about 1.2\%, so the chance that some grade is missing is about 3.5\%.
+    \item \textbf{Stratified.} Every grade contributes three students, so the sample mean is usually close to 79.7. Over many repeated draws, the stratified mean has a standard deviation of about 1.6 points, compared with about 3.0 points for the SRS.
+    \item \textbf{Cluster.} The cluster mean is the mean of the one grade chosen, so it is about 70.3 for 9th grade, 76.5 for 10th, or 92.4 for 11th. Over many repeated draws, its standard deviation is about 9.3 points.
+    \item \textbf{Table.} Your runs will vary, but expect the stratified means to fall within about 3 points of 79.7, the SRS means within about 5 points, and the cluster means at one of the three grade means. The cluster method is the least stable.
+    \item \textbf{Why.} The stratified sample is more stable because it always includes every grade, so differences between grades cannot shift the mean much. The cluster sample is the least stable because the whole sample comes from a single grade, and the grade means differ by about 22 points.
+\end{enumerate}
 \end{Answer}
 
 \textbf{Comparing Sampling Methods in Python}
@@ -609,9 +618,7 @@ Run this three times. What grades tend to appear? Does the SRS always represent 
 \item \textbf{Stratified Random Sample.} Draw 3 students from each grade level.
 
 \begin{minted}{python}
-stratified = df.groupby("grade", group_keys=False).apply(
-    lambda x: x.sample(n=3)
-)
+stratified = df.groupby("grade").sample(n=3)
 print(f"Stratified mean: {stratified['score'].mean():.1f}")
 print(stratified[["student_id", "grade", "score"]])
 \end{minted}
@@ -651,14 +658,7 @@ True mean & \multicolumn{4}{c|}{79.7} \\
 
 \end{enumerate}
 
-%\begin{Answer}[ref={ex:sampling-compare}]
-%\begin{enumerate} 
-%    \item The SRS may accidentally oversample one grade and undersample another. Since 11th graders have much higher scores than 9th graders, a sample that happens to include more 11th graders will overestimate the true mean.
-%    \item The stratified sample is more stable because every grade level is always represented. The within-grade variation is smaller than the overall variation, so the estimate stays close to the true mean across runs.
-%    \item The cluster mean varies dramatically because the entire sample is determined by which grade is chosen. Selecting 9th grade gives a mean around 70; selecting 11th grade gives a mean around 92. The cluster mean can be far from the true mean of 79.7.
-%    \item The stratified sample is most stable because it controls for the known difference between grade levels. The cluster sample is most variable because it takes all-or-nothing from each group, and the groups differ significantly from each other in score.
-%\end{enumerate}
-%\end{Answer}
+
 
 
 

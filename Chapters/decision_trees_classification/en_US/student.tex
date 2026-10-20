@@ -1,36 +1,42 @@
 \chapter{Decision Trees for Classification}
 
-A decision tree is a popular machine learning algorithm used for both
-regression and classification problems. In this discussion, we will
-focus on its application in classification tasks.\index{decision trees}
+\section{The Idea}\index{decision tree}
+A \newterm{decision tree} predicts a class by asking a series of questions about the features. Each internal node tests one
+feature against a threshold. Each leaf gives a predicted class. A good tree puts the points in each leaf into one class, or as
+close to that as possible.
 
-\section{Decision Trees for Classification}
+\section{Gini Impurity}\index{Gini impurity}
+The \newterm{Gini impurity} of a node measures how mixed its classes are. If $p_i$ is the fraction of points in the node that belong
+to class $i$, then
+$$G = 1 - \sum_{i} p_i^2$$
+A pure node has $G = 0$. A node with two equally common classes has $G = 0.5$.
 
-A decision tree for classification uses a tree structure to predict
-the class of an object based on its features. The tree is made up of
-nodes that split the data based on a feature value, and leaves that
-represent a class label. The idea is to create a tree that has minimum
-impurity, i.e., at the end of the tree, we would like each leaf to
-contain data points that belong to a single class.
+\section{Choosing a Split}\index{decision tree!splitting}
+At each node, the tree tries each feature and each threshold, and keeps the split with the lowest weighted impurity of the two
+children. The weight of each child is its share of the points.
 
-\section{Gini Impurity}
+\subsection{A Worked Example}
+A node holds 6 points of class A and 4 points of class B. Its impurity is
+$$G = 1 - (0.6^2 + 0.4^2) = 1 - 0.52 = 0.48$$
+Suppose a split sends 4 A and 1 B to the left child, and 2 A and 3 B to the right child. Each child has 5 points.
+The left impurity is $1 - (0.8^2 + 0.2^2) = 0.32$, and the right is $1 - (0.4^2 + 0.6^2) = 0.48$. The weighted impurity is
+$$\frac{5}{10}(0.32) + \frac{5}{10}(0.48) = 0.40$$
+The split lowers the impurity from 0.48 to 0.40.
 
-Gini impurity is a measure of misclassification, which applies in a
-multiclass classifier context. It gives an idea of how often a
-randomly chosen element from the set would be incorrectly labeled if
-it was randomly labeled according to the distribution of labels in the
-subset.\index{Gini impurity}
+\section{Stopping and Overfitting}
+Growing the tree until every leaf is pure can memorize the training data. Limit the depth of the tree, or require a minimum
+number of points in each leaf, to keep it general. The validation set is used to choose these limits.
 
-The Gini impurity for a node of the tree is calculated as:
+\begin{Exercise}[label=dt1, title=Compute impurity]
+A node holds 3 points of class A and 1 point of class B. What is its Gini impurity?
+\end{Exercise}
+\begin{Answer}[ref=dt1]
+$G = 1 - (0.75^2 + 0.25^2) = 1 - 0.625 = 0.375$.
+\end{Answer}
 
-\begin{equation}
-Gini(p) = 1 - \sum_{i=1}^{J} (p_i)^2
-\end{equation}
-
-where $p_i$ is the fraction of items classified to label $i$ at a node and $J$ is the total number of classes.
-
-A Gini impurity of 0 is the best score, where all elements in a partition fall into a single category. 
-
-\section{How Gini Impurity is Used}
-
-During the construction of a decision tree, the best feature to split on at each node is chosen by minimizing the Gini impurity of the child nodes. The algorithm will consider all features and all possible split points for each feature to find the split that yields the lowest weighted average Gini impurity.
+\begin{Exercise}[label=dt2, title=Is the split better?]
+A node with $G = 0.48$ is split into two children of equal size with $G = 0.2$ and $G = 0.3$. Is the split an improvement?
+\end{Exercise}
+\begin{Answer}[ref=dt2]
+The weighted impurity is $0.5(0.2) + 0.5(0.3) = 0.25$, which is lower than 0.48. The split is an improvement.
+\end{Answer}

@@ -11,8 +11,8 @@
 \definecolor{kgBrown}{HTML}{90582F}
 
 
-Derivatives play a key role in calculus, providing us with a means of
-calculating rates of change and the slopes of curves (Figure~\ref{fig:tangent-line}). In this chapter, we present
+\index{rate of change}Derivatives play a key role in calculus, providing us with a means of
+calculating rates of change and the slopes of curves (Figure~\ref{fig:tangent-line-derivative_rules}). In this chapter, we present
 some common rules used to calculate derivatives.
 
 \begin{figure}[H]
@@ -52,7 +52,7 @@ some common rules used to calculate derivatives.
   \node[above left] at (\tA,\fA) {$(a, f(a))$};
 \end{tikzpicture}
 \caption{The tangent line touches the curve $y = f(x)$ at the point $(a, f(a))$ and has slope $f'(a)$.}
-\label{fig:tangent-line}
+\label{fig:tangent-line-derivative_rules}
 \end{figure}
 
 \section{Constant Rule}
@@ -137,7 +137,7 @@ If $f$ is the function given, find $f'$.
 	[This question was originally presented as a multiple-choice, 
 	no-calculator question on the 2012 AP Calculus BC exam.] The position 
 	of a particle in the $xy$-plane is given by the parametric equations 
-	$x(t) = t^3-3t^2$ and $y(t) = 12t-3t^2$. State a coordinate point 
+	\index{parametric motion}$x(t) = t^3-3t^2$ and $y(t) = 12t-3t^2$. \index{particle at rest}State a coordinate point 
 	$(x,y)$ at which the particle is at rest. 
 \end{Exercise}
 	
@@ -257,7 +257,7 @@ If $f$ is the function given, find $f'$.
     The function $f$ is defined by $f(x) = \sqrt{25-x^2}$ for $-5 \leq 
     x \leq 5$. \\
     (a) Find $f'(x)$. \\
-    (b) Write an equation for the line tangent to the graph at $x = -3$. 
+    (b) \index{tangent line!equation of}Write an equation for the line tangent to the graph at $x = -3$. 
 \end{Exercise}
 \begin{Answer}
     [ref=deriv_rules9]
@@ -293,7 +293,7 @@ If $f$ is the function given, find $f'$.
 \begin{Exercise}[label=deriv_rules11]
 	[This question was originally presented as a multiple-choice, 
 	calculator-allowed question on the 2012 AP Calculus BC exam.]
-	Let $f$ and $g$ be the functions given by $f(x) = e^{x}$ and $g(x) = 
+	\index{exponential function!derivative of}Let $f$ and $g$ be the functions given by $f(x) = e^{x}$ and $g(x) = 
 	x^4$. On what intervals is the rate of change of $f(x)$ greater than 
 	the rate of change of $g(x)$?
 \end{Exercise}
@@ -315,8 +315,451 @@ If $f$ is the function given, find $f'$.
 	\cup (7.384, \infty)$.
 \end{Answer}
 
+\section{Applications of Derivatives}
+\subsection{Applications in Mathematics}
+\subsubsection{l'H\^{o}pital's Rule}
+\index{l'H\^{o}pital's rule}
+Consider the function $h(x) = \frac{\ln{x}}{x-1}$ and suppose we are interested 
+in the behavior of $h(x)$ around $x=1$. As x approaches 0 and the denominator $x-1$
+also approaches 0. This gives the an indeterminate result: $$\lim_{x \to 1}\frac{\ln{x}}{x-1} = \frac{0}{0}$$ 
+This is exactly the situation where L'H\^{o}pital's Rule applies.
+
+In Chapter 3, we will learn about Quotient Rule, which when directly 
+applied will give this indeterminate form! Keep an eye out for that.  
+
+Now, looking at the graph of $h(x)$ (see figure \ref{fig:lhospital}), we can guess 
+that $\lim_{x \to 1} \frac{\ln{x}}{x-1} = 1$. 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}
+    [clip=true,
+    xmin=0, xmax=4,
+    ymin=0, ymax=4,
+    axis lines=left
+    ]
+    \addplot[blue, domain=0.01:4, samples=100]{ln(x)/(x-1)};
+    \addplot[samples=50, black, dashed] coordinates{(1, 0)(1,1)};
+    \addplot[samples=50, black, dashed] coordinates{(0, 1)(1,1)};
+    \addplot[mark=*, fill=white, draw=blue] coordinates{(1, 1)};
+\end{axis}
+\end{tikzpicture}
+\caption{$h(x) = \frac{\ln{x}}{x - 1}$}
+\label{fig:lhospital}
+\end{figure}
+
+Let's examine the numerator and denominator separately: we'll define $f(x) = 
+\ln{x}$ and $g(x) = x - 1$ (see figure \ref{fig:zoom1}). 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale = 0.5]
+    \begin{axis}
+    [clip=false,
+    xmin=0, xmax=3,
+    ymin=-1, ymax=2,
+    axis lines = center]
+    \addplot[blue, samples=100, domain=1/e:3]{ln(x)}
+    node[right, pos=1]{$f(x) = \ln{x}$};
+    \addplot[red, samples=100, domain=0:3]{x-1}
+    node[right, pos=1]{$g(x) = x - 1$};
+    \end{axis}
+\end{tikzpicture}
+\caption{Examining each part of $\frac{\ln{x}}{x-1}$ separately}
+\label{fig:zoom1}
+\end{figure}
+
+If we zoom in very far around $x=1$, the graphs begin to look linear (see 
+figure \ref{fig:zoom2}):
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale = 0.5]
+    \begin{axis}
+    [clip=false,
+    xmin=0.9, xmax=1.1,
+    ymin=-0.1, ymax=0.1,
+    axis lines = center]
+    \addplot[blue, samples=100, domain=0.9:1.1]{ln(x)}
+    node[right, pos=0.9]{$f(x) = \ln{x}$};
+    \addplot[red, samples=100, domain=0.9:1.1]{x-1}
+    node[right, pos=1]{$g(x) = x - 1$};
+    \end{axis}
+\end{tikzpicture}
+\caption{As we zoom in, the graph of $\ln{x}$ appears linear}
+\label{fig:zoom2}
+\end{figure}
+
+We can approximate these graphs as linear functions with slopes $m_1$ and 
+$m_2$, so that the blue curve is approximated as $y=m_1(x-1)$ and the red 
+curve is approximated as $y=m_2(x-1)$. The ratio of the functions would then 
+be 
+$$\frac{m_1(x-1)}{m_2(x-1)}=\frac{m_1}{m_2}$$ 
+
+which is the same as the ratio of the derivatives of our linear approximations. 
+This suggests l'Hopital's rule, that the limit of a ratio is the same as the 
+limit of the ratio of the derivatives for certain indeterminate forms: 
+$$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$.
+
+Let's apply l'Hopital's rule to our limit of $h(x)$:
+$$\lim_{x\to 1} \frac{\ln{x}}{x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx} 
+\ln{x}}{\frac{d}{dx} (x - 1)} = \lim_{x \to 1} \frac{\frac{1}{x}}{1}=1$$
+
+Notice our result with l'H\^{o}pital's rule matches our guess based on the graph 
+of $h(x) = \frac{\ln{x}}{x-1}$. 
+
+L'Hospital's rule also applies to the indeterminate result $\frac{\pm \infty}
+{\pm \infty}$. For a limit of the form $\lim_{x\to a}\frac{f(x)}{g(x)}$, 
+l'H\^{o}pital's rule applies if:
+\begin{enumerate}
+    \item the original limit is of the indeterminate form $\frac{0}{0}$ or 
+    $\frac{\pm \infty}{\pm \infty}$
+    \item $f$ and $g$ are differentiable on an interval containing $a$ (but 
+    possibly not differentiable at $a$)
+    \item $g'(x) \neq 0$ on said interval
+\end{enumerate}
+
+\textbf{Example}: Determine $\lim_{x \to \infty} \frac{e^x}{x^2}$.
+
+\textbf{Solution}: We begin by evaluating the limit:
+$$\lim_{x \to \infty} \frac{e^x}{x^2} = \frac{e^{\infty}}{\infty^2} = 
+\frac{\infty}{\infty}$$
+
+This is an indeterminate form that we can apply l'Hopital's rule to:
+$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}x^2} = \lim_{x \to 
+\infty} \frac{e^x}{2x}$$
+
+Evaluating this limit, we get another indeterminate form:
+$$=\frac{e^{\infty}}{2 \cdot \infty} = \frac{\infty}{\infty}$$
+
+Don't panic! We can apply l'H\^{o}pital's rule again (in fact, we can apply 
+l'H\^{o}pital's rule as many times as needed to evaluate a limit, as long as we 
+keep getting $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$):
+$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}2x} = \lim_{x \to 
+\infty} \frac{e^x}{2} = \frac{\infty}{2} = \infty$$
+
+and therefore, $\lim_{x \to \infty} \frac{e^x}{x^2} = \infty$.
+
+\begin{Exercise}[label=LH1]
+What is $\lim_{x \to 0} \frac{\tan{x} - x}{x^3}$?
+\end{Exercise}
+
+\begin{Answer}[ref=LH1]
+First, let's confirm that l'H\^{o}pital's rule applies here:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \frac{0 - 0}{0} = \frac{0}{0}$$
+
+Therefore, we can apply l'H\^{o}pital's rule:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\tan{x} - x)}{\frac{d}{dx}x^3}$$
+$$= \lim_{x \to 0} \frac{\sec^2{x} - 1}{3x^2} = \frac{1 - 1}{0} = \frac{0}{0}$$
+
+which is an indeterminate form. We apply l'H\^{o}pital's rule again:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
+$$= \lim_{x \to 0} \frac{2\tan{x}\sec^2{x}}{6x} = \frac{2(0)(1^2)}{6 \cdot 0} = \frac{0}{0}$$
+
+which is also an indeterminate form. We apply l'H\^{o}pital's rule again:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(2\tan{x}\sec^2{x})}{\frac{d}{dx}6x}$$
+$$= \lim_{x \to 0} \frac{2\sec^2{x}[2\tan^2{x} + \sec^2{x}]}{6} = \frac{2 \cdot 1 \cdot [2 \cdot 0 + 1]}{6}$$
+$$= \frac{2}{6} = \frac{1}{3}$$
+\end{Answer}
+
+Note that this rule only applies if it is in \emph{indeterminate form}. The most common indeterminate forms are
+\begin{equation*}
+\frac{0}{0}
+\quad \text{and} \quad
+\frac{\infty}{\infty},
+\end{equation*}
+which you may end up with when evaluating quotients!
+
+However, \index{indeterminate form}indeterminate forms can also appear in other ways. Some common
+examples include:
+\begin{equation*}
+0 \cdot \infty, \quad
+\infty - \infty, \quad
+0^0, \quad
+1^\infty, \quad
+\infty^0.
+\end{equation*}
+
+These expressions are indeterminate because their values cannot be
+determined without evaluating further. In many cases, such limits can be
+rewritten into a quotient that results in either
+\begin{equation*}
+\frac{0}{0}
+\quad \text{or} \quad
+\frac{\infty}{\infty}.
+\end{equation*} This allows l’Hôpital’s Rule to be applied!
+
+Example: Evaluate
+\begin{equation*}
+\lim_{x \to 0^+} x \ln x.
+\end{equation*}
+
+Solution:
+As $x \to 0^+$, we have $x \to 0$ and $\ln x \to -\infty$, producing the
+indeterminate form
+\begin{equation*}
+0 \cdot (-\infty).
+\end{equation*}
+
+Rewrite the expression as a quotient:
+\begin{equation*}
+x \ln x = \frac{\ln x}{1/x}.
+\end{equation*}
+
+Now the limit has the form
+\begin{equation*}
+\frac{-\infty}{\infty},
+\end{equation*}
+so l’Hôpital’s Rule applies. Differentiate the numerator and denominator:
+\begin{equation*}
+\lim_{x \to 0^+} \frac{\ln x}{1/x}
+= \lim_{x \to 0^+} \frac{1/x}{-1/x^2}.
+\end{equation*}
+
+Simplifying,
+\begin{equation*}
+\lim_{x \to 0^+} (-x) = 0.
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+\lim_{x \to 0^+} x \ln x = 0.
+\end{equation*}
+
+
+\begin{Exercise}[label = LH2]
+Evaluate each of the following limits, using l'H\^{o}pital's rule where needed.
+\begin{enumerate}
+\item $\lim_{x \to 3} \frac{x-3}{x^2-9}$
+\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9}$
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}}$
+\item $\lim_{x \to \pi} \frac{1 + \cos{x}}{1 - \cos{x}}$
+\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=LH2]
+\begin{enumerate}
+\item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
+\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit does not require l'H\^{o}pital's rule because it is evaluable
+\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \frac{1 \cdot \sin{1 - 1}}{2(1)^2 - 1 - 1} = \frac{0}{0}$, so we apply l'Hospital's rule: $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx}(x\sin{x-1}}{\frac{d}{dx}(2x^2 - x - 1} = \lim_{x \to 1} \frac{x \cdot \cos{x - 1} + \sin{x - 1}}{4x - 1} = \frac{1 \cdot \cos{0} + \sin{0}}{4 - 1} = \frac{1 \cdot 1 + 0}{-3} = \frac{-1}{3}$. 
+\end{enumerate}
+\end{Answer}
+
+\subsubsection{Mean Value Theorem}\index{mean value theorem}
+
+The Mean Value Theorem (MVT) states that on an interval $[a, b]$ where a 
+continuous function $f$ is differentiable on an open interval $(a, b)$, there 
+is at least one point where the tangent line to $f$ has the same slope as a 
+line connecting the points $(a, f(a))$ and $(b, f(b))$. Consider the graph of 
+$f(x) = x^2$ (see figure \ref{fig:MVT1}). The line connecting the points 
+$(-1, 1)$ and $(2, 4)$ has a slope of $\frac{1}{2}$. MVT tells us there must 
+be \textit{at least one} point, $c$, on the interval $x \in (-1, 2)$ where 
+$f'(c) = \frac{1}{2}$. We can find this point by setting $f'(x)$ equal to 
+$\frac{1}{2}$: 
+$$2x = \frac{1}{2} \rightarrow x = \frac{1}{4}$$
+
+Examining the figure \ref{fig:MVT1}, you can see that the tangent at 
+$f(\frac{1}{4})$ (the black line) is parallel to the red line connecting 
+$(-1, f(-1))$ and $(2, f(2))$. 
+
+\begin{figure}[H]
+\begin{tikzpicture}
+    \begin{axis}
+        [ymin=-2, xmin=-2, xmax=2, axis lines = left]
+        \addplot[blue, samples=50]{x^2};
+        \addplot[red, mark=*]coordinates {(-1, 1)};
+        \addplot[red, mark=*] coordinates {(2, 4)};
+        \addplot[domain=-2:2, red] coordinates{(-1, 1)(2, 4)};
+        \addplot[black, mark=*] coordinates{(0.5, 0.25)};
+        \addplot[black, domain=-2:2, samples=50
+        ]{x-0.25};
+    \end{axis}
+\end{tikzpicture}
+\caption{$f(x) = x^2$}
+\label{fig:MVT1}
+\end{figure}
+
+Note that MVT doesn't tell us \textit{where} $f'(x)$ is parallel to the line 
+connecting $(a, f(a))$ and $(b, f(b))$, just that some value $c$ exists that 
+satisfies the condition. 
+
+\textbf{Example}: Consider a hammer thrown upwards at 5 $\frac{m}{s^2}$ on 
+Earth (where the acceleration due to gravity is approximately $-9.8 
+\frac{m}{s^2}$). 
+
+\textbf{Solution}: We can use the MVT to show that there must be some point in 
+the hammer's path upwards where the velocity of the hammer is exactly equal to 
+its average velocity as it flies through the air. 
+
+The hammer's rise can be described with the function $y(t) = 5t-4.9t^2$. The 
+hammer reaches its peak at approximately $t=0.51$. So, we are looking for some 
+value, $c$, such that $$y'(c) = \frac{y(0.51) - y(0)}{0.51 - 0} = \frac{5(0.51) 
+- 4.9(0.51^2)}{0.51} = \frac{1.2755}{0.51} = 2.5$$
+
+Solving $y'(t) = 5-9.8t = 2.5$, we find that the $c$ that satisfies the MVT is 
+approximately $0.255$. This result is illustrated in figure \ref{fig:hammer}:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[ymin=0,ymax=1.4, xmin=0, xmax=1.2, axis lines=left]
+    \addplot[blue, samples=50, domain=0:1.2]{5*x-4.9*x^2};
+    \addplot[mark=*, red] coordinates{(0,0)};
+    \addplot[mark=*, red] coordinates{(0.51, 1.275)};
+    \addplot[red, samples=50]coordinates{(0,0) (0.51, 1.275)};
+    \addplot[black, samples=50]{2.5*(x-0.255)+0.9564};
+    \addplot[mark=*, black]coordinates{(0.255, 0.9564)};
+    \end{axis}
+\end{tikzpicture}
+\caption{The height of a hammer tossed upwards at $5 \frac{m}{s}$}
+\label{fig:hammer}
+\end{figure}
+
+\subsubsection{MVT Practice}
+\begin{Exercise}
+[label=MVT1]
+AT 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
+$50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:340 PM, the car's 
+acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\end{Exercise}
+\begin{Answer}
+[ref=MVT1]
+The speed of a car must a continuous, differentiable function, since your car 
+can't "jump" from one speed to another: it must smoothly accelerate from one 
+speed to another. Therefore, the Mean Value Theorem applies. The average 
+acceleration from 3:30 PM to 3:40 PM is given by:
+$$\frac{\text{change in speed}}{\text{change in time}} = \frac{50 \frac{mi}{hr}
+ - 30\frac{mi}{hr}}{3:40PM - 3:30PM}$$ 
+Simplifying and converting minutes to hours, we see the average acceleration is:
+$$\frac{20\frac{mi}{hr}}{\frac{1}{6}hr} = 120\frac{mi}{hr^2}$$
+
+Therefore, by MVT, there must be some time between 3:30 and 3:40 PM where the 
+car's acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\end{Answer}
+
+\begin{Exercise}
+[label=MVT2]
+Find the number $c$ that satisfies the MVT on the given interval. 
+
+(a) $f(x) = \sqrt{x}$, $[0, 4]$
+
+(b)$f(x) = e^{-x}$, $[0,2]$
+
+(c)$f(x) = \ln{x}$, $[1,4]$	
+\end{Exercise}
+
+\begin{Answer}
+[ref=MVT2]
+(a) For the domain given, $f(x)$ is defined and differentiable. Finding the 
+slope of the secant line connecting the endpoints:
+$$\frac{f(b)-f(a)}{b-a}=\frac{\sqrt{4}-\sqrt{0}}{4-0}=\frac{2}{4}=\frac{1}{2}$$
+
+So we are looking for some number $c$ such that $f'(c) = \frac{1}{2}$. Let's 
+find $f'(x)$:
+$$f'(x) = \frac{d}{dx}\sqrt{x}=\frac{1}{2\sqrt{x}}$$
+
+Setting this equal to $\frac{1}{2}$ to find $c$:
+$$f'(c) = \frac{1}{2\sqrt{c}}=\frac{1}{2}$$
+$$\sqrt{c}=1$$
+$$c=1$$
+
+(b)For the domain given, $f(x)$ is defined and differentiable. Finding the 
+slope of the secant line connecting the endpoints:
+$$\frac{f(2) - f(0)}{2 - 0}=\frac{e^{-2} - e^{0}}{2}=\frac{1 - e^{2}}{2e^{2}} 
+\approx -0.432$$
+
+And find $f'(x)$:
+$$f'(x) = -e^{-x}$$
+According to MVT, there must be some $c$ such that $f'(c) \approx-0.432$:
+$$-e^{-c} \approx -0.432$$
+$$e^{-c}\approx 0.432$$
+$$-c \approx \ln{0.432}$$
+$$c \approx -\ln{0.432} \approx 0.839$$
+
+(c) For the domain given, $f(x)$ is defined and differentiable. Finding the 
+secant line connecting the endpoints:
+$$\frac{f(b) - f(a)}{b - a}=\frac{\ln{4} - \ln{1}}{4 - 1} = \frac{\ln{4}}{3} 
+\approx 0.462$$
+
+And find $f'(x)$:
+$$f'(x) = \frac{1}{x}$$
+
+According to MVT, there must be some $c$ such that $f'(c) \approx 0.462$
+$$f'(c) = \frac{1}{c} \approx 0.462$$
+$$c \approx \frac{1}{0.462} = 2.164$$
+\end{Answer}
+
+
+
+\subsection{Applications in Physics}
+
+In physics, derivatives play a vital role in describing how quantities change 
+with respect to one another.
+
+\subsubsection{Velocity and Acceleration}
+
+In kinematics, the derivative of the position function with respect to time 
+gives the velocity function, and further taking the derivative of the velocity 
+function gives the acceleration function. For example, if $s(t)$ represents 
+the position of an object at time $t$, then the velocity $v(t)$ and 
+acceleration $a(t)$ are given by:
+
+\begin{equation}
+v(t) = \frac{ds}{dt} \quad \text{and} \quad a(t) = \frac{dv}{dt} = \frac{d^2s}{dt^2}
+\end{equation}
+
+\subsubsection{Practice}
+
+A particle's motion is described by $s(t) = t^3-6t^2+6t$, where $t$ is measured 
+in seconds and $s$ is measured in meters. Answer the following questions about 
+the particle's motion:
+\begin{Exercise}[label=velacc1]
+Find the velocity at time $t$.
+\end{Exercise}
+
+\begin{Answer}[ref=velacc1]
+Velocity is the derivative of position. Therefore, $v(t) = s'(t) = 3t^2-12t+6$.
+\end{Answer}
+
+\begin{Exercise}[label=velacc2]
+What is the velocity after 2s? After 4s?
+\end{Exercise}
+
+\begin{Answer}[ref=velacc2]
+$$v(2) = 3(2)^2-12(2)+6=-6 \frac{m}{s}$$
+$$v(4) = 3(4)^2-12(4)+6=6\frac{m}{s}$$
+\end{Answer}
+
+\begin{Exercise}[label=velacc3]
+When is the particle at rest?
+\end{Exercise}
+
+\begin{Answer}[ref=velacc3]
+When the particle is at rest, $v(t) = 0$. 
+$$3t^2-12t+6=0$$
+$$3(t^2-4t+2)=0$$
+$$t^2-4t+2=0$$
+This is not easily factorable, so we will use the quadratic formula: $$t=\frac{-(-4)\pm\sqrt{(-4)^2-4(1)(2)}}{2(1)}$$
+$$x=\frac{4\pm\sqrt{16-8}}{2}=2\pm\sqrt{2}\approx0.586, 3.414$$
+Therefore, the particle is at rest at 0.586s and 3.414s.
+\end{Answer}
+
+\subsubsection{Force and Momentum}
+
+In mechanics, the derivative of the momentum of an object with respect to time gives the net force acting on the object, as stated by Newton's second law of motion:
+
+\begin{equation}
+F = \frac{dp}{dt}
+\end{equation}
+
+where $F$ is the force, $p$ is the momentum, and $t$ is the time.
+
+
 \section{Conclusion}
 
-These rules form the basis for calculating derivatives in
+\index{derivative!rules summary}These rules form the basis for calculating derivatives in
 calculus. Many more complex rules and techniques are built upon these
 fundamental rules.

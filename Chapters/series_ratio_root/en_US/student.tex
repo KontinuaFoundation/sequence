@@ -1,0 +1,347 @@
+\chapter{Ratio, Root, and Strategy Tests}
+
+\section{Ratio and Root Tests for Convergence}
+\subsection{Absolute Convergence}
+\index{absolute convergence}Suppose there is a series $\sum_{n=1}^\infty a_n$, 
+then there is a corresponding series $\sum_{n=1}^\infty |a_n| = |a_1| + |a_2| 
++ |a_3| + \cdots$. If $\sum_{n=1}^\infty |a_n|$ is convergent, then the series 
+$\sum_{n=1}^\infty a_n$ is called \textbf{absolutely convergent}. 
+
+\textbf{Example}: Consider the alternating series 
+$$\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n^2} = 1 - \frac{1}{2^2} + 
+\frac{1}{3^2} + \cdots$$\\
+Is this series absolutely convergent?
+
+\textbf{Solution}: We examine the corresponding series where we take the 
+absolute value of each term:
+$$\sum_{n=1}^\infty \left|\frac{(-1)^{n-1}}{n^2} \right| = \sum_{n=1}^
+\infty \frac{1}{n^2}$$
+We can identify $\sum_{n=1}^\infty \frac{1}{n^2}$ as a convergent $p$-series. 
+Since $\sum_{n=1}^\infty \frac{1}{n^2}$ is convergent, we can state that 
+$\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n^2}$ is absolutely convergent. 
+
+\textbf{Example} Is the convergent series $\sum_{n=1}^\infty 
+\frac{(-1)^{n-1}}{n}$ absolutely convergent?
+
+\textbf{Solution} We consider the sum of the absolute values of the terms:
+$$\sum_{n=1}^\infty \left|\frac{(-1)^{n-1}}{n}\right| = \sum_{n=1}^\infty 
+\frac{1}{n}$$\\
+You should recognize this as the harmonic series, which is divergent. When a 
+series is convergent but the corresponding series of absolute values is not, 
+we call it \textbf{conditionally convergent}. \index{conditionally convergent}
+
+We won't prove the theorem here, but it is useful to know that if a series 
+$\sum_{n=1}^\infty a_n$ is absolutely convergent, then it is convergent. You 
+can prove this yourself using the Comparison Test. 
+
+\begin{Exercise}[label = absconv1]
+Is the series given by 
+$$\frac{\cos{1}}{1^2} + \frac{\cos{2}}{2^2} + \frac{\cos{3}}{3^3} + \cdots$$ \\
+convergent or divergent?
+\vspace{40mm}
+\end{Exercise}
+
+\begin{Answer}[ref = absconv1]
+We can write the series as $\sum_{n=1}^\infty \frac{\cos{n}}{n^2}$. Since 
+$n$ is real, we know that $n^2 > 0$ and we can say that $\sum_{n=1}^\infty 
+\left| \frac{\cos{n}}{n^2} \right| = \sum_{n=1}^\infty \frac{|\cos{n}|}
+{n^2}$. Additionally, $|\cos{n}| \leq 1$ for all $n$, and therefore 
+$\frac{|\cos{n}|}{n^2} \leq \frac{1}{n^2}$. We know the series $\sum_{n=1}^
+\infty \frac{1}{n^2}$ is convergent. And since we have shown that $\sum_{n=1}
+^\infty \frac{|\cos{n}|}{n^2} \leq \sum_{n=1}^\infty \frac{1}{n^2}$, by the 
+comparison test $\sum_{n=1}^\infty \frac{|\cos{n}|}{n^2}$ is convergent. 
+Therefore, $\sum_{n=1}^\infty \frac{\cos{n}}{n^2}$ is absolutely convergent 
+and therefore convergent. 
+\end{Answer}
+
+\begin{Exercise}[label = absconv2]
+Determine whether each of the following series is absolutely or conditionally 
+convergent. 
+\begin{enumerate}
+\item $\sum_{n=1}^\infty \frac{(-1)^n}{3n + 2}$
+\item $\sum_{n=1}^\infty \frac{\sin{n}}{4^n}$
+\item $\sum_{n=1}^\infty (-1)^{n-1} \frac{2n}{n^2 + 4}$ 
+\end{enumerate}
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = absconv2]
+\begin{enumerate}
+\item Conditionally Convergent. $\sum_{n=1}^\infty \left| \frac{(-1)^n}{3n+2} 
+\right| = \sum_{n=1}^\infty \frac{1}{3n + 2}$ Applying the integral test to 
+this sum: $\int_1^\infty \frac{1}{3x+2}\,dx = \lim_{t \to \infty} \int_1^t 
+\frac{1}{3x+2}\,dx = \left[ \frac{1}{3} \ln{3x + 2} \right]_{x=1}^t = \lim_{t 
+\to \infty} \left[ \ln{3x + 2} \right] - \ln{3(1) - 2} = \infty - 0 = \infty$. 
+Since $\int_1^\infty \frac{1}{3x + 2}\,dx$ is divergent, $\sum_{n=1}^\infty 
+\frac{1}{3n + 2}$ is divergent, and $\sum_{n=1}^\infty \frac{(-1)^n}{3n + 2}$ 
+is conditionally convergent.
+\item Absolutely Convergent. $\sum_{n=1}^\infty \left| \frac{\sin{n}}{4^n} 
+\right| \leq \sum_{n=1}^\infty \frac{1}{4^n}$. Applying the integral test to 
+$\sum_{n=1}^\infty \frac{1}{4^n}$: $\int_1^\infty \frac{1}{4^x}\,dx = \lim_{t 
+\to \infty} \frac{-1}{4^x \ln{4}}|_{x=1}^t = \lim_{t \to \infty} \left[ \frac{
+-1}{4^t \ln{4}} \right] - \frac{-1}{4^1 \ln{4}} = 0 + \frac{1}{4 \ln{4}} = 
+\frac{1}{4 \ln{4}}$. Since $\int_1^\infty \frac{1}{4^x}\,dx$ is convergent, 
+the series $\sum_{n=1}^\infty \frac{1}{4^n}$ is also convergent. And since 
+$\sum_{n=1}^\infty \left| \frac{\sin{n}}{4^n} \right| \leq \sum_{n=1}^\infty 
+\frac{1}{4^n}$, $\sum_{n=1}^\infty \left| \frac{\sin{n}}{4^n} \right|$ is 
+also convergent, which shows that $\sum_{n=1}^\infty \frac{\sin{n}}{4^n}$ is 
+absolutely convergent. 
+\item Conditionally Convergent. We are asking if the series $\sum_{n=1}^\infty 
+\left| (-1)^{n-1} \frac{2n}{n^2 + 4} \right|$ is convergent. $\sum_{n=1}^
+\infty \left| (-1)^{n-1} \frac{2n}{n^2 + 4} \right| = \sum_{n=1}^\infty 
+\frac{2n}{n^2 + 4}$ We will apply the Limit Comparison test and compare this 
+series to the known, divergent series $\sum_{n=1}^\infty \frac{1}{n}$. $\lim_{
+n \to \infty} \frac{\frac{2n}{n^2 + 4}}{\frac{1}{n}} = \lim_{n \to \infty} 
+\frac{2n^2}{n^2 + 4} = 2 >0$. Therefore, by the Limit Comparison test, $\sum_{
+n=1}^\infty \left| (-1)^{n-1} \frac{2n}{n^2 + 4} \right|$ is divergent AND 
+$\sum_{n=1}^\infty (-1)^{n-1} \frac{2n}{n^2 + 4}$  is conditionally convergent. 
+\end{enumerate}
+\end{Answer}
+
+\subsection{The Ratio Test}
+\index{ratio test}The ratio test compares the $(n + 1)^{th}$ term of a series 
+to the $n^{th}$ term and takes the limit as $n \to \infty$ of the absolute 
+value of this ratio:
+$$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = L$$\\
+There are three possible outcomes of the ratio test:
+\begin{enumerate}
+\item If $L < 1$, then the series $\sum_{n=1}^\infty a_n$ is absolutely 
+convergent (and therefore convergent).
+\item If $L = 1$, then the ratio test is inconclusive and we cannot draw any 
+conclusions about whether $\sum_{n=1}^\infty a_n$ is convergent or divergent.
+\item If $L > 1$ or $\lim_{n \to \infty} \frac{a_{n + 1}}{a_n} = \infty$, then 
+the series $\sum_{n=1}^\infty a_n$ is divergent.
+\end{enumerate}
+
+\textbf{Example}: Apply the ratio test to determine if $\sum_{n=1}^\infty 
+(-1)^n \frac{n^3}{3^n}$ is convergent or divergent. 
+
+\textbf{Solution}: 
+$$\lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}(n + 1)^3}{3^{n + 1}}}{
+\frac{(-1)^n n^3}{3^n}} \right| = \lim_{n \to \infty} \frac{(n + 1)^3}{3^{n + 
+1}} \cdot \frac{3^n}{n^3}$$
+$$= \lim_{n \to \infty} \frac{(n + 1)^3}{n^3} \cdot \frac{3^n}{3 \cdot 3^n}$$
+$$= \lim_{n \to \infty} \left( \frac{n + 1}{n} \right) \cdot \frac{1}{3} = 
+\frac{1}{3} \lim_{n \to \infty} \left( \frac{n + 1}{n} \right) = \frac{1}{3} 
+\cdot 1 = \frac{1}{3} $$
+Since $L < 1$, the series $\sum_{n=1}^\infty (-1)^n \frac{n^3}{3^n}$ is 
+absolutely convergent. 
+
+The ratio test is most useful for series that contain factorials, constants 
+raised to the $n^{th}$ power, or other products. 
+
+\begin{Exercise}[label = ratio1]
+[This question was originally presented as a multiple-choice, no-calculator 
+problem on the 2012 AP Calculus BC exam.] Which of the following series are 
+convergent?
+\begin{enumerate}
+\item $\sum_{n=1}^\infty \frac{8^n}{n!}$
+\item $\sum_{n=1}^\infty \frac{n!}{n^{100}}$
+\item $\sum_{n=1}^\infty \frac{n + 1}{(n)(n+2)(n+3)}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = ratio1]
+Series 1 and 3 converge
+\begin{enumerate}
+\item We apply the ratio test: $\lim_{n \to \infty} \left| \frac{\frac{8^
+{n + 1}}{(n + 1)!}}{\frac{8^n}{n!}} \right| = \lim_{n \to \infty} \frac{8 
+\cdot 8^n}{(n + 1)(n!)} \cdot \frac{n!}{8^n} = \lim_{n \to \infty} 
+\frac{8}{n + 1} = 0$. Therefore, the series converges. 
+\item We apply the ratio test: $\lim_{n \to \infty} \left| \frac{\frac{(n + 1)!}
+{(n + 1)^{100}}}{\frac{n!}{n^{100}}} \right| = \lim_{n \to \infty} \frac{(n + 1)
+n!}{(n + 1)^{100}} \cdot \frac{n^{100}}{n!} = \lim_{n \to \infty} \left( 
+\frac{n}{n + 1} \right)^{100} \cdot (n + 1) = \lim_{n \to \infty} \frac{n^{100}
+}{(n + 1)^{99}} = \infty$. Therefore, the series diverges. 
+\item We apply the comparison test: $\frac{n + 1}{(n)(n + 2)(n + 3)} = \frac{n}
+{(n)(n + 2)(n + 3)} + \frac{1}{(n)(n + 2)(n + 3)} = \frac{1}{(n + 2)(n + 3)} + 
+\frac{1}{(n)(n + 2)(n + 3)} = \frac{1}{n^2 + 5n + 6} + \frac{1}{n^3 + 5n^2 + 
+6n} \leq \frac{1}{n^2} + \frac{1}{n^3}$. The series $\sum_{n = 1}^\infty 
+\frac{1}{n^2}$ and $\sum_{n = 1}^\infty \frac{1}{n^3}$ are both convergent, 
+because they are $p$-series with $p > 1$. Having established that $\sum_{n=1}
+^\infty \frac{n + 1}{(n)(n + 2)(n + 3)} \leq \sum_{n=1}^\infty \frac{1}{n^2} 
++ \frac{1}{n^3}$ and that $\sum_{n=1}^\infty \frac{1}{n^2} + \frac{1}{n^3}$ 
+converges, by the comparison test we can state that $\sum_{n=1}^\infty 
+\frac{n + 1}{(n)(n+2)(n+3)}$ converges. 
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[label = series2]
+[This question was originally presented as a multiple-choice, calculator-allowed 
+problem on the 2012 AP Calculus BC exam.]If the series $\Sigma_{n = 1}^\infty 
+a_n$ converges and $a_n > 0$ for all $n$, which of the following statements 
+must be true? Explain why. 
+\begin{enumerate}
+\item $\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = 0$
+\item $|a_n|<1$ for all $n$
+\item $\sum_{n=1}^\infty a_n = 0$
+\item $\sum_{n=1}^\infty na_n$ diverges
+\item $\sum_{n=1}^\infty \frac{a_n}{n}$ converges
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=series2]
+\begin{enumerate}
+\item This is not necessarily true. For a convergent series, the result of the 
+ratio test is $L < 1$, so the limit could be $\neq 0$. 
+\item This is not necessarily true. Consider the geometric series $\sum_{n=1}
+^\infty 2(\frac{1}{2})^{n-1}$. This series is convergent because the common 
+ratio is less than one, but the first term is $2(\frac{1}{2})^0 = 2 > 1$. 
+\item This is not necessarily true. Again, consider the geometric series 
+$\sum_{n=1}^\infty 2(\frac{1}{2})^{n-1}$, which converges to $4 \neq 0$. 
+\item This is not necessarily true. Consider the $p$-series $\sum_{n=1}^
+\infty \frac{1}{n^4}$. Then the series $\sum_{n=1}^\infty n \frac{1}{n^4} = 
+\sum_{n=1}^\infty \frac{1}{n^3}$ is convergent. 
+\item This must be true. By the comparison test, $\sum_{n=1}^\infty 
+\frac{a_n}{n} \leq \sum_{n = 1}^\infty a_n$. Since $\sum_{n = 1}^\infty 
+a_n$ converges, so much $\sum_{n = 1}^\infty na_n$. 
+\end{enumerate}
+\end{Answer}
+
+\subsection{Root Test}
+\index{root test}The root test examines the behavior of the $n^{th}$ root of 
+$a_n$ as $n \to \infty$. Similar to the ratio test, there are three possible 
+outcomes:
+\begin{enumerate}
+\item If $\lim_{n \to \infty} \sqrt[n]{|a_n|} = L < 1$, then the series $\sum
+_{n=1}^\infty a_n$ is absolutely convergent, and therefore convergent.
+\item If $\lim_{n \to \infty} \sqrt[n]{|a_n|} = L >1$ or $\lim_{n \to \infty} 
+\sqrt[n]{|a_n|} = \infty$, then the series $\sum_{n=1}^\infty a_n$ is 
+divergent.
+\item If $\lim_{n \to \infty} \sqrt[n]{|a_n|} = L = 1$, then the Root Test is 
+inconclusive. 
+\end{enumerate}
+
+The root test is best when there is a term or terms raised to the $n^{th}$ 
+power. Consider the series $\sum_{n=1}^\infty \left( \frac{2n + 3}{3n + 2} 
+\right)^n$:
+
+\textbf{Example}: Is the series $\sum_{n=1}^\infty \left( \frac{2n + 3}{3n + 
+2} \right)^n$ convergent or divergent?
+
+\textbf{Solution}: Since $a_n$ consists of terms raised to the $n^{th}$ power, 
+we will apply the root test for convergence:
+$$\lim_{n \to \infty} \sqrt[n]{\left| \left( \frac{2n+3}{3n+2} \right)^n 
+\right|} = \lim_{n \to \infty} \frac{2n+3}{3n+2} = \frac{2}{3} < 1$$ 
+Therefore, by the root test, the series $\sum_{n=1}^\infty \left( \frac{2n + 
+3}{3n + 2} \right)^n$ is convergent. 
+
+\begin{Exercise}[label=root1]
+Use the Root Test to determine whether the following series are convergent or 
+divergent.
+\begin{enumerate}
+\item $\sum_{n=1}^\infty \left( \frac{3n^2 + 1}{n^2 - 4} \right)^n$
+\item $\sum_{n=1}^\infty \frac{(-1)^{n}}{(\ln{n})^n}$
+\item $\sum_{n=1}^\infty \left( 1+ \frac{1}{n} \right)^{n^2}$
+\vspace{50mm}
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=root1] \begin{enumerate} \item $\lim_{n=1}^\infty \sqrt[n]{\left| \left( \frac{3n^2 + 1}{n^2 - 4} \right)^n 
+\right|} = \lim_{n=1}^\infty \frac{3n^2 + 1}{n^2 - 4} = 3 >1$. Therefore, 
+the series $\sum_{n=1}^\infty \left( \frac{3n^2 + 1}{n^2 - 4} \right)^n$ is 
+divergent.
+\item $\lim_{n \to \infty} \sqrt[n]{\left| \frac{(-1)^{n}}{(\ln{n})^n} \right|} 
+= \lim_{n \to \infty} \sqrt[n]{\frac{1}{(\ln{n})^n}} = \lim_{n \to \infty} 
+\frac{1}{\ln{n}} = \frac{1}{\infty} = 0 < 1$. Therefore, the series $\sum_
+{n=1}^\infty \frac{(-1)^{n}}{(\ln{n})^n}$ is convergent.
+\item $\lim_{n \to \infty} \sqrt[n]{\left| \left( 1 + \frac{1}{n} \right)^{n^2} 
+\right|} = \lim_{n \to \infty} \left(1 + \frac{1}{n} \right)^n = e > 1$. 
+Therefore, $\sum_{n=1}^\infty \left( 1+ \frac{1}{n} \right)^{n^2}$ is divergent. 
+\end{enumerate}
+\end{Answer}
+
+\section{Strategies for Testing Series}\index{series!testing strategies}
+When testing series for convergence, we want to choose a test based on the 
+form of the series. While you may by tempted to try each test one-by-one until 
+you find an answer, this quickly becomes cumbersome and time-consuming. 
+Additionally, if you plan to take an AP Calculus exam, you need to be able to 
+quickly choose an appropriate test as to conserve the time you have available 
+for the exam. Here are some tips:
+\begin{enumerate}
+\item Check if the series is a $p$-series ($\sum_{n=1}^\infty \frac{1}{n^p}$). 
+If so, then if $p > 1$, the series converges. Otherwise, the series diverges.
+\item If the series is not a $p$-series, check to see if you can write it as a 
+geometric series ($\sum_{n=1}^\infty ar^{n-1}$ or $\sum_{n=1}^\infty ar^n$). 
+Recall that geometric series are convergent if $|r| < 1$ and divergent otherwise.
+\item If the series can't be written as a $p$-series or geometric series, but 
+has a similar form, consider the comparison tests (the Direct Comparison Test 
+and the Limit Comparison Test). When choosing a $p$-series to compare your 
+series to, follow the guidelines outlined in the Comparison Tests section 
+above. 
+\item If you can see at a glance that $\lim_{n \to \infty} a_n \neq 0$, then 
+apply the Test for Divergence to show the series is divergent. REMEMBER: $\lim_
+{n \to \infty} a_n \neq 0$ implies the series $\sum_{n=1}^\infty a_n$ is 
+divergent, but $\lim_{n \to \infty} a_n = 0$ \textbf{does not} necessarily imply the 
+series $\sum_{n=1}^\infty a_n$ is convergent. 
+\item If the series is alternating (has $(-1)^n$ or $(-1)^{n-1}$ in the term), 
+the Alternating Series test may provide an answer. 
+\item The Ratio Test is excellent for series with factorials, other products, 
+or constants to the $n^{th}$ power. Remember that the Ratio Test will be 
+inconclusive for $p$-series, rational functions of $n$, and algebraic functions 
+of $n$. 
+\item If $a_n$ is of the form $(b_n)^n$, use the Root Test. 
+\item If $a_n = f(n)$ where $f(n)$ is continuous, positive, and decreasing and 
+you can evaluate $\int_1^\infty f(x)\,dx$, use the Integral Test. 
+\end{enumerate}
+
+You don't need to treat this as a checklist, where you check for every 
+condition. Rather, you should use this as a guide to quickly determine the 
+convergence test most likely to be useful. 
+
+\begin{Exercise}[label = test]
+Choose an appropriate test to determine if the series is convergent of 
+divergent. Apply the test and classify the series as convergent or divergent.
+\begin{enumerate}
+\item $\sum_{n=1}^\infty \frac{e^n}{n^2}$
+\item $\sum_{n=1}^\infty \frac{3^n n^2}{n!}$
+\item $\sum_{n=2}^\infty \frac{1}{n\sqrt{\ln{n}}}$
+\item $\sum_{n=1}^\infty \left( \frac{n}{n+1} \right)^{n^2}$
+\item $\sum_{n=1}^\infty \left( \sqrt[n]{2} - 1\right)^n$
+\vspace{75mm}
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = test]
+\begin{enumerate}
+\item Divergent. Since there is a constant to the $n^{th}$ power and an algebraic 
+function of $n$, we will try the Ratio Test. $\lim_{n \to \infty} \left| 
+\frac{a_{n+1}}{a_n} \right| = \lim_{n \to \infty} \frac{e^{n + 1}}{(n + 1)^2} 
+\cdot \frac{n^2}{e^n} = \lim_{n \to \infty} \frac{e^n \cdot e}{e^n} \cdot 
+\left( \frac{n}{n + 1} \right)^2 = \lim_{n \to \infty} e \cdot \left( 
+\frac{n}{n + 1} \right)^2 = e \cdot 1^2 = e >1$. Therefore, $\sum_{n=1}^\infty 
+\frac{e^n}{n^2}$ is divergent. 
+\item Convergent. Since there is a factorial, we will try the Ratio Test. $\lim_{n \to 
+\infty} \left| \frac{a_{n+1}}{a_n} \right| = \lim_{n \to \infty} 
+\frac{3^{n + 1}(n + 1)^2}{(n + 1)!} \cdot \frac{n!}{3^n n^2} = \lim_{n \to 
+\infty} \frac{3 \cdot 3^n}{3^n} \cdot \frac{n!}{(n+1)n!} \cdot \left( 
+\frac{n + 1}{n} \right)^2 = \lim_{n \to \infty} \frac{3(n+1)^2}{(n+1)n^2} = 
+\lim_{n \to \infty} \frac{3(n+1)}{n^2} = 0 < 1$. Therefore, the series 
+$\sum_{n=1}^\infty \frac{3^n n^2}{n!}$ is convergent. 
+\item Divergent. Since $\int_2^\infty \frac{1}{x\sqrt{\ln{x}}}\,dx$ can be integrated, we 
+will apply the integral test. $\int_2^\infty \frac{1}{x\sqrt{\ln{x}}}\,dx = 
+\lim_{t \to \infty} \int_2^t \frac{1}{x\sqrt{\ln{x}}}\,dx$. Setting $u = 
+\ln{x}$, then $du = \frac{dx}{x}$ and $\frac{1}{x\sqrt{\ln{x}}}dx = 
+\frac{1}{\sqrt{u}}du$. Then we can say that $\int_2^\infty \frac{1}{x\sqrt{\ln{
+x}}}\,dx = \lim_{t \to \infty} \int_{x=2}^{x=t} \frac{1}{\sqrt{u}}\,du = 
+\lim_{t \to \infty} \left( \frac{-1}{2} \right) \sqrt{u} |_{x=2}^{x=t} = 
+\lim_{t \to \infty} \left( \frac{-1}{2} \right) \sqrt{\ln{x}}_{2}^{t} = \left( 
+\frac{-1}{2} \right) \lim_{t \to \infty} \sqrt{\ln{t}} - \left( \frac{-1}{2} 
+\right) \sqrt{\ln{2}} = \infty$. Since the integral diverges, so does the 
+series. 
+\item Convergent. Since this series has terms to the $n^{th}$ power, we will 
+try the Root Test. $\lim_{n \to \infty} \sqrt[n]{\left| \left( \frac{n}{n+1} 
+\right)^{n^2} \right| } = \lim_{n \to \infty} \sqrt[n]{\left( \frac{n}{n+1} 
+\right)^{n+2}} = \lim_{n \to \infty} \left(\frac{n}{n+1} \right)^{\frac{n^2}{
+n}} = \lim_{n \to \infty} \left( \frac{n}{n+1} \right)^n = \lim_{n \to \infty} 
+\left( \frac{1}{1 + \frac{1}{n}} \right)^n = \frac{1}{lim_{n \to \infty} \left(
+1 + \frac{1}{n} \right)^n} = \frac{1}{e} < 1$ Therefore, by the root test, the 
+series is convergent.
+\item Convergent. This series also has terms raised to the $n^{th}$ power, we 
+will try the Root Test again. $\lim_{n \to \infty} \sqrt[n]{\left| \left(\sqrt[
+n]{2} - 1\right)^n \right| } = \lim_{n \to \infty} \sqrt[n]{\left( \sqrt[n]{2} 
+- 1 \right)^n} = \lim_{n \to \infty}\left(\sqrt[n]{2} - 1 \right)^{n/n} = \lim_
+{n \to \infty} \left( \sqrt[n]{2} - 1 \right) = \lim_{n \to \infty} 2^{1/n} - 
+1 = 1 - 1 = 0 < 1$. Therefore, the series converges. 
+\end{enumerate}
+\end{Answer}

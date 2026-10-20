@@ -6,7 +6,7 @@ As you learn more about optimization techniques, you will come across many effic
 
 First we will take a look at what some of the NP problems are. Next, we will describe the intuition behind semidefinite positive matrices. We will take a look at one NP problem, then introduce the Python module to use for solving these problems. 
 
-\section{NP Problems}
+\section{NP Problems}\index{NP problems}
 
 In the world of mathematics, easy problems are referred to as P, or polynomial time, problems. In simple terms, this means the problem can be solved quickly, and it is easy to verify that the solution is correct. Addition, subtraction, division, multiplication, square roots, and matrix-vector multiplication are just a few examples. NP problems, as stated in the introduction, can’t be computed in a reasonable amount of time, but solutions are usually easy to verify. The game of Sudoku is one such example. It is easy to verify a correct solution, but writing a generalized algorithm to solve any Sudoku game is an NP problem. 
 
@@ -33,7 +33,7 @@ When neural networks were first being developed to recognize things (faces, lett
     \label{fig:neuralnet-error}
 \end{figure}
 
-\section{Positive Definite and Semidefinite Matrices}
+\section{Positive Definite and Semidefinite Matrices}\index{positive definite matrix}\index{positive semidefinite matrix}
 
 Unlike matrices that are defined by their content (such as identity matrix, zero matrix, and diagonal matrix), positive definite and semidefinite matrices are characterized by the result they produce. They have an analog in the scalar world, so let's first look at that. Let's take the scalars $a$ and $b$ and treat them as vectors. $ab$ is then the dot product. If $a >0$, then $ab$ will take on the sign of $b$. If $a < 0$, then $ab$ will have the opposite sign of $b$. If you look at this in a graph, you can see that in the first case, $ab$ stays on the same side of the origin, but in the second case, $ab$ flips
 
@@ -53,7 +53,7 @@ For $a = [3], b = [-4]$. the result of multiplication flips a to the other side 
 \draw[black, ultra thick,->] (0,-1) -- (-8,-1);
 \end{tikzpicture}
 
-The notion of “staying on the same side” is positive definite. The notion of flipping is negative definite. Positive definite means that $x > 0$, so the result is a positive number. Positive semidefinite means that $x >= 0$, so the result is a non-negative number. 
+The notion of “staying on the same side” is positive definite. The notion of flipping is negative definite. Positive definite means that $x > 0$, so the result is a positive number. \index{positive semidefinite matrix!non-negative result}Positive semidefinite means that $x >= 0$, so the result is a non-negative number. 
 
 If you can formulate a problem as a positive semidefinite matrix, then you automatically constrain the result to the “same side.”  This constraint results in higher algorithmic efficiency.
 
@@ -76,7 +76,7 @@ $$
 \end{bmatrix}
 \geq 0
 $$
-For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a positive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an elliptope. This shape guarantees an optimal solution.
+For what values of $a, b, c$ is this matrix positive semidefinite? If you iterate through all possible combinations of a,b,c, then compute the eigenvalues for each matrix, you will find that some (like $0,0,0$) result in a positive semidefinite matrix and some (like $2, 2, 2 $) are not positive semidefinite. If you plot the set of triplets that result in a semidefinite matrix, you will see an \index{elliptope}elliptope. This shape guarantees an optimal solution.
 
 \begin{figure}[H]
     \centering
@@ -85,7 +85,7 @@ For what values of $a, b, c$ is this matrix positive semidefinite? If you iterat
     \label{fig:elliptope}
 \end{figure}
 
-\section{Identifying and Constructing a Positive Semidefinite Matrix}
+\section{Identifying and Constructing a Positive Semidefinite Matrix}\index{positive semidefinite matrix!constructing}
 In the last section, you saw that being symmetric does not guarantee a positive semidefinite matrix. You also saw that a matrix of positive values does not guarantee a positive semidefinite matrix. The only way to check for positive semidefinite is to calculate the eigenvalues, which you learned in a previous workbook.
 
 A surefire way to construct a positive semidefinite matrix is:
@@ -114,8 +114,8 @@ The answer depends on the 3 by 3 matrix you chose.
 \end{Answer}
 
 \section{The Max Cut Problem}
-\index{Max Cut}
-A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. (If you could find one, you would be eligible to win a huge prize from the Clay Mathematics Institute!) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a technique developed by mathematicians Michel Goemans and David Williamson. 
+\index{Max Cut}\index{relaxation!semidefinite}
+A famous NP problem is Max Cut. Given a graph of interconnected nodes, cut the graph to create two sets of nodes, such that the cut goes through as many edges as possible. (You can't cut an edge more than once.) Max Cut is important for binary classification in machine learning, circuit design, statistical physics, and more. There is no algorithm that will provide an exact solution. (If you could find one, you would be eligible to win a huge prize from the Clay Mathematics Institute!) Instead, you will see how to approximate a solution to this  problem using a positive semidefinite matrix and a \index{Goemans-Williamson technique}technique developed by mathematicians Michel Goemans and David Williamson. 
 
 You won't see all the complete details here, as this section is meant to be a quick introduction to how you can apply positive semidefinite matrices. 
 
@@ -175,11 +175,11 @@ It is this "relaxation" that gets us to a semidefinite matrix, because we can no
 $$
 X = \left[ x_{i}^{T}x_{j} \right]_{i,j}
 $$
-Python has a module for solving optimization problems. Using this, you will get an optimum matrix, but to get the unit vectors, you will need to take the square root of the matrix. 
+\index{semidefinite programming}Python has a module for solving optimization problems. Using this, you will get an optimum matrix, but to get the unit vectors, you will need to take the square root of the matrix. 
 $$
 X = \left[ x_{1}...x_{1n} \right]\left[ x_{1}...x_{1n} \right]^{T}
 $$
-Next we need to go from unit vectors to scalars, using a process called rounding.
+Next we need to go from unit vectors to scalars, using a process called \index{rounding}rounding.
 $$
 x^{i}\in R^n \to x^{i}\in \{ -1,1 \}
 $$

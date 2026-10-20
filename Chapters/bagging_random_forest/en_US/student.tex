@@ -1,54 +1,34 @@
 \chapter{Bagging and Random Forests}
 
-Bagging (Bootstrap Aggregating) and Random Forests are ensemble
-machine learning methods that are primarily used to improve the
-stability and accuracy of prediction models.
+\section{Bootstrap Aggregating}\index{bagging}
+\newterm{Bagging}, short for bootstrap aggregating, reduces the variance of a model by training many versions of it and combining
+their predictions. Each version is trained on a \newterm{bootstrap sample}: $n$ points drawn from the original $n$ points
+\emph{with replacement}. For regression, the predictions are averaged. For classification, the predictions are combined by a vote.
 
-\section{Bagging}
+\section{Why Bootstrap Samples Repeat}
+Sampling with replacement means some points appear more than once and others not at all. A given point is missed by one draw with
+probability $1 - \frac{1}{n}$, so it is missed by all $n$ draws with probability $(1 - \frac{1}{n})^n$. For large $n$ this approaches
+$\frac{1}{e} \approx 0.368$. So about $1 - \frac{1}{e} \approx 63.2\%$ of the distinct original points appear in each bootstrap sample.
 
-Bagging, an abbreviation for Bootstrap Aggregating, is a method for
-generating multiple versions of a predictor and using these to get an
-aggregated predictor. The aggregation averages the output (for
-regression) or performs a vote (for classification). \index{Bagging}
+\section{Random Forests}\index{random forest}
+A \newterm{random forest} is bagging with one more change. When a tree considers a split, it may use only a random subset of $k$ features.
+This makes the trees less correlated, so averaging them reduces variance more. A common choice is $k = \sqrt{p}$ for classification, where $p$ is the number
+of features, and $k = p/3$ for regression.
 
-Given a standard training set $D$ of size $n$, bagging generates $m$
-new training sets $D_i$, each of size $n'$, by sampling from $D$
-uniformly and with replacement. By sampling with replacement, some
-observations may be repeated in each $D_i$. If $n'=n$, then for large
-$n$ the set $D_i$ is expected to have the fraction $(1 - 1/e) \approx
-63.2\%$ of the unique examples of $D$, the rest being duplicates.
+\section{Out-of-Bag Error}\index{out-of-bag error}
+About one third of the points are left out of each bootstrap sample. Each point can be predicted by the trees that did not see it. The error of these
+out-of-bag predictions is an honest estimate of test error, so a random forest often needs no separate test set.
 
-\section{Random Forests}
+\begin{Exercise}[label=bag1, title=Probability a point is left out]
+A data set has 5 points. What is the probability that a particular point is not chosen in any of the 5 draws of a bootstrap sample?
+\end{Exercise}
+\begin{Answer}[ref=bag1]
+$(1 - \frac{1}{5})^5 = (0.8)^5 \approx 0.328$.
+\end{Answer}
 
-Random Forests is a substantial modification of Bagging that builds a
-large collection of de-correlated trees, and then averages them. When
-building these decision trees, each time a split in a tree is
-considered, a random sample of $k$ features is chosen as split
-candidates from the full set of features. The split is allowed to use
-only one of those $k$ features. A fresh sample of $k$ features is
-taken at each node, and the best feature/split-point among the $k$ is
-chosen.\index{Random Forest}
-
-For classification problems, $k = \sqrt{p}$ is typically taken, where
-$p$ is the number of features in the model. For regression problems,
-the inventors recommend $k = p/3$, with a minimum node size of 5 as
-the default.
-
-In Random Forests, there is no need for cross-validation or a separate
-test set to get an unbiased estimate of the test set error. It is
-estimated internally, during the run, as follows:
-
-\begin{enumerate}
-\item Each tree is constructed using a different bootstrap sample from
-  the original data.
-\item About one-third of the cases are left out of the bootstrap
-  sample and not used in the construction of the $k$-th tree.
-\item Let $y_{\text{tree k}}(x)$ be the class prediction of the $k$-th
-  Random Forest tree for $x$. Then the Random Forest classifier does a
-  majority vote over all trees:
-\end{enumerate}
-
-\[
-y_{\text{RF}}(x) = \text{majority}\{y_{\text{tree k}}(x), k=1, \ldots\}
-\]
-
+\begin{Exercise}[label=bag2, title=Choosing k]
+A classification problem has 16 features. How many features should each split consider in a random forest?
+\end{Exercise}
+\begin{Answer}[ref=bag2]
+$k = \sqrt{16} = 4$.
+\end{Answer}

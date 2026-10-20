@@ -1,59 +1,39 @@
-\chapter{Neural Nets for Regression}
+\chapter{Neural Networks for Regression}
 
-Neural Networks are powerful computational models that are used for a
-variety of tasks in machine learning, including regression. Unlike
-linear regression, which is a linear approach to modelling the
-relationship between a dependent variable and one or more independent
-variables, a Neural Network can model complex non-linear
-relationships.\index{neural net regression}
+\section{From Linear Models to Networks}\index{neural network!regression}
+A linear regression predicts $\hat{y} = \mathbf{w}^T\mathbf{x} + b$. A neural network stacks such predictions, with a nonlinear activation between the
+layers, so it can fit curved relationships. Each \newterm{neuron} computes a weighted sum of its inputs plus a bias, then applies an activation function.
 
-\section{Neural Networks}
+\section{Layers and Activations}\index{activation function}
+The input layer holds the features. Hidden layers transform them, and the output layer produces the prediction. Common activations include the
+ReLU, $\max(0, z)$, the sigmoid, and the hyperbolic tangent. For regression, the output layer usually uses the identity activation, because the
+prediction can be any real number.
 
-A neural network is composed of nodes (neurons) grouped into
-layers. The input layer takes in the features of the dataset, hidden
-layers perform computations on these inputs, and the output layer
-produces the final prediction. Each node in a layer is connected to
-each node in the next layer through "edges". These edges carry
-weights, which are the parameters of the model that are learned during
-training.
-
-A key part of each node is an activation function. It transforms the
-weighted sum of the node's inputs into an output value that is passed
-onto the next layer. Common activation functions include the ReLU
-(Rectified Linear Unit), sigmoid and hyperbolic tangent functions. For
-regression tasks, usually a linear activation function is used in the
-output layer, as the output can be any real number.
-
-\section{Neural Networks for Regression}
-
-To perform regression using a neural network, you would train the
-network to map the input features to a continuous target variable.
-
-Here is the basic process:
-
+\section{Training}
+Training a regression network follows the same steps as any gradient-based model.
 \begin{itemize}
-\item \textbf{Feedforward:} Compute the output of the network given
-  the input features. This involves calculating the weighted sum of
-  inputs for each node and applying the activation function.
-
-\item \textbf{Loss Calculation:} Calculate the loss (difference
-  between the network's prediction and the actual value). For
-  regression tasks, common loss functions include Mean Squared Error
-  (MSE) or Mean Absolute Error (MAE).
-
-\item \textbf{Backpropagation:} Update the network's weights to
-  minimize the loss. This is done by computing the gradient of the
-  loss function with respect to each weight in the network, and then
-  adjusting the weights in the direction that decreases the loss.
-
-\item \textbf{Iteration:} Repeat the feedforward, loss calculation,
-  and backpropagation steps for a number of epochs (complete passes
-  through the dataset) or until the loss converges to a minimum.
-
+\item \textbf{Feedforward}: compute the prediction from the inputs.
+\item \textbf{Loss}: compare the prediction with the target, usually with mean squared error.
+\item \textbf{Backpropagation}: compute the gradient of the loss with respect to each weight.
+\item \textbf{Update}: move each weight against its gradient, as in gradient descent.
 \end{itemize}
 
-This way, the neural network learns to approximate the function that
-best maps input features to the target variable, thus performing
-regression. The advantage of using neural networks over linear
-regression is that they can capture complex non-linear relationships
-between variables.
+\section{A Worked Example}
+Use a single neuron with the identity activation, $\hat{y} = 2x + 1$, on three points $(1, 3)$, $(2, 5)$, and $(3, 8)$. The predictions are
+$3, 5, 7$. The errors are $0, 0, 1$, so the mean squared error is
+$$\text{MSE} = \frac{0^2 + 0^2 + 1^2}{3} = \frac{1}{3}$$
+A neuron with an identity activation is just a linear regression. The power of the network comes from hidden layers with nonlinear activations.
+
+\begin{Exercise}[label=nnr1, title=Compute the error]
+A neuron predicts $\hat{y} = 2x + 1$. For the point $(2, 4)$, what is the squared error?
+\end{Exercise}
+\begin{Answer}[ref=nnr1]
+$\hat{y} = 5$, so the squared error is $(5 - 4)^2 = 1$.
+\end{Answer}
+
+\begin{Exercise}[label=nnr2, title=Output activation]
+Why is the identity activation used in the output layer for regression, but not the sigmoid?
+\end{Exercise}
+\begin{Answer}[ref=nnr2]
+The sigmoid output lies between 0 and 1, which would prevent the network from predicting values outside that range. Regression targets can be any real number, so the identity activation is used.
+\end{Answer}

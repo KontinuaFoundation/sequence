@@ -1,0 +1,270 @@
+\chapter{Experimental Designs}
+
+\section{Experimental Designs}\index{experimental design}
+
+There are three experimental designs you should be able to recognize, describe, and distinguish from one another. Each one handles \newterm{variability}\index{variability}, the natural differences among experimental units, in its own way.
+
+\subsection{Completely Randomized Design}
+
+The simplest structure is a \newterm{completely randomized design}\index{completely randomized design}. All available experimental units are assigned to treatments purely by chance, with no prior sorting or grouping. Randomization alone is responsible for balancing any existing differences among units across the treatment groups.
+
+Suppose an agricultural research station wants to compare the yield of three varieties of wheat: a standard variety currently in use, and two new varieties developed in the lab. The station has 90 available plots of farmland. In a completely randomized design, the experiment proceeds as follows:
+
+\begin{enumerate}
+    \item Measure the current condition of each plot (soil quality, drainage, sun exposure).
+    \item Number the plots 1 to 90 and use a random number generator to assign 30 plots to variety 1, 30 to variety 2, and 30 to variety 3.
+    \item Plant the assigned wheat variety in each plot and manage all plots identically in terms of water, fertilizer, and pest control.
+    \item At harvest, measure the yield from each plot.
+    \item Compare average yields across the three groups.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=2.2cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=2.2cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=2cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[unit] (plots) {90 available\\plots};
+\node[proc, right=0.8cm of plots] (rand) {Random\\assignment};
+
+\node[unit, right=1.2cm of rand] (g2) {Group 2\\30 plots};
+\node[unit, above=0.5cm of g2] (g1) {Group 1\\30 plots};
+\node[unit, below=0.5cm of g2] (g3) {Group 3\\30 plots};
+
+\node[trt, right=0.6cm of g1] (v1) {Variety 1};
+\node[trt, right=0.6cm of g2] (v2) {Variety 2};
+\node[trt, right=0.6cm of g3] (v3) {Variety 3};
+
+\node[proc, right=1.2cm of v2] (cmp) {Measure and\\compare yield};
+
+\draw[flow] (plots) -- (rand);
+\foreach \i in {1,2,3} {
+    \draw[flow] (rand.east) -- (g\i.west);
+    \draw[flow] (g\i) -- (v\i);
+    \draw[flow] (v\i.east) -- (cmp.west);
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a completely randomized experiment.}
+\label{fig:crd}
+\end{figure}
+
+
+This design works well when the experimental units are reasonably similar to begin with. If the 90 plots varied dramatically in soil quality, however, randomization might not perfectly balance soil quality across the three groups, particularly with a smaller experiment. This is the motivation for blocking.
+
+\begin{Exercise}[title={Designing a Completely Randomized Experiment}, label={ex:crd}]
+A sports science department wants to test whether three different warm-up routines (static stretching, dynamic stretching, or no warm-up) affect sprint times in recreational runners. Sixty volunteers have been recruited.
+
+\begin{enumerate} 
+    \item Identify the experimental units, the factor, the levels, and the treatments.
+    \item Describe a complete procedure for randomly assigning the 60 volunteers to the three groups.
+    \item At the end of the study, the dynamic stretching group has the fastest average sprint times. Can the researchers conclude that dynamic stretching caused the improvement? Explain.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:crd}]
+\begin{enumerate} 
+    \item Experimental units: the 60 volunteers. Factor: warm-up routine. Levels: three (static stretching, dynamic stretching, no warm-up). Treatments: the three levels, since there is only one factor.
+    \item Number the volunteers from 01 to 60. Use \texttt{randInt(1,60,20)} on a TI-84, ignoring repeats, to select 20 volunteers for group 1 (static stretching). From the remaining 40, use \texttt{randInt} again to select 20 for group 2 (dynamic stretching). The remaining 20 form group 3 (no warm-up).
+    \item Yes. Because treatments were randomly assigned, a causal conclusion is appropriate, provided the experiment was otherwise well-controlled (same track, same time of day, same measurement method, etc.). Random assignment is what licenses the claim of causation.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Randomized Block Design}
+
+When experimental units differ in some important, identifiable way before the experiment begins, a completely randomized design may leave a large amount of unexplained variability in the results. A more efficient approach is to group similar units into blocks before assigning treatments.
+
+In a \newterm{randomized block design}\index{randomized block design}, experimental units are first divided into groups of similar units called blocks. Within each block, all treatments are randomly assigned. Because units within a block are similar to each other, the comparison between treatments within a block is cleaner than a comparison that mixes unlike units together. The blocking factor is a variable known to affect the response that the researcher controls for by separating units before randomization.
+
+Return to the wheat experiment. Suppose the research station has two soil zones: sandy soil in the northern half of the land and clay soil in the southern half. Soil type is known to affect yield. If the three varieties are distributed randomly across all 90 plots without regard to soil type, differences in soil quality may obscure or exaggerate differences between varieties. The solution is to block on soil type.
+
+\begin{enumerate}
+    \item Divide the 90 plots into two blocks: 45 sandy-soil plots and 45 clay-soil plots.
+    \item Within the sandy-soil block, randomly assign 15 plots to variety 1, 15 to variety 2, and 15 to variety 3.
+    \item Within the clay-soil block, randomly assign 15 plots to variety 1, 15 to variety 2, and 15 to variety 3.
+    \item Plant, manage, and harvest as before.
+    \item Compare yields within each block, then examine how results differ across soil types.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.9cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.5cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    blk/.style={draw=sdkblue, dashed, rounded corners=4pt, inner sep=6pt},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+% Sandy soil block
+\node[proc] (srand) {Random\\assignment};
+\node[unit, right=1cm of srand] (sg2) {Group 2\\15 plots};
+\node[unit, above=0.3cm of sg2] (sg1) {Group 1\\15 plots};
+\node[unit, below=0.3cm of sg2] (sg3) {Group 3\\15 plots};
+\node[trt, right=0.5cm of sg1] (sv1) {Variety 1};
+\node[trt, right=0.5cm of sg2] (sv2) {Variety 2};
+\node[trt, right=0.5cm of sg3] (sv3) {Variety 3};
+\node[proc, right=0.9cm of sv2] (scmp) {Compare\\yields};
+\node[blk, fit=(srand) (sg1) (sg3) (sv1) (sv3) (scmp), label={[sdkblue, font=\small]above:Sandy soil block (45 plots)}] (sandy) {};
+
+% Clay soil block
+\node[proc, below=3.6cm of srand] (crand) {Random\\assignment};
+\node[unit, right=1cm of crand] (cg2) {Group 2\\15 plots};
+\node[unit, above=0.3cm of cg2] (cg1) {Group 1\\15 plots};
+\node[unit, below=0.3cm of cg2] (cg3) {Group 3\\15 plots};
+\node[trt, right=0.5cm of cg1] (cv1) {Variety 1};
+\node[trt, right=0.5cm of cg2] (cv2) {Variety 2};
+\node[trt, right=0.5cm of cg3] (cv3) {Variety 3};
+\node[proc, right=0.9cm of cv2] (ccmp) {Compare\\yields};
+\node[blk, fit=(crand) (cg1) (cg3) (cv1) (cv3) (ccmp), label={[sdkblue, font=\small]above:Clay soil block (45 plots)}] (clay) {};
+
+% Source of units
+\node[unit, text width=1.6cm, minimum height=1cm] at ($(srand)!0.5!(crand) + (-2.6,0)$) (plots) {90 available\\plots};
+
+\draw[flow] (plots.east) -- (srand.west);
+\draw[flow] (plots.east) -- (crand.west);
+\foreach \b in {s,c} {
+    \foreach \i in {1,2,3} {
+        \draw[flow] (\b rand.east) -- (\b g\i.west);
+        \draw[flow] (\b g\i) -- (\b v\i);
+        \draw[flow] (\b v\i.east) -- (\b cmp.west);
+    }
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a randomized block design.}
+\label{fig:rbd}
+\end{figure}
+
+Notice that results must be compared within blocks. Comparing a variety 1 plot on sandy soil to a variety 2 plot on clay soil would mix up the variety effect with the soil effect. The whole point of blocking is to make comparisons fair by ensuring the only difference within each comparison is the treatment.
+
+\index{blocking}A good blocking variable is one you can observe before the experiment begins and one you expect to affect the response. In the wheat experiment, soil type is visible and known to matter. In a study of a new study-skills program, prior academic performance would be a natural blocking variable. The rule: block on what you can see and control; randomize against what you cannot.
+
+\begin{Exercise}[title={Identifying the Block Design}, label={ex:block-id}]
+For each study, identify the blocking factor and explain why blocking is preferable to a completely randomized design.
+
+\begin{enumerate} 
+    \item A study tests two methods of teaching reading comprehension to primary school students. Researchers believe that students who already read above grade level will respond differently from those reading at or below grade level.
+    \item An engineering team tests four surface coatings on metal panels exposed to salt water. The available panels come from two different steel mills and are known to differ in base composition.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:block-id}]
+\begin{enumerate} 
+    \item Blocking factor: prior reading level (above grade level vs. at or below). If above-level readers respond better to one method regardless of which method it is, mixing them randomly with below-level readers would make it harder to detect the true method effect. Blocking ensures each method is compared within similar groups.
+    \item Blocking factor: steel mill source (mill A vs. mill B). Differences in base composition could affect how well coatings adhere, confounding the coating comparison. Blocking by mill source ensures all four coatings are tested on panels from each mill.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Matched-Pairs Design}
+
+A \newterm{matched-pairs design}\index{matched-pairs design} is a special case of blocking in which each block contains exactly two experimental units and there are exactly two treatments to compare. 
+
+Pairs of units are matched on some relevant characteristic, and within each pair, one unit is randomly assigned to each treatment. Because the two units in each pair are as similar as possible, any difference in their responses can be attributed to the treatment rather than to pre-existing differences.
+
+There are two common versions of this design.
+
+In the first, two different subjects are matched. A study comparing two physiotherapy protocols for knee rehabilitation might pair patients by age and injury severity. Within each pair, one patient is randomly assigned to protocol 1 and the other to protocol 2. The comparison is made within pairs, not across the whole sample.
+
+In the second version, each subject serves as their own pair, receiving both treatments in a randomly determined order. This is sometimes called a \newterm{repeated measures design}\index{repeated measures design}. \index{washout period}A washout period between treatments allows the first treatment's effect to clear before the second begins. Because each subject is compared only to themselves, all individual differences are perfectly controlled.
+
+Consider a study testing whether caffeine affects short-term memory performance. Each participant completes a memory task twice: once after consuming a caffeinated drink, and once after consuming an identical-looking decaffeinated drink. The order is randomly determined for each participant. This is a matched-pairs design because each participant's caffeinated performance is paired with their own decaffeinated performance. Comparing one participant's caffeinated score to a different participant's decaffeinated score would not be effective.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    unit/.style={draw=sdkblue, fill=sdkblue!10, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    trt/.style={draw=sdkblue, fill=sdkblue!25, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.7cm},
+    wash/.style={draw=sdkblue, dashed, fill=white, rounded corners=2pt, align=center, minimum height=0.8cm, text width=1.5cm},
+    proc/.style={draw=sdkblue, thick, fill=white, rounded corners=2pt, align=center, minimum height=1cm, text width=1.9cm},
+    flow/.style={-{Stealth[length=2mm]}, sdkblue, thick}
+]
+\node[unit] (people) {Participants};
+\node[proc, right=0.6cm of people] (rand) {Random\\order};
+
+\node[trt, above right=0.4cm and 1cm of rand] (a1) {Caffeinated\\drink};
+\node[wash, right=0.5cm of a1] (aw) {Washout\\period};
+\node[trt, right=0.5cm of aw] (a2) {Decaf\\drink};
+
+\node[trt, below right=0.4cm and 1cm of rand] (b1) {Decaf\\drink};
+\node[wash, right=0.5cm of b1] (bw) {Washout\\period};
+\node[trt, right=0.5cm of bw] (b2) {Caffeinated\\drink};
+
+\node[proc, text width=2.4cm, right=1cm of $(a2.east)!0.5!(b2.east)$, anchor=west] (cmp) {Compare each\\participant's\\two scores};
+
+\draw[flow] (people) -- (rand);
+\draw[flow] (rand.east) -- (a1.west);
+\draw[flow] (rand.east) -- (b1.west);
+\foreach \r in {a,b} {
+    \draw[flow] (\r 1) -- (\r w);
+    \draw[flow] (\r w) -- (\r 2);
+    \draw[flow] (\r 2.east) -- (cmp.west);
+}
+\end{tikzpicture}
+\caption{Schematic diagram of a matched-pairs design (repeated measures version).}
+\label{fig:mp}
+\end{figure}
+
+
+\begin{Exercise}[title={Matched Pairs or Randomized Block?}, label={ex:mp-block}]
+Classify each study as a matched-pairs design or a randomized block design with more than two units per block. Explain your reasoning.
+
+\begin{enumerate} 
+    \item A study tests three different revision strategies (practice testing, summarizing, and re-reading) on university students. Students are divided into blocks by their first-year GPA: high (3.5 and above), mid (2.5 to 3.49), and low (below 2.5). Within each GPA block, students are randomly assigned to one of the three strategies.
+    \item A study compares the effectiveness of two soil treatment methods on crop yield. Farmers are paired by farm size and climate zone. Within each pair, one farm uses method 1 and the other uses method 2.
+    \item A study tests whether a standing desk reduces reported lower back discomfort. Each participant uses a standard seated desk for four weeks, then a standing desk for four weeks, with the order randomly determined for each person.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:mp-block}]
+\begin{enumerate} 
+    \item Randomized block design. There are three treatments and each GPA block contains more than two units. It is not a matched-pairs design because the block size exceeds two and there are more than two treatments.
+    \item Matched-pairs design. There are exactly two treatments and each block (pair of farms) contains exactly two units, one receiving each treatment.
+    \item Matched-pairs design (repeated measures). Each participant receives both treatments in random order and serves as their own pair of size two.
+\end{enumerate}
+\end{Answer}
+
+
+\subsection{Choosing a Design}\index{experimental design!choosing}
+
+Knowing what each experimental design is called is not enough. The AP exam regularly asks you to justify why a particular design is appropriate for a given situation. That requires understanding what problem each design solves and when those problems arise.
+
+The starting point is always the completely randomized design. It is the simplest structure, and when experimental units are reasonably similar to one another, it is the right choice. Random assignment spreads pre-existing differences among units across the treatment groups by chance. With enough units, those differences tend to balance out. If you have no strong reason to expect a particular characteristic of the units to consistently affect the response, use a completely randomized design. 
+
+Blocking makes sense when, before the experiment begins, you can identify a characteristic of the units that you expect to affect the response. Ignoring such a characteristic adds extra variability to your results. Units in the same treatment group will differ in ways unrelated to the treatment, and those differences make a real treatment effect harder to detect. Blocking solves this by grouping similar units first. Treatments are then compared within groups of units that are alike in the relevant way, which reduces variability and makes the experiment more sensitive.
+
+To decide whether to block, ask yourself: is there a variable I can observe right now, before any treatment is applied, that I expect to affect how units respond? If yes, and if it is practical to measure and group by that variable, block on it.
+
+Use matched pairs when there are exactly two treatments. Either pair up units that match on a relevant characteristic, or give both treatments to each unit. Because the two units in a pair are as similar as possible, the within-pair comparison is very clean. When each unit receives both treatments (with a washout period between them), individual differences drop out of the comparison entirely.
+
+A design justification on the AP exam names the design, the variable it accounts for, and why that variable matters. Here is a model for the wheat experiment:
+
+\begin{quote}
+Use a randomized block design, blocking on soil type. Soil type can be observed before planting, and it is expected to affect yield. Comparing the three varieties within each soil type removes soil-related variability from the comparison, so a difference in yield is easier to attribute to the variety.
+\end{quote}
+
+The same three parts work for any design: name it, name the variable it handles, and explain how handling that variable makes the treatment comparison fairer.
+
+\begin{Exercise}[title={Justifying a Design Choice}, label={ex:design-choice}]
+For each situation, recommend a design (completely randomized, randomized block, or matched pairs) and write a clear justification that explains why that design is more appropriate than the alternatives.
+
+\begin{enumerate} 
+    \item A software company wants to test whether a new user interface reduces the time it takes to complete a standard task, compared to the existing interface. It has 80 volunteers available. None of them have used either interface, and all have similar levels of computing experience.
+
+    \item A sleep research lab wants to compare the effect of two room temperatures (cool vs. warm) on sleep quality. They have 40 adult volunteers. Each person's natural sleep patterns vary night to night, but researchers expect consistent individual differences in baseline sleep quality across people.
+
+    \item Bluewave School District wants to compare three different formats for a professional development workshop (in-person, hybrid, and fully online) on teachers' reported confidence in teaching a new curriculum. The district's teaching staff includes both primary school teachers and secondary school teachers, and prior research suggests that these two groups respond very differently to professional development formats.
+
+    \item A skincare company wants to test whether a new moisturizer reduces skin dryness compared to a standard moisturizer. They recruit 50 volunteers and note that participants' baseline skin dryness varies widely.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:design-choice}]
+\begin{enumerate} 
+    \item Completely randomized design. The volunteers are similar in relevant ways (comparable computing experience, no prior exposure to either interface). There is no identified variable that would consistently affect how they respond to one interface versus the other. Randomly assign 40 volunteers to the new interface and 40 to the existing interface.
+
+    \item Matched pairs (repeated measures). Each participant has their own baseline sleep patterns that differ from others. Using each person as their own pair eliminates individual differences in baseline sleep quality from the comparison. Randomly determine which temperature each volunteer experiences first, include a washout night between conditions, then compare each person's cool-night and warm-night sleep quality directly.
+
+    \item Randomized block design, blocking on school level (primary vs. secondary). Prior research indicates that the two groups respond differently to professional development formats. If teachers are randomly assigned to workshop formats without blocking, differences in how primary and secondary teachers respond could mask or distort the true effect of format. Block by school level and randomly assign teachers to the three formats within each block.
+
+    \item Randomized block design or matched pairs, blocking on baseline skin dryness level. Because baseline dryness varies widely, a participant who starts very dry might show a large reduction regardless of which moisturizer they use. Grouping participants by baseline dryness (for example, low, medium, high) and assigning both moisturizers within each group removes this variability from the comparison. Alternatively, if each participant can use each moisturizer on separate occasions, a matched-pairs repeated measures design would control individual differences even more completely. Both designs earn credit here because each one accounts for baseline dryness; the matched-pairs version is stronger when repeated use is practical.
+\end{enumerate}
+\end{Answer}

@@ -1,5 +1,5 @@
 \chapter{Matrices as Transformations}
-Recall that a \emph{function}, informally, is a rule that takes an input and produces an output. 
+\index{matrix transformation}Recall that a \emph{function}, informally, is a rule that takes an input and produces an output. 
 
 For example, we know the common function $f(x) = x^3$ takes the input and cubes it, such that the result is $x \times x \times x$. Inputting $x=3$ outputs $f(3) = 27$. 
 
@@ -14,8 +14,8 @@ Recall our subspace diagram; the matrix $A$, which is size $m\times n$, takes th
 
 The transformation $T$ is said to map from the reals of $n$ to the reals of $m$, such that: $T: \mathbb R^{n}\to \mathbb R^m$
 \begin{itemize}
-    \item $\mathbb R^n$ is called the \textbf{domain}
-    \item $\mathbb R^m$ is called the \textbf{codomain}
+    \item $\mathbb R^n$ is called the \index{domain}\textbf{domain}
+    \item $\mathbb R^m$ is called the \index{codomain}\textbf{codomain}
 \end{itemize}
 
 \begin{figure}[H]
@@ -63,7 +63,7 @@ The transformation $T$ is said to map from the reals of $n$ to the reals of $m$,
 
 
     \end{tikzpicture}
-    \label{fig:transformationDiagram}
+    \label{fig:transformationDiagram-transformations}
 \end{figure}
 
 Let's call the transformation $T$, such that 
@@ -128,7 +128,7 @@ Linear transformations preserve linear combinations while \emph{altering the dir
 
 In the next example, we will apply a non-identity matrix and observe how transforming the basis vectors reshapes the entire space. Each figure will show a grid of points in $\mathbb R^2$ alongside the resulting transformed points after applying the matrix transformation. We encourage you to play with the python script \texttt{transforms.py} to see how different matrices affect the transformation. Also, we will limit our view to a square region from $(-2, -2)$ to $(2, 2)$ and only use $2 \times 2$ matrices for simplicity.
 
-\subsection{Scaling and Shearing}
+\subsection{Scaling and Shearing}\index{shear}
 \index{scaling}
 \section{Scaling}
 Now, let's try scaling up and down the basis vectors. Consider the matrix:
@@ -281,7 +281,7 @@ Not only do the x and y values swap places, but they also flip signs. This means
 
 \end{Answer}
 % Note for future writers: I am not doing y=mx reflections as they are more complex and I am already hitting a complexity limit for linear alg.
-\section{Rotations}
+\section{Rotations}\index{rotation matrix}
 
 Those past four transformations (\ref{fig:house_reflection_x_axis}, \ref{fig:house_reflection_y_axis}, \ref{fig:house_reflection_y_equals_x_axis}, \ref{fig:house_reflection_y_equals_neg_x_axis}) all had something similar %fixme
 
@@ -333,7 +333,7 @@ Let's see what happens when we apply a $30^\circ$ clockwise and counterclockwise
 
 % Writers note: Not talked about is applying multiple transformations in sequence, which would be a good follow up topic. I feel like it is not necessary for our linear algebra foundation, but could be a good extension. Again, this is a high school level text. - Arjan Ellingson
 
-\section{What if I want to undo my transform?}
+\section{What if I want to undo my transform?}\index{inverse transformation}
 We have talked about how to apply a plethora transformations, but what if we want to undo a transformation? For example, if we have a house that is reflected across the rotated $30^\circ$ clockwise (\ref{fig:30degcw}), how do we get it back to its original position?
 
 This question brings us back to the application of those \textit{inverse matrices} that we learned about in the previous chapters. If we have a transformation represented by a matrix $A$, then the inverse transformation is represented by the inverse matrix $A^{-1}$. Applying $A^{-1}$ to the transformed house will return it to its original position.
@@ -360,7 +360,7 @@ A^{-1}_{30^\circ\textrm{cw}} &= \frac{1}{\cos(30^\circ)\cos(30^\circ) - (-\sin(3
 \end{align*}
 Notice that this is the same as the matrix for a $30^\circ$ counterclockwise rotation! This makes sense, since a $30^\circ$ counterclockwise rotation would undo a $30^\circ$ clockwise rotation.
 
-Note that if the determinant is $0$, then the associated linear transformation is not invertible. In this case, the transformation collapses space into a lower dimension (for example, a plane into a line or a line into a point), causing information to be lost. As a result, the transformation cannot be reversed, and therefore no inverse matrix exists.
+\index{non-invertible transformation}Note that if the determinant is $0$, then the associated linear transformation is not invertible. In this case, the transformation collapses space into a lower dimension (for example, a plane into a line or a line into a point), causing information to be lost. As a result, the transformation cannot be reversed, and therefore no inverse matrix exists.
 
 Common examples of this are:
 

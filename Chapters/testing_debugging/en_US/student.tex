@@ -1,0 +1,131 @@
+\chapter{Testing and Debugging}
+
+\section{Why Test?}\index{testing}\index{debugging}
+Programs fail in small ways. A function that returns the wrong answer for one
+input can look fine for every other input you try by hand. Testing means writing
+code that checks your code, so you find errors before someone else does.
+Debugging means finding the cause of an error once you know it exists.
+
+\section{Print Debugging}\index{debugging!print statements}
+The quickest way to find a bug is to print the values that matter. Suppose
+\pyfunction{average} returns the wrong answer:
+
+\begin{minted}{python}
+def average(values):
+    total = sum(values)
+    print("total:", total, "count:", len(values))
+    return total / len(values)
+
+print(average([1, 2]))
+\end{minted}
+
+The printed values show where the output diverges from what you expected.
+Remove the print statements when you are done.
+
+\section{Assertions}\index{assertion}
+An \newterm{assertion} checks a condition and stops the program if it is false:
+
+\begin{minted}{python}
+from mathtools import average
+
+x = [1, 2, 3]
+assert average(x) == 2, "average should be 2"
+print("ok")
+\end{minted}
+
+Assertions are good for stating what must always be true. They are not a
+replacement for tests, because they run only when the program runs.
+
+\section{Unit Tests}\index{unit test}
+A \newterm{unit test} checks one function on known inputs and expected outputs.
+Python's \texttt{unittest} module runs them for you. Given this file,
+\texttt{mathtools.py}:
+
+\begin{minted}{python}
+def average(values):
+    """Return the mean of a non-empty list of numbers."""
+    if len(values) == 0:
+        raise ValueError("average() needs at least one value")
+    return sum(values) / len(values)
+
+def is_even(n):
+    return n % 2 == 0
+\end{minted}
+
+Put the tests in \texttt{test\_mathtools.py}:
+
+\begin{minted}{python}
+import unittest
+from mathtools import average, is_even
+
+class TestAverage(unittest.TestCase):
+    def test_simple_list(self):
+        self.assertEqual(average([2, 4, 6]), 4)
+
+    def test_single_value(self):
+        self.assertEqual(average([7]), 7)
+
+    def test_empty_list_raises(self):
+        with self.assertRaises(ValueError):
+            average([])
+
+class TestIsEven(unittest.TestCase):
+    def test_even_and_odd(self):
+        self.assertTrue(is_even(10))
+        self.assertFalse(is_even(7))
+
+if __name__ == '__main__':
+    unittest.main()
+\end{minted}
+
+Run \texttt{python3 -m unittest test\_mathtools.py -v}. Each test prints a
+line, and the final line says \texttt{OK} when every test passes.
+
+\section{Reading a Failing Test}
+A test that fails shows what it expected and what it got. If you change the
+expected value in the test to 2 for \texttt{average([1, 2])}, the output
+reads:
+
+\begin{minted}{text}
+AssertionError: 1.5 != 2
+\end{minted}
+
+The function is correct and the test is wrong. Before you change the code,
+decide which one is wrong. Check the function's definition, then the expected
+value.
+
+\section{A Debugging Routine}
+\begin{enumerate}
+\item Reproduce the error with a specific input.
+\item Write a test that fails for that input.
+\item Form a guess about the cause, and check it with a print statement or an assertion.
+\item Fix the code, and run all the tests again, not just the new one.
+\end{enumerate}
+
+\begin{Exercise}[label=test1, title=Write a test]
+Add a test to \texttt{test\_mathtools.py} that checks that \texttt{average([-1, 1])} equals 0.
+\end{Exercise}
+\begin{Answer}[ref=test1]
+\begin{minted}{python}
+    def test_negative_values(self):
+        self.assertEqual(average([-1, 1]), 0)
+\end{minted}
+This test passes, because $(-1 + 1) / 2 = 0$.
+\end{Answer}
+
+\begin{Exercise}[label=test2, title=Which test fails?]
+A student wrote \texttt{self.assertEqual(average([1, 2, 3]), 3)}. What does the
+test output say, and what is the mistake?
+\end{Exercise}
+\begin{Answer}[ref=test2]
+\texttt{average([1, 2, 3])} is $\frac{6}{3} = 2$, not 3. The output says
+\texttt{AssertionError: 2.0 != 3}. The expected value in the test is wrong.
+\end{Answer}
+
+\begin{Exercise}[label=test3, title=Edge case]
+What should \texttt{average([])} do, and which test checks it?
+\end{Exercise}
+\begin{Answer}[ref=test3]
+It should raise a \texttt{ValueError}. The test \texttt{test\_empty\_list\_raises}
+checks this.
+\end{Answer}

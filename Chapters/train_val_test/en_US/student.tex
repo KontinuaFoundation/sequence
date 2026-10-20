@@ -1,19 +1,61 @@
-\chapter{The Training/Validation/Testing Process}
+\chapter{The Training, Validation, and Testing Process}
 
-In machine learning, it's essential to assess the performance of a model accurately. This assessment helps us choose the best model and tune its parameters. The data used to develop machine learning models is typically divided into three sets: training, validation, and testing.
+\section{Why Split the Data?}\index{training set}\index{validation set}\index{test set}
+A model that is judged on the same data it was trained on looks better than it is.
+A model with enough flexibility can memorize its training data, and that memorization
+says little about how it will perform on new cases. To estimate performance honestly,
+the data is divided into three sets.
 
-\subsection{Training Set}
+\begin{itemize}
+\item The \newterm{training set} is used to fit the model: to set its weights, or to choose the splits in a decision tree.
+\item The \newterm{validation set} is used to compare models and to tune \index{hyperparameter}\newterm{hyperparameters}, such as the number of neighbors $k$ in k-NN or the degree of a polynomial.
+\item The \newterm{test set} is used once, at the end, to estimate how the final model performs on new data.
+\end{itemize}
 
-The training set is used to train the model, i.e., to adjust the model's weights and biases in the case of neural networks, or to determine the best split in decision trees, among other things. The model learns from this data, which is why it's called the "training" set.
+\section{A Worked Split}
+Suppose a data set has 1000 rows. A common split is 70\% training, 15\% validation,
+and 15\% testing:
+$$700 \text{ training rows}, \qquad 150 \text{ validation rows}, \qquad 150 \text{ test rows}$$
+Shuffle the rows first, so that each set looks like the whole data set. Shuffling is
+especially important when the rows are sorted by time or by class.
 
-\subsection{Validation Set}
+\section{The Rules}
+The process works only if the three sets stay separate.
+\begin{itemize}
+\item Never fit parameters on the validation or test set.
+\item Never choose a model because of its test score. If you do, the test set has become a second validation set, and its estimate is too optimistic.
+\item Do not let information leak across the split. For example, if you scale the features using the mean of the whole data set, the test set has influenced the training data.
+\end{itemize}
 
-The validation set is used to tune model parameters (hyperparameters), to choose the model architecture (for example, the number of hidden layers in a neural network), or to determine the degree of the polynomial in polynomial regression, among other uses. This set provides an unbiased evaluation of a model fit on the training dataset while tuning model hyperparameters. 
+Scaling should be computed from the training set alone, and then applied to the validation and test sets.
 
-\subsection{Testing Set}
+\section{Cross-Validation}\index{cross-validation}
+When data is scarce, \newterm{$k$-fold cross-validation} splits the training data into $k$
+equal folds. The model is trained $k$ times, each time holding out one fold for validation.
+The average of the $k$ validation scores is used to compare models. The test set is still kept
+aside and used only once at the end.
 
-The testing set is used to provide an unbiased evaluation of the final model fit on the training dataset. The test set serves as a proxy for real-world data that the model has not seen before. It's important to only use the test set once, after all training and validation is complete, to avoid "leaking" information from the test set into the model.
+\begin{Exercise}[label=tvt1, title=Count the rows]
+A data set has 2400 rows, split 70\% training, 15\% validation, and 15\% testing. How many rows are in each set?
+\end{Exercise}
+\begin{Answer}[ref=tvt1]
+Training: $0.70 \cdot 2400 = 1680$. Validation: $0.15 \cdot 2400 = 360$. Testing: $360$.
+\end{Answer}
 
-The key to this process is that each set of data is separate and independent. Mixing data between the sets can lead to overly optimistic or pessimistic assessments of a model's performance.
+\begin{Exercise}[label=tvt2, title=Spot the leak]
+A student scales every feature using the mean and standard deviation of all 1000 rows, and then splits the data. Explain why this is a problem.
+\end{Exercise}
+\begin{Answer}[ref=tvt2]
+The mean and standard deviation of the validation and test rows were used when scaling
+the training rows. Information from the test set has leaked into the training process.
+The fix is to compute the scaling from the training set only, and then apply it to the
+other sets.
+\end{Answer}
 
-In practice, the division of data into these three sets can be done randomly (often with 70\% for training, 15\% for validation, and 15\% for testing), or using more structured methods like cross-validation, depending on the amount and nature of the available data.
+\begin{Exercise}[label=tvt3, title=Which set?]
+A researcher tries 10 values of $k$ for a k-NN model and picks the one with the best test score. What is wrong with this?
+\end{Exercise}
+\begin{Answer}[ref=tvt3]
+The choice of $k$ should be made on the validation set. Picking it by the test score
+means the test set has been used for tuning, so the reported test score is optimistic.
+\end{Answer}

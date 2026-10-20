@@ -66,7 +66,7 @@ $$\lim_{h \to 0} f(u) = \lim_{u \to x} f(u) = f(x)$$
 Recall also that 
 $$\lim_{h \to 0} \frac{g(x + h) - g(x)}{h} = g'(x)$$
 
-Taking the limit as $h \to 0$ of the whole, inequality becomes the Squeeze Theorem:
+Taking the limit as $h \to 0$ of the whole, inequality becomes the \index{squeeze theorem}Squeeze Theorem:
 $$\lim_{h \to 0} f(u) \leq \lim_{h \to 0} \frac{g(x + h) - g(x)}{h} \leq \lim_{h \to 0} f(v)$$
 $$f(x) \leq g'(x) \leq f(x)$$
 
@@ -90,7 +90,7 @@ Therefore, if $g(x) = \int_a^x f(t)\,dt$, then $g'(x) = f(x)$. Notice it doesn't
     \caption{$f(v) = M$, the maximum value, and $f(u) = m$, the minimum value on the interval $x \in [a, b]$}
     \end{figure}
 
-\begin{Exercise}[label = defint5]
+\begin{Exercise}[label = defint5_ftc]
 [This question was originally presented as a no-calculator, multiple-choice 
 problem on the 2012 AP Calculus BC Exam.] Let $g$ be a continuously 
 differentiable function with $g(1) = 6$ and $g'(1) = 3$. What is the value of 
@@ -103,7 +103,7 @@ $\lim_{x \to 1} \frac{\int_1^x g(t)\,dt}{g(x) - 6}$?\\
 \vspace{40mm}
 \end{Exercise}
 
-\begin{Answer}[ref = defint5]
+\begin{Answer}[ref = defint5_ftc]
 (D) 2. First, we try to compute the limit directly: $\lim_{x \to 1} \frac{\int_
 1^x g(t)\,dt}{g(x) - 6} = \frac{\int_1^1 g(t)\,dt}{6 - 6} = \frac{0}{0}$, 
 which is undefined. Because $g$ is continuous and differentiable, we can apply 
@@ -118,12 +118,12 @@ What the Fundamental Theorem of Calculus is really saying is that
 differentiation and integration are opposite processes. Mathematically, 
 we can say $$\frac{d}{dx} \int_{a}^{x} f(t)\,dt = f(x)$$
 This may seem clunky, but many useful functions are defined this way. 
-Consider the Fresnel function: $S(x) = \int_{0}^{x}\sin{
+Consider the \index{Fresnel function}Fresnel function: $S(x) = \int_{0}^{x}\sin{
 \frac{\pi t^2}{2}}\,dt$. Originally used in optics, this equation is 
 also used by civil engineers to design road and railway curves. 
 According to FTC, then, $S'(x) = \sin{\frac{\pi t^2}{2}}$. 
 
-We can also apply the Chain Rule when taking derivatives of integrals. 
+We can also apply the \index{chain rule!with integrals}Chain Rule when taking derivatives of integrals. 
 Let $f(x) = \int_{1}^{x^4} \sec{t}\,dt$. What is $f'(x)$? First, let 
 us define $u = x^4$. By the Chain Rule,
 $$\frac{d}{dx}\int_{0}^{x^4} \sec{t}\,dt = \frac{d}{dx}\int_{0}^{u} 
@@ -165,7 +165,7 @@ function.
 	\end{enumerate}
 \end{Answer}
 
-\section{Using Antiderivatives to Evaluate Definite Integrals}
+\section{Using Antiderivatives to Evaluate Definite Integrals}\index{definite integral!antiderivatives}
 In everyday English, the FTC states that the integral from $a$ to $b$ 
 of a function is the antiderivative of that function evaluated from 
 $a$ to $b$. In the previous chapter, the integrals presented were of 
@@ -288,7 +288,7 @@ integral of its acceleration over the time period. Therefore, $v(3) = v(0) +
 6.71 = 11.71$. 
 \end{Answer}
 
-\section{Average Value of a Function}
+\section{Average Value of a Function}\index{average value of a function}
 The average value of a function, $f$, on an interval $\left[ a, b \right]$ is 
 given by:
 \begin{mdframed}[style=important, frametitle={Average Value of a Function}]
@@ -331,3 +331,52 @@ $$\frac{2}{\pi} \int_0^{\pi/2} \sqrt{\cos{x}}\,dx \approx 0.763 $$
 
 %FIXME add FTC application of chain rule
 %FIXME finding the area between two curves
+
+\section{Physics Applications}
+\subsection{Position, Velocity, and Acceleration}
+
+When we discussed derivatives, you saw that:
+$$v(t) = \frac{d}{dt} x(t)$$
+$$a(t) = \frac{d}{dt} v(t)$$
+
+If we integrate both sides of these equations and apply the Fundamental Theorem of Calculus, we see that:
+$$\int v(t)\,dt + C_x = x(t)$$
+$$\int a(t)\,dt + C_v = v(t)$$
+
+Remember: we lose any constants when taking a derivative, so $C_x$ and $C_v$ represent the unknown constants. These constants will be the initial position and initial velocity, respectively. Since these are the position and velocity when $t = 0$, we call them $x_0$ and $v_0$. 
+$$x(t) = x_0 + \int v(t)\,dt$$
+$$v(t) = v_0 + \int a(t)\,dt$$
+
+%fixme graphic arrows showing relationship among position, velocity, and acceleration
+%fixme example integration
+
+\begin{Exercise}[label = velocity]
+[This question was adapted from a multiple-choice question originally presented
+in the 2012 AP Physics C public practice exam.] A particle of mass $m$ accelerates
+from rest starting at time $t = 0$. The acceleration is caused by a single force, 
+$F = bt$, where $b$ is a constant. Derive a formula for the particle's velocity, 
+$v_x(t)$, in terms of $b$, $t$, and $m$. 
+\vspace{50mm}
+\end{Exercise}
+
+\begin{Answer}[ref = velocity]
+If $F = bt$, then $a(t) = \frac{bt}{m}$. Since the particle starts from rest, we 
+know that $v_0 = 0 \frac{m}{s}$. And we know the relationship between acceleration
+and velocity:
+$$v(t) = v_0 + \int a(t) \, dt$$
+
+Substituting for $v(0)$ and $a(t)$:
+$$v(t) = 0 + \int \frac{bt}{m} \, dt = \frac{bt^2}{2m}$$
+\end{Answer}
+
+\subsection{Work and Kinetic Energy}
+%intuitive explanation
+%equation
+%example
+%practice
+
+\subsection{Force, Momentum, and Impulse}
+%intuitive explanation
+%equation
+%example
+%practice

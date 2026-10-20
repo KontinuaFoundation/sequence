@@ -1,50 +1,45 @@
 \chapter{Bayesian Networks}
 
-A Bayesian network, also known as a Bayes network, belief network, or
-decision network, is a probabilistic graphical model that represents a
-set of variables and their conditional dependencies via a directed
-acyclic graph (DAG).\index{Bayesian Network}
+\section{Variables and Dependencies}\index{Bayesian network}
+A \newterm{Bayesian network} is a probability model for several variables and the dependencies among them. Its
+structure is a \newterm{directed acyclic graph} (DAG): each node is a variable, and an arrow from $A$ to $B$ means $A$
+directly influences $B$. Each node has a \newterm{conditional probability table} (CPT) giving its probabilities for
+each combination of its parents' values.
 
-\section{Components}
+\section{A Small Network}
+Let $R$ be ``it rained'' and $W$ be ``the grass is wet,'' with the arrow $R \to W$. The network needs two numbers
+for $R$ and two conditional probabilities for $W$:
+$$P(R) = 0.2, \qquad P(W \mid R) = 0.9, \qquad P(W \mid \neg R) = 0.1$$
 
-A Bayesian Network consists of two main components:
-
-\begin{enumerate}
-    \item A directed acyclic graph (DAG) where each node represents a
-      variable, and the absence or presence of a directed edge between
-      nodes denotes the conditional dependence or independence
-      respectively between the variables.
-    \item A conditional probability table (CPT) associated with each
-      node which contains the conditional probability distribution of
-      that node given its parents in the DAG.
-\end{enumerate}
-
-\section{Inferences}
-
-Bayesian Networks are typically used for reasoning and making
-inferences under uncertainty. Given observations of a set of
-variables, we can compute the posterior probabilities of the other
-variables using Bayes' rule.
-
-There are three main types of inferences that we can make:
-
+\section{Inference}\index{Bayesian network!inference}
+A Bayesian network answers questions about unknown variables given observed ones. Three kinds of reasoning are common.
 \begin{itemize}
-    \item \textbf{Causal reasoning (prediction)}: Given the causes,
-      what are the effects?
-    \item \textbf{Evidential reasoning (diagnosis)}: Given the
-      effects, what are the causes?
-    \item \textbf{Intercausal reasoning (explaining away)}: Given an
-      effect and some of its causes, what can we say about the other
-      causes?
+\item \textbf{Prediction} (causal): given a cause, how likely is the effect? Here, $P(W \mid R) = 0.9$.
+\item \textbf{Diagnosis} (evidential): given an effect, how likely is the cause? This needs Bayes' rule.
+\item \textbf{Explaining away}: if two causes can produce the same effect, observing one cause lowers the probability of the other.
 \end{itemize}
 
-\section{Learning}
+For the diagnosis question, first find the total probability of wet grass:
+$$P(W) = P(W \mid R)P(R) + P(W \mid \neg R)P(\neg R) = 0.9(0.2) + 0.1(0.8) = 0.26$$
+Then Bayes' rule gives
+$$P(R \mid W) = \frac{P(W \mid R) P(R)}{P(W)} = \frac{0.18}{0.26} \approx 0.692$$
+Seeing wet grass raises the probability of rain from 0.2 to about 0.69.
 
-Learning a Bayesian Network from data involves two main tasks:
+\section{Learning a Network}
+Learning has two parts. \newterm{Parameter learning} estimates the CPT entries from data, often by counting how often each
+combination appears. \newterm{Structure learning} chooses the arrows, and it is harder because many structures
+fit the same data. Expert knowledge is often used to choose the structure.
 
-\begin{itemize}
-    \item \textbf{Structure learning}: Determining the DAG structure
-      that best fits the data.
-    \item \textbf{Parameter learning}: Estimating the parameters
-      (conditional probabilities) of the CPTs given the DAG and data.
-\end{itemize}
+\begin{Exercise}[label=bn1, title=Compute a posterior]
+Using the network above, find $P(W)$ if $P(R)$ is changed to $0.5$, with the same conditional probabilities.
+\end{Exercise}
+\begin{Answer}[ref=bn1]
+$P(W) = 0.9(0.5) + 0.1(0.5) = 0.5$.
+\end{Answer}
+
+\begin{Exercise}[label=bn2, title=Read a table]
+A node $C$ has two parents, $A$ and $B$, each either true or false. How many rows does its CPT have?
+\end{Exercise}
+\begin{Answer}[ref=bn2]
+There are $2 \times 2 = 4$ parent combinations, so the CPT has 4 rows, each giving $P(C \mid A, B)$.
+\end{Answer}

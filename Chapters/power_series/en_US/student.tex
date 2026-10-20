@@ -42,7 +42,7 @@ series centered at }$a$, or a \textit{power series about }$a$.
 x^2 - 4x +3}$. 
 
 \textbf{Solution}: Since we know $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$, we 
-will use partial fractions to decompose the function into two fractions. (The 
+will use \index{partial fractions}partial fractions to decompose the function into two fractions. (The 
 process is left as an exercise for the student.) We find that:
 $$\frac{2x - 4}{x^2 - 4x + 3} = \frac{1}{x - 1} + \frac{1}{x-3}$$
 Noting that $\frac{1}{x-1} = (-1) \cdot\frac{1}{1-x}$, we can say that:
@@ -68,7 +68,7 @@ then find $x$ such that the test is passed.
 \textbf{Example}: For what values of $x$ is the series $\sum_{n=0}^\infty n!x^n$ 
 convergent?
 
-\textbf{Solution}: We will apply the Ratio Test (since there is a factorial in 
+\textbf{Solution}: We will apply the \index{ratio test}Ratio Test (since there is a factorial in 
 the series) and find $x$ such that $\lim_{n \to \infty} \left| \frac{a_{n+1}}{
 a_n} \right| < 1$. 
 $$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = \lim_{n \to 
@@ -86,43 +86,32 @@ such that:
 $$\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1$$
 $$\lim_{n \to \infty} \left| \frac{\frac{(x-4)^{n+1}}{2(n+1)}}{\frac{(x-4)^n}{
 2n}} \right| < 1$$
-$$\lim_{n \to \infty} \left| \frac{(x-4)(x-4)^n}{2n + 2} \cdot \frac{2n}{(x-4)^
-n} \right| < 1$$
 $$\lim_{n \to \infty} \left| \frac{(x-4)(x-4)^n(2n)}{(x-4)^n(2n+2)} \right| < 
 1$$
 $$\lim_{n \to \infty} \left| \frac{(x-4)(2n)}{2n + 2} \right| < 1$$
-$$\lim_{n \to \infty} \left| \frac{2(x-4)}{2 + \frac{2}{n}} \right| < 1$$
-$$2 \cdot \lim_{n \to \infty} \left| \frac{x-4}{1+ \frac{1}{n}} \right| < 1$$
-$$2 \cdot \left| x-4 \right| < 1$$
-$$\left| x-4 \right| < \frac{1}{2}$$\\
+$$\lim_{n \to \infty} \left| \frac{x-4}{1 + \frac{1}{n}} \right| < 1$$
+$$\left| x-4 \right| < 1$$
 Which is true when 
-$$-\frac{1}{2} < x-4 < \frac{1}{2}$$
-$$3.5 < x < 4.5$$
+$$-1 < x-4 < 1$$
+$$3 < x < 5$$
 
-We are not done yet, though! We know the series converges for $3.5 < x < 4.5$ 
-and diverges for $x < 3.5$ and $x > 4.5$. What about when $x = 3.5$ and $x = 
-4.5$? (These are the cases where the Ratio Test is indeterminate, because 
+We are not done yet, though! We know the series converges for $3 < x < 5$ 
+and diverges for $x < 3$ and $x > 5$. What about when $x = 3$ and $x = 5$? 
+(These are the cases where the Ratio Test is indeterminate, because 
 $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = 1$.) We need to test 
-each case. Substituting $x = 3.5$ into the series yields:
-$$\sum_{n=1}^\infty \frac{(3.5-4)^n}{2n} = \sum_{n=1}^\infty \frac{\left( 
-\frac{-1}{2} \right)^n}{2n}$$
-$$= \sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$$
-This is an alternating series, so we apply the alternating series test. First, 
+each case. Substituting $x = 3$ into the series yields:
+$$\sum_{n=1}^\infty \frac{(3-4)^n}{2n} = \sum_{n=1}^\infty \frac{(-1)^n}{2n}$$
+This is an alternating series, so we apply the \index{alternating series test}alternating series test. First, 
 we check that $|a_{n+1}| < |a_n|$:
-$$\frac{1}{(n+1) \cdot 2^{n+2}}  < \frac{1}{n \cdot 2^{n+1}}$$
+$$\frac{1}{2(n+1)} < \frac{1}{2n}$$
 Which is true for all $n > 0$. Next, we check if $\lim_{n \to \infty} |a_n| = 0$:
-$$\lim_{n \to \infty} \frac{1}{n \cdot 2^{n+1}} = \frac{1}{\infty} = 0$$
-Therefore, $\sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$ is convergent 
-and $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ is convergent for $x = 3.5$. Next, we 
-test $x=4.5$ for convergence:
-$$\sum_{n=1}^\infty \frac{(4.5-4)^n}{2n} = \sum_{n=1}^\infty \left( 
-\frac{1}{2} \right)^n \cdot \frac{1}{2n} = \sum_{n=1}^\infty \left( 
-\frac{1}{2} \right)^{n+1} \frac{1}{n}$$
-This series is less than the harmonic series $\sum_{n=1}^\infty \frac{1}{n}$ 
-for all $n$. We know the harmonic series diverges, therefore, by the direct 
-comparison test, $\sum_{n=1}^\infty \left( \frac{1}{2} \right)^{n+1} 
-\frac{1}{n}$ must also diverge. So, our final answer to the original question 
-is that the series is convergent fort $3.5 \leq x < 4.5$. 
+$$\lim_{n \to \infty} \frac{1}{2n} = 0$$
+Therefore, $\sum_{n=1}^\infty \frac{(-1)^n}{2n}$ is convergent, and the power 
+series converges for $x = 3$. Next, we test $x = 5$:
+$$\sum_{n=1}^\infty \frac{(5-4)^n}{2n} = \sum_{n=1}^\infty \frac{1}{2n}$$
+This is half of the harmonic series $\sum_{n=1}^\infty \frac{1}{n}$, which 
+diverges. So the series diverges for $x = 5$. Our final answer to the original 
+question is that the series is convergent for $3 \leq x < 5$. 
 
 \subsection{Radius of Convergence}
 There are three possible outcomes when testing a power series $\sum_{n=0}^
@@ -179,10 +168,10 @@ of convergence:
 It is important to check each endpoint to determine the interval of convergence individually. 
 
 In the example of $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ (shown above), 
-$a = 4$ and $R = 0.5$, and we found that the power series is convergent for 
-$x \in [3.5, 4.5)$. 
+$a = 4$ and $R = 1$, and we found that the power series is convergent for
+$x \in [3, 5)$.
 
-\textbf{Example}: For what values of $x$ is the Bessel function $J_0 (x) = 
+\textbf{Example}: For what values of $x$ is the \index{Bessel function}Bessel function $J_0 (x) = 
 \sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{2^{2n}(n!)^2}$ convergent? 
 
 \textbf{Solution}: Because there is a factorial, we will apply the Ratio Test:
@@ -235,7 +224,7 @@ of the series $\sum_{n=0}^\infty \frac{(x - 4)^{2n}}{3^n}$?
 \end{Exercise}
 
 \begin{Answer}[ref = radconv1]
-Since this sum has terms to the $n^{th}$ power, we will apply the Root Test, 
+Since this sum has terms to the $n^{th}$ power, we will apply the \index{root test}Root Test, 
 which states a series is convergent if $\lim_{n \to \infty} \sqrt[n]{\left| 
 a_n \right|} < 1$. 
 $$\lim_{n \to \infty} \sqrt[n]{\left| \frac{(x - 4)^{2n}}{3^n} \right|} < 1$$

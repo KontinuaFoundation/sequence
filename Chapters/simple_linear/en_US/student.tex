@@ -1,32 +1,70 @@
 \chapter{Simple Linear Regression}
 
-Simple linear regression is a statistical method that allows us to summarize and study relationships between two continuous (quantitative) variables:
+\section{Predictor and Response}\index{simple linear regression}\index{regression!simple linear}
+\newterm{Simple linear regression} summarizes the relationship between two
+quantitative variables. The \index{predictor variable}\newterm{predictor} $x$
+(also called the explanatory or independent variable) is used to predict the
+\index{response variable}\newterm{response} $y$ (also called the outcome or
+dependent variable). It is \emph{simple} because there is only one predictor.
+Multiple regression, covered later, uses two or more predictors.
 
-\begin{itemize}
-\item One variable, denoted $x$, is regarded as the predictor, explanatory, or independent variable.
-\item The other variable, denoted $y$, is regarded as the response, outcome, or dependent variable.
-\end{itemize}
+\section{The Model}
+A straight line is fit to the scatterplot:
+$$\hat{y} = b_0 + b_1 x$$
+Here $b_0$ is the intercept and $b_1$ is the slope, which is the estimated
+change in $y$ for a one-unit increase in $x$. The population model adds an error term:
+$$y = \beta_0 + \beta_1 x + \epsilon$$
+The error $\epsilon$ is the part of $y$ that the line does not capture.
 
-Because the other terms are used less frequently today, we'll use the "predictor" and "response" terms to refer to the variables encountered in this course. The other terms are mentioned only to make you aware of them should you encounter them in other contexts.
+\section{Least Squares}\index{least squares}
+The line is chosen to minimize the sum of the squared vertical distances from the
+points to the line. Those vertical distances are the \index{residual}\newterm{residuals}
+$e_i = y_i - \hat{y}_i$. The formulas that minimize $\sum e_i^2$ are
+$$b_1 = \frac{S_{xy}}{S_{xx}}, \qquad b_0 = \bar{y} - b_1 \bar{x}$$
+where $S_{xx} = \sum (x_i - \bar{x})^2$ and $S_{xy} = \sum (x_i - \bar{x})(y_i - \bar{y})$.
 
-Simple linear regression gets its adjective "simple," because it concerns the study of only one predictor variable. In contrast, multiple linear regression, a topic that will be covered later, gets its adjective "multiple," because it concerns the study of two or more predictor variables.
+\subsection{A Worked Example}
+Five students studied for $x = 1, 2, 3, 4, 5$ hours and scored
+$y = 2.1, 3.9, 6.2, 7.8, 10.1$ (in points, on a quiz scaled to 10).
+We have $\bar{x} = 3$ and $\bar{y} = 6.02$. Also $S_{xx} = 10$ and
+$S_{xy} = 19.9$. So
+$$b_1 = \frac{19.9}{10} = 1.99, \qquad b_0 = 6.02 - 1.99(3) = 0.05$$
+The fitted line is $\hat{y} = 0.05 + 1.99x$. For a student who studies 6 hours,
+the prediction is $\hat{y} = 0.05 + 1.99(6) = 11.99$. Be careful: this is a
+prediction for $x = 6$, which is just outside the data. Predictions far outside
+the range of the data are unreliable.
 
-\subsection{The model behind simple linear regression}
+The residuals are $0.06, -0.13, 0.18, -0.21, 0.10$. They always sum to zero for
+a least squares line with an intercept, because the line passes through
+$(\bar{x}, \bar{y})$.
 
-Given a scatterplot of the response variable $y$ versus the predictor variable $x$, we fit the line 
+\section{Interpreting the Slope}
+The slope $b_1 = 1.99$ means that each additional hour of study is associated
+with about 1.99 more points on the quiz. The word \emph{associated} matters. A
+regression line describes a pattern in the data. It does not prove that studying
+causes the score to rise, unless the data came from a well-designed experiment.
 
-\begin{equation}
-y = \beta_0 + \beta_1x + \epsilon
-\end{equation}
+\begin{Exercise}[label=slr1, title=Predict a value]
+Using $\hat{y} = 0.05 + 1.99x$, predict the score for a student who studies
+4 hours.
+\end{Exercise}
+\begin{Answer}[ref=slr1]
+$\hat{y} = 0.05 + 1.99(4) = 8.01$.
+\end{Answer}
 
-that minimizes the distances from the observed points to the line!
+\begin{Exercise}[label=slr2, title=Find a residual]
+For the student who studied 3 hours, the observed score was 6.2. What is the residual?
+\end{Exercise}
+\begin{Answer}[ref=slr2]
+The predicted score is $0.05 + 1.99(3) = 6.02$. The residual is $6.2 - 6.02 = 0.18$.
+\end{Answer}
 
-\begin{itemize}
-\item $y$ = dependent variable (output/outcome/prediction/estimation)
-\item $\beta_0$ = y-intercept (constant term)
-\item $\beta_1$ = slope of the regression line (the effect that X has on Y)
-\item $x$ = independent variable (input variable used in the prediction of Y)
-\item $\epsilon$ = error (the difference between the actual and predicted/estimated value)
-\end{itemize}
-
-This line can be used to predict future values of $y$ given new data values of $x$.
+\begin{Exercise}[label=slr3, title=Interpret the intercept]
+Explain why the intercept $b_0 = 0.05$ is not useful for interpretation in this example.
+\end{Exercise}
+\begin{Answer}[ref=slr3]
+The intercept is the predicted score for 0 hours of study. No data was collected
+near $x = 0$, and a student who studies zero hours could still score something
+other than 0.05, so the intercept is an extrapolation and is not a meaningful
+estimate by itself.
+\end{Answer}
