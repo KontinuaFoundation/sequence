@@ -108,7 +108,12 @@ print(raw_model.resid)
 
 This gives an intercept of $-54.91$, a slope of $48.83$, and $R^2 \approx 0.750$. 
 
-% [figure placeholder: residuals-vs-fitted-values scatter for the raw model, showing a bowed pattern]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.52\textwidth]{logt_resid_raw.png}
+    \caption{Residuals against fitted values for the raw linear model. The residuals form a U-shaped bow, so a line does not fit the data.}
+    \label{fig:logt-resid-raw}
+\end{figure}
 
 Apply the log transform and refit:
 
@@ -124,7 +129,12 @@ print(log_model.resid)
 
 Now the intercept is near $1.393$, the slope near $0.7356$, and $R^2 \approx 0.9995$. 
 
-% [figure placeholder: residuals-vs-fitted-values scatter for the log-transformed model]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.54\textwidth]{logt_resid_log.png}
+    \caption{Residuals against fitted values after the log transformation. The residuals are small and show no curved pattern.}
+    \label{fig:logt-resid-log}
+\end{figure}
 
 One detail changes between the by-hand work and the code: \mintinline{python}{np.log()} is the natural logarithm, not $\log_{10}$. Natural log pairs with \mintinline{python}{np.exp()} instead, so the transformed slope and intercept convert back a little differently:
 
