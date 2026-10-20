@@ -1,13 +1,12 @@
-# Energy and Conservation — Notes
+# Work and Energy — Notes
 
 ## Summary
-Merged from `work_energy`, `matter_energy_intro`, `conservation_mass_energy`. Each source keeps its own section, under the chapter title.
+Covers work, the forms of energy, conservation of energy, work and kinetic energy, and efficiency and power. This chapter was split from `energy_conservation` (the matter and mass-energy material is now in `matter_energy`).
 
-## Merge history
-- `work_energy` is now section 1.
-- `matter_energy_intro` is now section 2.
-- `conservation_mass_energy` is now section 3.
+## Changes in this pass
+- Split the chapter in two. This chapter keeps the work and energy material.
+- Removed contractions from the prose.
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Add a link to `matter_energy` where mass-energy equivalence comes up.
+- The efficiency and power section may need one more worked example.

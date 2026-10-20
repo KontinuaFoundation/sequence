@@ -1,12 +1,11 @@
 # Volumes — Notes
 
 ## Summary
-Merged from `volume_solids`, `volume_single_integral`. Each source keeps its own section, under the chapter title.
+Volumes of common solids and volumes with integrals.
 
-## Merge history
-- `volume_solids` is now section 1.
-- `volume_single_integral` is now section 2.
+## Changes in this pass
+- Added a worked cylinder example (radius 2, height 5: 20 pi, about 62.8) and an exercise (radius 3, height 4: 36 pi).
+- Removed contractions from the prose (none were left).
 
-## Editor to-do
-- Remove repeated introductions and check transitions between sections.
-- Check that figure and equation labels are unique across the merged sources.
+## Open items
+- Add a worked example of a volume of revolution with an integral.

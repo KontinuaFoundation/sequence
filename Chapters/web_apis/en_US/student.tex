@@ -67,7 +67,7 @@ Application Programming Interface (API) is a set of rules that allows
 programs to talk to each other. The developer creates the API on the
 server and allows the client to talk to it.
 
-When a developer makes a request to an API endpoint, they're asking
+When a developer makes a request to an API endpoint, they are asking
 the server to either send them some data or receive some data from
 them. The response from the server will often be in a format like JSON
 or XML, which the developer can then use in their own application.
@@ -234,7 +234,7 @@ with HTTP APIs, including:
         manage API quotas.
 
   \item API documentation and testing: Proper documentation is essential
-        for understanding an API's capabilities, endpoints, and expected
+        for understanding an APIs capabilities, endpoints, and expected
         behavior. We will explore how to read and interpret API
         documentation, as well as techniques for testing and validating API
         integrations.
@@ -245,14 +245,14 @@ development toolkit and gain the ability to seamlessly integrate your
 applications with external services, leverage their functionalities,
 and build powerful, interconnected systems.
 
-So, let's dive into the world of HTTP APIs and uncover the endless
+So, let us dive into the world of HTTP APIs and uncover the endless
 possibilities they offer for enhancing your software engineering
 projects.
 
 % Written by Arjan June-July 2026
 \subsection{Setting up an API}
 
-Create a file called \texttt{server.js}. This will be a basic webserver that we will use to test our an API. This is called a \index{RESTful API}\newterm{RESTful API}. Write the following code to create a basic server for our API.
+Create a file called \texttt{server.js}. This will be a basic webserver that we will use to test our API. This is called a \index{RESTful API}\newterm{RESTful API}. Write the following code to create a basic server for our API.
 \begin{minted}{javascript}
 const express = require("express");
 
@@ -289,7 +289,7 @@ data based on the request of the endpoint.
 We can navigate to the endpoint \texttt{GET /students/42}, where students is the resource 
 that usually maps to a database, and \texttt{42} is the id of a student in the database. 
 To retrieve this student from the database, we can navigate to
-\begin{minted}{python}
+\begin{minted}{text}
 GET http://localhost:3000/students/42
 \end{minted}
 which is an endpoint from our API. This will output
@@ -306,16 +306,14 @@ Note that this is done in json format, common for backend data parsing.
 
 Each endpoint combines a resource path with an HTTP method to complete an action.
 
-This leads us to the idea of \index{CRUD operations}\newterm{CRUD operations}. CRUD, which stands for CREATE, 
-REMOVE, UPDATE, DELETE, are a form of outlining an API's routes. Calling a route that 
-aims to alter should follow one of the CRUD operations. GET does not have an operation 
-since it is \newterm{read-only}.
+This leads us to the idea of \index{CRUD operations}\newterm{CRUD operations}. CRUD, which stands for CREATE, READ, UPDATE, and DELETE, are a form of outlining an APIs routes. Calling a route that 
+aims to alter should follow one of the CRUD operations. GET is the READ operation, since it only reads data.
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|}
     \hline
     \textbf{HTTP Method} & \textbf{Purpose}       & \textbf{CRUD Op} & \textbf{Example}                  \\ \hline
-    GET                  & Fetch Data             & N/A              & Get student information           \\ \hline
+    GET                  & Fetch Data             & READ              & Get student information           \\ \hline
     PUT                  & Update Data            & UPDATE           & Fully update student              \\ \hline
     PATCH                & Update section of Data & UPDATE           & Update a student's major          \\ \hline
     POST                 & Create Data            & CREATE           & Create a new student              \\ \hline
@@ -454,7 +452,7 @@ trigger each of them with curl.
 \subsubsection{Fully replacing a resource with PUT}\index{PUT request}
 
 A \texttt{PUT} request means \emph{replace this entire resource with
-  what I'm sending you.} If you leave out a field, that field is
+  what I am sending you.} If you leave out a field, that field is
 expected to disappear or reset, because the whole object is being
 overwritten.
 
@@ -493,7 +491,7 @@ response. This is the behavior that distinguishes PUT from PATCH.
 
 \subsubsection{Partially updating a resource with PATCH}\index{PATCH request}
 
-A \texttt{PATCH} request means \emph{only change the fields I'm
+A \texttt{PATCH} request means \emph{only change the fields I am
   sending you, and keep everything else the same.} This is almost always
 what you want when, say, updating a single field like a student's
 major.
@@ -549,7 +547,7 @@ app.delete("/students/:id", (req, res) => {
 curl -X DELETE http://localhost:3000/students/44
 \end{minted}
 
-Run \texttt{GET /students} again and Jerry Doe should be gone. If you
+Jerry Doe (student 44) is added with a POST request in the next section, so run this command after that section. Then run \texttt{GET /students} again and Jerry Doe should be gone. If you
 run the same \texttt{DELETE} command a second time, you should get a
 \texttt{404}, since the student no longer exists to delete.
 
@@ -560,7 +558,7 @@ But remember: every HTTP exchange also includes headers and a status
 code, even when curl hides them by default. Two flags make that
 conversation visible.
 
-\texttt{-i} includes the response headers above the body:
+\texttt{-i} includes the response headers above the body. The output below leaves out a few headers that Express adds, such as \texttt{Date} and \texttt{ETag}:
 
 \begin{minted}{shell}
 curl -i http://localhost:3000/students/43
@@ -569,14 +567,14 @@ curl -i http://localhost:3000/students/43
 \begin{minted}{text}
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
-Content-Length: 78
+Content-Length: 76
  
 {"student_id":43,"name":"Jane Doe","major":"Physics","credits_completed":64}
 \end{minted}
 
 \texttt{-v} (verbose) goes further and shows the \emph{request} curl
 sent, not just the response it received -- useful when a request is
-failing and you aren't sure what curl is actually sending:
+failing and you are not sure what curl is actually sending:
 
 \begin{minted}{shell}
 curl -v -X PATCH http://localhost:3000/students/43 \
@@ -591,10 +589,10 @@ lines starting with \texttt{<} are what the server sent back.
 \subsection{Authentication and API Keys}
 \index{API keys}\index{Authorization header}
 
-Every route we've built so far is completely open: anyone who knows
+Every route we have built so far is completely open: anyone who knows
 the URL can read, create, update, or delete students. Real APIs
-usually can't work that way, since that data might be private, or
-changing it might cost money (imagine n API that sends text messages
+usually cannot work that way, since that data might be private, or
+changing it might cost money (imagine an API that sends text messages
 or charges a credit card). To restrict access, APIs commonly require
 an \newterm{API key}: a long, unique string that identifies who is
 making the request.
@@ -643,19 +641,19 @@ beyond this textbook:
   \item \textbf{Treat an API key like a password.} Anyone who has your
         key can act as you. They could be reading your data, spending your quota, or
         in some APIs, spending your money.
-  \item \textbf{You can only access API's with their specific key.} If you have multiple API's, each one will have its own key. You cannot use the same key for different API's. For example, Spotify's public API has its own key, and a method for you to generate your own key. You cannot use a key from another API (such as OpenAI) to access Spotify's API. The strength here is that if one key is compromised, it does not compromise all of your API's. Secondly, this way, if a breach of data is attempted, Spotify knows who owns the key and can revoke it. Feel free to learn more about Spotify's API and how to generate your own key at \url{https://developer.spotify.com/documentation/web-api/}. Becoming increasingly more common is OpenAI's API, which has its own key and method for generating your own key. You can learn more about OpenAI's API at \url{https://platform.openai.com/docs/guides/authentication}.
+  \item \textbf{You can only access APIs with their specific key.} If you have multiple APIs, each one will have its own key. You cannot use the same key for different APIs. For example, Spotify's public API has its own key, and a method for you to generate your own key. You cannot use a key from another API (such as OpenAI) to access Spotify's API. The strength here is that if one key is compromised, it does not compromise all of your APIs. Secondly, this way, if a breach of data is attempted, Spotify knows who owns the key and can revoke it. Feel free to learn more about Spotify's API and how to generate your own key at \url{https://developer.spotify.com/documentation/web-api/}. Becoming increasingly more common is OpenAI's API, which has its own key and method for generating your own key. You can learn more about OpenAI's API at \url{https://platform.openai.com/docs/guides/authentication}.
 \end{itemize}
 
 This is the difference between \newterm{authentication} (proving
 \emph{who} you are, usually with a key or token) and
-\newterm{authorization} (determining \emph{what} you're allowed to do
-once you've proven who you are). A key can identify you correctly and
-still be denied access to a specific route if you don't have
+\newterm{authorization} (determining \emph{what} you are allowed to do
+once you have proven who you are). A key can identify you correctly and
+still be denied access to a specific route if you do not have
 permission for it.
 
 \subsection{Creating resources with POST}\index{POST request}
 
-That's all great, but we can put cURL to work on much more laborious tasks. Going back to our created API example, we can post, update, and delete resources using cURL.
+That is all great, but we can put cURL to work on much more laborious tasks. Going back to our created API example, we can post, update, and delete resources using cURL.
 
 A POST request creates a new resource. Unlike GET requests, POST
 requests send data inside the request body.
@@ -664,8 +662,8 @@ requests send data inside the request body.
 app.post("/students", (req, res) => {
   const student = req.body;
 
-  // basic validation: ensure a body is received
-  if (!student) {
+  // basic validation: ensure the body has at least one field
+  if (!student || Object.keys(student).length === 0) {
     return res.status(400).json({ error: "Invalid student data" });
   }
 
@@ -719,7 +717,7 @@ This can be broken down as:
 
 The request body in this example is the JSON string passed with \texttt{-d}. Express will parse that JSON into \texttt{req.body} when \texttt{express.json()} middleware is enabled.
 
-Note that our server.js students array will not update with Jerry Doe, because the server only stores the students array upon initialization, but we can see our now three students by running a GET request on \texttt{/students}
+The POST handler adds Jerry Doe to the \texttt{students} array in memory, so a GET request on \texttt{/students} now returns three students. This data lives only while the server runs. It is not saved anywhere, so restarting the server resets the list.
 
 \begin{minted}{json}
 [
@@ -745,6 +743,18 @@ Note that our server.js students array will not update with Jerry Doe, because t
 \end{minted}
 
 
+\begin{Exercise}[title={Changing One Field with PATCH}, label=webapi1]
+Use curl and a PATCH request to change Jane Doe's \texttt{credits\_completed} to 70. Leave her other fields alone. Then send a GET request to \texttt{/students/43} and check the result.
+\end{Exercise}
+\begin{Answer}[ref=webapi1]
+\begin{minted}{shell}
+curl -X PATCH http://localhost:3000/students/43 \
+  -H "Content-Type: application/json" \
+  -d '{ "credits_completed": 70 }'
+\end{minted}
+The response is the updated student, \texttt{\{"student\_id":43,"name":"Jane Doe","major":"Physics","credits\_completed":70\}}. PATCH changes only the field that was sent, so the name and major stay the same.
+\end{Answer}
+
 \subsection{Postman}
 \index{Postman}
  
@@ -756,7 +766,7 @@ every single time gets tedious and error-prone, especially for requests
 with long JSON bodies or several headers.
  
 \newterm{Postman} is a GUI application for building, sending, and
-saving HTTP requests. Everything you've been typing as curl flags has
+saving HTTP requests. Everything you have been typing as curl flags has
 a matching box in Postman:
  
 \begin{table}[]
@@ -833,7 +843,7 @@ terminal:
  
 Neither tool replaces the other. cURL is scriptable and works anywhere
 you have a terminal, including inside automated tests and shell
-scripts, which is why you'll keep seeing it later in this book. Postman
+scripts, which is why you will keep seeing it later in this book. Postman
 is better suited to exploring an API interactively, organizing a large
 set of requests, and sharing that organized set with teammates. Most
 professional API developers end up using both, for different parts of
@@ -843,8 +853,8 @@ their workflow.
 
 This chapter touched on a lot of software and development concepts. Here are some of the key takeaways:
 \begin{itemize}
-  \item API's are ways to connect and fetch data from a server. They are a way to connect two different applications together.
-  \item API's are usually built with a RESTful architecture, which is a set of principles that follow HTTP protocol to perform CRUD operations on resources.
+  \item APIs are ways to connect and fetch data from a server. They are a way to connect two different applications together.
+  \item APIs are usually built with a RESTful architecture, which is a set of principles that follow HTTP protocol to perform CRUD operations on resources.
   \item \textbf{CURL} is a command line tool that allows you to send HTTP requests to an API. Another commonly used tool is \textbf{Postman}, which is a GUI application that allows you to send HTTP requests to an API.
   \item We created a basic API that allows us to perform CRUD operations on a student resource. We can create, read, update, and delete students from our API.
 \end{itemize}

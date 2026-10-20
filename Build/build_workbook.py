@@ -122,7 +122,7 @@ def build_book(book_id, config, draft, final_dir, header, footer):
     log_path = INTERMEDIATE_DIR / f"workbook-{book_id}.log"
     prefix = f"Building workbook-{book_id}"
 
-    cmd = [tool, "-halt-on-error", "-synctex=1", "-shell-escape", output_tex_file.name]
+    cmd = [tool, "--halt-on-error", "--synctex=1", "--shell-escape", output_tex_file.name]
 
     with log_path.open("w") as log_f:
         if draft:
@@ -169,7 +169,7 @@ def main():
         mode = Mode("numbered")
 
         if args.index == "all":
-            book_nums = ["00"] + [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
+            book_nums = [str(x).zfill(2) for x in range(1, VOL_COUNT + 1)]
             print("Building all workbooks")
         elif args.index.isdigit():
             book_nums = [str(args.index).zfill(2)]
@@ -253,7 +253,7 @@ def main():
         log_path = INTERMEDIATE_DIR / f"{output_tex.stem}.log"
         prefix = f"Building {output_tex.stem}"
 
-        cmd = [config["LatexExecutable"], "-halt-on-error", "-synctex=1", "-shell-escape", str(output_tex)]
+        cmd = [config["LatexExecutable"], "--halt-on-error", "--synctex=1", "--shell-escape", str(output_tex)]
 
         with log_path.open("w") as log_f:
             _passes, ok = run_latex_passes(cmd, log_f, output_tex.stem, prefix, min_passes=2)
