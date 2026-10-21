@@ -1,25 +1,32 @@
 \chapter{Images in Python}
 
-An image is usually represented as a three-dimensional array of 8-bit
-integers. \index{NumPy array}NumPy arrays are the most commonly used library for this
-sort of data structure.
+Every photo filter on your phone, every face detector, and every
+self-driving car's camera does the same basic thing: it treats a picture as
+a big grid of numbers and does math on them. In this chapter, you will
+make images from scratch with Python and take real photos apart.
+
+As you saw in the camera chapter, a color image is a grid of pixels, each
+with a red, green, and blue value from 0 to 255. In Python, we store that
+as a three-dimensional \index{NumPy array}NumPy array of 8-bit integers
+(type \texttt{uint8}, which holds exactly the values 0 to 255).
 
 If you have an \index{RGB}RGB image that is 480 \index{pixel}pixels tall and 640 pixels wide,
 you will need a $480 \times 640 \times 3$ NumPy array.
 
-There is a separate library (\index{imageio}imageio) that:
+A separate library, \index{imageio}imageio, does the file handling. (Install it with
+\texttt{pip3 install imageio} if you need to.) It
 \begin{itemize}
 \item Reads an image file (like JPEG files) and creates a NumPy array.
 \item Writes a NumPy array to a file in standard image formats
 \end{itemize}
 
-Let us create a simply python program that creates a file containing an
+Let us create a simple Python program that creates a file containing an
 all-black image that is 640 pixels wide and 480 pixels tall. Create a
 file called \filename{create\_image.py}:
 
 \begin{minted}{python}
-import NumPy as np
-import imageio
+import numpy as np
+import imageio.v3 as iio
 import sys
 
 # Check command-line arguments
@@ -35,11 +42,12 @@ IMAGE_HEIGHT = 480
 image = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3), dtype=np.uint8)
 
 # Write the array to the file
-imageio.imwrite(sys.argv[1], image)
+iio.imwrite(sys.argv[1], image)
 \end{minted}
 
-To run this, you will need to supply the \index{command-line argument} the name of the file you are
-trying to create. The extension (like .png or .jpeg) will tell imageio
+To run this, you supply the name of the file you want to create as a
+\index{command-line argument}\newterm{command-line argument}; Python puts it
+in \pyvar{sys.argv[1]}. The extension (like .png or .jpeg) will tell imageio
 what format you want written. Run it now:
 
 \begin{minted}{python}
@@ -50,7 +58,11 @@ Open the image to confirm that it is 640 pixels wide, 480 pixels tall, and compl
 
 \section{Adding color}\index{color (RGB)}
 
-\textbf{Worked example: colors in RGB.} Each pixel stores three numbers for red, green, and blue, from $0$ to $255$. A pixel with $(255, 255, 0)$ has full red and full green and no blue, so it looks yellow.
+\textbf{Worked example.} What color is a pixel with the value
+$(255, 255, 0)$?
+
+\textbf{Solution.} Full red, full green, and no blue. As you learned in the
+eye chapter, red and green light together look yellow.
 
 
 Now, let us walk through the image, pixel-by-pixel, adding some
@@ -58,8 +70,8 @@ red. We will gradually increase the red from 0 on the left to 255 on
 the right.
 
 \begin{minted}{python}
-import NumPy as np
-import imageio
+import numpy as np
+import imageio.v3 as iio
 import sys
 
 # Check command-line arguments
@@ -85,7 +97,7 @@ for col in range(IMAGE_WIDTH):
         image[row, col, 0] = r
 
 # Write the array to the file
-imageio.imwrite(sys.argv[1], image)
+iio.imwrite(sys.argv[1], image)
 \end{minted}
 
 When you run the function to create a new image, it will be a fade
@@ -107,7 +119,7 @@ from zero at the top to 255 at the bottom:
         b = int(row * 255.0 / IMAGE_HEIGHT)
         image[row,col,2] = b
 
-imageio.imwrite(sys.argv[1], image)
+iio.imwrite(sys.argv[1], image)
 \end{minted}
 
 When you run the program again, you will see the color fades from
@@ -121,8 +133,8 @@ Notice that red and blue with no green looks magenta to your eye.
 Next, let us add some stripes of green:
 
 \begin{minted}{python}
-import NumPy as np
-import imageio
+import numpy as np
+import imageio.v3 as iio
 import sys
 
 # Check command line arguments
@@ -162,11 +174,11 @@ for col in range(IMAGE_WIDTH):
         b = int(row * 255.0 / IMAGE_HEIGHT)
         image[row,col,2] = b
 
-imageio.imwrite(sys.argv[1], image)
+iio.imwrite(sys.argv[1], image)
 \end{minted}
 
-When you run this version, you will see the previous image in half the
-stripes.  In the other half, you will see that green fades to cyan
+When you run this version, you will see the previous image in every
+other stripe.  In the other half, you will see that green fades to cyan
 down the left side, and yellow fades to white down the right side.
 
 \includegraphics[width=0.4\linewidth]{rgb.png}
@@ -180,7 +192,8 @@ channels out as its own image.
 Create a new file called \filename{separate\_image.py}:
 
 \begin{minted}{python}
-import imageio
+import numpy as np
+import imageio.v3 as iio
 import sys
 import os
 
@@ -191,7 +204,7 @@ if len(sys.argv) < 2:
 
 # Read the image
 path = sys.argv[1]
-image = imageio.imread(path)
+image = iio.imread(path)
 
 # What is the filename?
 filename = os.path.basename(path)
@@ -217,7 +230,7 @@ for i in range(3):
     # Save to a file
     new_filename = f"{colors[i]}_{filename}"
     print(f"Writing {new_filename}")
-    imageio.imwrite(new_filename, newimage)
+    iio.imwrite(new_filename, newimage)
 \end{minted}
 
 Now, you can run the program with any common RGB image type:
@@ -227,7 +240,40 @@ python3 separate_image.py dog.jpg
 \end{minted}
 
 This will create three images: \filename{red\_dog.jpg},
-\filename{green\_dog.jpg}, and \filename{blue\_dog.jpg}.
+\filename{green\_dog.jpg}, and \filename{blue\_dog.jpg}. Look at them side
+by side. A red sweater is bright in the red image and dark in the others;
+the sky is brightest in the blue one.
+
+\section{Faster with NumPy}
+The loops above visit all 307,200 pixels one at a time, which is slow.
+NumPy can do the same work on a whole array at once. This one line makes
+the left-to-right red fade without any loops:
+\begin{minted}{python}
+image[:, :, 0] = np.linspace(0, 255, IMAGE_WIDTH).astype(np.uint8)
+\end{minted}
+NumPy copies the row of 640 values down every one of the 480 rows. Real
+image-processing code is written this way, and it can be hundreds of times
+faster.
+
+\begin{Exercise}[title={Grayscale}, label=img_gray]
+Write a program that reads a color image and writes a grayscale version.
+A common formula for how bright a pixel looks is
+$0.299R + 0.587G + 0.114B$. Why is green weighted most heavily?
+\end{Exercise}
+\begin{Answer}[ref=img_gray]
+\begin{minted}{python}
+import numpy as np
+import imageio.v3 as iio
+import sys
+
+image = iio.imread(sys.argv[1]).astype(float)
+gray = 0.299 * image[:, :, 0] + 0.587 * image[:, :, 1] + 0.114 * image[:, :, 2]
+iio.imwrite(sys.argv[2], gray.astype(np.uint8))
+\end{minted}
+Green gets the most weight because our eyes are most sensitive to green
+light, so green contributes the most to how bright a color looks. (The
+weights add up to 1, so white stays 255.)
+\end{Answer}
 
 \begin{Exercise}[title={White Pixel}, label=img1]
 What RGB value makes a pixel white?

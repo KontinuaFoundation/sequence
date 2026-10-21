@@ -1,20 +1,29 @@
 \chapter{Diodes, Rectifiers, and Photovoltaics}
 
-Early in this course, we discussed some basic electronics components: resistors, capacitors, and inductors. In this chapter, we are going to introduce a \index{semiconductor}semiconductor: \newterm{Diodes} ensure that current flows in only one direction.\index{diode}
-
-You will learn a lot about semiconductors from studying diodes.  We can then apply what you have learned to solar cells, transistors, and integrated circuits like CPUs.
+The phone in your pocket contains billions of tiny switches, all carved
+from a material that is neither a good conductor nor a good insulator: a
+\index{semiconductor}\newterm{semiconductor}. The simplest semiconductor
+device is the \newterm{diode}\index{diode}, a one-way valve for current.
+Understand the diode, and you are most of the way to understanding solar
+cells, LEDs, transistors, and the chips inside every computer.
 
 We are going to focus on semiconductors made of silicon. You can make semiconductors out of other materials, but silicon has proved to be very versatile and cost-effective.
 
 \section{Silicon}
 
-A silicon atom has 14 protons and 14 electrons.  The inner 10 electrons are arranged in two complete and stable shells.  The outer four electrons are in an incomplete shell, which allows them to form bonds with other atoms. We call these \index{valence electron}\newterm{valence electrons} because they are not tightly bound to their atoms. A complete outer shell would have eight electrons.\index{silicon}
+A silicon atom has 14 protons and 14 electrons.  The inner 10 electrons are arranged in two complete and stable shells.  The outer four electrons are in an incomplete shell, which allows them to form bonds with other atoms. These outer electrons are called \index{valence electron}\newterm{valence
+electrons}, and they are the ones that form bonds. A complete outer shell would have eight electrons.\index{silicon}
 
 Atoms can share electrons to get complete shells.  This is called \index{covalent bond}\newterm{covalent bonding}.  When atoms share electrons, they form a \newterm{covalent bond}.  The electrons are shared between the atoms, and the atoms are held together by the shared electrons.
 
-In a silicon crystal, each silicon atom shares its outer four electrons with four neighboring atoms. With its four electrons and an electron borrowed from each of it four neighbors, each silicon atom has eight electrons in its outer shell. This is a complete shell, and the atoms are stable. This is why glass is hard and stable.  It also why electricity does not flow through glass -- all the electrons are tightly bound to their atoms.
+In a silicon crystal, each silicon atom shares its outer four electrons with four neighboring atoms. With its four electrons and an electron borrowed from each of it four neighbors, each silicon atom has eight electrons in its outer shell. This is a complete shell, and the atoms are stable. With every electron
+locked into a bond, almost none are free to move, so pure silicon conducts
+electricity poorly.
 
-Phosphorus has five valence electrons. If you put a phosphorus atom into silicon crystal, it shares four of its electrons with its neighbors, but it has one electron left over after the complete shell of eight is built. As you add more phosphorus to a silicon crystal, it conducts more electricity.  We call this \newterm{doping}.\index{phosphorus}\index{doping}
+Phosphorus has five valence electrons. If you put a phosphorus atom into silicon crystal, it shares four of its electrons with its neighbors, but it has one electron left over after the complete shell of eight is built. That extra electron is free to wander through the crystal and carry
+current. The more phosphorus you add, the better the silicon conducts.
+Adding small amounts of another element on purpose is called
+\newterm{doping}.\index{phosphorus}\index{doping}
 
 \begin{figure}[H]
     \centering
@@ -36,7 +45,9 @@ Boron has only three valence electrons. If you put a boron atom into silicon cry
 
 Both n-doped and p-doped silicon are conductors of electricity.  In n-doped silicon, we say the loose electrons are the \index{charge carriers}\newterm{carriers} of the current. In p-doped silicon, we say the holes are the carriers.
 
-Note that doped silicon is still mostly silicon. In normal doping, maybe 1 in 10,000 atoms are replaced with boron or phosphorus.
+Doped silicon is still almost entirely silicon. Often only about one atom
+in a million is replaced with boron or phosphorus, and that is enough to
+change its conductivity enormously.
 
 \section{Diodes}
 
@@ -70,7 +81,11 @@ One end of the diode is called the \newterm{anode}.  The anode is p-doped.  The 
     \label{fig:diode-real-diodes-2}
 \end{figure}
 
-The region close to where the anode and cathode meet is called the \newterm{depletion region}. In this space, the spare electrons in the cathode (the n-doped material) migrate over to fill the holes in anode (the p-doped material). This creates an electric field: there are more electrons than protons on the anode side, and more protons than electrons on the cathode side. (How strong is this field? It is typically about 0.7 volts.)\index{depletion region}
+The region close to where the anode and cathode meet is called the \newterm{depletion region}. In this space, the spare electrons in the cathode (the n-doped material) migrate over to fill the holes in anode (the p-doped material). This leaves the anode side slightly negative (extra electrons) and the
+cathode side slightly positive (missing electrons), creating an electric
+field across the junction. For silicon, the voltage across this region is
+about 0.7 volts. It acts like a small hill that pushes back on any more
+electrons trying to cross from the cathode to the anode.\index{depletion region}
 
 \begin{figure}[H]
     \centering
@@ -79,7 +94,9 @@ The region close to where the anode and cathode meet is called the \newterm{depl
     \label{fig:diode-depletion}
 \end{figure}
 
-What happens if we overpower that 0.7 volts? What if we put 2 volts in the opposite direction? This shrinks the depletion region and the diode becomes a conductor. For example, if the negative end of a battery is connected to the cathode of a diode and the positive end is connected to the anode, current will flow through the diode.
+What happens if we overpower that 0.7 volts? Push electrons into the
+cathode with, say, 2 volts. This shrinks the depletion region, and the
+diode becomes a conductor. This is called \newterm{forward bias}. For example, if the negative end of a battery is connected to the cathode of a diode and the positive end is connected to the anode, current will flow through the diode.
 
 \begin{figure}[H]
     \centering
@@ -88,7 +105,8 @@ What happens if we overpower that 0.7 volts? What if we put 2 volts in the oppos
     \label{fig:diode-flow}
 \end{figure}
 
-If we reverse the battery, the depletion region expands, and the diode becomes an insulator.
+If we reverse the battery (\newterm{reverse bias}), the depletion region
+grows, and the diode becomes an insulator.
 
 \begin{figure}[H]
     \centering
@@ -106,7 +124,16 @@ Here is the \index{diode!symbol}symbol for a diode:
     \label{fig:diode-symbol}
 \end{figure}
 
-Current will flow in the direction of the arrow. It will not flow in the opposite direction.
+Conventional current flows in the direction of the arrow (electrons flow
+the other way). It will not flow in the opposite direction.
+
+\textbf{Light-emitting diodes.} When an electron crosses the junction of a
+forward-biased diode and falls into a hole, it gives up energy. In
+ordinary silicon diodes, that energy becomes heat. In an \newterm{LED},
+made from materials like gallium arsenide, it comes out as a photon. The
+energy drop sets the photon's energy, and so its color: about 1.8 eV for
+red, 2.6 eV for blue. That is why LEDs need different voltages for
+different colors.
 
 \textbf{Worked example: current through a silicon diode.} A diode that is conducting drops about $0.7$ V. Put it in series with a $1$ k$\Omega$ resistor and a $5$ V supply. The resistor sees $5 - 0.7 = 4.3$ V, so the current is $I = \frac{4.3}{1000} = 4.3$ mA.
 
@@ -136,9 +163,22 @@ A \newterm{full-wave rectifier} uses four diodes to swap the direction of the cu
 
 \subsection{Photovoltaics}
 
-Photovoltaics (or "Solar cells") are similar to diodes. They have a \index{p-n junction}p-n junction that creates a 0.7 volt barrier. The difference is that sunlight is allowed to shine on the cathode side. When an atom is struck by a photon of light energy, the electron becomes excited.  Sometimes it is excited enough to leap across that 0.7 volt barrier.\index{solar cells}\index{photovoltaics}
+A solar cell (or \newterm{photovoltaic} cell) is an LED run backward.
+\index{solar cells}\index{photovoltaics}It is a large, thin diode with a
+\index{p-n junction}p-n junction just under the surface, where sunlight can
+reach it. When a photon with enough energy (more than about 1.1 eV for
+silicon) is absorbed near the junction, it knocks an electron loose,
+leaving a hole behind.
 
-When it leaps across, there is an extra electron on the anode side of the barrier and a hole (a missing electron) on the cathode side. The electron cannot go back over the barrier (unless more than 0.7 volts of charge have built up across the barrier).  So, it goes the long way: through the load.
+Now the built-in field of the depletion region takes over. It pushes the
+freed electron toward the n side (the cathode) and the hole toward the p
+side (the anode). Electrons pile up on the n side, and the cell becomes a
+small battery. The electrons cannot cross back through the junction
+against the field, so they take the long way: out through the wires,
+through the load, and back to the p side, where they fill the holes.
+
+Each silicon cell makes only about half a volt, so a solar panel connects
+dozens of cells in series.
 
 \begin{figure}[H]
     \centering
@@ -146,6 +186,14 @@ When it leaps across, there is an extra electron on the anode side of the barrie
     \caption{Solar Cell}
     \label{fig:solarcell}
 \end{figure}
+
+\begin{Exercise}[title={How many cells?}, label=diode_solar]
+Each solar cell in a panel produces 0.5 V. How many cells must be connected
+in series to make a panel that produces 30 V?
+\end{Exercise}
+\begin{Answer}[ref=diode_solar]
+$\frac{30}{0.5} = 60$ cells, which is a very common panel size.
+\end{Answer}
 
 \begin{Exercise}[title={A Larger Supply}, label=diode_current]
 A $12$ V supply, a silicon diode with a $0.7$ V drop, and a $2$ k$\Omega$ resistor are in series. Find the current.

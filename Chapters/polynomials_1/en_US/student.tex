@@ -2,6 +2,13 @@
 
 
 \section{Introduction to Polynomials}
+The height of a tossed ball, the area of a garden, the profit of a lemonade
+stand, the path of a roller coaster, the curve a graphics program draws
+for the letter S: all of them are described by polynomials. They are the
+workhorses of algebra, and computers are very good at them. In this
+chapter, you will learn to add and multiply polynomials by hand and teach
+Python to do it for you.
+
 Watch Khan Academy's \textbf{Polynomials intro} video at \url{https://youtu.be/Vm7H0VTlIco}\index{polynomial}
 
 A \emph{monomial}\index{monomial} is the product of a number and a variable raised to a non-negative (but possibly zero) integer power. Here are some examples of monomials:
@@ -202,7 +209,7 @@ polynomial, then simplify by \index{like terms}combining terms with the same deg
   \Question{$3x^5 - 5x^3 + 3x^2 - x - 3$ and $2x^4 - 2x^3 - 2x^2 + x - 9$}
   \vspace{20mm}
 \end{Exercise}
-\begin{Answer}[ref=addpns]$3x^3 - 7x^2 + x - 18$ and $3x^5 - 7x^3 + x^2 - 12$\end{Answer}
+\begin{Answer}[ref=addpns]$3x^3 - 7x^2 + x - 18$ and $3x^5 + 2x^4 - 7x^3 + x^2 - 12$\end{Answer}
 
 Notice that in the second question, the degree 1 term disappears completely: $(-x) + x = 0$
 
@@ -234,17 +241,21 @@ subtracted by -1. For example:
   \Question{$(3x^5 - 5x^3 + 3x^2 - x - 3) - (2x^4 - 2x^3 - 2x^2 + x - 9)$}
   \vspace{20mm}
 \end{Exercise}
-\begin{Answer}[ref=subtractpns]$x^3 - 3x^2 + 5x$ and $x^5 - 3x^3 + 5x^2 - 2x + 6$\end{Answer}
+\begin{Answer}[ref=subtractpns]$x^3 - 3x^2 + 5x$ and $3x^5 - 2x^4 - 3x^3 + 5x^2 - 2x + 6$\end{Answer}
 
 \subsection{Adding Polynomials in Python}\index{polynomial!adding in Python}
 
-As a reminder, in our Python code, we are representing a \index{polynomial!list representation}polynomial
-with a list of coefficients.  The first coefficient is the constant
-term. The last coefficient is the leading coefficient. So, we can
-imagine $-5x^3 + 3x^2 - 4x + 9$ and $2x^3 +4x^2 - 9$ would look
-like this, with one column for each degree and its coefficient in that column. The first polynomial is $(-5, 3, -4, 9)$, and the second is $(2, 4, 0, -9)$, where the $0$ marks the missing $x$ term.
+In Python, we represent a \index{polynomial!list representation}polynomial
+as a list of coefficients. The first entry is the constant term (the
+coefficient of $x^0$), the next is the coefficient of $x^1$, and so on, so
+the entry at index $i$ goes with $x^i$. The last entry is the leading
+coefficient. So $-5x^3 + 3x^2 - 4x + 9$ becomes \texttt{[9, -4, 3, -5]},
+and $2x^3 + 4x^2 - 9$ becomes \texttt{[-9, 0, 4, 2]}, where the 0 marks
+the missing $x$ term.
 
-To add the two polynomials then, we sum the coefficients for each degree. Here the sum is $(-5+2,\ 3+4,\ -4+0,\ 9-9) = (-3, 7, -4, 0)$, which is $-3x^3 + 7x^2 - 4x$.
+To add the two polynomials, we add the entries with the same index:
+\texttt{[9 + (-9), -4 + 0, 3 + 4, -5 + 2]} $=$ \texttt{[0, -4, 7, -3]}, which
+is $-3x^3 + 7x^2 - 4x$.
 
 Create a file called \filename{add\_polynomials.py}, and type in the following: 
 \begin{minted}{python}
@@ -419,7 +430,7 @@ When multiplying a monomial and a polynomial, you use the \index{distributive pr
 \end{multline*}
 
 \begin{Exercise}[title={Multiplying a monomial and a polynomial}, label=multmonopoly]
-Multiply these monomials:
+Multiply:
 \Question $(3x^2)(5x^3 - 2x + 3)$
 \vspace{20mm}
 \Question $(2x)(4x^9 - 1)$
@@ -435,7 +446,7 @@ Multiply these monomials:
 
   $(2x)(4x^9 - 1) = 8x^{10} - 2x$
 
-  $(-5.5x^2)(2x^3 + 4x^2 + 6) = 11x^5 - 22x^4 + 33x^2$
+  $(-5.5x^2)(2x^3 + 4x^2 + 6) = -11x^5 - 22x^4 - 33x^2$
 
   $(\pi)(-2x^5 + 3x^4 + x) = -2\pi x^5 + 3\pi x^4 + \pi x$
 
@@ -454,8 +465,8 @@ example,
   (2x^2 - 3)(5x^2 + 2x - 7) \\
   =   (2x^2)(5x^2 + 2x - 7) + (-3)(5x^2 + 2x - 7) \\
   =   (2x^2)(5x^2) + (2x^2)(2x) + (2x^2)(-7) + (-3)(5x^2) + (-3)(2x) + (-3)(-7) \\
-  =   10^4 + 4x^3 + -14x^2 + -15x^2 + -6x + 21
-  =   10^4 + 4x^3 + -29x^2 + -6x + 21
+  =   10x^4 + 4x^3 + (-14)x^2 + (-15)x^2 + (-6)x + 21 \\
+  =   10x^4 + 4x^3 - 29x^2 - 6x + 21
 \end{multline*}
 
 One common form that you will see is \index{binomial!multiplying}multiplying two binomials together:
@@ -515,9 +526,9 @@ you should work with that as $4x^2 + (-5)x + (-3)$.
 
   $(-3x^2 + 5)(4x - 2) = -12x^3 + 6x^2 + 20x - 10$
 
-  $(-2x - 1)(-3x - \pi) = 6x^2 + (4 + 2\pi)x + \pi$ 
+  $(-2x - 1)(-3x - \pi) = 6x^2 + (3 + 2\pi)x + \pi$ 
 
-  $(-2x^5 + 5x)(3x^5 + 2x) = -6x^{10} + 12x^6 + 10x^2$
+  $(-2x^5 + 5x)(3x^5 + 2x) = -6x^{10} - 4x^6 + 15x^6 + 10x^2 = -6x^{10} + 11x^6 + 10x^2$
 \end{Answer}
 
 \begin{Exercise}[title={Observations}, label=obsmultpoly]
@@ -588,10 +599,9 @@ def multiply_polynomials(a, b):
 \end{minted}
 It will return a list of coefficients.
 
-In an exercise in the last chapter, you were asked `` Let us say I have
-two polynomials, $p_1$ and $p_2$.  $p_1$ has degree 23.  $p_2$ has
-degree 12.  What is the degree of their product?'' The answer was $23 +
-12 = 35$.
+Earlier in this chapter, you found that multiplying a degree 23
+polynomial by a degree 12 polynomial gives a polynomial of degree
+$23 + 12 = 35$.
 
 In our implementation, a polynomial of degree 23 is held in a list of length 24.
 
@@ -609,7 +619,7 @@ print(b)
 # [5, 7, 5, 7, 5, 7, 5, 7]
 \end{minted}
 
-Here iss how you will get a list of zeros:
+Here is how you will get a list of zeros:
 \begin{minted}{python}
 result = [0.0] * (result_degree + 1)
 \end{minted}
@@ -624,24 +634,26 @@ coefficient of the result.
 
 Here is the whole function:
 \begin{minted}{python}
-def multiply_polynomials(a, b): # What is the degree of the resulting
-polynomial?  result_degree = (len(a) - 1) + (len(b) - 1)
+def multiply_polynomials(a, b):
+    # What is the degree of the resulting polynomial?
+    result_degree = (len(a) - 1) + (len(b) - 1)
 
-    # Make a list of zeros to hold the coefficients result = [0.0] *
-    (result_degree + 1)
+    # Make a list of zeros to hold the coefficients
+    result = [0.0] * (result_degree + 1)
 
-    # Iterate over the indices and values of a for a_degree,
-    a_coefficient in enumerate(a):
+    # Iterate over the indices and values of a
+    for a_degree, a_coefficient in enumerate(a):
 
-        # Iterate over the indices and values of b for b_degree,
-        b_coefficient in enumerate(b):
+        # Iterate over the indices and values of b
+        for b_degree, b_coefficient in enumerate(b):
 
-            # Calculate the resulting monomial coefficient =
-            a_coefficient * b_coefficient degree = a_degree + b_degree
-            
+            # Calculate the resulting monomial
+            coefficient = a_coefficient * b_coefficient
+            degree = a_degree + b_degree
+
             # Add it to the right bucket
             result[degree] = result[degree] + coefficient
-            
+
     return result
 \end{minted}
 
@@ -652,6 +664,11 @@ In \filename{test.py}, try out the new function:
 # Multiplication
 a_times_b = poly.multiply_polynomials(polynomial_a, polynomial_b)
 print('A x B =', poly.polynomial_to_string(a_times_b))
+\end{minted}
+
+You should see:
+\begin{minted}{text}
+A x B = -5.0x^7 + -7.0x^6 + -18.0x^5 + 13.0x^4 + 47.0x^3 + 9.0x^2 + 36.0x + -81.0
 \end{minted}
 
 This is an example of a \index{nested loop}\emph{nested loop}. The outer loop steps
@@ -732,7 +749,7 @@ chapters, you will learn to factorize polynomials.
 
   $x^2 - 9 = (x + 3)(x - 3)$
 
-  $49 - 16x^6 = (7 + 4x^3)(7 + 4^3)$
+  $49 - 16x^6 = (7 + 4x^3)(7 - 4x^3)$
   
   $\pi^2 - 25x^8 = (\pi + 5x^4)(\pi - 5x^4)$
   
@@ -833,7 +850,7 @@ So, for example, $(7x^3 + \pi)^2 = 49x^6 + 14\pi x^3 + \pi^2$
 \begin{Answer}[ref=squaringbinomials]
   $(x+1)^2 = x^2 + 2x + 1$
 
-  $(3x^5 + 5)^2 = 9x^10 + 30x^5 + 25$
+  $(3x^5 + 5)^2 = 9x^{10} + 30x^5 + 25$
 
   $(x^3 - 1)^2 = x^6 - 2x^3 + 1$
 
@@ -872,10 +889,11 @@ The coefficients of each term are given by the entries in Pascal's triangle:
 (a + b)^4 = 1a^4 + 4a^3b + 6a^2 b^2 + 4 a b^3 + 1 b^4   
 \end{equation*}
 
-Notice how each term fits the form ${\displaystyle \textstyle ax^{k}y^{m}}$. The coefficient ${\displaystyle a}$ 
-in each term $\textstyle ax^{k}y^{m}$ is known as the \index{binomial coefficient}binomial coefficient or \newterm{binomial theorem}. The binomial coefficient is denoted 
-as ${\displaystyle \textstyle \binom{n}{k}}$ where $n$ is the exponent and $k$ is the term number (starting with 0). 
-This is said ``n choose k''. \index{combinatorics} For example, in $(a + b)^4$, the coefficient of the third term 
+Each coefficient is called a \index{binomial coefficient}\newterm{binomial
+coefficient}, written $\binom{n}{k}$, where $n$ is the exponent and $k$ is
+the term number (starting with 0). It is read ``$n$ choose $k$.'' The rule
+that $(a+b)^n$ expands with these coefficients is the \newterm{binomial
+theorem}. \index{combinatorics} For example, in $(a + b)^4$, the coefficient of the third term 
 ($6a^2b^2$) is $\binom{n}{k}=\binom{4}{2} = 6$. We will heavily discuss this in a future chapter on combinatorics.
 
 \begin{Exercise}[title={Using Pascal's Triangle}, label=pascalbinomial]

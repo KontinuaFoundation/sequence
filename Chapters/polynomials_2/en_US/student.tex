@@ -2,6 +2,12 @@
 
 
 \section{Factoring Polynomials}
+Multiplying polynomials is mechanical: expand and collect. Going backward,
+from a polynomial to its factors, takes cleverness, and it pays off. Once a
+polynomial is factored, you can read its roots right off the page: where
+the ball lands, where the profit breaks even, where the curve crosses the
+axis.
+
 We factor a polynomial into two or more polynomials of lower
 degree. For example, let us say that you wanted to factor
 $5x^3 - 45x$. You would note that you can factor out $5x$ from every term. Thus,
@@ -419,9 +425,9 @@ A quotient of polynomials is called a rational expression.\index{rational!expres
 \begin{equation} \label{eq1}
 \begin{split}
 \frac{(x + 1)(x + 5)}{x + 5} & = (x + 1) \cdot \frac{x+5}{x+5} \\
-& = x + 1 \qquad (x\ne5)
+& = x + 1 \qquad (x\ne -5)
 \end{split}
-\end{equation}\footnote{It is important to note that we need to restrict $x \ne 5$ since substituting $x=5$ would produce division by zero, making the expression undefined. Canceling the $(x+5)$ factor is only valid when $x \ne 5$, so the simplified form $x+1$ and the original expression are equal everywhere \emph{except} at $x=5$.}
+\end{equation}\footnote{We must restrict $x \ne -5$, since substituting $x=-5$ would produce division by zero, making the original expression undefined. Canceling the $(x+5)$ factor is only valid when $x \ne -5$, so the simplified form $x+1$ and the original expression are equal everywhere \emph{except} at $x=-5$.}
 
 What if the polynomials are not factored? Factor them first.
 
@@ -556,14 +562,16 @@ x-intercept: $(-5/2, 0)$; y-intercept: $(0, 5/4)$; horizontal asymptote: $y = 2$
 
 \begin{Answer}[ref=ratfunc2]
 	The correct answer is E. To explain, we examine the behavior of each 
-	function as $x \to \infty$. \\
-	A. $\lim_{x \to \infty} \frac{\sin{5x}}{x} = \pm \infty \neq 5$\\
-	B. $\lim_{x \to \infty} 5x = \infty \neq 5$\\
-	C. $\lim_{x \to \infty} \frac{1}{x-5} = 0 \neq 5$ (this function 
-	does have a \textit{vertical} asymptote at $x = 5$). \\
-	D. $\lim_{x \to \infty} \frac{5x}{1-x} = \frac{5}{-1} = -5 \neq 5$ 
-	(this function has a horizontal asymptote at $x = -5$).\\
-	E. $\lim_{x \to \infty} \frac{20x^2 - x}{1 + 4x^2} = \frac{20}{4} = 5$. 
+	function when $x$ is very large. \\
+	A. For large $x$, $\sin 5x$ stays between $-1$ and 1 while $x$ grows,
+	so $\frac{\sin 5x}{x}$ shrinks toward 0, not 5.\\
+	B. $5x$ grows without bound.\\
+	C. $\frac{1}{x-5}$ shrinks toward 0 (this function has a
+	\textit{vertical} asymptote at $x = 5$).\\
+	D. For large $x$, $\frac{5x}{1-x}$ behaves like $\frac{5x}{-x} = -5$,
+	so its horizontal asymptote is $y = -5$.\\
+	E. For large $x$, the $x^2$ terms dominate, so
+	$\frac{20x^2 - x}{1 + 4x^2}$ behaves like $\frac{20x^2}{4x^2} = 5$. 
 \end{Answer}
 
 In those examples, common factors cancel, leaving one polynomial. Of course, there is no guarantee that any two polynomials will have common factors, or even be factorable at all. Now, we consider an example that cannot be simplified. We will focus on just the asymptotes here.
@@ -638,11 +646,14 @@ We obtain a quotient of \( x + 1 \) and a remainder of \( 1 \). It is the quotie
 
 We have seen lines act as end behaviors. Are there other possibilities? Sure! Here is an example with parabolic end behavior. 
 \[ k(x) = \frac{x^3}{x - 2} \]
-We use our add-subtract trick to reveal the quotient, which describes the end behavior.
+We use our add-subtract trick to reveal the quotient, which describes the
+end behavior. This time we subtract and add 8, because $x^3 - 8$ is a
+difference of cubes: $x^3 - 8 = (x - 2)(x^2 + 2x + 4)$. (Check it by
+multiplying.)
 
 \begin{equation} \label{eq1_4}
 \begin{split}
-h(x) & = \frac{x^3}{x - 2} \\
+k(x) & = \frac{x^3}{x - 2} \\
 & = \frac{x^3 - 8 + 8}{x - 2} \\ 
 & = \frac{x^3 - 8}{x - 2} + \frac{8}{x - 2} \\
 & = \frac{(x - 2)(x^2 + 2x + 4)}{x - 2} + \frac{8}{x - 2} \\
@@ -704,10 +715,10 @@ of $R$ is less than the degree of $Q$:
 $$g(x) = \frac{P(x)}{Q(x)} = S(x) + \frac{R(x)}{Q(x)}$$
 
 \subsubsection{Improper fractions}\index{improper fraction}
-What is $\int \frac{x^3 + x}{x-1}\,dx$. \index{long division}Using long division, we see that:
+How can we rewrite $\frac{x^3 + x}{x-1}$ as a polynomial plus a proper
+fraction? \index{long division}Using long division (see figure
+\ref{polylongdiv}), just like dividing whole numbers:
 $$\frac{x^3 + x}{x - 1} = x^2 + x + 2 + \frac{2}{x - 1}$$
-(see figure \ref{polylongdiv} for an explanation). Then we can also say that:
-$$\frac{x^3 + x}{x-1} = x^2 + x + 2 + \frac{2}{x-1}$$
 
 \begin{figure}[H]
 \centering
@@ -751,15 +762,16 @@ term plus a proper rational fraction.
 
 \begin{Answer}[ref = improper]
 \begin{enumerate}
-\item $x^2 + 4x + 12 \frac{30x - 27}{x^2 - 3x + 2}$
+\item $x^2 + 4x + 12 + \frac{30x - 27}{x^2 - 3x + 2}$
 \item $2 + \frac{6x^2 - 4x + 13}{x^3 - 3x^2 + 2x - 4}$
 \item $3x - 2 + \frac{8x^2 - 6x + 1}{x^3 - 3x}$
 \end{enumerate}
 \end{Answer}
 
 \subsubsection{Proper fractions}\index{proper fraction}
-When the order of the numerator is less than or equal to the denominator, 
-there are three further possibilities. 
+When the degree of the numerator is less than the degree of the
+denominator, there are several cases, depending on how the denominator
+factors. 
 
 \subsubsection{No repeated linear factors}\index{partial fraction decomposition!distinct linear factors}
 In the first case, the denominator, $Q(x)$ is composed of distinct linear 
@@ -777,7 +789,7 @@ $$4x^2 - 7x - 12 = A(x + 2)(x - 3) + B(x)(x - 3) + C(x)(x + 2)$$
 We have 3 unknowns and only one equation! Do not worry --- remember this equation 
 is true for all $x$, so we can choose a convenient value of $x$ to isolate 
 each unknown in turn. Starting, let $x = 0$. Then:
-$$4(0)^2 - 7(0) - 12 = A(0 + 2)(0 - 3) + B(0)(x - 3) + C(0)(x + 2)$$
+$$4(0)^2 - 7(0) - 12 = A(0 + 2)(0 - 3) + B(0)(0 - 3) + C(0)(0 + 2)$$
 $$-12 = A(2)(-3) + 0 + 0$$
 Notice that the $B$ and $C$ disappear, and we can solve for $A$:
 $$A = \frac{-12}{-6} = 2$$
@@ -785,7 +797,7 @@ We can solve for $B$ by setting $x = -2$ and for $C$ by setting $x = 3$
 (notice, we have used all three zeroes of the denominator polynomial):
 $$4(-2)^2 - 7(-2) - 12 = A(-2 + 2)(-2 - 3) + B(-2)(-2 - 3) + C(-2)(-2 + 2)$$
 $$4(4) + 14 - 12 = 0 + B(-2)(-5) + 0$$
-$$16 + 2 = 10B$$
+$$18 = 10B$$
 $$B = \frac{9}{5}$$
 and
 $$4(3)^2 - 7(3) - 12 = A(3 + 2)(3 - 3) + B(3)(3 - 3) + C(3)(3 + 2)$$
@@ -815,7 +827,7 @@ $$\frac{x^2 + x + 1}{(x + 1)^2 (x + 2)} = \frac{A}{x + 1} + \frac{B}{(x + 1)^
 Multiplying both sides by $(x + 1)^2 (x + 2)$:
 $$x^2 + x + 1 = A(x + 1)(x + 2) + B(x + 2) + C(x + 1)^2$$
 Since there are only 2 roots to $(x + 1)^2 (x + 2)$, we will use another 
-method called ''equating the coefficients" to find $A$, $B$, and $C$. We start 
+method called ``equating the coefficients'' to find $A$, $B$, and $C$. We start 
 by expanding the right side of the equation:
 $$x^2 + x + 1 = A(x^2 + 3x + 2) + B(x + 2) + C(x^2 + 2x + 1)$$
 Distributing and combining, we find that:

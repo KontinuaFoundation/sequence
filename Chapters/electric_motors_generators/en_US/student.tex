@@ -1,71 +1,180 @@
-\chapter{Electric Motor}
+\chapter{Electric Motors and Generators}
 \index{Electric Motor}
 
-Electric motors are devices that convert electrical energy into mechanical energy. They operate
-based on the interaction between magnetic fields and electric currents, producing rotational
-motion. As mentioned previously, when an electric current flows through a conductor, it generates
-a magnetic field around the conductor. If you place a magnet near this conductor, the
-magnetic field will interact with the magnet's field, causing the conductor to experience a force.
-This force can be harnessed to create motion, which is the fundamental principle behind electric motors.
+Count the electric motors in your home: the refrigerator compressor, the
+fan in your laptop, the washing machine, the vibrator in your phone, the
+spinning disc in a microwave. There are probably more than fifty. Now
+follow the electricity that runs them back to the power plant, and you will
+find a generator, which is a motor running backward. In this chapter, you
+will see that motors and generators are the same machine, built on the two
+ideas from the last chapters: currents feel forces in magnetic fields, and
+changing magnetic fields create currents.
 
-\section{Basic Electric Motor}
+\section{How a Motor Turns}
 
-\textbf{Worked example: electrical power in a motor.} A motor draws $2$ A from a $120$ V supply. Its electrical power is $P = VI = (120)(2) = 240$ W.
+In the magnetism chapter, you saw that a wire carrying current $I$ across a
+magnetic field $B$ feels a force $F = ILB$. Now bend the wire into a
+rectangular loop and set it between the poles of a magnet. Current flows
+one way along one side of the loop and the opposite way along the other
+side. So the two sides are pushed in \emph{opposite} directions: one up,
+one down. That pair of forces twists the loop. A twisting effect is called
+a \newterm{torque}.
 
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  \fill[red!70] (-4,-1.2) rectangle (-3,1.2) node[midway, white] {N};
+  \fill[blue!60] (3,-1.2) rectangle (4,1.2) node[midway, white] {S};
+  \draw[->, gray] (-2.8,0.6) -- (2.8,0.6);
+  \draw[->, gray] (-2.8,-0.6) -- (2.8,-0.6) node[below left, black] {$\vec{B}$};
+  \draw[very thick, sdkblue] (-1.5,-0.9) rectangle (1.5,0.9);
+  \node[left] at (-1.5,0) {$I$ out};
+  \node[right] at (1.5,0) {$I$ in};
+  \draw[->, very thick, red] (-1.5,0.9) -- (-1.5,2) node[above] {$F$};
+  \draw[->, very thick, red] (1.5,-0.9) -- (1.5,-2) node[below] {$F$};
+\end{tikzpicture}
 
-\index{brushed motor}The most common type of electric motor is the DC (Direct Current) brushed motor. It consists of a coil of wire
-(\index{armature}armature) that rotates within a magnetic field created by permanent magnets or electromagnets. The armature 
-is connected to a \index{commutator}commutator, which reverses the direction of the current in the coil as it rotates, ensuring 
-continuous rotation in one direction. The name "brushed" refers to the use of brushes that make contact with 
-the commutator to supply current to the armature. 
+Seen from the end, the current flows out of the page on one side of the
+loop and into the page on the other. The forces push one side up and the
+other down, so the loop turns.
+\end{center}
 
-TODO: Can there be a graphic of a basic electric motor? The generator image is similar, but the motor has a power source rather than a load.
+For a coil of $N$ turns and area $A$, the torque is largest when the plane
+of the coil lines up with the field:
+$$\tau_{\max} = NBIA$$
 
-Other types of electric motors include brushless DC motors, stepper motors, and AC (Alternating Current) motors. Each type has its own
-characteristics and applications, but they all operate on the same basic principles of electromagnetism.
+There is a catch. Once the loop has turned a half turn, the side that was
+being pushed up is now on the other side, and it gets pushed back. The loop
+would just rock back and forth. The fix is a \index{commutator}
+\newterm{commutator}: a split ring on the shaft. Carbon \newterm{brushes}
+press against it to carry current into the coil, and every half turn the
+gap in the ring swaps the connections, reversing the current in the coil.
+The push always points the same way around, and the motor keeps spinning.
 
-\section{Basic Electric Generator}
-\index{Electric Motor ! Generator}
+This design, a coil (the \index{armature}\newterm{armature}) spinning
+between magnets with a commutator and brushes, is a \index{brushed
+motor}\newterm{brushed DC motor}. It powers toys, drills, and car window
+lifts.
 
-\index{electric generator}Electric generators are the reverse of electric motors. They convert mechanical energy into electrical energy by
-using the principle of \newterm{electromagnetic induction}. When a conductor (such as a coil of wire) moves through a magnetic field, 
-it induces an electric current in the conductor. This is covered in another chapter.
+\textbf{Worked example.} A motor coil has 50 turns and an area of
+$0.01$ m$^2$, carries 2 A, and sits in a 0.2 T field. What is the largest
+torque?
 
-To construct a basic electric generator, all you need is an electric motor and a load.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{basicGenerator.png}
-    \caption{Basic Electric Generator Diagram}
-    \label{fig:basic-generator-diagram}
-\end{figure}
+\textbf{Solution.} $\tau_{\max} = NBIA = (50)(0.2)(2)(0.01) = 0.2$ N$\cdot$m.
+That is about the twist you would make pushing with 2 newtons (the weight
+of a cup of coffee) on the end of a 10 cm wrench.
 
-\clearpage
+\subsection{Other Kinds of Motors}
+Brushes wear out and make sparks. A \newterm{brushless motor} flips the
+design around: the magnets spin and the coils stay still, and a small
+computer switches the current in the coils at just the right moments.
+Drones, computer fans, and electric cars use them. A \newterm{stepper
+motor} turns in small, precise steps, perfect for 3D printers. An
+\newterm{AC induction motor}, invented by Nikola Tesla, uses alternating
+current to make a rotating magnetic field, which induces currents in the
+rotor and drags it around. It needs no brushes or magnets, so it is cheap
+and nearly indestructible; it runs fans, pumps, and factory machines.
 
-When you turn the motor with mechanical force, it will generate electricity that can be used to power a load. As the coil rotates within the 
-magnetic field, the changing magnetic field induces a current in the coil, which can flow through the load, providing the necessary power. 
+\section{Power and Efficiency}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.35\textwidth]{basicGeneratorCrank.png}
-    \caption{Basic Electric Generator in Motion with Handcrank}
-    \label{fig:basic-generator-w-crank}
-\end{figure}
+A motor turns electrical power into mechanical power. The electrical power
+going in is $P = VI$.
 
-If you instead turn the motor with a wheel, you can generate electricity in any manner of ways. This simple principle is used all
-over the world to generate electricity. For example, in hydroelectric power plants, water is used to turn large turbines connected 
-to generators, producing electricity on a massive scale. In wind power plants, wind turns the blades of a turbine, which is connected 
-to a generator that produces electricity. In coal and natural gas power plants, steam is used to turn turbines connected to generators.
+\textbf{Worked example.} A motor draws $2$ A from a $120$ V supply. What
+electrical power does it use?
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.35\textwidth]{basicGeneratorWheel.png}
-    \caption{Basic Electric Generator in Motion with Wheel}
-    \label{fig:basic-generator-w-wheel}
-\end{figure}
+\textbf{Solution.} $P = VI = (120)(2) = 240$ W.
+
+No motor is perfect. Some energy is lost to friction and to heat in the
+wires. The \newterm{efficiency} is the mechanical power out divided by the
+electrical power in. Large industrial motors can be more than 95\%
+efficient. Compare that with a car engine, which turns only about 30\% of
+the energy in its fuel into motion.
 
 \begin{Exercise}[title={Power at Higher Current}, label=emg1]
 The same motor now draws $5$ A from a $120$ V supply. What is its power?
 \end{Exercise}
 \begin{Answer}[ref=emg1]
 $P = (120)(5) = 600$ W.
+\end{Answer}
+
+\begin{Exercise}[title={Lifting with a motor}, label=emg_eff]
+A winch motor draws 240 W and lifts a 10 kg box straight up at a steady
+0.2 m/s. What mechanical power does it deliver? What is its efficiency?
+\end{Exercise}
+\begin{Answer}[ref=emg_eff]
+Lifting at steady speed takes a force equal to the weight,
+$(10)(9.8) = 98$ N. Mechanical power is force times speed:
+$(98)(0.2) = 19.6$ W. The efficiency is $\frac{19.6}{240} \approx 8\%$.
+This winch wastes most of its power as heat, probably in a gearbox.
+\end{Answer}
+
+\section{Generators}
+\index{Electric Motor ! Generator}
+
+\index{electric generator}Now run the motor backward. Instead of feeding it
+current, turn its shaft by hand. As the coil spins between the magnets, the
+magnetic flux through it rises and falls. By Faraday's law, the changing
+flux induces an emf, and current flows through anything connected to it.
+A generator turns mechanical energy into electrical energy.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{basicGenerator.png}
+    \caption{A basic generator: a loop spins between the poles of a magnet.
+    Brushes on the rotating rings carry the induced current to a light
+    bulb.}
+    \label{fig:basic-generator-diagram}
+\end{figure}
+
+Every small DC motor is also a generator. Connect a motor to a light bulb
+and turn the shaft with a crank, and the bulb lights.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{basicGeneratorCrank.png}
+    \caption{Turning the generator with a hand crank.}
+    \label{fig:basic-generator-w-crank}
+\end{figure}
+
+You will notice something as you crank: the brighter the bulb, the harder
+the crank is to turn. That is Lenz's law. The current in the coil feels a
+force from the magnets that opposes the turning. The energy in the light
+comes from the work your arm does.
+
+When a coil of $N$ turns and area $A$ spins at a steady rate in a field $B$,
+the angle of the coil changes steadily, so the flux follows a cosine and
+the emf follows a sine wave:
+$$\mathcal{E} = NBA\omega \sin(\omega t)$$
+where $\omega$ is the rotation rate in radians per second. That is
+alternating current! A generator naturally makes AC. Spin it 60 times a
+second, and you get the 60 Hz power in your outlet.
+
+\textbf{Worked example.} A generator coil has 100 turns, an area of
+$0.01$ m$^2$, and spins 60 times per second in a 0.5 T field. What is its
+peak emf?
+
+\textbf{Solution.} 60 turns per second is $\omega = 2\pi(60) \approx 377$
+rad/s. The peak emf is $NBA\omega = (100)(0.5)(0.01)(377) \approx 188$ V.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{basicGeneratorWheel.png}
+    \caption{Any spinning wheel can drive a generator.}
+    \label{fig:basic-generator-w-wheel}
+\end{figure}
+
+Almost all of the world's electricity comes from spinning generators. In a
+hydroelectric dam, falling water spins the turbines. In a wind farm, the
+wind does. In coal, natural gas, and nuclear plants, heat boils water, and
+the high-pressure steam spins turbines. (Solar panels are the big
+exception: they turn light directly into electricity with no moving parts.)
+
+\begin{Exercise}[title={Spin it faster}, label=emg_gen]
+The generator in the worked example is spun twice as fast. What happens to
+its peak emf and to the frequency of the AC it produces?
+\end{Exercise}
+\begin{Answer}[ref=emg_gen]
+Both double: the peak emf becomes about 377 V, and the frequency becomes
+120 Hz. That is why power plants must spin their generators at a precise,
+steady speed.
 \end{Answer}

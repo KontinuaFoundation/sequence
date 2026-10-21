@@ -1,23 +1,15 @@
 \chapter{Python Classes}
-FIXME integrate this better with polynomials, but we need to cover the following
 \section{Object-Oriented Programming Introduction}\index{object-oriented programming}
 
-\textbf{Worked example: a Rectangle class.} \begin{minted}{python}
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+In a video game, every character has a name, health, and position, and can
+move, jump, and attack. Programmers do not write separate variables for
+each of a thousand characters. They define a \emph{class}, a blueprint for
+a kind of thing, and then make as many objects from it as they need. This
+style is called \newterm{object-oriented programming}, and it is how most
+large programs are organized.
 
-    def area(self):
-        return self.width * self.height
-
-r = Rectangle(3, 4)
-print(r.area())
-\end{minted}
-The output is \mintinline{text}{12}. The \mintinline{python}{__init__} method sets the attributes, and \mintinline{python}{area} uses them.
-
-
-Imagine you want to implement multiple dogs in python. It gets a bit complicated to do the following:
+Imagine you want to keep track of several dogs in Python. Without classes,
+it gets messy fast:
 
 \begin{minted}{python}
     dog1name = "Teddy"
@@ -67,6 +59,23 @@ dog2.speak()
 dog3.speak()
 
 \end{minted}
+
+\textbf{Worked example.} Write a class for rectangles that can compute its own area.
+
+\textbf{Solution.}
+\begin{minted}{python}
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+r = Rectangle(3, 4)
+print(r.area())
+\end{minted}
+The output is \mintinline{text}{12}. The \mintinline{python}{__init__} method sets the attributes, and \mintinline{python}{area} uses them.
 
 Now let us talk about classes in the context of polynomials!
 
@@ -144,15 +153,18 @@ for dog in dogs:
 
 \end{minted}
 
-Here, we have made a parent class for `dog' called `animal'. 
+Here, \pytype{Animal} is the parent class of \pytype{Dog}. A
+\pytype{Dog} automatically gets \pyfunction{describe} from
+\pytype{Animal}, and \pyfunction{super().\_\_init\_\_} lets it reuse the
+parent's setup code. A \pytype{Cat} class could inherit from
+\pytype{Animal} the same way.
 \section{Making a Polynomial class}\index{Polynomial class}
 
-You have created a bunch of useful python functions for dealing with
-polynomials. Notice how each one has the word ``polynomial'' in the
-function name like \pyfunction{derivative\_of\_polynomial}.  Wouldn't it
-be more elegant if you had a Polynomial class with a
-\pyfunction{derivative} method? Then you could use your polynomial
-like this:\index{class in python}
+You have written a bunch of useful Python functions for polynomials, and
+every one has ``polynomial'' in its name, like
+\pyfunction{add\_polynomials}. Would it not be more elegant to have a
+\pytype{Polynomial} class, so you could just write \texttt{a + b} and
+\texttt{a * b}? Then you could use your polynomials like this:\index{class in python}
 \begin{minted}{python}
 a = Polynomial([9.0, 0.0, 2.3])
 b = Polynomial([-2.0, 4.5, 0.0, 2.1])
@@ -173,10 +185,26 @@ And it would output:
 2.30x^2 + 9.00 times 2.10x^3 + 4.50x + -2.00 is 4.83x^5 + 29.25x^3 + -4.60x^2 + 40.50x + -18.00
 2.30x^2 + 9.00 times 3 is 6.90x^2 + 27.00
 2.30x^2 + 9.00 minus 2.10x^3 + 4.50x + -2.00 is -2.10x^3 + 2.30x^2 + -4.50x + 11.00
-Derivative of 2.10x^3 + 4.50x + -2.00 is 6.30x^2 + 4.50  
+Derivative of 2.10x^3 + 4.50x + -2.00 is 6.30x^2 + 4.50
 \end{minted}
 
-\index{magic methods}Create a file for your class definition called \filename{Polynomial.py}. Enter the following:
+The \pyfunction{derivative} method is a sneak preview of calculus. The
+derivative of a polynomial is another polynomial that gives the slope of
+its graph at every point. The rule is simple: each term $cx^n$ becomes
+$ncx^{n-1}$. So the derivative of $2.1x^3 + 4.5x - 2$ is $6.3x^2 + 4.5$.
+You will learn why this works in the calculus volumes.
+
+How does Python know what \texttt{+} means for a \pytype{Polynomial}?
+Methods with special names surrounded by double underscores, called
+\index{magic methods}\newterm{magic methods}, tell it. If a class defines
+\pyfunction{\_\_add\_\_}, then \texttt{a + b} calls
+\texttt{a.\_\_add\_\_(b)}. Likewise, \pyfunction{\_\_mul\_\_} handles
+\texttt{*}, \pyfunction{\_\_sub\_\_} handles \texttt{-},
+\pyfunction{\_\_repr\_\_} decides how \pyfunction{print} shows the object,
+and \pyfunction{\_\_call\_\_} lets you use an object like a function,
+as in \texttt{c(3)}.
+
+Create a file for your class definition called \filename{Polynomial.py}. Enter the following:
 \begin{minted}{python}
 class Polynomial:
     def __init__(self, coeffs):
@@ -273,13 +301,6 @@ class Polynomial:
     
     def derivative(self):
 
-        # What is the degree of the resulting polynomial?
-        original_degree = len(self.coefficients) - 1
-        if original_degree > 0:
-            degree_of_derivative = original_degree - 1
-        else:
-            degree_of_derivative = 0
-
         # We can ignore the constant term (skip the first coefficient)
         current_degree = 1
         result = []
@@ -322,6 +343,26 @@ Run the test code:
 \begin{minted}{python}
 python3 test_polynomial.py
 \end{minted}
+
+You should see the output shown at the start of this section, followed by
+one more line:
+\begin{minted}{text}
+Value of the derivative at 3 is 61.2
+\end{minted}
+That is $6.3(3^2) + 4.5 = 61.2$: the slope of $b$'s graph at $x = 3$.
+
+\begin{Exercise}[title={Evaluate it}, label=cls_eval]
+Using your \pytype{Polynomial} class, create $p(x) = x^3 - 7x + 6$ and
+print $p(-3)$, $p(1)$, and $p(2)$. What do the results tell you?
+\end{Exercise}
+\begin{Answer}[ref=cls_eval]
+\begin{minted}{python}
+p = Polynomial([6.0, -7.0, 0.0, 1.0])
+print(p(-3), p(1), p(2))
+\end{minted}
+All three print \texttt{0.0}, so $-3$, 1, and 2 are the roots, just as you
+found on the graph in the Python lists chapter.
+\end{Answer}
 
 \begin{Exercise}[title={Second Rectangle}, label=cls1]
 Create a Rectangle with width $5$ and height $2$, and print its area.

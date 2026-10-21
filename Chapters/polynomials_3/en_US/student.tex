@@ -3,9 +3,14 @@
 
 \section{Graphing Polynomials}
 
-\textbf{Worked example: roots from a graph.} The polynomial $p(x) = x^3 - x = x(x-1)(x+1)$ has roots at $x = -1$, $0$, and $1$. These are the points where the graph crosses the $x$-axis.
+\index{polynomial!sketching graphs}A roller coaster designer sketches
+the track as a smooth curve through a few key heights, and a computer
+fills in the rest with polynomials. In this chapter, you will learn to
+sketch a polynomial's graph from a few clues, and then to do the
+designer's trick: find a polynomial that passes through any points you
+choose.
 
-\index{polynomial!sketching graphs}Polynomials are used to solve real-world problems! To do this, we need to know what these polynomials look like on a graph. You have many tools you can use to sketch out graphs. These graphs are simple visuals that help to evaluate several different points on the plot. 
+You already have several tools for sketching. 
 
 For instance, you can determine:
 
@@ -26,7 +31,7 @@ For instance, you can determine:
         \label{fig:x_intercept_sequence18}
     \end{center}
 
-\item the \index{level spots}level spots on the graph (often the top of a hump or the bottom of a dip). You can take the derivative of the polynomial (which is also a polynomial), and find the roots of that.
+\item the \index{level spots}level spots on the graph (often the top of a hump or the bottom of a dip). Recall the derivative from the classes chapter: a polynomial whose value is the slope of the graph. The level spots are where the slope is zero, so you find the roots of the derivative.
 
     \begin{center}
         \includegraphics[width=\textwidth]{extrema_sequence18.png}
@@ -57,7 +62,9 @@ others? We will not know until we factor the polynomial:
 \end{multline*}
 So, yes, there is a third root: $x = -3$
 
-What about the level spots? $f'(x) = -3x^2 - 2x + 6$. Where is that zero?
+What about the level spots? Using the rule from the classes chapter (each
+$cx^n$ becomes $ncx^{n-1}$), the derivative is $f'(x) = -3x^2 - 2x + 6$.
+Where is that zero? Divide by $-3$:
 \begin{multline*}
   -3x^2 -2x + 6 = 0 \\
   x^2 + \frac{2}{3}x - 2 = 0
@@ -81,7 +88,7 @@ Now, you might plug those numbers in:
 \subsection{Leading term in graphing}\index{end behavior}
 
 There is one more trick you need before you can draw a good graph of a
-polynomial. As you go father and farther to the left and right, where
+polynomial. As you go farther and farther to the left and right, where
 does the function go? In other words, does the graph go up on both ends
 (like a smile)? Or does it go down on both ends (like a frown)? Or
 does the negative end go down (frowny) while the positive end go up
@@ -92,8 +99,16 @@ Assuming the polynomial is not constant, there are only those four
 possibilities. It is determined entirely by the leading term of the
 polynomial.  If the degree of the leading term is even, both ends go
 in the same direction (both are smiley or both are frowny).  If the
-coefficient of the leading term is positive, the positive end is
-smiley.
+coefficient of the leading term is positive, the right end goes up.
+(Far from zero, the leading term is so much bigger than all the others
+that it decides everything.)
+
+\textbf{Worked example.} Describe the graph of $p(x) = x^3 - x$.
+
+\textbf{Solution.} It factors as $x(x - 1)(x + 1)$, so it crosses the
+$x$-axis at $-1$, 0, and 1, and the $y$-intercept is 0. The leading term
+$x^3$ has odd degree and positive coefficient, so the graph comes up from
+the bottom left and rises to the top right.
 
 The graph we are working on has a leading term of $-1x^3$. The degree is odd, thus the ends go in different directions. The coefficient is negative, so the positive end points down.  Now, you can draw the graph, which should look something like this:
 \begin{figure}[H]
@@ -112,11 +127,14 @@ how high the hammer is in each one. Can you create a 2nd degree
 polynomial that explains the entire flight of the hammer?
 
 In other words, you have three points $(t_0, h_0), (t_1, h_1), (t_2, h_2)$.
-\index{interpolation}Can you find $a,b,c$ such that the graph of $at^2 + bt + c = t$ passes
+\index{interpolation}Can you find $a,b,c$ such that the graph of $h = at^2 + bt + c$ passes
 through all three points?
 
-The answer is yes.  In fact, \index{polynomial!through given points}given any $n$ points\footnote{$n=2$ will result in a line in slope intercept point, and $n=1$ is a single point}, there is exactly
-one $n-1$ degree polynomial that passes through all the points.
+The answer is yes. In fact, \index{polynomial!through given points}given
+any $n$ points with different $t$ values, there is exactly one polynomial
+of degree at most $n-1$ that passes through all of them. (Two points
+determine a line, which has degree 1. Three points determine a parabola,
+degree 2.) Finding it is called \newterm{interpolation}.
 
 There are a lot of variables floating around. Let us make it concrete:
 The photos are taken at $t = 2$ seconds, $t = 3$ seconds, and $t = 4$
@@ -213,12 +231,18 @@ all of them? Just what you would expect:
 \frac{h_0}{(t_0 - t_1)(t_0 - t_2)\ldots(t_0 - t_8)}(x - t_1)(x - t_2)\ldots(x - t_8) + \ldots + \frac{h_8}{(t_8 - t_0)\ldots(t_8-t_7)}(x - t_0)\dots(x - t_7)
 \end{equation*}
 
-\textit{FIXME: Do I need to define summation and prod here?}
-
-\index{interpolation!general formula}The general solution is, given $n$ points, the $n-1$ degree polynomial that goes through them is
+Mathematicians write this compactly with two symbols. You met $\Sigma$
+(capital sigma) in the data chapters: it means ``add up.'' Its cousin
+$\Pi$ (capital pi) means ``multiply together.'' \index{interpolation!general formula}Given $n$ points
+$(t_0, h_0), \ldots, (t_{n-1}, h_{n-1})$, the polynomial of degree at
+most $n-1$ that goes through them is
 \begin{equation*}
-  y =\sum_{i=0}^{n}\left ( \prod_{\stackrel{\!0\leq j\leq n}{j\neq i}}\frac{x-t_j}{t_i-t_j}\right ) h_i
+  y =\sum_{i=0}^{n-1}\left ( \prod_{\stackrel{\!0\leq j\leq n-1}{j\neq i}}\frac{x-t_j}{t_i-t_j}\right ) h_i
 \end{equation*}
+Read it from the inside out: for each point $i$, multiply together the
+factors $\frac{x - t_j}{t_i - t_j}$ for every other point $j$ (this is 1
+at $t_i$ and 0 at every other $t_j$), scale by $h_i$, and add up the
+results.
 
 That would be tedious for a person to compute, but computers are perfect for this
 stuff. Let us create a \index{from\_points method}method that creates instances of Polynomial
@@ -239,7 +263,7 @@ print(pn)
 
 Add the following method to your Polynomial class in \filename{Polynomial.py}
 \begin{minted}{python}
-@classmethod
+    @classmethod
     def from_points(cls, x_values, y_values):
         coef_count = len(x_values)
 
@@ -267,18 +291,22 @@ Add the following method to your Polynomial class in \filename{Polynomial.py}
         return sum_pn  
 \end{minted}
 
-It should work exactly the same as before.  You should get the same
-polynomial printed out as before as well as the same plot of the
-curve passing through the three points.
+It should work exactly the same as before. You should get the same
+polynomial printed out, $-1.50x^2 + 9.50x + -8.00$, and the same plot of
+the curve passing through the three points.
 
-How about five points? Change \pyvar{in\_x} and \pyvar{in\_y} at the
+The line \texttt{@classmethod} makes \pyfunction{from\_points} a method
+of the class itself rather than of one polynomial, so you call it as
+\texttt{Polynomial.from\_points(...)} to build a brand-new polynomial.
+
+How about six points? Change \pyvar{in\_x} and \pyvar{in\_y} at the
 start of \filename{test\_interpolation.py}:
 \begin{minted}{python}
 in_x = [1.7, 2, 2.7, 3.5, 4, 4.4]
 in_y = [8, 12, 1, 4, -1, 6]
 \end{minted}
 
-You should get a polynomial that passes through all five points:
+You should get a degree 5 polynomial that passes through all six points:
 \begin{equation*}
 11.21x^5 - 171.05x^4 + 1019.44x^3 - 2957.53x^2 + 4161.78x - 2258.75  
 \end{equation*}
@@ -287,9 +315,22 @@ It should look like this:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{fiveinterp.png}
-    \caption{5 point interpolation of points.}
+    \caption{Interpolating six points with a degree 5 polynomial.}
     \label{fig:fiveinterp}
 \end{figure}
+
+\begin{Exercise}[title={Interpolate by hand}, label=poly3_2]
+Find the parabola through $(0, 1)$, $(1, 0)$, and $(2, 3)$ using the
+three-polynomial method from this chapter. Check your answer at all three
+points.
+\end{Exercise}
+\begin{Answer}[ref=poly3_2]
+$f_0 = \frac{1}{(0-1)(0-2)}(x-1)(x-2) = \frac{1}{2}(x^2 - 3x + 2)$.
+$f_1 = \frac{0}{\ldots}(\ldots) = 0$.
+$f_2 = \frac{3}{(2-0)(2-1)}x(x-1) = \frac{3}{2}(x^2 - x)$.
+Adding: $p(x) = 2x^2 - 3x + 1$. Check: $p(0) = 1$, $p(1) = 0$,
+$p(2) = 8 - 6 + 1 = 3$.
+\end{Answer}
 
 \begin{Exercise}[title={Interpolating a Line}, label=poly3_1]
 Find the polynomial of degree at most $1$ through the points $(0, 1)$ and $(2, 5)$.

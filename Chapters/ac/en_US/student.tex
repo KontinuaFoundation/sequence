@@ -1,9 +1,14 @@
 \chapter{Alternating Current}
 \index{Alternating Current}
-We have discussed the voltage and current created by a battery.  A
-battery pushes the electrons in one direction at a constant voltage;
-this is known as \newterm{Direct Current}\index{direct current} or DC. A battery typically
-provides between 1.5 and 9 volts.
+Plug in a phone charger, and something strange is going on inside the
+wall. The electrons in the wire are not flowing from the power plant to
+your house at all. They are sloshing back and forth, 60 times a second,
+going nowhere. Yet they deliver all the energy you use. This chapter
+explains how, and why the whole world's power grid works this way.
+
+A battery pushes electrons in one direction at a constant voltage; this is
+\newterm{direct current}\index{direct current}, or DC. Most batteries
+provide between 1.5 and 12 volts.
 
 The electrical power that comes into your home on wires is
 different. If you plotted the voltage over time, it would look like
@@ -36,24 +41,24 @@ this:
     \label{fig:acvoltsGraph}
 \end{figure}
 
-The $x$ axis here represents ground. When you insert a two-prong plug
-into an outlet, one is ``hot'' and the other is ``ground''. Ground
-represents 0 volts and should be the same voltage as the dirt under
-the building.
+The $x$ axis here represents 0 volts. When you insert a two-prong plug
+into an outlet, one prong is ``hot'' and the other is ``neutral.'' The
+neutral wire is connected to the earth at your electrical panel, so it
+stays at about 0 volts, the same as the dirt under the building. (The
+round third hole on many outlets is a separate safety \emph{ground}.)
 
 The voltage is a sine wave at 60Hz. Your voltage fluctuates between
--170v and 170v. Think for a second what that means: The power company
-pushes electrons at 170v, then pulls electrons at 170v.  It
-alternates back and forth this way 60 times per second.
+-170v and 170v. Think for a second what that means: the power company pushes electrons
+with 170 volts, then pulls them back with 170 volts, alternating 60 times
+per second. This is \newterm{alternating current}, or AC. (In Europe and
+much of the world, it is 230 volts at 50 Hz.)
 
 \section{Power of AC}
 
-\textbf{Worked example: peak voltage.} A household outlet has an RMS voltage of $120$ V. Its peak voltage is $V_{\text{peak}} = \sqrt{2}\,V_{\text{rms}} = 120\sqrt{2} \approx 170$ V.
 
 
 Let us say you turn on your toaster, which has a resistance of 14.4
-ohms. How much energy (in watts) does it change from electrical energy
-to heat? We know that $I = V/R$ and that watts of power are
+ohms. How much power (in watts) does it turn into heat? We know that $I = V/R$ and that watts of power are
 $IV$. So, given a voltage of $V$, the toaster is consuming $V^2/R$
 watts.
 
@@ -84,7 +89,9 @@ However, $V$ is fluctuating. Let us plot the power the toaster is consuming:
     \label{fig:acpowerGraph}
 \end{figure}
 \index{Alternating Current ! graphed}
-Another sine wave! Here is a lesser-known trig identity: $\left( \sin(x) \right)^2 = \frac{1}{2} - \frac{1}{2}\cos(2x)$
+Another wave! It never goes negative, because $V^2$ is never negative.
+Its shape comes from a power-reducing identity from the trigonometric
+identities chapter: $\sin^2(x) = \frac{1}{2} - \frac{1}{2}\cos(2x)$.
 
 This is actually a cosine wave flipped upside down, scaled down by
 half the peak power, and translated up so that it is never
@@ -94,16 +101,19 @@ wave.
 If we say the peak voltage is $V_p$ and the resistance of the toaster
 is $R$, the power is given by
 
-$$\frac{V_p^2}{2R} - \frac{V_p^2}{2R} \cos \left(\frac{2\pi t}{120} \right)$$
+$$\frac{V_p^2}{2R} - \frac{V_p^2}{2R} \cos \left(2\pi \cdot 120\, t \right)$$
+(The power wave repeats 120 times per second, twice the frequency of the
+voltage, because it peaks at both the top and the bottom of the voltage
+wave.)
 
 As a toaster user and as someone who pays a power bill, you are mostly
 interested in the average power.  To get the average power, you take
 the area under the power graph and divide it by the amount of time.
 
-We can think of the area under the curve as two easy-to-integrate quantities summed:
+Split the area under the curve into two pieces:
 \begin{itemize}
 \item A constant function of $y = \frac{V_p^2}{2R}$
-\item A wave $y = - \frac{V_p^2}{2R} \cos \left(\frac{2\pi t}{120} \right)$
+\item A wave $y = - \frac{V_p^2}{2R} \cos \left(2\pi \cdot 120\, t \right)$
 \end{itemize}
 
 \begin{tikzpicture}[
@@ -125,28 +135,36 @@ tl/.style = {% tick labels
 % curve
 \draw[<->,thick,draw=black] (0,1.003) -- (6.5, 1.003) node[right] {Constant: $\frac{V_p^2}{2R}$};
 \draw[<->,thick,draw=black,domain=0:6.5,samples=300,variable=\x]
-      plot (\x,{-1 * cos(deg(\x) * 2) * 1.003}) node[right]{Wave:$- \frac{V_p^2}{2R} \cos \left(\frac{2\pi t}{120} \right)$};
+      plot (\x,{-1 * cos(deg(\x) * 2) * 1.003}) node[right]{Wave};
 \end{tikzpicture}
     
-When we integrate that constant function, we get $\frac{t V_p^2}{2R}$.
+The area under the constant line over a time $t$ is a rectangle:
+$\frac{V_p^2}{2R} \cdot t$.
 
-When we integrate that wave for a complete cycle we get...zero! The
-positive side of the wave is canceled out by the negative side.
+The area under the wave over a complete cycle is\ldots zero! The part above
+the axis exactly cancels the part below.
 
-So, the average power is $\frac{V_p^2}{2R}$ watts.
+So the average power is $\frac{V_p^2}{2R}$ watts: exactly half the peak
+power. For the toaster, $\frac{170^2}{2(14.4)} \approx 1000$ watts.
 
 Someone at some point said, ``I am used to power being $V^2/R$. Can
 we define a voltage measure for AC power such that this is always true?''
 
-So we started using \index{RMS voltage}$V_{rms}$ which is just
-$\frac{V_p}{\sqrt{2}}$. If you look on the back of anything that plugs
+So we use the \index{RMS voltage}\newterm{RMS voltage}
+$V_{rms} = \frac{V_p}{\sqrt{2}}$. Then the average power is
+$\frac{V_{rms}^2}{R}$, just like DC. If you look on the back of anything that plugs
 into a standard US power outlet, it will say something like ``For
 120v''.  What they mean is, ``For 120v RMS, we expect the voltage to
 fluctuate back and forth from 170v to -170v.''
 
-Notice that this is the same Root-Mean-Squared that we defined
-earlier, but now we know that if $y = \sin(x)$, the RMS of $y$ is
-$1/\sqrt{2} \approx 0.707$.
+RMS stands for root-mean-square: square the voltage, take the mean
+(average), then take the square root. For any sine wave, the RMS value is
+$\frac{1}{\sqrt{2}} \approx 0.707$ times the peak.
+
+\textbf{Worked example.} A household outlet has an RMS voltage of $120$ V.
+What is its peak voltage?
+
+\textbf{Solution.} $V_{\text{peak}} = \sqrt{2}\,V_{\text{rms}} = 120\sqrt{2} \approx 170$ V.
 
 For current, we do the same thing. If the current is AC, the power
 consumed by a resistor is $I_{RMS}^2 R$, where $I_{RMS}$ is the peak
@@ -160,17 +178,19 @@ copper wires.
 
 Let us say that the power that comes to your house has to travel 20 km
 from the generator in a cable that has about $1 \Omega$ of resistance
-per km.  Let us also say that your home is consuming 12 kilowatts of power. If that power is 120v RMS from the generator to your home, what
-percentage of the power is lost heating the power line? 
+per km.  Let us also say that your home is consuming 12 kilowatts of power. If that
+power traveled the whole way at 120 V RMS, how much would be lost heating
+the power line?
 
-10 amps RMS flow through your home. When that current goes through the wire, $I^2
-R = (100)(20) = 2000 watts$ is lost to heat. This means the power company would need to supply 14 kilowatts of power,
-knowing that 2 kilowatts would be lost on the wires.
+The current would be $I = \frac{P}{V} = \frac{12{,}000}{120} = 100$ amps
+RMS. In the 20 $\Omega$ line, $I^2R = (100^2)(20) = 200{,}000$ watts would
+be lost to heat. That is more than 16 times the power your home uses! The
+line would glow, and the plan is hopeless.
 
-What if the power company moved the power at 120,000 volts RMS? Now
-only 0.01 amps RMS flow through your home. When that current goes
-through the wire $I^2R = (0.0001)(20) = .002$ watts of power are lost
-on the power lines.
+What if the power company moved the power at 120,000 volts RMS? Now only
+$\frac{12{,}000}{120{,}000} = 0.1$ amps flow in the line, and the loss is
+$I^2R = (0.1^2)(20) = 0.2$ watts. A thousand times the voltage means a
+thousandth of the current, and a millionth of the loss.
 
 This is much, much more efficient. The only problem is that 120,000 volts
 would be incredibly dangerous.  So the power company moves power long
@@ -208,9 +228,23 @@ secondary windings.
 
 There are usually at least two transformers between you and the very
 high voltage lines. There are transformers at the substation that make
-the voltage low enough to travel on regular utility poles. On the
-utility poles, you will see cans that contain smaller
-transformers. Those step the voltage down to the 120V RMS that your home uses.
+the voltage low enough to travel on regular utility poles. On the utility poles, you will see gray cans that contain smaller
+transformers. Those step the voltage down to the 120 V RMS that your home
+uses.
+
+This is the big reason the world uses AC: transformers only work with
+alternating current, because they depend on a \emph{changing} magnetic
+field.
+
+\begin{Exercise}[title={Turns ratio}, label=ac_transformer]
+A pole transformer takes 7,200 V RMS and delivers 240 V RMS to a
+neighborhood. The secondary coil has 50 turns. How many turns does the
+primary coil have?
+\end{Exercise}
+\begin{Answer}[ref=ac_transformer]
+$\frac{N_P}{N_S} = \frac{V_P}{V_S} = \frac{7{,}200}{240} = 30$, so
+$N_P = 30 \times 50 = 1{,}500$ turns.
+\end{Answer}
 
 \section{Phase and 3-phase power}
 \index{Alternating Current ! phased}
@@ -289,8 +323,8 @@ The voltage on each is $2\pi/3$ out of phase with the other two:
 This is nice in two ways:
 \begin{itemize}
 \item While the power in each wire is fluctuating, the total power is not fluctuating at all.
-\item While the power plant is pushing and pulling electrons on each
-  wire, the total number of electrons leaving the load is zero.
+\item At every instant, the three currents add up to zero, so no return
+  wire is needed: three wires do the work of three separate circuits.
 \end{itemize}
 (Both these assume that each wire is attached to a load with the same constant resistance.)
 
@@ -302,9 +336,8 @@ In residential settings, each home gets its power from one of the three
 wires. However, two wires typically carry power into the home. Each
 one carries 120V RMS, but they are out of phase by 180 degrees. Lights
 and small appliances are connected to one of the wires and ground, so
-they get 120V RMS. Large appliances, like air conditioners and
-washing machines, are connected across the two wires, so they get 240V
-RMS.
+they get 120V RMS. Large appliances, like air conditioners, clothes dryers, and electric
+ovens, are connected across the two wires, so they get 240 V RMS.
 
 \begin{figure}[H]
     \centering
@@ -331,10 +364,12 @@ RMS.
 \end{figure}
 
 
-How do you get two circuits, 180 degrees out of phase, from one
-circuit?  Using a \index{center-tap transformer}center-tap transformer.
-
-FIXME: Diagram here
+How do you get two circuits, 180 degrees out of phase, from one? With a
+\index{center-tap transformer}\newterm{center-tap transformer}. Its
+secondary coil has an extra wire attached to its exact middle, which
+becomes the neutral. Whenever one end of the coil is 170 V above the
+middle, the other end is 170 V below it. So the two ends are perfectly out
+of phase, each 120 V RMS from the middle and 240 V RMS from each other.
 
 \begin{Exercise}[title={RMS from Peak}, label=ac2]
 A signal has a peak voltage of $340$ V. What is its RMS voltage?

@@ -2,10 +2,14 @@
 
 Watch CS Dojo's \textbf{Introduction to Lists in Python} video at \url{https://www.youtube.com/watch?v=tw7ror9x32s}
 
-To review, \index{Python!list}Python list is an indexed collection. The \index{indexing!zero-based}indices start at
+Your playlist, your contacts, the scores in a video game's leaderboard:
+programs are full of lists. In this chapter, you will review Python lists
+and then use them to store, evaluate, print, and plot polynomials.
+
+To review, a \index{Python!list}Python list is an indexed collection. The \index{indexing!zero-based}indices start at
 zero. You can create a list using square brackets.
 
-You are now going to write a program that makes an array of
+You are now going to write a program that makes a list of
 strings. Type this code into a file called \filename{faves.py}:
 
 \begin{minted}{python}
@@ -95,12 +99,12 @@ def polynomial_to_string(pn):
     ...Your Code Here...
 
 pn_test = [-12.0, 10.0, 0.0, 1.0]
-print(polynomial_to_string(pn1))
+print(polynomial_to_string(pn_test))
 \end{minted}
 
 This would output:
 \begin{minted}{python}
-1.0x**3 + 10.0x + -12.0
+1.0x^3 + 10.0x + -12.0
 \end{minted}
 This is not as simple as you might hope. In particular:
 \begin{itemize}
@@ -156,14 +160,16 @@ we are walking the list backwards, we start at \pyfunction{len(pn) -
   1} and stop at zero.
 
 Look over the code and google the functions you are not familiar
-with. For example, if you want to know about the \pyfunction(join)
-function, google for ``python join''.
+with. For example, if you want to know about the \pyfunction{join}
+function, search for ``python join''. (In short,
+\mintinline{python}{" + ".join(["a", "b", "c"])} makes the string
+\texttt{"a + b + c"}.)
 
 Now, change your code to use the new function:
 \begin{minted}{python}
 pn1 = [-12.0, 10.0, -3.0, 1.0]
 y = evaluate_polynomial(pn1, 4.0)
-print("y =", polynomial\_to\_string(pn1))
+print("y =", polynomial_to_string(pn1))
 print("    When x is 4.0, y is", y)
 \end{minted}
 
@@ -181,7 +187,7 @@ Using the function that you just wrote, add a few lines of code to
 \begin{minted}{python}
 pn2 = [2.5, 5.0, -2.0, -7.0, 4.0]
 y = evaluate_polynomial(pn2, 8.5)
-print("Polynomia 2: When x is 8.5, y is", y)
+print("Polynomial 2: When x is 8.5, y is", y)
 
 pn3 = [-9.0, 0.0, 0.0, 0.0, 0.0, 5.0]
 y = evaluate_polynomial(pn3, 2.0)
@@ -263,9 +269,11 @@ $ pip3 install matplotlib
   The polynomial crosses the y-axis at 6. When x is zero, all the terms are zero except the
   last one. Thus, you can easily tell that $x^3 - 7x + 6$ will cross the y-axis at $y=6$.
 
-  Looking at the graph, you tell that the curve crosses the y-axes
-  near -3, 1 and 2. If you plug those numbers into the polynomial, you
-  would find that it evaluates to zero at each one. Thus, $x=-3$, $x=1$, and $x=2$ are roots.
+  Looking at the graph, you can tell that the curve crosses the x-axis
+  near $-3$, 1, and 2. If you plug those numbers into the polynomial, you
+  would find that it evaluates to zero at each one. Thus, $x=-3$, $x=1$, and $x=2$ are roots. (In fact,
+$x^3 - 7x + 6 = (x + 3)(x - 1)(x - 2)$, which you can check by
+multiplying.)
 \end{Answer}
 
 \begin{Exercise}[title={Cubic Polynomial}, label=pl4]

@@ -1,8 +1,10 @@
 \chapter{How Cameras Work}
 
-Let us say it is a sunny day and you are standing in a field a few meters
-from a cow. You use the camera on your phone to take a picture of the
-cow. How does that whole process work?
+It is a sunny day, and you are standing in a field a few meters from a
+cow. You pull out your phone and snap a picture. In a few thousandths of a
+second, light that left the Sun eight minutes ago bounces off the cow,
+squeezes through a lens smaller than a pea, and lands on a chip with 24
+million tiny light meters. Let us follow that light the whole way.
 \index{camera}
 \begin{figure}[H]
     \centering
@@ -23,13 +25,13 @@ process known as ``nuclear fusion'' (which we will be discussing more in a futur
 process. This heat makes the gases glow.
 
 How does heat make things glow? The heat pushes the electrons into
-higher orbitals. When they come back down to a lower orbital, they
-release a photon of energy, which travels away from the atom as an
-electromagnetic wave. Recall that when we talked about reflections, we established that light is a constant stream of particles we call photons. These photons travel at the speed of light.
+higher orbitals. When they come back down to a lower orbital, they release a photon, which
+travels away at the speed of light. (Recall from the photons chapter that
+light is a stream of these little packets of energy.)
 \begin{figure}[H]
     \includegraphics[width=.5\textwidth]{cow2.png}
     \includegraphics[width=.5\textwidth]{cow3.png}
-    \caption{Photons are released when the sunlight hits the cow.}
+    \caption{Photons from the Sun travel to the cow.}
     \label{fig:photonreleases}
 \end{figure}
 
@@ -43,8 +45,8 @@ Depending on what orbital it falls from and how far it falls, the
 photon created has different amounts of energy. The amount of energy
 determines the frequency of the electromagnetic wave, and ultimately, its color!
 
-In the sun, there are several kinds of molecules and each has a few
-different orbitals that the electrons can live in. Thus, the light
+The Sun's hot gas contains many kinds of atoms, each with many different
+orbitals, and the atoms are jostling constantly. Thus, the light
 coming from the sun is made up of electromagnetic waves of many
 different frequencies.
 
@@ -85,7 +87,6 @@ that are not absorbed go into the lens of our camera.
 
 \section{Pinhole camera}
 
-\textbf{Worked example: image size.} A $2$ m tall object stands $10$ m from a pinhole camera. The sensor is $0.05$ m behind the pinhole. The image height is $\frac{0.05}{10}(2) = 0.01$ m, or $1$ cm.
 
 \index{camera ! pinhole}
 The simplest cameras have no lenses. They are just a box. The box has
@@ -99,6 +100,18 @@ entered from high hit the back wall at a low point. The photons that came from
 the left hit the back wall on the right. This is how the image is projected
 onto the back wall, rotated 180 degrees; what was up is down, what was
 on the left is on the right.
+
+You can make one with a shoebox, a pin, and a sheet of wax paper for the
+back wall. Point it at a bright window, and you will see a dim, upside-down
+picture of the outdoors.
+
+\textbf{Worked example.} A 2 m tall object stands 10 m from a pinhole
+camera whose back wall is 0.05 m behind the pinhole. How tall is the
+image?
+
+\textbf{Solution.} The rays through the pinhole form two similar
+triangles, so the image is $\frac{0.05}{10}$ as tall as the object:
+$\frac{0.05}{10}(2) = 0.01$ m, or 1 cm.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{pinholeCamera.png}
@@ -126,9 +139,8 @@ on the left is on the right.
 \end{Exercise}
 \begin{Answer}[ref=image_height]
 
-    The two triangles are similar; one is 2 m and 3m, the other is $x$ cm and 3 cm.
-
-    The image of the cow is 2 cm tall.
+    The two triangles are similar, so $\frac{x}{3 \text{ cm}} = \frac{2 \text{ m}}{3 \text{ m}}$,
+    and $x = 2$ cm. The image of the cow is 2 cm tall (and upside down).
 
 \end{Answer}
 
@@ -140,25 +152,28 @@ absorbed by the cow, and heads off in a new direction. It passes
 through the pinhole and hits the back wall of the camera. That seems
 incredibly improbable, right?
 
-It actually is relatively improbable, especially if there is not a lot of
-light --- like you are taking the picture at dusk. To increase the
-odds, we added a \newterm{lens} to the camera.
+It is improbable. A pinhole lets in very little light, so pinhole images
+are dim, especially at dusk. You could make the hole bigger, but then light
+from each point of the cow lands on a whole blob of the back wall, and the
+picture blurs. The solution is a \newterm{lens}: a big opening that still
+makes a sharp image.
 \index{camera ! lens}
-If you focus a lens on a wall and you draw a dot on that
-wall, the lens is designed such that all the photons from the dot that
-hit the lens get redirected to the same spot on the back wall of the
-camera --- regardless of which path it took to get to the lens.
+Focus a lens on a wall with a dot drawn on it. All the photons from that
+dot that hit the lens, no matter which part of the lens they pass
+through, get bent to the same spot on the back wall of the camera. A lens
+gathers light like a big hole but makes a sharp picture like a pinhole.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{pinholePoints.png}
-    \caption{A pinhole with a lens allows you to choose the points it reflects.}
+    \caption{A lens bends all the light from one point of the object to one point of the image.}
     \label{fig:pinholePoints}
 \end{figure}
 
 
 
-Note that the image still gets flipped. There is a \newterm{focal
-    point} that all the photons pass through.
+Note that the image still gets flipped. Light rays that enter the lens
+parallel to its axis all pass through a single point, the \newterm{focal
+point}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{lensPoints.png}
@@ -183,28 +198,36 @@ the sensor is a grid of 24,000,000 pixels: 6000 pixels wide and
 4000 pixels tall.
 
 
-In the sensor, each individual pixel is hit by an incoming photon. If the photon's energy (recall $E = hf$) is less than the \index{work function}Work Function $\Phi$ to dislodge an electron, the light simply passes through or reflects, and the pixel remains \textit{dark}, or what we call \textit{black}. If $hf \geq \Phi$, the photon is absorbed, and its energy is transferred to an electron, which \textit{jumps} into the conduction band, appearing like \textit{white} to us. Camera sensors then convert their pixels into a binary mapping, using voltage measurements.
+Each pixel is a tiny patch of silicon, a cousin of the solar cell from the
+diodes chapter. When a photon with enough energy (recall $E = hf$) strikes
+it, the photon frees an electron, and the pixel collects it. The minimum
+energy for silicon, called its \newterm{band gap}, is about 1.1 eV. A
+photon with less energy passes right through without freeing anything.
+During the exposure, each pixel counts up its electrons: more photons
+mean more electrons, which mean a brighter pixel. Then the camera measures
+the charge in each pixel as a voltage and turns it into a number.
 
-Each pixel has three types of cavities that take in photos. One of the
-cavities measures the amount of short wavelength light, like blues and
-violets. One of the cavities measures the long wavelength light, like
-reds and oranges. One of the cavities measures the intensity of
-wavelengths in the middle, like greens.
+But a pixel cannot tell what color a photon was. So a mosaic of tiny color
+filters sits on top of the sensor, one filter per pixel, in a checkerboard
+called a \newterm{Bayer pattern}. Half the pixels are under green filters,
+a quarter under red, and a quarter under blue. (There are twice as many
+green ones because our eyes are most sensitive to green.) The camera then
+estimates all three colors at every pixel by looking at its neighbors.
 \index{rgb}
-Thus, if your camera has a \index{resolution}\newterm{resolution} of $6000 \times 4000$, the image
-is 24,000,000 pixels yields three
-numbers: intensity of long wavelength, mid wavelength, and short
-wavelength light, for a total of 72,000,000 numbers. We call these numbers ``RGB'' for Red, Green, and
+So if your camera has a \index{resolution}\newterm{resolution} of
+$6000 \times 4000$, the finished image has 24,000,000 pixels, each with
+three numbers: the intensity of red, green, and blue light, for a total of
+72,000,000 numbers. We call these numbers ``RGB'' for Red, Green, and
 Blue. The RGB values range from $0-255$ for each channel. We will talk more about this when hexadecimal is introduced.
 
 \begin{Exercise}[title={Camera Pixels}, label={ex:photon_camera}]
-A digital camera sensor is made of a material with a work function of $\Phi = 1.1\text{ electronvolts}$. If the sensor is exposed to monochromatic light with a wavelength of $\lambda = 1200\text{ nm}$, what does the resulting image look like? Why?
+A digital camera sensor is made of silicon, with a band gap of $1.1$ electronvolts. If the sensor is exposed to monochromatic light with a wavelength of $\lambda = 1200\text{ nm}$, what does the resulting image look like? Why?
 
 Hint: $E = \frac{1240}{\lambda}$ where $\lambda$ is in nanometers and $E$ is in electronvolts ($\textrm{eV}$).
 \end{Exercise}
 \begin{Answer}[ref={ex:photon_camera}]
 
-The pixels will remain dark, or black, because the energy of the incoming photons is less than the work function of the sensor material. Calculating $E = \frac{1240}{1200} = 1.033 \, \textrm{eV}$, which is less than the work function of $1.1 \, \textrm{eV}$.
+The pixels will remain dark, or black, because the energy of each incoming photon is less than the band gap of silicon. Calculating $E = \frac{1240}{1200} = 1.033 \, \textrm{eV}$, which is less than the work function of $1.1 \, \textrm{eV}$.
 
 \end{Answer}
 \section{Aspect Ratio}
@@ -256,7 +279,11 @@ Digital cameras and smartphone cameras capture images using a rectangular sensor
 
 Important: when you change the aspect ratio setting on a camera, the device does not change the sensor itself. Instead, it crops part of the image to match the selected ratio. Cropping reduces the number of recorded pixels, which may reduce file size. However, actual file size also depends on compression methods used by the device.
 
-Human vision has a wider horizontal field of view than vertical field of view. Because of this, wider aspect ratios such as $16:9$ often feel more natural and immersive. This is one reason modern TVs and cinema formats favor wider screen shapes. However, with the rise of cellphones, we have switched to consistently using portrait or vertical mode, and video aspect ratios are more consistently becoming $9:16$. This allows for consistency in device quality, and commonly used for vertical videos, like in short-form content, compared to traditional widescreen videos, such as Youtube or traditional horizontal video capturing.
+Human vision covers a wider angle side to side than up and down, so wide
+shapes like $16:9$ feel natural and immersive. That is why TVs and movie
+screens are wide. But phones are usually held upright, so short videos made
+for phones use the tall $9:16$ shape, which is just $16:9$ turned on its
+side.
 
 \subsection{Printing}\index{printing photos}
 You can imagine this may cause a problem for printing out photos. Most printing paper is $8.5 \, \mathrm{ inches} \times 11 \, \mathrm{ inches}$ or $8 \, \mathrm{inches} \times 10 \, \mathrm{inches}$. This causes an issue, as that fits a $8.5 : 11 \iff 17 : 22$  or $4:5$ aspect ratio, respectively.
@@ -269,7 +296,21 @@ We combat this by using very standardized printing sizes (in inches):
 \end{itemize}
 Going to any framing or printing store will give you a very standardized set of sizes, or some multiple of these.
 
-Most smartphones use $4:3$ or $3:2$, which will work for $4\times6$ inches or $8\times6$ inches, respectively.
+Most smartphones take photos at $4:3$ or $3:2$. A $3:2$ photo fits a
+$6 \times 4$ inch print exactly; a $4:3$ photo fits an $8 \times 6$ inch
+print.
+
+\begin{Exercise}[title={Will it fit?}, label=cam_print]
+A phone photo is $4032 \times 3024$ pixels. What is its aspect ratio? If
+you print it as a $6 \times 4$ inch photo, how much of the image must be
+cropped?
+\end{Exercise}
+\begin{Answer}[ref=cam_print]
+$\frac{4032}{3024} = \frac{4}{3}$, so it is $4:3$. To fit $3:2$, keep the full
+width of 4032 pixels and cut the height to $\frac{2}{3}(4032) = 2688$
+pixels. That crops $3024 - 2688 = 336$ pixel rows, about 11\% of the
+image.
+\end{Answer}
 
 \begin{Exercise}[title={Taller Person}, label=cam3]
 A $1.8$ m person stands $20$ m from the same camera. How tall is the image on the sensor?
