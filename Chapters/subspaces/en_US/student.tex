@@ -1,5 +1,11 @@
 \chapter{Subspaces}\label{chap:subspaces}
-Recall that, in Section~\ref{chap:syseqma}, we established that all linear systems can be represented in matrix form as $A\vec{x}=\vec{b}$. In this chapter, we will explore the concept of subspaces, which are fundamental to understanding the structure of solutions to linear systems.
+Picture the room you are sitting in as $\mathbb{R}^3$, with the origin in
+one corner. Some sets of vectors in the room are special: a flat, endless
+sheet through the corner, or a straight, endless wire through it. If you
+start on the sheet and add or stretch vectors that lie on it, you never
+leave the sheet. These self-contained sets are called \emph{subspaces}, and
+they describe exactly what the solutions of $A\vec{x}=\vec{0}$ look like
+(Section~\ref{chap:syseqma}).
 
 Quickly, let us review some vocabulary. 
 \index{zero vector}The zero vector, denoted as $\vec{0}$, is the vector where all components are zero. It will be a column vector of appropriate size $n\times 1$.
@@ -52,10 +58,10 @@ We need to review and reinforce some vocabulary that will come up often during t
 \section{Basis and Dimension}
 A basis of a subspace $V$ is a set of linearly independent vectors that span $V$. 
 \begin{mdframed}[frametitle = {Basis}, style = important]
-A set of vectors $\{\vec v_1, \vec v_2, \ldots, \vec v_k\} \in \mathbb{R}^n$ is called a \textbf{basis} for $\mathbb{R}^n$ if
+A set of vectors $\{\vec v_1, \vec v_2, \ldots, \vec v_k\}$ in a subspace $V$ is called a \textbf{basis} for $V$ if
 
 \begin{itemize}
-    \item the vectors span $\mathbb{R}^n$, and
+    \item the vectors span $V$, and
     \item the vectors are linearly independent.
 \end{itemize}
 \end{mdframed}
@@ -379,7 +385,9 @@ The row space of a matrix $A$ is defined as
 \[\text{Row}(A) = \text{span}\{\text{row}_1, \text{row}_2, \ldots, \text{row}_m\},\]
 where $\text{row}_i$ represents the $i$-th row of the matrix $A$.
 The row space consists of all directions in $\mathbb{R}^n$ that can be built from the rows of the matrix.
-Note that we are observing the matrix before it is transformed into RREF or altered in any way. 
+Row operations replace rows with combinations of rows, so they never
+change the row space. That means the nonzero rows of $\operatorname{RREF}(A)$
+form a convenient basis for $\text{Row}(A)$.
 \end{mdframed}
 
 Another way to think about it is that the row space represents all possible linear combinations of the equations represented by the rows of the matrix $A$. Each row is "tested" on by $\vec{x}$ to produce a component of the output vector $A\vec{x}$. Equivalently, the row space is the set of all vectors that can be formed by adding and scaling the rows of $A$.
@@ -539,7 +547,7 @@ A=
 0 & 0 & 1 & 0\\
 0 & 0 & 0 & 0
 \end{bmatrix} \end{array}$$
-\item Columns 1, 2, and 3 are pivot columns (containing a pivot). Column 4 is a non-pivot or free column. This tells you that there are 3 fixed variables, and 1 free one. The nullspace will be 1 dimensional.
+\item Columns 1, 2, and 3 are pivot columns (containing a pivot). Column 4 is a non-pivot or free column. This tells you that there are 3 pivot variables and 1 free variable. The nullspace will be 1 dimensional.
 \item We have the system of equations: $$\begin{aligned}
 x_1 + x_4 &= 0,\\
 x_2 + x_4 &= 0,\\
@@ -574,7 +582,7 @@ In this chapter, we have established a few different common subspaces: the Nulls
 
 We have now set the stage for a new way of viewing matrices. Rather than thinking of a matrix solely as a collection of numbers or equations, we can begin to interpret a matrix as a transformation -- a rule that takes input vectors and maps them to output vectors. In the next few chapters, we will build on our understanding of subspaces to study how matrices act on vectors and reshape space, providing a unifying viewpoint for many of the ideas introduced so far. We will look at the geometric implications of matrices and how they \textit{transform} space. Ideas like this sit behind many computer graphics programs, such as the ones that move objects in video games.
 
-Before ending this chapter, take a look at this graphic. It shows the relationship between the subspaces we talked about, plus a new one: $\operatorname{Null}(A^T)$, the transpose of the nullspace. If matrix $A$ has size $m\times n$, then $A^T$ has size $n \times m$. Note which subspaces live in $\mathbb{R}^n$ and which live in $\mathbb{R}^m$. 
+Before ending this chapter, take a look at this graphic. It shows the relationship between the subspaces we talked about, plus a new one: $\operatorname{Null}(A^T)$, the nullspace of the transpose (sometimes called the \emph{left nullspace}). If matrix $A$ has size $m\times n$, then $A^T$ has size $n \times m$. Note which subspaces live in $\mathbb{R}^n$ and which live in $\mathbb{R}^m$. 
 
 \begin{figure}[H]
     \centering

@@ -1,7 +1,11 @@
 \chapter{Euler's Method}
 \index{Euler's method}
-How do computers approximate the solution to a differential equation that 
-cannot be explicitly solved? Let us consider the differential equation 
+Imagine driving at night with a speedometer that updates only every few
+seconds. Between readings, you assume your speed stays the same and estimate
+how far you have gone. Euler's method approximates a differential equation the
+same way: read the slope, take a step, read the slope again.
+
+Let us consider the differential equation 
 $\frac{dy}{dx} = x + y$ with initial condition $y(0) = 1$.
 
 This means the solution passes through the point (0, 1). Additionally, the 
@@ -78,12 +82,9 @@ the approximation gets closer and closer to the true solution.
 \end{figure}
 
 In general, Euler's method is a numerical process similar to sketching a 
-solution on a \index{slope field}slope field. One begins at the given initial value, proceeds for 
-a short step in the direction indicated by the slope field. You adjust the 
-slope of your approximation based on the value of the slope field at the end 
-of each step. 
-
-Think of a car with a speedometer that updates only every few seconds. Between readings, you assume the speed stays the same. Euler's method works the same way.
+solution on a \index{slope field}slope field. You begin at the initial value and take a short step in the direction the
+slope field points. At the end of each step, you read the slope again and
+turn.
 
 For a first-order differential equation, let $\frac{dy}{dx} = F(x, y)$ and 
 $y(x_0) = y_0$. If we have step size $h$, then our successive $x$-values are 
@@ -148,6 +149,27 @@ n & $x_n$ & $y_n$ & $F(x_n, y_n)$ \\\hline
 
 Therefore, $y(1) \approx 3.465$. The exact solution is $y = 3e^x - 2x - 2$, which gives $y(1) \approx 4.155$. Euler's method is low here because the solution curves upward, and a straight-line step falls below a curve that bends up.
 
+A computer does not mind taking thousands of tiny steps:
+\begin{minted}{python}
+def euler(F, x0, y0, h, steps):
+    x, y = x0, y0
+    for _ in range(steps):
+        y = y + h * F(x, y)
+        x = x + h
+    return y
+
+F = lambda x, y: 2 * x + y
+for steps in [5, 50, 500]:
+    print(steps, euler(F, 0, 1, 1 / steps, steps))
+\end{minted}
+\begin{verbatim}
+5 3.46496
+50 4.074764087220816
+500 4.146705561955173
+\end{verbatim}
+Each tenfold cut in the step size shrinks the error (compared with
+$4.1548$) by about a factor of ten.
+
 \textbf{Example}: This problem was originally presented as a no-calculator, 
 multiple-choice question on the 2012 AP Calculus BC exam. Let $y = f(x)$ be 
 the solution to $\frac{dy}{dx} = x - y$ with initial condition $f(1) = 3$. 
@@ -171,7 +193,7 @@ So the approximate value of $f(2)$ is $\frac{7}{4}$.
 
 \begin{Exercise}[label = eulercircuit]
 
-In the previous chapter on slope fields, we discussed the behavior of inductors in electronic circuits. As you may recall, capacitors also exhibit more complex behavior than regular resistors. \index{RC circuit}Consider a circuit with a resistor and capacitor (see figure below). Let the resistor have resistance R ohms and the capacitor have capacitance C farads. By \index{Kirchhoff's law}Kirchhoff's law, we know that:
+In the slope fields chapter, we discussed the behavior of inductors in electronic circuits. As you may recall, capacitors also exhibit more complex behavior than regular resistors. \index{RC circuit}Consider a circuit with a resistor and capacitor (see figure below). Let the resistor have resistance R ohms and the capacitor have capacitance C farads. By \index{Kirchhoff's law}Kirchhoff's law, we know that:
 $$RI + \frac{Q}{C} = V$$
 where Q is the charge on each side of the capacitor and $\frac{Q}{C}$ is the voltage drop across the capacitor. Recall that current is the change in charge over time. Therefore, $I = \frac{dQ}{dt}$, and we can write the differential equation:
 $$R \frac{dQ}{dt} + \frac{1}{C}Q = V$$

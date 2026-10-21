@@ -1,8 +1,9 @@
 \chapter{Making Plots with matplotlib}
 
-Matplotlib is a comprehensive library for creating static, animated,
-and interactive visualizations in Python. It is highly useful for
-presenting data in a more intuitive and easy-to-understand manner.\index{matplotlib}
+A table of a thousand numbers tells you almost nothing at a glance; a
+picture of them can tell you everything. Matplotlib is the most widely
+used Python library for turning numbers into pictures: line plots, bar
+charts, scatter plots, histograms, and much more.\index{matplotlib}
 
 You have probably graphed functions in algebra class by plotting points on a grid. Matplotlib does the same job for us, and it draws the grid, the points, and the labels.
 
@@ -74,6 +75,127 @@ Change the bar plot example so that the categories are the names of five of your
 \end{Exercise}
 \begin{Answer}[ref=mpl2]
 Replace the \texttt{labels} and \texttt{values} lists with your own data. For example, \texttt{labels = ["Pizza", "Tacos", "Ramen", "Salad", "Pasta"]} and \texttt{values = [12, 9, 7, 4, 10]}. Then call \texttt{plt.bar(labels, values)} and \texttt{plt.show()}, as in the example above.
+\end{Answer}
+
+\section{Several Lines on One Plot}
+
+Call \pyfunction{plt.plot} more than once before \pyfunction{plt.show}, and
+the lines share the same axes. Give each a \texttt{label}, and
+\pyfunction{plt.legend} draws a key. The \texttt{marker} and
+\texttt{linestyle} options make the lines easy to tell apart, even in
+black and white:
+
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+plt.plot(x, [1, 4, 9, 16, 25], marker="o", label="x squared")
+plt.plot(x, [1, 8, 27, 64, 125], marker="s", linestyle="--", label="x cubed")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Squares and Cubes")
+plt.legend()
+plt.show()
+\end{minted}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{mpl_lines.png}
+\caption{Two lines with markers and a legend.}
+\label{fig:mpl_lines}
+\end{figure}
+
+To save a plot as an image file, call \pyfunction{plt.savefig("myplot.png")}
+\emph{before} \pyfunction{plt.show}; after the window closes, the figure is
+gone.
+
+\section{Scatter Plots and Real Data}\index{scatter plot}
+
+Real data usually lives in a file. Your digital resources include
+\filename{dataset.csv}, which has 50 rows with a \texttt{Category} (A, B, C,
+or D), an \texttt{X\_values} column, and a \texttt{Y\_values} column. A
+\newterm{scatter plot} draws one dot per row, with no connecting lines. Here
+we use pandas (from the pandas chapter) to read the file, then draw each
+category in its own color:
+
+\begin{minted}{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("dataset.csv")
+
+for category in sorted(df["Category"].unique()):
+    rows = df[df["Category"] == category]
+    plt.scatter(rows["X_values"], rows["Y_values"], label=category)
+
+plt.xlabel("X value")
+plt.ylabel("Y value")
+plt.title("Points by Category")
+plt.legend()
+plt.show()
+\end{minted}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{mpl_scatter.png}
+\caption{The points of \filename{dataset.csv}, colored by category.}
+\label{fig:mpl_scatter}
+\end{figure}
+
+The dots are spread all over, with no clear upward or downward trend: in
+this data set, knowing $X$ does not help you predict $Y$.
+
+\section{Histograms}\index{histogram}
+
+A \newterm{histogram} shows how one set of numbers is distributed. It
+divides the range into equal \newterm{bins} and draws a bar for how many
+values land in each:
+
+\begin{minted}{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("dataset.csv")
+
+plt.hist(df["Y_values"], bins=10, edgecolor="black")
+plt.xlabel("Y value")
+plt.ylabel("Number of points")
+plt.title("Distribution of Y Values")
+plt.show()
+\end{minted}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{mpl_hist.png}
+\caption{Most $Y$ values fall between 40 and 65, with one outlier above 80.}
+\label{fig:mpl_hist}
+\end{figure}
+
+Try changing \texttt{bins=10} to 5 or 25. Too few bins hide the shape; too
+many make it jagged.
+
+\begin{Exercise}[title={Averages by Category}, label=mpl3]
+Using \filename{dataset.csv}, make a bar plot of the average
+\texttt{Y\_values} for each category. Which category has the highest
+average? (Hint: \texttt{df.groupby("Category")["Y\_values"].mean()}.)
+\end{Exercise}
+\begin{Answer}[ref=mpl3]
+\begin{minted}{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("dataset.csv")
+averages = df.groupby("Category")["Y_values"].mean()
+print(averages.round(1))
+
+plt.bar(averages.index, averages.values)
+plt.xlabel("Category")
+plt.ylabel("Average Y value")
+plt.title("Average Y Value by Category")
+plt.show()
+\end{minted}
+The averages are about A: 49.5, B: 48.4, C: 49.1, and D: 55.5. Category D
+is highest.
 \end{Answer}
 
 Matplotlib provides a variety of other plot types and customization

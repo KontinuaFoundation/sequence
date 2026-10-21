@@ -1,10 +1,13 @@
 \chapter{Bitmaps}\label{chap:bitmaps}
 %OVERALL NOTE: This chapter is an introduction to bitmaps, following the hexbinary chapter. It assumes C++ knowledge, way may cause an issue with the learning curve. 
-Let us talk about another image format: the Bitmap. The Bitmap, denoted with file type \index{BMP file format}\mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
+Zoom way in on any photo and it dissolves into tiny colored squares. A
+bitmap file is the most direct way to store those squares: just a header
+and then the color of every pixel, one after another. Because it is so
+simple, it is the perfect format for writing your own image-editing code. The Bitmap, denoted with file type \index{BMP file format}\mintinline{bash}|.bmp|, is an early file format for storing images on computers. Rows of different colors are stored as a grid of pixels. Each pixel is represented by a specific number of bits, which determines the color depth of the image. For example, a 24-bit bitmap can represent over 16 million colors, while an 8-bit bitmap can only represent 256 colors. \index{bitmaps}
 
-Bitmaps are uncompressed, meaning they can take up a lot of storage space compared to other image formats like JPEG or PNG. However, they are simple to read and write in code, making them useful for certain applications where image quality is more important than file size.
+Bitmaps are uncompressed, meaning they can take up a lot of storage space compared to other image formats like JPEG or PNG. However, they are simple to read and write in code: no decompression is needed, so a short program can edit them pixel by pixel.
 
-To understand how bitmaps work in practice, it helps to think of an image as nothing more than numbers stored in memory. Each pixel in a bitmap corresponds to a color value, and these values are usually written in hexadecimal (base-16) form. If you need a review, look back at Chapter~\ref{chap:hexbinary}\index{hexadecimal}
+To understand how bitmaps work in practice, it helps to think of an image as nothing more than numbers stored in memory. Each pixel in a bitmap corresponds to a color value, and these values are usually written in hexadecimal (base-16) form, where the digits run 0--9 and then A--F, so \texttt{FF} is $15 \cdot 16 + 15 = 255$. (Chapter~\ref{chap:hexbinary} covers hexadecimal in depth.)\index{hexadecimal}
 
 In a common $24$-bit bitmap, each pixel is made up of three color components:
 \begin{itemize}
@@ -247,7 +250,7 @@ free(data);
 free(out);
 \end{minted}
 
-After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp output.bmp| and \mintinline{bash}|./bitmap_reader gradient.bmp output.bmp| produces the following outputs (see Figures~\ref{fig:gradientRedBlueSwap} and \ref{cowRedBlueSwap}):
+After compiling, running this using \mintinline{bash}|./bitmap_reader cow.bmp output.bmp| and \mintinline{bash}|./bitmap_reader gradient.bmp output.bmp| produces the following outputs (see Figures~\ref{fig:gradient-comparison} and \ref{fig:cow-comparison}):
 
 % Duplicates of each bmp made into pngs for inclusion in chapter
 % done using magick cmdline library
@@ -623,7 +626,7 @@ int main(int argc, char const *argv[])
 \end{Answer}
 
 \section{Connection to transformations}
-What if alter the pixel values in a more complex way? For example, instead of altering the colors themselves, we alter the pixel positions. This is what is called a transformation, and is a fundamental concept in computer graphics. A transformation is a mathematical operation that changes the position, size, or orientation of an object in a graphical space. In the context of bitmaps, transformations can be applied to the pixel data to achieve various effects, such as rotation, scaling, translation, and shearing.
+What if we alter the pixel values in a more complex way? For example, instead of altering the colors themselves, we alter the pixel positions. This is what is called a transformation, and is a fundamental concept in computer graphics. A transformation is a mathematical operation that changes the position, size, or orientation of an object in a graphical space. In the context of bitmaps, transformations can be applied to the pixel data to achieve various effects, such as rotation, scaling, translation, and shearing.
 
 What if you took a selfie, but then wanted to mirror it horizontally, to get a view of your face like the one in a mirror? This is a common transformation called a \index{horizontal flip}horizontal flip. To achieve this, you would iterate through each row of pixels in the bitmap and swap the pixels on the left side with the corresponding pixels on the right side. This can be done by calculating the index of each pixel and performing the necessary swaps. Note that nothing on the vertical direction of the image is changed, only the horizontal positions of the pixels are altered.
 
@@ -632,10 +635,10 @@ $$x' = w - 1 - x,\qquad y' = y$$
 
 This operation does not change the pixel values themselves, but instead sets the new position of each pixel according to the transformation rule. The entire image transformation is therefore a systematic coordinate mapping applied across the matrix.
 
-Without having to learn too much linear algebra, we can express this as a simple function: If we have a pixel coordinate expressed as a simple vector $\mathbf{p} = \vecb{x\\y}$, we can define a transformation function $T$ that takes this pixel coordinate and maps it to a new coordinate $\mathbf{p'}$:
+In the language of linear algebra: If we have a pixel coordinate expressed as a simple vector $\mathbf{p} = \vecb{x\\y}$, we can define a transformation function $T$ that takes this pixel coordinate and maps it to a new coordinate $\mathbf{p'}$:
 $$\mathbf{p'} = T\mathbf{p}$$
 
-In this case, the transformation function $T$ is a matrix that encodes the horizontal flip operation that obeys matrix multiplication. We have not talked about this yet, and it is a difficult concept to understand without having introduced linear algebra or matrices. So, we will not go into the details of how to construct this matrix, but just know that a horizontal flip can be represented as:
+In this case, $T$ is a matrix, just like the reflections in the Matrices as Transformations chapter. A reflection across the $y$-axis is:
 $$T = \begin{bmatrix}-1 & 0 \\ 0 & 1\end{bmatrix}$$
 This matrix, when multiplied with the pixel coordinate vector $\mathbf{p}$, will yield the new coordinate $\mathbf{p'}$ that corresponds to the horizontally flipped position of the original pixel. Specifically, the $-1$ in the first row of the matrix indicates that the x-coordinate is inverted (flipped), while the $1$ in the second row indicates that the y-coordinate remains unchanged. This matrix sends $x$ to $-x$, which puts the image on the wrong side of the origin. To keep the flipped image inside the frame, we must also shift each x-coordinate by $w - 1$. A shift is not a linear transformation, so this matrix alone cannot do the whole job.
 
@@ -673,7 +676,7 @@ Taking the input bitmap of the cow from \ref{fig:cow1-bitmap} and running this c
 \end{wrapfigure}
 
 
-Similarly, we can transform the bitmap in other ways, which we will learn more of how to do in the transformations chapter by experimenting with vectors. For now, remember that matrices are a powerful tool for representing transformations, and that by manipulating pixel coordinates, we can achieve a wide variety of effects on bitmap images.
+The same idea works for any of the transformations from that chapter: compute where each pixel goes, and copy its color there. Rotations by angles other than $90^\circ$ land between pixels, so real image editors blend neighboring colors, a process called \emph{interpolation}.
 \section{Summary}
 In this chapter, we experimented with bitmaps. Specifically,
 \begin{itemize}
@@ -682,4 +685,5 @@ In this chapter, we experimented with bitmaps. Specifically,
     \item creating a pixel structure to work with hexadecimal bytes and hexcodes
     \item swapping the channels of a bitmap
     \item creating a bitmap from scratch in C++
+    \item mirroring an image by remapping pixel coordinates
 \end{itemize}

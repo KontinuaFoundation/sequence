@@ -1,9 +1,14 @@
 \chapter{Double Integrals in Other Coordinate Systems}
 
-\section{Double Integrals in Other Coordinate Systems}
-% \index{double integral! polar coordinates}
+A dartboard, a pizza, the ripples from a stone in a pond: some shapes are made
+of circles, and forcing them into $x$ and $y$ makes the math miserable. Polar
+coordinates describe them naturally. This chapter shows how to set up double
+integrals in polar coordinates, including the one surprising extra factor you
+must not forget.
+
+\section{Polar Double Integrals}
 \index{polar double integrals}
-Consider a region composed of a semi-circular ring (see figure \ref{
+Consider a region shaped like half of a ring (see figure \ref{
 fig:semicircle}). Describing the region in Cartesian coordinates is 
 complicated; you would have to split it into three regions. However, in polar coordinates, we can describe the whole region in one statement:
 $$\textit{D} = \{(r, \theta)\text{ }|\text{ }1 \leq r \leq 4,\text{ }0 \leq 
@@ -34,8 +39,8 @@ by $\textit{D} = \{(r, \theta)\text{ }|\text{ }a \leq r \leq b,\text{ }\alpha
 \leq \theta \leq \beta \}$ (see figure \ref{fig:polar_rect}). Similar to 
 Cartesian coordinates, we can divide this region into many smaller polar 
 rectangles, with each subrectangle defined by $\textit{D}_{ij} = \{(r, \theta)
-\text{ }|\text{ }r_{i-1} \leq r \leq r_i,\text{ }\theta_{i - 1} \leq \theta 
-\leq \theta_i\}$. The center of each subrectangle has polar coordinates $(
+\text{ }|\text{ }r_{i-1} \leq r \leq r_i,\text{ }\theta_{j - 1} \leq \theta 
+\leq \theta_j\}$. The center of each subrectangle has polar coordinates $(
 r_i^*, \theta_j^*)$, where:
 $$r_i^* = \frac{1}{2} \left( r_{i - 1} + r_i \right)$$
 $$\theta_j^* = \frac{1}{2} \left( \theta_{j - 1} + \theta_j \right)$$ 
@@ -89,17 +94,22 @@ find a simplified expression for the area of each subrectangle:
 $$\Delta A_i = r_i^* \Delta r \Delta \theta$$
 
 Therefore, the Riemann sum of $f(x,y)$ over the region is:
-$$\sum_{i = 1}^n \sum_{j = 1}^n f(r_i^* \cos{\theta_j^*}, r_i^* \sin{\theta_j^*
+$$\sum_{i = 1}^m \sum_{j = 1}^n f(r_i^* \cos{\theta_j^*}, r_i^* \sin{\theta_j^*
 }) \Delta A_i$$
 
 (Recall that to convert from Cartesian to polar coordinates, we use $x = r\cos{
 \theta}$ and $y = r\sin{\theta}$). Substituting for $\Delta A_i$:
-$$= \sum_{i = 1}^n \sum_{j = 1}^n f(r_i^* \cos{\theta_j^*}, r_i^* \sin{\theta_j
+$$= \sum_{i = 1}^m \sum_{j = 1}^n f(r_i^* \cos{\theta_j^*}, r_i^* \sin{\theta_j
 ^*}) r_i^* \Delta r \Delta \theta$$
 
-Taking the limit as $n \to \infty$, the Riemann sum becomes the double integral:
+Taking the limit as $m$ and $n$ go to $\infty$, the Riemann sum becomes the double integral:
 $$\int_{\alpha}^{\beta} \int_a^b f(r\cos{\theta}, r\sin{\theta}) r\,dr\,d
 \theta$$
+
+Notice the extra factor of $r$. A polar rectangle far from the origin is
+bigger than one near the origin with the same $\Delta r$ and $\Delta\theta$, and
+the $r$ accounts for that. Forgetting it is the most common mistake with polar
+integrals.
 
 Therefore, if $f$ is continuous on the polar rectangle $a \leq r \leq b$, 
 $\alpha \leq \theta \leq \beta$, then:
@@ -126,7 +136,7 @@ the semi-circle shown below.
 describe \textit{D} as $\textit{D} = \{(r, \theta)\text{ }|\text{ }0 \leq r 
 \leq 5,\text{ }0 \leq \theta \leq \pi\}$. Therefore, 
 $$\iint_{\textit{D}} x^2y\,dA = \int_0^{\pi} \int_0^5 \left(r\cos{\theta} 
-\right)^2 \left(r \sin{\theta}\right) r\,d\theta\,dr$$
+\right)^2 \left(r \sin{\theta}\right) r\,dr\,d\theta$$
 $$= \int_0^{\pi} \int_0^5 r^4 \cos^2{\theta} \sin{\theta}\,dr\,d\theta$$
 $$= \int_0^{\pi} \cos^2{\theta} \sin{\theta} \left[ \frac{1}{5}r^5 \right]_{r 
 = 0}^{r = 5}\,d\theta$$

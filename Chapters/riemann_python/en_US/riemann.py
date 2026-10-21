@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import sys
 import math
 
-from matplotlib.table import Rectangle
+from matplotlib.patches import Rectangle
 
 # Did the user supply two arguments?
 if len(sys.argv) != 3:
@@ -29,7 +29,7 @@ step_size = (stop - start)/divisions
 print(f"Step size is {step_size:.5f}.")
 x_values = []
 y_values = []
-sum = 0.0
+total = 0.0
 for i in range(divisions):
     current_x = start + i * step_size
     current_y = 1.0/current_x
@@ -38,10 +38,10 @@ for i in range(divisions):
 
     x_values.append(current_x)
     y_values.append(current_y)
-    sum += area
-    print(f"\tCumulative={sum:.3f}, ln({current_x:.3f})={math.log(current_x):.3f}")
+    total += area
+    print(f"\tCumulative={total:.3f}, ln({current_x:.3f})={math.log(current_x):.3f}")
 
-print(f"Numerical integration of 1/x from 1.0 to {stop:.4f} is {sum:.4f}")
+print(f"Numerical integration of 1/x from 1.0 to {stop:.4f} is {total:.4f}")
 print(f"The natural log of {stop:.4f} is {math.log(stop):.4f}")
 
 # Create data for the smooth 1/x line

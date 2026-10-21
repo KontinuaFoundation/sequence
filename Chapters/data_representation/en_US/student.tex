@@ -2,6 +2,11 @@
 
 
 \section{Introduction to Text}
+Everything on your computer, from your essays and photos to the songs on
+your playlist, is stored as a long list of 0s and 1s. This chapter shows
+how: how text, whole numbers, decimals, and compressed files all become
+bits.
+
 In computer systems, text is represented in files as a sequence of
 characters, each of which corresponds to a specific number, known as a
 character code. \index{character code}These character codes are then stored in the file as
@@ -53,13 +58,6 @@ nations and regions. Meanwhile, accents, diacritical marks, and other
 phonetic notations play a crucial role in conveying the correct
 pronunciation and meaning of words.\index{Alphabets} \index{Accents} \index{Diacritical Marks}
 
-This guide aims to provide software developers with a fundamental
-understanding of alphabets and accents to navigate the complexities of
-handling text from different nations. By familiarizing yourself with
-these concepts, you will be better equipped to develop robust
-applications, support multiple languages, and ensure accurate
-representation and interpretation of text data.
-
 Alphabets are sets of letters or symbols used to represent the sounds
 of a language. While the Latin alphabet is widely used in many Western
 languages, numerous other alphabets exist, such as \index{Cyrillic}Cyrillic, Greek,
@@ -104,19 +102,17 @@ various factors:
   variations in spelling or diacritics.
 \end{enumerate}
 
-By grasping the concepts of alphabets and accents, software developers
-can build robust, inclusive applications that handle multilingual text
-effectively. Understanding character encodings, implementing proper
-text validation, considering sorting and collation rules, and enabling
-efficient search capabilities are crucial steps toward supporting
-diverse linguistic communities and providing a seamless user
-experience across different languages.
-
-Now, let us delve deeper into specific alphabets and accents commonly
-encountered in software development, exploring their unique
-characteristics and considerations for handling text from different
-nations.
-
+\begin{Exercise}[title={Counting Bytes}, label={ex:utf8}]
+In UTF-8, ASCII characters take 1 byte, accented Latin letters like
+\'e take 2 bytes, most Chinese characters take 3 bytes, and emoji take 4
+bytes. How many bytes does the text \texttt{café} take? What about a
+message of 10 emoji?
+\end{Exercise}
+\begin{Answer}[ref={ex:utf8}]
+\texttt{c}, \texttt{a}, and \texttt{f} take 1 byte each, and \'e takes 2:
+5 bytes for 4 characters. Ten emoji take 40 bytes. (In Python,
+\texttt{len("café".encode("utf-8"))} returns 5.)
+\end{Answer}
 
 \section{Representing Natural Numbers}\label{chap:hexbinary}
 \index{natural numbers}Natural numbers are positive whole numbers, such as 1, 2, 3, and so on. -5 is not a natural
@@ -130,7 +126,7 @@ think ``2 thousands, 5 hundreds, 3 tens, and 1 one.'' Rewritten, this is:
 
 $$2 \times 10^3 + 5 \times 10^2 + 3 \times 10^1 + 1 \times 10^0$$
 
-The \index{radix}\newterm{radix} is the amount of number of unique values a base can have before increasing the amount of digits. 
+The \index{radix}\newterm{radix} is the number of different digits a base uses before it needs another place. 
 For example, values 0, 1, 2, $\cdots$, 8, 9 are all the values for base-10. 
 Once 1 is added to 9, we need to increase the amount of digits in a number. 
 
@@ -171,7 +167,7 @@ pair of digits. $254 \times 26$ might look like this:
 & 1 & 0 & & & $2 \times 5$\\
 + & 4 & & & & $2 \times 2$\\
  \hline
- 6 & 6 & 0 & 4
+ & 6 & 6 & 0 & 4 &
  \end{tabular}
  
 
@@ -226,12 +222,12 @@ Because the radix is 2, the numbers increase differently:
 
 \subsubsection*{Conversion from Decimal to Binary}
 To convert $13_{10}$ to binary, repeatedly divide by $2$ and record the remainders until the divisor reaches 0 or 1:
-\[
-13 \div 2 = 6 \text{ remainder } 1 \\
-6 \div 2 = 3 \text{ remainder } 0 \\
-3 \div 2 = 1 \text{ remainder } 1 \\
-1 \div 2 = 0 \text{ remainder } 1
-\]
+\begin{align*}
+13 \div 2 &= 6 \text{ remainder } 1 \\
+6 \div 2 &= 3 \text{ remainder } 0 \\
+3 \div 2 &= 1 \text{ remainder } 1 \\
+1 \div 2 &= 0 \text{ remainder } 1
+\end{align*}
 Reading from bottom to top, $13_{10} = 1101_2$.
 
 \subsubsection{Bits and Bytes}
@@ -271,13 +267,13 @@ Programs group these bytes into data types:
 Strings are formed by listing characters in consecutive memory addresses such that they are marked by a starting memory address and ending memory address. 
 
 8-bit binary numbers can be used to signify positive or negative numbers.  \index{signed bits}
-The most significant bit (MSB) will alter sign, causing the range to be $[-2^{7}, \; 2^{7}-1]$. \index{two's complement}If the byte is negative (in terms of bits), invert each bit and add 1 to the inverted result. The other way is to multiply the MSB by negative one, and add until the value is reached, as seen below. 
+The most significant bit (MSB) will alter sign, causing the range to be $[-2^{7}, \; 2^{7}-1]$. \index{two's complement}This scheme is called \newterm{two's complement}. To negate a number, invert every bit and add 1. To read a byte whose MSB is 1, count the MSB as $-128$ instead of $+128$ and add the rest as usual: 
 
 \[
 -85_{10} = -1 \times 2^7 + 0 \times 2^6 + 1 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 1010 1011
 \]
 
-Binary can be easy converted to \newterm{Hexadecimal}. 
+Binary can be easily converted to \newterm{Hexadecimal}. 
 
 \subsection{Base-16 (Hexadecimal)}
 \index{hexadecimal}
@@ -295,7 +291,8 @@ Counting to 16 in hex goes as follows:
   &\text{C} \; (\text{decimal value} \; 12) \\
   &\text{D} \; (\text{decimal value} \; 13) \\
   &\text{E} \; (\text{decimal value} \; 14) \\
-  &\text{F} \; (\text{decimal value} \; 15)
+  &\text{F} \; (\text{decimal value} \; 15) \\
+  &10 \; (\text{decimal value} \; 16)
 \end{align*}
 
 Converting between binary and hexadecimal is easy because $16 = 2^4$, so each hex digit matches exactly four binary digits. 
@@ -308,7 +305,7 @@ For example,
 
 
 \subsubsection{Hex Color Codes}
-Hex colors are represented by 6 hexadecimal digits, grouped as two each for red, green, and blue (RGB). Each pair ranges from \$00\$ (0 in decimal) to \$FF\$ (255 in decimal), allowing \$256\$ shades per color channel. For example:\index{hexadecimal}
+Hex colors are represented by 6 hexadecimal digits, grouped as two each for red, green, and blue (RGB). Each pair ranges from \texttt{00} (0 in decimal) to \texttt{FF} (255 in decimal), allowing 256 shades per color channel. For example:\index{hexadecimal}
 
 $$
 \#\text{FF}0000 = \text{Red}, \quad\#00\text{FF}00 = \text{Green}, \quad \#0000\text{FF} = \text{Blue}
@@ -653,7 +650,7 @@ defines two standard ways to do this split, called
 \begin{center}
 \begin{tabular}{lccc}
     \hline
-    & Total bits & Significand bits ($p$) & Exponent bits \\
+    & Total bits & Stored significand bits & Exponent bits \\
     \hline
     Single precision & 32 & 23 & 8 \\
     Double precision & 64 & 52 & 11 \\
@@ -681,7 +678,7 @@ A floating-point system uses $N = 16$ bits total. The sign takes 1 bit and the
 significand takes 10 bits.
 \begin{enumerate}
     \item How many bits are left for the exponent?
-    \item If those exponent bits can represent integers from $-31$ to $32$, what is the
+    \item Five bits give $2^5 = 32$ different exponents. If they represent the integers from $-15$ to $16$, what is the
     largest exponent $M$?
     \item Would you expect this system to be more or less precise than single precision?
     Why?
@@ -690,7 +687,7 @@ significand takes 10 bits.
 \begin{Answer}[ref={ex:bit-allocation}]
 \begin{enumerate}
     \item $16 - 1 - 10 = 5$ bits for the exponent.
-    \item $M = 32$.
+    \item $M = 16$.
     \item Less precise than single precision. Single precision has $p = 23$ significand
     bits; this system has only $p = 10$, so it can store fewer digits and will produce
     larger roundoff errors.
@@ -707,10 +704,12 @@ For a system that rounds to the nearest float, machine epsilon is
 \[
     u = \frac{1}{2} \beta^{1-p},
 \]
-where $\beta$ is the base and $p$ is the precision. For IEEE 754 double precision,
-$\beta = 2$ and $p = 52$, giving $u \approx 2.22 \times 10^{-16}$. That means any
-real number is stored with a relative error no worse than about $2 \times 10^{-16}$
-roughly 16 significant decimal digits of accuracy.
+where $\beta$ is the base and $p$ is the precision. In IEEE 754, every nonzero binary significand starts with a 1, so that
+bit is not stored: double precision keeps 52 bits but has precision $p = 53$
+(single precision: 23 stored, $p = 24$). For double precision, $\beta = 2$ and
+$p = 53$, giving $u = 2^{-53} \approx 1.11 \times 10^{-16}$. That means any
+real number is stored with a relative error no worse than about $1.1 \times
+10^{-16}$: roughly 16 significant decimal digits of accuracy.
 
 If you have access to Python, you can check your machine epsilon directly (\index{sys.float\_info}):
 
@@ -720,7 +719,7 @@ print(sys.float_info.epsilon)   # double precision machine epsilon
 \end{minted}
 
 Every machine running IEEE 754 double precision should return the same value:
-\texttt{2.220446049250313e-16}. This is twice the value of $u$ above, because the value of $u$ uses rounding to the nearest float, while Python reports the gap between $1$ and the next float, which is $2^{-52}$.
+\texttt{2.220446049250313e-16}. This is twice the value of $u$ above: Python reports the gap between $1$ and the next float, $2^{-52}$, while $u$ is half a gap, because rounding to the nearest float is never off by more than half the gap.
 
 \begin{Exercise}[title={Machine Epsilon}, label={ex:machine}]
 A base-10 floating-point system has precision $p = 6$ and uses rounding.
@@ -794,3 +793,24 @@ If the entropy of the data is high (i.e., the data is random and
 unpredictable), the potential for compression is low. On the other
 hand, if the entropy is low (the data is predictable), the data can be
 compressed to a smaller size.
+
+\textbf{Worked example.} A fair coin flip has $p(\text{heads}) = p(\text{tails}) = \frac{1}{2}$:
+$$H = -\left(\tfrac{1}{2}\log_2\tfrac{1}{2} + \tfrac{1}{2}\log_2\tfrac{1}{2}\right) = 1 \text{ bit}$$
+No scheme can store a long run of fair coin flips in less than 1 bit per
+flip. But a coin that lands heads 90\% of the time has
+$$H = -(0.9\log_2 0.9 + 0.1\log_2 0.1) \approx 0.47 \text{ bits}$$
+so a long record of its flips can be squeezed to less than half a bit per
+flip. Predictable data compresses well.
+
+\begin{Exercise}[title={Entropy of a Message}, label={ex:entropy}]
+A source sends the letter A half the time, and B and C a quarter of the
+time each. Compute its entropy. Then show that the code A = \texttt{0},
+B = \texttt{10}, C = \texttt{11} achieves it.
+\end{Exercise}
+\begin{Answer}[ref={ex:entropy}]
+$$H = -\left(\tfrac{1}{2}\log_2\tfrac{1}{2} + \tfrac{1}{4}\log_2\tfrac{1}{4} + \tfrac{1}{4}\log_2\tfrac{1}{4}\right) = \tfrac{1}{2}(1) + \tfrac{1}{4}(2) + \tfrac{1}{4}(2) = 1.5 \text{ bits}$$
+The code uses 1 bit half the time and 2 bits the other half, an average of
+$\frac{1}{2}(1) + \frac{1}{2}(2) = 1.5$ bits per letter, which matches the
+entropy. (Because no code word is the start of another, the bits can be
+decoded without spaces: \texttt{01011} is A, B, C.)
+\end{Answer}

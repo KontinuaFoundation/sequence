@@ -1,8 +1,13 @@
 \chapter{Span}
 \section{Spans of Vectors}
-Knowing whether two vectors are linearly dependent or independent allows us to 
-accurately describe the span of those two vectors (this expands to include any 
-number of vectors). In the previous chapter, we saw that linear combinations of 
+Imagine flying a drone whose controller has one stick that moves it
+forward and back. You can reach any spot on one straight line, and nowhere
+else. Add a second stick for left and right, and you can reach any point
+at that altitude: a whole plane. Add a third for up and down, and the
+whole sky is yours. Each stick is a vector, and the places you can reach
+are their \emph{span}.
+
+In the Linear Combinations chapter, we saw that linear combinations of 
 two linearly dependent vectors can only make vectors that lie on the same line 
 as the two starting vectors. We saw this in 2D, but it also applies to 3D 
 vectors. Consider the two vectors $\mathbf{u} = \left[ 2, 4, 3 \right]$ and 
@@ -38,7 +43,7 @@ vector guide/.style={dashed,black}]
 \label{fig:3d_vectors-span}
 \end{figure}
 \index{span}
-Notice that these two vectors are colinear (that is, they are on the same 
+Notice that these two vectors are collinear (that is, they are on the same 
 line), therefore they are linearly dependent and any combination of \textbf{u} 
 and \textbf{v} will lie on the same line as \textbf{u} and \textbf{v}. 
 Therefore, we say that \textit{the span of} \textbf{u} \textit{and} \textbf{v} \textit{\index{line!span of vectors}is a line}. In fact, if every vector in a list lies on one line through the origin, then the span of the list is that line, no matter how many vectors are in the list. 
@@ -201,7 +206,11 @@ $S = \{ \left[1, 2, 4 \right], \left[-2, -4, -8 \right] \}$ is a \textit{line}.
 \item Since the second vector is not a scalar multiple of the first, the span 
 of $S = \{ \left[2, 0, 0 \right], \left[0, 1, 3 \right] \}$ is a 
 \textit{plane}.
-\item The three vectors are linearly independent, since the determinant of the matrix with these rows is $-9 \neq 0$. Therefore, the span of $S = \{ \left[3, 0, 0 \right], \left[ 0, 
+\item Put the vectors in the rows of a matrix and row reduce:
+$$\vecb{3 & 0 & 0 \\ 0 & 3 & 3 \\ 3 & 3 & 2} \xrightarrow{R_3 - R_1}
+\vecb{3 & 0 & 0 \\ 0 & 3 & 3 \\ 0 & 3 & 2} \xrightarrow{R_3 - R_2}
+\vecb{3 & 0 & 0 \\ 0 & 3 & 3 \\ 0 & 0 & -1}$$
+Three pivots, so the vectors are linearly independent. Therefore, the span of $S = \{ \left[3, 0, 0 \right], \left[ 0, 
 3, 3 \right], \left[3, 3, 2 \right] \}$ is $\mathbb{R}^3$.
 \end{enumerate}
 \end{Answer}
@@ -212,17 +221,14 @@ Do the vectors $\left[ 1, 1, 0 \right]$, $\left[ 0, 1, 1 \right]$, and $\left[ 1
 \end{Exercise}
 
 \begin{Answer}[ref = span2]
-Put the three vectors in the rows of a matrix. Its determinant is $1(1 \cdot 1 - 1 \cdot 0) - 1(0 \cdot 1 - 1 \cdot 1) + 0 = 2$, which is not zero. So the three vectors are linearly independent, and their span is $\mathbb{R}^3$.
+Put the three vectors in the rows of a matrix and row reduce:
+$$\vecb{1 & 1 & 0 \\ 0 & 1 & 1 \\ 1 & 0 & 1} \xrightarrow{R_3 - R_1}
+\vecb{1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & -1 & 1} \xrightarrow{R_3 + R_2}
+\vecb{1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 2}$$
+Three pivots, so the three vectors are linearly independent, and their span is $\mathbb{R}^3$. (Soon you will see a faster test: the determinant.)
 \end{Answer}
 
 
 \section{Where to Learn More}
 Watch this video on \emph {Linear Combinations and Vector Spans from Khan 
 Academy}: \url{http://rb.gy/g1snk}
-
-The Wolfram Demonstrations website has a fun, interactive demo where you can 
-enter values for 2D and 3D matrices and see how the area or volume changes. 
-\url{https://demonstrations.wolfram.com/DeterminantsSeenGeometrically/#more}
-
-If you are curious about the \emph {Expansion of Minors}, see:
-\url {https://mathworld.wolfram.com/DeterminantExpansionbyMinors.html}

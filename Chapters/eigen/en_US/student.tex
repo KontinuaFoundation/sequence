@@ -1,6 +1,11 @@
 \chapter{Eigenvectors and Eigenvalues}
 
-Like many specialized disciplines, Linear Algebra uses many unfamiliar terms whose origins you might wonder about. Eigenvectors and eigenvalues are two of them. If you know German, you will recognize that eigen means inherent or a characteristic attribute. Named by the German mathematician David Hilbert, an eigenvector mathematically describes a characteristic feature of an object that remains unchanged after transformation. You can think of an eigenvector as a direction that does not change under a transformation. Each eigenvector has an eigenvalue, which tells how much the vector is scaled. Eigenvalues can be negative or positive. A negative value indicates the direction of the eigenvector is reversed.
+When a bridge sways in the wind, a guitar string vibrates, or Google ranks
+web pages, the math underneath is the same: eigenvectors. They are the
+directions a transformation leaves alone.
+
+\emph{Eigen} is German for ``own'' or ``characteristic.'' Named by the
+German mathematician David Hilbert, an eigenvector mathematically describes a characteristic feature of an object that remains unchanged after transformation. You can think of an eigenvector as a direction that does not change under a transformation. Each eigenvector has an eigenvalue, which tells how much the vector is scaled. Eigenvalues can be negative or positive. A negative value indicates the direction of the eigenvector is reversed.
 
 Eigenvalues and eigenvectors are a way to break down matrices, which can simplify many calculations and enable us to understand various properties of the matrix. They are widely used in physics and engineering for stability analysis, vibration analysis, and many other applications. \index{eigenvector} \index{eigenvalue}
 
@@ -8,7 +13,7 @@ Let us look at a visual example.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{eigensquirrel.png}
+    \includegraphics[width=0.8\textwidth]{EigenSquirrel.png}
     \caption{Standardized and skewed squirrel image.}
     \label{fig:eigensquirrel}
 \end{figure}
@@ -20,7 +25,7 @@ Think about a rubber sheet with a grid drawn on it. When you pull the sheet, mos
 When you overlay the vectors from one image over the other, you will notice that the horizontal vector, while the same direction in both images, is a bit longer in the skewed version. The scale of the stretch is described by an eigenvalue.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{overlaysquirrel.png}
+    \includegraphics[width=0.4\textwidth]{OverlaySquirrel.png}
     \caption{Standardized and skewed squirrel image overlaid on each other.}
     \label{fig:overlaysquirrel}
 \end{figure}
@@ -93,18 +98,19 @@ $$\begin{bmatrix}
 
 The characteristic equation is: 
 $$|A - \lambda I| = 0$$ 
-$$\begin{bmatrix}
+$$\begin{vmatrix}
 5 - \lambda & 4\\
  1 & 2- \lambda
-\end{bmatrix} = 0$$
+\end{vmatrix} = 0$$
 $$(5 - \lambda) (2 - \lambda) - (4)(1) = 0$$
 $$10 - 5\lambda - 2\lambda + \lambda^2 - 4 = 0$$
 $$\lambda^2 - 7\lambda + 6 = 0$$
 $$(\lambda - 6)(\lambda - 1) = 0$$
 $$\lambda = 6, \lambda = 1$$
-Now that you have the eigen values you can substitute these values into the equation: 
-$$|A - \lambda I| = 0$$ 
-For $λ = 1$:
+Now that you have the eigenvalues, substitute each one into
+$(A - \lambda I)\vec{v} = \vec{0}$ and solve for $\vec{v}$.
+
+For $\lambda = 1$:
 $$(A - \lambda I) v = \vec{0}$$
 $$\begin{bmatrix}
 5-1 & 4 \\
@@ -221,7 +227,7 @@ Expand as an equation:
 
 $$-x + 4y = 0$$
 
-$$\text{Assume} y = w$$
+Let $y = w$:
 
 $$-x + 4w = 0$$
 
@@ -372,25 +378,43 @@ x_1 \\ x_2
 \end{cases}$$
 This results in $x_{2}= -2x_{1}$, meaning $\mathbf e_{2}= \begin{bmatrix}1 \\ -2\end{bmatrix}$.
 \end{Answer}
-\section{Eigenvalues and Eigenvectors in Python}
-Create a file called \filename{vectors\_eigen.py} and enter this code:
+\section{Eigenvalues and Eigenvectors in Python}\index{numpy!eig}
+NumPy's \pyfunction{np.linalg.eig} finds eigenvalues and eigenvectors for
+you. Let us check the first example in this chapter. Create
+\filename{eigen.py}:
 
 \begin{minted}{python}
-# import numpy to perform operations on vector
 import numpy as np
-from numpy.linalg import eig \index{numpy!eig}
 
-a = np.array([[2, 2, 4], 
-              [1, 3, 5],
-              [2, 3, 4]])
-eigenvalue,eigenvector = eig(a) #return a tuple of eigenvalues [l1, l2,..., ln], eigenvectors [ [...], [...], ...]
+A = np.array([[5, 4],
+              [1, 2]])
+values, vectors = np.linalg.eig(A)
 
-# The values are not in any particular order
-print('Eigenvalues:', eigenvalue)
+print("Eigenvalues:", values)
+print("Eigenvectors (one per column):")
+print(vectors)
 
-# The eig function returns the normalize vectors
-print('Eigenvectors:', eigenvector)
+# Check the first pair: A v should equal lambda v
+v = vectors[:, 0]
+print(A @ v, values[0] * v)
 \end{minted}
+
+You should see:
+\begin{minted}{text}
+Eigenvalues: [6. 1.]
+Eigenvectors (one per column):
+[[ 0.9701425  -0.70710678]
+ [ 0.24253563  0.70710678]]
+[5.820855   1.45521375] [5.820855   1.45521375]
+\end{minted}
+(Some versions of NumPy print these as complex numbers, like \texttt{6.+0.j};
+the \texttt{+0.j} just means the imaginary part is zero.)
+
+NumPy scales each eigenvector to length 1. The first column,
+$[0.970, 0.243]$, is $\frac{1}{\sqrt{17}}[4, 1]$: the same direction as the
+eigenvector $[4, 1]$ we found by hand. The second is $\frac{1}{\sqrt{2}}[-1,
+1]$. Remember that any nonzero multiple of an eigenvector is also an
+eigenvector.
 
 \section{Connection to transformations}
 In the previous chapter, we studied matrix transformations such as scaling, reflection, shear, and rotation. Each of these transformations changes vectors in space by stretching, shrinking, flipping, or rotating them. Most vectors change both their length and/or their direction under such transformations.

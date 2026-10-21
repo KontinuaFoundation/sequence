@@ -224,6 +224,8 @@ while (i < 5) {
 In C, you must declare the return type and the type of each parameter:
 
 \begin{minted}{c}
+#include <stdio.h>
+
 double square(double x)
 {
     return x * x;
@@ -251,6 +253,8 @@ provide a \index{forward declaration}\emph{forward declaration} (just the signat
 semicolon) above \texttt{main}:
 
 \begin{minted}{c}
+#include <stdio.h>
+
 double square(double x);   /* forward declaration */
 
 int main()
@@ -468,7 +472,7 @@ Fraction part: 0.140000
 Here is another way to think about it.  Imagine you need to give a spy
 an assignment.  You say: ``I have left a length of steel pipe at the foot
 of the angel statue in the park.  When you have the information, roll
-it up and leave it in the pipe.  I'll pick it up Tuesday.''  In the spy
+it up and leave it in the pipe.  I will pick it up Tuesday.''  In the spy
 business, this is called a \emph{dead drop}.
 
 Pass-by-reference works the same way.  You are not giving the function
@@ -728,32 +732,110 @@ to a heap-allocated struct.  When Python's garbage collector determines
 that nothing points to an object anymore, it calls the equivalent of
 \texttt{free} to release that memory.
 
-The next chapter introduces C++ classes, and with this memory model
-in hand, you will implement linked lists, trees, and hash tables from
-scratch.
+The next chapter moves to C++ and, with this memory model in hand, builds
+linked lists from scratch.
 
 \section{Exercises}
 
-\begin{enumerate}
+\begin{Exercise}[title={Temperature Conversion}, label=c_temp]
+Write a C function \texttt{celsiusToFahrenheit} that takes a
+\texttt{double} temperature in Celsius and returns the equivalent in
+Fahrenheit. Call it from \texttt{main} for the values 0, 20, 37, and 100,
+and print each result.
+\end{Exercise}
+\begin{Answer}[ref=c_temp]
+\begin{minted}{c}
+#include <stdio.h>
 
-\item Write a C function \texttt{celsiusToFahrenheit} that takes a
-  \texttt{double} temperature in Celsius and returns the equivalent in
-  Fahrenheit.  Call it from \texttt{main} for the values 0, 20, 37,
-  and 100, and print each result.
+double celsiusToFahrenheit(double c)
+{
+    return c * 9.0 / 5.0 + 32.0;
+}
 
-\item Write a function \texttt{swap} that takes two \texttt{int}
-  pointers and swaps the values at the two addresses.  Test it so that
-  after calling \texttt{swap(\&a, \&b)}, the values of \texttt{a} and
-  \texttt{b} have been exchanged.
+int main()
+{
+    double temps[] = {0, 20, 37, 100};
+    for (int i = 0; i < 4; i++) {
+        printf("%.1f C = %.1f F\n", temps[i], celsiusToFahrenheit(temps[i]));
+    }
+    return 0;
+}
+\end{minted}
+The output ends with \texttt{100.0 C = 212.0 F}. (Note \texttt{9.0 / 5.0},
+not \texttt{9 / 5}: in C, dividing two \texttt{int}s throws away the
+remainder, so \texttt{9 / 5} is \texttt{1}.)
+\end{Answer}
 
-\item Write a struct \texttt{Point} with \texttt{double} members
-  \texttt{x} and \texttt{y}.  Write a function \texttt{distance} that
-  takes two \texttt{struct Point *} pointers and returns the Euclidean
-  distance between them.  Allocate two points on the heap, fill in
-  their coordinates, print the distance, and then free the memory.
+\begin{Exercise}[title={Swap}, label=c_swap]
+Write a function \texttt{swap} that takes two \texttt{int} pointers and
+swaps the values at the two addresses. Test it so that after calling
+\texttt{swap(\&a, \&b)}, the values of \texttt{a} and \texttt{b} have
+been exchanged.
+\end{Exercise}
+\begin{Answer}[ref=c_swap]
+\begin{minted}{c}
+#include <stdio.h>
 
-\item \textbf{Memory leak hunt.}  The following program has a memory
-  leak.  Identify and fix it.
+void swap(int *p, int *q)
+{
+    int temp = *p;
+    *p = *q;
+    *q = temp;
+}
+
+int main()
+{
+    int a = 3, b = 7;
+    swap(&a, &b);
+    printf("a = %d, b = %d\n", a, b);   /* a = 7, b = 3 */
+    return 0;
+}
+\end{minted}
+\end{Answer}
+
+\begin{Exercise}[title={Distance Between Points}, label=c_point]
+Write a struct \texttt{Point} with \texttt{double} members \texttt{x} and
+\texttt{y}. Write a function \texttt{distance} that takes two
+\texttt{struct Point *} pointers and returns the Euclidean distance between
+them. Allocate two points on the heap, fill in their coordinates, print the
+distance, and then free the memory.
+\end{Exercise}
+\begin{Answer}[ref=c_point]
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+struct Point {
+    double x;
+    double y;
+};
+
+double distance(struct Point *p, struct Point *q)
+{
+    double dx = q->x - p->x;
+    double dy = q->y - p->y;
+    return sqrt(dx * dx + dy * dy);
+}
+
+int main()
+{
+    struct Point *a = malloc(sizeof(struct Point));
+    struct Point *b = malloc(sizeof(struct Point));
+    a->x = 1; a->y = 2;
+    b->x = 4; b->y = 6;
+    printf("distance = %f\n", distance(a, b));   /* 5.000000 */
+    free(a);
+    free(b);
+    return 0;
+}
+\end{minted}
+Compile with \texttt{gcc point.c -o point -lm}; the \texttt{-lm} links the
+math library that provides \texttt{sqrt}.
+\end{Answer}
+
+\begin{Exercise}[title={Memory Leak Hunt}, label=c_leak]
+The following program has a memory leak. Identify and fix it.
 
 \begin{minted}{c}
 #include <stdio.h>
@@ -778,12 +860,23 @@ int main()
     return 0;
 }
 \end{minted}
+\end{Exercise}
+\begin{Answer}[ref=c_leak]
+Each call to \texttt{printValue} allocates a \texttt{Node} on the heap,
+but nothing ever frees it. When the function returns, the pointer
+\texttt{n} disappears with the stack frame, and the heap memory can never
+be reached again. Five calls leak five nodes. The fix is to add
+\texttt{free(n);} after the \texttt{printf} in \texttt{printValue}. (Even
+better: a single \texttt{int} does not need the heap at all.)
+\end{Answer}
 
-\item A \texttt{struct tm} is defined in \texttt{<time.h>} and holds a
-  broken-down calendar time.  The function \texttt{time(NULL)} returns the number of seconds since the Unix epoch, midnight UTC on January 1, 1970.
-  The function \texttt{localtime\_r(\&seconds, \&now)} fills a
-  \texttt{struct tm} with the corresponding date and time.  Here is a
-  snippet to get you started:
+\begin{Exercise}[title={What Time Is It?}, label=c_time]
+A \texttt{struct tm} is defined in \texttt{<time.h>} and holds a
+broken-down calendar time. The function \texttt{time(NULL)} returns the
+number of seconds since the Unix epoch, midnight UTC on January 1, 1970.
+The function \texttt{localtime\_r(\&seconds, \&now)} fills a
+\texttt{struct tm} with the corresponding date and time. Here is a snippet
+to get you started:
 
 \begin{minted}{c}
 #include <stdio.h>
@@ -791,7 +884,7 @@ int main()
 
 int main()
 {
-    long secondsSince1970 = time(NULL);
+    time_t secondsSince1970 = time(NULL);
     struct tm now;
     localtime_r(&secondsSince1970, &now);
     printf("The time is %d:%d:%d\n",
@@ -800,9 +893,26 @@ int main()
 }
 \end{minted}
 
-  Look up the other fields of \texttt{struct tm} and modify the
-  program to print today's full date.  Then modify it to print the
-  date that falls exactly 4,000,000 seconds from now.  (Hint:
-  \texttt{tm\_mon} is 0-indexed, so January is 0.)
+Look up the other fields of \texttt{struct tm} and modify the program to
+print today's full date. Then modify it to print the date that falls
+exactly 4,000,000 seconds from now. (Hints: \texttt{tm\_mon} is
+0-indexed, so January is 0, and \texttt{tm\_year} counts years since
+1900.)
+\end{Exercise}
+\begin{Answer}[ref=c_time]
+\begin{minted}{c}
+#include <stdio.h>
+#include <time.h>
 
-\end{enumerate}
+int main()
+{
+    time_t seconds = time(NULL) + 4000000;
+    struct tm later;
+    localtime_r(&seconds, &later);
+    printf("In 4,000,000 seconds it will be %d-%02d-%02d\n",
+           later.tm_year + 1900, later.tm_mon + 1, later.tm_mday);
+    return 0;
+}
+\end{minted}
+4,000,000 seconds is about 46.3 days.
+\end{Answer}

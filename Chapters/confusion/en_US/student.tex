@@ -1,5 +1,9 @@
 \chapter{Evaluating Classification Systems}
 
+A model that predicts ``no one has the flu'' is right most days in July. That
+does not make it a good model. To judge a classifier, you need to count not just
+how often it is right, but \emph{how} it is wrong. This chapter shows you how.
+
 \section{The Confusion Matrix}\index{confusion matrix}
 A \newterm{confusion matrix} compares a classifier's predictions with the true classes.
 For a binary problem, one class is called positive and the other negative. The four cells are:
@@ -50,7 +54,10 @@ For this reason, accuracy alone can hide a poor classifier, especially when one 
 The right metric depends on the cost of each error. For a screening test, a missed case
 (a false negative) is often the more serious error, so recall matters most. For a spam
 filter, a false positive means a real email is lost, so precision matters most. The
-$F_1$ score balances the two, and it is useful when both matter. Think of a metal detector at a school entrance. A false positive stops a student by mistake, and a false negative lets a weapon through. The school cares more about the second error, so it wants high recall.
+$F_1$ score balances the two, and it is useful when both matter. Think of a smoke detector. A false positive means burnt toast sets off the alarm.
+A false negative means a real fire goes unnoticed. The second error is far worse,
+so smoke detectors are built for high recall, and we put up with the occasional
+toast alarm.
 
 \begin{Exercise}[label=conf1, title=Compute the metrics]
 A classifier has $TP = 30$, $FP = 5$, $FN = 15$, and $TN = 50$. Compute the accuracy and the precision.

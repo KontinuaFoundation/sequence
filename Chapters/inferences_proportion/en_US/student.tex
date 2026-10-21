@@ -45,7 +45,7 @@ more certainty at the cost of being precise. That tradeoff is captured by
 a single number called the \newterm{critical value}\index{critical value},
 written $z^*$.
 
-Let’s say a city council wants to estimate the proportion of residents who
+Suppose a city council wants to estimate the proportion of residents who
 support building a new network of bike lanes. Before collecting any data,
 they need to decide how confident they want to be in their eventual
 estimate, say 95\%. That confidence level determines $z^*$.
@@ -57,12 +57,13 @@ left is 0.975. Using a standard normal table or a calculator's inverse
 normal function, $z^* \approx 1.96$.
 
 If the city council instead wanted 99\% confidence, would $z^*$ be larger
-or smaller than 1.96?
+or smaller than 1.96? (Larger: to catch the true value 99\% of the time,
+the interval must reach farther out. For 99\%, $z^* \approx 2.576$.)
 
 Once we have $z^*$, we still need to decide how precise we want our estimate
 to be. An interval can technically be true and still be worthless. If the
 council's confidence interval for bike lane support turned out to be
-"somewhere between 5\% and 95\%,” that would be almost useless for making a
+``somewhere between 5\% and 95\%,'' that would be almost useless for making a
 decision, even if it is a perfectly valid 95\% confidence interval. The
 width of a useful interval, called the margin of error, depends on how large
 a sample the council collects. Larger samples produce narrower, more
@@ -128,3 +129,112 @@ is the process of using information from a sample to answer a specific
 question or make a decision about a population parameter, and a
 \newterm{test of significance}\index{test of significance} is the tool built
 for exactly this kind of question.
+
+\subsection{The Logic of a Significance Test}
+
+A streaming service offers a free trial. Historically, 20\% of trial users
+convert to paying subscribers. The company redesigns its sign-up page and
+wants to know: did the conversion rate go up?
+
+A significance test starts by assuming nothing changed, then asks whether
+the data would be surprising under that assumption.
+\begin{itemize}
+\item The \newterm{null hypothesis}\index{null hypothesis}, $H_0$, is the
+``nothing changed'' claim: $H_0: p = 0.20$.
+\item The \newterm{alternative hypothesis}\index{alternative hypothesis},
+$H_a$, is what we are looking for evidence of: $H_a: p > 0.20$. (If we
+cared about a change in either direction, we would write $H_a: p \neq
+0.20$, a \emph{two-sided} test.)
+\end{itemize}
+
+After the redesign, a random sample of $n = 400$ trial users shows 98
+conversions, so $\hat{p} = 0.245$. That is higher than 0.20, but samples
+vary. Could a jump this big happen by chance if the true rate were still
+20\%?
+
+\subsection{The Test Statistic and the p-value}\index{test statistic}\index{p-value}
+
+If $H_0$ is true, $\hat{p}$ is approximately normal with mean $p_0 = 0.20$
+and standard deviation $\sqrt{\frac{p_0(1-p_0)}{n}}$. (Notice that we use
+$p_0$, the value from $H_0$, not $\hat{p}$. The conditions are the same
+as before, but the large-counts check uses $p_0$: $np_0 = 80 \geq 10$ and
+$n(1-p_0) = 320 \geq 10$.) The \newterm{test statistic} measures how many
+standard deviations $\hat{p}$ is from $p_0$:
+$$z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}} = \frac{0.245 - 0.20}{\sqrt{\frac{(0.2)(0.8)}{400}}} = \frac{0.045}{0.02} = 2.25$$
+
+The \newterm{p-value} is the probability, assuming $H_0$ is true, of getting
+a result at least as extreme as the one observed. Here that is $P(Z \geq
+2.25) \approx 0.012$. If the redesign did nothing, only about 1.2\% of
+samples would show a conversion rate this high.
+
+\subsection{Making a Decision}\index{significance level}
+
+Before collecting data, we choose a \newterm{significance level} $\alpha$,
+the cutoff for ``too surprising to be chance.'' The most common choice is
+$\alpha = 0.05$.
+\begin{itemize}
+\item If the p-value $< \alpha$, \textbf{reject $H_0$}: the data give
+convincing evidence for $H_a$.
+\item If the p-value $\geq \alpha$, \textbf{fail to reject $H_0$}: the data
+do not give convincing evidence for $H_a$. (This does \emph{not} prove
+$H_0$ is true.)
+\end{itemize}
+Since $0.012 < 0.05$, we reject $H_0$. There is convincing evidence that
+the redesign raised the conversion rate above 20\%.
+
+In Python:
+\begin{minted}{python}
+from scipy.stats import norm
+import math
+
+p0, n, successes = 0.20, 400, 98
+p_hat = successes / n
+z = (p_hat - p0) / math.sqrt(p0 * (1 - p0) / n)
+p_value = 1 - norm.cdf(z)          # one-sided, H_a: p > p0
+print(round(z, 3), round(p_value, 4))   # 2.25 0.0122
+\end{minted}
+In Excel, the p-value is \texttt{=1-NORM.S.DIST(2.25, TRUE)}. For a
+two-sided test, double the one-sided tail area.
+
+\subsection{Type I and Type II Errors}\index{Type I error}\index{Type II error}
+
+Because tests rely on samples, they can be wrong in two ways:
+\begin{itemize}
+\item A \newterm{Type I error} is rejecting $H_0$ when it is actually true:
+concluding the redesign helped when it did not. The probability of a Type I
+error is $\alpha$.
+\item A \newterm{Type II error} is failing to reject $H_0$ when $H_a$ is
+actually true: missing a real improvement.
+\end{itemize}
+The \newterm{power}\index{power} of a test is the probability of correctly
+rejecting $H_0$ when $H_a$ is true. Power goes up with a larger sample size,
+a bigger true effect, or a larger $\alpha$. For example, if the redesign
+really raised the conversion rate to 25\%, this test (with $n = 400$ and
+$\alpha = 0.05$) would detect it about 79\% of the time; the other 21\% of
+the time it would make a Type II error.
+
+\begin{Exercise}[title={The Cafeteria Survey}, label=prop_test1]
+The cafeteria claims that 60\% of students like the new menu. The student
+council surveys a random sample of 150 students, and 81 say they like it.
+At $\alpha = 0.05$, is there convincing evidence that the true proportion
+differs from 60\%?
+\end{Exercise}
+\begin{Answer}[ref=prop_test1]
+$H_0: p = 0.60$ and $H_a: p \neq 0.60$. The conditions hold: $np_0 = 90$
+and $n(1-p_0) = 60$ are both at least 10. $\hat{p} = \frac{81}{150} = 0.54$, and
+$$z = \frac{0.54 - 0.60}{\sqrt{\frac{(0.6)(0.4)}{150}}} = \frac{-0.06}{0.04} = -1.5$$
+The two-sided p-value is $2P(Z \leq -1.5) \approx 0.134$. Since $0.134 >
+0.05$, fail to reject $H_0$. The survey does not give convincing evidence
+that the true proportion differs from 60\%.
+\end{Answer}
+
+\begin{Exercise}[title={Name the Error}, label=prop_test2]
+In the streaming-service example, suppose the redesign actually had no
+effect, but the test rejected $H_0$ anyway. What kind of error is this, and
+what is its consequence for the company?
+\end{Exercise}
+\begin{Answer}[ref=prop_test2]
+A Type I error: rejecting a true $H_0$. The company would believe the
+redesign works and might spend money rolling it out, even though it does
+not help.
+\end{Answer}

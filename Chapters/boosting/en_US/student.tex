@@ -27,9 +27,17 @@ $0.5$, and each correct point has weight $\frac{1}{6} \approx 0.167$. The next l
 \newterm{Gradient boosting} generalizes this idea to any differentiable loss. Each new tree is fit to the negative gradient of the loss at the
 current predictions. For squared-error loss, this gradient is just the residual, so each tree is fit to the errors of the ensemble so far.
 
+\textbf{Example}: Three houses sell for 3, 5, and 10 (in hundreds of thousands of dollars).
+Start by predicting the mean, 6, for every house. The residuals are $-3$, $-1$, and $4$.
+Suppose the first tree learns these residuals exactly. With a learning rate of $0.5$, each
+prediction moves halfway toward its target: $6 + 0.5(-3) = 4.5$, $6 + 0.5(-1) = 5.5$, and
+$6 + 0.5(4) = 8$. The new residuals are $-1.5$, $-0.5$, and $2$, half as big. The next tree
+fits these, and so on.
+
 \section{Cautions}
 Boosting can overfit if the number of rounds is too large. The validation set is used to choose the number of rounds, and the
-learning rate is usually made small to slow the fit.
+learning rate (the fraction of each tree's correction that is actually applied) is usually made
+small to slow the fit.
 
 \begin{Exercise}[label=bst1, title=Compute alpha]
 A weak learner has weighted error $\varepsilon = 0.1$. What is $\alpha$?
@@ -44,3 +52,12 @@ After a round of AdaBoost, which points have their weights increased?
 \begin{Answer}[ref=bst2]
 The points that were misclassified by $h_t$. Since $y_i h_t(x_i) = -1$ for those points, $e^{-\alpha_t y_i h_t(x_i)} = e^{\alpha_t} > 1$.
 \end{Answer}
+
+\begin{Exercise}[label=bst3, title=A coin-flip learner]
+A weak learner has weighted error $\varepsilon = 0.5$. What is $\alpha$, and what does that mean?
+\end{Exercise}
+\begin{Answer}[ref=bst3]
+$\alpha = \frac{1}{2}\ln\frac{0.5}{0.5} = \frac{1}{2}\ln 1 = 0$. A learner that does no better than
+flipping a coin gets no vote in the final classifier.
+\end{Answer}
+

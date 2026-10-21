@@ -1,7 +1,11 @@
 \chapter{Definite Integrals}
 \index{definite integral}
-Integrals are a fundamental concept in calculus. They are used to
-calculate areas, volumes, and many other things. A definite integral
+Your car's odometer is doing calculus. Every instant, it takes your
+speed, multiplies by a tiny slice of time, and adds the result to the
+running total. That running total of ``rate times a little bit'' is an
+\emph{integral}, and in this chapter you will learn what it means and how
+to use its properties. Integrals measure areas, volumes, distances,
+energy, and much more. A definite integral
 calculates the \index{net area}net area between the function and the x-axis over a
 given interval.
 
@@ -109,14 +113,12 @@ then the width of the area ($\Delta x$) is zero, and therefore the
 area is also zero. Let us prove this formally. 
 
 Recall that $\int_a^b f(x)\,dx = \lim_{n\to \infty} \sum_{i = 1}^{n}
-f(x_i)\Delta x$, where $\Delta x = \frac{b - a}{n}$ and $x_i = a + i
-\Delta x$. To evaluate the integral when $b = a$, we will take the 
-limit of the limit: $$\lim_{b \to a} \lim_{n \to \infty}f(x_i)
-\frac{b - a}{n}$$ This can be rewritten as $$\lim_{b \to a} (b - a) 
-\lim_{n \to \infty}\frac{f(x_i)}{n}$$ We know that $\lim_{b \to a}
-(b - a) = (a - a) = 0$, and therefore $$\int_a^a f(x)\,dx = 0 \cdot 
-\lim_{n \to \infty}\frac{f(x_i)}{n} = 0$$ This is true for any 
-function. 
+f(x_i)\Delta x$, where $\Delta x = \frac{b - a}{n}$. When $b = a$, every
+rectangle has width $\Delta x = \frac{a - a}{n} = 0$, so every term in the
+sum is $f(x_i) \cdot 0 = 0$. The sum is 0 for every $n$, and so is the
+limit:
+$$\int_a^a f(x)\,dx = 0$$
+This is true for any function.
 
 Note that when $a=b$, the integral just becomes a line. From geometry we also know that 
 a line has no area, as the width or $dx$ is 0. 
@@ -244,7 +246,7 @@ x + \lim_{n \to \infty} \sum_{i = 1}^n g(x_i) \Delta x$$ $$ =
 \int_a^b f(x)\,dx + \int_a^b g(x)\,dx$$
 
 Similar to the addition property, the integral of the difference 
-between two function is equal to the difference of the integrals of 
+between two functions is equal to the difference of the integrals of 
 two functions. $$\int_a^b [f(x) - g(x)]\,dx = \int_a^b f(x)\,dx - 
 \int_a^b g(x)\,dx$$. This is more difficult to visualize than addition, 
 but we can easily prove it by applying the constant multiple and 
@@ -332,10 +334,10 @@ M(b -a)$ if $m \leq f(x)$ and $M \geq f(x)$ on the interval $x \in
 
 \subsection{Other Properties of Integrals}
 If $f(x) \geq 0$ over the interval $a \leq x \leq b$, then $\int_a^b 
-f(x)\,dx >0$. We can make an intuitive, geometric argument to support 
+f(x)\,dx \geq 0$. We can make an intuitive, geometric argument to support 
 this claim. Recall that areas above the $x$-axis are considered 
 positive. If $f(x) \geq 0$, then all the area of the integral lies 
-above the $x$-axis, therefore, the total area must be positive. 
+above the $x$-axis, therefore, the total cannot be negative. 
 
 Similarly, if $f(x) \geq g(x)$ on the interval $a \leq x \leq b$, 
 then $\int_a^b f(x)\,dx \geq \int_a^b g(x)\,dx$ (see figure 
@@ -422,14 +424,14 @@ is $10 - 8 = 2$ meters.
 When you push on something to move it, you are applying a force over 
 a distance (assuming you are strong enough to move it!). The integral 
 of force as a function of distance is the \index{work!integral}\textit{work} done on that 
-object.  Work is the change in kinetic energy (KE) of an object. 
+object. If it is the only force acting, the work equals the change in the object's kinetic energy (KE). 
 Mathematically, this is $$\int_{a}^{b} F(x)\,dx = \Delta KE = 
-\frac{1}{2} m (v_f^2 - v_i^2)$$.
+\frac{1}{2} m (v_f^2 - v_i^2)$$
 
 If you integrate the force as a function of time, that is 
 \index{impulse}\textit{impulse}. Impulse is the change in momentum (p) of the 
 object. Mathematically, this is $$\int_{a}^{b} F(t)\,dt = \Delta p 
-= m (v_f - v_i)$$.
+= m (v_f - v_i)$$
 
 Example problem: You push a 3 kg box with force $F(x) = 0.5x$, where 
 $x$ is measured in meters and $F$ is measured in Newtons. If the box 
@@ -472,11 +474,11 @@ of integrals to evaluate $\int_{0}^{1} (5-6x^2)\,dx$.
 \end{Exercise}
 
 \begin{Answer}[ref=defint2]
-By property 6, we know that $$\int_{0}^{1} (5-6x^2)\,dx = \int_{0}^{1} 
+By the difference property, $$\int_{0}^{1} (5-6x^2)\,dx = \int_{0}^{1} 
 5\,dx - \int_{0}^{1} 6x^2\,dx$$\\
-By property 5, we know that $$\int_{0}^{1} 5\,dx - \int_{0}^{1} 6x^2\,
+By the constant multiple property, $$\int_{0}^{1} 5\,dx - \int_{0}^{1} 6x^2\,
 dx = \int_{0}^{1} 5\,dx - 6\int_{0}^{1} x^2\,dx$$\\
-By property 3, we know that $$\int_{0}^{1} 5\,dx = 5(1 - 0) = 5$$\\
+By the integral of a constant, $$\int_{0}^{1} 5\,dx = 5(1 - 0) = 5$$\\
 Putting it all together, we see that $$\int_{0}^{1} (5-6x^2)\,dx = 5 
 - 6(\frac{1}{3}) = 5 - 2 = 3$$
 \end{Answer}

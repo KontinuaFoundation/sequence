@@ -1,15 +1,15 @@
 \chapter{Linear Combinations of Vectors}
 
-In the introductory linear algebra chapter, you learned that vectors and 
-matrices can be rotated, inverted, and added. In this chapter, we will explore 
-linear combinations of vectors and the span of group of vectors. The 
-\textbf{span}\index{span} of a group of vectors is the set of vectors that can 
-be made with linear combinations of the original group of vectors. We will 
-offer mathematical and visual explanations later in the chapter. First, let us 
-examine linear combinations. 
+A smoothie shop sells two blends. A cup of the berry blend has 2 g of
+protein and 30 g of sugar; a cup of the green blend has 4 g of protein and
+10 g of sugar. Write each as a vector, $[2, 30]$ and $[4, 10]$. If you mix
+2 cups of berry with 1 cup of green, you get
+$2[2, 30] + 1[4, 10] = [8, 70]$. Could you mix them to get exactly 10 g of
+protein and 50 g of sugar? Questions like this are what this chapter is
+about.
 
-A \emph{linear combination}\index{linear combination} is simply the addition of vectors with leading scalar 
-multipliers. In algebra, we can express polynomials similar to the form $5x + -4y$. In linear algebra, we do this with a vectors: $3 \begin{bmatrix}
+A \emph{linear combination}\index{linear combination} of vectors is a sum
+of vectors, each multiplied by a number. For example, $3 \begin{bmatrix}
     2 \\ -1
 \end{bmatrix} + 2 \begin{bmatrix}
     3 \\ 5
@@ -18,7 +18,8 @@ a linear combination of the vectors $\begin{bmatrix}
     2 \\ -1
 \end{bmatrix}$ and $\begin{bmatrix}
     3 \\ 5
-\end{bmatrix}$. Another way to say this is:
+\end{bmatrix}$. The set of all the vectors you can make this way is called
+the \textbf{span}\index{span} of the vectors. Formally:
 \index{linear combination of vectors}
 \index{linear combinations}
 \begin{mdframed}[style = important, frametitle = {Linear Combination of 
@@ -69,10 +70,11 @@ $$-18 + 4 a_2 = 2$$
 $$4 a_2 = 20$$
 $$a_2 = 5$$
 
-Since we used all 3 equations, we know $a_1 = 6$ and $a_2 = 5$ are solutions 
-to all 3 equations. If we had only used the first two equations to find $a_1$ 
-and $a_2$, we would want to substitute our values back into the third equation 
-to make sure our solution holds for that equation also. 
+We found $a_1$ from the first two equations combined and $a_2$ from the
+third, so we must check that both values also satisfy the first two
+equations: $2(6) + 5 = 17$ and $6 - 2(5) = -4$. They do. Always check
+every equation: three equations in two unknowns might have no solution at
+all, as you will see shortly.
 
 Therefore,
 $$
@@ -90,7 +92,6 @@ vector.
 \item $\vecb{9 \\ 4}$, $\vecb{0 \\ 1}$, $\vecb{-5 \\ 3}$
 \item $\vecb{7 \\ -2}$, $\vecb{-8 \\ 4}$, $\vecb{6 \\ -2}$
 \end{enumerate}
-\vspace{50mm}
 \end{Exercise}
 
 \begin{Answer}[ref = combo]
@@ -265,7 +266,7 @@ vectors to reach $y = 4$ (see figure \ref{fig:just_u}). Next, we can use
             \draw[red, dashed, -latex] (0,0) -- (-1, 4);
         \end{axis}
     \end{tikzpicture}
-    \subcaption{To create vector $\vecb{4 \\ -2}$ with $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = \vecb{2 \\ 0}$, we begin by adding two 
+    \subcaption{To create vector $\vecb{-1 \\ 4}$ with $\textbf{u} = \vecb{1 \\ 2}$ and $\textbf{v} = \vecb{2 \\ 0}$, we begin by adding two 
     \textbf{u} vectors to reach a $y$-value of 4.}
     \label{fig:just_u}
 \end{minipage}
@@ -355,7 +356,7 @@ But now we run into a problem: no matter how many multiples of \textbf{q} vector
 subtract, we just move along the \textbf{p} vector and never reach our goal of 
 $\vecb{-1 \\ 4}$ (see figure \ref{fig:fail}). Notice that \textbf{p} and 
 \textbf{q} lie on the same line, (for a better visualization, refer back to 
-\ref{fig:p_and_q}). In other words, the vectors are \emph{scalar multiples} of each other: $\vecb{2 \\ 2} = -2\cdot \vecb{-1 \\ -1}$. When two vectors lie on the same line or a scalar multiples of each other, we call them 
+\ref{fig:p_and_q}). In other words, the vectors are \emph{scalar multiples} of each other: $\vecb{2 \\ 2} = -2\cdot \vecb{-1 \\ -1}$. When two vectors lie on the same line, so that one is a scalar multiple of the other, we call them 
 \textit{linearly dependent}\index{linearly dependent}. 
 
 \begin{figure}[H]
@@ -394,6 +395,40 @@ $\vecb{-1 \\ 4}$ (see figure \ref{fig:fail}). Notice that \textbf{p} and
     \label{fig:fail}
 \end{figure}
 % section on linear dependence of vectors moved to dependence chapters
-FIXME add summary
+\textbf{Back to the smoothies.} To get 10 g of protein and 50 g of sugar,
+solve $a_1[2, 30] + a_2[4, 10] = [10, 50]$: $2a_1 + 4a_2 = 10$ and $30a_1
++ 10a_2 = 50$. The solution is $a_1 = 1$ and $a_2 = 2$: one cup of berry
+and two cups of green. Because $[2, 30]$ and $[4, 10]$ are not multiples
+of each other, they span $\mathbb{R}^2$, and you can hit any target (as
+long as you allow negative cups, which the shop does not).
+
+\begin{Exercise}[title={Span or Not?}, label=lc_span]
+Do the vectors span $\mathbb{R}^2$? If not, describe the set of vectors
+they do span.
+\begin{enumerate}
+\item $\vecb{3 \\ 1}$ and $\vecb{-6 \\ -2}$
+\item $\vecb{1 \\ 1}$ and $\vecb{1 \\ -1}$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=lc_span]
+\begin{enumerate}
+\item No. $\vecb{-6 \\ -2} = -2\vecb{3 \\ 1}$, so they are linearly
+dependent. They span only the line through the origin in the direction of
+$\vecb{3 \\ 1}$: the line $y = \frac{x}{3}$.
+\item Yes. They are not multiples of each other. (For any $\vecb{a \\ b}$,
+take $\frac{a + b}{2}\vecb{1 \\ 1} + \frac{a - b}{2}\vecb{1 \\ -1}$.)
+\end{enumerate}
+\end{Answer}
+
+\section{Summary}
+\begin{itemize}
+\item A linear combination is a sum of scalar multiples of vectors.
+\item Asking whether $\mathbf{w}$ is a linear combination of $\mathbf{v}_1$
+and $\mathbf{v}_2$ is the same as asking whether a system of equations has
+a solution.
+\item The span of a set of vectors is everything you can build from them.
+Two vectors in $\mathbb{R}^2$ that are not multiples of each other span
+the whole plane; two that are multiples span only a line.
+\end{itemize}
 
 In the next chapter, we will be looking more at linear combinations, span, and independence in the form of systems of equations. Future chapters will look even further at these concepts, linear dependence and independence, and their applications to various subspaces.

@@ -12,7 +12,7 @@ A quantitative variable like this calls for the same two tools you already trust
 % Continuing example from Statistical Inferences for Proportions. edit to be more clear about this. 
 
 
-Suppose the streaming service now wants to know something different from Statistical Inferences for Proportions's conversion rate: how long, on average, a subscriber watches in a single sitting. A product analyst pulls a random sample of viewing sessions and calculates a sample mean watch time, $\bar{x}$. To turn that one number into a confidence interval or a significance test, you need the \index{standard error}standard error of $\bar{x}$, and the standard error depends on the population standard deviation, $\sigma$. Here is the catch: nobody knows $\sigma$. The population's true spread in viewing habits is exactly the kind of thing you would need a census to pin down, and if you had a census, you would not need inference in the first place.
+Suppose the streaming service now wants to know something different from its conversion rate: how long, on average, a subscriber watches in a single sitting. A product analyst pulls a random sample of viewing sessions and calculates a sample mean watch time, $\bar{x}$. To turn that one number into a confidence interval or a significance test, you need the \index{standard error}standard error of $\bar{x}$, and the standard error depends on the population standard deviation, $\sigma$. Here is the catch: nobody knows $\sigma$. The population's true spread in viewing habits is exactly the kind of thing you would need a census to pin down, and if you had a census, you would not need inference in the first place.
 
 \subsection{Meet the \texorpdfstring{$t$}{t}-Distribution}
 
@@ -267,7 +267,7 @@ No. The interval $(0.23, 2.57)$ does contain values above 1, but it also contain
 \end{Answer}
 
 \begin{Exercise}[title={Spot the Error}, label={ex:pooling-error}]
-A student compares two independent samples with visibly different spreads, one sample's dotplot is tightly clustered, the other is spread out much wider, and writes, "Since both populations are approximately normal, I'll pool the two sample standard deviations into one estimate of $\sigma$ and use that in my confidence interval." Explain what is wrong with this reasoning for an AP Statistics response.
+A student compares two independent samples with visibly different spreads, one sample's dotplot is tightly clustered, the other is spread out much wider, and writes, "Since both populations are approximately normal, I will pool the two sample standard deviations into one estimate of $\sigma$ and use that in my confidence interval." Explain what is wrong with this reasoning for an AP Statistics response.
 \end{Exercise}
 
 \begin{Answer}[ref={ex:pooling-error}]
@@ -283,13 +283,13 @@ Testing a claim about $\mu_1 - \mu_2$ follows the same four-step process, usuall
 \[
 t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}
 \]
-using the same Welch-approximated $df$ and conditions from Section 4.
+using the same Welch-approximated $df$ and conditions as the two-sample interval.
 
-Free-tier versus paid-tier, same samples as Section 4: $n_1 = 20$, $\bar{x}_1 = 35.2$, $s_1 = 8.4$; $n_2 = 18$, $\bar{x}_2 = 44.6$, $s_2 = 10.1$. Testing whether paid-tier watches more on average:
+Free-tier versus paid-tier, same samples as before: $n_1 = 20$, $\bar{x}_1 = 35.2$, $s_1 = 8.4$; $n_2 = 18$, $\bar{x}_2 = 44.6$, $s_2 = 10.1$. Testing whether paid-tier watches more on average:
 \[
 H_0: \mu_1 - \mu_2 = 0 \qquad H_a: \mu_1 - \mu_2 < 0
 \]
-$SE = 3.032$ (from Section 4), so
+$SE = 3.032$ (as before), so
 \[
 t = \dfrac{35.2 - 44.6}{3.032} \approx -3.100
 \]
@@ -305,7 +305,7 @@ $H_0: \mu_1 - \mu_2 = 0$, $H_a: \mu_1 - \mu_2 < 0$. The standard error is $\sqrt
 
 \subsection{Selecting the Right Procedure}
 
-By this point you have four inference procedures for means and, from the last chapter, four more for proportions. The hardest part of a real problem is often not the arithmetic, it is recognizing which of those eight procedures actually fits. Figure 1 lays out the same three questions, in order, that will get you there every time.
+By this point you have several inference procedures for means and, from the last chapter, inference for a proportion. The hardest part of a real problem is often not the arithmetic; it is recognizing which procedure actually fits. Figure~\ref{fig:procedure_flow} lays out the same three questions, in order, that will get you there every time.
 
 % [Verify cfigure environment and TikZ diagram]
 
@@ -339,6 +339,7 @@ By this point you have four inference procedures for means and, from the last ch
 
 \end{tikzpicture}
 \caption{Selecting an inference procedure for a single quantitative or categorical variable}
+\label{fig:procedure_flow}
 \end{figure}
 
 Categorical or quantitative is usually obvious from the variable itself. Paired or independent is worth slowing down for: does each measurement in one group have a natural partner in the other, or could the two groups' labels be shuffled without anything becoming meaningless? Same subscriber measured twice: shuffling is meaningless, so paired. Two disjoint groups: shuffling changes nothing, so independent.
@@ -356,7 +357,7 @@ This would be a Type I error. The researcher rejected $H_0$ (concluding Store 1'
 \end{Answer}
 
 \begin{Exercise}[title={Choosing the Procedure}, label={ex:means-test2-select}]
-For each scenario, state which of the four procedures from Figure 1 applies, quantitative one-sample, quantitative paired, quantitative independent-samples, or categorical.
+For each scenario, state which of the four procedures from Figure~\ref{fig:procedure_flow} applies: quantitative one-sample, quantitative paired, quantitative independent-samples, or categorical.
 \begin{enumerate}
     \item[(a)] A gym wants to know whether the average weight lifted by 30 randomly selected members changed after switching to a new equipment brand, measuring the same members' max lift before and after the switch.
     \item[(b)] A researcher wants to compare the proportion of two different email subject lines that get opened.
@@ -372,7 +373,7 @@ For each scenario, state which of the four procedures from Figure 1 applies, qua
 (c) Quantitative, one sample. A single random sample is used to estimate one population mean, with no comparison to a second group or a second measurement per subject.
 \end{Answer}
 
-That decision flowchart will keep earning its keep. The next chapter turns to a different kind of categorical question, one with more than two possible outcomes at once, and the first thing you will need to decide, again, is which procedure actually fits the shape of the data in front of you.
+That decision flowchart will keep earning its keep. Later chapters add inference for regression slopes and chi-square tests for categorical variables with more than two outcomes, and the first question will always be the same: which procedure fits the shape of the data in front of you?
 
 
  

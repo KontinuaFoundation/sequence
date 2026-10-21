@@ -1,5 +1,9 @@
 \chapter{Evaluating the Fit of a Linear Regression Model}
 
+Any two columns of numbers can be fed to a regression, and you will always get
+a line. The real question is whether the line is any good. This chapter gives
+you the tools to grade a fit: residual plots, $R^2$, RMSE, and the ANOVA table.
+
 \section{Residuals}\index{residual!plot}
 The residual for observation $i$ is $e_i = y_i - \hat{y}_i$, the observed value
 minus the predicted value. A \newterm{residual plot} graphs $e_i$ against $\hat{y}_i$
@@ -11,7 +15,9 @@ Three sums of squares measure the variation in $y$:
 $$SS_{tot} = \sum (y_i - \bar{y})^2, \qquad SS_{res} = \sum (y_i - \hat{y}_i)^2, \qquad
 SS_{reg} = \sum (\hat{y}_i - \bar{y})^2$$
 Here $SS_{tot}$ is the total variation, $SS_{res}$ is the variation the line does not
-explain, and $SS_{reg}$ is the variation the line explains.
+explain, and $SS_{reg}$ is the variation the line explains. For a least squares line
+with an intercept, they add up:
+$$SS_{tot} = SS_{reg} + SS_{res}$$
 
 \section{Coefficient of Determination}\index{R-squared}
 The coefficient of determination is
@@ -37,6 +43,30 @@ $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2} = \sqrt{\frac{SS_{r
 For the quiz data, $RMSE = \sqrt{0.107/5} \approx 0.146$ points. Some textbooks divide by
 $n - 2$ instead of $n$ when estimating error variance in regression. This chapter
 uses $n$ so that RMSE is the root of the average squared error.
+
+\section{The ANOVA Table}\index{ANOVA!regression}
+Statistical software summarizes the sums of squares in an \newterm{analysis of
+variance} (ANOVA) table. Each sum of squares is divided by its degrees of
+freedom to get a mean square, and the ratio of the two mean squares is the
+$F$ statistic:
+
+\begin{center}
+\begin{tabular}{l|c|c|c|c}
+Source & SS & df & MS & $F$ \\
+\hline
+Regression & $SS_{reg}$ & $1$ & $MS_{reg} = SS_{reg}/1$ & $MS_{reg}/MS_{res}$ \\
+Residual & $SS_{res}$ & $n - 2$ & $MS_{res} = SS_{res}/(n-2)$ & \\
+Total & $SS_{tot}$ & $n - 1$ & & \\
+\end{tabular}
+\end{center}
+
+A large $F$ means the line explains much more variation than the leftover
+noise does. For the quiz data, $SS_{reg} = 39.601$, $SS_{res} = 0.107$, and
+$n - 2 = 3$, so
+$$F = \frac{39.601/1}{0.107/3} \approx 1110$$
+The $p$-value for this $F$ (with 1 and 3 degrees of freedom) is about $0.00006$,
+strong evidence that the slope is not zero. In simple linear regression, this
+$F$-test gives the same $p$-value as the $t$-test for the slope.
 
 \section{Limits of These Measures}
 A high $R^2$ does not mean the model is correct. It can be high for a curved pattern
@@ -69,3 +99,13 @@ The pattern is curved, not random. A straight line does not describe the
 relationship, and a model with a curved term, or a transformation of the
 variables, would be a better choice.
 \end{Answer}
+
+\begin{Exercise}[label=lr2_4, title=Fill in an ANOVA table]
+A regression on $n = 12$ points has $SS_{tot} = 80$ and $SS_{res} = 20$. Find
+$SS_{reg}$, $R^2$, and $F$.
+\end{Exercise}
+\begin{Answer}[ref=lr2_4]
+$SS_{reg} = 80 - 20 = 60$ and $R^2 = 60/80 = 0.75$. The residual degrees of
+freedom are $12 - 2 = 10$, so $F = \frac{60/1}{20/10} = 30$.
+\end{Answer}
+

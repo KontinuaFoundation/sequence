@@ -74,6 +74,54 @@ Use $h(k) = k \bmod 5$ and linear probing in an array of 5 slots. Insert the key
 The final table is: slot 0 holds 3, slot 1 is empty, slot 2 holds 12, slot 3 holds 7, and slot 4 holds 17.
 \end{Answer}
 
+\section{Hashing Strings}\index{hash function!strings}
+
+Keys are often strings, not numbers. A hash function for strings turns
+the characters into one number. A simple (but weak) one adds the
+character codes: \texttt{"cat"} becomes $99 + 97 + 116 = 312$. Its flaw
+is that \texttt{"act"} and \texttt{"tac"} get the same number. Real hash
+functions mix the characters so that small changes scatter results all
+over the table. Python's built-in \pyfunction{hash} does this.
+
+Here is a complete hash table with chaining, in Python:
+
+\begin{minted}{python}
+class HashTable:
+    def __init__(self, size=8):
+        self.buckets = [[] for _ in range(size)]
+
+    def _index(self, key):
+        return hash(key) % len(self.buckets)
+
+    def put(self, key, value):
+        bucket = self.buckets[self._index(key)]
+        for i, (k, v) in enumerate(bucket):
+            if k == key:               # key already here: replace value
+                bucket[i] = (key, value)
+                return
+        bucket.append((key, value))    # new key: add to the chain
+
+    def get(self, key):
+        for k, v in self.buckets[self._index(key)]:
+            if k == key:
+                return v
+        return None
+
+ages = HashTable()
+ages.put("Maya", 16)
+ages.put("Jonah", 15)
+ages.put("Maya", 17)        # Maya had a birthday
+print(ages.get("Maya"))     # 17
+print(ages.get("Jonah"))    # 15
+print(ages.get("Priya"))    # None
+\end{minted}
+
+As a table fills up, its chains get longer and lookups slow down. Real
+hash tables (including Python's \texttt{dict}) watch the \newterm{load
+factor}\index{load factor}, the number of keys divided by the number of
+buckets. When it gets too high, they allocate a bigger array and reinsert
+every key.
+
 \section{Time Complexity}\index{hash tables!time complexity}
 
 In an ideal scenario where hash collisions do not occur, hash tables

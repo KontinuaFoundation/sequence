@@ -9,32 +9,37 @@
 \definecolor{kgGreen}{HTML}{4B9751}
 \definecolor{kgBrown}{HTML}{90582F}
 
-If you had a function that gave you the height of an object, it would
-be handy to be able to figure out a function that gave you the
-velocity at which it was rising or falling. The process of converting
-the position function into a velocity function is known as
+In the last chapter, every derivative took a page of algebra with limits.
+Good news: for polynomials, you can skip all of it. If you know a
+function that gives the height of an object, three rules turn it into a
+function that gives its velocity. Finding that new function is called
 \index{differentiation}\emph{differentiation} or \emph{finding the derivative}.
 \index{derivative!definition of}
-There are a bunch of rules for finding a derivative, but
-differentiating polynomials only requires three:
+The rules:
 \begin{itemize}
 \item The derivative of a sum is equal to the sum of the derivatives.
 \item The derivative of a constant is zero.
-\item The derivative of a nonconstant monomial $at^b$ ($a$ and $b$ are constant numbers, $t$ is time) is $abt^{b-1}$. This is referred to as the \textbf{power rule}. \index{power rule}
+\item The derivative of a nonconstant monomial $at^b$ ($a$ and $b$ are constant numbers, $t$ is time) is $abt^{b-1}$. This is the \textbf{power rule}. \index{power rule}
 \end{itemize}\index{polynomials!differentiation}
 
 \begin{mdframed}[frametitle = {Power Rule}, style = important]
 For \( f(x) = ax^n \), the derivative is \( f'(x) = anx^{n-1} \).
 \end{mdframed}
 
-Say, for example, that we tell you that the height (position) in meters of a quadcopter
-at second $t$ is given by $2t^3 - 5t^2 + 9t + 200$. You could tell us
-that its vertical velocity is $6t^{2} - 10t + 9$.
+The power rule works for any exponent $n$, not just positive integers:
+the derivative of $x^{-2}$ is $-2x^{-3}$, and the derivative of $x^{1/2}$
+is $\frac{1}{2}x^{-1/2}$.
 
-\index{prime notation}We indicate the derivative of a function with an apostrophe (read as "prime") between the name of the function and the variable. For example, the derivative of $h(t)$ is $h'(t)$ (which is read out loud as "h prime of t"). 
+Say, for example, that the height in meters of a quadcopter at second $t$
+is $2t^3 - 5t^2 + 9t + 200$. Term by term, its vertical velocity is
+$6t^{2} - 10t + 9$. The constant 200 (the height of the hill it took off
+from) disappears: it does not change, so it contributes nothing to the
+velocity.
+
+\index{prime notation}Remember the notation: the derivative of $h(t)$ is $h'(t)$, read ``h prime of t.'' 
 
 \begin{Exercise}[title={Differentiation of polynomials}, label=diffpoly]
-  Differentiate the following polynomials.
+  Differentiate the following functions.
   \begin{enumerate}
   \item $f(t)=2t^3-3t^2-4t$
   \item $g(t)=2t^{-3/4}$
@@ -44,9 +49,9 @@ that its vertical velocity is $6t^{2} - 10t + 9$.
   \end{Exercise}
 \begin{Answer}[ref=diffpoly]
 \begin{enumerate}
-\item $f'(t) = 3t^2-6t-4$
+\item $f'(t) = 6t^2-6t-4$
 \item $g'(t) = (\frac{-3}{4})2t^{-3/4-1}=\frac{-3}{2}t^{-7/4}$
-\item $F'(r) = \frac{-15}{r^4}$
+\item Rewrite $F(r) = 5r^{-3}$, so $F'(r) = -15r^{-4} = \frac{-15}{r^4}$
 \item First, we expand the function by multiplying out the two binomials: $(3u-1)(u+2)=3u^2+6u-u-2$. Therefore, $H(u) = 3u^2+5u-2$, and we can differentiate using what we have learned about differentiating polynomials. $H'(u) = 6u+5$. In a later chapter, you will learn the \index{product rule}Product rule, which will allow you to differentiate this function without multiplying out the binomials. 
 \end{enumerate}
 \end{Answer}
@@ -99,6 +104,8 @@ def derivative_of_polynomial(pn):
 \end{minted}
 When you test it in \filename{test.py}, it should look like this:
 \begin{minted}{python}
+import poly
+
 # 3x**3 + 2x + 5
 p1 = [5.0, 2.0, 0.0, 3.0]
 d1 = poly.derivative_of_polynomial(p1)
@@ -115,13 +122,6 @@ print("Derivative of", poly.polynomial_to_string(p2),"is", poly.polynomial_to_st
 \begin{Answer}[ref=pydiffpoly]
 \begin{minted}{python}
 def derivative_of_polynomial(pn):
-
-    # What is the degree of the resulting polynomial?
-    original_degree = len(pn) - 1
-    if original_degree > 0:
-        degree_of_derivative = original_degree - 1
-    else:
-        degree_of_derivative = 0
 
     # We can ignore the constant term (skip the first coefficient)
     current_degree = 1
@@ -151,7 +151,7 @@ To find where the velocity is $0$, set $s'(t) = 0$:
 $$3t^2-5=0$$
 $$3t^2=5$$
 $$t^2=\frac{5}{3}$$
-$$t = \sqrt{\frac{5}{3}} \approx 1.29s$$ (We ignore the other solution, $t=-\sqrt{\frac{5}{3}}$ because it is usual for time to start at zero.)
+$$t = \sqrt{\frac{5}{3}} \approx 1.29s$$ (We ignore the other solution, $t=-\sqrt{\frac{5}{3}}$, because the clock starts at zero.)
 
 Next, we use $t\approx 1.29s$ in the acceleration function, $s''(t)$:
 $$s''(\sqrt{\frac{5}{3}}) = 6\sqrt{\frac{5}{3}} \approx 7.75 \frac{m}{s^2}$$
@@ -177,4 +177,22 @@ The position of a particle is described by the equation $s(t) = t^4-2t^3+t^2-t$,
 (c) $s''(1.5) = 12(1.5)^2-12(1.5)+2 = 11$. Similarly to part (b), our answer needs units. The units for acceleration are the units for velocity divided by the unit for time (because acceleration is a rate of change of velocity), and our final answer should be $s''(1.5s) = 11\frac{m}{s^2}$.
 
 (d) When velocity and acceleration are occurring in the same direction (i.e. have the same sign), the speed (the absolute value of velocity) is increasing. Since $s'(1.5s)$ and $s''(1.5s)$ are both $>0$, the speed of the object is increasing. 
+\end{Answer}
+
+\begin{Exercise}[title={Penalty Kick}, label=diffpoly_kick]
+A goalkeeper boots a ball straight up. Its height in meters after $t$
+seconds is $h(t) = 1 + 15t - 4.9t^2$.
+\begin{enumerate}
+\item Find its velocity at $t = 1$ and at $t = 2$. Which way is it moving
+each time?
+\item Find its acceleration. Why does it not depend on $t$?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=diffpoly_kick]
+\begin{enumerate}
+\item $h'(t) = 15 - 9.8t$. $h'(1) = 5.2$ m/s (still rising) and $h'(2) =
+-4.6$ m/s (falling).
+\item $h''(t) = -9.8$ m/s$^2$. The only force on the ball (ignoring air)
+is gravity, which pulls the same way all the time.
+\end{enumerate}
 \end{Answer}

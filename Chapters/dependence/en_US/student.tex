@@ -1,11 +1,16 @@
 \chapter{Linear Independence and Dependence}\label{chap:dependence}
-We have briefly mentioned the idea of linear independence and dependence in previous chapters. Let us explicitly define them using the concepts we have covered already.
+Remember the smoothie shop? Suppose it adds a third drink, the ``combo,''
+which is just one cup of berry blend mixed with one cup of green. The combo
+looks new on the menu, but it adds nothing you could not already make
+from the other two. Mathematicians would say the three drinks are
+\emph{linearly dependent}. This chapter makes that idea precise.
 \section{Linear Independence}\index{linear independence}
 \begin{mdframed}[frametitle = {Linear Independence}, style = important]
-\textbf{Linear independent} vectors are vectors that cannot be written as linear combinations (\index{scalar multiple}scalar multiples) of each other.
+A set of vectors is \textbf{linearly independent} if no vector in the set
+can be written as a linear combination of the others.
 
 Mathematically, this means that 
-$$c_1v_1 + c_2 v_2 \dots c_kv_k = 0$$
+$$c_1v_1 + c_2 v_2 + \dots + c_kv_k = \mathbf{0}$$
 is only satisfied by
 $$c_1 = c_2 = \dots =c_k = 0$$
 \end{mdframed}
@@ -17,7 +22,7 @@ scalars $c_1, \dots, c_k$, not all zero, such that
 c_1 v_1 + \cdots + c_k v_k = \mathbf 0.
 \]
 
-For two vectors, this reduces to one being a scalar multiple of the other.
+For two vectors, this reduces to one being a \index{scalar multiple}scalar multiple of the other.
 \end{mdframed}
 
 When vectors are arranged as columns of a matrix, linear independence means that no column can be written as a linear combination of the others.
@@ -171,11 +176,8 @@ Mathematically,
 
 \begin{mdframed}[style = important, frametitle = {Linearly dependent vectors in $\mathbb{R}^n$}]
 Two vectors $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$ are linearly dependent if 
-there exists a scalar $a \in \mathbb{R}$ such that
-
-\[
-\mathbf{v} = a\,\mathbf{u}.
-\]
+one is a scalar multiple of the other: $\mathbf{v} = a\,\mathbf{u}$ or
+$\mathbf{u} = a\,\mathbf{v}$ for some $a \in \mathbb{R}$.
 \end{mdframed}
 
 Graphically, two linearly dependent vectors in $\mathbb{R}^2$ lie on the same 
@@ -210,6 +212,10 @@ Therefore, \textbf{v} and \textbf{w} are linearly dependent. Since \textbf{w} = 
 if \textbf{u} and \textbf{w} were dependent, then \textbf{u} and \textbf{v} would be too. 
 They are not, so \textbf{u} and \textbf{w} are not linearly dependent either. 
 
+As a \emph{set}, though, $\{\textbf{u}, \textbf{v}, \textbf{w}\}$ is
+linearly dependent, because it contains the dependent pair \textbf{v} and
+\textbf{w}: $0\textbf{u} + 2\textbf{v} + 1\textbf{w} = \mathbf{0}$.
+
 \begin{Exercise}[title = Linear Dependence, label = colinear]
 Identify which, if any, of the following vectors are linearly dependent:
 \begin{enumerate}
@@ -234,6 +240,40 @@ We also see that $\frac{1}{2} \textbf{c} = \frac{1}{2} \vecb{2 \\ -4 \\ 6}
 \textbf{e} are linearly dependent. Vector \textbf{b} is not linearly dependent 
 to any of the other vectors. 
 \end{Answer}
+\section{Three or More Vectors}\index{linear independence!testing with RREF}
+
+With three or more vectors, checking pairs is not enough. The vectors
+$\vecb{1 \\ 0 \\ 1}$, $\vecb{0 \\ 1 \\ 1}$, and $\vecb{1 \\ 1 \\ 2}$ are
+not multiples of each other, yet the third is the sum of the first two:
+they are dependent, like the smoothie combo.
+
+To test any set, put the vectors in the columns of a matrix $A$ and solve
+$A\vec{c} = \mathbf{0}$ by row reducing. If every column gets a pivot,
+the only solution is $\vec{c} = \mathbf{0}$ and the vectors are
+independent. If some column has no pivot, there is a free variable, so
+there are nonzero solutions, and the vectors are dependent.
+
+\textbf{Example}: For the three vectors above,
+$$\vecb{1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2} \xrightarrow{R_3 \leftarrow R_3 - R_1}
+\vecb{1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 1 & 1} \xrightarrow{R_3 \leftarrow R_3 - R_2}
+\vecb{1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 0}$$
+Column 3 has no pivot, so the vectors are dependent.
+
+One shortcut: in $\mathbb{R}^n$, any set of more than $n$ vectors is
+dependent, because the matrix has more columns than rows, so some column
+must miss a pivot. Three vectors in the plane are always dependent.
+
+\begin{Exercise}[title = {Independent or Not?}, label = indep_rref]
+Are these vectors linearly independent?
+$$\vecb{1 \\ 0 \\ 2},\quad \vecb{2 \\ 1 \\ 0},\quad \vecb{0 \\ 1 \\ 1}$$
+\end{Exercise}
+\begin{Answer}[ref = indep_rref]
+$$\vecb{1 & 2 & 0 \\ 0 & 1 & 1 \\ 2 & 0 & 1} \xrightarrow{R_3 \leftarrow R_3 - 2R_1}
+\vecb{1 & 2 & 0 \\ 0 & 1 & 1 \\ 0 & -4 & 1} \xrightarrow{R_3 \leftarrow R_3 + 4R_2}
+\vecb{1 & 2 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 5}$$
+Every column has a pivot, so the vectors are independent.
+\end{Answer}
+
 \section{What is next?}
 In this chapter, we defined linear independence and linear dependence, which describe whether a set of vectors contains redundancy. Linearly independent vectors introduce new directions, while dependent vectors can be written as linear combinations of others.
 

@@ -3,6 +3,10 @@
 \section{Longitude and Latitude}
 
 \subsection{Longitude and Latitude}
+When you share your location with a friend, your phone sends just two
+numbers. Those two numbers pin down one spot out of the 510 million square
+kilometers on Earth's surface.
+
 The Earth can be represented as a sphere, and the position of a point
 on its surface can be described using two coordinates: latitude and
 longitude.
@@ -69,17 +73,17 @@ The coordinates follow a system of latitude and then longitude (in the majority 
 \begin{itemize}
   \item \textbf{London, England}: $51^\circ$ N $0^\circ$ W
   \item \textbf{New York City, New York, USA}: $40^\circ$ N $74^\circ$ W
-  \item \textbf{Sydney, New South Wales, Australia}: $33^\circ$ S $150^\circ$ E
+  \item \textbf{Sydney, New South Wales, Australia}: $34^\circ$ S $151^\circ$ E
   \item \textbf{Rio de Janeiro, Brazil}: $22^\circ$ S $43^\circ$ W
 \end{itemize}
 
 These coordinates may be broken down further into minute and second components as well, for further geometric accuracy.
-\index{minutes and seconds}Each degree ($^\circ$) is divided into 60 minutes ($'$). Each minute ($'$) is divided into 60 seconds ($"$). Just like in time. Some sources write these in decimal degrees instead.
+\index{minutes and seconds}Each degree ($^\circ$) is divided into 60 minutes ($'$). Each minute ($'$) is divided into 60 seconds ($''$), just like time. Many apps use decimal degrees instead: $40^\circ\,42'\,46''$ is $40 + \frac{42}{60} + \frac{46}{3600} \approx 40.7128^\circ$. South latitudes and west longitudes are written as negative numbers, so New York is $(40.7128, -74.0061)$.
 
 \begin{itemize}
   \item \textbf{London, England}: $51^\circ$ 30$'$ 26$''$ N $0^\circ$ 7$'$ 39$''$ W
   \item \textbf{New York City, New York, USA}: $40^\circ$ 42$'$ 46$''$ N $74^\circ$ 0$'$ 22$''$ W
-  \item \textbf{Sydney, New South Wales, Australia}: $33^\circ$ 52$'$ 0$''$ S $150^\circ$ 12$'$ 0$''$ E
+  \item \textbf{Sydney, New South Wales, Australia}: $33^\circ$ 52$'$ 0$''$ S $151^\circ$ 12$'$ 0$''$ E
   \item \textbf{Rio de Janeiro, Brazil}: $22^\circ$ 54$'$ 0$''$ S $43^\circ$ 12$'$ 0$''$ W
 \end{itemize}
 
@@ -88,11 +92,13 @@ These coordinates may be broken down further into minute and second components a
 A nautical mile is a unit of measurement used primarily in aviation
 and maritime contexts. It is based on the circumference of the Earth,
 and is defined as one minute ($1/60^{\circ}$) of latitude; in other words, \textbf{one minute of latitude is equal to 1 nautical mile.} 
-This makes it directly related to the Earth's geometry, unlike a kilometer or a
-mile, which are arbitrary in nature. The exact value of a nautical
-mile can vary slightly depending on which type of latitude you use
-(e.g., geodetic, geocentric, etc.), but for practical purposes, it is
-often approximated as 1.852 kilometers or 1.15078 statute miles.\index{nautical mile}
+This makes navigation easy: if a ship sails 60 nautical miles due north,
+it has moved exactly $1^\circ$ of latitude. (The kilometer was also born
+from Earth's size: it was first defined so that the distance from the
+North Pole to the equator would be 10,000 km.) Because the Earth is not a
+perfect sphere, a minute of latitude varies slightly, so today the
+nautical mile is defined as exactly 1.852 kilometers (about 1.151 ordinary
+miles).\index{nautical mile}
 
 \subsection{Haversine Formula}
 
@@ -140,10 +146,35 @@ Here, $\phi_1$ and $\phi_2$ represent the latitudes of the two points (in radian
 $\Delta\phi$ and $\Delta\lambda$ represent the differences in latitude
 and longitude (also in radians), and $R$ is the radius of the
 Earth (using whatever unit of distance you desire). The result, $d$, is the distance between the two points along
-the surface of the sphere. Notice that $d$ is equal to the formula for the \index{arc length}\emph{arc length} of a sector. 
-A sphere is just a bunch of circles with radius $r$, so it follows that we can use formulas for circles in our spherical calculations. 
+the surface of the sphere. Notice that $d = Rc$ is the formula for the \index{arc length}\emph{arc length} of a circle: the shortest path between two points on a sphere runs along a \emph{great circle}, a circle whose center is the center of the sphere (like the equator), and $c$ is the angle between the two points as seen from that center. 
 
-This is why planes fly arc-shaped paths rather than straight paths from points $A \to B$. Planes follow the shortest path between two points on a sphere, called a \index{great-circle route}\emph{great-circle route}. On a map, like plane flight-progress maps or the \index{Mercator projection}Mercator projection, the straight path looks very arc shaped, but this is just a geographical illusion. This straight distance can be calculated using the haversine formula, ultimately minimizing distance and fuel using the `as-the-crow-flies' path. 
+Planes follow these \index{great-circle route}\emph{great-circle routes} to save distance and fuel. On a flat map like the \index{Mercator projection}Mercator projection, a great-circle route looks like a curve bending toward the pole: a flight from New York to Tokyo passes over Alaska. The curve is an illusion caused by flattening a sphere; on a globe, it is the straightest possible path.
+
+\textbf{Worked example.} How far is it from New York $(40.7128^\circ, -74.0061^\circ)$ to London $(51.5072^\circ, -0.1275^\circ)$? Use $R = 6{,}371$ km.
+
+\textbf{Solution.} In Python:
+\begin{minted}{python}
+import math
+
+def haversine(lat1, lon1, lat2, lon2, R=6371):
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = phi2 - phi1
+    dlam = math.radians(lon2 - lon1)
+    a = (math.sin(dphi / 2) ** 2
+         + math.cos(phi1) * math.cos(phi2) * math.sin(dlam / 2) ** 2)
+    return 2 * R * math.asin(math.sqrt(a))
+
+print(haversine(40.7128, -74.0061, 51.5072, -0.1275))   # about 5570
+\end{minted}
+The great-circle distance is about 5,570 km, or about 3,008 nautical miles.
+
+\begin{Exercise}[title={Sydney to Rio}, label=haversine1]
+Use the coordinates in this chapter (Sydney $33^\circ 52'$ S, $151^\circ 12'$ E; Rio de Janeiro $22^\circ 54'$ S, $43^\circ 12'$ W) to find the great-circle distance between the two cities. Remember that south and west are negative.
+\end{Exercise}
+\begin{Answer}[ref=haversine1]
+In decimal degrees, Sydney is $(-33.8667, 151.2)$ and Rio is $(-22.9, -43.2)$. \texttt{haversine(-33.8667, 151.2, -22.9, -43.2)} gives about 13,500 km. (Surprisingly, the shortest route crosses Antarctica, reaching about $77^\circ$ S.)
+\end{Answer}
+
 
 
 \section{Geocoding and Reverse Geocoding}

@@ -1,5 +1,9 @@
 \chapter{Matrices as Transformations}
-\index{matrix transformation}Recall that a \emph{function}, informally, is a rule that takes an input and produces an output. 
+\index{matrix transformation}When you pinch to zoom on a photo, rotate your
+phone, or watch a video-game character turn, every point on the screen is
+being fed through a $2 \times 2$ matrix. This chapter shows how.
+
+Recall that a \emph{function}, informally, is a rule that takes an input and produces an output. 
 
 For example, we know the common function $f(x) = x^3$ takes the input and cubes it, such that the result is $x \times x \times x$. Inputting $x=3$ outputs $f(3) = 27$. 
 
@@ -259,7 +263,7 @@ Not only do the x and y values swap places, but they also flip signs. This means
 \begin{Exercise}[title={Guess the transformation matrix}, label={ex:guess_transform}]
     Given the following transformation of the house, find the matrix that represents this transformation. 
 
-    Hint: the grid is $3\times 3$ unit direction with 13 points in each row/column.
+    Hint: the blue grid runs from $-3$ to $3$ in each direction, with 13 points in each row and column (spaced $0.5$ apart). Track where the corner $(3, 3)$ ends up.
 
     \begin{figure}[H]
         \centering
@@ -276,6 +280,8 @@ Not only do the x and y values swap places, but they also flip signs. This means
     Next we can see that the house is stretched horizontally in the x-direction. The orange dots end at 4.5, which is 1.5 times the original length of 3, so we know that the x-values are scaled by a factor of 1.5. This gives us the value of 1.5 in the first row of the matrix.
 
     Finally, the roof is slanted, which means that there is a shearing component to this transformation. Notice that the roof (door corner) is moved up, so the $e_1$ also has a negative value y-component. This gives us the value of -2 in the second row, first column of the matrix. 
+
+    Check with a corner: $A\vecb{3 \\ 3} = \vecb{4.5 \\ -6 - 3} = \vecb{4.5 \\ -9}$, which is the bottom-right orange point.
 
 \end{Answer}
 % Note for future writers: I am not doing y=mx reflections as they are more complex and I am already hitting a complexity limit for linear alg.
@@ -409,15 +415,29 @@ $$(x, y) \mapsto (x + ky, y)$$
 
 
 
-\section{Summary and looking ahead} % eigenvector prelude
+\begin{Exercise}[title={Build a Matrix}, label={ex:build_matrix}]
+Write the matrix that first reflects across the x-axis and then doubles every
+length. Where does the point $(1, 2)$ go? What is the determinant, and what
+does it tell you?
+\end{Exercise}
+\begin{Answer}[ref={ex:build_matrix}]
+Reflecting sends $\vec e_1 \mapsto \vec e_1$ and $\vec e_2 \mapsto -\vec e_2$;
+doubling then gives $\vec e_1 \mapsto 2\vec e_1$ and $\vec e_2 \mapsto
+-2\vec e_2$. So the matrix is $\begin{bmatrix} 2 & 0 \\ 0 & -2
+\end{bmatrix}$, and $(1, 2) \mapsto (2, -4)$. The determinant is $-4$: areas
+grow by a factor of 4, and the negative sign says the shape has been
+flipped.
+\end{Answer}
+
+\section{Summary and looking ahead}
 In this chapter, we have seen how matrices can be used to represent transformations in $\mathbb R^2$. We have explored various types of transformations, including scaling, shearing, reflections, and rotations. We have also discussed how to find the inverse of a transformation, which allows us to undo the effects of a transformation.
 
 We want to look at these transformation as effects on directions. Specifically, are there any directions that this transformation does not mix with others?
 
 \begin{itemize}
     \item Reflections have the property that they flip one direction while keeping the other direction unchanged. For example, a reflection across the x-axis flips the y-direction while keeping the x-direction unchanged. In this, some directions stay the same, while others are flipped. Certain directions are preserved, while others are not.
-    \item Rotations, on the other hand, mix all directions together. There are no directions that remain unchanged under a rotation, except for the trivial case of a $0^\circ$ rotation (the identity transformation)
-    \item Stretches and scalings also have the property that they stretch or shrink certain directions while keeping others unchanged. For example, a scaling transformation that stretches the x-direction while keeping the y-direction unchanged will preserve the y-direction while stretching the x-direction.
+    \item Rotations, on the other hand, mix all directions together. No direction stays on its own line under a rotation, except in the special cases of $0^\circ$ (nothing moves) and $180^\circ$ (every vector is reversed).
+    \item Scalings stretch or shrink certain directions without turning them. The matrix $\begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}$ leaves the x-direction alone and doubles the y-direction.
 \end{itemize}
 
 For some transformations, there exist special directions along which vectors are simply scaled. In studying linear transformations, it is natural to ask whether there exist directions that remain unchanged, except for scaling of its length. Before reading the next chapter, try to find a nonzero vector whose direction is \emph{unchanged} by each transformation. Not every transformation will have such a vector, but some will. 

@@ -2,7 +2,9 @@
 
 \section{Determining the Arc Length of a Curve}
 
-Another application of integrals is finding the length of a curve. In 
+How long is the cable hanging between two telephone poles? How far does a
+roller coaster car actually travel along its twisting track? These are
+questions about the length of a curve, and integrals answer them. In 
 real life, we could do this by laying a piece of string up against 
 the curve, then straightening out the string and measuring its length 
 with a ruler (you may have done this in elementary school when you 
@@ -10,8 +12,8 @@ were first learning about the relationship between the radius and
 circumference of a circle). 
 
 \index{Archimedes}Archimedes estimated the circumference of 
-a circle by inscribing a circle with polygons of increasing numbers 
-of sides. (Archimedes' proof that $\pi$ is between $3 \frac{10}{71}$ 
+a circle by fitting polygons inside it (and around it) with more and more 
+sides. (Archimedes' proof that $\pi$ is between $3 \frac{10}{71}$ 
 and $3 \frac{1}{7}$ is more complicated, but we will not dive into that 
 here.) As we increase the number of sides of the inscribed polygon, 
 the perimeter of the polygon (the sum of the lengths of the sides) 
@@ -160,7 +162,7 @@ sum as $$\sum_{i=1}^n \sqrt{(\Delta x)^2 + [f'(x_i^{\text{*}}) \Delta x]^2}
 
 Putting this all together, we see that the actual length of the 
 curve is defined as $$L = \lim_{n \to \infty}\sum_{i=1}^n \sqrt{1+
-[f'(x_i^{\text{*}})]^2}\Delta x$$.
+[f'(x_i^{\text{*}})]^2}\Delta x$$
 
 \index{arc length!formula}This is the definition of the integral of $\sqrt{1+[f'(x)]^2}$ and 
 therefore the length of some function $f(x)$ on the interval $a < x <b$ 
@@ -198,6 +200,63 @@ Moving the $\frac{dx}{dt}$ under the square root, we see that
 $$L = \int_a^b \sqrt{(\frac{dx}{dt})^2 + (\frac{dy}{dt})^2}\,dt$$\\
 which is equivalent to 
 $$L = \int_a^b \sqrt{(x'(t))^2 + (y'(t))^2}\,dt$$\footnote{Note that this is similar to distance formula, just applied at every $dx$ along the curve. Zooming in on a small piece of the curve, it looks like a straight line, and seems as if the distance formula is being applied.}
+
+\section{Speed and Distance Along a Parametric Curve}
+In the parametric functions chapter, a Python animation showed a point
+moving along a curve as $t$ increased. Parametric equations describe not
+just a shape but \emph{motion} along it, and the point does not
+necessarily move at a constant rate.
+
+The point's velocity is the vector $[x'(t), y'(t)]$, and its
+\index{speed!of a parametric curve}\newterm{speed} is the length of that
+vector:
+\begin{equation*}
+    \text{Speed} = \sqrt{(x'(t))^2 + (y'(t))^2}
+\end{equation*}
+\index{arc length!parametric}The arc length formula above is just the
+integral of the speed: adding up speed $\times$ time over $a \le t \le b$
+gives the total distance traveled, which (if the curve is traced once) is
+its length.
+
+\subsection*{Example: Finding Speed}
+
+Given
+\begin{equation*}
+    x'(t) = 8t - t^2, \quad y'(t) = -t + \sqrt{t^{1.2} + 20},
+\end{equation*}
+the speed of the particle at time $t$ is
+\begin{equation*}
+    \text{Speed} =
+    \sqrt{(8t - t^2)^2 + \left(-t + \sqrt{t^{1.2} + 20}\right)^2}.
+\end{equation*}
+
+Evaluating at $t = 2$ gives a speed of approximately $12.3$ cm/s.
+
+\subsection*{Example: Length of a Curve}
+
+Consider the parametric equations
+\begin{equation*}
+    x = \cos t, \quad y = \sin t,
+\end{equation*}
+for $0 \le t \le 2\pi$.
+
+First compute the derivatives:
+\begin{equation*}
+    x'(t) = -\sin t, \quad y'(t) = \cos t.
+\end{equation*}
+
+Substitute into the arc length formula:
+\begin{equation*}
+    L = \int_0^{2\pi} \sqrt{(-\sin t)^2 + (\cos t)^2}\, dt.
+\end{equation*}
+
+Using the identity $\sin^2 t + \cos^2 t = 1$, this simplifies to
+\begin{equation*}
+    L = \int_0^{2\pi} 1 \, dt = 2\pi.
+\end{equation*}
+
+Thus, the length of the curve traced is $2\pi$, which matches the circumference
+of the unit circle.
 
 \section{Applications in Physics}
 When we take the integral of a velocity function, we get the 
@@ -248,7 +307,7 @@ predict: Will the distance be more or less than the displacement?
 \end{figure}
 
 The distance traveled is $\int_a^b |v(t)|\,dt$, so for the block we need
-$$\int_0^3 \left|-0.16\sin{9t}\right|\,dt$$.
+$$\int_0^3 \left|-0.16\sin{9t}\right|\,dt$$
 
 The absolute value makes this integral piecewise, so we split it at each zero of $\sin{9t}$. Each piece is a simple sine integral. Adding them up gives a total distance of about $0.307$ meters. A calculator with Riemann sums gives the same value. Did you predict that the distance would be 
 greater than the displacement?
@@ -300,7 +359,7 @@ Therefore, $f(x) = \frac{2}{9}(3x + 4)^{3 / 2} + \frac{2}{9}$. To find
 the coordinate point where $s(x) = 3$, we first note that the 
 antiderivative of $\sqrt{3t + 5}$ is $\frac{2}{9}(3t + 5)^{3 / 2} + C$. 
 Therefore, $s(x) = \frac{2}{9}(3x + 5)^{3 / 2} - \frac{2}{9}(5)^{3 / 2}$. 
-Setting $s(x) = 3$ and solving for $x$, we find that $x = 1.159$. The point on $f$ is $(1.159, 4.766)$.
+Setting $s(x) = 3$ and solving for $x$, we find that $x = 1.159$. The point on $f$ is $(1.159, 4.765)$.
 \end{Answer}
 
 \begin{Exercise}[label=length3]

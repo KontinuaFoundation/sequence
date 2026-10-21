@@ -13,13 +13,16 @@ $\frac{1}{e} \approx 0.368$. So about $1 - \frac{1}{e} \approx 63.2\%$ of the di
 \textbf{Example}: For $n = 10$ points, a given point is missed by all 10 draws with probability $(0.9)^{10} \approx 0.349$. So about $65\%$ of the distinct points appear in each bootstrap sample.
 
 \section{Random Forests}\index{random forest}
-A \newterm{random forest} is bagging with one more change. When a tree considers a split, it may use only a random subset of $k$ features.
-This makes the trees less correlated, so averaging them reduces variance more. A common choice is $k = \sqrt{p}$ for classification, where $p$ is the number
+A \newterm{random forest} is bagging with one more change. When a tree considers a split, it looks at only a random subset of $k$ features.
+This makes the trees less correlated, so averaging them reduces variance more. If one feature is a
+very strong predictor, ordinary bagging would put it at the top of almost every tree, and the trees
+would all make the same mistakes. Hiding it from some splits forces the trees to find other patterns. A common choice is $k = \sqrt{p}$ for classification, where $p$ is the number
 of features, and $k = p/3$ for regression.
 
 \section{Out-of-Bag Error}\index{out-of-bag error}
 About one third of the points are left out of each bootstrap sample. Each point can be predicted by the trees that did not see it. The error of these
-out-of-bag predictions is an honest estimate of test error, so a random forest often needs no separate test set.
+out-of-bag predictions is an honest estimate of how the forest does on new data. That means you can tune a random forest
+without setting aside a separate validation set. (Keep the test set anyway, for the final report.)
 
 \begin{Exercise}[label=bag1, title=Probability a point is left out]
 A data set has 5 points. What is the probability that a particular point is not chosen in any of the 5 draws of a bootstrap sample?

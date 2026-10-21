@@ -1,28 +1,29 @@
 \chapter{Power Series}
 
-Consider the function $f(x) = \frac{1}{1-x}$. This looks similar to the value 
-of convergent geometric series, $\sum_{n=1}^\infty ar^{n-1} = \frac{a}{1-r}$. 
+When your calculator shows $\sin(0.3)$ or $e^{1.7}$, it is not looking anything up.
+It is adding up a polynomial with enough terms to get every digit right.
+Polynomials are the only functions a chip really knows how to evaluate: just
+multiply and add. This chapter shows how to turn other functions into
+``infinitely long polynomials.''
+
+Consider the function $f(x) = \frac{1}{1-x}$. This looks like the sum of a
+convergent geometric series, $\sum_{n=1}^\infty ar^{n-1} = \frac{a}{1-r}$. 
 If we let $a = 1$ and $r = x$, then we see that $\sum_{n=1}^\infty x^{n-1} = 
 \frac{1}{1-x}$. We can reindex to begin at $n=0$ and see that:
 $$\frac{1}{1-x} = \sum_{n=0}^\infty x^n$$
 
-This is a \textbf{power series}. \index{power series}We use power series in place of functions for many 
-applications, such as integrals where an explicit antiderivative does not exist, solving 
-differential equations, and computer scientists representing functions on 
-computers. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
-f(x)\,dx$? We cannot directly use u-substitution, and this is not a derivative of 
-any inverse trigonometric function. [You may have realized we could integrate 
-this explicitly by using partial fractions, but this is not true for other 
-functions, and we are using this as a demonstration anyway.] One way to 
-evaluate this integral would be to represent $f(x)$ as a power series, then 
-integrate the series. This is easier, since we know how to take the integral 
-of any polynomial ($\int x^n\,dx = \frac{1}{n+1}x^{n+1} + C$). First, we 
-discuss what power series are further.
+This is a \textbf{power series}. \index{power series}We use power series in place of functions to
+evaluate integrals with no explicit antiderivative, to solve differential
+equations, and to compute functions on computers. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
+f(x)\,dx$? A $u$-substitution does not work, and it is not the derivative of an inverse
+trigonometric function. (Partial fractions would work here, but for many
+functions nothing works.) Another approach: write $f(x)$ as a power series and
+integrate term by term, since we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1} + C$.
+We will come back to this integral at the end of the chapter.
 
 \section{Power Series}
 Power series are series of the form
-$$\sum_{n=0}^\infty c_n x^n = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + \cdots + c_n 
-x^n$$
+$$\sum_{n=0}^\infty c_n x^n = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + \cdots$$
 
 for some fixed $x$. Depending on $x$, the series may converge or diverge. For 
 example, the power series $\sum_{n=0}^\infty x^n$ converges for $ -1 < x < 1$ 
@@ -32,18 +33,16 @@ converges for $|r|<1$.
 
 The form given above is for a power series centered on $0$, but a power series 
 can be centered on any value, $a$. In that case, it looks like this:
-$$\sum_{n=0}^\infty c_n (x - a)^n = c_0 + c_1(x - a) + c_2(x - a)^2 + \cdots + 
-c_n(x - a)^n$$
+$$\sum_{n=0}^\infty c_n (x - a)^n = c_0 + c_1(x - a) + c_2(x - a)^2 + \cdots$$
 
-Which we say is a \textit{power series in }$(x - a)$, or a \textit{power 
+which we call is a \textit{power series in }$(x - a)$, or a \textit{power 
 series centered at }$a$, or a \textit{power series about }$a$. 
 
 \textbf{Example}: Find a power series representation for $f(x) = \frac{2x - 4}{
 x^2 - 4x +3}$. 
 
 \textbf{Solution}: Since we know $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$, we 
-will use \index{partial fractions}partial fractions to decompose the function into two fractions. (The 
-process is left as an exercise for the student.) We find that:
+will use \index{partial fractions}partial fractions to decompose the function into two fractions. (Try it yourself.) We find that:
 $$\frac{2x - 4}{x^2 - 4x + 3} = \frac{1}{x - 1} + \frac{1}{x-3}$$
 Noting that $\frac{1}{x-1} = (-1) \cdot\frac{1}{1-x}$, we can say that:
 $$\frac{1}{x-1} = (-1) \cdot \sum_{n=0}^\infty x^n$$
@@ -58,7 +57,10 @@ $$\frac{1}{x-3} = \left( \frac{-1}{3} \right) \sum_{n=0}^\infty \left(
 \frac{x}{3} \right)^n$$
 Adding the terms, we see that:
 $$\frac{1}{x-1} + \frac{1}{x-3} = (-1) \sum_{n=0}^\infty x^n + \left( 
-\frac{-1}{3} \right) \sum_{n=0}^\infty \left( \frac{x}{3} \right)^n$$
+\frac{-1}{3} \right) \sum_{n=0}^\infty \left( \frac{x}{3} \right)^n
+= -\sum_{n=0}^\infty \left(1 + \frac{1}{3^{n+1}}\right) x^n$$
+The first series needs $|x| < 1$ and the second needs $|x| < 3$, so the
+combined series represents $f$ when $|x| < 1$.
 
 \section{Power Series Convergence}
 Sometimes, you will be asked to find one or more values of $x$ 
@@ -276,18 +278,16 @@ which can also be written as $-1 \leq x \leq 1$.
 You can integrate and differentiate power series. Let $f(x) = \sum_{n=0}^\infty 
 c_n (x-a)^n$. Recall that $f(x)$ is just a very long polynomial and that the 
 derivative of a polynomial $x^n$ is $n \cdot x^{n-1}$. We can then state that:
-$$\frac{d}{dx}f(x) = \frac{d}{dx} \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots 
-+ c_n(x-a)^n \right]$$
-$$f'(x) = 0 + c_1 + 2c_2(x-a)^1 + \cdots + n c_n(x-a)^{n-1}$$
+$$\frac{d}{dx}f(x) = \frac{d}{dx} \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + c_3(x-a)^3 + \cdots \right]$$
+$$f'(x) = 0 + c_1 + 2c_2(x-a)^1 + 3c_3(x-a)^2 + \cdots$$
 $$f'(x) = \sum_{n=1}^\infty n c_n(x-a)^{n-1}$$
 
 which is true when $x$ is in the interval of convergence for the series. 
 
 Similarly, we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1}$. We can then say that:
-$$\int f(x) \,dx = \int \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots + c_n(x-a)
-^n\right]\,dx$$
+$$\int f(x) \,dx = \int \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots\right]\,dx$$
 $$\int f(x)\,dx = C + c_0(x-a) + \frac{c_1}{2}(x-a)^2 + \frac{c_2}{3}(x-a)^3 + 
-\cdots + \frac{c_n}{n+1}(x-a)^{n+1}$$
+\cdots$$
 $$\int f(x)\,dx = C + \sum_{n=0}^\infty \frac{c_n}{n+1}(x-a)^{n+1}$$
 
 Where $C$ is the integration constant. Again, this is true when $x$ is in the 
@@ -307,9 +307,9 @@ nx^{n-1}$$
 $$\frac{1}{(1-x)^2} = \sum_{n=1}^\infty nx^{n-1}$$
 Reindexing to begin at $n = 0$
 $$\frac{1}{(1-x)^2} = \sum_{n=0}^\infty (n+1)x^n$$
-Because $\sum_{n=0}^\infty$ has a radius of convergence of 1, so does $\sum_{
+Because $\sum_{n=0}^\infty x^n$ has a radius of convergence of 1, so does $\sum_{
 n=0}^\infty (n+1)x^n$. We can confirm our series makes sense by plotting the 
-partial sums for $n = 3, 5, and 7$ with the original function (see figure 
+partial sums for $n = 3$, $5$, and $7$ with the original function (see figure 
 \ref{power1}).
 
 \Needspace{12\baselineskip}  % force include space to make figure avoid floating to next page
@@ -330,8 +330,8 @@ partial sums for $n = 3, 5, and 7$ with the original function (see figure
             \addlegendentry{$\sum_{n=1}^7 nx^{n-1}$};
         \end{axis}
     \end{tikzpicture}
-    \caption{The function $f(x) = \frac{1}{(1-x)^2}$ is equal to the power 
-    series $\sum_{n=1}^\infty nx^{n-1}$}
+    \caption{Partial sums of $\sum_{n=1}^\infty nx^{n-1}$ hug
+    $f(x) = \frac{1}{(1-x)^2}$ more closely as terms are added, for $|x| < 1$}
     \label{power1}
 \end{figure}
 
@@ -366,3 +366,25 @@ x^{2n}\,dx = C + \sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{2n+1}$. Knowing that
 $\arctan{0} = 0$, we find that $C = 0$ and $\arctan{x} = \sum_{n=0}^\infty 
 \frac{(-1)^n x^{2n+1}}{2n+1}$. 
 \end{Answer}
+
+\textbf{Example}: Back to the opening question. Find $\int \frac{1}{1-x^2}\,dx$
+as a power series.
+
+\textbf{Solution}: Replace $x$ with $x^2$ in the geometric series:
+$$\frac{1}{1-x^2} = \sum_{n=0}^\infty x^{2n} = 1 + x^2 + x^4 + \cdots \qquad (|x| < 1)$$
+Integrate term by term:
+$$\int \frac{1}{1-x^2}\,dx = C + x + \frac{x^3}{3} + \frac{x^5}{5} + \cdots = C + \sum_{n=0}^\infty \frac{x^{2n+1}}{2n+1}$$
+No partial fractions needed.
+
+\begin{Exercise}[label = seriescalc2]
+Use the series for $\ln(1+x)$ to estimate $\ln(1.1)$ with three terms. How
+close is it to the calculator value?
+\end{Exercise}
+
+\begin{Answer}[ref = seriescalc2]
+With $x = 0.1$: $0.1 - \frac{0.01}{2} + \frac{0.001}{3} \approx 0.0953333$.
+The calculator gives $\ln(1.1) \approx 0.0953102$, so the error is about
+$0.000023$. The next term, $\frac{0.0001}{4} = 0.000025$, bounds the error, just
+as the Alternating Series Test promises.
+\end{Answer}
+

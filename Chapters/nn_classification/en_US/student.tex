@@ -9,12 +9,20 @@ that sum to 1.
 \section{Cross-Entropy Loss}\index{cross-entropy}
 The usual loss for classification is cross-entropy. For a binary label $y \in \{0, 1\}$ and predicted probability $p$,
 $$L = -\left[y \ln p + (1 - y)\ln(1 - p)\right]$$
-If the true label is 1, the loss is $-\ln p$, which is large when $p$ is small. Think of a weather forecast that gives a 10 percent chance of rain on a day that turns out rainy. The forecast was very wrong, and cross-entropy punishes it heavily. It is small when the network assigns high probability to the correct class.
+If the true label is 1, the loss is $-\ln p$. It is small when the network assigns high probability to the correct class, and large when $p$ is small. Think of a weather forecast that gives a 10 percent chance of rain on a day that turns out rainy. The forecast was confidently wrong, and cross-entropy punishes it heavily.
 
 \section{A Worked Example}
 A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Then $z = 1$, and the predicted probability is
 $$p = \sigma(1) = \frac{1}{1 + e^{-1}} \approx 0.731$$
 If the true label is $y = 1$, the cross-entropy loss is $-\ln(0.731) \approx 0.313$.
+
+\subsection{Softmax with Three Classes}
+A network that sorts photos into cat, dog, or bird produces three raw scores, say
+$z = (2, 1, 0)$. Softmax exponentiates each score and divides by the total:
+$$e^2 \approx 7.389, \quad e^1 \approx 2.718, \quad e^0 = 1, \qquad \text{total} \approx 11.107$$
+$$P(\text{cat}) \approx \frac{7.389}{11.107} \approx 0.665, \quad P(\text{dog}) \approx 0.245, \quad P(\text{bird}) \approx 0.090$$
+The probabilities sum to 1, and the largest score gets the largest probability. If
+the photo really is a cat, the cross-entropy loss is $-\ln(0.665) \approx 0.408$.
 
 \section{Training and Prediction}
 Training repeats the same steps as in regression: feedforward, loss, backpropagation, and a weight update. Once trained, a new instance is classified by

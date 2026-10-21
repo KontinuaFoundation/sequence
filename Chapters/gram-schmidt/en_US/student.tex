@@ -1,6 +1,10 @@
 \chapter{The Gram-Schmidt Process}
 
-The Gram-Schmidt Process is a method use to transform a set of linearly independent vectors to a set of orthogonal (perpendicular) vectors. The original vectors and the transformed vectors span the same subspace. 
+Street grids are easy to navigate because the streets meet at right angles:
+going three blocks east never changes how far north you are. Directions
+that are perpendicular do not interfere with each other. The Gram-Schmidt
+Process takes any set of linearly independent vectors, however tilted,
+and straightens them into a set of orthogonal (perpendicular) vectors. The original vectors and the transformed vectors span the same subspace. 
 
 \index{Gram-Schmidt!history}The process was named after two mathematicians: Jørgen Pedersen Gram, a Danish actuary mathematician, and Erhard Schmidt, a German mathematician. The men developed the orthogonalization process independently. Gram introduced the process in 1883, whereas Schmidt did his work in 1907.  It was not named the Gram-Schmidt process until sometime later, after both mathematicians became well known in the mathematical community.
 
@@ -39,7 +43,7 @@ process is orthogonal, but not necessarily orthonormal. To create
 unit length. That is, $u_i' = \frac{u_i}{\|u_i\|}$, where $\|.\|$
 denotes the norm (or length) of a vector.
 
-Among other things, making vectors orthonormal simplifies calculations makes it easier to define rotations and transformations, and provides a framework for calculations in fields such as quantum mechanics.
+Among other things, making vectors orthonormal simplifies calculations, makes it easier to define rotations and transformations, and provides a framework for calculations in fields such as quantum mechanics.
 
 \section{Example Calculation}\index{Gram-Schmidt!example}
 
@@ -56,21 +60,22 @@ The first vector of the orthogonal subspace is easy to define. We set it to be t
 
 $$v_1 = x_1 = (1, 2, -2)$$
 
-The second orthogonal vector is a projection of $x_2$ onto $v_1$. You learned projections in the last chapter, so this should be fairly straightforward.
+For the second vector, take $x_2$ and subtract its projection onto $v_1$.
+What is left is the part of $x_2$ perpendicular to $v_1$:
 
-$$v_2 = x_2 - \frac{x_2v_1}{v_1v_1} v_1$$
+$$v_2 = x_2 - \frac{x_2 \cdot v_1}{v_1 \cdot v_1} v_1$$
 
 Substitute the values:
 
-$$v_2 = (1, 0, -4)  - \frac{(1,0, -4)(1,2,-2)}{(1,2,-2)(1,2,-2)} \ (1, 2, -2) $$
+$$v_2 = (1, 0, -4)  - \frac{(1,0, -4)\cdot(1,2,-2)}{(1,2,-2)\cdot(1,2,-2)} \ (1, 2, -2) $$
 
 Calculate the coefficient for $v_1$:
-$$v_2 = (1, 0, -4) - \frac{9}{9} (1, 2, -2)  \\$$
+$$v_2 = (1, 0, -4) - \frac{9}{9} (1, 2, -2)$$
 Perform the subtraction:
-$$v_2 = (0, -2, -2) \\$$
+$$v_2 = (0, -2, -2)$$
  
-The third vector for the orthogonal subspace is a projection onto $v_1$ and $v_2$. 
-$$v_3 = x_3 - \frac{x_3v_1}{v_1v_1} v_1 - \frac{x_3v_2}{v_2v_2} v_2$$
+For the third vector, subtract from $x_3$ its projections onto both $v_1$ and $v_2$:
+$$v_3 = x_3 - \frac{x_3 \cdot v_1}{v_1 \cdot v_1} v_1 - \frac{x_3 \cdot v_2}{v_2 \cdot v_2} v_2$$
 
 Substitute the values:
 $$v_3 = (5,2,0) - \frac{(5,2,0)\cdot(1,2,-2)}{(1,2,-2)\cdot(1,2,-2)} (1,2,-2) - \frac{(5,2,0)\cdot(0,-2,-2)}{(0,-2,-2)\cdot(0,-2,-2)} (0,-2,-2)$$
@@ -79,9 +84,9 @@ $$v_3 =  (5,2,0) - (1,2,-2) + (1/2)(0,-2,-2)$$
 $$v_3  = (5,2,0 ) - (1,2,-2) + (0,-1,-1)$$
 $$v_3 = (4, -1, 1)$$
 
-This set of vectors is orthogonal, so we need to normalize them so that the vectors are orthonormal. Recall that an orthonormal vector has a length of 1 and is computed using this formula:
-$$normalizedVector = vector / np.sqrt(np.sum(vector**2))$$
-Thus the normalized set of vectors is:
+Check: $v_1 \cdot v_3 = 4 - 2 - 2 = 0$ and $v_2 \cdot v_3 = 0 + 2 - 2 = 0$. The
+set is orthogonal. To make it orthonormal, divide each vector by its
+length, $\frac{v}{\|v\|}$:
 $$v_1 = (0.33,  0.67, -0.67)$$
 $$v_2 = (0.0,  -0.71, -0.71 )$$
 $$v_3 = (0.94, -0.24,  0.24 ) $$
@@ -94,10 +99,10 @@ $$v_3 = (0.94, -0.24,  0.24 ) $$
 \begin{Answer}[ref=gram_schmidt]
       The first vector of the orthogonal subspace is: 
 		$$v_1 = x_1 =  (1, 1, 1) $$ 
-	  The second vector of the subspace is a projection of $x_2$ onto $v_1$.
-	  $$v_2 = x_2 - \frac{x_2v_1}{v_1v_1} v_1$$
+	  The second vector is $x_2$ minus its projection onto $v_1$:
+	  $$v_2 = x_2 - \frac{x_2 \cdot v_1}{v_1 \cdot v_1} v_1$$
 	  Substitute the values:
-	  $$v_2 =  (0, 1, 1)  - \frac{(0,1, 1)(1,1,1)}{(1,1,1)\cdot(1,1,1)}  (1, 1, 1)$$
+	  $$v_2 =  (0, 1, 1)  - \frac{(0,1, 1)\cdot(1,1,1)}{(1,1,1)\cdot(1,1,1)}  (1, 1, 1)$$
 	  $$v_2 =  (0, 1, 1)  - (2/3) (1, 1, 1) $$
 	  $$v_2 =  (-2/3, 1/3, 1/3)$$
 	  Normalize each vector by dividing by its length. Since $\|v_1\| = \sqrt{3}$, we get $v_1' = \frac{1}{\sqrt{3}}(1, 1, 1) \approx (0.577, 0.577, 0.577)$. Since $\|v_2\| = \frac{\sqrt{6}}{3} \approx 0.816$, we get $v_2' \approx (-0.816, 0.408, 0.408)$.
@@ -143,6 +148,16 @@ v3_norm = v3 / np.sqrt(np.sum(v3**2))
 print("v1_norm = ", v1_norm)
 print("v2_norm = ", v2_norm)
 print("v3_norm = ", v3_norm)
+\end{minted}
+
+You should see:
+\begin{minted}{text}
+v1 =  [ 1  2 -2]
+v2 =  [ 0. -2. -2.]
+v3 = [ 4. -1.  1.]
+v1_norm =  [ 0.33333333  0.66666667 -0.66666667]
+v2_norm =  [ 0.         -0.70710678 -0.70710678]
+v3_norm =  [ 0.94280904 -0.23570226  0.23570226]
 \end{minted}
 
 \section{Where to Learn More}

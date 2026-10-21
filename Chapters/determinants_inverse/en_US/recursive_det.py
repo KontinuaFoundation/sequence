@@ -21,7 +21,7 @@ def recursive_determinant(matrix):
         for row in matrix[1:]:
             # remove column col and store as new_row
             new_row = row[:col]+row[col+1:]
-            # apprend new row to the minor matrix
+            # append new row to the minor matrix
             minor.append(new_row)
     
         sign = (-1) ** col #exponential for alternating sign

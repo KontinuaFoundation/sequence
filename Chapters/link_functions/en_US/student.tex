@@ -1,5 +1,9 @@
 \chapter{Link Functions}
 
+A linear predictor is a wild animal: it can wander anywhere from $-\infty$ to
+$\infty$. A probability has to stay between 0 and 1, and a count can never be
+negative. A link function is the leash that keeps the prediction in bounds.
+
 \section{The Role of a Link}\index{link function}
 A link function $g$ connects the mean of the response, $\mu = E[Y]$, to the linear predictor $\eta$, so that $g(\mu) = \eta$.
 The link must map the allowed values of $\mu$ onto all real numbers, because $\eta$ can be any real number. The
@@ -19,7 +23,7 @@ returns $\frac{e^{1.386}}{1 + e^{1.386}} = 0.8$. For a mean of $\mu = 10$, the l
 the inverse gives $e^{2.303} = 10$.
 
 \section{Choosing a Link}
-The link should respect the range of the response. Think of a test score, which can be any number, and a chance of passing, which must stay between 0 and 1. Use the identity link for real-valued responses, the log link for
+The link should respect the range of the response. Think of the change in your height over a year, which can be positive or negative, and a chance of passing a test, which must stay between 0 and 1. Use the identity link for real-valued responses, the log link for
 positive or count responses, and the logit or probit link for probabilities. The choice affects how coefficients are
 interpreted. Under the log link, a coefficient multiplies the mean; under the logit link, it multiplies the odds.
 
@@ -31,8 +35,21 @@ $\ln\frac{0.25}{0.75} = \ln\frac{1}{3} \approx -1.099$.
 \end{Answer}
 
 \begin{Exercise}[label=lf2, title=Interpret the log link]
-Under the log link, $\ln\mu = \beta_0 + \beta_1 x$. If $\beta_1 = 0.2$, by what factor does the mean change when $x$ increases by 1?
+Under the log link, $\ln\mu = \beta_0 + \beta_1 x$. If $\beta_1 = -0.1$, by what factor does the mean change when $x$ increases by 1?
 \end{Exercise}
 \begin{Answer}[ref=lf2]
-The mean is multiplied by $e^{0.2} \approx 1.221$, an increase of about 22\%.
+The mean is multiplied by $e^{-0.1} \approx 0.905$, a decrease of about 9.5\%. A
+negative coefficient under the log link shrinks the mean, but never makes it negative.
 \end{Answer}
+
+\begin{Exercise}[label=lf3, title=Logit versus probit]
+For $\mu = 0.8$, the logit is $1.386$. The probit is $\Phi^{-1}(0.8)$. Use a
+$z$-table (or \texttt{scipy.stats.norm.ppf}) to find it, and compare.
+\end{Exercise}
+\begin{Answer}[ref=lf3]
+$\Phi^{-1}(0.8) \approx 0.842$. The probit value is smaller because the normal
+curve has thinner tails than the logistic curve. The two links usually give
+similar fitted probabilities, but their coefficients are on different scales
+(logit coefficients are roughly 1.6 to 1.8 times probit coefficients).
+\end{Answer}
+

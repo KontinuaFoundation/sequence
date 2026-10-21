@@ -1,5 +1,10 @@
 \chapter{Conditional Probability}
 
+Your weather app says there is a 30\% chance of rain. But if you
+already know that dark clouds are rolling in, the chance is higher. A
+\emph{conditional probability} is a probability that has been updated by
+something you already know.
+
 Let us say there is a virus going around, and there is a vaccine for it
 that requires two shots. You are working at a school, and you are
 wondering how effective the vaccines are. Some students are
@@ -30,7 +35,7 @@ had only one of the two shots tested negative for the virus.
 
 Your principal has a few questions. The first is, ``If I put five
 randomly chosen students in a study group together, what is the
-probability that one of them has the virus?''
+probability that at least one of them has the virus?''
 
 The first thing you might do is make a new table that shows the probability of a randomly chosen student being in any particular
 group. You just divide each entry by 644 (the total number of
@@ -62,7 +67,7 @@ Now we can sum across the columns and rows.
 \end{tabular}
 
 If a student is chosen randomly from the entire student body, there is
-a 34.2\% that the student has tested positive for the virus, and there is
+a 34.2\% chance that the student has tested positive for the virus, and there is
 17.4\% chance that the student has one shot of the vaccine.
 
 \index{marginal probability}This summing of the probabilities across one dimension is known as
@@ -104,14 +109,14 @@ That is the probability that a student who has had both vaccination
 shots will test negative for the virus.
 
 How would you calculate this? You would count all the students who had
-a positive test \textit{and} both vaccination shots, which you would
+a negative test \textit{and} both vaccination shots, which you would
 divide by the total number of students who had both vaccination shots.
 
 $$p(T_{-} | V_{2}) = \frac{256}{96 + 256} = \frac{8}{11} \approx 72.7\%$$
 
 If we are working from the probabilities, you can get the same result
 this way. Divide the probability that a randomly chosen student had a
-positive test \textit{and} both vaccination shots by the probability
+negative test \textit{and} both vaccination shots by the probability
 that a student had both vaccination shots:
 
 $$p(T_{-} | V_{2}) = \frac{p(T_{-} \text{ AND } V_{2})}{p(V_{2})} =  \frac{0.398}{0.547} \approx 72.7\%$$
@@ -151,35 +156,38 @@ and win the lottery is equal to the probability that you buy a ticket
 times the probability that you win, given that you have bought a ticket.
 (Here $A$ is ``win the lottery'' and $B$ is ``buy a ticket''.)
 
-This is known as \index{chain rule of probability}\textit{The Chain Rule of Probability}.  We can
-chain together as many events as we want: The probability that you are
-going to die in the car that you bought with your winnings from the
-lottery ticket you bought is:
+This is known as \index{chain rule of probability}\textit{The Chain Rule of Probability}. We can
+chain together as many events as we want. Suppose you apply to a college
+($Z$), get accepted ($Y$), and receive a scholarship ($X$). Then
+$$p(X \text{ AND } Y \text{ AND } Z) = p(X \mid Y \text{ AND } Z)\, p(Y \mid Z)\, p(Z)$$
+In English: the probability that you apply, get in, and get a scholarship
+is the probability that you apply, times the probability that you get in
+given that you applied, times the probability of a scholarship given that
+you applied and got in. Each step only has to consider the world in which
+the earlier steps already happened.
 
-$$p(W \text{ AND } X \text{ AND } Y \text{ AND } Z) = p( W | X \text{ AND } Y \text{ AND } Z) p( X |  Y \text{ AND } Z) p (Y | Z) p(Z)$$
+\begin{Exercise}[label=cp2, title=Chaining Probabilities]
+You apply to a college with probability 0.9. If you apply, you are
+accepted with probability 0.4. If accepted, you receive a scholarship with
+probability 0.25. What is the probability that you end up with a
+scholarship to this college?
+\end{Exercise}
+\begin{Answer}[ref=cp2]
+$0.9 \times 0.4 \times 0.25 = 0.09$, a 9\% chance.
+\end{Answer}
 
-where
-
-\begin{itemize}
-\item $W =$ Dying in car accident
-\item $X =$ Buying a car with lottery winnings
-\item $Y =$ Winning the lottery
-\item $Z =$ Buying a lottery ticket
-\end{itemize}
-
-In English, the equation says:
-
-``The probability that you will die in a car accident, buy a car with
-lottery winnings, win the lottery, and buy a lottery ticket is equal
-to the probability that you buy a lottery ticket times the probability
-that you win the lottery (given that you have bought a ticket) times
-the probability that buy a car with those lottery winnings (given that
-bought a ticket and won) times the probability that you crash that car
-(given that you have bought the car, won the lottery, and bought a
-ticket).''
-
-% KA: https://www.khanacademy.org/math/ap-calculus-ab/ab-differentiation-2-new/ab-3-1a/v/chain-rule-introduction
-% ^ above is a link to chain rule for calculus
-
-
-  
+\begin{Exercise}[label=cp3, title=Two Shots]
+Using the student table, a principal picks one student at random. What is
+the probability that the student had zero shots, given that they tested
+positive? Compare it with the probability that a student had two shots,
+given that they tested positive. Can you conclude that the vaccine does
+not work, since more positive students had two shots than one?
+\end{Exercise}
+\begin{Answer}[ref=cp3]
+$p(V_0 \mid T_{+}) = \frac{88}{220} = 40\%$ and $p(V_2 \mid T_{+}) = \frac{96}{220} \approx 43.6\%$.
+No. Far more students had two shots (352) than zero shots (180), so of
+course more positive students are double-vaccinated. The fair comparison
+is $p(T_{+} \mid V_2) = \frac{96}{352} \approx 27.3\%$ versus $p(T_{+} \mid
+V_0) = \frac{88}{180} \approx 48.9\%$: a double-vaccinated student was much
+less likely to test positive.
+\end{Answer}

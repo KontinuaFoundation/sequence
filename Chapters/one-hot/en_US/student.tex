@@ -3,7 +3,10 @@
 \section{Categorical Data}\index{categorical variable}
 A \newterm{categorical variable} takes values that are labels rather than numbers. Color (red, blue, green),
 size (small, medium, large), and city are categorical. Most learning algorithms need numbers as input, so
-categories must be converted first. Think of a survey question about your favorite subject. Each answer becomes its own yes or no column.
+categories must be converted first. Why not just number them, red $= 1$,
+blue $= 2$, green $= 3$? Because then the model would believe that green is
+``bigger'' than red, and that blue sits exactly halfway between them. Colors
+have no such order. Think of a survey question about your favorite subject. Each answer becomes its own yes or no column.
 
 \section{The Encoding}\index{one-hot encoding}
 \newterm{One-hot encoding} creates one binary column for each category. The column is 1 when the row has that
@@ -28,8 +31,9 @@ red & 1 & 0 & 0 \\
 \end{center}
 
 \section{The Dummy Variable Trap}
-One column is redundant. If a row is not red, not blue, and not green, the category would have to be the
-fourth value, which does not exist. Dropping one column, such as is\_green, avoids this problem in linear and
+One column is redundant. If you know is\_red and is\_blue, you already know is\_green: it is 1 exactly
+when the other two are 0, so is\_green $= 1 -$ is\_red $-$ is\_blue. In a regression with an intercept,
+the three columns add up to the column of ones, so the model cannot tell their effects apart. Dropping one column, such as is\_green, avoids this problem in linear and
 logistic regression. Keeping all $n$ columns is fine for many tree-based and neural network methods.
 
 \section{When to Use It}
@@ -37,7 +41,7 @@ Use one-hot encoding for nominal categories, where the labels have no order. For
 small, medium, and large, an integer code that respects the order may be more appropriate.
 
 \begin{Exercise}[label=oh1, title=Encode a variable]
-Write the one-hot encoding of the sizes small, medium, large, small, using three columns in that order.
+Write the one-hot encoding of the pets cat, dog, fish, cat, using three columns in that order.
 \end{Exercise}
 \begin{Answer}[ref=oh1]
 $(1,0,0)$, $(0,1,0)$, $(0,0,1)$, $(1,0,0)$.

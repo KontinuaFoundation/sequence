@@ -9,7 +9,13 @@
 %  adjacency matrices [prereq matrices and lin alg.] https://github.com/KontinuaFoundation/sequence/issues/303
 
 % note, eliminate dijkstra and binarys search as their own chapters
-This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs). A lot of these are very advanced graph theory topics, so you will not be tested on too heavily of these topics. Many of these appear on AP/IB exams, or in advanced college level CS classes.
+How does a power company wire a town with the least cable? How does a
+video game character find its way around walls? How does a build system
+know which tasks can run at the same time? Each is a graph problem. This
+chapter is a tour: adjacency matrices, Prim's algorithm for minimum
+spanning trees, A* search, isomorphism, the Traveling Salesperson Problem,
+topological sorting, and some classic proofs. Several of these ideas are
+advanced; you will meet them again in college computer science.
 \section{Adjacency Matrices}
 
 Recall that we can represent graphs as lists of data called \index{adjacency list}adjacency lists. In code, this could look like the following:
@@ -56,7 +62,7 @@ $$\begin{array}{c} A=
 			0 & 1 & 0 & 0
 		\end{bmatrix}\end{array}$$
 
-For \emph{undirected} graphs, the adjacency matrix is symmetric, and thusly $n\times n$, meaning that the transpose of matrix is the same matrix!
+For \emph{undirected} graphs, the adjacency matrix is symmetric: it equals its own transpose.
 
 $$A = A^T$$
 \begin{figure}[H]
@@ -86,7 +92,7 @@ $$A = A^T$$
 \end{figure}
 By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, Figure~\ref{fig:adjacency2} shows one loop on vertex D, so the diagonal entry is 1. (Some texts count an undirected loop twice and use 2.)
 
-For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
+For \emph{directed} graphs, the adjacency matrix looks a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
 
 \begin{figure}[H]
 	\centering
@@ -228,13 +234,13 @@ where $c(u,v)$ is the cost of traversing the edge from $u$ to $v$. As we discuss
 \subsection{The Heuristic Function $h(n)$}
 The heuristic $h(n)$ function depends on the problem domain. Its purpose is to estimate the remaining cost from node $n$ to the goal. While this is a difficult task, we can use basic algebra to make an informed guess.
 
-For example, in a map-based pathfinding problem, $h(n)$ may be the straight-line distance, or \newterm{Euclidean distance} between node $n$ and the goal. Since the actual path cannot be shorter than the Euclidean distance, this provides a reasonable estimate of the remaining cost. If a nodes location is represented on a 2D plane (such as a map or graph) $(x_n, y_n)$ and the goal location as $(x_g, y_g)$, the Euclidean Heuristic
+For example, in a map-based pathfinding problem, $h(n)$ may be the straight-line distance, or \newterm{Euclidean distance} between node $n$ and the goal. Since the actual path cannot be shorter than the Euclidean distance, this provides a reasonable estimate of the remaining cost. If a node's location is represented on a 2D plane (such as a map or graph) $(x_n, y_n)$ and the goal location as $(x_g, y_g)$, the Euclidean Heuristic
 $$h(n) = \sqrt{(x_g-x_n)^2 + (y_g-y_n)^2}$$
 
-Alternatively, many 2D games use a similar either \newterm{taxicab distance} (typically for 4-way movement),
+Many 2D games instead use \newterm{taxicab distance} (for 4-way movement),
 $$h(n) = |x_g-x_n| + |y_g-y_n|$$
 or \newterm{Chebyshev distance} (typically for 8-way movement in a game)
-$$d = \max(|x_2 - x_1|,\ |y_2 - y_1|)$$
+$$h(n) = \max(|x_g - x_n|,\ |y_g - y_n|)$$
 which takes the maximum of the horizontal and vertical movements.
 
 Sometimes, graphs without direct spatial meaning become more difficult to work with because there is no obvious notion of distance between two nodes.
@@ -474,7 +480,7 @@ Therefore,
 This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem. We call this an \newterm{algorithmic reduction}.\footnote{Algorithmic Reductions are the basis of a set of problems called P, NP, and NP-Complete. See \href{https://youtu.be/eHZifpgyH_4}{this video} for more.} 
 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
-The Travelling Salesperson Problem (TSP) asks for the shortest route that visits every city exactly once and returns to the start. It is an NP problem, and no fast algorithm is known that always finds the best route. A simple heuristic is the \newterm{nearest neighbour} method. Start at a city. Repeatedly go to the closest city you have not visited yet, and return to the start at the end. This is fast and often gives a reasonable route, but it may not be the shortest.
+The Travelling Salesperson Problem (TSP) asks for the shortest route that visits every city exactly once and returns to the start. It is NP-hard: no fast algorithm is known that always finds the best route, and with just 20 cities there are about $6 \times 10^{16}$ possible tours. A simple heuristic is the \newterm{nearest neighbour} method. Start at a city. Repeatedly go to the closest city you have not visited yet, and return to the start at the end. This is fast and often gives a reasonable route, but it may not be the shortest.
 \section{Topological Sort and DAGs}
 Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs in a way that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \index{topological sort}\newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
 
@@ -535,7 +541,7 @@ will produce the following error \index{Cycle Error}
 \begin{minted}{python}
 graphlib.CycleError: ('nodes are in a cycle', ['C', 'Z', 'A', 'C'])
 \end{minted}
-The exception reports one cycle that prevents the ordering from being constructed. In this case, $C\rightarrow Z\rightarrow A\rightarrow C$ forms a directed cycle.
+The exception reports one cycle that prevents the ordering from being constructed (the exact cycle printed may vary). In this case, $C\rightarrow Z\rightarrow A\rightarrow C$ forms a directed cycle.
 
 We can also introduce tasks that can be done in parallel. Create the following file \mintinline{python}|parallel_dag.py|
 \begin{minted}{python}
@@ -570,13 +576,13 @@ Running this code outputs the following
 ('Test',)
 ('Deploy',)
 \end{minted}
-showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently (this is similar to running circuits in parallel!).
+showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently .
 \section{Proofs}
 % CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 This section will be a set of proofs or algorithm design problems for graph-related concepts that are important to know. At the basis level, these are just practice problems for graph understand, but can be applied in many real world scenarios.
 
-\subsection{Example 1: Bipartite} %FIXME Example environment
+\subsection{Example 1: Bipartite}
 
 \begin{mdframed}[frametitle = {Bipartite Graph}, style = important]
 
@@ -668,9 +674,8 @@ $e = (u, v)$, and determines whether $G$ has a cycle containing $e$.
 \end{Answer}
 
 \begin{Exercise}[title={Leaf Removal}, label={ex:proofs_leaf}]
-\textbf{Proof the following statement:}
+\textbf{Prove the following statement:}
 In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
-\vspace*{20mm}
 \end{Exercise}
 \begin{Answer}[ref={ex:proofs_leaf}]
 \begin{proof}
@@ -679,15 +684,15 @@ Build a DFS tree $T$ of $G$. $T$ spans $G$, so if $G$ has at least two vertices,
 \end{Answer}
 
 Sometimes, we may need to create new graphs as counterexamples to disprove a statement. Consider the following:
-\begin{theorem}
-A graph $G$ is \index{strongly connected}\newterm{strongly connected} if every vertex is reachable from every other vertex.
-\end{theorem}
+\begin{definition}[Strongly Connected]
+A directed graph $G$ is \index{strongly connected}\newterm{strongly connected} if every vertex is reachable from every other vertex.
+\end{definition}
 Strongly connected components are the largest subgraphs that are strongly connected. They come up when we study directed graphs, for example, when we want to know which groups of web pages can all reach each other.
 \begin{Exercise}[title={Strongly Connected Graphs}, label={ex:proofs_strongly_connected}]
 Create an example of a strongly connected directed graph $G = (V,E)$ such that, for every $v \in V$,
 removing $v$ from $G$ leaves a directed graph that is not strongly connected. 
 
-\textit{Hint: the simplest answer is usually the best. Start with one vertex.}
+\textit{Hint: the simplest answer is usually the best. Try a single cycle.}
 \end{Exercise}
 \begin{Answer}[ref={ex:proofs_strongly_connected}]
 
@@ -708,6 +713,11 @@ removing $v$ from $G$ leaves a directed graph that is not strongly connected.
 		\draw (C) to[bend left=20] (A);
 
 	\end{tikzpicture}
+
+A directed triangle $A \to B \to C \to A$. You can get from any vertex to any
+other by going around the cycle, so it is strongly connected. Remove any
+one vertex, say $A$, and only the edge $B \to C$ is left: you can reach
+$C$ from $B$ but not $B$ from $C$.
 \end{Answer}
 % Prove the following theorem:
 % 

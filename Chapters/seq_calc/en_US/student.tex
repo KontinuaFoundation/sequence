@@ -1,10 +1,13 @@
 \chapter{Sequences in Calculus}
 \index{sequences}
-We introduced sequences in Chapter~\ref{chap:sequences}. Now, we will examine them
-in more detail in the context of calculus. You already know about arithmetic and
+Your phone's battery drops from 100\% to 99\% to 98\%. Your savings account
+grows a little each month. A rumor reaches 1, then 3, then 9 classmates.
+Each of these is a list of numbers that follows a rule, which is a sequence.
+We introduced sequences in Chapter~\ref{chap:sequences}. Now we ask the
+calculus question: where is the list heading? You already know about arithmetic and
 geometric sequences, but not all sequences can be classified as arithmetic or
 geometric. Take the famous \index{Fibonacci sequence}Fibonacci sequence, \{1, 1, 2, 3, 5, 8, ...\},
-which can be explicitly defined as $a_n = a_{n-1} + a_{n-2}$, with $a_1 = a_2
+which is defined by the rule $a_n = a_{n-1} + a_{n-2}$, with $a_1 = a_2
     = 1$. There is no common difference or common ratio, so the Fibonacci sequence
 is not arithmetic or geometric. Another example is $a_n = \sin{\frac{n\pi}{6}}$,
 which will cycle through a set of values.
@@ -12,8 +15,7 @@ which will cycle through a set of values.
 Sequences have many real-world applications, including compound interest and
 modeling population growth. In later chapters, you will learn that the sum of
 all the values in a sequence is a series and how to use series to describe
-functions. In order to be able to do all that, we first need to talk in depth
-about sequences.
+functions. First, we need to understand sequences well.
 
 Some sequences are defined explicitly, like $a_n = \sin{\frac{n\pi}{6}}$, while
 others are \index{recursive sequence}defined recursively, like $a_n = a_{n-1} + a_{n-2}$.
@@ -65,14 +67,14 @@ $\frac{4}{5}$, and $\frac{5}{6}$\}.
 
 \section{The Idea of Approaching}
 \subsection{Law of Large Numbers Revisited}\index{Law of Large Numbers}
-Recall that, in the limits chapter, we talked about the \newterm{Law of Large Numbers}. The Law states that as the number of tests (in the case from the limits chapter, coin flips) increases, the number of successes (heads) approaches closer to the expected value or mean.
+Recall that, in the limits chapter, we talked about the \newterm{Law of Large Numbers}. It says that as the number of trials (coin flips, in that chapter) grows, the proportion of successes (heads) gets closer to the expected value.
 
 Let us bring back our flip sequence from that chapter
 \[
     H, T, T, H, T, H, T, T, H, T
 \]
 
-We want to make a sequence from this. Let us have the \[a_n = \frac{\text{heads so far}}{\text{flips so far}}\]
+Let us turn it into a sequence: \[a_n = \frac{\text{heads so far}}{\text{flips so far}}\]
 The first few terms would be
 \[
     a_1 = \frac{1}{1} = 1
@@ -107,8 +109,7 @@ The coin-flip sequence is random, so now we will look at sequences whose rules a
 You can visualize a sequence on an $xy$-plane or a number line. Figures
 \ref{fig:linefrac} and \ref{fig:planefrac} show visualizations of the sequence
 $a_n = \frac{n}{n+1}$. To visualize this on the $xy$-plane, we take points such
-that $x = n$ and $y = a_n$, where $n$ is a positive integer. What do you notice
-about this sequence? It is not as easy to identify as our coin example. As $n$ increases, $a_n$ gets closer and closer to $1$.
+that $x = n$ and $y = a_n$, where $n$ is a positive integer. What do you notice? As $n$ increases, $a_n$ gets closer and closer to $1$.
 
 \begin{figure}[H]
     \centering
@@ -255,7 +256,7 @@ $$\lim_{n \to \infty} \frac{\ln{n}}{n} = $$
 $$\frac{\lim_{n \to \infty} \ln{n}}{\lim_{n \to \infty}n} =
     \frac{\infty}{\infty}$$
 
-This is undefined, but fits the criteria for \index{L'Hospital's rule!sequences}L'Hospital's rule:
+This is an indeterminate form, so we can use \index{L'Hospital's rule!sequences}l'H\^{o}pital's rule:
 $$\lim_{n \to \infty} \frac{\ln{n}}{n} = \lim_{n \to \infty}
     \frac{\frac{d}{dn}\ln{n}}{\frac{d}{dn}n}$$
 $$= \lim_{n \to \infty} \frac{\frac{1}{n}}{1} = 0$$
@@ -286,7 +287,7 @@ $$= \lim_{n \to \infty} \frac{\frac{1}{n}}{1} = 0$$
 \textbf{Solution}: First trying to take the limit directly, we see that:
 $$\lim_{n \to \infty} \frac{n!}{n^n} = \frac{\infty}{\infty}$$
 
-which is undefined. Because the factorial cannot be described as a continuous
+which is indeterminate. Because the factorial cannot be described as a continuous
 function, we cannot use l'H\^{o}pital's rule. We can examine this sequence
 graphically (see figure \ref{fig:factorial}) and mathematically. We examine it
 mathematically by writing out a few terms to get an idea of what happens to
@@ -305,7 +306,7 @@ $$a_n = \frac{n!}{n^n} = \frac{1 \cdot 2 \cdot 3 \cdots \cdot n}{n
         \cdot n \cdot n \cdots n} = \frac{1}{n}(\frac{2 \cdot 3 \cdots n}{n
         \cdot n \cdots n})$$
 
-The expression inside the parentheses is less than 1; therefore, $0 < a_n <
+Each fraction inside the parentheses is at most 1, so the product is at most 1; therefore, $0 < a_n \leq
     \frac{1}{n}$. Since $\lim_{n \to \infty} 0 = 0$ and $\lim_{n \to \infty}
     \frac{1}{n} = 0$, by Squeeze Theorem, we know that $\lim_{n \to \infty}
     \frac{n!}{n^n} = 0$. Therefore, the sequence $a_n = \frac{n!}{n^n}$ is
@@ -476,6 +477,27 @@ Therefore, $a_n < 7$ for all $n$ and the sequence is bounded above. Because
 the sequence is monotonic and bounded, we know the sequence is convergent and,
 therefore, that the limit of $a_n$ as $n \to \infty$ exists.
 
+\begin{Exercise}[label=seqcalc4]
+    Let $a_1 = 1$ and $a_{n+1} = \sqrt{2 + a_n}$.
+    \begin{enumerate}
+        \item Compute $a_2$, $a_3$, and $a_4$ to three decimal places.
+        \item Show that if $a_k < 2$, then $a_{k+1} < 2$.
+        \item The sequence is increasing. Explain why it must converge, and
+        guess its limit.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=seqcalc4]
+    \begin{enumerate}
+        \item $a_2 \approx 1.732$, $a_3 \approx 1.932$, $a_4 \approx 1.983$.
+        \item If $a_k < 2$, then $2 + a_k < 4$, so $\sqrt{2 + a_k} < 2$.
+        \item By induction it is bounded above by $2$ (and below by $1$), and
+        it is increasing, so it is monotonic and bounded and therefore
+        converges. The terms approach $2$. (If the limit is $L$, then
+        $L = \sqrt{2 + L}$, which gives $L = 2$.)
+    \end{enumerate}
+\end{Answer}
+
 \section{Applications of Sequences}
 \index{sequences!applications of}
 \subsection{Compound Interest}\index{compound interest}
@@ -495,7 +517,7 @@ will it take you to save \$10,000?
 \textbf{Solution}: We can write a recursive definition for the sequence. At
 the end of each year, the account will gain the interest on the entirety of
 the previous year's balance plus \$1200:
-$$P_n = P_{n-1}(1+0.0325) + \$1200$$\\
+$$P_n = P_{n-1}(1+0.0325) + \$1200$$
 With an initial investment $P_0 = \$3000$. We can write out the first few terms
 to find how many years it will take to save \$10,000:
 \begin{center}
@@ -530,13 +552,13 @@ The accumulation of interest with deposits is better described by a sequence tha
 \end{Exercise}
 
 \begin{Answer}[ref=seqcalc5]
-    Our principal is $P = 1500$ and the interest rate is $r = 0.06$. After $n$
-    years, your investment will be worth $a_n = 1500(1.06)^{n}$. For $n = 10$,
-    your investment will be valued at $a_{10} = \$1500(1.06)^{10} = \$2686.27$
-    (that is over \$1000 in interest!). To determine if the sequence is convergent
+    Our principal is $P = 1500$ and the interest rate is $r = 0.05$. After $n$
+    years, your investment will be worth $a_n = 1500(1.05)^{n}$. For $n = 10$,
+    your investment will be valued at $a_{10} = \$1500(1.05)^{10} \approx \$2443.34$
+    (that is over \$900 in interest). To determine if the sequence is convergent
     or divergent, we examine the limit as $n \to \infty$:
     $$\lim_{n \to \infty} 1500(1.06)^n = 1500\cdot \lim_{n \to \infty}
-        (1.06)^n = 1500 \cdot \infty = \infty$$\\
+        (1.05)^n = \infty$$
     The sequence is divergent.
 \end{Answer}
 
@@ -545,7 +567,7 @@ Sequences can be used to model a reproducing population that is being
 occasionally culled from or added to. Similar to compound interest, a
 population of living things (plants, animals, fungi, etc.) reproducing at a
 rate \textit{r} can be modeled with an exponential function:
-$$P_n = P_0(1+r)^n$$\
+$$P_n = P_0(1+r)^n$$
 where $P_0$ is the initial population, $r$ is the yearly reproductive rate,
 and $n$ is the number of years elapsed.
 
@@ -578,16 +600,15 @@ deer is not a living deer):
 There will be 6617 deer in the park after 5 years.
 
 \begin{Exercise}[label=seqcalc6]
-    A farmer keeps a pond stocked with fish. If the fish are eaten by predators
-    at a rate of 5\% per month and the farmer can afford to restock the pond with
-    10 fish every 6 months. If the farmer starts with 100 fish, how many total fish
+    A farmer keeps a pond stocked with fish. Predators eat 5\% of the fish each month,
+    and the farmer can afford to add 10 fish at the end of every 6 months. If the farmer starts with 100 fish, how many total fish
     will the farmer have lost to predation after 4 years?
 \end{Exercise}
 
 \begin{Answer}[ref=seqcalc6]
     The number of fish in the pond is:
     $$P_n = 0.95^6 P_{n-1} + 10$$
-    $$P_0 = 100$$\\
+    $$P_0 = 100$$
     where $n$ is the number of 6-month periods that have passed. The four-year
     period is given by $1 \leq n \leq 8$. The amount lost to predation every 6
     months is given by $P_{n-1}(1-0.95^6)$.

@@ -20,17 +20,21 @@ Four points on a line are $1, 2, 6, 8$, and $k = 2$. Start with centroids $c_1 =
 \item Update: $c_1 = \frac{1 + 2}{2} = 1.5$ and $c_2 = \frac{6 + 8}{2} = 7$.
 \end{itemize}
 The next assignment is the same, so the algorithm stops with clusters $\{1, 2\}$ and $\{6, 8\}$.
+The total squared distance is $0.5^2 + 0.5^2 + 1^2 + 1^2 = 2.5$.
 
 \section{Choosing k}
 The number $k$ is not learned by the algorithm. The \newterm{elbow method} plots the total squared distance against $k$. The total always falls as $k$ grows,
 and the point where the decrease levels off is a common choice. Other methods, such as silhouette scores, compare how well separated the clusters are.
 
 \begin{Exercise}[label=km1, title=One iteration]
-Using the four points $1, 2, 6, 8$ and starting centroids $c_1 = 2$ and $c_2 = 7$, find the assignments and the new centroids after one iteration.
+Using the four points $1, 2, 6, 8$, start with the poorly placed centroids $c_1 = 1$ and $c_2 = 2$. Run k-means until it stops.
 \end{Exercise}
 \begin{Answer}[ref=km1]
-Point $1$ is at distance 1 from $c_1 = 2$, and point $2$ is at distance 0. Points $6$ and $8$ are nearer $c_2 = 7$. So the clusters are
-$\{1, 2\}$ and $\{6, 8\}$. The new centroids are $1.5$ and $7$.
+Iteration 1: point $1$ joins $c_1$, and points $2$, $6$, and $8$ join $c_2$. The centroids become $c_1 = 1$ and
+$c_2 = \frac{2 + 6 + 8}{3} \approx 5.33$.
+Iteration 2: point $2$ is now nearer $c_1$ (distance 1 versus 3.33), so the clusters are $\{1, 2\}$ and $\{6, 8\}$, and the
+centroids become $1.5$ and $7$. Iteration 3 changes nothing, so the algorithm stops. Even from a bad start,
+it found the natural clusters here, though that does not always happen.
 \end{Answer}
 
 \begin{Exercise}[label=km2, title=Why run it again?]

@@ -1,5 +1,11 @@
 \chapter{Generalized Linear Models}
 
+How many goals will a team score? Will a customer click ``buy''? How long
+until a light bulb burns out? Linear regression could make a prediction for
+each, but it might predict $-0.4$ goals or a 130\% chance of clicking. This
+chapter shows how to keep the simplicity of a linear model while respecting
+what the answer is allowed to be.
+
 \section{Beyond the Normal Distribution}\index{generalized linear model}
 Ordinary linear regression assumes the response is normal, with a mean that is a linear function of the predictors.
 Many responses are not normal: counts, binary outcomes, and positive amounts all violate that assumption. A
@@ -20,11 +26,13 @@ outcomes use a binomial distribution. The link is then chosen so the mean stays 
 \newterm{canonical} link for each distribution is a natural default. The chapter on link functions lists the common choices.
 
 \section{A Worked Example}
-A Poisson model for the number of customers $Y$ per hour uses the log link. Suppose $\beta_0 = 0.5$ and $\beta_1 = 0.2$,
-and $x = 3$ is the number of staff on duty. Then
+A Poisson model for the number of customers $Y$ per hour at a smoothie shop uses the log link. Suppose $\beta_0 = 0.5$ and $\beta_1 = 0.2$,
+where $x$ is the number of social media posts the shop made that day. With $x = 3$,
 $$\eta = 0.5 + 0.2(3) = 1.1$$
 The log link gives $\ln(E[Y]) = 1.1$, so the expected number of customers is $E[Y] = e^{1.1} \approx 3.004$.
-The log link keeps the mean positive, which is required for counts.
+The log link keeps the mean positive, which is required for counts. It also
+makes the coefficients multiplicative: each extra post multiplies the expected
+number of customers by $e^{0.2} \approx 1.22$, a 22\% increase.
 
 \section{Fitting a GLM}
 Parameters are estimated by maximum likelihood, not least squares. Software iterates until the likelihood stops increasing.

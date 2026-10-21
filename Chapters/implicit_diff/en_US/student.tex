@@ -1,42 +1,30 @@
 \chapter{Implicit Differentiation}
 
-Implicit differentiation is a technique in calculus for finding the
-derivative of a relation defined implicitly (that is, a relation
-between variables $x$ and $y$ that is not explicitly solved for one
-variable in terms of the other).\index{implicit differentiation}
+The equation $x^2 + y^2 = 25$ draws a perfectly good circle, but it is
+not a function: most values of $x$ give two values of $y$. You could
+split it into two functions, $y = \sqrt{25 - x^2}$ and $y = -\sqrt{25 -
+x^2}$, and differentiate each. But some curves, like the leaf-shaped
+$x^3 + y^3 = 3xy$ later in this chapter, are nearly impossible to solve
+for $y$. \newterm{Implicit differentiation}\index{implicit differentiation}
+finds slopes without solving for $y$ at all.
 
 \section{Implicit Differentiation Procedure}
 
-\textbf{Worked example: a slope on a circle.} The circle $x^2 + y^2 = 25$ is not a function of $x$ in the usual form. Differentiate both sides with respect to $x$, using the chain rule on $y^2$:
+The trick: pretend $y$ is some function of $x$, even if you do not know
+which one. Then differentiate both sides of the equation with respect to
+$x$. Terms with only $x$ work as usual. Whenever you differentiate
+something with $y$ in it, the \index{chain rule!implicit}chain rule tacks
+on a factor of $\frac{dy}{dx}$. For example,
+$$\frac{d}{dx}y^2 = 2y\frac{dy}{dx}$$
+just as $\frac{d}{dx}(g(x))^2 = 2g(x)g'(x)$. Finally, solve the resulting
+equation for $\frac{dy}{dx}$.
+
+\textbf{Worked example: a slope on a circle.} Differentiate both sides of
+$x^2 + y^2 = 25$ with respect to $x$:
 $$2x + 2y\frac{dy}{dx} = 0 \quad \Longrightarrow \quad \frac{dy}{dx} = -\frac{x}{y}$$
-At the point $(3, 4)$, the slope is $\frac{dy}{dx} = -\frac{3}{4}$.
-
-
-Consider an equation that defines a relationship between $x$ and $y$:
-
-\[
-F(x, y) = 0
-\]
-
-To find the derivative of $y$ with respect to $x$, we differentiate
-both sides of this equation with respect to $x$, treating $y$ as an
-implicit function of $x$:\footnote{This $\frac{d}{dx}$ form of the derivative is the same as $y'$ said as taking the derivative of $y$ with respect to $x$}
-
-$$\frac{d}{dx} F(x, y) = \frac{d}{dx} 0$$
-
-Applying the \index{chain rule!implicit}chain rule during the differentiation on the left side of
-the equation gives:
-
-$$\frac{\partial F}{\partial x} + \frac{\partial F}{\partial y} 
-\frac{dy}{dx} = 0$$
-
-Finally, we solve for $\frac{dy}{dx}$ to find the derivative of $y$
-with respect to $x$:
-
-$$\frac{dy}{dx} = 
--\frac{\frac{\partial F}{\partial x}}{\frac{\partial F}{\partial y}}$$
-
-This result is obtained using the implicit differentiation method.
+At the point $(3, 4)$, the slope is $\frac{dy}{dx} = -\frac{3}{4}$. The
+answer depends on both $x$ and $y$, which makes sense: at $(3, 4)$ and $(3,
+-4)$ the circle has different slopes.
 
 \section{Example}
 
@@ -54,7 +42,7 @@ First, we need to rearrange the equation to solve for y: $$y^2 = r^2
 $$y = \pm \sqrt{r^2 - x^2}$$
 
 We take the derivative of $y$ by applying the Chain Rule:
-$$\frac{dy}{dx}=\frac{1}{2 \pm \sqrt{r^2 - x^2}} \cdot (- 2x) = 
+$$\frac{dy}{dx}=\frac{1}{2 \left(\pm \sqrt{r^2 - x^2}\right)} \cdot (- 2x) = 
 \frac{-x}{\pm \sqrt{r^2 - x^2}}$$ 
 
 Notice the denominator of this fraction is the same as the solution 
@@ -64,10 +52,10 @@ this as: $$\frac{dy}{dx}=\frac{-x}{y}$$
 \subsection{With Implicit Differentiation}
 With implicit differentiation, we assume $y$ is a function of $x$ and 
 apply the Chain Rule. $$\frac{d}{dx}[x^2+y^2]=\frac{d}{dx}[r^2]$$ For 
-$x^2$ and $r^2$, we take the derivative as we normally would.\footnote{The $\frac{d}{dx}$ part disappears when taking the derivative of $x$, as the derivative of $x$ with respect to $x$ is just regular differentiation.} For 
-$y^2$, we apply the Chain Rule, as outlined above.\footnote{Applying the chain rule is only allowed as $y$ is not the variable we were taking the derivative with respect to.} 
-$$2x+2y\frac{dy}{dx}=0$$\\ Solving for $\frac{dy}{dx}$, we find 
-$$\frac{dy}{dx}=\frac{-x}{y}$$ \\, which is the same result as we found 
+$x^2$ and $r^2$ (a constant), we take the derivative as we normally would. For 
+$y^2$, the chain rule adds a $\frac{dy}{dx}$:
+$$2x+2y\frac{dy}{dx}=0$$ Solving for $\frac{dy}{dx}$, we find 
+$$\frac{dy}{dx}=\frac{-x}{y}$$ which is the same result as we found 
 without implicit differentiation. 
 
 \section{Folium of Descartes}
@@ -122,9 +110,9 @@ To explicitly solve the equation $x^3 + y^3 = 3xy$ for $y$ requires multiple exp
 In this example, we will use implicit differentiation to easily find 
 the tangent line at a point on the folium. 
 
-(a) Find $\frac{dy}{dx} \text{ if } x^3+y^3 = 6xy$
+(a) Find $\frac{dy}{dx} \text{ if } x^3+y^3 = 3xy$
 
-(b) \index{tangent line!implicit}Find the tangent to the folium $x^3+y^3=3xy$ at the point $(2, 2)$
+(b) \index{tangent line!implicit}Find the tangent to the folium $x^3+y^3=3xy$ at the point $(\frac{3}{2}, \frac{3}{2})$. (Check: $\frac{27}{8} + \frac{27}{8} = \frac{27}{4} = 3 \cdot \frac{3}{2} \cdot \frac{3}{2}$.)
 
 (c) \index{horizontal tangent}Is there any place in the first quadrant where the tangent line 
 is horizontal? If so, state the point(s). 
@@ -138,28 +126,30 @@ Rearranging to solve for $\frac{dy}{dx}$:
 $$\frac{dy}{dx}(y^2-x)=y-x^2$$
 $$\frac{dy}{dx}=\frac{y-x^2}{y^2-x}$$
 
-(b) We already have the coordinate point, $(2, 2)$, so to write an 
+(b) We already have the point, $(\frac{3}{2}, \frac{3}{2})$, so to write an 
 equation for the tangent line, all we need is the slope. Substituting 
-$x=2 \text{ and }y=2$ into our result from part (a):
-$$\frac{dy}{dx}=\frac{2-2^2}{2^2-2}=\frac{-2}{2}=-1$$
+$x = y = \frac{3}{2}$ into our result from part (a):
+$$\frac{dy}{dx}=\frac{\frac{3}{2}-\frac{9}{4}}{\frac{9}{4}-\frac{3}{2}}=\frac{-3/4}{3/4}=-1$$
 This is the slope, $m$. Using the point-slope form of a line, our 
-tangent line is $y-2=-(x-2)$. 
+tangent line is $y-\frac{3}{2}=-\left(x-\frac{3}{2}\right)$, or $y = 3 - x$. 
 
 (c) Recall that in the first quadrant, $x > 0$ and $y > 0$. We will 
 set our solution for $\frac{dy}{dx}$  equal to 0:
-$$\frac{y-x^2}{y+2-x} = 0$$ \\
+$$\frac{y-x^2}{y^2-x} = 0$$
 which implies that $$y - x^2 = 0$$ \\
 Substituting $y = x^2$ into the original equation: 
 $$x^3 + (x^2)^3 = 3(x)(x^2)$$ 
-$$x^3 + x^6 = 3x^3$$ \\
+$$x^3 + x^6 = 3x^3$$
 Which simplifies to 
-$$x^6 = 2x^3$$\\
+$$x^6 = 2x^3$$
 Since we have excluded $x = 0$ by restricting our search to the first 
 quadrant, we can divide both sides by $x^3$: 
 $$x^3 = 2$$ 
-$$x = \sqrt[3]{2} \approx 1.26$$\\
+$$x = \sqrt[3]{2} \approx 1.26$$
 Substituting $x \approx 1.26$ into our equation for $y$: 
-$$y \approx 1.26^2 = 1.59$$\\ 
+$$y = \sqrt[3]{4} \approx 1.59$$
+(The denominator $y^2 - x$ is not zero there, so the slope really is 0.)
+
 Therefore, the folium has a horizontal tangent line at the point 
 $(1.26, 1.59)$.
 
@@ -199,7 +189,7 @@ $(1.26, 1.59)$.
 	local maximum. At $(1, -5)$, $\frac{dy}{dx} = 1^2 + -5 = -4 \neq 0$ 
 	and $\frac{d^2y}{dx^2} = 2(1) + 1^2 + (-5) = -2 \neq 0$. Since 
 	neither the first nor second derivative of $y$ are zero, $(1, -5)$ 
-	is neither a local extrema nor an inflection point. 
+	is neither a local extremum nor an inflection point. 
 \end{Answer}
 
 \begin{Exercise}[title={Slope on a Circle}, label=implicit3]
@@ -207,4 +197,149 @@ For $x^2 + y^2 = 25$, find $\frac{dy}{dx}$ at the point $(-4, 3)$.
 \end{Exercise}
 \begin{Answer}[ref=implicit3]
 $\frac{dy}{dx} = -\frac{x}{y} = -\frac{-4}{3} = \frac{4}{3}$.
+\end{Answer}
+
+\begin{Exercise}[title={Tangent to an Ellipse}, label=implicit4]
+Find the equation of the line tangent to the ellipse $x^2 + 4y^2 = 8$ at
+the point $(2, 1)$.
+\end{Exercise}
+\begin{Answer}[ref=implicit4]
+$2x + 8y\frac{dy}{dx} = 0$, so $\frac{dy}{dx} = -\frac{x}{4y}$. At $(2, 1)$
+the slope is $-\frac{1}{2}$, and the tangent line is $y - 1 =
+-\frac{1}{2}(x - 2)$, or $y = 2 - \frac{x}{2}$.
+\end{Answer}
+
+\section{Derivatives of Parametric Functions}
+In the parametric functions chapter, you described curves with a pair of
+equations $x(t)$ and $y(t)$. Now that you can take derivatives, you can
+find the slope of such a curve.
+\index{derivative!parametric}
+You could eliminate $t$ and differentiate the result, but there is an
+easier way. By the chain rule, $\frac{dy}{dt} = \frac{dy}{dx}\cdot\frac{dx}{dt}$,
+so:
+\begin{equation*}
+    \frac{dy}{dx} = \frac{dy/dt}{dx/dt}.
+\end{equation*}
+
+The tangent is horizontal where $\frac{dy}{dt} = 0$ (and $\frac{dx}{dt}
+\neq 0$), and vertical where $\frac{dx}{dt} = 0$ (and $\frac{dy}{dt} \neq
+0$).
+
+
+\subsection*{Example}
+
+Find $\dfrac{dy}{dx}$ for the parametric equations
+\[
+    x = t^2 + 1, \quad y = 3t - 2.
+\]
+
+\textbf{Solution}
+
+First compute the derivatives with respect to $t$:
+\[
+    \frac{dx}{dt} = 2t, \quad \frac{dy}{dt} = 3.
+\]
+
+Now divide:
+\[
+    \frac{dy}{dx} = \frac{3}{2t}.
+\]
+
+As a check, eliminate the parameter. From $x = t^2 + 1$, we get (for $t > 0$)
+\[
+    t = \sqrt{x - 1}.
+\]
+Substitute into $y = 3t - 2$:
+\[
+    y = 3\sqrt{x - 1} - 2.
+\]
+Differentiating gives
+\[
+    \frac{dy}{dx} = \frac{3}{2\sqrt{x - 1}},
+\]
+which matches the parametric result.
+
+
+\begin{Exercise}[label = parametric3]
+
+    Consider the parametric equations
+    \begin{equation*}
+        x = t^3 - 3t, \quad y = t^2.
+    \end{equation*}
+
+    \begin{itemize}
+        \item[(a)] Compute $\dfrac{dx}{dt}$ and $\dfrac{dy}{dt}$.
+        \item[(b)] Find the values of $t$ for which the curve has horizontal tangents.
+        \item[(c)] Find the values of $t$ for which the curve has vertical tangents.
+        \item[(d)] Identify the points on the curve where these tangents occur.
+    \end{itemize}
+\end{Exercise}
+
+\begin{Answer}[ref=parametric3]
+
+    First compute the derivatives:
+    \begin{equation*}
+        \frac{dx}{dt} = 3t^2 - 3, \quad \frac{dy}{dt} = 2t.
+    \end{equation*}
+
+    Horizontal tangents occur when $\dfrac{dy}{dt} = 0$ and $\dfrac{dx}{dt} \neq 0$.
+    \begin{equation*}
+        2t = 0 \Rightarrow t = 0.
+    \end{equation*}
+
+    At $t = 0$, the point on the curve is
+    \begin{equation*}
+        x = 0, \quad y = 0.
+    \end{equation*}
+
+    Vertical tangents occur when $\dfrac{dx}{dt} = 0$ and $\dfrac{dy}{dt} \neq 0$.
+    \begin{equation*}
+        3t^2 - 3 = 0 \Rightarrow t = \pm 1.
+    \end{equation*}
+
+    At $t = 1$, the point is
+    \begin{equation*}
+        ( -2, 1 ),
+    \end{equation*}
+    and at $t = -1$, the point is
+    \begin{equation*}
+        ( 2, 1 ).
+    \end{equation*}
+
+\end{Answer}
+
+
+\begin{Exercise}[label = parametric4]
+
+    Consider the parametric equations
+    \begin{equation*}
+        x = 2t + 1, \quad y = t^2.
+    \end{equation*}
+
+    \begin{itemize}
+        \item[(a)] Find $\dfrac{dy}{dx}$ in terms of $t$.
+        \item[(b)] Evaluate $\dfrac{dy}{dx}$ at $t = 1$.
+        \item[(c)] Interpret your result as the slope of the tangent line at the corresponding point.
+    \end{itemize}
+\end{Exercise}
+
+\begin{Answer}[ref=parametric4]
+
+    First compute the derivatives with respect to $t$:
+    \begin{equation*}
+        \frac{dx}{dt} = 2, \quad \frac{dy}{dt} = 2t.
+    \end{equation*}
+
+    The derivative of the curve is
+    \begin{equation*}
+        \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{2t}{2} = t.
+    \end{equation*}
+
+    At $t = 1$,
+    \begin{equation*}
+        \frac{dy}{dx} = 1.
+    \end{equation*}
+
+    Thus, the slope of the tangent line at the corresponding point on the curve is $1$.
+
 \end{Answer}

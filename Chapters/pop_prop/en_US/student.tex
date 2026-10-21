@@ -1,18 +1,18 @@
 \chapter{Population Proportion Statistics}
 
-Let us say that you are trying to get a candidate elected. The candidate asks you, "What proportion of the voting population is going to vote for me?" 
-So, you go out and ask a random sample of 12 voters. 11 say that they are going to vote for your candidate. What can you tell the candidate?
+Let us say that you are trying to get a candidate elected. The candidate asks you, ``What proportion of the voting population is going to vote for me?'' 
+So you ask a random sample of 12 voters, and 9 say they will vote for your candidate. Can you promise a win? How sure can you be? This chapter turns those 9 yeses into an honest answer.
 
 \section{Sample Probabilities from Population Proportion}
 
 To address these sorts of questions (and there are a lot of them), we start with the opposite question: If we knew what the proportion was in the 
 entire population, what sort of results should we expect in a random sample of just 12?
 
-For example, let us say that 62\% of the entire population plans to vote for your candidate. You ask 12 people, "Will you vote for my candidate?" How many will say "Yes"? You do not know --- it depends
+For example, let us say that 62\% of the entire population plans to vote for your candidate. You ask 12 people, ``Will you vote for my candidate?'' How many will say ``Yes''? You do not know --- it depends
 on the sample. For example, there is some chance that you will just happen to choose all 12 from the 38\% of the population that does not plan to vote for your candidate.
 
-We can compute the probability of each outcome using the \index{binomial distribution}binomial distribution. Let $r$ be the probability that a random person will say, "I plan to vote for your candidate." Let $n$ be the number of people 
-you ask. The probability that exactly $k$ people will say, "I plan to vote for your candidate" is given by:
+We can compute the probability of each outcome using the \index{binomial distribution}binomial distribution. Let $r$ be the probability that a random person will say, ``I plan to vote for your candidate.'' Let $n$ be the number of people 
+you ask. The probability that exactly $k$ people will say, ``I plan to vote for your candidate'' is given by:
 
 $$p(k) = \binom{n}{k}r^k(1-r)^{n-k}$$
 
@@ -35,10 +35,11 @@ $k$ & $p(k)$ \\
 8 & 0.225358 \\
 9 & 0.163418 \\
 10 & 0.079989 \\
-11 & 0.023729 
+11 & 0.023729 \\
+12 & 0.003226
 \end{tabular}
 
-Looking at this, the most likely outcome is that 8 people will say "Yes." However, although it is the most like, there is still less than a 1 in 4 chance of that outcome. It is very unlikely that less than 2 people will say "Yes." 
+Looking at this, the most likely outcome is that 8 people will say ``Yes.'' Even so, there is less than a 1 in 4 chance of that outcome. It is very unlikely that fewer than 2 people will say ``Yes.'' 
 Here is a bar chart of the data:
 \begin{figure}[H]
   \centering
@@ -47,15 +48,15 @@ Here is a bar chart of the data:
   \label{fig:binomial_dist}
 \end{figure}
 
-In this section, we knew the proportion of the population ($p$) and used that to find the probability of each possible number of positives in a random sample ($k$). 
-Now, we are going to go the other way: You know $k$, and you are finding the probability of possible values of $p$.
+In this section, we knew the proportion of the population ($r$) and used it to find the probability of each possible number of positives in a random sample ($k$). 
+Now we go the other way: you know $k$, and you want to know which values of $r$ are plausible.
 
 
 \section{Population Proportion from Sample}
 
-You ask 12 people if they will vote for your candidate. 9 say "Yes."
+You ask 12 people if they will vote for your candidate. 9 say ``Yes.''
 
-Next, you do a thought experiment: "If only 10\% of the population were going to vote for my candidate, what is the probability that I would see this outcome?"
+Next, you do a thought experiment: ``If only 10\% of the population were going to vote for my candidate, what is the probability that I would see this outcome?''
 
 $p(9) = \binom{n}{k}r^k(1-r)^{n-k} = \binom{12}{9}(0.1)^9 (0.9)^{12-9} = 0.00000016$
 
@@ -75,7 +76,7 @@ So, you decide to plot out the likelihood of this outcome for every possible val
 
 This looks very similar to a probability distribution, but \emph{it is not}. The area under the curve is about 0.077 (exactly 1/13), not 1.0. This is called a \index{likelihood}\newterm{likelihood}.
 
-However, it still tells us something, right? The \index{maximum likelihood estimator}maximum likelihood estimator is $9/12 = 0.75$.
+It still tells us something. The value of $r$ that makes the observed data most likely, called the \index{maximum likelihood estimator}maximum likelihood estimator, is $9/12 = 0.75$.
 
 \section{From Likelihood to Probability Density Function}
 
@@ -108,7 +109,7 @@ What happens to this graph if you ask 120 voters and 90 say yes?
     \label{fig:bayes_dist_tight}
 \end{figure}
 
-The MLE (0.75) is the same, but because of the much larger sample size,  you are more confident when you say "It is probably close to 75\%."
+The MLE (0.75) is the same, but because of the much larger sample size,  you are more confident when you say ``It is probably close to 75\%.''
 
 \section{Beta Distribution}
 
@@ -116,7 +117,7 @@ This probability distribution that you discovered is actually pretty common. It 
 
 The beta distribution has two parameters $a$ and $b$ that determine its shape. If you get $k$ positives out of $n$, then use $a = k +1$ and $b = n - k + 1$.
 
-When you make your report to your candidate, they will look at your probability distribution with quiet awe and ask "Based on your sample of 12 people, what is the probability that at least 50\% of the population will vote for me?" So, you'd fill in the region and say, "This area represents that probability."
+When you make your report to your candidate, they will look at your probability distribution with quiet awe and ask ``Based on your sample of 12 people, what is the probability that at least 50\% of the population will vote for me?'' So you would fill in the region and say, ``This area represents that probability.''
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{bayes50.png}
@@ -124,7 +125,7 @@ When you make your report to your candidate, they will look at your probability 
     \label{fig:bayes50}
 \end{figure}
 
-Once again, there will be a long silence, followed by a simple question: "Can you give me a number?" Here is the Python code:
+Once again, there will be a long silence, followed by a simple question: ``Can you give me a number?'' Here is the Python code:
 
 \begin{minted}{python}
 from scipy.stats import beta
@@ -138,12 +139,12 @@ p_less = beta.cdf(0.5, K +1, N - K +1)
 
 # What is the probability r > 0.5?
 p_more = 1.0 - p_less
-print(f"I'm {p_more * 100.0:.2f}% sure you will win.")
+print(f"I am {p_more * 100.0:.2f}% sure you have majority support.")
 \end{minted}
 
 This will give you:
 \begin{minted}{python}
-I'm 95.39% sure you will win.
+I am 95.39% sure you have majority support.
 \end{minted}
 
 \begin{Exercise}[label = popprop1]

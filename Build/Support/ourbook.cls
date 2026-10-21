@@ -814,6 +814,10 @@
 \usepgfplotslibrary{fillbetween}
 \usepackage{subcaption}
 \usepackage{enumitem}
+% Do not indent lists: put the labels flush with the left edge of the
+% surrounding text. (This matters most in exercises, whose column is narrow.)
+\setlist[enumerate]{leftmargin=*}
+\setlist[itemize]{leftmargin=*}
 \usepackage{mdframed}
 % algorithm and algpseudocode added for future use for pseudocode sections - 1/19/26
 % will be useful for sections such as Linked List, Queue, Stack, etc chapters
@@ -1238,6 +1242,9 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 \hsize=.45\textwidth \linewidth=.45\textwidth
 \ExeBaseLeftskip=-36pt
 \leftskip=\ExeBaseLeftskip \rightskip=36pt
+% Lists position their lines with \@totalleftmargin and \linewidth rather
+% than \leftskip and \rightskip, so give them the same outdented column.
+\@totalleftmargin=\ExeBaseLeftskip
 \everydisplay\expandafter{\the\everydisplay\advance\displayindent\ExeBaseLeftskip}%
 \parskip=12pt
 \noindent\rlap{\hskip.5\textwidth\hskip16pt\vtop{\vskip-30pt

@@ -11,9 +11,12 @@
 \definecolor{kgBrown}{HTML}{90582F}
 
 
-\index{rate of change}Derivatives play a key role in calculus, providing us with a means of
-calculating rates of change and the slopes of curves (Figure~\ref{fig:tangent-line-derivative_rules}). In this chapter, we present
-some common rules used to calculate derivatives.
+\index{rate of change}You can now differentiate any polynomial in your head. But what about
+$\sqrt{x^2 + 1}$, or $x\sin{x}$, or $\frac{e^x}{x}$? Grinding through the
+limit definition every time would be miserable. Instead, a handful of
+rules lets you take apart any function built by multiplying, dividing, and
+nesting simpler ones. Each rule gives the slope of the tangent line
+(Figure~\ref{fig:tangent-line-derivative_rules}).
 
 \begin{figure}[H]
 \centering
@@ -55,22 +58,15 @@ some common rules used to calculate derivatives.
 \label{fig:tangent-line-derivative_rules}
 \end{figure}
 
-\section{Constant Rule}
+\section{Constant, Sum, and Power Rules}
 
-The derivative of a constant is zero. If $c$ is a constant and $x$ is
-a variable, then:\index{constant rule}
-
-\begin{equation}
-\frac{d}{dx}c = 0
-\end{equation}
-
-\section{Power Rule}
-
-For any real number $n$, the derivative of $x^n$ is:\index{power rule}
-
-\begin{equation}
-\frac{d}{dx}x^n = nx^{n-1}
-\end{equation}
+You met these in the last chapter. If $c$ is a constant:\index{constant rule}\index{power rule}
+\begin{align}
+\frac{d}{dx}c &= 0\\
+\frac{d}{dx}\left(c f\right) &= c f'\\
+\frac{d}{dx}\left(f + g\right) &= f' + g'\\
+\frac{d}{dx}x^n &= nx^{n-1} \quad \text{for any real number } n
+\end{align}
 
 \section{Product Rule}
 
@@ -80,8 +76,19 @@ The derivative of the product of two functions is:\index{product rule}
 \frac{d}{dx}(fg) = f'g + fg'
 \end{equation}
 
-where $f'$ and $g'$ denote the derivatives of $f$ and $g$,
-respectively.
+Notice that it is \emph{not} $f'g'$. To see why, picture a rectangle $f$
+wide and $g$ tall, with both sides growing. In a tiny moment, the width
+grows by a sliver and the height grows by a sliver. The area gains a
+strip along the top ($f$ times the change in $g$) and a strip down the
+side ($g$ times the change in $f$). The little corner where the two strips
+overlap is a sliver times a sliver, so small it vanishes in the limit.
+
+\textbf{Example:} Find $\frac{d}{dx}\left[x^3(2x + 1)\right]$.
+
+\textbf{Solution:} With $f = x^3$ and $g = 2x + 1$:
+$$3x^2(2x + 1) + x^3(2) = 8x^3 + 3x^2$$
+Check by expanding first: $x^3(2x+1) = 2x^4 + x^3$, whose derivative is
+$8x^3 + 3x^2$. It matches.
 
 \section{Quotient Rule}
 
@@ -91,6 +98,15 @@ The derivative of the quotient of two functions is:\index{quotient rule}
 \frac{d}{dx}\left(\frac{f}{g}\right) = \frac{f'g - fg'}{g^2}
 \end{equation}
 
+Because of the minus sign, order matters. Students remember it with a
+chant: ``low d-high minus high d-low, over the square of what is
+below.''
+
+\textbf{Example:} Find $\frac{d}{dx}\frac{x}{x^2 + 1}$.
+
+\textbf{Solution:}
+$$\frac{(1)(x^2 + 1) - x(2x)}{(x^2 + 1)^2} = \frac{1 - x^2}{(x^2 + 1)^2}$$
+
 \section{Chain Rule}
 
 The derivative of a composition of functions is:\index{chain rule}
@@ -98,6 +114,64 @@ The derivative of a composition of functions is:\index{chain rule}
 \begin{equation}
 \frac{d}{dx}(f(g(x))) = f'(g(x)) \cdot g'(x)
 \end{equation}
+
+Think of gears. If gear A turns 3 times for every turn of gear B, and gear
+B turns 2 times for every turn of gear C, then gear A turns $3 \times 2 =
+6$ times for every turn of gear C. Rates of change multiply. If we write
+$u = g(x)$ and $y = f(u)$, the chain rule looks like fractions canceling:
+$$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
+
+In practice: take the derivative of the outside function (leaving the
+inside alone), then multiply by the derivative of the inside.
+
+\textbf{Example:} Find $\frac{d}{dx}(x^2 + 1)^5$.
+
+\textbf{Solution:} The outside is $u^5$; the inside is $u = x^2 + 1$.
+$$5(x^2 + 1)^4 \cdot 2x = 10x(x^2 + 1)^4$$
+(You could expand $(x^2+1)^5$ first, but that is a lot of work.)
+
+\textbf{Example:} Find $\frac{d}{dx}\sqrt{3x + 1}$.
+
+\textbf{Solution:} Write it as $(3x + 1)^{1/2}$:
+$$\frac{1}{2}(3x + 1)^{-1/2} \cdot 3 = \frac{3}{2\sqrt{3x + 1}}$$
+
+\section{Exponentials and Logarithms}
+\index{exponential function!derivative of}\index{natural logarithm!derivative of}
+
+Here is what makes $e$ special: $e^x$ is its own derivative. At every
+point, the slope of $y = e^x$ equals its height.
+\begin{align}
+\frac{d}{dx}e^x &= e^x\\
+\frac{d}{dx}\ln{x} &= \frac{1}{x} \quad (x > 0)
+\end{align}
+
+With the chain rule, $\frac{d}{dx}e^{kx} = ke^{kx}$. For any other base,
+rewrite $a^x = e^{x\ln{a}}$, which gives $\frac{d}{dx}a^x = a^x\ln{a}$.
+
+\textbf{Example:} A colony of bacteria has a population of $P(t) = 100e^{0.3t}$
+after $t$ hours. How fast is it growing at $t = 5$?
+
+\textbf{Solution:} $P'(t) = 30e^{0.3t}$, so $P'(5) = 30e^{1.5} \approx 134$
+bacteria per hour. Notice that $P' = 0.3P$: the colony always grows at
+30\% of its current size per hour. That is what exponential growth means.
+
+\begin{Exercise}[title={Exponential Derivatives}, label=deriv_explog]
+Find the derivative of each function.
+\begin{enumerate}
+\item $f(x) = 5e^{2x}$
+\item $g(x) = \ln{(x^2 + 1)}$
+\item $h(x) = 2^x$
+\item $k(x) = xe^{x}$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=deriv_explog]
+\begin{enumerate}
+\item $f'(x) = 10e^{2x}$
+\item By the chain rule, $g'(x) = \frac{1}{x^2 + 1} \cdot 2x = \frac{2x}{x^2 + 1}$
+\item $h'(x) = 2^x\ln{2}$
+\item By the product rule, $k'(x) = e^x + xe^x = (1 + x)e^x$
+\end{enumerate}
+\end{Answer}
 
 \section{Derivatives of Trigonometric Functions}
 \index{derivatives!of trigonometric functions}
@@ -282,10 +356,10 @@ If $f$ is the function given, find $f'$.
 	We can solve $y' = 0$ for $t$ and find that the $y$-velocity is $0$ 
 	when $t=2$. Substituting $t=2$ into our expression for $x'$, we find 
 	$x'(2) = 3(2)^2 - 6(2) = 0$. Therefore, the particle is at rest when 
-	$t=0$. To find the $xy$-coordinate, we substitute $t=2$ into $x(t)$ 
+	$t=2$. To find the $xy$-coordinate, we substitute $t=2$ into $x(t)$ 
 	and $y(t)$:\\
 	$$x(2) = (2)^3 - 3(2)^2 = 8 - 12 = -4$$
-	$$y(2) = 12(2) - 6(2) = 24 - 12 = 12$$
+	$$y(2) = 12(2) - 3(2)^2 = 24 - 12 = 12$$
 	Therefore, the particle is at rest when it is located at $(-4, 12)$. 
 \end{Answer}
 
@@ -355,12 +429,12 @@ If $f$ is the function given, find $f'$.
     The velocity of the particle is given by $v(t) = x'(t) = \cos{t} 
     + \sin{t}$. Setting $v(t) = 0$, we find:
     $$\cos{t} = -\sin{t}$$ 
-    which is true for $ t = \frac{3\pi + 4n}{4}$, where $n$ is an 
+    which is true for $t = \frac{3\pi}{4} + n\pi$, where $n$ is an 
     integer. Therefore, the first time the velocity is $0$ is $t_0 = 
     \frac{3\pi}{4}$. \\
     (b) To find the acceleration at $t=\frac{3\pi}{4}$, we take the 
     derivative of the velocity function to yield the acceleration 
-    function. $$a(t) = v'(t) = -\sin{t} + \cos{t}$$. Substituting $t =
+    function. $$a(t) = v'(t) = -\sin{t} + \cos{t}$$ Substituting $t =
     \frac{3\pi}{4}$, we find the acceleration is $-\sin{\frac{3\pi}{4}}
      + \cos{\frac{3\pi}{4}} = \frac{-\sqrt{2}}{2} - \frac{\sqrt{2}}{2} 
      = -\sqrt{2}$
@@ -368,7 +442,7 @@ If $f$ is the function given, find $f'$.
 
 \begin{Exercise}
     [label=deriv_rules8]
-    The graph of $y=e^(\tan{x}) - 2$ crosses the x-axis at one point 
+    The graph of $y=e^{\tan{x}} - 2$ crosses the x-axis at one point 
     on the interval $[0, 1]$. What is the slope of the graph at this 
     point?
 \end{Exercise}
@@ -396,7 +470,7 @@ If $f$ is the function given, find $f'$.
     [ref=deriv_rules9]
     (a) Apply the chain rule to find $f'(x)$ 
     $$f'(x) = \frac{1}{2\sqrt{25 - x^2}} \cdot(-2x) = \frac{-x}{
-    \sqrt{25-x^2}}$$. \\
+    \sqrt{25-x^2}}$$
     (b) First, substitute $x=-3$ into $f'(x)$ 
     $$f'(-3) = \frac{-(-3)}{\sqrt{25 - (-3)^2}} = \frac{3}{\sqrt{16}} 
     = \frac{3}{4}$$
@@ -453,12 +527,11 @@ If $f$ is the function given, find $f'$.
 \subsubsection{l'H\^{o}pital's Rule}
 \index{l'H\^{o}pital's rule}
 Consider the function $h(x) = \frac{\ln{x}}{x-1}$ and suppose we are interested 
-in the behavior of $h(x)$ around $x=1$. As x approaches 0 and the denominator $x-1$
-also approaches 0. This gives the an indeterminate result: $$\lim_{x \to 1}\frac{\ln{x}}{x-1} = \frac{0}{0}$$ 
-This is exactly the situation where L'H\^{o}pital's Rule applies.
-
-In Chapter 3, we will learn about Quotient Rule, which when directly 
-applied will give this indeterminate form! Keep an eye out for that.  
+in the behavior of $h(x)$ around $x=1$. As $x$ approaches 1, the numerator
+$\ln{x}$ approaches 0, and so does the denominator $x-1$. Plugging in gives
+the \index{indeterminate form}indeterminate result $\frac{0}{0}$, which could
+turn out to be anything. This is exactly the situation where l'H\^{o}pital's
+rule applies.
 
 Now, looking at the graph of $h(x)$ (see figure \ref{fig:lhospital}), we can guess 
 that $\lim_{x \to 1} \frac{\ln{x}}{x-1} = 1$. 
@@ -531,18 +604,20 @@ be
 $$\frac{m_1(x-1)}{m_2(x-1)}=\frac{m_1}{m_2}$$ 
 
 which is the same as the ratio of the derivatives of our linear approximations. 
-This suggests l'Hopital's rule, that the limit of a ratio is the same as the 
+This suggests l'H\^{o}pital's rule, that the limit of a ratio is the same as the 
 limit of the ratio of the derivatives for certain indeterminate forms: 
-$$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$.
+$$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$
+Careful: this is the derivative of the top over the derivative of the
+bottom, not the quotient rule.
 
-Let us apply l'Hopital's rule to our limit of $h(x)$:
+Let us apply l'H\^{o}pital's rule to our limit of $h(x)$:
 $$\lim_{x\to 1} \frac{\ln{x}}{x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx} 
 \ln{x}}{\frac{d}{dx} (x - 1)} = \lim_{x \to 1} \frac{\frac{1}{x}}{1}=1$$
 
 Notice our result with l'H\^{o}pital's rule matches our guess based on the graph 
 of $h(x) = \frac{\ln{x}}{x-1}$. 
 
-L'Hospital's rule also applies to the indeterminate result $\frac{\pm \infty}
+L'H\^{o}pital's rule also applies to the indeterminate result $\frac{\pm \infty}
 {\pm \infty}$. For a limit of the form $\lim_{x\to a}\frac{f(x)}{g(x)}$, 
 l'H\^{o}pital's rule applies if:
 \begin{enumerate}
@@ -559,7 +634,7 @@ l'H\^{o}pital's rule applies if:
 $$\lim_{x \to \infty} \frac{e^x}{x^2} = \frac{e^{\infty}}{\infty^2} = 
 \frac{\infty}{\infty}$$
 
-This is an indeterminate form that we can apply l'Hopital's rule to:
+This is an indeterminate form that we can apply l'H\^{o}pital's rule to:
 $$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}x^2} = \lim_{x \to 
 \infty} \frac{e^x}{2x}$$
 
@@ -587,7 +662,7 @@ $$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\ta
 $$= \lim_{x \to 0} \frac{\sec^2{x} - 1}{3x^2} = \frac{1 - 1}{0} = \frac{0}{0}$$
 
 which is an indeterminate form. We apply l'H\^{o}pital's rule again:
-$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
 $$= \lim_{x \to 0} \frac{2\tan{x}\sec^2{x}}{6x} = \frac{2(0)(1^2)}{6 \cdot 0} = \frac{0}{0}$$
 
 which is also an indeterminate form. We apply l'H\^{o}pital's rule again:
@@ -621,14 +696,14 @@ rewritten into a quotient that results in either
 \frac{0}{0}
 \quad \text{or} \quad
 \frac{\infty}{\infty}.
-\end{equation*} This allows l’Hôpital’s Rule to be applied!
+\end{equation*} Then l'H\^{o}pital's rule applies.
 
-Example: Evaluate
+\textbf{Example:} Evaluate
 \begin{equation*}
 \lim_{x \to 0^+} x \ln x.
 \end{equation*}
 
-Solution:
+\textbf{Solution:}
 As $x \to 0^+$, we have $x \to 0$ and $\ln x \to -\infty$, producing the
 indeterminate form
 \begin{equation*}
@@ -644,7 +719,7 @@ Now the limit has the form
 \begin{equation*}
 \frac{-\infty}{\infty},
 \end{equation*}
-so l’Hôpital’s Rule applies. Differentiate the numerator and denominator:
+so l'H\^{o}pital's rule applies. Differentiate the numerator and denominator:
 \begin{equation*}
 \lim_{x \to 0^+} \frac{\ln x}{1/x}
 = \lim_{x \to 0^+} \frac{1/x}{-1/x^2}.
@@ -668,7 +743,7 @@ Evaluate each of the following limits, using l'H\^{o}pital's rule where needed.
 \item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9}$
 \item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}}$
 \item $\lim_{x \to \pi} \frac{1 + \cos{x}}{1 - \cos{x}}$
-\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1}$
+\item $\lim_{x \to 1} \frac{x\sin{(x - 1)}}{2x^2 - x - 1}$
 \end{enumerate}
 \end{Exercise}
 
@@ -676,8 +751,9 @@ Evaluate each of the following limits, using l'H\^{o}pital's rule where needed.
 \begin{enumerate}
 \item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
 \item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
-\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit does not require l'H\^{o}pital's rule because it is evaluable
-\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \frac{1 \cdot \sin{1 - 1}}{2(1)^2 - 1 - 1} = \frac{0}{0}$, so we apply l'Hospital's rule: $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx}(x\sin{x-1}}{\frac{d}{dx}(2x^2 - x - 1} = \lim_{x \to 1} \frac{x \cdot \cos{x - 1} + \sin{x - 1}}{4x - 1} = \frac{1 \cdot \cos{0} + \sin{0}}{4 - 1} = \frac{1 \cdot 1 + 0}{-3} = \frac{-1}{3}$. 
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit is not indeterminate, so l'H\^{o}pital's rule does not apply (and is not needed).
+\item $\frac{1 + \cos{\pi}}{1 - \cos{\pi}} = \frac{1 - 1}{1 + 1} = \frac{0}{2} = 0$. Not indeterminate, so just plug in.
+\item $\frac{1 \cdot \sin{0}}{2 - 1 - 1} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule: $\lim_{x \to 1} \frac{x\cos{(x - 1)} + \sin{(x - 1)}}{4x - 1} = \frac{1 \cdot 1 + 0}{4 - 1} = \frac{1}{3}$.
 \end{enumerate}
 \end{Answer}
 
@@ -719,14 +795,12 @@ Note that MVT does not tell us \textit{where} $f'(x)$ is parallel to the line
 connecting $(a, f(a))$ and $(b, f(b))$, just that some value $c$ exists that 
 satisfies the condition. 
 
-\textbf{Example}: Consider a hammer thrown upwards at 5 $\frac{m}{s^2}$ on 
+\textbf{Example}: A hammer is tossed straight up at 5 $\frac{m}{s}$ on 
 Earth (where the acceleration due to gravity is approximately $-9.8 
-\frac{m}{s^2}$). 
+\frac{m}{s^2}$). Show that at some moment on the way up, its velocity
+equals its average velocity for the climb.
 
-\textbf{Solution}: We can use the MVT to show that there must be some point in 
-the hammer's path upwards where the velocity of the hammer is exactly equal to 
-its average velocity as it flies through the air. 
-
+\textbf{Solution}: 
 The hammer's rise can be described with the function $y(t) = 5t-4.9t^2$. The 
 hammer reaches its peak at approximately $t=0.51$. So, we are looking for some 
 value, $c$, such that $$y'(c) = \frac{y(0.51) - y(0)}{0.51 - 0} = \frac{5(0.51) 
@@ -754,13 +828,13 @@ approximately $0.255$. This result is illustrated in figure \ref{fig:hammer}:
 \subsubsection{MVT Practice}
 \begin{Exercise}
 [label=MVT1]
-AT 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
-$50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:340 PM, the car's 
+At 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
+$50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:40 PM, the car's 
 acceleration is exactly $120 \frac{mi}{hr^2}$. 
 \end{Exercise}
 \begin{Answer}
 [ref=MVT1]
-The speed of a car must a continuous, differentiable function, since your car 
+The speed of a car must be a continuous, differentiable function, since your car 
 cannot "jump" from one speed to another: it must smoothly accelerate from one 
 speed to another. Therefore, the Mean Value Theorem applies. The average 
 acceleration from 3:30 PM to 3:40 PM is given by:
@@ -876,7 +950,7 @@ $$3t^2-12t+6=0$$
 $$3(t^2-4t+2)=0$$
 $$t^2-4t+2=0$$
 This is not easily factorable, so we will use the quadratic formula: $$t=\frac{-(-4)\pm\sqrt{(-4)^2-4(1)(2)}}{2(1)}$$
-$$x=\frac{4\pm\sqrt{16-8}}{2}=2\pm\sqrt{2}\approx0.586, 3.414$$
+$$t=\frac{4\pm\sqrt{16-8}}{2}=2\pm\sqrt{2}\approx0.586, 3.414$$
 Therefore, the particle is at rest at 0.586s and 3.414s.
 \end{Answer}
 
@@ -893,6 +967,7 @@ where $F$ is the force, $p$ is the momentum, and $t$ is the time.
 
 \section{Conclusion}
 
-\index{derivative!rules summary}These rules form the basis for calculating derivatives in
-calculus. Many more complex rules and techniques are built upon these
-fundamental rules.
+\index{derivative!rules summary}With the constant, sum, power, product,
+quotient, and chain rules, plus the derivatives of $\sin$, $\cos$, $e^x$,
+and $\ln{x}$, you can differentiate nearly any function you can write
+down. Everything else in differential calculus is built on these.

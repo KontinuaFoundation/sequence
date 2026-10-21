@@ -204,7 +204,7 @@ nodes have been visited.  Then you know every node has been marked
 with its lowest price.
 
 In a big graph, each node may be marked several times in this process
---- each time with a lower price from a cheaper router.
+--- each time with a lower price from a cheaper route.
 
 Of course, once you have the price, you will ask, ``What is the route
 that gets me that price?''  So, we will also mark each node with the
@@ -279,7 +279,7 @@ We do not actually want to sully our graph objects with the three additional pie
           called the \pyvar{dist}, from ``distance''.
     \item The neighbor who gives us the current minimal cost. This is
           usually called \pyvar{prev}, from ``previous''.
-    \item Whether the city is visited or now.
+    \item Whether the city is visited or not.
 \end{itemize}
 So, we will keep them in collections external to the graph.
 
@@ -432,6 +432,7 @@ else:
 
 This should look like this:
 \begin{minted}{text}
+*** Total cost from Long Beach to NYC: $52.00 ***
 *** Cheapest path from Long Beach to NYC: [(node:Long Beach, edges:1),
 (node:Los Angeles, edges:3), (node:Denver, edges:3), (node:Cleveland, edges:4),
 (node:New York City, edges:3)] ***
@@ -497,4 +498,31 @@ The algorithm works as follows:
 If the graph does not contain a negative cycle reachable from the
 source, the shortest paths are well-defined, and Bellman-Ford will
 correctly calculate them. If a negative cycle is reachable, no
-solution exists, but Bellman-Ford will detect it.
+solution exists (you could loop forever, getting ``cheaper'' each time),
+but Bellman-Ford will detect it.
+
+Why would an edge ever be negative? Think of costs that can be refunds: a
+delivery route that earns a rebate, or a currency trade that gains money.
+Bellman-Ford is slower than Dijkstra's, about $|V| \cdot |E|$ steps, so use
+it only when you need it.
+
+\begin{Exercise}[title={When Dijkstra Fails}, label={ex:bellman}]
+A directed graph has edges $A \to B$ costing 1, $A \to C$ costing 3,
+$C \to B$ costing $-3$, and $B \to D$ costing 1.
+\begin{enumerate}
+\item Run Dijkstra's algorithm from $A$. What cost does it give for $D$?
+\item What is the true cheapest cost to $D$? What went wrong?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:bellman}]
+\begin{enumerate}
+\item Visit $A$: $B = 1$, $C = 3$. Visit $B$ (cost 1, now final): $D = 2$.
+Visit $D$ (cost 2). Visit $C$ (cost 3): the route to $B$ through $C$ costs
+$3 - 3 = 0$, but $B$ is already finalized, so nothing changes. Dijkstra
+reports $D = 2$.
+\item $A \to C \to B \to D$ costs $3 - 3 + 1 = 1$. Dijkstra assumed that a
+finalized node can never get cheaper, which is true only when every edge
+is nonnegative. Bellman-Ford keeps relaxing every edge and finds $B = 0$
+and $D = 1$.
+\end{enumerate}
+\end{Answer}

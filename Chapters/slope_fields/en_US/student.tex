@@ -1,13 +1,13 @@
 \chapter{Slope Fields}
 
-While separable differential equations are solvable, most differential 
-equations are not separable. In fact, it is impossible to obtain an 
-explicit formula as a solution to most differential equations. How do computers 
-solve these, then? They start with a given quantity (usually initial 
-conditions) and perform many small calculations to estimate the behavior of 
-the solution. We can do this graphically with slope fields (also called 
-\index{direction field}direction fields), which allow us to visualize the family of solutions to the 
-differential equation. \index{slope field}
+Separable equations are the lucky ones. Most differential equations have no
+formula for their solution at all. So how does a weather app predict tomorrow's
+temperature? It starts from what it knows right now and takes many small
+steps, each one following the rate of change the equation gives. You can do
+the same thing by hand with a \textbf{slope field} (also called a
+\index{direction field}direction field): a grid of tiny tick marks showing
+which way a solution would head from each point. Drop a pencil anywhere, follow
+the ticks, and you have traced a solution. \index{slope field}
 
 \section{Drawing Slope Fields}
 When a differential equation is in the form
@@ -32,8 +32,7 @@ tick of slope $2$ at the $(1, 1)$ (see figure \ref{slopefield1}).
     \label{slopefield1}
 \end{figure}
 
-Continuing, we want to choose coordinates that are easy to determine the slope. 
-Notice that $y' = 0$ when $-x = y$, so let us go ahead and fill those ticks in 
+Next, look for points where the slope is easy to find. Notice that $y' = 0$ when $-x = y$, so let us go ahead and fill those ticks in 
 (see figure \ref{slopefield2}):
 
 \begin{figure}[H]
@@ -126,7 +125,7 @@ field (see figure \ref{slopefield3}).
 If you are given an initial condition or a known point in the solution to the 
 differential equation, you can begin sketching a curve on the slope field. 
 Start at the given point and draw parallel to the nearby slopes. For example, 
-suppose we know that particular solution to $y' = x + y$ passes through the 
+suppose we know that a particular solution to $y' = x + y$ passes through the 
 point $(1, 0)$. Begin by extending the dash at $(1, 0)$ (see figure 
 \ref{slopefield4}), changing the slope of your sketched solution to be 
 approximately parallel to the nearby slopes (see figure \ref{slopefield5}). 
@@ -260,10 +259,9 @@ approximately parallel to the nearby slopes (see figure \ref{slopefield5}).
 
 While this method does not yield an exact, formulaic solution to the 
 differential equation, it does allow us to visualize solutions and generally 
-describe the behavior of any solutions. Sketching solutions in this way is 
-logically similar to Euler's method for finding numerical approximations of 
-solutions to differential equations, which we will discuss more in the next 
-chapter. 
+describe the behavior of any solutions. Sketching solutions this way is the idea behind
+Euler's method, which turns ``follow the ticks'' into arithmetic a computer can
+do. That is the next chapter. 
 
 \section{Example: Application of Differential Equations to Electronics}
 Think back to the chapter on DC circuits. You learned that \index{Ohm's law}Ohm's Law relates 
@@ -329,7 +327,7 @@ solution to the differential equation on the slope field.
 
 \textbf{Solution}: Substituting the given values into the differential 
 equation and rearranging to isolate $\frac{dI}{dt}$, we get $\frac{dI}{dt} = 
-15 - 3I$. Notice that the current is not dependent on time. When the slope is 
+15 - 3I$. Notice that the slope does not depend on time. When the slope is 
 only dependent on the value of the function (as in this case), we call this an 
 \textbf{autonomous differential equation}. \index{autonomous differential 
 equation} This means that the slope is the same for all values of $t$ at 
@@ -393,7 +391,7 @@ solution. A sketch of the solution with $I(0) = 0$ is shown in figure
         }
         
     \end{tikzpicture}
-    \caption{Slope field for the differential equation $\frac{dI}{dt} = 15 - 3I$}
+    \caption{The solution with $I(0) = 0$ rises toward the equilibrium $I = 5$}
     \label{circuitsolution}
 \end{figure}
 
@@ -463,3 +461,36 @@ slope field to sketch a solution that passes through the point $(0,0)$.
     \end{axis}
 \end{tikzpicture}
 \end{Answer}
+
+\begin{Exercise}[label = field2]
+Consider the autonomous equation $\frac{dy}{dt} = y(4 - y)$.
+\begin{enumerate}
+\item Find the equilibrium solutions.
+\item For which values of $y$ are solutions increasing? Decreasing?
+\item Without drawing the whole field, describe what happens to the solution
+with $y(0) = 1$ and the solution with $y(0) = 6$ as $t$ grows.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = field2]
+\begin{enumerate}
+\item Setting $y(4 - y) = 0$ gives $y = 0$ and $y = 4$.
+\item The slope is positive when $0 < y < 4$, so solutions increase there. It is
+negative when $y > 4$ or $y < 0$, so solutions decrease there.
+\item Starting at $1$, the solution rises and levels off toward $4$. Starting
+at $6$, it falls and levels off toward $4$. Every solution that starts above $0$
+is drawn to $y = 4$, just like a population approaching its carrying capacity.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[label = field3]
+In the slope field for $y' = x$, every tick in a vertical column has the same
+slope. Explain why, and name the family of curves the solutions belong to.
+\end{Exercise}
+
+\begin{Answer}[ref = field3]
+The slope depends only on $x$, so moving up or down a column does not change
+it. Each solution is a vertical shift of the others: integrating gives
+$y = \frac{1}{2}x^2 + C$, a family of parabolas.
+\end{Answer}
+

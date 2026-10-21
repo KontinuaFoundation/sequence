@@ -1,8 +1,10 @@
 \chapter{Springs and Simple Harmonic Motion}
 % authors note: verified against AP Phys C 19th edition chapter 12
-We just finished up a chapter about circular motion, where objects move around
-in a circle at either constant (uniform/harmonic) or changing (non-uniform)
-speeds.
+A guitar string, a car's suspension over a bump, a skyscraper swaying in
+the wind, the quartz crystal ticking inside a watch: all of them vibrate
+back and forth in the same characteristic way. In the last chapters, you
+studied objects moving around circles. Now we look at objects that move back
+and forth.
 
 In this chapter, we will study oscillatory motion, which is a type of motion
 where an object moves back and forth around an equilibrium point. Oscillations are
@@ -13,8 +15,9 @@ more complex behaviors. Small oscillations often behave in a very predictable wa
 and can be described using \emph{simple harmonic motion} (SHM), which is governed
 by restoring forces proportional to displacement.
 
-We will also give an introduction to \emph{differential equations} used to model
-oscillatory systems, often found in engineering and physics.
+(Engineers model oscillations with \emph{differential equations}, which you
+will meet in the calculus volumes. Here, we will get far with the slopes of
+sine and cosine that you already know.)
 
 \section{Sine and Cosine Graphs [Review]}
 Let us recall the two pillars of trigonometry and, consequently, simple harmonic motion:
@@ -23,7 +26,7 @@ repeat their values in regular intervals or periods. The sine and cosine functio
 have a period of $2\pi$ radians or 360$^{\circ}$, repeating their values every $2
 \pi$ radians.
 
-As discussed in the circular motion chapter, the sine function represents the y-coordinate
+As discussed in the trigonometric functions chapter, the sine function represents the y-coordinate
 of a point on the unit circle as it moves around the circle, while the cosine function
 represents the x-coordinate. This is the fundamental behavior of the unit circle,
 where a point moves around the circle at a constant angular speed $\omega$. The
@@ -50,34 +53,26 @@ where:
 		oscillation at $t = 0$.
 \end{itemize}
 
-Recall that the derivatives of these functions are also periodic, a key property that
-is useful for analyzing oscillatory motion:
-\[
-	\frac{d}{dt}\cos(\omega t) = -\omega \sin(\omega t)
-\]
-\[
-	\frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)
-\]
-\[
-	\frac{d^{2}}{dt^{2}}\cos(\omega t) = -\omega^{2}\cos(\omega t)
-\]
+Recall from the circular motion chapter what happens when a point moves
+around a circle of radius $A$ at angular speed $\omega$. Its velocity is
+$-A\omega\sin(\omega t)$ in the $x$ direction, and its acceleration points
+toward the center with size $A\omega^2$, so its $x$ component is
+$-A\omega^2\cos(\omega t)$.
 
-In the motion we will talk about,
+Now watch only the $x$-coordinate, the shadow of the point on the $x$-axis:
 \begin{itemize}
-	\item $x(t)$ will be our position function
-
-	\item $v(t)$ describes our velocity function, which can be the first
-		derivative of our position
-
-	\item $a(t)$ is our acceleration function, derived from $v(t)$
+	\item position: $x(t) = A\cos(\omega t)$
+	\item velocity: $v(t) = -A\omega \sin(\omega t)$
+	\item acceleration: $a(t) = -A\omega^{2}\cos(\omega t)$
 \end{itemize}
-We notice that the second derivative produces a negative multiple of the
-original function. This can be simplified in terms of acceleration and position functions:
-$a(t) = -\omega^{2}x(t)$.
+Compare the first and last lines: the acceleration is the position times
+$-\omega^2$:
+$$a(t) = -\omega^{2}x(t)$$
+That is the signature of every oscillation in this chapter: the farther
+the object is from the middle, the harder it is pulled back.
 
 \section{Simple Harmonic Motion}
 
-\textbf{Worked example: period of a mass on a spring.} A mass of $m = 2$ kg hangs on a spring with spring constant $k = 200$ N/m. The angular frequency is $\omega = \sqrt{\frac{k}{m}} = \sqrt{\frac{200}{2}} = 10$ rad/s. The period is $T = \frac{2\pi}{\omega} = \frac{2\pi}{10} \approx 0.628$ s.
 
 \index{SHM|see{simple harmonic motion}} \index{simple harmonic motion} Simple
 Harmonic Motion will reference many definitions we have seen before and will
@@ -137,9 +132,9 @@ and slows down to a stop at maximum displacement. Examples of these systems are
 	\item Vibrations of a tuning fork or guitar string
 \end{itemize}
 
-We saw in our pendulums chapter how the system has both centripetal acceleration
-and acceleration due to gravity, causing oscillations back and forth with changing
-speed. \index{simple harmonic motion!energy in} Like all mechanical systems, an SHM
+In the pendulums chapter, you will see a swinging mass with both
+centripetal acceleration and acceleration due to gravity, oscillating back
+and forth with changing speed. \index{simple harmonic motion!energy in} Like all mechanical systems, an SHM
 system has both kinetic and potential energy. For general simple harmonic motion
 systems, we can describe its energy as follows:
 \begin{itemize}
@@ -162,7 +157,7 @@ Let us talk about springs! Springs are mechanical devices, usually made out of s
 rigid metal material, that store and release energy through deformation. When a spring
 is stretched or compressed from its equilibrium position, it exerts a restoring
 force that tries to bring it back to its original shape. The most common type of spring
-is a coil spring, which consists of a linear wire would into a helical shape. \index{springs}
+is a coil spring, which is a wire wound into a helix. \index{springs}
 
 \subsection{Hooke's Law}
 In 1676, physicist Robert Hooke formulated a principle that describes the behavior
@@ -367,22 +362,17 @@ system.
 	\label{fig:ms1}
 \end{figure}
 
-But since above we found a relation between acceleration and position, we can
-write:
-
-\begin{align}
-	m \frac{d^{2}x}{dt^{2}}             & = -kx                         \\
-	\frac{d^{2}x}{dt^{2}}+ \frac{k}{m}x & = 0 \label{eq:linearequation}
-\end{align}
-
-We can see that this equation describes simple harmonic motion, where the
-acceleration is proportional to the negative of the displacement. In this form,
-we can identify the angular speed $\omega$ of the oscillation as:
+Dividing by $m$:
+\begin{equation}
+	a = -\frac{k}{m}x \label{eq:linearequation}
+\end{equation}
+This is exactly the signature $a = -\omega^2 x$ from the start of the
+chapter, so the mass moves in simple harmonic motion with
 \[
 	\omega = \sqrt{\frac{k}{m}}
 \]
-as the term in front of the $x$ in equation~\eqref{eq:linearequation} is
-$\omega^{2}$. Thus, we can further define the period as
+since the number in front of $x$ in equation~\eqref{eq:linearequation} plays
+the role of $\omega^{2}$. So the period is
 \[
 	T = 2\pi \sqrt{\frac{m}{k}}
 \]
@@ -391,8 +381,14 @@ and the frequency as
 	f = \frac{1}{2\pi}\sqrt{\frac{k}{m}}
 \]
 
-In a later section of this chapter, we will solve this differential equation to
-find the position function $x(t)$ of general mass-spring systems.
+Notice that the amplitude does not appear. Pull the mass back a little
+or a lot, and it takes the same time per cycle.
+
+\textbf{Worked example.} A 2 kg mass hangs on a spring with $k = 200$ N/m.
+What are its angular frequency and period?
+
+\textbf{Solution.} $\omega = \sqrt{\frac{200}{2}} = 10$ rad/s, and
+$T = \frac{2\pi}{10} \approx 0.628$ s.
 
 \begin{Exercise}
 	[label={ex:springmassfreq}, title={Mass-Spring Frequency Change}] A block is
@@ -428,6 +424,7 @@ find the position function $x(t)$ of general mass-spring systems.
 		   & = \sqrt{2}\cdot f
 	\end{align*}
 	Therefore, the frequency increases by a factor of $\sqrt{2}$ when the
+	mass is halved.
 \end{Answer}
 \subsection{Spring Potential Energy}
 \index{springs!spring potential energy} Let us recall that Work from a physics standpoint
@@ -436,31 +433,15 @@ When we alter the length of a spring through either compression or extension, we
 performing work on the spring. This work is stored as potential energy within
 the spring, which can be released when the spring returns to its equilibrium position.
 
-Let us find an equation for this change in potential energy, which gets stored up
-in the spring. Recall the two mathematical definitions for work:
-\begin{itemize}
-	\item Work as the product of force and distance: $W = F \cdot d$
-
-	\item Work as the integral of force over a distance: $W = \oint F \, dx$
-\end{itemize}
-We need to use the integral definition, since, by our definition of Hooke's Law, the
-force exerted by a spring varies with displacement, so every tiny bit of
-distance, or $dx$ is different. For any spring starting at equilibrium (0), and moving
-to some final position $x_{f}$, we can write:
-\begin{align*}
-	W     & = \int_{x_i}^{x_f}F_{x}\, dx        \\
-	W_{s} & = \int_{x_i}^{x_f}F_{s}\, dx        \\
-	      & = \int_{0}^{x_f}-kx \, dx           \\
-	      & = \frac{-kx^{2}}{2}\bigg|_{0}^{x_f} \\
-	% &= \frac{-k{x_f}^2}{2} - 0 \\
-	      & = \frac{-k({x_f})^{2}}{2}
-\end{align*}
-
-This work done on the spring is stored as potential energy, so we can say that the
-change in potential energy of the spring is equal to the negative of the work done
-by the spring force:
+How much energy is stored? Work is force times distance, but here the
+force changes as you stretch: it grows from 0 to $kx_f$. When force
+changes, work is the area under the force-versus-displacement graph. For a
+spring, that graph is a straight line, so the area is a triangle with base
+$x_f$ and height $kx_f$ (figure \ref{fig:springpe}):
+$$W = \frac{1}{2}(x_f)(kx_f) = \frac{1}{2}kx_f^2$$
+This work is stored as potential energy in the spring:
 \begin{equation}
-	\Delta U_{s}= -W_{s}= \frac{1}{2}k x_{f}^{2}\label{springpe}
+	\Delta U_{s}= \frac{1}{2}k x_{f}^{2}\label{springpe}
 \end{equation}
 We can see this graphically in Figure~\ref{fig:springpe}, where the area under the
 force vs. displacement graph represents the work done on the spring, which is equal
@@ -681,7 +662,7 @@ For kinetic energy
 	[ref={ex:springequation}] First, we find the angular frequency $\omega$ using
 	the formula:
 	\[
-		w = 2\pi f = \sqrt{\frac{k}{m}}= \sqrt{\frac{400 \, \text{N/m}}{4 \,
+		\omega = 2\pi f = \sqrt{\frac{k}{m}}= \sqrt{\frac{400 \, \text{N/m}}{4 \,
 		\text{kg}}}= \sqrt{100}= 10 \, \text{rad/s}
 	\]
 
@@ -690,9 +671,11 @@ For kinetic energy
 	\[
 		x(t) = A \cos(\omega t + \phi)
 	\]
-	becomes $x= 6 \sin(10t + \phi)$ since the initial velocity is 0, meaning it starts
-	at maximum displacement. Solving for $\phi$ using the initial condition
-	$x(0) = 6$ cm:
+	The block starts at its maximum displacement ($x = 6$ cm, velocity 0), and
+	$\cos 0 = 1$, so $\phi = 0$ and $x(t) = 6\cos(10t)$: option (A).
+
+	Option (C) is the same function in disguise. Writing it with sine,
+	$x = 6\sin(10t + \phi)$, we need $x(0) = 6$:
 	\[
 		6 = 6 \sin(\phi) \implies \sin(\phi) = 1 \implies \phi = \frac{\pi}{2}
 	\]
@@ -700,7 +683,9 @@ For kinetic energy
 	\[
 		x(t) = 6 \sin(10t + \frac{\pi}{2})
 	\]
-	Which is option C.
+	which equals $6\cos(10t)$, because $\sin(\theta + \frac{\pi}{2}) =
+	\cos\theta$. So both (A) and (C) are correct. (Options (D) and (E) use
+	$10\pi$, which would be the wrong angular frequency.)
 \end{Answer}
 
 % Note: commented this out as i moved this equation to the questionbank quiz for this chapter. Mar 2026
@@ -762,195 +747,6 @@ For kinetic energy
 	\]
 	The speed of the ball as it leaves the spring is $12 \, \text{m/s}$.
 \end{Answer}
-
-\section{Mass-Spring Systems and Linear Differential Equations}\index{mass-spring system}
-We have already seen that the motion of a mass attached to a spring can be model
-e d using different ial equations. Here, we will examine this connection more
-clo sel y.
-\subsection{Undamped Simple Harmonic Motion}
-Starting from Newton's Second Law and Hooke's Law, we derived the differential equation for simple harmonic motion:
-\begin{equation}
-	m\frac{d^{2}x}{dt^{2}}+ kx = 0. \label{eq:basicshm}
-\end{equation}
-The term$m\,\frac{d^{2}x}{dt^{2}}$comes directly from \textit{Newton's Second
-Law}, representing the net force required to accelerate the mass. The term $kx$ arises from \textit{Hooke's Law}, which states that the spring exerts a restoring
-force proportional to displacement and directed toward equilibrium. Equation~
-\eqref{eq:basicshm} is an example of a \index{differential equation!second-order}\textbf{ second-order linear differential equation
-with constant coefficients without damping }. It describes an ideal mass-spring
-system with no external influences: one that oscillates forever, undamped and
-unforced. The $ma(t)$ term is \textit{Newton's Second Law} part of the equation,
-while the $k x(t)$ term comes from \textit{Hooke's Law}. This is a second-order
-linear differential equation with constant coefficients. What if the spring system
-is be ing driven by a third force, like friction or damping? We can add an additional
-force term$F(t)$to the equation:$F_{f}(t) = -cv = -cx'$ for forcing function.
-\subsection{Introducing Damping}\index{damping}
-Real systems are often influenced by additional forces. One common example is a
-\textbf{damping force}, such as friction or air resistance, which opposes the motion
-of the mass. A typical damping force is proportional to the velocity and can
-be written as
-\[
-	F_{d}(t) = -c\,\frac{dx}{dt},
-\]
-where$c$is the damping coefficient. Including this force in Newton's Second Law modifies our differential equation. Instead of the undamped equation~\eqref{eq:basicshm},
-we obtain:
-\begin{align}
-	m a(t)                                     & = -c\,v(t) - k\,x(t) \label{eq:forcebalance} \\
-	m\frac{d^{2}x}{dt^{2}}+ c\frac{dx}{dt}+ kx & = 0 \label{eq:dampedmassspring}
-\end{align}
-This is still a second-order linear differential equation with constant coeffici e
-nts, but its solutions behave very differently. Depending on the value of $c$,
-th e system may oscillate with decreasing amplitude, fail to oscillate at all,
-or re t urn to equilibrium as quickly as possible. Finding the roots of the characteristic
-equation associated with Equation~\eqref{eq:dampedmassspring} allows us to
-classify the system's behavior into three categories. Recall that the quadratic formula
-gives us the roots using our coefficients:
-\[
-	r = \frac{-c \pm \sqrt{c^{2}- 4mk}}{2m}
-\]
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\textbf{Characteristic Roots}               & \textbf{Homogeneous Solution}                                                 & \textbf{Damping Type}  \\
-		\hline
-		$r_{1}, r_{2}\in \mathbb{R}$, both negative & $y_{h}= C_{1}e^{r_1 t}+ C_{2}e^{r_2 t}$                                       & Overdamped             \\
-		\hline
-		$r$ real, repeated                          & $y_{h}= (C_{1}+ C_{2}t)e^{rt}$                                                & Critically damped      \\
-		\hline
-		$r = \alpha \pm i\beta$, $\alpha < 0$       & $y_{h}= e^{\alpha t}\!\left( C_{1}\cos(\beta t) + C_{2}\sin(\beta t) \right)$ & Underdamped            \\
-		\hline
-		$r = \pm i \beta$                           & $y_{h}= C_{1}\cos(\beta t) + C_{2}\sin(\beta t)$                              & Simple Harmonic Motion \\
-		\hline
-	\end{tabular}
-	\caption{Classification of solutions to the damped harmonic oscillator based
-	on characteristic roots.}
-\end{table}
-Without going into too much linear algebra, the function of a mass spring is giv e
-n by$y(t) = y_{h}(t) + y_{p}(t)$, where $y_{h}$ is the homogeneous solution (the p art we solved above by setting the differential equation to $0$), and $y_{p}$ is
-the p articular solution, which depends on any external forcing functions. In
-this section, we focused on the homogeneous solution. If the equation~\eqref{eq:dampedmassspring}
-had a forcing function$F(t)$on the right side, we would need to find a
-particular solution$y_{p}$ to account for that.
-
-\begin{Exercise}
-	[title={Linear Systems 1}, label={ex:id_diff_eq}]
-
-	A $2 \, \text{kg}$ mass is attached to a spring with $k=200 \, \text{N/m}$ with
-	no damping. Which differential equation describes the motion?
-
-	\begin{enumerate}
-		\item $x'' + 100x = 0$
-
-		\item $x'' + 10x = 0$
-
-		\item $x'' + 200x = 0$
-
-		\item $2x'' + 100x = 0$
-	\end{enumerate}
-\end{Exercise}
-\begin{Answer}
-	[ref={ex:id_diff_eq}] The correct differential equation is $x'' + 100x = 0$.
-	This is derived from the equation of motion for any simple harmonic oscillator:
-	$m x'' + k x = 0$, where $m = 2 \, \text{kg}$ and $k = 200 \, \text{N/m}$. Dividing
-	by $m$, we get $x'' + \frac{k}{m}x = 0$, which simplifies to $x'' + 100x = 0$.
-\end{Answer}
-
-\begin{Exercise}
-	[title={Linear Systems 2}, label={ex:diff_eq2}] \par
-	\smallskip
-	% FIXME FORMATTING: this is messing up the working space, need to fix the formatting
-
-	Answer the following questions about the graph below, which shows the position
-	of a mass on a spring as a function of time. The equation of motion for this system
-	is given by:
-	\[
-		x(t) = 0.15e^{-0.40t}\cos(4t + 0.30)
-	\]
-
-	\begin{figure}[H]
-		\begin{tikzpicture}[scale=0.7]
-			\draw[very thin, color=gray] (-8,-4) grid (0,4);
-
-			\draw[color=orange, domain=-8:0, samples=200]
-				plot
-				(\x,{0.15*exp(-0.40*\x)*cos(deg(4*\x+0.30))});
-		\end{tikzpicture}
-	\end{figure}
-	\begin{itemize}
-		\item Is this system undergoing simple harmonic motion, or is it damped? If it
-			is damped, is it underdamped, overdamped, or critically damped?
-
-		\item What would need to be changed in the equation of motion to make this system
-			undergo simple harmonic motion instead?
-	\end{itemize}
-\end{Exercise}
-\begin{Answer}
-	[ref={ex:diff_eq2}]
-	\begin{itemize}
-		\item This system is damped. Specifically, it is underdamped because the amplitude
-			of oscillation decreases over time.
-
-		\item To make this system undergo simple harmonic motion, we would need to
-			remove the damping term from the equation of motion. This means setting the
-			damping coefficient $c$ to zero in the differential equation, which would
-			eliminate the exponential decay factor in the position function. The equation
-			becomes $x(t) = 0.15\cancel{e^{-0.40t}}\cos(4t + 0.30) \rightarrow x(t) = 0
-			.15\cos(4t + 0.30)$
-	\end{itemize}
-\end{Answer}
-
-\begin{Exercise}
-	[title={Linear Systems 3}, label={ex:diff_eq3}]
-
-	Given that a unit (1 kg) mass obeys:
-	\[
-		x''+16x=0,\quad x(0)=0.20,\quad v(0)=x'(0)=0
-	\]
-
-	\begin{enumerate}
-		\item Solve for $x(t)$
-
-		\item Find the acceleration, $a(t)$, and the velocity, $v(t)$, as functions of
-			time.
-	\end{enumerate}
-\end{Exercise}
-\begin{Answer}
-	[ref={ex:diff_eq3}]
-	\begin{enumerate}
-		\item Notice that the system equation is linear as it is defined with an $x''$
-			and $x$.The general solution to the differential equation $x'' + 16x = 0$ is
-			of the form $x(t) = A\cos(4t) + B\sin(4t)$. This comes from the idea that
-			the characteristic equation $r^{2}+ 16 = 0$ has roots $r = \pm 4i$, where the
-			$\beta$ term is $4$. Using the initial conditions $x(0) = 0.20$ and
-			$v(0) = x'(0) = 0$, we find our velocity equation to be $v(t)=x'(t)=-4A\sin
-			(4t)+4B\cos(4t)$.
-
-			From $x(0)=A\cos 0 + B\sin 0 = A(1)+B(0)=A=0.20$, we find that $A=0.20$.
-
-			From $v(0)=-4A\sin 0 + 4B\cos 0 = -4(0.20)(0)+4B(1)=4B=0$, we find that $B=
-			0$.
-
-			Therefore, the solution is:
-			\[
-				x(t) = 0.20\cos(4t)
-			\]
-
-		\item To find the acceleration, we double differentiate $x(t)$ with respect
-			to time: To find the velocity, we differentiate $x(t)$ with respect to
-			time:
-			\[
-				v(t) = x'(t) = -0.80\sin(4t)
-			\]
-			\[
-				a(t) = v'(t) = -3.20\cos(4t)
-			\]
-
-			Since cosine and sine functions oscillate between -1 and 1 (regardless of
-			angular frequency $\omega = 4$), the maximum velocity is $0.80$ m/s and
-			the maximum acceleration is $3.20 \, \textrm{m/s}^{2}$.
-	\end{enumerate}
-\end{Answer}
-% many more exercises being created in the question bank for this chap
 
 \begin{Exercise}[title={A Lighter Mass}, label=osc_light]
 The same spring, with $k = 200$ N/m, now holds a $0.5$ kg mass. Find the angular frequency and the period.

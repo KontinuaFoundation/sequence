@@ -2,6 +2,12 @@
 
 
 \section{Introduction to Discrete Probability}
+In a game of Monopoly, why do players land on the orange properties so
+often? How many different ways can your class line up for a photo? What
+are the odds that your phone's 4-digit passcode is guessed on the first
+try? All of these are counting problems in disguise, and this chapter
+gives you the tools to solve them.
+
 Before we begin talking about discrete probability, let us address the word \emph{discrete}. It means ``individually
 separate and distinct'' as in ``You can think of light as a
 continuous wave or as a blast of discrete particles.''
@@ -38,10 +44,10 @@ you will pull out a white marble,'' which becomes the equation
 
 We know that you are either going to pull out a red marble or a white marble,
 so the probability of a white marble being pulled and the probability
-of a red marble being pulled must add up to 100\%. Therefore, the odds of
+of a red marble being pulled must add up to 100\%. Therefore, the probability of
 pulling out a red marble must be 99\%, or 0.99. If we let the event ``Pull out a red marble'' be given by the symbol $R$, we can say:
 \begin{equation*}
-  p(R) = 1.0 - P(W) = 1.0 - 0.01 = 0.99
+  p(R) = 1.0 - p(W) = 1.0 - 0.01 = 0.99
 \end{equation*}
 
 Now, let us say that you take a marble from the bag, then
@@ -56,7 +62,7 @@ chance. Do the probabilities still sum to 1?
 % ADD: add up the values at the end for clarity
 \end{itemize}
 $0.005 + 0.005 + 0.495 + 0.495 = 1.000$
-Yes, the probabilities of all the possibilities still add to 1. This is only true because \emph{the events do not effect each other}; the events are \textbf{\textit{independent}}. 
+Yes, the probabilities of all the possibilities still add to 1. We were allowed to multiply because \emph{the events do not affect each other}: the events are \textbf{\textit{independent}}. 
 \subsection{Independence and Dependence}
 
 In the last section, you learned that the probability of two events
@@ -90,7 +96,7 @@ So saying correlation does not imply causation simply means: just because two va
 
 Here are some examples:
 \begin{itemize}
-  \item Ice Cream Sales, Mosquito bites, and Sunburn cases all increase during the summertime. However, none of these are causally connected.
+  \item Ice Cream Sales, Mosquito bites, and Sunburn cases all increase during the summertime. However, none of them causes another: hot, sunny weather drives all three.
   \item Dinosaurs were not able to read books. However, this does not mean that the inability to read caused dinosaur extinction. 
   \item There was a large increase in toilet paper sales and people working from home in the years 2020-2021. Does this mean that one causes the other? Not necessarily. In this case a third factor $C$, the pandemic, caused a large global quarantine, leading to increased toilet paper usage and the inability to work in an office. 
 \end{itemize}
@@ -114,7 +120,7 @@ Here are some examples:
   probability that at least one coin will come up heads?
 \end{Exercise}
 \begin{Answer}[ref=flipping-coins]
-  probability of at least one heads = 1.0 - probability of all tails $ = 1.0 - \left(\frac{1}{2}\right)^5 =1.0 - \frac{1}{32} = \frac{31}{32} = \approx 0.97$ 
+  probability of at least one heads = 1.0 - probability of all tails $ = 1.0 - \left(\frac{1}{2}\right)^5 =1.0 - \frac{1}{32} = \frac{31}{32} \approx 0.97$ 
 
   \includegraphics[width=0.5\textwidth]{coin_prob.png}
 \end{Answer}
@@ -163,7 +169,7 @@ computers do for us.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{dice_histogram.png}
-    \caption{A histogram of probabilities of dice sums. This is referred to as a bell curve.}
+    \caption{A histogram of probabilities of dice sums. With two dice, the shape is a triangle; with more dice, it gets closer and closer to a bell curve.}
     \label{fig:dice_histogram}
 \end{figure}
 \subsection{Random Numbers and Python}
@@ -220,7 +226,7 @@ will have simulated rolling a pair of dice. Like this:
 8
 \end{minted}
 
-First, let us write a program that just rolls the dice 100 times and shows the result. Make a file \url{dice.py}:
+First, let us write a program that just rolls the dice 100 times and shows the result. Make a file \filename{dice.py}:
 \begin{minted}{python}
 import random
 
@@ -433,9 +439,9 @@ people are left to fill the second blank. Likewise, only 4 people remain
 to fill the third blank, since two people have already been assigned to
 the first two spots. Multiplying these together, $6 \times 5 \times 4 =
 120$, tells you exactly how many different first-second-third outcomes
-are possible --- and thus how many plaques you'd need engraved.
+are possible --- and thus how many plaques you would need engraved.
 
-What if the plaque includes all 6 places?  Using the same reasoning, you'd
+What if the plaque includes all 6 places?  Using the same reasoning, you would
 fill in six blanks instead of three: $6 \times 5 \times 4 \times 3 \times 2
 \times 1 = 720$ plaques engraved.  We use this process often enough that
 we gave it a name.  We say ``I need 6 factorial plaques engraved.''  When
@@ -445,7 +451,7 @@ $$6! = 6 \times 5 \times 4 \times 3 \times 2 \times 1 = 720$$
 We use the word ``permutation'' to mean a particular ordering.
 This rule says $n$ items can be ordered in $n!$ ways. Thus,
 mathematicians actually say ``If you have a list of $n$ items then we
-can generate $n!$ different permutations of those items''. We will discuss this further in the next chapter. 
+can generate $n!$ different permutations of those items.'' We will return to permutations at the end of this chapter. 
 
 In Python, there is a \pyfunction{factorial} function in the math library:
 \begin{minted}{python} 
@@ -491,11 +497,11 @@ That gets us our answer: How many different teams of four can be chosen from 12 
 
 $$\frac{12!}{(12-4)! 4!}= 495$$
 % ADD: Needs a bit more explanation for clarity, might just be my understanding
-Generally, this formula, referred to as the \newterm{Binomial coefficient}. \index{binomial coefficient}
+This number is called a \newterm{binomial coefficient}. \index{binomial coefficient}
 In combinatorics, we use this quantity a lot, so we have given it a name: \textit{choose}\index{choose function}
 \index{combinations!formula}
 \begin{mdframed}[frametitle = {Combinations}, style = important]
-For combinations, where order doesn't matter, the formula for ${}^n C_k$ ($n$ objects choose $k$) is 
+For combinations, where order does not matter, the formula for ${}^n C_k$ ($n$ objects choose $k$) is 
 $${n \choose k} = \frac{n!}{k!(n-k)!}$$
 \end{mdframed}
 We have also given it a notation. ``12 choose 4'' is written like this:
@@ -604,15 +610,16 @@ $$P(\text{exactly 3 heads}) = \binom{5}{3}\left(\frac{1}{2}\right)^3\left(\frac{
 This pattern of counting the arrangements with $\binom{n}{k}$, then multiplying by the probability of one arrangement works whenever you have repeated \emph{independent} trials with only two possible outcomes each time (success or failure). 
 
 \begin{Exercise}[title={Free Throws}, label={ex:free_throw_prob}]
-A free throw shooter has a past record of making 60\% of her free throws. Over the next 6 free throws, what is the probability that she makes exactly 4 of them?
+A basketball player has a past record of making 60\% of their free throws. Over the next 6 free throws, what is the probability that she makes exactly 4 of them?
 \end{Exercise}
 
 
 \begin{Answer}[ref={ex:free_throw_prob}]
 
 \[
-P(\text{exactly 4 makes}) = \binom{6}{4}(0.6)^4(0.4)^2 = 0.31104
+P(\text{exactly 4 makes}) = \binom{6}{4}(0.6)^4(0.4)^2 = 15 \times 0.1296 \times 0.16 = 0.31104
 \]
+About 31\%.
 
 \end{Answer}
 This probability situation has been rightfully called the \index{binomial distribution}\newterm{binomial distribution}. This is a brief introduction to the binomial distribution, and we will discuss it in more detail in a later chapter.
@@ -699,6 +706,8 @@ $$I = \begin{pmatrix}
 \subsubsection{Challenge} Find an example of two permutations $S$ and $T$, such that $S \circ T$ does not equal $T \circ S$.
 
 Hint: on a list of three items, try swapping the first two items and swapping the last two items.
+
+(One answer: let $S$ swap positions 1 and 2, and $T$ swap positions 2 and 3. Starting from $[a, b, c]$, $S \circ T$ gives $[c, a, b]$, but $T \circ S$ gives $[b, c, a]$.)
 
 \subsection{Sorting in Python}
 
@@ -822,9 +831,9 @@ Starting with the list $[a, b, c, d, e]$, let us repeatedly apply the permutatio
   $T \circ T \circ T \circ T \circ T \circ T$ applied & {\color{red} a, b,} {\color{blue} c,} {\color{red} d,}  {\color{blue} e}\\
 \end{tabular}
 
-This permutation results in six combinations, then it loops back
-on itself. The number of combinations is the \index{least common multiple}least common multiple of
-all the cycles.  In this case, there is a 3-cycle and a 2-cycle. The
+After six applications, the list is back where it started. The number of
+applications needed, called the \newterm{order} of the permutation, is the
+\index{least common multiple}least common multiple of the cycle lengths.  In this case, there is a 3-cycle and a 2-cycle. The
 least common multiple of 2 and 3 is 6.
 
 \subsection{Further Learning}

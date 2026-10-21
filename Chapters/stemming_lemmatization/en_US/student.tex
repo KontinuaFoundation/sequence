@@ -29,6 +29,39 @@ For each pair of words, say whether a stemmer would likely give them the same st
 (a) A stemmer such as Porter's often maps both to "happi", so they match. A lemmatizer keeps "happiness" as its own noun and "happy" as an adjective, so they do not match. (b) A stemmer does not link "better" to "good", because the spelling is too different. A lemmatizer that knows irregular forms can map "better" to "good".
 \end{Answer}
 
+\subsection{Stemming in Python}
+\index{NLTK}
+The Natural Language Toolkit (\pyfunction{nltk}, installed with
+\texttt{pip install nltk}) includes the classic Porter stemmer:
+
+\begin{minted}{python}
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+words = ["jumping", "jumped", "jumps", "studies", "running", "ran"]
+print([stemmer.stem(w) for w in words])
+\end{minted}
+
+This prints \texttt{['jump', 'jump', 'jump', 'studi', 'run', 'ran']}.
+Notice that the stemmer just chops endings: it cannot know that
+``ran'' is a form of ``run.'' A lemmatizer, which looks words up in a
+dictionary, can. (NLTK's \pyfunction{WordNetLemmatizer} does this, after a
+one-time download of its dictionary.)
+
+\begin{Exercise}[label=stem2, title=Search Results]
+A search engine stems every word in its documents and every word you
+type. You search for ``connected.'' Which of these documents will match:
+one containing ``connection,'' one containing ``connecting,'' and one
+containing ``linked''?
+\end{Exercise}
+\begin{Answer}[ref=stem2]
+The Porter stemmer reduces ``connected,'' ``connection,'' and
+``connecting'' all to ``connect,'' so the first two documents match.
+``Linked'' means the same thing but shares no letters, so stemming cannot
+find it. Matching synonyms takes a different technique, such as a
+thesaurus or word embeddings.
+\end{Answer}
+
 \subsection{Applications}
 \index{stemming!applications of}
 \index{lemmatization!applications of}

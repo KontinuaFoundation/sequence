@@ -1,5 +1,10 @@
 \chapter{Deep Learning}
 
+The networks in the last two chapters had one or two hidden layers. The systems
+that recognize your voice, translate languages, and generate images have dozens
+or hundreds. This chapter explains what all those layers buy you, and the one
+idea from calculus, the chain rule, that makes it possible to train them.
+
 \section{Many Layers}\index{deep learning}
 A \newterm{deep} neural network has many hidden layers. Each layer applies a weighted sum followed by a nonlinear
 activation function, and each layer builds features from the layer before it. Early layers may detect simple
@@ -20,7 +25,12 @@ the forward pass. Each weight's gradient is the product of the derivatives along
 
 Consider a single weight $w$ with prediction $\hat{y} = wx$ and loss $L = (\hat{y} - t)^2$. The chain rule gives
 $$\frac{\partial L}{\partial w} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial w} = 2(\hat{y} - t) \cdot x$$
-The gradient descent update from the chapter on gradient descent then moves $w$ against this gradient.
+The update rule from the Linear Regression and Gradient Descent chapter then moves $w$ against this gradient.
+
+In a deep network, the path from a weight to the loss passes through many
+layers, so its gradient is a long product of local derivatives. Backpropagation
+computes all of these products in one backward sweep, sharing the work, instead
+of starting over for every weight.
 
 \section{Practical Points}
 Deep networks are trained with minibatches of examples, using stochastic gradient descent or a variant of it. Very deep networks can
@@ -39,4 +49,16 @@ A single weight has $\hat{y} = wx$ and $L = (\hat{y} - t)^2$. Find $\frac{\parti
 \end{Exercise}
 \begin{Answer}[ref=dl2]
 $\hat{y} = 6$, so $\frac{\partial L}{\partial w} = 2(6 - 5)(3) = 6$.
+\end{Answer}
+
+\begin{Exercise}[label=dl3, title=Vanishing gradients]
+The sigmoid activation has a derivative of at most $0.25$. A gradient passes back
+through 10 sigmoid layers, picking up a factor of at most $0.25$ at each layer.
+What is the largest the resulting factor can be?
+\end{Exercise}
+\begin{Answer}[ref=dl3]
+$0.25^{10} \approx 9.5 \times 10^{-7}$. The gradient reaching the early layers is
+less than a millionth of its original size, so those layers barely learn. This is
+the vanishing gradient problem, and it is one reason modern networks use the ReLU,
+whose derivative is 1 for positive inputs.
 \end{Answer}

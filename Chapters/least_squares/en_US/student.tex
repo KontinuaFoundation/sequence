@@ -8,8 +8,8 @@ and data points $(x_i, y_i)$,
 $$S(b_0, b_1) = \sum_{i=1}^{n} (y_i - b_0 - b_1 x_i)^2$$
 The \newterm{least squares} line is the one that makes $S$ as small as possible.
 
-Squaring the errors has two effects. It keeps positive and negative errors from cancelling,
-and it gives extra weight to large errors. It also makes the problem solvable with calculus.
+Squaring keeps positive and negative errors from cancelling and gives extra weight to large
+errors. It also makes the problem solvable with calculus.
 
 \section{Solving with Calculus}\index{normal equations}
 A minimum of $S$ occurs where both partial derivatives are zero. Taking the partial derivative with
@@ -19,16 +19,16 @@ Taking the partial derivative with respect to $b_1$ and setting it to zero gives
 $$\sum x_i (y_i - b_0 - b_1 x_i) = 0$$
 Substituting $b_0$ into the second equation and simplifying gives
 $$b_1 = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = \frac{S_{xy}}{S_{xx}}$$
-These are the formulas used in the simple linear regression chapter.
+You will use these formulas throughout the next chapter, Simple Linear Regression.
 
 \section{A Worked Example}
-Use the same five points as the simple linear regression chapter:
+Here are five points (hours studied and quiz scores) that the next chapter will use again:
 $x = 1, 2, 3, 4, 5$ and $y = 2.1, 3.9, 6.2, 7.8, 10.1$. The sums needed are
 $$\sum x_i = 15, \qquad \sum y_i = 30.1, \qquad \sum x_i^2 = 55, \qquad \sum x_i y_i = 110.2$$
 so $\bar{x} = 3$, $\bar{y} = 6.02$, $S_{xx} = 55 - 5(3)^2 = 10$, and $S_{xy} = 110.2 - 5(3)(6.02) = 19.9$.
 Therefore
 $$b_1 = \frac{19.9}{10} = 1.99, \qquad b_0 = 6.02 - 1.99(3) = 0.05$$
-This matches the fitted line from the previous chapter.
+The least squares line is $\hat{y} = 0.05 + 1.99x$.
 
 \section{The Matrix Form}\index{normal equations!matrix form}
 Write the model as a matrix equation. Let $X$ be the matrix whose first column is all ones and
@@ -73,5 +73,6 @@ Give one reason to minimize the sum of squared errors instead of the sum of abso
 \end{Exercise}
 \begin{Answer}[ref=ls3]
 Squared errors are differentiable everywhere, so calculus gives a closed-form solution. (Another
-valid answer: squared errors give large errors more weight, which makes the fit sensitive to outliers.)
+valid answer: squared errors punish one big miss more than several small ones, so the line avoids
+being badly wrong anywhere. The flip side is that a single outlier can pull the line.)
 \end{Answer}

@@ -4,14 +4,19 @@
 
 \subsection{Systems of Equations, REF, and RREF}
 
-We have talked a lot about matrices and vectors. Now we can use matrices and vectors to solve systems of equations. A system of linear equations can be written compactly using matrices and vectors. This matrix representation allows us to use algebraic tools such as row operations and matrix multiplication to analyze and solve the system more efficiently. Let us look at a very simple example from a previous section.
+You have solved systems of two equations in two unknowns since algebra
+class. But real problems, like balancing a chemical reaction, routing
+traffic, or fitting a curve through data, can have hundreds of equations
+and hundreds of unknowns. Matrices let us write any system compactly and
+solve it with one systematic recipe that a computer can follow. Let us
+start small:
 
 \[\begin{cases}
 1x_1 + 2x_2 = -1 \\
 2x_1 + 0x_2 = 4
 \end{cases}\]
 
-We can write this in the form of a matrix! This may come as a surprise to some of you. How can we do this? Let us write the coefficients as a matrix, the $x_n$'s as a column vector, and the constants as a column vector called $\vec{b}$, the right-hand-side vector.
+We can write this with matrices. Write the coefficients as a matrix, the $x_n$'s as a column vector, and the constants as a column vector called $\vec{b}$, the right-hand-side vector.
 \index{system of equations}
 Here is the \index{coefficient matrix}coefficient matrix which we will call $A$:
 \[A = \vecb{1 & 2 \\ 2 & 0}\]
@@ -31,7 +36,7 @@ $$A\vec{x} = \vecb{1 & 2 \\ 2 & 0}\vecb{x_1 \\ x_2} = \vecb{1x_1 + 2x_2 \\ 2x_1 
 We get exactly the left-hand sides of our original system of equations!
 Therefore, when we set this equal to the right-hand-side vector $\vec{b}$:
 $$\vec{b}=\vecb{-1 \\ 4}$$
-we get the \index{matrix equation}fundamental system of equation formula represented as a matrix Equation
+we get the \index{matrix equation}matrix equation
 \begin{equation}
        A\vec{x} = \vec{b}
        \label{eq:matrixform}
@@ -54,7 +59,7 @@ This is a very important equation for linear algebra as a whole. Notice that the
 \end{Answer}
 
 \subsection{Row-Echelon Form}
-This brings up the question, how can we solve for the $\vec{x}$? There are multiple ways, but most commonly we form an augmented matrix and solve for Row-Echelon Form. \index{row-echelon form}
+How do we solve for $\vec{x}$? The most common way is to form an augmented matrix and reduce it to row-echelon form. \index{row-echelon form}
 \subsubsection{The Augmented Matrix}
 \index{augmented matrix}
 What is the augmented matrix? It is a way of representing the $A$ matrix and $\vec{b}$ vector. We write the $A$ matrix, separated by a vertical line from the $\vec{b}$ vector:
@@ -66,7 +71,7 @@ a_{21} & a_{22} & \cdots & a_{2n} & \vert & b_2 \\
 a_{m1} & a_{m2} & \cdots & a_{mn} & \vert & b_m
 \end{bmatrix} \end{array}$$
 
-The left block contains all the coefficients of the system of equations, and the right block contains only the solutions. Then, to solve for $\vec{x}$, we perform \textit{Elementary Row Operations} to find the \textit{Row-Echelon Form}, mathematically stated as $\text{rref}(A\vert \vec{b})$. Let us continue with the matrix vector set we were experimenting with:
+The left block contains all the coefficients of the system of equations, and the right block contains the constants. Then, to solve for $\vec{x}$, we perform \textit{elementary row operations} to reach \textit{row-echelon form}. Let us continue with the matrix vector set we were experimenting with:
 $$A\vec{x} = \vecb{1 & 2 \\ 2 & 0}\vecb{x_1 \\ x_2} = \vecb{1x_1 + 2x_2 \\ 2x_1 + 0x_2}$$
 This can be written as an augmented matrix:
 
@@ -74,7 +79,7 @@ $$\vecb{A\vert \vec{b}} = \vecb{1 & 2 &\vert & -1 \\ 2 & 0 & \vert & 4}$$
 
 
 \subsubsection{Elementary Row Operations}
-The Row-Echelon Form of a matrix is an \emph{equivalent} form of a matrix obtained through Gaussian and Gauss-Jordan elimination. There are lots of videos on this process online, so multiple videos included in your digital resources to walk you through the process. The rules of Gaussian Elimination are simple, only 3 different elementary row operations, or ERO's can be performed:
+The Row-Echelon Form of a matrix is an \emph{equivalent} form of a matrix obtained through Gaussian and Gauss-Jordan elimination. The rules of Gaussian elimination are simple. Only three \emph{elementary row operations} (EROs) are allowed:
 
 \begin{itemize}
        \item Swapping two rows
@@ -90,7 +95,7 @@ With these ERO's, we are trying to achieve a matrix with the following propertie
 \item Each pivot has zeros in all positions below it in the same column.
 \end{itemize}
 
-Lets walk through the steps to simplify $\text{ref}(A\vert \vec{b})$:
+Let us walk through the steps to simplify $\text{ref}(A\vert \vec{b})$:
 
 \begin{align*}
 \vecb{1 & 2 &\vert & -1 \\ 2 & 0 & \vert & 4} \\
@@ -463,7 +468,7 @@ $$\vecb{
 1&2&4&0\\
 0&0&0&1\\
 0&0&0&0}$$
-we can interpret this As
+We can interpret this as
 $$\begin{aligned}
 x_1 + 2x_2 + 4x_3 &= 0,\\
 0x_1 + 0x_2 + 0x_3 &= 1.
@@ -507,7 +512,7 @@ $$\begin{array}{lcl}
 \text{number of basis vectors} &=& n - \text{rank}
 \end{array}$$
 
-\subsection*{Exercises} % added this as a separator, maybe not needed
+\subsection*{Exercises}
 \begin{Exercise}[title=Augmented Matrix 1, label=infinitelymany]
 Simplify the matrix:
 $$\vecb{
@@ -700,141 +705,107 @@ There are $n=4$ variables $(x_1,x_2,x_3,x_4)$.
 \end{enumerate}
 \end{Answer}
 \subsection{Creating Matrices in Python}
-Recall that matrices can be represented by 2D arrays in Python. Let us explore this idea further with the module \mintinline{python}|numpy|. Create a file called \filename{matrices\_creation.py} and enter this code:
+NumPy stores matrices as 2D arrays. Create \filename{matrices\_creation.py}:
 \begin{minted}{python}
-# import the python module that supports matrices
 import numpy as np
-# Use the function np.array to define a matrix that 
-# contains specific values that you supply.
-A = np.array([[ 5, 1, 3], 
-              [ 1, -1, 8], 
-              [ 6, 2, 1]])
-# The transpose function returns 
-A.transpose()
-\end{minted}
-When you run it, you should see:
-\begin{minted}{python}
-array([[ 5, 1, 6], 
-       [ 1, -1, 2], 
-       [ 3, 8, 1]])
-\end{minted}
-As you can see, $A\neq A^T$, so A is not symmetric.
-Try another: 
-\begin{minted}{python}
-# create a matrix, B
-B = np.array([[ 5, 1, 6], 
-              [ 1, -1, 2], 
-              [ 6, 2, 1]])
-B.transpose()
-\end{minted}
-When you run it, you should see:
-\begin{minted}{python}
-array([[ 5, 1, 6], 
-       [ 1, -1, 2], 
-       [ 6, 2, 1]])
-\end{minted}
-B is symmetric. You can actually transpose any matrix using this function, but a matrix cannot be symmetric unless it is square. 
 
-Try this code to see what happens when you transpose a rectangular matrix. 
-\begin{minted}{python}
-# create a matrix, J
-J = np.array([[ 5, 1, 3, 0], 
-              [ 1, -1, 8, 11], 
-              [ 6, 2, 1,-7]])
-J.transpose()
+A = np.array([[5, 1, 3],
+              [1, -1, 8],
+              [6, 2, 1]])
+print(A.T)                      # not equal to A: not symmetric
+
+B = np.array([[5, 1, 6],
+              [1, -1, 2],
+              [6, 2, 1]])
+print(np.array_equal(B, B.T))   # True: B is symmetric
+
+J = np.array([[5, 1, 3, 0],
+              [1, -1, 8, 11],
+              [6, 2, 1, -7]])
+print(J.T.shape)                # (4, 3)
 \end{minted}
-Note that transposing a rectangular matrix changes its dimension from 3 by 4 to 4 by 3. You should see a transposed matrix, but it is not symmetric.
-\begin{minted}{python}
-array([[ 5,  1,  6],
-       [ 1, -1,  2],
-       [ 3,  8,  1],
-       [ 0, 11, -7]])
+When you run it, you should see:
+\begin{minted}{text}
+[[ 5  1  6]
+ [ 1 -1  2]
+ [ 3  8  1]]
+True
+(4, 3)
 \end{minted}
+$A \neq A^T$, so $A$ is not symmetric, but $B$ is. You can transpose any
+matrix, but only a square matrix can be symmetric: transposing the $3
+\times 4$ matrix $J$ gives a $4 \times 3$ matrix.
 
 \subsubsection{Creating Special Matrices in Python}
- Use the same file to add this code for creating a zero matrix.
+NumPy has shortcuts for the special matrices. \pyfunction{np.diag} works
+both ways: given a matrix, it extracts the diagonal; given a list, it
+builds a diagonal matrix. (\pyfunction{np.diag(W, 1)} extracts the diagonal
+just above the main one, and \pyfunction{np.diag(W, -1)} the one just
+below.)
 \begin{minted}{python}
-# create an 8 by 10 Zero matrix.
- C = np.zeros((8, 10))
- C
-\end{minted}
-When you run it, you should see:
-\begin{minted}{python}
-array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
-\end{minted}
-Add the following code to create an 8 by 8 Identity matrix.
-\begin{minted}{python}
-# create an 8 by 8 Identity matrix 
- D = np.eye(8)
- D
-\end{minted}
-When you run it, you should see:
-\begin{minted}{python}
-array([[1., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 1., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 1., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 1., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 1., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 1., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 1., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 1.]])
-\end{minted}
-As you progress in your studies, you will learn the importance of diagonal matrices and of extracting the diagonal of a matrix. Let us see how to extract a diagonal, then create a diagonal matrix.
-\begin{minted}{python}
-# create a  matrix 
-W = np.array([[1, 2, 3, 4], 
-              [5, 6, 7, 8], 
+import numpy as np
+
+print(np.zeros((2, 3)))         # a 2 x 3 zero matrix
+print(np.eye(3))                # a 3 x 3 identity matrix
+
+W = np.array([[1, 2, 3, 4],
+              [5, 6, 7, 8],
               [-8, -7, -6, -5],
               [-4, -3, -2, -1]])
+print(np.diag(W))               # the main diagonal
+print(np.diag([1, 2, 3]))       # a diagonal matrix
+print(np.triu(W))               # upper triangle
+print(np.tril(W))               # lower triangle
 \end{minted}
-Extract the main diagonal using \index{numpy!diag}np.diag(<array>,<diagonal to extract>). 
-Passing 0 as the second parameter specifies the main diagonal. A positive value extracts a diagonal from the upper part. A negative value extracts a diagonal from the lower part. Run this code then experiment passing other values to see what you get.
-\begin{minted}{python}
-print(np.diag(W,0))
-\end{minted}
-When you run it, you should see:
-\begin{minted}{python}
-array([ 1,  6, -6, -1])
-\end{minted}
-You can also use np.diag() to create a diagonal matrix from a 1D array. In this case, do not pass a second parameter.
-\begin{minted}{python}
-Q = np.array([1, 2, 3])
-DiagArray = np.diag(Q)
-print(DiagArray)
-\end{minted}
-When you run it you should see;
-\begin{minted}{python}
+You should see:
+\begin{minted}{text}
+[[0. 0. 0.]
+ [0. 0. 0.]]
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+[ 1  6 -6 -1]
 [[1 0 0]
  [0 2 0]
  [0 0 3]]
-\end{minted}
-Python has functions for extracting upper and lower triangular matrices. Try these:
-\begin{minted}{python}
-print(np.triu(W))
-print(np.tril(W))
-\end{minted}
-You should see:
-\begin{minted}{python}
 [[ 1  2  3  4]
  [ 0  6  7  8]
  [ 0  0 -6 -5]
  [ 0  0  0 -1]]
- 
 [[ 1  0  0  0]
  [ 5  6  0  0]
  [-8 -7 -6  0]
  [-4 -3 -2 -1]]
 \end{minted}
 
+\subsubsection{Solving Systems in Python}\index{NumPy!linalg.solve}
+Row reduction by hand is great for understanding, but for real problems
+you let the computer do it. \pyfunction{np.linalg.solve} solves
+$A\vec{x} = \vec{b}$ when there is exactly one solution. Here is the $4
+\times 4$ system from earlier in the chapter:
+\begin{minted}{python}
+import numpy as np
+
+A = np.array([[1, 1, 1, 1],
+              [2, 1, 3, 1],
+              [1, 3, 2, 2],
+              [3, 1, 2, 4]])
+b = np.array([4, 9, 10, 13])
+
+x = np.linalg.solve(A, b)
+print(x)
+print(A @ x)    # check: should equal b
+\end{minted}
+You should see:
+\begin{minted}{text}
+[-2.66666667 -0.66666667  3.83333333  3.5       ]
+[ 4.  9. 10. 13.]
+\end{minted}
+That is $-\frac{8}{3}$, $-\frac{2}{3}$, $\frac{23}{6}$, $\frac{7}{2}$, just
+as we found by hand.
+
 \subsection{Conclusion}
-In this module, we have explored the fundamental concepts of matrices, including their types, properties, and how they can be used to represent and solve systems of linear equations. We have also learned how to perform row operations to convert matrices into Row-Echelon Form (REF) and Reduced Row-Echelon Form (RREF), which are essential techniques in linear algebra. In the next chapter~\ref{chap:subspaces}, we will talk deeper about the concepts of vector spaces and subspaces and how to find RREF, building on our understanding of matrices and their applications.
+In this module, we have explored the fundamental concepts of matrices, including their types, properties, and how they can be used to represent and solve systems of linear equations. We have also learned how to perform row operations to convert matrices into Row-Echelon Form (REF) and Reduced Row-Echelon Form (RREF), which are essential techniques in linear algebra. In Chapter~\ref{chap:subspaces}, we will go deeper into vector spaces and subspaces, building on RREF.
 
 
 \section{Applications of Matrices in System Form}
@@ -1010,29 +981,15 @@ Since method C yields the highest grade, the professor will post a final grade o
 \end{Answer}
 
 \subsubsection{Vector-Matrix Multiplication in Python}\index{matrix-vector multiplication}
-Most real-world problems use very large matrices, where it becomes impractical to do calculations by hand. As long as you understand how matrix-vector multiplication is performed, you will be equipped to use a computing language, like Python, to do the calculations for you. 
-
-Create a file called \filename{vectors\_matrices.py} and enter this code:
-
+Real problems use matrices far too big to multiply by hand. Check your
+answers to the exercises above with NumPy's \pyfunction{@} operator, as in
+the Vectors and Matrices chapter:
 \begin{minted}{python}
-# import the python module that supports matrices
 import numpy as np
 
-# create an array
-a = np.array([[5, 1, 3, -2], 
-              [1, -1, 8, 4], 
-              [6, 2, 1, 3]])
-
-# create a vector 
-b = np.array([1, 2, 3, -8])
-
-# calculate the dot product
-print(a.dot(b))
-\end{minted}
-
-When you run it, you should see:
-\begin{minted}{python}
-[32 -9 -11]
+mix = np.array([[6, 10, 4], [2, 3, 15], [14, 1, 5]])
+cost = np.array([7.50, 14.75, 22.25])
+print(mix @ cost)    # [281.5 393.  231. ]
 \end{minted}
 
 \subsection{Where to Learn More}

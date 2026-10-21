@@ -28,7 +28,7 @@ results change with the units of the inputs.
 the response, in standard deviations, for a one-standard-deviation increase in that predictor.
 \end{itemize}
 
-\section{Two Cautions}
+\section{Cautions}
 Standardization does not change the shape of a distribution. It only sets the mean to 0 and the standard deviation to 1.
 Tree-based models, such as decision trees, are not affected by monotone rescaling of a feature, so they do not need
 standardization. Compute $\mu$ and $\sigma$ from the training data only, and then apply the same values to the
@@ -48,3 +48,16 @@ A student computes $\mu$ and $\sigma$ from all the data, then splits it into tra
 The test data helped determine the scaling, so information from the test set has leaked into training.
 The fix is to compute $\mu$ and $\sigma$ from the training set only.
 \end{Answer}
+
+\begin{Exercise}[label=std3, title=Which test went better?]
+You scored 85 on a math test (class mean 75, standard deviation 5) and 90 on a
+science test (class mean 85, standard deviation 10). Relative to your class,
+which test went better?
+\end{Exercise}
+\begin{Answer}[ref=std3]
+Math: $Z = \frac{85 - 75}{5} = 2$. Science: $Z = \frac{90 - 85}{10} = 0.5$. Your
+math score is two standard deviations above the mean, while your science score is
+only half a standard deviation above. Math went better, even though the raw score
+was lower.
+\end{Answer}
+

@@ -1,8 +1,18 @@
 \chapter{Singular Value Decomposition}
 
-In the previous chapter, you learned how to calculate eigenvalues and eigenvectors. However, not every matrix has them. For those matrices, \index{singular values}singular values and \index{singular vectors}singular vectors are analogous features. 
+A photo on your phone is a big matrix of numbers. Netflix's record of who
+watched what is an even bigger one. Both are full of patterns, and the
+Singular Value Decomposition (SVD) is the tool that finds them. It is how
+images get compressed, how recommendation engines guess what you will like,
+and how scientists find the few important directions hidden in huge data
+sets.
 
-Singular Value Decomposition (SVD) is a matrix factorization technique that breaks down a matrix into three matrices that represent the structure and properties of the original matrix. The decomposed matrices make calculations easier and provide insight into the original matrix. Essentially, SVD can transform a high dimension, highly variable set of data into a set of uncorrelated data points that reveal subgroupings that you might not have noticed in the original data. SVD tells us that a linear transformation can be thought of as a rotation, scaling, and another rotation.
+You learned to find eigenvalues and eigenvectors, but only square matrices
+have them, and not every square matrix has real ones. Every matrix, of any
+shape, has \index{singular values}singular values and \index{singular
+vectors}singular vectors instead. 
+
+Singular Value Decomposition (SVD) is a matrix factorization technique that breaks down a matrix into three matrices that represent the structure and properties of the original matrix. The decomposed matrices make calculations easier and provide insight into the original matrix. SVD tells us that a linear transformation can be thought of as a rotation, scaling, and another rotation.
 \index{singular value decomposition} \index{svd}
 
 \section{Definition}
@@ -36,7 +46,7 @@ You might be inclined to skip this example because the computations are lengthy.
 
 After you read through this example, you will see how to use Python to compute SVD. Next, you will see an example of using SVD for image compression. Finally, you will be given an exercise to compute the SVD. For this, you will need to write your own Python script.
 
-Let us find the SVD for matrix $A$. Recall that we want to find $U$. $\Sigma$, and $V^T$ such that:
+Let us find the SVD for matrix $A$. Recall that we want to find $U$, $\Sigma$, and $V^T$ such that:
 
 \begin{equation}
 A = U \Sigma V^T
@@ -47,9 +57,7 @@ $$ A = \begin{bmatrix}
  -1 & 3 & 1 
 \end{bmatrix}$$
 
-$$U = AA^T$$ 
-
-Calculating $$AA^T$$ will give us a square matrix:
+The columns of $U$ are the eigenvectors of $AA^T$, so we start by computing $AA^T$, a square matrix:
 $$ A^T = \begin{bmatrix}
 3 & -1\\
 1 & 3 \\
@@ -131,8 +139,7 @@ U = \begin{bmatrix}
 1/\sqrt{2} & -1/\sqrt{2} 
 \end{bmatrix}
 $$
-The process for calculating $V$ is the same as the calculation for $U$, except that we use $A^TA$:
-$$V = A^TA$$ 
+The process for calculating $V$ is the same as the calculation for $U$, except that we use the eigenvectors of $A^TA$:
 $$A^TA = 
 \begin{bmatrix}
 3 & -1\\
@@ -141,7 +148,7 @@ $$A^TA =
 \end{bmatrix}
 \begin{bmatrix}
 3 & 1 & 1\\
--1 & 3 & 1&
+-1 & 3 & 1
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -150,7 +157,7 @@ $$A^TA =
 2 & 4 & 2
 \end{bmatrix}
 $$
-Normalizing the eigenvectors of $A^TA$ in the same way gives:
+Its eigenvalues are 12, 10, and 0, with eigenvectors $[1, 2, 1]$, $[2, -1, 0]$, and $[1, 2, -5]$. (Check: $A^TA [1, 2, 1] = [12, 24, 12]$.) Normalizing them, in order of decreasing eigenvalue, gives:
 $$
 V = \begin{bmatrix}
 1/\sqrt{6} & 2/\sqrt{5} & 1/\sqrt{30} \\
@@ -158,9 +165,9 @@ V = \begin{bmatrix}
 1/\sqrt{6} & 0 & -5/\sqrt{30}
 \end{bmatrix}
 $$
-However, you want $V_T$:
+However, you want $V^T$:
 $$
-V_T =
+V^T =
 \begin{bmatrix}
 1/\sqrt{6} & 2/\sqrt{6} & 1/\sqrt{6} \\
 2/\sqrt{5} & -1/\sqrt{5} & 0\\
@@ -174,7 +181,7 @@ $$
 \Sigma = 
 \begin{bmatrix}
 \sqrt{12} & 0 & 0\\
- 0 & \\sqrt{10} & 0 
+ 0 & \sqrt{10} & 0 
 \end{bmatrix}
 $$
 You can check your work by multiplying the decomposed matrices. This should return the original matrix.
@@ -186,7 +193,7 @@ $$ =
 \end{bmatrix}
 \begin{bmatrix}
 \sqrt{12} & 0 & 0\\
- 0 & \\sqrt{10} & 0 
+ 0 & \sqrt{10} & 0 
 \end{bmatrix}
 \begin{bmatrix}
 1/\sqrt{6} & 2/\sqrt{6} & 1/\sqrt{6} \\
@@ -215,52 +222,56 @@ $$
 
 \section{Singular Value Decomposition with Python}
 \index{svd!python script for}
-This code uses SciPy, which you can install with \texttt{pip install scipy}. Create a file called \filename{vectors\_decomposition.py} and enter this code:
+NumPy computes the SVD with one command, \pyfunction{np.linalg.svd}. Create
+\filename{decomposition.py}:
 
 \begin{minted}{python}
-# Singular-value decomposition
 import numpy as np
-from numpy import array
-from scipy.linalg import svd
-from numpy import diag
-from numpy import dot
-from numpy import zeros
 
-# Define a matrix
-A = array([[1, 2], [3, 4], [5, 6]])
+A = np.array([[1, 2],
+              [3, 4],
+              [5, 6]])
 
-print("Matrix (3x2) to be decomposed: ")
-print(A)
-
-# CalculateSVD
-U, S, VT = svd(A)
-print("Matrix (3x3) that represents the left singular values of A:")
+U, S, VT = np.linalg.svd(A)
+print("U (left singular vectors):")
 print(U)
-print("Singular values:")
-print(S)
-print("Matrix (2x2) that represents the right singular values of A:")
+print("Singular values:", S)
+print("V transpose (right singular vectors):")
 print(VT)
 
-# Check if the decomposition by rebuilding the original matrix
-# The singular values must be in an m x n matrix 
-# Create a zero matrix with the same dimension as A
-Sigma = zeros((A.shape[0], A.shape[1]))
-# Populate Sigma with n x n diagonal matrix
-Sigma[:A.shape[1], :A.shape[1]] = diag(S)
-# Reconstruct the original matrix
-A_Rebuilt = U.dot(Sigma.dot(VT))
-print("Original matrix:")
-print(A_Rebuilt)
+# Rebuild A. Sigma must be the same shape as A (3 x 2).
+Sigma = np.zeros(A.shape)
+Sigma[:2, :2] = np.diag(S)
+print("Rebuilt A:")
+print(U @ Sigma @ VT)
 \end{minted}
+
+You should see:
+\begin{minted}{text}
+U (left singular vectors):
+[[-0.2298477   0.88346102  0.40824829]
+ [-0.52474482  0.24078249 -0.81649658]
+ [-0.81964194 -0.40189603  0.40824829]]
+Singular values: [9.52551809 0.51430058]
+V transpose (right singular vectors):
+[[-0.61962948 -0.78489445]
+ [-0.78489445  0.61962948]]
+Rebuilt A:
+[[1. 2.]
+ [3. 4.]
+ [5. 6.]]
+\end{minted}
+NumPy returns the singular values as a list, so we put them into a matrix
+$\Sigma$ the same shape as $A$ before multiplying.
 
 \section{Sign Ambiguity}\index{sign ambiguity}
 You might notice that at times, the absolute values in the $U$ and $V^T$ matrices are correct, but that the signs vary from what you see as the answer. For example, when you compare a manually calculated SVD with one done in Python the signs might not agree. Both decompositions of $A$ are valid. Both decompositions will satisfy:
 $$A = U \Sigma V^T$$
-Note that the $S$ diagonal values are always nonnegative. 
+The singular values on the diagonal of $\Sigma$ are always nonnegative, so they never have this ambiguity. 
 
 The sign ambiguity has implications. For example, when using SVD to compress data, if some of the signs are flipped, the data can have artifacts. At this point in your education, you do not need to concern yourself with it, except when you are comparing SVD results for the same matrix.
 
-\begin{Exercise}[title={Single Value Decomposition}, label=svd]
+\begin{Exercise}[title={Singular Value Decomposition}, label=svd]
 Modify your Python code to calculate SVD for the matrix in the worked out example. Did you arrive at the same answer? Keep in mind that Python will compute square roots and present fractions as decimal. Take a look at the signs for the values in the $U$ and $V^T$ matrices. Are they the same, or is this an example of sign ambiguity? 
 \end{Exercise}
 \begin{Answer}[ref=svd]
@@ -292,11 +303,11 @@ The characteristic equation is $\lambda^2 - 25\lambda = 0$, so $\lambda = 25$ or
 \section{SVD Applied to Image Compression}\index{image compression}
 This image is a grid of 20 pixels across and 10 pixels down, each of which is either black or white.
 
-\includegraphics[width=0.4\textwidth]{imagecompress.png}
+\includegraphics[width=0.4\textwidth]{ImageCompress.png}
 
 It is a simple image that has only two types of rows, which makes it ideal for data compression. A row is either the first pattern or the second. Think of a striped shirt. Once you know the stripe pattern, you only need to describe the stripes, not every thread.
 
-\includegraphics[width=0.4\textwidth]{rows.png}
+\includegraphics[width=0.4\textwidth]{Rows.png}
 
 We can represent the data as a 10 by 20 matrix whose 200 entries are either 0 for black or 1 for white. 
 $$
@@ -313,9 +324,9 @@ $$
 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0
 \end{bmatrix}
 $$
-When you perform an SVD on this matrix, there are only two non-zero singular values, 6.79 and 3.72. (You are welcome perform the calculation in Python.) Thus, you can represent the matrix as:
+When you perform an SVD on this matrix, there are only two non-zero singular values, 6.79 and 3.72. (Try it in Python.) Thus, you can represent the matrix as:
 $$
-A = U_1 S_1 V_1 + U_2 S_2 V_2
+A = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^T + \sigma_2 \mathbf{u}_2 \mathbf{v}_2^T
 $$
 This means there are two $u$ vectors, each with 10 entries, two $v$ vectors each with 20 entries, and two singular values. Add those up: 2*10 + 2*20 + 2 = 62. This implies that the image can be represented by 62 values instead of 200. If you look back at the image, you can see that there are many dependent rows and very few independent ones. 
 

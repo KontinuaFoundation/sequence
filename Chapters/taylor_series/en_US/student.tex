@@ -1,19 +1,25 @@
 \chapter{Taylor and Maclaurin Series}
 
-Consider the generic power series:
-$$f(x) = c_0 + c_1(x - a) + c_2(x - a)^2 + c_3(x - a)^3 + \cdots + c_n(x - a)^n$$
+In the last chapter, we built power series by tinkering with the geometric
+series. That trick only works for a few functions. What if you want a series
+for $\sin x$ or $e^x$? It turns out a function's derivatives at a single point
+tell you everything you need. Knowing how a function starts, how fast it
+changes, how fast \emph{that} changes, and so on, is enough to rebuild it.
+
+Suppose $f$ is given by a power series:
+$$f(x) = c_0 + c_1(x - a) + c_2(x - a)^2 + c_3(x - a)^3 + \cdots$$
 Notice that substituting $x = a$ yields:
 $$f(a) = c_0$$
 Suppose we differentiate both sides, which gives:
-$$f'(x) = c_1 + 2c_2(x - a) + 3c_3(x - a)^2 + \cdots nc_n(x-a)^{n-1}$$
+$$f'(x) = c_1 + 2c_2(x - a) + 3c_3(x - a)^2 + \cdots$$
 Again, substituting $x = a$:
 $$f'(a) = c_1$$
 Continuing, we see that
-$$f''(x) = 2c_2 + 2 \cdot 3c_3(x-a) + \cdots + n(n-1)c_n(x-a)^{n-2}$$
+$$f''(x) = 2c_2 + 2 \cdot 3c_3(x-a) + 3 \cdot 4 c_4 (x-a)^2 + \cdots$$
 And
 $$f''(a) = 2c_2$$
 Once more, we see that:
-$$f'''(x) = 2 \cdot 3 c_3 + 2 \cdot 3 \cdot 4 c_4 (x-a) + \cdots + n (n-1)(n-2)(x-a)^{n-3}$$
+$$f'''(x) = 2 \cdot 3 c_3 + 2 \cdot 3 \cdot 4 c_4 (x-a) + \cdots$$
 And substituting $x = a$ gives
 $$f'''(a) = 2 \cdot 3 c_3 = 3!c_3$$
 
@@ -50,9 +56,9 @@ $$\lim_{n \to \infty} \left| \frac{x^{n + 1}}{(n+1)n!} \cdot \frac{n!}{x^n}
 $$\lim_{n \to \infty} \frac{|x|}{n + 1} = 0 < 1$$
 The limit converges to 0 for all $x$, so the radius of convergence is $\infty$.
 
-We can confirm this graphically. But first, a quick definition. The $n^{th}$-
-degree Taylor polynomial is the first $n$ terms of the infinite Taylor 
-polynomial. That is,
+We can confirm this graphically. But first, a quick definition. The $n^{th}$-degree
+\textbf{Taylor polynomial}\index{Taylor polynomial} keeps the terms of the
+Taylor series up through $(x-a)^n$:
 $$T_n(x) = \sum_{i=0}^n \frac{f^{(i)}(a)}{i!}(x - a)^i$$
 
 In the case of $f(x) = e^x$ and $a = 0$, the $n^{th}$ degree Taylor polynomial
@@ -117,7 +123,7 @@ This is also a series you will see again and again.
 
 \begin{Exercise}[label=trigmac]
 Derive a Maclaurin series for $\cos{x}$. Use it and the Maclaurin series for 
-$\sin{x}$ to find a $3^{rd}$ order Maclaurin series for $\tan{x}$. Confirm 
+$\sin{x}$ to find the first four nonzero terms of the Maclaurin series for $\tan{x}$. Confirm 
 your series for $\tan{x}$ by plotting. 
 \end{Exercise}
 
@@ -133,7 +139,7 @@ $$\cos{x} = \sum_{n=0}^\infty \frac{(-1)^n}{(2n + 1)(2n)!} \left(2n + 1
 $$\cos{x} = \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}x^{2n}$$
 
 This is also an important Maclaurin series you will see again. 
-PartII: Find a $3^{rd}$ order Maclaurin series for $\tan{x}$ using the series 
+Part II: Find the first four nonzero terms of the Maclaurin series for $\tan{x}$ using the series 
 for $\cos{x}$ and $\sin{x}$. We may be tempted to use the same process of 
 explicitly calculating the derivatives of $\tan{x}$ at $x = 0$. However, the 
 derivative of $\tan{x}$ is $\sec^2{x}$, and the derivatives only get more 
@@ -145,8 +151,8 @@ n = 0}^\infty \frac{(-1)^n x^{2n}}{(2n)!}}$$
 We may be tempted to divide the terms directly and have lots of beautiful 
 cancellations. However, this would be incorrect (because $\frac{a + b + c + 
 \cdots}{A + B + C + \cdots} \neq \frac{a}{A} + \frac{b}{B} + \frac{c}{C} + 
-\cdots$). Instead, we will find the first 4 terms (we are starting at $n = 0$, 
-so we need 4 terms to reach $n = 3$) and perform long division. 
+\cdots$). Instead, we keep the first four terms of each series and perform long
+division of polynomials. 
 $$\tan{x} = \frac{x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!}}{1 - 
 \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!}}$$
 When we evaluate this, we find the first four terms of the result are $\tan{x} 
@@ -208,7 +214,7 @@ $$(1 + x)^k = \sum_{n=0}^\infty \frac{k(k-1)(k-2)\cdots(k - n + 1)}{n!}x^n$$
 
 This is called the \textbf{binomial series}\index{binomial series}. Another 
 notation you can use is:
-$$\left( _n^k \right) = \frac{k(k-1)(k-2)\cdots(k-n+1)}{n!}$$
+$$\binom{k}{n} = \frac{k(k-1)(k-2)\cdots(k-n+1)}{n!}$$
 
 To determine the radius of convergence, we apply the ratio test:
 $$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| < 1$$
@@ -225,11 +231,38 @@ Therefore, the series converges for $|x|<1$ and the radius of convergence is 1.
 
 \textbf{Solution}: We can write this series in sigma notation:
 $$\sum_{n=1}^\infty (-1)^{n-1} \frac{1}{n \cdot 2^n} = \sum_{n = 1}^\infty 
-\frac{1}{n} \cdot \left( \frac{1}{2} \right)^n$$
-Notice this is the same as the series for $\ln{1 + x}$ when $x = \frac{1}{2}$. 
+(-1)^{n-1}\frac{1}{n} \left( \frac{1}{2} \right)^n$$
+Notice this is the series for $\ln{(1 + x)}$ with $x = \frac{1}{2}$. 
 Therefore, 
-$$\sum_{n = 1}^\infty \frac{1}{n} \cdot \left( \frac{1}{2} \right)^n = \ln{1 + 
-\frac{1}{2}} = \ln{\frac{3}{2}}$$
+$$\sum_{n = 1}^\infty (-1)^{n-1}\frac{1}{n} \left( \frac{1}{2} \right)^n = \ln{\left(1 + 
+\frac{1}{2}\right)} = \ln{\frac{3}{2}}$$
+
+\section{How Good Is the Approximation?}\index{Lagrange error bound}
+A Taylor polynomial is only useful if you know how far off it might be. The
+\textbf{Lagrange error bound} answers that. If $|f^{(n+1)}(t)| \leq M$ for every
+$t$ between $a$ and $x$, then
+$$|f(x) - T_n(x)| \leq \frac{M}{(n+1)!}|x - a|^{n+1}$$
+In words: the error looks like the next term of the series, using the largest
+value the next derivative can take.
+
+\textbf{Example}: Use $T_2$ for $e^x$ at $a = 0$ to estimate $e^{0.1}$, and bound
+the error.
+
+\textbf{Solution}: $T_2(0.1) = 1 + 0.1 + \frac{0.01}{2} = 1.105$. The third
+derivative is $e^t$, which is at most $e^{0.1} < 3$ on $[0, 0.1]$. So
+$$|e^{0.1} - 1.105| \leq \frac{3}{3!}(0.1)^3 = 0.0005$$
+The true value is $1.1051709\ldots$, so the actual error is about $0.00017$, well
+within the bound.
+
+\textbf{Example}: Find $T_2$ for $f(x) = \sqrt{x}$ centered at $a = 4$, and use it
+to estimate $\sqrt{4.2}$.
+
+\textbf{Solution}: $f(4) = 2$, $f'(x) = \frac{1}{2}x^{-1/2}$ so $f'(4) = \frac{1}{4}$,
+and $f''(x) = -\frac{1}{4}x^{-3/2}$ so $f''(4) = -\frac{1}{32}$. Then
+$$T_2(x) = 2 + \frac{1}{4}(x-4) - \frac{1}{64}(x-4)^2$$
+and $T_2(4.2) = 2 + 0.05 - 0.000625 = 2.049375$. A calculator gives
+$\sqrt{4.2} \approx 2.049390$. Centering at $4$, where we know the square root
+exactly, is what makes this work.
 
 \begin{Exercise}[label = mac1]
 [The problem was originally presented as a no-calculator, multiple-choice 
@@ -250,7 +283,7 @@ series is $\frac{a}{1-r} = \frac{1}{1-\left(- \frac{3}{4} \right)} = \frac{1}{1
 
 \begin{Exercise}[label = taylor1]
 [This problem was originally presented as a calculator-allowed, multiple-choice 
-question on the 2012 AP Calculus BC exam.] Let $f$ be function having 
+question on the 2012 AP Calculus BC exam.] Let $f$ be a function having 
 derivatives of all orders for $x > 0$ such that $f(3) = 2$, $f'(3) = -1$, 
 $f''(3) = 6$, and $f'''(3) = 12$. Write a $3^{rd}$-degree Taylor polynomial 
 for $f$ about $x = 3$ and estimate the value of $f(3.4)$
@@ -285,16 +318,28 @@ estimate $f(1.4)$.
 [The problem was originally presented as a no-calculator, multiple-choice 
 question on the 2012 AP Calculus BC exam.] For $x > 0$, the power series $1 - 
 \frac{x^2}{3!} + \frac{x^4}{5!} - \frac{x^6}{7!} + \cdots + (-1)^n \frac{x^{2n}}{(2n + 1)!}$ converges to which of the following?
-(a) $\cos{x}$
-(b) $\sin{x}$
-(c) $\frac{\sin{x}}{x}$
-(d) $e^x - e^{x^2}$
+(a) $\cos{x}$\\
+(b) $\sin{x}$\\
+(c) $\frac{\sin{x}}{x}$\\
+(d) $e^x - e^{x^2}$\\
 (e) $1 + e^x - e^{x^2}$
 \end{Exercise}
 
-\begin{Answer}[ref=mac2] (C). Since $\sin{x} = \sum_{n=0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}$, 
+\begin{Answer}[ref=mac2] (c). Since $\sin{x} = \sum_{n=0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}$, 
 then $\frac{\sin{x}}{x} = \sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{x(2n+1
 )!} = \sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n + 1)!}$.
 \end{Answer}
 
 
+
+\begin{Exercise}[label = taylor3]
+Use $T_3(x) = x - \frac{x^3}{6}$ to estimate $\sin(0.5)$. Use the Lagrange error
+bound to show your estimate is within $0.003$ of the true value.
+\end{Exercise}
+
+\begin{Answer}[ref = taylor3]
+$T_3(0.5) = 0.5 - \frac{0.125}{6} \approx 0.479167$. Every derivative of
+$\sin x$ is $\pm\sin$ or $\pm\cos$, so $M = 1$ works:
+$$|\sin(0.5) - T_3(0.5)| \leq \frac{1}{4!}(0.5)^4 \approx 0.0026 < 0.003$$
+(The true value is $0.479426$, so the actual error is only about $0.00026$.)
+\end{Answer}

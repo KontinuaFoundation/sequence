@@ -2,7 +2,7 @@
 
 \section{The Sampling Distribution of $b_1$ and the Confidence Interval for the Slope}
 
-Suppose the sleep researcher ran her study again with a brand new sample of $8$ teenagers. A new sample of $8$ teenagers would give a different fitted line and a different $b_1$, the same way $\hat{p}$ and $\bar{x}$ vary from sample to sample. That variation is the \newterm{sampling distribution}\index{sampling distribution!of the slope} of $b_1$: the distribution of values you'd get from repeated random samples of the same size. Under the conditions for inference, this distribution is approximately normal, centered at $\beta_1$, with standard deviation $\sigma_{b_1}$.
+Suppose the sleep researcher ran the study again with a brand new sample of $8$ teenagers. A new sample of $8$ teenagers would give a different fitted line and a different $b_1$, the same way $\hat{p}$ and $\bar{x}$ vary from sample to sample. That variation is the \newterm{sampling distribution}\index{sampling distribution!of the slope} of $b_1$: the distribution of values you would get from repeated random samples of the same size. Under the conditions for inference, this distribution is approximately normal, centered at $\beta_1$, with standard deviation $\sigma_{b_1}$.
 
 $\sigma_{b_1}$ depends on $\sigma_\varepsilon$, the population standard deviation of the errors, which is unknown, so you estimate it with $s_{b_1}$, the \newterm{standard error of the slope}\index{standard error!of the slope}. Substituting $s_{b_1}$ for $\sigma_{b_1}$ turns
 \[
@@ -41,7 +41,7 @@ with $n = 8$, so $df = n - 2 = 6$. To build a $90\%$ confidence interval for $\b
 \text{Confidence Interval: } -0.1649 \pm 0.0798 = (-0.2447, -0.0850)
 \]
 
-We are $90\%$ confident that, for teenagers in general, each additional hour of daily screen time is associated with a change in average sleep duration of between $-0.245$ and $-0.085$ hours. Notice that this entire interval is negative. Since it does not contain $0$, every plausible value of $\beta_1$ in this interval represents some negative relationship between screen time and sleep, which is a first hint that the effect the researcher found in her sample may reflect something real in the population, and not just sampling noise. Sections 3 and 4 make that hint precise, first by checking whether this procedure was even valid to use, and then by testing the claim directly.
+We are $90\%$ confident that, for teenagers in general, each additional hour of daily screen time is associated with a change in average sleep duration of between $-0.245$ and $-0.085$ hours. Notice that this entire interval is negative. Since it does not contain $0$, every plausible value of $\beta_1$ in this interval represents some negative relationship between screen time and sleep, which is a first hint that the effect the researcher found in the sample may reflect something real in the population, and not just sampling noise. The next two sections make that hint precise, first by checking whether this procedure was even valid to use, and then by testing the claim directly.
 
 \begin{itemize}
     \item $b_1$ varies from sample to sample; its sampling distribution is centered at $\beta_1$ under the conditions for inference.
@@ -97,7 +97,7 @@ A researcher studies the relationship between weekly study hours ($X$) and the i
 
 \textbf{Computing in Excel}
 
-The regression output table above, including $s_{b_1}$, can be generated directly from the raw data rather than typed in by hand. Using the same screen time and sleep duration columns from Section 1 (A2:A9 and B2:B9):
+The regression output table above, including $s_{b_1}$, can be generated directly from the raw data rather than typed in by hand. Using the same screen time and sleep duration columns as in the previous chapter (A2:A9 and B2:B9):
 
 \begin{enumerate}
     \item Select a blank $2 \times 2$ range, say D2:E3. Type \texttt{=LINEST(B2:B9,A2:A9,TRUE,TRUE)} and confirm with Ctrl+Shift+Enter (in newer versions of Excel with dynamic arrays, a plain Enter is enough). This fills all four cells at once:
@@ -116,7 +116,7 @@ The regression output table above, including $s_{b_1}$, can be generated directl
     \item Confidence interval bounds: \texttt{=D2-[margin cell]} and \texttt{=D2+[margin cell]}, giving $-0.2447$ and $-0.0850$.
 \end{enumerate}
 
-\index{LINEST}\texttt{LINEST} is the same idea as \texttt{SLOPE} and \texttt{INTERCEPT} from Section 1, but it returns the standard errors in the same step, so you never have to hunt for $s_{b_1}$ separately. The argument order is the same gotcha as before: known $y$'s first, known $x$'s second.
+\index{LINEST}\texttt{LINEST} is the same idea as \texttt{SLOPE} and \texttt{INTERCEPT} from the previous chapter, but it returns the standard errors in the same step, so you never have to hunt for $s_{b_1}$ separately. The argument order is the same gotcha as before: known $y$'s first, known $x$'s second.
 
 \begin{figure}[H]
     \centering
@@ -127,7 +127,7 @@ The regression output table above, including $s_{b_1}$, can be generated directl
 
 \section{Conditions for Inference on the Slope}
 
-The confidence interval you just built in Section 2  assumed that it was valid to use a $t$-procedure at all. Every inference method in this book comes with conditions attached, and the slope is no exception. 
+The confidence interval you just built assumed that it was valid to use a $t$-procedure at all. Every inference method in this book comes with conditions attached, and the slope is no exception. 
 
 You have already met four of these five conditions for proportions and for means.
 
@@ -145,9 +145,9 @@ These are remembered by the acronym \index{LINER conditions}LINER. Random and In
 
 \subsection*{Checking the Conditions: The Sleep Study}
 
-Return to the sleep researcher's $8$ teenagers. Before trusting the confidence interval from Section 2, check all five conditions.
+Return to the sleep researcher's $8$ teenagers. Before trusting the confidence interval, check all five conditions.
 
-\textbf{Random.} The researcher selected her $8$ teenagers using a random sampling method, so this condition is satisfied by the design of the study.
+\textbf{Random.} The researcher selected the $8$ teenagers using a random sampling method, so this condition is satisfied by the design of the study.
 
 \textbf{Independence.} Teenagers in general form a population far larger than $8$, so sampling $8$ of them without replacement does not meaningfully affect the independence of their screen time or sleep duration from one another. The $10\%$ condition is easily satisfied.
 
@@ -190,7 +190,7 @@ The residuals in Figure \ref{fig:slope-resid-plot} bounce above and below $0$ wi
 
 The dotplot in Figure \ref{fig:slope-resid-dotplot} shows no strong skew and no outliers among the eight residuals, so it is reasonable to proceed as though normality holds. With only $n = 8$ observations, though, this check is genuinely limited; a small sample simply does not give you enough information to rule out non-normality with much confidence. The honest conclusion is not "the residuals are normal," but "nothing in this small sample contradicts normality," which is a weaker, more defensible claim, and one that is worth stating explicitly on an exam or in a report.
 
-With all five conditions reasonably satisfied, the confidence interval built in Section 2, and the hypothesis test coming in Section 4, both rest on solid ground.
+With all five conditions reasonably satisfied, the confidence interval, and the hypothesis test coming next, both rest on solid ground.
 
 \begin{itemize}
     \item The five conditions for slope inference: Linearity, Independence, Random, Equal variance, Normality(LINER).
@@ -239,7 +239,7 @@ A researcher studies the relationship between a car's weight and its fuel effici
 
 \section{Testing a Claim About the Slope}\index{significance test!for the slope}
 
-The confidence interval in Section 2 hinted that the true slope $\beta_1$ is not $0$, since $(-0.2447, -0.0850)$ never crosses it. A hint is not a conclusion. To make the claim precise, and to attach an actual probability to the strength of the evidence, you need a significance test.
+The confidence interval hinted that the true slope $\beta_1$ is not $0$, since $(-0.2447, -0.0850)$ never crosses it. A hint is not a conclusion. To make the claim precise, and to attach an actual probability to the strength of the evidence, you need a significance test.
 
 \subsection*{Step 1: State the Hypotheses}
 
@@ -251,11 +251,11 @@ $H_0$ says screen time has no linear relationship with sleep duration in the pop
 
 \subsection*{Step 2: Name the Procedure and Verify Conditions}
 
-Use a one-sample $t$-test for the slope of a regression line, with $df = n - 2$. Section 3 already checked all five conditions, Random, Linearity, Independence, Normality, and Equal variance, against this exact data set, and found no serious violations. Since the same data set is being reused here, that check still applies; there is no need to redo it.
+Use a one-sample $t$-test for the slope of a regression line, with $df = n - 2$. The previous section already checked all five conditions, Random, Linearity, Independence, Normality, and Equal variance, against this exact data set, and found no serious violations. Since the same data set is being reused here, that check still applies; there is no need to redo it.
 
 \subsection*{Step 3: Calculate the Test Statistic and $P$-value}
 
-Recall the regression output from Section 2:
+Recall the regression output:
 
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|}
@@ -341,7 +341,7 @@ Because $p = 0.0035 < \alpha = 0.05$, reject $H_0$. There is convincing statisti
 
 \textbf{Computing in Excel}
 
-Continuing from the \texttt{LINEST} output in Section 2 (cell D2 for $b_1$, cell D3 for $s_{b_1}$):
+Continuing from the \texttt{LINEST} output (cell D2 for $b_1$, cell D3 for $s_{b_1}$):
 
 \begin{enumerate}
     \item Test statistic: in an empty cell, enter \texttt{=D2/D3}. Excel returns $-4.0131$, matching the $T$ column of the regression output.

@@ -1,6 +1,12 @@
 \chapter{Poisson and Exponential Distributions}
 
 \section{Counting Events}\index{Poisson distribution}
+On a typical Friday night, a pizza shop gets about 12 orders an hour. Some
+hours bring 8, some bring 17. How many delivery drivers should it
+schedule? And after one order comes in, how long until the next? Two
+distributions answer these questions: one counts events, the other times
+the gaps between them.
+
 The \newterm{Poisson distribution} models the number of events that occur in a fixed interval of time or space,
 when events happen independently at a constant average rate $\lambda$. Customer arrivals in an hour, calls to a
 help desk in a day, and defects on a production line are typical examples. If $X$ counts the events, then
@@ -22,7 +28,12 @@ So the store with $\lambda = 3$ expects 3 customers per hour, with variance 3 an
 
 \section{Waiting Times}\index{exponential distribution}
 The \newterm{exponential distribution} models the time $T$ until the next event, when events occur at a constant rate $\lambda$.
-Its density and tail probability are
+Unlike a count, a waiting time can be any positive number, like 1.37
+minutes, so $T$ is a \emph{continuous} random variable. The chance of
+waiting \emph{exactly} 1.37000\ldots\ minutes is zero; instead we ask about
+ranges, like $P(T > 3)$. The \emph{density} $f(t)$ describes how the
+probability is spread out (you will study densities in the Continuous
+Distributions chapter). For the exponential distribution, the density and the tail probability are
 $$f(t) = \lambda e^{-\lambda t}, \qquad P(T > t) = e^{-\lambda t}, \qquad t \ge 0$$
 Its mean is $E[T] = \frac{1}{\lambda}$, and its variance is $\operatorname{Var}(T) = \frac{1}{\lambda^2}$.
 
@@ -68,4 +79,21 @@ The time between arrivals at a counter is exponential with mean 4 minutes. Find 
 \end{Exercise}
 \begin{Answer}[ref=pe3]
 $\lambda = \frac{1}{4} = 0.25$ per minute. The variance is $\frac{1}{\lambda^2} = 16$. The probability is $P(T > 4) = e^{-0.25 \cdot 4} = e^{-1} \approx 0.368$.
+\end{Answer}
+
+\begin{Exercise}[label=pe4, title=Pizza Drivers]
+A pizza shop averages 12 orders per hour on Friday nights. Use a Poisson
+model.
+\begin{enumerate}
+\item What is the expected number of orders in a 15-minute period?
+\item What is the probability of no orders in a 15-minute period?
+\item What is the average wait between orders, in minutes?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=pe4]
+\begin{enumerate}
+\item 15 minutes is a quarter hour, so $\lambda t = 12 \times 0.25 = 3$ orders.
+\item $P(X = 0) = e^{-3} \approx 0.050$, about 5\%.
+\item The rate is $\frac{12}{60} = 0.2$ orders per minute, so the mean wait is $\frac{1}{0.2} = 5$ minutes.
+\end{enumerate}
 \end{Answer}

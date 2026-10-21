@@ -1,7 +1,10 @@
 % With the current ordering, this feels out of place. Could it be moved or merged into transformations?
 \chapter{Projections}
 
-The word "projection" has two main meanings in everyday life. One is a projection as a forecast or estimate of something in the future based on the current situation; another is the result of shining a light to cast a shadow or show a movie. Both these definitions apply to mathematical projection.
+At noon, with the sun straight overhead, your shadow is a small blob at your
+feet. Hold a meter stick at an angle, and its shadow on the ground shows how
+much of the stick points sideways. That shadow is a \emph{projection}: the
+part of one thing that lies along another.
 
 Projections are used in many fields, such as science, math, engineering, and finance. Here are a few examples: 
 \begin{itemize}
@@ -43,7 +46,7 @@ The figure~\ref{fig:projection} depicts a projection. The perpendicular line dro
     \label{fig:projection2}
 \end{figure}
 
-\index{projection!beyond the vector}The projected vector can be in any direction and its length can extend beyond the vector onto which it is projecting. See Figure~\ref{fig:projection3}. 
+\index{projection!beyond the vector}The projection always lies on the line through $\mathbf{v}$. It can be longer than $\mathbf{v}$, and if the angle between $\mathbf{u}$ and $\mathbf{v}$ is more than $90^\circ$ (so $\mathbf{u} \cdot \mathbf{v} < 0$), it points opposite to $\mathbf{v}$. See Figure~\ref{fig:projection3}. 
 
 \begin{figure}[H]
     \centering
@@ -85,7 +88,7 @@ $$\mathbf{proj}_\mathbf{v}(\mathbf{u}) = \frac{(1,4,6)\cdot(-2,6,2)}{ (-2,6,2)\c
 $$\mathbf{proj}_\mathbf{v}(\mathbf{u}) = \frac{34}{44}(-2,6,2)$$
 $$\mathbf{proj}_\mathbf{v}(\mathbf{u}) = (-1.545, 4.64, 1.545)$$
 
-As you work your way through this course, you will have a chance to apply the calculations you learn in this chapter to a variety of problems. Specifically, the next chapter shows how to transform a set of linearly independent vectors into a set of orthogonal ones. Projections are essential to that transformation. 
+As you work your way through this course, you will have a chance to apply the calculations you learn in this chapter to a variety of problems. Specifically, the Gram-Schmidt chapter shows how to transform a set of linearly independent vectors into a set of orthogonal ones. Projections are essential to that transformation. 
 
 \begin{Exercise}[title={Projections}, label=projections]
 	Find the projection of $\mathbf{a}$ on $\mathbf{b}$ where:
@@ -110,6 +113,21 @@ As you work your way through this course, you will have a chance to apply the ca
 	The orthogonal component is $(3, 4) - (3, 0) = (0, 4)$. It is perpendicular to $\mathbf{v}$, since $(0, 4) \cdot (1, 0) = 0$.
 \end{Answer}
  
+\begin{Exercise}[title={Sliding Down a Ramp}, label=projections3]
+A skateboarder is on a ramp that drops 3 m for every 4 m forward, so the
+downhill direction is $\mathbf{r} = (4, -3)$. Gravity accelerates them at
+$\mathbf{g} = (0, -9.8)$ m/s$^2$. Find the part of $\mathbf{g}$ that points
+along the ramp, and its size.
+\end{Exercise}
+\begin{Answer}[ref=projections3]
+$\mathbf{g} \cdot \mathbf{r} = 0 + 29.4 = 29.4$ and $\mathbf{r} \cdot
+\mathbf{r} = 16 + 9 = 25$, so
+$$\operatorname{proj}_{\mathbf{r}}(\mathbf{g}) = \frac{29.4}{25}(4, -3) = (4.704, -3.528) \text{ m/s}^2$$
+Its length is $\sqrt{4.704^2 + 3.528^2} = 5.88$ m/s$^2$, which is $0.6
+\times 9.8$. The ramp's slope angle $\theta$ has $\sin\theta = \frac{3}{5}
+= 0.6$, so this matches the physics formula $g\sin\theta$.
+\end{Answer}
+
 \section{Projections in Python}\index{projection!Python}
 
 Create a file called \filename{projections.py} and enter this code:
@@ -125,7 +143,13 @@ projection_a_on_b = (np.dot(a, b)/np.dot(b, b))*b
   
 print("The projection of vector a on vector b is:", projection_a_on_b)
 \end{minted}
- 
+
+You should see:
+\begin{minted}{text}
+The projection of vector a on vector b is:  [-1.54545455  4.63636364  1.54545455]
+\end{minted}
+This matches the worked example.
+
 \section{Where to Learn More}
 
 Watch this Introduction to Projections from Khan Academy from your digital resources:

@@ -1,38 +1,51 @@
 \chapter{Related Rates}
 \index{related rates}
-In calculus, related rates problems involve finding a rate at which a quantity changes by relating that quantity to other quantities whose rates of change are known. The technique used to solve these problems is known as "related rates" because one rate is related to another rate.
+Drop a pebble in a pond and a ring of ripples spreads out. The radius
+grows at a steady 30 cm per second. Does the area inside the ring also
+grow at a steady rate? No: the bigger the ring, the faster its area
+grows. The two rates are linked by the formula $A = \pi r^2$, and calculus
+tells you exactly how.
 
-\section{Steps to solve related rates problems}
+In a \newterm{related rates} problem, you know how fast one quantity is
+changing and want to know how fast another one is. The secret is that
+every quantity is a function of time $t$, so you can differentiate an
+equation that links them with respect to $t$, using the chain rule.
 
-\index{related rates!steps}Step 1: Understand the problem.
-First, read the problem carefully. Understand what rates are given and what rate you need to find.
+\textbf{Worked example: the ripple.} When the radius is 50 cm, how fast is
+the area growing?
 
-Step 2: Draw a diagram.
-For most problems, especially geometry problems, drawing a diagram can be very helpful.
+\textbf{Solution.} Differentiate $A = \pi r^2$ with respect to $t$:
+$$\frac{dA}{dt} = 2\pi r \frac{dr}{dt} = 2\pi (50)(30) \approx 9{,}425 \text{ cm}^2\text{/s}$$
+At $r = 100$ cm, it would be twice as fast.
 
-Step 3: Write down what you know.
-Write down the rates that you know and the rate that you need to find.
+\section{Steps to Solve Related Rates Problems}
 
-Step 4: Write an equation.
-Write an equation that relates the quantities in the problem. This equation will be your main tool to solve the problem. Some cases may require an \index{implicit differentiation!related rates}implicit equation to be constructed. 
+\index{related rates!steps}
+\begin{enumerate}
+\item \textbf{Draw a diagram} and label the quantities that change with
+variables.
+\item \textbf{Write down what you know and what you want}, as rates:
+$\frac{dx}{dt} = \ldots$, find $\frac{dy}{dt}$.
+\item \textbf{Write an equation} that relates the quantities. (Geometry is
+your friend: the Pythagorean theorem, similar triangles, volume formulas.)
+\item \textbf{Differentiate both sides with respect to $t$}.\index{implicit differentiation!related rates}
+\item \textbf{Substitute and solve.} Plug in the numbers only
+\emph{after} differentiating. If you plug in $x = 6$ first, $x$ becomes a
+constant and its rate disappears.
+\item \textbf{Answer in words}, with units.
+\end{enumerate}
 
-Step 5: Differentiate both sides of the equation.
-Now you can use calculus. Differentiate both sides of the equation with respect to time.
+\section{Example: The Balloon and the Cyclist}\index{related rates!example}
 
-Step 6: Substitute the known rates and solve for the unknown.
-Now that you have an equation that relates the rates, substitute the known rates into the equation and solve for the unknown rate.
+\textit{A balloon rises at a constant 5 m/s. A cyclist rides toward the
+spot directly under it at 15 m/s. How fast is the distance between the
+cyclist and the balloon changing when the balloon is 100 m up and the
+cyclist is 40 m from the spot beneath it?}
 
-Step 7: Write a concluding statement.
-Write a concluding statement that sums up what you have calculated in a concise manner. 
-\section{Example}\index{related rates!example}
-
-Here is an example of a related rates problem:
-
-\textit{A balloon is rising at a constant rate of 5 m/s. A boy is cycling towards the balloon along a straight path at 15 m/s. If the balloon is 100 m above the ground, find the rate at which the distance from the boy to the balloon is changing when the boy is 40 m from the point on the ground directly beneath the balloon.}
-
-The problem can be modeled with a right triangle where the vertical side is the height of the balloon, the horizontal side is the distance of the boy from the point on the ground directly beneath the balloon, and the hypotenuse is the distance from the boy to the balloon.
-
-Let $x$ be the distance of the boy from the point on the ground directly beneath the balloon, $y$ the height of the balloon above the ground, and $z$ the distance from the boy to the balloon. From the \index{Pythagorean theorem}Pythagorean theorem, we have 
+Let $x$ be the cyclist's distance from the spot under the balloon, $y$
+the balloon's height, and $z$ the distance from the cyclist to the
+balloon. They form a right triangle, so by the \index{Pythagorean
+theorem}Pythagorean theorem
 
 \begin{equation}
 z^2 = x^2 + y^2
@@ -44,10 +57,31 @@ Differentiating both sides with respect to time $t$ gives
 2z \frac{dz}{dt} = 2x \frac{dx}{dt} + 2y \frac{dy}{dt}
 \end{equation}
 
-Given that $\frac{dx}{dt} = -15$ m/s (the boy is moving towards the point beneath the balloon), $\frac{dy}{dt} = 5$ m/s (the balloon is rising), $x=40$ m, $y=100$ m, we can substitute these into the equation. Here $z = \sqrt{40^2 + 100^2} = \sqrt{11600} \approx 107.7$ m, so
-$$2(107.7)\frac{dz}{dt} = 2(40)(-15) + 2(100)(5) = -100$$
-Therefore $\frac{dz}{dt} \approx -0.93$ m/s. The distance from the boy to the balloon is decreasing at about $0.93$ m/s.
+We know $\frac{dx}{dt} = -15$ m/s (negative, because $x$ is shrinking),
+$\frac{dy}{dt} = 5$ m/s, $x = 40$ m, and $y = 100$ m. Then $z =
+\sqrt{40^2 + 100^2} = \sqrt{11600} \approx 107.7$ m, so
+$$2(107.7)\frac{dz}{dt} = 2(40)(-15) + 2(100)(5) = -200$$
+Therefore $\frac{dz}{dt} \approx -0.93$ m/s. The distance between them is
+shrinking at about 0.93 m/s. The cyclist closes in fast, but the rising
+balloon nearly cancels it out.
 
+\section{Example: Filling a Cone}\index{related rates!cone}
+
+\textit{A water tank is an upside-down cone 4 m tall with a radius of 2 m
+at the top. Water is pumped in at 2 m$^3$/min. How fast is the water
+level rising when the water is 3 m deep?}
+
+The volume of water at depth $h$ is $V = \frac{1}{3}\pi r^2 h$, where $r$
+is the radius of the water's surface. That is two changing variables, but
+similar triangles link them: the cone is half as wide as it is tall, so
+$r = \frac{h}{2}$. Then
+$$V = \frac{1}{3}\pi \left(\frac{h}{2}\right)^2 h = \frac{\pi h^3}{12}$$
+Differentiate with respect to $t$:
+$$\frac{dV}{dt} = \frac{\pi h^2}{4}\frac{dh}{dt}$$
+Substitute $\frac{dV}{dt} = 2$ and $h = 3$:
+$$2 = \frac{9\pi}{4}\frac{dh}{dt} \quad\Rightarrow\quad \frac{dh}{dt} = \frac{8}{9\pi} \approx 0.28 \text{ m/min}$$
+The level rises about 28 cm per minute. It slows down as the tank fills,
+because the same volume spreads over a wider surface.
 
 \begin{Exercise}[title={A Sliding Ladder}, label=rr_ladder]
 A $10$ m ladder leans against a wall. Its base slides away from the wall at $1$ m/s. When the base is $6$ m from the wall, how fast is the top of the ladder sliding down the wall?
@@ -56,4 +90,33 @@ A $10$ m ladder leans against a wall. Its base slides away from the wall at $1$ 
 Let $x$ be the distance of the base from the wall and $y$ the height of the top. Then $x^2 + y^2 = 100$, so $2x\frac{dx}{dt} + 2y\frac{dy}{dt} = 0$. When $x = 6$, $y = 8$, and $\frac{dx}{dt} = 1$, so $\frac{dy}{dt} = -\frac{6(1)}{8} = -0.75$ m/s. The top slides down at $0.75$ m/s.
 \end{Answer}
 
-All related rates problems are different, so it is important to continually do them so that you encounter many different examples. For more examples and practice, work through the problems included in your digital resources!
+\begin{Exercise}[title={Your Shadow}, label=rr_shadow]
+You are 1.8 m tall and walk away from a 6 m streetlight at 1.5 m/s.
+\begin{enumerate}
+\item How fast is your shadow getting longer?
+\item How fast is the tip of your shadow moving?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=rr_shadow]
+Let $x$ be your distance from the light and $s$ the length of your
+shadow. The light, the tip of the shadow, and the top of your head form
+similar triangles:
+$$\frac{6}{x + s} = \frac{1.8}{s} \quad\Rightarrow\quad 6s = 1.8x + 1.8s \quad\Rightarrow\quad s = \frac{3}{7}x$$
+\begin{enumerate}
+\item $\frac{ds}{dt} = \frac{3}{7}\frac{dx}{dt} = \frac{3}{7}(1.5) \approx 0.64$ m/s.
+\item The tip is at $x + s$, so it moves at $1.5 + 0.64 \approx 2.14$ m/s,
+faster than you walk. Neither answer depends on how far you are from the
+light.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={The Snowball}, label=rr_snowball]
+A spherical snowball melts so that its volume shrinks at 10 cm$^3$/min. How
+fast is its radius shrinking when the radius is 5 cm? (The volume of a
+sphere is $V = \frac{4}{3}\pi r^3$.)
+\end{Exercise}
+\begin{Answer}[ref=rr_snowball]
+$\frac{dV}{dt} = 4\pi r^2 \frac{dr}{dt}$, so $-10 = 4\pi(25)\frac{dr}{dt}$
+and $\frac{dr}{dt} = -\frac{10}{100\pi} \approx -0.032$ cm/min. The
+radius shrinks by about 0.32 mm per minute.
+\end{Answer}

@@ -1,5 +1,10 @@
 \chapter{Simple Linear Regression}
 
+Does more sleep go with better grades? Do taller players score more points?
+Does a car's age predict its price? Each question pairs two numbers, and a
+straight line through the scatterplot is the simplest honest answer. This
+chapter is about fitting that line, reading it, and knowing when not to trust it.
+
 \section{Predictor and Response}\index{simple linear regression}\index{regression!simple linear}
 \newterm{Simple linear regression} summarizes the relationship between two
 quantitative variables. The \index{predictor variable}\newterm{predictor} $x$
@@ -24,15 +29,16 @@ $$b_1 = \frac{S_{xy}}{S_{xx}}, \qquad b_0 = \bar{y} - b_1 \bar{x}$$
 where $S_{xx} = \sum (x_i - \bar{x})^2$ and $S_{xy} = \sum (x_i - \bar{x})(y_i - \bar{y})$.
 
 \subsection{A Worked Example}
-Five students studied for $x = 1, 2, 3, 4, 5$ hours and scored
+We return to the example from the Least Squares chapter. Five students studied for $x = 1, 2, 3, 4, 5$ hours and scored
 $y = 2.1, 3.9, 6.2, 7.8, 10.1$ (out of 10 points on a quiz).
 We have $\bar{x} = 3$ and $\bar{y} = 6.02$. Also $S_{xx} = 10$ and
 $S_{xy} = 19.9$. So
 $$b_1 = \frac{19.9}{10} = 1.99, \qquad b_0 = 6.02 - 1.99(3) = 0.05$$
 The fitted line is $\hat{y} = 0.05 + 1.99x$. For a student who studies 6 hours,
-the prediction is $\hat{y} = 0.05 + 1.99(6) = 11.99$. Be careful: this is a
-prediction for $x = 6$, which is just outside the data. Predictions far outside
-the range of the data are unreliable.
+the prediction is $\hat{y} = 0.05 + 1.99(6) = 11.99$. That is more than the
+10 points the quiz allows! The line was fit to $x$ between 1 and 5, and nothing
+guarantees the pattern continues beyond that. Predicting outside the range of
+the data is called \index{extrapolation}\newterm{extrapolation}, and it is risky.
 
 The residuals are $0.06, -0.13, 0.18, -0.21, 0.10$. They always sum to zero for
 a least squares line with an intercept, because the line passes through
@@ -68,3 +74,15 @@ near $x = 0$, and a student who studies zero hours could still score something
 other than 0.05, so the intercept is an extrapolation and is not a meaningful
 estimate by itself.
 \end{Answer}
+
+\begin{Exercise}[label=slr4, title=Spot the problem]
+A study of 200 cities finds that cities with more ice cream sales have more
+drownings, with a positive regression slope. A news site says, ``Ice cream
+causes drowning.'' What is wrong with this conclusion?
+\end{Exercise}
+\begin{Answer}[ref=slr4]
+The data are observational, so the slope shows only an association. A
+\textit{lurking variable}, hot weather, drives both: people buy more ice cream
+and swim more on hot days. More swimming leads to more drownings.
+\end{Answer}
+

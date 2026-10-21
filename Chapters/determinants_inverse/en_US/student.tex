@@ -2,14 +2,17 @@
 
 \section{Determinants}
 
-Checking the independence of multitudes of vectors may take an immense amount of time. What if you had a list 
-of 5, 10, or even 100 vectors? The determinant of a matrix is a scalar value 
-that also indicates whether the columns of a matrix are linearly independent. So, 
-if you put all your vectors together in a matrix and take the determinant of 
-that matrix, the result will tell you if all the vectors are independent or 
-not. For a 2D matrix, the \index{parallelogram area}determinant is the area of the parallelogram defined 
-by the column vectors. For a 3D matrix, the determinant is the volume of the 
-parallelepiped (a three-dimensional box formed by six parallelograms, such as a cube).\footnote{Note that determinants can only be found for square, $n \times n$ matrices.} \index{determinant}
+Every square matrix has a single number hiding inside it that answers a big
+question: are the columns independent? That number is the
+\newterm{determinant}. Put your vectors into the columns of a matrix, compute
+the determinant, and if it is zero, the vectors are dependent; if not, they
+are independent.
+
+The determinant also has a beautiful geometric meaning. For a $2 \times 2$
+matrix, it is the \index{parallelogram area}area of the parallelogram
+formed by the two column vectors (with a sign: negative if the columns are
+``flipped''). For a $3 \times 3$ matrix, it is the volume of the
+parallelepiped (a slanted box) formed by the three columns.\footnote{Note that determinants can only be found for square, $n \times n$ matrices.} \index{determinant}
 
 Think about a rectangle on graph paper. Its area is base times height. The determinant gives the area of a parallelogram in the same way. Let us plot the parallelogram for this matrix (see figure \ref{fig:twos}):
 $$
@@ -49,7 +52,7 @@ $$
  
 \begin{mdframed}[frametitle = {2 by 2 Determinant}, style = important]
 The formal definition for calculating the determinant of a 2 by 2 matrix $A$ is:
-$$det(A) = (a\cdot d)-(b\cdot c)$$
+$$\det(A) = (a\cdot d)-(b\cdot c)$$
 where
 $$A = 
 \begin{bmatrix}
@@ -159,7 +162,7 @@ w & x\\
 y & z
 \end{bmatrix}$$
 
-Then $det(A) = wz - xy$. We can scale this matrix by a constant, $c$:
+Then $\det(A) = wz - xy$. We can scale this matrix by a constant, $c$:
 $$cA = c \cdot \begin{bmatrix}
 w & x\\
 y & z
@@ -169,10 +172,10 @@ cy & cz
 \end{bmatrix}$$
 
 And we can take the determinant:
-$$det(cA) = det \left( \begin{bmatrix}
+$$\det(cA) = det \left( \begin{bmatrix}
 cw & cx\\
 cy & cz
-\end{bmatrix} \right)= cw(cz) - cx(cy) = c^2 (wz - xy) = c^2 \cdot det(A)$$
+\end{bmatrix} \right)= cw(cz) - cx(cy) = c^2 (wz - xy) = c^2 \cdot \det(A)$$
 
 Therefore, scaling a 2 by 2 matrix by a factor changes the determinant by that 
 factor squared. What about higher dimensions? If each side of a cube were 
@@ -259,7 +262,7 @@ area of this parallelogram?
     \end{tikzpicture}
 
     The area of this parallelogram is the same as the determinant of the matrix:
-    $$det\left( \begin{bmatrix}
+    $$\det\left( \begin{bmatrix}
         1 & 4\\
         -3 &1
     \end{bmatrix} \right) = 1 \cdot 1 - \left( 4 \cdot -3 \right) = 1 + 12 = 13$$
@@ -300,7 +303,7 @@ area of this parallelogram?
 
     This is a rectangle, and we can see the area is $5 \cdot 2 = 10$. However, 
     the determinant is:
-    $$det \left( \begin{bmatrix}
+    $$\det \left( \begin{bmatrix}
         0 & -5\\
         -2 & 0
     \end{bmatrix} \right) = 0 \cdot 0 - \left( -5 \cdot -2 \right) = 0 - 10 = 
@@ -389,15 +392,20 @@ Python code to solve.
 
 
 \section{Determinants in Python}
-Modify your code so that it uses the $np.linalg.det()$ function. If the 
-determinant is not zero, then you can call the $np.linalg.solve()$ function. 
-In this snippet, $D$ is the coefficient matrix and $\vec{e}$ is the right-hand side. Your code should look like this:
+NumPy computes determinants with \pyfunction{np.linalg.det}. Before calling
+\pyfunction{np.linalg.solve}, you can check that the system has exactly one
+solution. Because computers store decimals only approximately, a
+determinant that should be 0 may come out as something like
+$4 \times 10^{-17}$, so we compare against a small tolerance instead of
+testing for exactly zero:
 \begin{minted}{python}
-# Are the rows and columns independent? 
-# Equivalently, is the determinant 0?
-if (np.linalg.det(D) != 0): 
-    j = np.linalg.solve(D,e)
-    print(j)
+import numpy as np
+
+D = np.array([[2, 1], [1, 1]], dtype=float)
+e = np.array([5, 3], dtype=float)
+
+if abs(np.linalg.det(D)) > 1e-12:
+    print(np.linalg.solve(D, e))    # [2. 1.]
 else:
     print("Rows and columns are dependent.")
 \end{minted}
@@ -551,13 +559,15 @@ A = \begin{bmatrix}
 First, find the determinant of $A$:
 $$\det(A) = (1)(-1) - (2)(0) = -1$$
 So our inverse is given by:
-$$A^{-1} = -1\begin{bmatrix}
+$$A^{-1} = \frac{1}{-1}\begin{bmatrix}
 -1 & -2 \\
 0 & 1
 \end{bmatrix} = \begin{bmatrix}
 1 & 2 \\
 0 & -1
 \end{bmatrix}$$
+Surprise: $A^{-1} = A$. Check: $AA = I$. Applying this matrix twice gets you
+back where you started.
 
 \end{Answer}
 \subsection*{$n \times n$ Inverse}\index{inverse!augmented matrix method}
@@ -817,10 +827,6 @@ Output:
 Matrix is singular or nearly singular. No reliable inverse.
 \end{minted}
 \section{Summary}
-In this chapter, we established the determinant of a matrix and inverse matrix. 
-
-The determinant of a matrix provides a powerful geometric and algebraic description of how a matrix acts on space. 
-
 In two dimensions, the determinant of a \(2 \times 2\) matrix represents the signed area of the parallelogram formed by the images of the standard basis vectors. 
 In higher dimensions, the determinant represents signed volume.
 
@@ -833,10 +839,14 @@ AA^{-1} = A^{-1}A = I.
 \]
 Thus, invertibility, nonzero determinant, linear independence of rows and columns, and reversibility of action are all different ways of describing the same underlying property.
 
-In the next chapter, we will interpret matrices as \emph{functions} that transform vectors.
+In the next chapter, we will treat matrices as \emph{functions} that
+transform space: stretching, rotating, and flipping it. Determinants will
+measure how much area changes, and inverses will undo the transformation.
 
-This idea will allow us to visualize matrix multiplication, understand invertibility deeper, and connect algebraic properties such as determinants to transformations of space.
+\section{Where to Learn More}
+The Wolfram Demonstrations website has an interactive demo where you can
+enter 2D and 3D matrices and watch the area or volume change:
+\url{https://demonstrations.wolfram.com/DeterminantsSeenGeometrically/}
 
-The existence of an inverse matrix is closely related to whether a matrix represents a reversible transformation.
-
-The next chapter will be very graph and program heavy, as we expand the geometric properties of determinants, inverses, and matrices.
+For more on expansion by minors, see
+\url{https://mathworld.wolfram.com/DeterminantExpansionbyMinors.html}

@@ -38,9 +38,12 @@ is removed. For \pyfunction{factorial(3)}, the stack grows to four frames:
 \texttt{factorial(0)}. Then the answers return back up the stack: $1$, $1$, $2$, and $6$.
 
 \section{Binary Search, Recursively}\index{binary search!recursive}
-Binary search from the earlier chapter can be written recursively. Look at the
-middle item. If it matches, return its index. Otherwise, search only the half
-that could contain the target.
+\newterm{Binary search} finds an item in a \emph{sorted} list the way you
+look up a word in a dictionary: open to the middle, decide which half the
+word must be in, and repeat on that half. Each step throws away half of
+what is left, so even a million items take only about 20 steps. It is
+naturally recursive. Look at the middle item. If it matches, return its
+index. Otherwise, search only the half that could contain the target.
 
 \begin{minted}{python}
 def binary_search(items, target, low, high):
@@ -63,8 +66,10 @@ The first base case, \pyvar{low > high}, handles a target that is not in the
 list. The second, \pyvar{items[mid] == target}, handles a match.
 
 \section{Recursive Traversal of a Tree}\index{depth-first search!recursive}
-A tree is naturally recursive: each node has children, and each child is the
-root of a smaller tree. To visit every node, visit the node, then visit each of its
+A \emph{tree} is a structure like a family tree or the folders on your
+computer: each node can have children, which can have children of their
+own. (You will study trees in detail in the next chapter.) A tree is
+naturally recursive: each child is the root of a smaller tree. To visit every node, visit the node, then visit each of its
 subtrees.
 
 \begin{minted}{python}

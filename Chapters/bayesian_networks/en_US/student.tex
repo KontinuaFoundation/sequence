@@ -1,5 +1,10 @@
 \chapter{Bayesian Networks}
 
+You wake up and the lawn is wet. Did it rain, or did the sprinkler run? Your
+brain weighs the possibilities without effort. A Bayesian network does the
+same reasoning on paper, and it scales to problems with hundreds of variables,
+from medical diagnosis to spam filters.
+
 \section{Variables and Dependencies}\index{Bayesian network}
 A \newterm{Bayesian network} is a probability model for several variables and the dependencies among them. Its
 structure is a \newterm{directed acyclic graph} (DAG): each node is a variable, and an arrow from $A$ to $B$ means $A$
@@ -24,6 +29,28 @@ $$P(W) = P(W \mid R)P(R) + P(W \mid \neg R)P(\neg R) = 0.9(0.2) + 0.1(0.8) = 0.2
 Then Bayes' rule gives
 $$P(R \mid W) = \frac{P(W \mid R) P(R)}{P(W)} = \frac{0.18}{0.26} \approx 0.692$$
 Seeing wet grass raises the probability of rain from 0.2 to about 0.69.
+
+\subsection{Explaining Away, with Numbers}\index{explaining away}
+Now add a sprinkler $S$, so the network is $R \to W \leftarrow S$. Let
+$P(R) = 0.2$ and $P(S) = 0.3$, independently, and
+$$P(W \mid R, S) = 0.99, \quad P(W \mid R, \neg S) = 0.9, \quad P(W \mid \neg R, S) = 0.8, \quad P(W \mid \neg R, \neg S) = 0.05$$
+Multiplying out the four cases where the grass is wet:
+\begin{center}
+\begin{tabular}{c|c|c}
+$R$ & $S$ & $P(R, S, W)$ \\
+\hline
+yes & yes & $0.2 \cdot 0.3 \cdot 0.99 = 0.0594$ \\
+yes & no & $0.2 \cdot 0.7 \cdot 0.9 = 0.126$ \\
+no & yes & $0.8 \cdot 0.3 \cdot 0.8 = 0.192$ \\
+no & no & $0.8 \cdot 0.7 \cdot 0.05 = 0.028$ \\
+\end{tabular}
+\end{center}
+The total is $P(W) = 0.4054$. Knowing only that the grass is wet,
+$$P(R \mid W) = \frac{0.0594 + 0.126}{0.4054} \approx 0.457$$
+Now you also learn that the sprinkler was on. Keep only the rows where $S$ is yes:
+$$P(R \mid W, S) = \frac{0.0594}{0.0594 + 0.192} \approx 0.236$$
+The sprinkler already explains the wet grass, so the probability of rain drops
+from 0.457 to 0.236, close to its starting value of 0.2.
 
 \section{Learning a Network}
 Learning has two parts. \newterm{Parameter learning} estimates the CPT entries from data, often by counting how often each

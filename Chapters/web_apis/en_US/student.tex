@@ -2,6 +2,12 @@
 
 \section{Making Web Requests with HTTP}
 
+When you open a weather app, it does not know the forecast. It sends a
+short message across the internet to a server, asking ``What is the
+weather in Denver?'', and the server sends back an answer. Your phone does
+this hundreds of times a day. In this chapter, you will learn the language
+those messages are written in, and then build a server of your own.
+
 The Hypertext Transfer Protocol (HTTP) is the protocol used for
 transmitting hypertext over the World Wide Web. It is the foundation
 of any data exchange on the web, and it is a protocol used for
@@ -130,6 +136,8 @@ Some common \index{status code}HTTP status codes are:
 \begin{itemize}
     \item 200: The request worked, and the server is sending back the requested data.
     \item 201: The request worked, and the server created something new.
+    \item 204: The request worked, and there is nothing to send back (common after a delete).
+    \item 401: The client has not proven who it is (for example, a missing API key).
     \item 400: The request had a problem, such as missing or incorrect information.
     \item 404: The server could not find what was requested.
     \item 500: Something went wrong on the server.
@@ -177,79 +185,11 @@ return data in different formats.
 
 \section{Using and Creating APIs}
 
-As a software engineer, you are likely familiar with building
-applications that interact with various external services and data
-sources. One of the most common methods for communication and
-integration is through HTTP APIs (Application Programming
-Interfaces). HTTP APIs provide a standardized way for applications to
-exchange data and functionality over the internet.\index{Web APIs} \index{HTTP}
+Now you will build an API of your own. It will manage a list of students,
+and by the end of the chapter it will support every CRUD operation,
+require an API key, and be testable from both the command line (curl)
+and a graphical tool (Postman).\index{Web APIs}
 
-This chapter will introduce you to the world of HTTP APIs and explore
-how you can leverage them in your software development projects. We
-will cover the fundamental concepts, techniques, and best practices
-for effectively working with HTTP APIs.
-
-An HTTP API allows two software systems to communicate and exchange
-information using the Hypertext Transfer Protocol (HTTP). It enables
-your application to make requests to an API server and receive
-responses in a structured format, such as JSON (JavaScript Object
-Notation) or XML (eXtensible Markup Language).
-
-Using HTTP APIs offers a range of benefits for software engineers. It
-allows you to leverage external services and data sources, enabling
-your application to access functionality or retrieve valuable
-information from third-party systems. This opens up opportunities for
-integration with popular platforms, social media networks, payment
-gateways, geolocation services, and much more.
-
-Throughout this chapter, we will explore various aspects of working
-with HTTP APIs, including:
-
-\begin{itemize}
-  \item API endpoints and methods: Understanding how to interact with an
-        API involves identifying the available endpoints and the supported
-        methods, such as GET, POST, PUT, DELETE, and so on. We will discuss how to
-        construct API requests and handle different response formats.
-
-  \item Authentication and authorization: Many APIs require
-        authentication to ensure secure access and protect sensitive
-        data. We will delve into different authentication mechanisms,
-        including API keys, tokens, OAuth, and other authentication
-        protocols commonly used in API integrations.
-
-  \item Request parameters and payloads: APIs often accept additional
-        parameters or payloads to customize the request or send data for
-        processing. We will explore how to pass query parameters, request
-        headers, and request bodies when interacting with APIs.
-
-  \item Error handling and status codes: Learning how to handle errors
-        and interpret status codes returned by APIs is crucial for building
-        robust and resilient applications. We will discuss common status
-        codes and best practices for handling various scenarios gracefully.
-
-  \item Rate limiting and throttling: Many APIs impose restrictions on
-        the number of requests you can make within a given timeframe to
-        prevent abuse and ensure fair usage. We will cover techniques for
-        handling rate limiting and implementing efficient strategies to
-        manage API quotas.
-
-  \item API documentation and testing: Proper documentation is essential
-        for understanding an APIs capabilities, endpoints, and expected
-        behavior. We will explore how to read and interpret API
-        documentation, as well as techniques for testing and validating API
-        integrations.
-\end{itemize}
-
-By mastering the art of using HTTP APIs, you will expand your
-development toolkit and gain the ability to seamlessly integrate your
-applications with external services, leverage their functionalities,
-and build powerful, interconnected systems.
-
-So, let us dive into the world of HTTP APIs and uncover the endless
-possibilities they offer for enhancing your software engineering
-projects.
-
-% Written by Arjan June-July 2026
 \subsection{Setting up an API}
 
 Create a file called \texttt{server.js}. This will be a basic webserver that we will use to test our API. This is called a \index{RESTful API}\newterm{RESTful API}. Write the following code to create a basic server for our API.
@@ -442,9 +382,101 @@ which will return the \texttt{html} source code of the website \url{http://examp
 
 </html>
 \end{minted}
+\subsection{Creating resources with POST}\index{POST request}
+
+So far, curl has only read data. It can also send data. Going back to our student API, let us add a new student.
+
+A POST request creates a new resource. Unlike GET requests, POST
+requests send data inside the request body.
+
+\begin{minted}{javascript}
+app.post("/students", (req, res) => {
+  const student = req.body;
+
+  // basic validation: ensure the body has at least one field
+  if (!student || Object.keys(student).length === 0) {
+    return res.status(400).json({ error: "Invalid student data" });
+  }
+
+  students.push(student);
+
+  // status 201 means that the student was pushed successfully
+  res.status(201).json(student);
+});
+\end{minted}
+
+Notice the use of
+
+\begin{minted}{javascript}
+req.body
+\end{minted}
+
+which contains the JSON sent by the client.
+
+HTTP requests are composed of headers and a body. Headers are metadata such as \texttt{Content-Type} (most commonly application/json) or \texttt{Authorization} that describe how the request should be handled. The body is the payload that carries actual data, like the student record being created by a POST request.
+
+In Express, request headers are available on \texttt{req.headers}. For JSON payloads, middleware like \texttt{express.json()} parses the body so that the data is available on \texttt{req.body}.
+
+A template for sending json in the body looks something like the following:
+\begin{minted}{bash}
+curl -X METHOD URL \
+     -H "Header: Value" \
+     -d 'JSON DATA'
+\end{minted}
+
+To send a request body, include the body data in the HTTP request and set the appropriate \texttt{Content-Type} header. For example, with curl:
+
+\begin{minted}{shell}
+curl -X POST http://localhost:3000/students \
+  -H "Content-Type: application/json" \
+  -d '{
+      "student_id": 44,
+      "name": "Jerry Doe",
+      "major": "Computer Science",
+      "credits_completed": 23
+    }'
+\end{minted}
+This can be broken down as:
+
+\begin{itemize}
+  \item \texttt{curl}: The command-line tool for making HTTP requests.
+  \item \texttt{-X POST}: Use the POST HTTP method.
+  \item \texttt{http://localhost:3000/students}: The endpoint being contacted. Must exist in our server routes.
+  \item \texttt{-H "Content-Type: application/json"}: Tell the server the request body contains JSON.
+  \item \verb|-d '{ ... }'|: Send this JSON as the request body.
+\end{itemize}
+
+The request body in this example is the JSON string passed with \texttt{-d}. Express will parse that JSON into \texttt{req.body} when \texttt{express.json()} middleware is enabled.
+
+The POST handler adds Jerry Doe to the \texttt{students} array in memory, so a GET request on \texttt{/students} now returns three students. This data lives only while the server runs. It is not saved anywhere, so restarting the server resets the list.
+
+\begin{minted}{json}
+[
+  {
+    "student_id": 42,
+    "name": "John Smith",
+    "major": "Computer Science",
+    "credits_completed": 88
+  },
+  {
+    "student_id": 43,
+    "name": "Jane Doe",
+    "major": "Mathematics",
+    "credits_completed": 61
+  },
+  {
+    "student_id": 44,
+    "name": "Jerry Doe",
+    "major": "Computer Science",
+    "credits_completed": 23
+  }
+]
+\end{minted}
+
+
 \subsection{Updating and Deleting Resources with cURL}
 
-So far our API can read students and create new ones. To finish out
+Our API can now read students and create new ones. To finish out
 the CRUD table from earlier, we need routes for \texttt{PUT},
 \texttt{PATCH}, and \texttt{DELETE}, and we need to know how to
 trigger each of them with curl.
@@ -547,7 +579,7 @@ app.delete("/students/:id", (req, res) => {
 curl -X DELETE http://localhost:3000/students/44
 \end{minted}
 
-Jerry Doe (student 44) is added with a POST request in the next section, so run this command after that section. Then run \texttt{GET /students} again and Jerry Doe should be gone. If you
+This removes Jerry Doe (student 44), whom you added with POST. Then run \texttt{GET /students} again and Jerry Doe should be gone. If you
 run the same \texttt{DELETE} command a second time, you should get a
 \texttt{404}, since the student no longer exists to delete.
 
@@ -633,7 +665,7 @@ beyond this textbook:
 
 \begin{itemize}
   \item \textbf{Never commit an API key to a public repository.} Once a
-        key is pushed to code repository such as GitHub, assume it is compromised, even if you
+        key is pushed to a code repository such as GitHub, assume it is compromised, even if you
         delete it in a later commit. If you do accidentally commit a key, revoke it immediately and generate a new one.
   \item \textbf{Never hardcode a real key directly in your source code.} The example does for simplicity. Real projects store keys in environment variables (often loaded from a \texttt{.env}
         file that is excluded from version control or public repositories) and read them with
@@ -650,98 +682,6 @@ This is the difference between \newterm{authentication} (proving
 once you have proven who you are). A key can identify you correctly and
 still be denied access to a specific route if you do not have
 permission for it.
-
-\subsection{Creating resources with POST}\index{POST request}
-
-That is all great, but we can put cURL to work on much more laborious tasks. Going back to our created API example, we can post, update, and delete resources using cURL.
-
-A POST request creates a new resource. Unlike GET requests, POST
-requests send data inside the request body.
-
-\begin{minted}{javascript}
-app.post("/students", (req, res) => {
-  const student = req.body;
-
-  // basic validation: ensure the body has at least one field
-  if (!student || Object.keys(student).length === 0) {
-    return res.status(400).json({ error: "Invalid student data" });
-  }
-
-  students.push(student);
-
-  // status 201 means that the student was pushed successfully
-  res.status(201).json(student);
-});
-\end{minted}
-
-Notice the use of
-
-\begin{minted}{javascript}
-req.body
-\end{minted}
-
-which contains the JSON sent by the client.
-
-HTTP requests are composed of headers and a body. Headers are metadata such as \texttt{Content-Type} (most commonly application/json) or \texttt{Authorization} that describe how the request should be handled. The body is the payload that carries actual data, like the student record being created by a POST request.
-
-In Express, request headers are available on \texttt{req.headers}. For JSON payloads, middleware like \texttt{express.json()} parses the body so that the data is available on \texttt{req.body}.
-
-A template for sending json in the body looks something like the following:
-\begin{minted}{bash}
-curl -X METHOD URL \
-     -H "Header: Value" \
-     -d 'JSON DATA'
-\end{minted}
-
-To send a request body, include the body data in the HTTP request and set the appropriate \texttt{Content-Type} header. For example, with curl:
-
-\begin{minted}{shell}
-curl -X POST http://localhost:3000/students \
-  -H "Content-Type: application/json" \
-  -d '{
-      "student_id": 44,
-      "name": "Jerry Doe",
-      "major": "Computer Science",
-      "credits_completed": 23
-    }'
-\end{minted}
-This can be broken down as:
-
-\begin{itemize}
-  \item \texttt{curl}: The command-line tool for making HTTP requests.
-  \item \texttt{-X POST}: Use the POST HTTP method.
-  \item \texttt{http://localhost:3000/students}: The endpoint being contacted. Must exist in our server routes.
-  \item \texttt{-H "Content-Type: application/json"}: Tell the server the request body contains JSON.
-  \item \verb|-d '{ ... }'|: Send this JSON as the request body.
-\end{itemize}
-
-The request body in this example is the JSON string passed with \texttt{-d}. Express will parse that JSON into \texttt{req.body} when \texttt{express.json()} middleware is enabled.
-
-The POST handler adds Jerry Doe to the \texttt{students} array in memory, so a GET request on \texttt{/students} now returns three students. This data lives only while the server runs. It is not saved anywhere, so restarting the server resets the list.
-
-\begin{minted}{json}
-[
-  {
-    "student_id": 42,
-    "name": "John Smith",
-    "major": "Computer Science",
-    "credits_completed": 88
-  },
-  {
-    "student_id": 43,
-    "name": "Jane Doe",
-    "major": "Mathematics",
-    "credits_completed": 61
-  },
-  {
-    "student_id": 44,
-    "name": "Jerry Doe",
-    "major": "Computer Science",
-    "credits_completed": 23
-  }
-]
-\end{minted}
-
 
 \begin{Exercise}[title={Changing One Field with PATCH}, label=webapi1]
 Use curl and a PATCH request to change Jane Doe's \texttt{credits\_completed} to 70. Leave her other fields alone. Then send a GET request to \texttt{/students/43} and check the result.
@@ -854,6 +794,7 @@ their workflow.
 This chapter touched on a lot of software and development concepts. Here are some of the key takeaways:
 \begin{itemize}
   \item APIs are ways to connect and fetch data from a server. They are a way to connect two different applications together.
+  \item An HTTP exchange is a request (method, URL, headers, body) and a response (status code, headers, body).
   \item APIs are usually built with a RESTful architecture, which is a set of principles that follow HTTP protocol to perform CRUD operations on resources.
   \item \textbf{CURL} is a command line tool that allows you to send HTTP requests to an API. Another commonly used tool is \textbf{Postman}, which is a GUI application that allows you to send HTTP requests to an API.
   \item We created a basic API that allows us to perform CRUD operations on a student resource. We can create, read, update, and delete students from our API.

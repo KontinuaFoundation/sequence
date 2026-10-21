@@ -46,7 +46,7 @@ $$p(C \text{ AND } D) = p(D | C) p(C)$$
 
 Thus:
 \index{bayes' theorem!formula}
-$$p(D | C) = \frac {p(C | D)p(D)}{P(C)}$$
+$$p(D | C) = \frac {p(C | D)p(D)}{p(C)}$$
 
 Now, you can calculate $p(D | C)$ (in this case, the probability that
 you are waiting to see a doctor given that you have a cough.) if you
@@ -58,10 +58,11 @@ know:
 \item $p(C)$ (The probability that you have a cough anywhere)
 \end{itemize}
 
-Pretty much all modern statistical methods (including most artificial
-intelligence) are based on this formula, which is known as Bayes'
-Theorem. It was written down by Thomas Bayes before he died in
-1761. It was then found and published after his death.
+This formula, known as Bayes' Theorem, is at the heart of a great deal of
+modern statistics and artificial intelligence, from spam filters to
+self-driving cars. The English minister Thomas Bayes worked it out before
+he died in 1761; his friend Richard Price found it in his papers and
+published it in 1763.
 
 \section{Using Bayes' Theorem}
 
@@ -85,27 +86,27 @@ $p(B_R | D_R)$, where $B_R$ is ``the selected bag is Bag R'' and $D_R$ is
 
 From Bayes' Theorem, we can write:
 
-$$p(B_R | D_R) = \frac{ P(D_R | B_R) P(B_R) } {P(D_R)}$$
+$$p(B_R | D_R) = \frac{ p(D_R | B_R) p(B_R) } {p(D_R)}$$
 
-\index{likelihood}$P(D_R | B_R)$ is just the probability of drawing a red marble given that the
+\index{likelihood}$p(D_R | B_R)$ is just the probability of drawing a red marble given that the
 selected bag is Bag R. That is easy to calculate: There are 100
-marbles in the bag, and 90 are red. Thus, $P(D_R | B_R) = 0.9$.
+marbles in the bag, and 90 are red. Thus, $p(D_R | B_R) = 0.9$.
 
-$P(B_R)$ is just the probability that you chose Bag R before you drew
-out a marble. Both bags look the same, so $P(B_R)= 0.5$. This is
+$p(B_R)$ is just the probability that you chose Bag R before you drew
+out a marble. Both bags look the same, so $p(B_R)= 0.5$. This is
 called \index{prior probability}\textit{the prior}, because it represents what you thought the
 probability was before you got more information.
 
-\index{total probability}$P(D_R)$ is the probability of drawing a red marble. There was 0.5
+\index{total probability}$p(D_R)$ is the probability of drawing a red marble. There was 0.5
 probability that you put your hand into Bag W (in which 40 of the 100
 marbles are red) and a 0.5 probability that you put your hand into Bag
 R (in which 90 of the 100 marbles are red).  So
 
-$$P(D_R) = 0.5 \frac{40}{100} + 0.5 \frac{90}{100} = 0.65$$
+$$p(D_R) = 0.5 \frac{40}{100} + 0.5 \frac{90}{100} = 0.65$$
 
 Putting it together:
 
-$$p(B_R | D_R) = \frac{ P(D_R | B_R) P(B_R) } {P(D_R)} = \frac{(0.9)(0.5)}{0.65} = \frac{9}{13} \approx 0.69$$
+$$p(B_R | D_R) = \frac{ p(D_R | B_R) p(B_R) } {p(D_R)} = \frac{(0.9)(0.5)}{0.65} = \frac{9}{13} \approx 0.69$$
 
 Thus, \index{posterior probability}given that you have pulled a red marble, there is about a 69\% chance
 that you have selected the bag with 90 red marbles.
@@ -114,7 +115,7 @@ that you have selected the bag with 90 red marbles.
 Use the same two bags from the example. This time you pull a white marble. What is the probability that you chose Bag R?
 \end{Exercise}
 \begin{Answer}[ref=bayes1]
-$P(W \mid B_R) = 0.1$ and $P(B_R) = 0.5$. Also $P(W) = 0.5(0.6) + 0.5(0.1) = 0.35$. So $P(B_R \mid W) = \frac{(0.1)(0.5)}{0.35} = \frac{1}{7} \approx 0.14$. A white marble makes Bag R less likely, which matches our intuition.
+$p(W \mid B_R) = 0.1$ and $p(B_R) = 0.5$. Also $p(W) = 0.5(0.6) + 0.5(0.1) = 0.35$. So $p(B_R \mid W) = \frac{(0.1)(0.5)}{0.35} = \frac{1}{7} \approx 0.14$. A white marble makes Bag R less likely, which matches our intuition.
 \end{Answer}
 
 \section{Confidence}
@@ -137,6 +138,23 @@ guilty of a crime. Few jurors are ever 100\% certain. In some trials, Bayes'
 Theorem is an exceptionally important tool.
 
 %FIXME 
+\begin{Exercise}[label=bayes2, title=A Positive Test]
+A disease affects 1\% of people. A test for it catches 99\% of people who
+have the disease, but it also comes back positive for 5\% of people who do
+not. You test positive. What is the probability that you have the
+disease?
+\end{Exercise}
+\begin{Answer}[ref=bayes2]
+Let $D$ be ``has the disease'' and $+$ be ``tests positive.'' Then
+$p(+ \mid D) = 0.99$, $p(D) = 0.01$, and
+$$p(+) = (0.99)(0.01) + (0.05)(0.99) = 0.0099 + 0.0495 = 0.0594$$
+So
+$$p(D \mid +) = \frac{(0.99)(0.01)}{0.0594} \approx 0.167$$
+Only about 17\%! The disease is so rare that most positive tests come from
+the large group of healthy people. This is why doctors retest before
+making a diagnosis.
+\end{Answer}
+
 \section{The Monty Hall Problem}
 \index{bayes' theorem!monty hall problem}
 
@@ -154,7 +172,7 @@ At first glance, many people assume that after Monty opens a door, there are two
 doors left and hence the probability of winning the car is $1/2$ regardless of
 whether one switches or stays. However, conditional probability and Bayes' Theorem reveal a different result.
 
-Originally, the probability that you picked the right door, Door A, is $P(\text{A has the car}) = \frac{1}{3}$. 
+Originally, the probability that you picked the right door, Door A, is $p(\text{A has the car}) = \frac{1}{3}$. 
 
 Then, Monty Hall reveals Door B to contain a goat behind it. This changes things, as Door A remains a probability of $\frac{1}{3}$, while Door C, the unopened door, now contains the summed probability of the other two doors, $\frac{2}{3}$.
 
@@ -162,13 +180,13 @@ Proving this with Bayes' Theorem:
 
 %FIXME simplify this
 \begin{align*}
-P(\text{Car behind C} \mid \text{Monty opens B}) 
-&= \frac{P(\text{Monty opens B} \mid \text{Car behind C}) \, P(\text{Car behind C})}
-         {P(\text{Monty opens B})} \\[6pt]
+p(\text{Car behind C} \mid \text{Monty opens B}) 
+&= \frac{p(\text{Monty opens B} \mid \text{Car behind C}) \, p(\text{Car behind C})}
+         {p(\text{Monty opens B})} \\[6pt]
 &= \frac{1 \cdot \tfrac{1}{3}}
-         {\;P(\text{Monty opens B} \mid \text{Car behind A})P(\text{Car behind A}) 
-         + P(\text{Monty opens B} \mid \text{Car behind B})P(\text{Car behind B}) 
-         + P(\text{Monty opens B} \mid \text{Car behind C})P(\text{Car behind C})} \\[6pt]
+         {\;p(\text{Monty opens B} \mid \text{Car behind A})p(\text{Car behind A}) 
+         + p(\text{Monty opens B} \mid \text{Car behind B})p(\text{Car behind B}) 
+         + p(\text{Monty opens B} \mid \text{Car behind C})p(\text{Car behind C})} \\[6pt]
 &= \frac{\tfrac{1}{3}}
          {\;(\tfrac{1}{2})(\tfrac{1}{3}) + 0\cdot(\tfrac{1}{3}) + 1\cdot(\tfrac{1}{3})} \\[6pt]
 &= \frac{\tfrac{1}{3}}{\tfrac{1}{6} + \tfrac{1}{3}} \\[6pt]

@@ -1,6 +1,11 @@
 \chapter{Numerical Root Finding}
 
 \section{Why Approximate a Root?}\index{root!numerical}
+Your calculator has a $\sqrt{\ }$ button, but nobody stored the answer
+for every number inside it. When you press it, the chip makes a guess, checks
+how wrong it is, and improves the guess, a few times, in a fraction of a
+millisecond. This chapter shows you two ways to do that.
+
 A \newterm{root} of a function $f$ is a value $x$ where $f(x) = 0$. For
 $f(x) = x^2 - 2$, the root is $\sqrt{2}$. Many equations have no formula for their
 roots, such as $\cos x = x$ or $e^x = 3x$. For those we use numerical methods:
@@ -26,6 +31,19 @@ $$x_1 = 1.5, \qquad x_2 = 1.41\overline{6}, \qquad x_3 \approx 1.414216$$
 Starting from the same point, the iterates stop changing by less than $10^{-12}$
 after 6 steps. It works quickly when the starting guess is close, but it can fail if
 $f'(x_n)$ is zero or the guess is far from the root.
+
+\textbf{Example}: Solve $\cos x = x$.
+
+\textbf{Solution}: Rewrite it as $f(x) = \cos x - x = 0$, so
+$f'(x) = -\sin x - 1$. Starting at $x_0 = 1$:
+$$x_1 \approx 0.750364, \qquad x_2 \approx 0.739113, \qquad x_3 \approx 0.739085, \qquad x_4 \approx 0.739085$$
+Three steps give six correct decimal places. No algebra trick would have found
+this number.
+
+Newton's method can also get stuck. For $f(x) = x^3 - 2x + 2$ starting at
+$x_0 = 0$, you get $x_1 = 1$, then $x_2 = 0$, then $x_3 = 1$, forever. The
+tangent at each point aims straight at the other one. Always check that your
+iterates are actually settling down.
 
 \section{Code}\index{bisection method!code}
 \begin{minted}{python}
@@ -80,3 +98,13 @@ Why does \pyfunction{bisection} raise an error for $f(x) = x^2 + 1$ on $[-1, 1]$
 $f(-1) = 2$ and $f(1) = 2$ have the same sign, so the Intermediate Value Theorem
 does not guarantee a root in the interval. (The function has no real roots at all.)
 \end{Answer}
+
+\begin{Exercise}[label=rootfind4, title=How many halvings?]
+You run bisection on an interval of width 1. How many steps until the interval
+is narrower than $0.001$?
+\end{Exercise}
+\begin{Answer}[ref=rootfind4]
+After $n$ steps the width is $\frac{1}{2^n}$. Since $2^{10} = 1024 > 1000$, you
+need $10$ steps.
+\end{Answer}
+

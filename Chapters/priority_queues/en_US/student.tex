@@ -1,6 +1,13 @@
 \chapter{Priority Queues}
 
-You are going to make a \index{priority queue}\newterm{priority queue} for use with \index{Dijkstra's algorithm}Dijkstra's Algorithm, which finds the cheapest route through a weighted graph. Using it will look like this:
+An emergency room does not treat patients in the order they arrive. A
+broken arm waits; a heart attack goes straight in. That is a
+\index{priority queue}\newterm{priority queue}: every item has a priority,
+and the most urgent one always comes out first.
+
+Your Dijkstra's Algorithm from the last chapter needs exactly this: at each
+step, it pulls out the unvisited node with the lowest cost. In this
+chapter, you will build a priority queue and use it to speed Dijkstra up. Using it will look like this:
 
 \begin{minted}{python}
 import kpqueue
@@ -65,7 +72,7 @@ In a minute, we will revisit these inefficiencies and make them better.
 \section{Using the Priority Queue}\index{priority queue!in graph search}
 
 We are going to change \filename{graph.py} to use the priority
-queue. While we are doing so, why do not we also shrink the memory
+queue. While we are doing so, let us also shrink the memory
 footprint of our program a bit.
 
 Notice that as the algorithm is running, each node is in one of three states:
@@ -143,7 +150,7 @@ Now try running it.  You should get an \index{TypeError}error:
 TypeError: '<' not supported between instances of 'Node' and 'Node'
 \end{minted}
 
-What happened? The \pyfunction{loc\_for\_pair} method is comparing
+What happened? When \pyfunction{add} sorts the list, Python compares
 tuples made up of a \pytype{float} and a \pytype{Node}.  The
 \pytype{float} comes first in the tuple, so that is compared
 first. However, if the two tuples have the same priority, it then
@@ -261,7 +268,7 @@ Use the same list, $[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]$, and the same method.
 The search checks 23 (index 5), then 72 (index 8), then 56 (index 7), then 38 (index 6). The index of 38 is 6.
 \end{Answer}
 
-If you try running it now, it should work perfectly.
+Run \filename{cities.py} again. It should give exactly the same answers as before, only faster.
 
 You now have a graph class that will find the cheapest path quickly,
 even if it has thousands of nodes with thousands of edges.

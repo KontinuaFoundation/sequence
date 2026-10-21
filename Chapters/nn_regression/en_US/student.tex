@@ -1,5 +1,9 @@
 \chapter{Neural Networks for Regression}
 
+Plot the temperature over a day: it climbs in the morning, peaks in the
+afternoon, and falls at night. No straight line fits that. Neural networks
+build curves out of many simple pieces, and they can learn the pieces from data.
+
 \section{From Linear Models to Networks}\index{neural network!regression}
 A linear regression predicts $\hat{y} = \mathbf{w}^T\mathbf{x} + b$. A neural network stacks such predictions, with a nonlinear activation between the
 layers, so it can fit curved relationships. Think of a curve on a graph. A single straight line cannot follow it, but several bent pieces can. Each \newterm{neuron} computes a weighted sum of its inputs plus a bias, then applies an activation function.
@@ -14,7 +18,7 @@ Training a regression network follows the same steps as any gradient-based model
 \begin{itemize}
 \item \textbf{Feedforward}: compute the prediction from the inputs.
 \item \textbf{Loss}: compare the prediction with the target, usually with mean squared error.
-\item \textbf{Backpropagation}: compute the gradient of the loss with respect to each weight.
+\item \textbf{Backpropagation}: compute the gradient of the loss with respect to each weight. (The Deep Learning chapter shows how the chain rule makes this efficient.)
 \item \textbf{Update}: move each weight against its gradient, as in gradient descent.
 \end{itemize}
 
@@ -23,6 +27,25 @@ Use a single neuron with the identity activation, $\hat{y} = 2x + 1$, on three p
 $3, 5, 7$. The errors are $0, 0, 1$, so the mean squared error is
 $$\text{MSE} = \frac{0^2 + 0^2 + 1^2}{3} = \frac{1}{3}$$
 A neuron with an identity activation is just a linear regression. The power of the network comes from hidden layers with nonlinear activations.
+
+\subsection{A Hidden Layer at Work}
+Here is a tiny network with one input $x$, two hidden ReLU neurons, and one output:
+$$h_1 = \max(0,\ x - 1), \qquad h_2 = \max(0,\ 1 - x), \qquad \hat{y} = h_1 + h_2$$
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$x$ & $h_1$ & $h_2$ & $\hat{y}$ \\
+\hline
+$-1$ & 0 & 2 & 2 \\
+$0$ & 0 & 1 & 1 \\
+$1$ & 0 & 0 & 0 \\
+$2$ & 1 & 0 & 1 \\
+$3$ & 2 & 0 & 2 \\
+\end{tabular}
+\end{center}
+The output is $\hat{y} = |x - 1|$, a V shape. Each hidden neuron contributes one
+straight piece, and the ReLU switches it on only on its side of $x = 1$. No single
+line can make a V, but two neurons can. With more neurons, a network can bend in
+more places and follow almost any curve.
 
 \begin{Exercise}[label=nnr1, title=Compute the error]
 A neuron predicts $\hat{y} = 2x + 1$. For the point $(2, 4)$, what is the squared error?
@@ -37,3 +60,14 @@ Why is the identity activation used in the output layer for regression, but not 
 \begin{Answer}[ref=nnr2]
 The sigmoid output lies between 0 and 1, which would prevent the network from predicting values outside that range. Regression targets can be any real number, so the identity activation is used.
 \end{Answer}
+
+\begin{Exercise}[label=nnr3, title=Build a tent]
+Using two ReLU neurons, $h_1 = \max(0, x)$ and $h_2 = \max(0, x - 2)$, and the output
+$\hat{y} = h_1 - 2h_2$, compute $\hat{y}$ at $x = 0, 1, 2, 3, 4$. Describe the shape.
+\end{Exercise}
+\begin{Answer}[ref=nnr3]
+At $x = 0, 1, 2, 3, 4$: $h_1 = 0, 1, 2, 3, 4$ and $h_2 = 0, 0, 0, 1, 2$, so
+$\hat{y} = 0, 1, 2, 1, 0$. The output rises with slope 1 up to $x = 2$ and then falls with
+slope $-1$: a tent (or upside-down V) peaking at $x = 2$. (For $x < 0$, the output is 0.)
+\end{Answer}
+

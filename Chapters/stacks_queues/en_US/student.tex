@@ -2,6 +2,8 @@
 
 \section{Stacks}
 
+Every time you press Ctrl-Z, your editor undoes the most recent change, then the one before that, and so on backward. The list of changes is a stack.
+
 A \index{stack}\newterm{stack} is a linear data structure that only allows access at one end, called the \index{stack!top}\newterm{top}. 
 
 Data comes off in the reverse order it went on: the last thing pushed onto the stack is the first thing popped off. This ordering is called \index{LIFO}\newterm{LIFO}, for ``last in, first out.'' 
@@ -133,7 +135,7 @@ only ever looks at indices \texttt{0} through \texttt{top}.
 
 The full, 
 runnable version of this file, including a \texttt{main()} that 
-demonstrates both overflow and underflow, is in your digital resources. In this version, we added memory address output to demonstrate that shows how the array is a contiguous block.
+demonstrates both overflow and underflow, is in your digital resources. That version also prints memory addresses, showing that the array is one contiguous block.
 
 \subsection{Linked-List Stack}\index{stack!linked-list}
 
@@ -206,7 +208,7 @@ int pop(LinkedStack& s) {
 }
 \end{minted}
 
-Both \texttt{push} and \texttt{pop} still run in constant time (we will cover this in a future chapter), same as the array version, since neither one has to walk the list. But unlike the array version, \texttt{pop} here calls \texttt{delete} on the old top node; if it did not, the node would sit on the heap forever.
+Both \texttt{push} and \texttt{pop} still run in constant time, same as the array version, since neither one has to walk the list. But unlike the array version, \texttt{pop} here calls \texttt{delete} on the old top node; if it did not, the node would sit on the heap forever.
 
 The full version of this file is in your digital resource!
 
@@ -227,9 +229,27 @@ Memory per element & Just the value & Value + one pointer \\
 If you know a safe upper bound on how much data you will ever hold, the array version is the most efficient choice. If you do not, the linked version is safer, since it will never overflow.
 
 
+\begin{Exercise}[title={Balanced Brackets}, label=stack_brackets]
+Code editors use a stack to check that brackets match. Read the string left
+to right. Push every opening bracket, \texttt{(}, \texttt{[}, or
+\texttt{\{}. At each closing bracket, pop the stack and check that the
+popped bracket is the matching opener. The string is balanced if every
+check passes and the stack is empty at the end. Trace the stack for
+\texttt{\{[()]()\}} and for \texttt{([)]}. Which is balanced?
+\end{Exercise}
+\begin{Answer}[ref=stack_brackets]
+\texttt{\{[()]()\}}: push \texttt{\{}, push \texttt{[}, push \texttt{(};
+\texttt{)} pops \texttt{(} (match); \texttt{]} pops \texttt{[} (match);
+push \texttt{(}; \texttt{)} pops \texttt{(} (match); \texttt{\}} pops
+\texttt{\{} (match). The stack ends empty: balanced.
+
+\texttt{([)]}: push \texttt{(}, push \texttt{[}; then \texttt{)} pops
+\texttt{[}, which does not match. Not balanced.
+\end{Answer}
+
 \section{Queues}
 
-\index{queue}Imagine you are at a concert. You are arriving at around 1pm, but the line has been growing since about 3am that same day (wow!). Naturally, by way of timing, the people who arrived earliest are going to be able to enter the venue first, while the people you arrive closest to the show time will enter the venue last.
+\index{queue}Imagine you are at a concert. You are arriving at around 1pm, but the line has been growing since about 3am that same day (wow!). Naturally, by way of timing, the people who arrived earliest are going to be able to enter the venue first, while the people who arrive closest to the show time will enter the venue last.
 
 Assuming supplements like VIP packages or fast-track lines are not of concern here, we can summarize this type of line in a similar phrase: \textbf{First In, First Out}. The first people to arrive in the line are the first people out of the line, and, subsequently, into the venue. We call this way of organizing data \index{FIFO}\newterm{FIFO}.
 

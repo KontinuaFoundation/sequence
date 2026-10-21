@@ -2,9 +2,9 @@
 
 \section{The Regression Model and Why We Need Inference for the Slope}\index{regression slope!inference}
 
-A sleep researcher pulls data from a sample of $8$ teenagers: daily screen time, in hours, and how many hours they slept that night. She plots the points, fits a line, and finds a slope of $b_1 = -0.16$: for every extra hour of screen time, sleep drops by about ten minutes. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this by chance?
+A sleep researcher pulls data from a sample of $8$ teenagers: daily screen time, in hours, and how many hours they slept that night. The researcher plots the points, fits a line, and finds a slope of $b_1 = -0.16$: for every extra hour of screen time, sleep drops by about ten minutes. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this by chance?
 
-Recall from the Numerical Methods chapter that the \index{least-squares line}least-squares line $\hat{y} = b_0 + b_1x$ describes your sample: descriptive statistics, not inference.
+Recall from the chapter Applying Numerical Methods to Bivariate Data that the \index{least-squares line}least-squares line $\hat{y} = b_0 + b_1x$ describes your sample: descriptive statistics, not inference.
 
 A sample slope $b_1$ estimates an unknown population slope $\beta_1$, the same way $\hat{p}$ estimates $p$ and $\bar{x}$ estimates $\mu$. Statisticians describe the true relationship between two quantitative variables using a \newterm{population regression model}\index{population regression model}:
 \[
@@ -28,7 +28,7 @@ Both formulas give the same $b_1$. You can use whichever matches the summary sta
 
 The \index{residual}residual for any data point is still $e = y - \hat{y}$, where $\hat{y} = b_0 + b_1x$ is the value your line predicts. The standard deviation of all the residuals in your sample, $s_e$, tells you the typical size of a prediction miss. You will use $s_e$ heavily, because it is the key in measuring how much $b_1$ itself might vary from sample to sample.
 
-Following the sleep researcher's study, she samples $8$ teenagers at random and records their daily screen time ($X$, in hours) and their sleep duration that night ($Y$, in hours):
+For the study, the researcher samples $8$ teenagers at random and records their daily screen time ($X$, in hours) and their sleep duration that night ($Y$, in hours):
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -59,7 +59,7 @@ A horticulturist records the amount of fertilizer applied (in grams per plant) a
     \item Identify $X$ and $Y$ in this study.
     \item Write the population regression model for this relationship, using correct notation.
     \item In context, what would it mean if $\beta_1 = 0$?
-    \item Explain why $\beta_1$ is not something the horticulturist can ever know exactly, even after collecting data from every plant she owns.
+    \item Explain why $\beta_1$ is not something the horticulturist can ever know exactly, even after collecting data from every plant they own.
 \end{enumerate}
 \end{Exercise}
 
@@ -68,34 +68,34 @@ A horticulturist records the amount of fertilizer applied (in grams per plant) a
     \item $X$ is the amount of fertilizer applied (grams per plant); $Y$ is the resulting plant height (centimeters).
     \item $Y = \beta_0 + \beta_1 X + \varepsilon$, where $\beta_0$ is the population intercept, $\beta_1$ is the population slope relating fertilizer amount to height, and $\varepsilon$ is random error.
     \item If $\beta_1 = 0$, then fertilizer amount has no linear relationship with plant height in the population; the population regression line is flat, and knowing how much fertilizer a plant received tells you nothing about how tall it will grow.
-    \item $\beta_1$ describes the relationship for the entire population of plants the horticulturist could ever grow, under all possible conditions, not just the ones she happened to collect data from. Even collecting data from every plant she currently owns would still leave $\beta_1$ unknown, since her plants are themselves a sample of all plants that could exist under those growing conditions. $\beta_1$ is a parameter; only a $b_1$ calculated from data is ever directly observed.
+    \item $\beta_1$ describes the relationship for the entire population of plants the horticulturist could ever grow, under all possible conditions, not just the ones they happened to collect data from. Even collecting data from every plant they currently own would still leave $\beta_1$ unknown, since those plants are themselves a sample of all plants that could exist under those growing conditions. $\beta_1$ is a parameter; only a $b_1$ calculated from data is ever directly observed.
 \end{enumerate}
 \end{Answer}
 
-% \begin{Exercise}[title={Spot the Error}, label={ex:slope-model-2}]
-% A student in the sleep study writes: "I calculated $\beta_1 = -0.165$ from my sample of 8 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.165$ hours of sleep for every teenager." Identify two separate errors in this statement.
-% \end{Exercise}
-%
-% \begin{Answer}[ref={ex:slope-model-2}]
-% First, the value $-0.165$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
-% \end{Answer}
-%
-% \begin{Exercise}[title={Computing the Line}, label={ex:slope-model-3}]
-% An engineer records the operating temperature (in degrees Celsius) and the battery life (in hours) for a random sample of $6$ devices. She finds $\bar{x} = 30$, $\bar{y} = 9.2$, $s_x = 8.5$, $s_y = 1.4$, and $r = -0.79$.
-% \begin{enumerate}
-%     \item Find $b_1$ and $b_0$.
-%     \item Write the least-squares regression equation.
-%     \item Predict the battery life for a device operating at $35^\circ$C.
-% \end{enumerate}
-% \end{Exercise}
-%
-% \begin{Answer}[ref={ex:slope-model-3}]
-% \begin{enumerate}
-%     \item $b_1 = (-0.79)\dfrac{1.4}{8.5} = -0.130$; $b_0 = 9.2 - (-0.130)(30) = 13.10$.
-%     \item $\hat{y} = 13.10 - 0.130x$.
-%     \item At $x = 35$: $\hat{y} = 13.10 - 0.130(35) = 8.55$ hours.
-% \end{enumerate}
-% \end{Answer}
+\begin{Exercise}[title={Spot the Error}, label={ex:slope-model-2}]
+A student in the sleep study writes: "I calculated $\beta_1 = -0.165$ from my sample of 8 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.165$ hours of sleep for every teenager." Identify two separate errors in this statement.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:slope-model-2}]
+First, the value $-0.165$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
+\end{Answer}
+
+\begin{Exercise}[title={Computing the Line}, label={ex:slope-model-3}]
+An engineer records the operating temperature (in degrees Celsius) and the battery life (in hours) for a random sample of $6$ devices and finds $\bar{x} = 30$, $\bar{y} = 9.2$, $s_x = 8.5$, $s_y = 1.4$, and $r = -0.79$.
+\begin{enumerate}
+    \item Find $b_1$ and $b_0$.
+    \item Write the least-squares regression equation.
+    \item Predict the battery life for a device operating at $35^\circ$C.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:slope-model-3}]
+\begin{enumerate}
+    \item $b_1 = (-0.79)\dfrac{1.4}{8.5} = -0.130$; $b_0 = 9.2 - (-0.130)(30) = 13.10$.
+    \item $\hat{y} = 13.10 - 0.130x$.
+    \item At $x = 35$: $\hat{y} = 13.10 - 0.130(35) = 8.55$ hours.
+\end{enumerate}
+\end{Answer}
 
 \textbf{Computing in Excel}
 
