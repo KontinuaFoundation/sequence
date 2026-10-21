@@ -1225,36 +1225,53 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 %% for exercises with working space for students:
 \newdimen\ExtraWorkingSpace
 
-\long\def\addworkingspace{\nobreak
-\hsize=.5\textwidth\vtop\bgroup\hbox to
-\textwidth\bgroup\vrule height 24pt width0pt\hskip-36pt\vtop\bgroup\hsize=.45\textwidth
-\parskip=12pt
-\linewidth=.45\textwidth\noindent{\color{white}.}\hskip-2pt\ignorespaces}
+% The exercise text is set as ordinary paragraphs in the left 45% of the
+% page (outdented 36pt into the margin), and the right half is left blank
+% as working space. The "Working Space" bracket is drawn beside the first
+% line, and the "Answer on Page" bracket after the last line. Because the
+% body is not wrapped in a box, a long exercise can break across pages.
+\newdimen\ExeBaseLeftskip \ExeBaseLeftskip=0pt
+\newskip\ExeSavedParskip
 
-\def\endworkingspace{\vskip\ExtraWorkingSpace
-\global\ExtraWorkingSpace=0pt
-\vskip24pt 
-\rlap{\hbox
-to\textwidth{\hskip.5\textwidth\hskip16pt\vrule height 18pt depth0pt
-\color{sdkblue}\footnotesize\bfseries\itshape 
-\hrulefill\ \ \ 
-Answer on
-\hyperlink{x\ExerciseLabel}{Page \expandafter\pageref{y\ExerciseLabel}}
-\ \ \ \hrulefill\hbox to -34pt{}}
-\hskip30pt\vrule height 18pt depth 0pt
-} \vskip18pt\egroup
-\rlap{\hskip16pt\hskip.05\textwidth\vtop{\vskip-30pt\hsize=.5\textwidth
+\long\def\addworkingspace{\par\nobreak
+\ExeSavedParskip=\parskip
+\hsize=.45\textwidth \linewidth=.45\textwidth
+\ExeBaseLeftskip=-36pt
+\leftskip=\ExeBaseLeftskip \rightskip=36pt
+\everydisplay\expandafter{\the\everydisplay\advance\displayindent\ExeBaseLeftskip}%
+\parskip=12pt
+\noindent\rlap{\hskip.5\textwidth\hskip16pt\vtop{\vskip-30pt
+\leftskip=0pt \rightskip=0pt \parskip=\ExeSavedParskip
+\hsize=.5\textwidth
 \advance\hsize by 18pt
 \hrulefill\ \ \ \color{sdkblue}\bfseries\itshape\lower 3pt\hbox{Working
 Space}\ \ \ \hrulefill
 \vskip-27pt
 \vrule depth 18pt height0pt\hfill
 \vrule depth 18pt height0pt\vskip1sp
-}}\egroup\egroup}
+}}\ignorespaces}
+
+\def\endworkingspace{\par
+% drop the space and penalty a closing list leaves behind, so the
+% "Answer on Page" bracket cannot be separated from the last line
+\unskip\unpenalty\unskip\unpenalty\unskip
+\nobreak\vskip\ExtraWorkingSpace
+\global\ExtraWorkingSpace=0pt
+\nobreak\vskip24pt\nobreak
+\moveleft36pt\rlap{\hbox
+to\textwidth{\hskip.5\textwidth\hskip16pt\vrule height 18pt depth0pt
+\color{sdkblue}\footnotesize\bfseries\itshape
+\hrulefill\ \ \
+Answer on
+\hyperlink{x\ExerciseLabel}{Page \expandafter\pageref{y\ExerciseLabel}}
+\ \ \ \hrulefill\hbox to -34pt{}}
+\hskip30pt\vrule height 18pt depth 0pt
+}\vskip18pt}
 
 \newcount\questionnumber
 \def\xQuestion{\parskip=0pt\advance\questionnumber by
-1\vskip6pt\leftskip=36pt\noindent\llap{\hbox to 24pt{\hfill\the\questionnumber.\ \
+1\vskip6pt\leftskip=\ExeBaseLeftskip\advance\leftskip by 36pt
+\noindent\llap{\hbox to 24pt{\hfill\the\questionnumber.\ \
 }}}
 \renewcommand{\@@@ExeEnv}{%
     \pagebreak[1]\vskip\ExerciseSkipBefore
@@ -1264,11 +1281,11 @@ Space}\ \ \ \hrulefill
     \addcontentsline{\ext@exercise}{\toc@exercise}{\ExerciseName\
         \theExercise\ \expandafter{\itshape \ExerciseTitle}\hspace{.66em}}
     \endgroup\AtBeginExercise
-\setbox0=\vbox\bgroup\questionnumber=0
+\questionnumber=0
 \let\Question\xQuestion\addworkingspace}
 
 \let\saveendExercise\endExercise
-\def\endExercise{\vskip1sp\endworkingspace\egroup\unvbox0
+\def\endExercise{\endworkingspace
 \vskip12pt\saveendExercise}
 
 \renewcommand{\ExerciseHeader}{
