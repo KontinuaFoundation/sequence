@@ -25,7 +25,7 @@ Each item below is a place where a chapter uses something the student has not se
 | Where | Problem | Suggested fix |
 |---|---|---|
 | `kinematics` (Vol 1) | 7 Python/matplotlib listings; Python is taught in `intro_python1` (Vol 3) | Mark the code "Come back after the Python chapter," or move the plotting examples into `matplotlib` (now in Vol 4) |
-| `forces_motion` (Vol 1) | Uses sin/cos 16 times (inclined planes); trig arrives in Vol 6 | Add a short **Right-Triangle Trigonometry** chapter (SOH-CAH-TOA) to Vol 1, or move the inclined-plane section to after Vol 6 |
+| `forces_motion` (Vol 1) | Uses sin/cos 16 times (inclined planes); trig arrives in Vol 6 | **Done:** `right_triangle_trig` now opens Vol 6, and the inclined-plane section moved to a new chapter, `inclined_planes`, at the start of Vol 7 |
 | `intro_dataviz` (Vol 3) | Uses Python before `intro_python1`, which is in the same volume | Put `intro_python1` first in Vol 3, or make the dataviz chapter spreadsheet-first |
 | `projectiles` (Vol 7) | Uses the quadratic formula; `solving_quadratics` is in Vol 9 | Move `solving_quadratics` to Vol 5 or 6, ahead of projectiles |
 | `paradoxes` (Vol 10) | Monty Hall, the birthday problem, and Simpson's paradox all come before probability (Vol 28) | Keep them as teasers, but add explicit "you will prove this in Volume 28/29" pointers. `bayes` should refer back to the Monty Hall teaser |
@@ -52,7 +52,7 @@ Each item below is a place where a chapter uses something the student has not se
 ### Orphaned chapters
 
 Two complete chapters are not in any volume:
-- **`log_transform`** (2,093 words). It belongs with the data-preparation chapters in the ML unit, or right after `num_methods_2`.
+- **`log_transform`** (2,093 words). **Done:** placed in Vol 11, right after `num_methods_2`.
 - **`sql_2`** (3,231 words; commented out in `book_14.txt`). Uncomment it or place it right after `sql_1`; multi-table joins are what make databases interesting.
 
 ---
@@ -106,7 +106,7 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 | **Logistic regression** | `simple_logistic` + `multiv_logistic` | **Done:** merged into `logistic_regr`. |
 | **GLMs** | `glm` + `link_functions` | **Done:** merged into `glm`. |
 | **Classifier evaluation** | `confusion` + `precision_recall_auc_roc` | **Done:** merged into `confusion`. |
-| **Data preparation** | `standardization` (500 words) + `one-hot` (400) + orphan `log_transform` | Merge into "Preparing Data for Models." |
+| **Data preparation** | `standardization` (500 words) + `one-hot` (400) | Merge into "Preparing Data for Models," with a pointer back to `log_transform` (Vol 11). |
 | **Greek alphabet** | `greek` (Vol 1, a reference table) | Move it to an appendix volume along with `stat_tables`, the unit tables from `units_conversions`, and a formula sheet. |
 | **Experimental design** | `experiments` + `experimental_designs` (Vol 19, one section each) | Fine as two chapters, but give them sections and remove the vocabulary overlap. |
 
@@ -124,11 +124,11 @@ Mark these as optional rather than cutting them.
 These are ranked by how much a curious high school student would care, and by how well each topic reuses tools the series already teaches.
 
 ### Mathematics
-1. **Number theory and cryptography.** Primes, divisibility, the Euclidean algorithm, modular arithmetic, and RSA. Only `sets` mentions primes, and no chapter covers encryption. This may be the single best hook for teenagers ("how does your phone keep secrets?"), and it ties to `proofs`, `data_representation`, and `hash_tables`.
-2. **Right-triangle trigonometry, and the Law of Sines and Law of Cosines.** Neither law appears anywhere. They are needed for physics (forces, vectors) and for AP Precalculus.
-3. **Euler's formula and the complex exponential**, e^{iθ} = cos θ + i sin θ. It falls naturally out of `taylor_series` and connects to `complex_numbers` and `ac`. It is the most famous equation in math, and it is missing.
-4. **Fourier series and signals.** Breaking sound into sine waves ties together `sound`, `trig_functions`, `series`, `py_images` (JPEG), and `ac`. It also gives students a project they can hear.
-5. **Lagrange multipliers.** These are needed for constrained optimization. `gradients_optimization` sets them up but stops short.
+1. **Number theory and cryptography.** **Done:** new chapter `number_theory` at the end of Vol 5.
+2. **Right-triangle trigonometry, and the Law of Sines and Law of Cosines.** **Done:** new chapter `right_triangle_trig` at the start of Vol 6.
+3. **Euler's formula and the complex exponential.** **Done:** new chapter `euler_formula` in Vol 34, after `taylor_series`.
+4. **Fourier series and signals.** **Done:** new chapter `fourier_series` in Vol 34, after `euler_formula` (includes speaker crossovers).
+5. **Lagrange multipliers.** **Done:** new chapter `lagrange_multipliers` in Vol 20, after `gradients_optimization`.
 6. **Monte Carlo simulation**, as a chapter: estimating π, simulating Monty Hall and the birthday problem in Python. This would bridge `paradoxes` (Vol 10) and probability (Vol 28) without needing counting first.
 
 ### Statistics and probability
@@ -176,7 +176,7 @@ These are ranked by how much a curious high school student would care, and by ho
 **Volume 36a: Learning from Data**
 1. `classification_regression`: what supervised learning is.
 2. `train_val_test`.
-3. Preparing data: `standardization` + `one-hot` + `log_transform`.
+3. Preparing data: `standardization` + `one-hot` (pointing back to `log_transform` in Vol 11).
 4. `least_squares` (with `simple_linear` merged in).
 5. `lin_reg_gradient_descent`.
 6. `logistic_regr` (merged from `simple_logistic` and `multiv_logistic`).
@@ -259,7 +259,7 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 - `bitmap` (Vol 23) uses hex, which is taught in Vol 26.
 - Images: drag's `artillery.png` needs regenerating; the water phase diagram needs redrawing; several images are unused; `tidesSolution.png` is no longer referenced.
 - Opinion statements flagged in `economics`, and data values to confirm.
-- The orphan chapters `log_transform` and `sql_2`.
+- The orphan chapter `sql_2` (`log_transform` is now in Vol 11).
 - Content moved out of `random_variables` (now 582 words) to `int_methods` and `double_int_moments_average`; the move is logged in each chapter's summary. Merge the remainder as described in Section 3.
 
 ---

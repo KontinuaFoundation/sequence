@@ -1341,6 +1341,7 @@ width 0pt
 \tikzstyle{mybattery}=[battery1,l=$\Delta V$,invert]
 
 \usepackage{amsfonts}
+\usepackage{amssymb} % extra symbols such as \nmid
 \usepackage{fancyvrb}
 \usepgflibrary{shapes}
 %\usepackage{bera}

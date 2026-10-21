@@ -1,0 +1,302 @@
+\chapter{Lagrange Multipliers}\index{Lagrange multipliers}
+
+Imagine hiking on a mountain, but you must stay on a marked trail. The highest
+point you can reach is probably not the summit. It is the highest point
+\emph{on the trail}. Most real optimization problems look like this. A company
+wants the most profit, but it has a fixed budget. An engineer wants the strongest
+beam, but it must fit in a given space. A can maker wants to use the least
+aluminum, but the can must hold 355 cm$^3$.
+
+In the Optimization chapter, you solved problems like these by using the
+constraint to eliminate a variable. That works when the algebra cooperates.
+This chapter gives a method that works even when it does not, and it comes with
+a beautiful picture: at the best point, two gradients line up.
+
+\section{Constrained Optimization}\index{constrained optimization}
+The general problem is:
+$$\text{maximize (or minimize) } f(x, y) \quad \text{subject to} \quad g(x, y) = c$$
+The function $f$ is the \newterm{objective}: the thing you care about. The equation
+$g(x, y) = c$ is the \newterm{constraint}: a curve in the plane that you must stay on.
+
+Here is a simple example to keep in mind. You have 16 m of fence to make a
+rectangle. If the sides are $x$ and $y$, then $2x + 2y = 16$, or $x + y = 8$, and you
+want to maximize the area $f(x, y) = xy$. (You can solve this one by substitution,
+but it is a good test case for the new method.)
+
+\section{The Picture}
+Draw the level curves of $f(x, y) = xy$: the hyperbolas $xy = 4$, $xy = 9$, $xy = 16$,
+and $xy = 25$ (the Multivariate Functions chapter introduced level curves). Then
+draw the constraint, the line $x + y = 8$ (figure \ref{fig:lagrange-contours}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.75]
+\draw[-latex] (0,0) -- (9.4,0) node[below right] {$x$};
+\draw[-latex] (0,0) -- (0,9.2) node[above] {$y$};
+\foreach \x in {2,4,6,8} { \draw (\x,0.1) -- (\x,-0.1) node[below] {\small \x}; \draw (0.1,\x) -- (-0.1,\x) node[left] {\small \x}; }
+\foreach \c/\lo in {4/0.45, 9/1.0, 16/1.8, 25/2.8} {
+  \draw[gray, thick, domain=\lo:9, samples=80, smooth] plot (\x, {\c/\x});
+  \node[gray, right] at (9, {\c/9}) {\small $xy = \c$};
+}
+\draw[very thick, sdkblue] (0,8) -- (8,0);
+\node[sdkblue, right] at (0.3,8.3) {constraint $x + y = 8$};
+\fill[orange] (1.354,6.646) circle (0.12);
+\fill[orange] (6.646,1.354) circle (0.12);
+\fill[red] (4,4) circle (0.14) node[above right] {$(4, 4)$};
+\end{tikzpicture}
+\caption{Level curves of the area $f = xy$ (gray) and the fence constraint
+$x + y = 8$ (blue). The line crosses $xy = 9$ at the orange points but only
+touches $xy = 16$, at $(4, 4)$.}
+\label{fig:lagrange-contours}
+\end{figure}
+
+Walk along the blue line from the top left. At first, you cross level curves with
+bigger and bigger values: $xy = 4$, then $xy = 9$. You are going uphill. At $(4, 4)$,
+the line just \emph{touches} the level curve $xy = 16$ without crossing it, and after
+that you start crossing the same curves again in reverse: downhill. The curve
+$xy = 25$ is out of reach entirely. So the best area is 16 m$^2$, at $x = y = 4$.
+
+That is the whole idea: \textbf{at a constrained maximum or minimum, the constraint
+curve is tangent to a level curve of $f$.} If the path crossed the level curve
+instead, you could keep walking in one direction and climb higher.
+
+\subsection{Tangent Curves Have Parallel Gradients}
+From the Gradients chapter, the gradient $\nabla f$ points in the direction of
+steepest ascent, and it is perpendicular to the level curve through that point
+(moving along a level curve does not change $f$, so the gradient has no component
+along it). The constraint curve is a level curve of $g$, so $\nabla g$ is
+perpendicular to the constraint.
+
+When the two curves are tangent, they share a tangent line, so their perpendiculars
+point along the same line. That means the gradients are parallel: one is a multiple
+of the other.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.95]
+\begin{scope}
+\clip (0.4,0.4) rectangle (8.6,8.0);
+\draw[gray, thick, domain=1.9:8.4, samples=80, smooth] plot (\x, {16/\x});
+\draw[gray, thick, domain=1.1:8.4, samples=80, smooth] plot (\x, {9/\x});
+\draw[very thick, sdkblue] (0.6,7.4) -- (7.4,0.6);
+\end{scope}
+\node[gray, right] at (8.4, 16/8.4) {\small $xy = 16$};
+\node[gray, right] at (8.4, 9/8.4) {\small $xy = 9$};
+\node[sdkblue, below left] at (7.4,0.6) {constraint};
+% at the optimum (4,4): grad f = (4,4), grad g = (1,1)
+\draw[-latex, very thick, red] (4,4) -- (5.0,5.0) node[above right] {$\nabla f$};
+\draw[-latex, thick, sdkblue] (4,4) -- (4.6,4.6);
+\node[sdkblue, right] at (4.6,4.45) {$\nabla g$};
+\fill[red] (4,4) circle (0.09);
+\node[red, below left] at (4,4) {optimum};
+% at a crossing point (1.354, 6.646): grad f = (6.646, 1.354), scaled by 1/4
+\draw[-latex, very thick, red] (1.354,6.646) -- (3.016,6.985) node[right] {$\nabla f$};
+\draw[-latex, thick, sdkblue] (1.354,6.646) -- (1.954,7.246) node[left, xshift=-2pt] {$\nabla g$};
+\draw[-latex, very thick, orange] (1.30,6.42) -- (2.10,5.62);
+\node[orange, right] (up) at (4.4,6.2) {\small uphill along the path};
+\draw[orange, thin] (up.west) -- (1.78,5.98);
+\fill[orange] (1.354,6.646) circle (0.09);
+\end{tikzpicture}
+\caption{At the optimum, $\nabla f$ and $\nabla g$ point the same way. At the orange
+point, $\nabla f$ tilts away from $\nabla g$. The part of $\nabla f$ that runs along the
+blue path (orange arrow) says you can still increase $f$ by moving along the path.}
+\label{fig:lagrange-gradients}
+\end{figure}
+
+Figure \ref{fig:lagrange-gradients} shows the difference. At the orange point,
+$\nabla f = (6.65, 1.35)$ is not parallel to $\nabla g = (1, 1)$. Part of $\nabla f$
+points along the fence line, so sliding along the line raises the area. At $(4, 4)$,
+$\nabla f = (4, 4)$ is exactly $4\nabla g$. No part of it points along the line, so
+there is nowhere better to slide.
+
+\section{The Method}
+Write the parallel-gradient condition with a multiplier $\lambda$ (the Greek letter
+lambda), called a \newterm{Lagrange multiplier}, after Joseph-Louis Lagrange, who
+invented the method in 1788.
+
+\begin{mdframed}[style = important, frametitle = {Lagrange Multipliers}]
+To find the maximum and minimum of $f(x, y)$ subject to $g(x, y) = c$, solve
+$$\nabla f = \lambda\nabla g \qquad \text{and} \qquad g(x, y) = c$$
+that is, the three equations
+$$f_x = \lambda g_x, \qquad f_y = \lambda g_y, \qquad g(x, y) = c$$
+for $x$, $y$, and $\lambda$. Then evaluate $f$ at every solution. The largest value is
+the maximum, and the smallest is the minimum.
+\end{mdframed}
+
+The method finds \emph{candidates}, just as setting a derivative to zero did in one
+variable. Always compare the values of $f$ at all of them.
+
+\textbf{Example}: Maximize $f(x, y) = xy$ subject to $x + y = 8$.
+
+\textbf{Solution}: $\nabla f = (y, x)$ and $\nabla g = (1, 1)$. The equations are
+$$y = \lambda, \qquad x = \lambda, \qquad x + y = 8$$
+So $x = y$, and then $x = y = 4$, with $\lambda = 4$. The maximum area is $16$, just as
+the picture showed.
+
+\textbf{Example}: Find the maximum and minimum of $f(x, y) = x^2 + 2y^2$ on the unit
+circle $x^2 + y^2 = 1$.
+
+\textbf{Solution}: $\nabla f = (2x, 4y)$ and $\nabla g = (2x, 2y)$. The equations are
+$$2x = 2\lambda x, \qquad 4y = 2\lambda y, \qquad x^2 + y^2 = 1$$
+The first says $x(1 - \lambda) = 0$, so $x = 0$ or $\lambda = 1$. The second says
+$y(2 - \lambda) = 0$, so $y = 0$ or $\lambda = 2$.
+\begin{itemize}
+\item If $\lambda = 1$, then $y = 0$, and the constraint gives $x = \pm 1$. There, $f = 1$.
+\item If $\lambda = 2$, then $x = 0$, and the constraint gives $y = \pm 1$. There, $f = 2$.
+\end{itemize}
+($x = y = 0$ is not on the circle.) The maximum is 2, at $(0, \pm 1)$, and the minimum
+is 1, at $(\pm 1, 0)$. Notice that one set of equations found both.
+
+\section{The Soda Can, Without Substitution}
+In the Optimization chapter, you found the can that holds 355 cm$^3$ using the least
+aluminum. Here is the same problem with Lagrange multipliers. Minimize the surface
+area $A(r, h) = 2\pi r^2 + 2\pi rh$ subject to the volume $V(r, h) = \pi r^2 h = 355$.
+The gradient equations are
+$$4\pi r + 2\pi h = \lambda\,(2\pi rh), \qquad 2\pi r = \lambda\,(\pi r^2)$$
+The second gives $\lambda = \frac{2}{r}$. Put that into the first:
+$$4\pi r + 2\pi h = \frac{2}{r}(2\pi rh) = 4\pi h \quad\Longrightarrow\quad 4\pi r = 2\pi h \quad\Longrightarrow\quad h = 2r$$
+Look at what happened. Before using the number 355 at all, we learned the
+\emph{shape} of the best can: its height equals its diameter. That holds for a can of
+any size. Then $\pi r^2(2r) = 355$ gives $r \approx 3.84$ cm and $h \approx 7.67$ cm.
+
+(Real soda cans are about 12 cm tall and 6.6 cm wide, much taller than the ideal.
+They are easier to hold, the top and bottom are made of thicker metal than the
+sides, and a narrow can fits more neatly in a vending machine.)
+
+\section{A Probability Example: The Most Likely Spinner}\index{maximum likelihood}
+A spinner has three colors, but you do not know how big each section is. You spin it
+20 times and get red 10 times, green 6 times, and blue 4 times. What are the most
+believable probabilities $p$, $q$, and $s$ for red, green, and blue?
+
+Spins are independent, so the probability of getting this particular sequence of
+results is the product of the individual chances:
+$$P = p^{10} q^{6} s^{4}$$
+(For example, two heads in a row with a fair coin has probability
+$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$.) The probabilities must add to 1, so we
+want to
+$$\text{maximize } p^{10}q^{6}s^{4} \quad\text{subject to}\quad p + q + s = 1$$
+This is called finding the \newterm{maximum likelihood} estimate: the probabilities that
+make what you actually saw most likely.
+
+Products of powers are awkward to differentiate, so take the natural log first. Since
+$\ln$ always increases, $P$ and $\ln P$ are largest at the same point, and
+$$\ln P = 10\ln p + 6\ln q + 4\ln s$$
+The method works the same way with three variables: set
+$\nabla(\ln P) = \lambda\nabla(p + q + s)$:
+$$\frac{10}{p} = \lambda, \qquad \frac{6}{q} = \lambda, \qquad \frac{4}{s} = \lambda$$
+So $p = \frac{10}{\lambda}$, $q = \frac{6}{\lambda}$, and $s = \frac{4}{\lambda}$. The constraint
+gives $\frac{20}{\lambda} = 1$, so $\lambda = 20$, and
+$$p = \frac{10}{20} = 0.5, \qquad q = \frac{6}{20} = 0.3, \qquad s = \frac{4}{20} = 0.2$$
+The most likely probabilities are just the fractions you observed. That may sound
+obvious, but now you have a proof, and the same argument works for any number of
+outcomes and any counts. It is the starting point for much of statistics and machine
+learning, which you will meet in later volumes.
+
+\section{What $\lambda$ Means}\index{Lagrange multipliers!meaning of lambda}
+The multiplier is more than a bookkeeping device. It tells you how much the best value
+of $f$ changes when you loosen the constraint: if $c$ increases by a small amount
+$\Delta c$, the optimum changes by about $\lambda\,\Delta c$.
+
+Check it on the fence. With $x + y = c$, the best rectangle is a square with side
+$\frac{c}{2}$, so the best area is $\frac{c^2}{4}$. Its derivative is $\frac{c}{2}$, which is 4
+when $c = 8$: exactly the $\lambda$ we found. So one more meter of $x + y$ (two more
+meters of fence) buys about 4 more square meters of garden. Economists call $\lambda$ a
+\newterm{shadow price}: what one more unit of a limited resource is worth.
+
+\section{Lagrange Multipliers with SymPy}
+The equations can get messy, and a computer algebra system can solve them for you. Here
+is the circle example in Python with the SymPy library:
+\begin{minted}{python}
+import sympy as sp
+
+x, y, lam = sp.symbols("x y lambda", real=True)
+f = x**2 + 2*y**2          # what we optimize
+g = x**2 + y**2            # the constraint is g = 1
+
+# grad f = lambda * grad g, together with the constraint
+equations = [
+    sp.Eq(sp.diff(f, x), lam * sp.diff(g, x)),
+    sp.Eq(sp.diff(f, y), lam * sp.diff(g, y)),
+    sp.Eq(g, 1),
+]
+for sol in sp.solve(equations, [x, y, lam], dict=True):
+    print(sol, " f =", f.subs(sol))
+\end{minted}
+\begin{verbatim}
+{lambda: 1, x: -1, y: 0}  f = 1
+{lambda: 1, x: 1, y: 0}  f = 1
+{lambda: 2, x: 0, y: -1}  f = 2
+{lambda: 2, x: 0, y: 1}  f = 2
+\end{verbatim}
+All four candidate points appear, with their values of $f$.
+
+\begin{Exercise}[title={On a Circle}, label=lm_circle]
+Find the maximum and minimum of $f(x, y) = x + y$ on the circle $x^2 + y^2 = 8$. Draw a
+sketch like figure \ref{fig:lagrange-contours} to check your answer.
+\end{Exercise}
+\begin{Answer}[ref=lm_circle]
+$\nabla f = (1, 1)$ and $\nabla g = (2x, 2y)$, so $1 = 2\lambda x$ and $1 = 2\lambda y$. Thus
+$x = y$, and $2x^2 = 8$ gives $x = y = \pm 2$. The maximum is $f(2, 2) = 4$ and the minimum
+is $f(-2, -2) = -4$. In a sketch, the level lines $x + y = c$ are parallel lines, and the
+two extreme ones just touch the circle at $(2, 2)$ and $(-2, -2)$.
+\end{Answer}
+
+\begin{Exercise}[title={Fencing by a River}, label=lm_river]
+A farmer has 100 m of fence to enclose a rectangular field along a straight river. No
+fence is needed along the river. Let $x$ be the side parallel to the river and $y$ each
+side perpendicular to it.
+\begin{enumerate}
+\item Use Lagrange multipliers to find the largest possible area.
+\item What is $\lambda$, and what does it tell the farmer?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=lm_river]
+\begin{enumerate}
+\item Maximize $xy$ subject to $x + 2y = 100$. The equations are $y = \lambda$ and
+$x = 2\lambda$, so $x = 2y$. Then $4y = 100$, so $y = 25$ m, $x = 50$ m, and the area is
+1250 m$^2$.
+\item $\lambda = 25$. Each extra meter of fence adds about 25 m$^2$ of field. (Check: with
+$F$ meters of fence, the best area is $\frac{F^2}{8}$, and its derivative at $F = 100$ is
+$\frac{100}{4} = 25$.)
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={The Biggest Box}, label=lm_box]
+A closed box has surface area $2(xy + yz + xz) = 24$. Find the largest possible volume
+$xyz$. (Hint: with three variables, there are four equations.)
+\end{Exercise}
+\begin{Answer}[ref=lm_box]
+The equations are $yz = 2\lambda(y + z)$, $xz = 2\lambda(x + z)$, and $xy = 2\lambda(x + y)$.
+Multiply the first by $x$ and the second by $y$: $xyz = 2\lambda(xy + xz)$ and
+$xyz = 2\lambda(xy + yz)$, so $xz = yz$, and $x = y$. In the same way, $y = z$. So the box is
+a cube, $6x^2 = 24$ gives $x = 2$, and the largest volume is $8$.
+\end{Answer}
+
+\begin{Exercise}[title={An Ellipse}, label=lm_ellipse]
+Find the maximum and minimum of $f(x, y) = xy$ on the ellipse $x^2 + 4y^2 = 8$. Then
+check your answer with SymPy.
+\end{Exercise}
+\begin{Answer}[ref=lm_ellipse]
+$y = 2\lambda x$ and $x = 8\lambda y$. Substituting, $y = 16\lambda^2 y$, so $\lambda = \pm\frac{1}{4}$
+(the case $y = 0$ forces $x = 0$, which is not on the ellipse). With $\lambda = \frac{1}{4}$,
+$x = 2y$, and $4y^2 + 4y^2 = 8$ gives $y = \pm 1$: the points $(2, 1)$ and $(-2, -1)$, where
+$f = 2$. With $\lambda = -\frac{1}{4}$, $x = -2y$: the points $(-2, 1)$ and $(2, -1)$, where
+$f = -2$. The maximum is 2 and the minimum is $-2$. In the SymPy program, use
+\mintinline{python}{f = x*y} and \mintinline{python}{g = x**2 + 4*y**2}, with the
+constraint \mintinline{python}{sp.Eq(g, 8)}.
+\end{Answer}
+
+\begin{Exercise}[title={The Most Uncertain Spinner}, label=lm_entropy]
+A measure of how unpredictable a spinner with probabilities $p$, $q$, and $s$ is, called
+its \newterm{entropy}, is
+$$H = -p\ln p - q\ln q - s\ln s$$
+Use Lagrange multipliers to find the probabilities that make $H$ as large as possible,
+subject to $p + q + s = 1$. Does the answer make sense?
+\end{Exercise}
+\begin{Answer}[ref=lm_entropy]
+$\frac{\partial H}{\partial p} = -\ln p - 1$, and similarly for $q$ and $s$. So
+$-\ln p - 1 = \lambda$, $-\ln q - 1 = \lambda$, and $-\ln s - 1 = \lambda$, which means
+$\ln p = \ln q = \ln s$, so $p = q = s = \frac{1}{3}$. The most unpredictable spinner gives
+every color the same chance, which makes sense: any imbalance would make one color a
+safer guess.
+\end{Answer}

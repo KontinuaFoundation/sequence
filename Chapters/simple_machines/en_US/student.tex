@@ -70,8 +70,6 @@ You push with one fifth of the crate's weight, but you push over five times the 
 \begin{center}
 	\begin{tikzpicture}
 	   \draw[thick, black, fill=gray!20] (0,0) -- (6, 0) -- (6, 2) -- cycle;
-          \draw[black] (1, 0) arc (0:18:1) 
-          	node[font=\tiny, right, yshift = -0.15cm] {$\theta$};
           \draw[decorate, decoration = {brace, amplitude=5pt}] 
           	(0, 0.15) -- (6, 2.15);
           \node[] at (2.95, 1.55) {$L$};
@@ -81,189 +79,31 @@ You push with one fifth of the crate's weight, but you push over five times the 
 	\end{tikzpicture}
 \end{center}
 
-(We will discuss sine function later, but in case you are familiar with it, note that:
+Why is the force $\frac{V}{L}F_g$? Because the work cannot change. Lifting a load
+of weight $F_g$ straight up by a height $V$ takes work $F_g V$. Pushing it up a
+frictionless ramp of length $L$ with force $F_A$ takes work $F_A L$. These must be
+equal, so $F_A L = F_g V$, which gives $F_A = \frac{V}{L}F_g$.
 
-\begin{equation}
-    \frac{V}{L} = \sin{\theta}
-    \label{eq:incPlaneSinDeriv}
-\end{equation}
-
-
-where \( \theta \) is the angle between the inclined plane and the horizontal surface.)
-
-Let us compare the force needed and work done when pushing a load up a ramp 
-versus just lifting it vertically. Consider a family on moving day: there is a 
-hand trolley loaded with 200 N (about 45 pounds) of boxes. If the bed of the 
-moving truck is 1.5 m high, how much work would it take to lift the boxes 
-straight up into the truck? What about with a ramp? 
-
-First, let us look at how much force and work is needed if you were to lift the 
-entire 200 N load straight up into the air. You would need to apply 200 N of force 
-upwards for a distance of 1.5 m:
+Let us check this with numbers. Consider a family on moving day: a hand trolley is
+loaded with 200 N (about 45 pounds) of boxes, and the bed of the moving truck is
+1.5 m high. Lifting the boxes straight up takes 200 N of force over 1.5 m:
 $$W = F \cdot d = \left( 200 \text{ N} \right) \left( 1.5 \text{ m} \right) = 300 \text{ J}$$
-
-So, without a ramp, you would have to apply 200 N and do 300 J of work. Suppose 
-your moving truck comes with a ramp that has an incline of 15 degrees:
-
-\begin{center}
-	\begin{tikzpicture}
-            \draw[black, fill=black] (0,0) -- (6, 1.7) -- (6.5, 1.7) -- 
-            	(6.5, 1.6) -- (6, 1.6) -- (0.35, 0) -- cycle; 
-	    	\draw[gray, fill=gray] (6, 1.2) rectangle (7.5, 1.6);
-            \draw[brown, fill=brown] (0,-0.25) rectangle (7.5, 0);
-            \draw[black, fill=black] (7.5, 1.3) arc (90:270:0.65) -- cycle;
-            \draw[gray, fill=gray!20] (7.5, 1.6) -- (7, 1.6) -- (7, 7) -- (7.5, 7);
-            \draw[black] (2, 0) arc (0:15:2) 
-            	node[right, yshift = -0.25cm, font = \scriptsize] 
-            	{
-            	$\theta = 15^{\circ}$
-            	};
-            \draw[decorate, decoration = {brace, amplitude=5pt, mirror}] 
-            (6, 1.6) -- (6, 0) 
-            node[left, yshift = 0.8cm, xshift = -0.2cm, font = \scriptsize] 
-            {
-            $V=1.5\text{ m}$
-            };
-	\end{tikzpicture}
-\end{center}
-
-Since $\sin{ \left( \theta \right) } = V/L$, we know that $L = V / \sin{ \left( 
-\theta \right) }$. You can use a calculator or search engine to find that the 
-sine of $15^{\circ} \approx 0.26$. Therefore, the length of the ramp is 
-approximately 5.8 meters. How much force does it take to move the load of boxes 
-up the ramp? Intuitively, we know it is less force. We can use a 
-\newterm{free body diagram} to determine the minimum force needed to push the 
-box up the ramp. \index{free body diagram}(A free body diagram is a simplified 
-model showing all the forces acting on an object. You will learn to create and 
-use your own free body diagrams in a later chapter. For now, just follow along.)
-
-Before you push it, there are two forces acting on the loaded hand trolley: its 
-weight ($F_g$) and the normal force between the trolley and the ramp ($F_N$):
-
-\begin{center}
-	\begin{tikzpicture}
-            \draw[thick, black] (0,0) -- (5.6, 0) -- (5.6, 1.5) -- cycle;
-            \draw[] (5.3, 0) -- (5.3, 0.3) -- (5.6, 0.3);
-            \draw[] (1, 0) arc (0:15:1) node[right, font = \scriptsize, yshift = -0.1cm] 
-            	{$\theta = 15^{\circ}$};
-            \draw[thick, black, fill=gray!20] (2.3, 0.616) -- (3.3, 0.884) -- 
-            	(3.032, 1.884) -- (2.032, 1.616) -- cycle;
-            \draw[-latex, thick, blue] (2.666, 1.25) -- (2.416, 2.183) 
-            	node[above] {$F_N$};
-            \draw[-latex, thick, red] (2.666, 1.25) -- (2.666, 0.25) 
-            	node[below, yshift = -0.3cm] {$F_g = 200\text{ N}$};
-            \draw[black, fill=black] (2.666, 1.25) circle (0.03cm);
-	\end{tikzpicture}
-\end{center}
-
-Notice that the normal force is perpendicular to the ramp! We want to know how 
-much force it takes to push the load up the ramp, so we will ``split" the 
-weight force vector into two parts: one part parallel to the ramp ($F_{g,\vert 
-\vert}$) and one part perpendicular ($F_{g, \perp}$):
-
-\begin{center}
-	\begin{tikzpicture}
-            \draw[thick, black] (0,0) -- (5.6, 0) -- (5.6, 1.5) -- cycle;
-            \draw[] (5.3, 0) -- (5.3, 0.3) -- (5.6, 0.3);
-            \draw[] (1, 0) arc (0:15:1) 
-            	node[right, font = \scriptsize, yshift = -0.1cm] 
-            	{$\theta = 15^{\circ}$};
-            \draw[thick, black, fill=gray!20] (2.3, 0.616) -- (3.3, 0.884) -- 
-            	(3.032, 1.884) -- (2.032, 1.616) -- cycle;
-            \draw[-latex, thick, blue] (2.666, 1.25) -- (2.416, 2.183) 
-            	node[above] {$F_N$};
-            \draw[-latex, thin, red, dashed] (2.666, 1.25) -- (2.666, 0.25);
-            \draw[-latex, thick, red] (2.666, 1.25) -- (2.916, 0.317);
-            \draw[-latex, thick, red] (2.666, 1.25) -- (2.416, 1.183);
-            \draw[black, fill=black] (2.666, 1.25) circle (0.03cm);
-            \draw[red, <-, thin] (2.95, 0.6) arc (90:25:0.25) -- (3.25, 0.3) 
-            	node[below, font = \tiny, xshift = 0.95cm, yshift = 0.1cm] 
-            	{$F_{g,\perp} = F_g \cos{\left( \theta \right)}$};
-            \draw[red, <-, thin] (2.5, 1.25) arc (25:90:0.25) -- (1.75, 1.42) 
-            	node[left, font = \tiny] 
-            	{$F_{g,\vert \vert} = F_g \sin{ \left( \theta \right)}$};
-	\end{tikzpicture}
-\end{center}
-
-We did this by treating the weight vector as the hypotenuse of a right triangle 
-with legs perpendicular and parallel to the ramp. You will learn how to do this 
-and why it works in the chapter on vectors. For now, just trust that the part 
-of the hand trolley's weight that is perpendicular to the ramp is $F_g \cos{ 
-\left( \theta \right) }$ and the part that is parallel to the ramp is $F_g 
-\sin{ \left( \theta \right) }$.
-
-What force do you need to overcome to push the hand trolley up the ramp? Just 
-the part of the weight that is parallel to the ramp! You will need to apply an 
-equal force in the opposite direction (up the ramp) to move the hand trolley:
-
-\begin{center}
-	\begin{tikzpicture}
-            \draw[thick, black] (0,0) -- (5.6, 0) -- (5.6, 1.5) -- cycle;
-            \draw[] (5.3, 0) -- (5.3, 0.3) -- (5.6, 0.3);
-            \draw[] (1, 0) arc (0:15:1) 
-            	node[right, font = \scriptsize, yshift = -0.1cm] 
-            	{$\theta = 15^{\circ}$};
-            \draw[thick, black, fill=gray!20] (2.3, 0.616) -- (3.3, 0.884) -- 
-            	(3.032, 1.884) -- (2.032, 1.616) -- cycle;
-            \draw[-latex, thick, blue] (2.666, 1.25) -- (2.416, 2.183) 
-            	node[above] {$F_N$};
-            \draw[-latex, thin, red, dashed] (2.666, 1.25) -- (2.666, 0.25);
-            \draw[-latex, thick, red] (2.666, 1.25) -- (2.916, 0.317);
-            \draw[-latex, thick, red] (2.666, 1.25) -- (2.416, 1.183);
-            \draw[red, <-, thin] (2.95, 0.6) arc (90:25:0.25) -- (3.25, 0.3) 
-            	node[below, font = \tiny, xshift = 0.2cm, yshift = 0.1cm] 
-            	{$F_{g,\perp}$};
-            \draw[red, <-, thin] (2.5, 1.25) arc (25:90:0.25) -- (1.75, 1.42) 
-            	node[left, font = \tiny, xshift = 0.1cm] 
-            	{$F_{g,\vert \vert}$};
-            \draw[thick, black, -latex] (2.666, 1.25) -- (2.916, 1.317);
-            \draw[thin, black, <-] (2.85, 1.35) arc (180:90:0.35) 
-            	node[right, font = \tiny, xshift = -0.1cm] {$F_A$};
-            \draw[black, fill=black] (2.666, 1.25) circle (0.03cm);
-	\end{tikzpicture}
-\end{center}
-
-% Otto here: these free body diagrams are not quite what is usually done in simple kinematics physics.
-% Usually, the object is just treated as a point, and you're free to rotate the
-% coordinate system to make the inclined plane horizontal. This makes it easier to
-% see that the normal force and the perpendicular component of gravity cancel out,
-% and you have to take the sin/cos of the angle less often. Also, things are less talked about in terms of
-% parallel and perpendicular components, and more in terms of X and Y components, as
-% defined by the coordinate system. I'll double check the chapter that covers free body diagrams
-% and make sure it's consistent with what I was taught as the standard way of doing thing.
-% However, I understand that the way they currently have it may be more intuitive for students seeing this
-% for the first time, so I'm not going to change it right now.
-
-So, we know that you are pushing with an applied force of $F_A = F_{g, \vert 
-\vert} = F_{g} \sin{ \left( \theta \right) }$. Therefore, the work you would do 
-pushing the hand trolley up the ramp is:
-$$F_A \cdot L = F_{g} \sin{ \left( \theta \right)} \cdot \left( \frac{V}{\sin{ 
-\left( \theta \right)}} \right) = F_{g} \cdot V = 300 \text{ }J$$
-
-Therefore, when using a ramp, you still perform the same amount of work! This 
-is a key property of simple machines: \textit{the work done does not change}.
-
-So what makes it ``easier" to use a ramp to lift the hand trolley? The fact 
-that you need to apply less \textit{force} to move the hand trolley ($F_A < 
-F_g$). Now, let us look at the mechanical advantage of the ramp. In this case, 
-the mechanical advantage is given by:
-$$MA = \frac{F_g}{F_A}$$
-
-Substituting for $F_A$, we see that:
-$$MA = \frac{F_g}{F_g \sin{ \left( \theta \right)}} = \frac{1}{\frac{V}{L}} 
-= \frac{L}{V}$$
-
-So for a ramp whose length is $L$ and vertical rise is $V$, the mechanical 
-advantage is equal to the length divided by the rise. 
+Now suppose the truck has a ramp 6 m long. The force needed to push the trolley up
+it is
+$$F_A = \frac{V}{L}F_g = \frac{1.5}{6}(200 \text{ N}) = 50 \text{ N}$$
+and the work is $(50 \text{ N})(6 \text{ m}) = 300$ J, exactly the same. The ramp
+does not save work. It lets you push with a quarter of the force, over four times
+the distance: its mechanical advantage is $\frac{F_g}{F_A} = \frac{200}{50} = 4 = \frac{L}{V}$.
 
 \begin{mdframed}[style = important, frametitle={Ramps}]
-For a ramp, the mechanical advantage is equal to $\frac{L}{V}$ and the force 
-needed to push an object with weight $W$ up the ramp is given by $W \cdot 
-\frac{V}{L} = W \cdot \sin{ \left( \theta \right)}$, where $L$ is the length 
-of the ramp, $V$ is the vertical rise of the ramp, and $\theta$ is the angle 
-the ramp forms with the (horizontal) ground.
+For a frictionless ramp of length $L$ and vertical rise $V$, the mechanical
+advantage is $\frac{L}{V}$, and the force needed to push an object of weight $W$ up
+the ramp is $W \cdot \frac{V}{L}$.
 \end{mdframed}
 
+Real ramps have friction, and real problems usually give the ramp's angle instead of
+its length. Handling those takes trigonometry, so we return to ramps in the Inclined
+Planes chapter in Volume 7.
 
 \begin{Exercise}[title={Ramp}, label=ramp]
 You need to lift a barrel of oil with a mass of 136 kilograms. You can apply a 
