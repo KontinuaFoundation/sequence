@@ -1,48 +1,89 @@
 \chapter{Solving Quadratics}
 
-A quadratic function has three terms: $ax^2 + bx + c$. $a$, $b$, and
-$c$ are known as the \textit{coefficients}. The coefficients can be any
-constant, except that $a$ can never be zero. (If $a$ is zero, it is a linear
-function, not a quadratic.)
+Toss a ball, and its height follows a quadratic. So does the area of a
+square garden as you widen it, and the profit of a business as it raises
+prices. Sooner or later, you want to know \emph{when} the ball lands or
+\emph{which} price breaks even. That means solving a quadratic equation.
 
-When you have an equation with a quadratic function on one side and a
-zero on the other, you have a quadratic equation. For example:
+A \newterm{quadratic function} has the form $ax^2 + bx + c$. The numbers
+$a$, $b$, and $c$ are its \textit{coefficients}. They can be any
+constants, except that $a$ cannot be zero. (If $a$ is zero, the function is
+linear.)
+
+Set a quadratic function equal to zero, and you have a \newterm{quadratic
+equation}. For example:
 
 $$72x^2 - 12x + 1.2 = 0$$
 
 How can you find the values of $x$ that will make this equation true?
 
-You can always reduce a quadratic equation so that the first
-coefficient is 1, so that your equation looks like this:
+Dividing both sides by $a$ never changes the solutions, so you can always
+make the first coefficient 1:
 
 $$x^2 +bx + c = 0$$
 
-For example, if you are asked to solve $4x^2 + 8x - 19 = -2x^2 - 7$
+For example, to solve $4x^2 + 8x - 19 = -2x^2 - 7$, move everything to
+the left side, then divide by 6:
 \begin{multline*}
   4x^2 + 8x - 19 = -2x^2 - 7 \\
   6x^2 + 8x -12 = 0 \\
   x^2 + \frac{4}{3}x - 2 = 0
 \end{multline*}
 Here, $b = \frac{4}{3}$ and $c = -2$.
-% This looks a little wonky, maybe add explanations too
+
+\section{Completing the Square}
+\index{completing the square}
+Some quadratics are easy. To solve $(x + 3)^2 = 16$, take the square root
+of both sides: $x + 3 = \pm 4$, so $x = 1$ or $x = -7$. (Do not forget the
+$\pm$: both $4^2$ and $(-4)^2$ are 16.)
+
+The trick is to make every quadratic look like that. Notice that
+$$(x + 3)^2 = x^2 + 6x + 9$$
+The middle coefficient, 6, is twice the 3, and the last term, 9, is
+$3^2$. So $x^2 + 6x$ is just 9 short of a perfect square. In general,
+$x^2 + bx$ is $\left(\frac{b}{2}\right)^2$ short of the perfect square
+$\left(x + \frac{b}{2}\right)^2$. Adding that missing piece is called
+\newterm{completing the square}.
+
+\textbf{Worked example.} Solve $x^2 + 6x - 7 = 0$.
+
+\textbf{Solution.} Move the $-7$ over: $x^2 + 6x = 7$. Half of 6 is 3, and
+$3^2 = 9$, so add 9 to both sides:
+$$x^2 + 6x + 9 = 16$$
+$$(x + 3)^2 = 16$$
+$$x + 3 = \pm 4$$
+So $x = 1$ or $x = -7$.
+
+Now do the same thing with letters. Start with $x^2 + bx + c = 0$:
+\begin{align*}
+x^2 + bx &= -c \\
+x^2 + bx + \frac{b^2}{4} &= \frac{b^2}{4} - c \\
+\left(x + \frac{b}{2}\right)^2 &= \frac{b^2 - 4c}{4} \\
+x + \frac{b}{2} &= \pm \frac{\sqrt{b^2 - 4c}}{2}
+\end{align*}
+That gives a formula that solves every quadratic whose first coefficient
+is 1:
 
 \begin{mdframed}[style=important]
-$x^2 + bx + c = 0$ when
+When $a = 1$, $x^2 + bx + c = 0$ when
 \begin{equation*}
-x = -\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2}  
+x = -\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2}
 \end{equation*}
-Only when $a=1$
 \end{mdframed}
 
-What does this mean?
-
-For any $b$ and $c$, the graph of $x^2 + bx + c$ is a parabola
-that goes up on each end. Its low point, the vertex, is at $x = -\frac{b}{2}$.
+Completing the square also tells you what the graph looks like. Since
+$x^2 + bx + c = \left(x + \frac{b}{2}\right)^2 + \left(c - \frac{b^2}{4}\right)$,
+the graph is a parabola that opens upward, and its lowest point, the
+vertex, is at $x = -\frac{b}{2}$, where the squared part is zero.
 For a quadratic with any value of $a$, the vertex is at $x = -\frac{b}{2a}$,
 which is called the vertex formula\index{vertex formula}.
 
-\index{discriminant}If there are no real roots ($b^2 - 4c < 0$), which means the
-parabola never gets low enough to cross the $x$-axis:
+The number under the square root, $b^2 - 4c$, is called the
+\index{discriminant}\newterm{discriminant}. It tells you how many solutions
+(or \newterm{roots}) there are before you do any more work.
+
+If $b^2 - 4c < 0$, there are no real roots. The parabola never gets low
+enough to reach the $x$-axis:
 \begin{center}
   \begin{tikzpicture}
       \begin{axis}[
@@ -60,7 +101,8 @@ parabola never gets low enough to cross the $x$-axis:
   \end{tikzpicture}
 \end{center}
 
-If there is one real root ($b^2 - 4c = 0$), it means that the parabola only touches the x-axis.
+If $b^2 - 4c = 0$, there is one real root. The parabola just touches the
+$x$-axis at its vertex:
 \begin{center}
   
   \begin{tikzpicture}
@@ -79,7 +121,8 @@ If there is one real root ($b^2 - 4c = 0$), it means that the parabola only touc
   \end{tikzpicture}
 \end{center}
 
-If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses the x-axis twice as it dips below and then returns:
+If $b^2 - 4c > 0$, there are two real roots. The parabola dips below the
+$x$-axis and comes back up, crossing it twice:
 \begin{center}
   
   \begin{tikzpicture}
@@ -100,11 +143,12 @@ If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses
 \end{center}
 \begin{Exercise}[title={Roots of a Quadratic}, label=solve_quadratic]
 
-  In the last chapter, you found that the function for the height of your flying hammer is:
+  You toss a hammer upward from a height of 2 meters at 12 m/s. Its height
+  in meters after $t$ seconds is
 
   $$p = -\frac{1}{2}9.8 t^2 + 12t + 2$$
 
-  At what time will the hammer hit the ground?
+  When does the hammer hit the ground?
 
   
 \end{Exercise}
@@ -118,7 +162,8 @@ If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses
 
   $$x = -\frac{b}{2} \pm \frac{\sqrt{b^2 - 4c}}{2} = -\frac{-2.45}{2} \pm \frac{\sqrt{(-2.45)^2 - 4(-0.408)}}{2} = 1.225 \pm 1.382$$
 
-  We only care about the root after we release the hammer ($t > 0$).
+  The other root, $1.225 - 1.382 \approx -0.16$, is a time before you threw
+  the hammer, so we ignore it.
 
   $1.225 + 1.382 \approx 2.61$ seconds after releasing the hammer, it will hit the ground.
 
@@ -128,7 +173,9 @@ If there are two real roots ($b^2 - 4c > 0$), it means that the parabola crosses
 
 \section{The Traditional Quadratic Formula}
 
-If the last explanation was a little tricky to understand, the \index{quadratic formula}quadratic formula is a nifty tool.
+Divide $ax^2 + bx + c = 0$ by $a$ and complete the square, and you get the
+famous \index{quadratic formula}\newterm{quadratic formula}. It works
+directly, with no dividing first.
 
 \begin{mdframed}[style=important, frametitle={The Quadratic Formula}]
 
@@ -168,12 +215,10 @@ root of a negative number, so this equation has no real solutions.
 
 
 \section{Factoring Quadratics}
-\textbf{Worked example: factoring.}
-Solve $x^2 - 5x + 6 = 0$. Factor the left side as $(x - 2)(x - 3) = 0$. The solutions are $x = 2$ and $x = 3$. Check: $2^2 - 5(2) + 6 = 0$ and $3^2 - 5(3) + 6 = 0$.
-
 
 The quadratic formula always works, but the arithmetic can get heavy,
-especially without a calculator. For some quadratics, \index{factoring}factoring is faster.
+especially without a calculator. For some quadratics,
+\index{factoring}factoring is much faster.
 
 Factoring rewrites a quadratic as a product of two simpler expressions. For
 example, $x^2 + 5x + 6$ can be written as $(x + 2)(x + 3)$. Expanding the
@@ -186,9 +231,13 @@ $(x + 2)(x + 3) = 0$ means $x + 2 = 0$ or $x + 3 = 0$, which gives $x = -2$
 or $x = -3$. These are the same roots the quadratic formula gives, found
 without a square root.
 
-Most quadratics you factor by hand have $a = 1$, in the form
-$x^2 + bx + c$. Certain quadratics with $a \neq 1$ also factor, using the
-AC method below.
+\textbf{Worked example.} Solve $x^2 - 5x + 6 = 0$.
+
+\textbf{Solution.} We need two numbers that multiply to 6 and add to $-5$:
+$-2$ and $-3$. So $(x - 2)(x - 3) = 0$, and $x = 2$ or $x = 3$. Check:
+$2^2 - 5(2) + 6 = 0$ and $3^2 - 5(3) + 6 = 0$.
+
+Here are the factoring techniques worth knowing.
 
 \subsection*{Types of Factoring Techniques}
 
@@ -240,13 +289,47 @@ AC method below.
 \end{itemize}
 
 
-%FIXME completing the square section? 
-
-% we should have all 3 factoring methods at least mentioned or taught
 
 \begin{Exercise}[title={Difference of Squares}, label=quad1]
 Solve $x^2 - 4 = 0$.
 \end{Exercise}
 \begin{Answer}[ref=quad1]
 Factor as $(x - 2)(x + 2) = 0$. The solutions are $x = 2$ and $x = -2$.
+\end{Answer}
+
+\begin{Exercise}[title={Pick your method}, label=quad2]
+Solve each equation. Choose factoring, completing the square, or the
+quadratic formula, whichever is easiest.
+\begin{enumerate}
+\item $x^2 + 6x + 5 = 0$
+\item $2x^2 + 7x + 3 = 0$
+\item $x^2 - 10x + 18 = 0$
+\item $x^2 + 2x + 5 = 0$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=quad2]
+\begin{enumerate}
+\item Factor: $(x + 1)(x + 5) = 0$, so $x = -1$ or $x = -5$.
+\item AC method: $ac = 6 = 6 \times 1$ and $6 + 1 = 7$, so
+      $2x^2 + 6x + x + 3 = 2x(x + 3) + (x + 3) = (2x + 1)(x + 3) = 0$.
+      So $x = -\frac{1}{2}$ or $x = -3$.
+\item Complete the square: $x^2 - 10x + 25 = 7$, so $(x - 5)^2 = 7$ and
+      $x = 5 \pm \sqrt{7}$, about 7.65 or 2.35.
+\item The discriminant is $2^2 - 4(5) = -16 < 0$, so there are no real
+      solutions.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={Nothing but net}, label=quad3]
+You shoot a basketball from a height of 2 m. Its height after $t$ seconds
+is $h = -4.9t^2 + 8t + 2$. The rim is 3.05 m high. At what times is the
+ball at rim height? Which one matters for making the shot?
+\end{Exercise}
+\begin{Answer}[ref=quad3]
+Solve $-4.9t^2 + 8t + 2 = 3.05$, or $-4.9t^2 + 8t - 1.05 = 0$. With
+$a = -4.9$, $b = 8$, $c = -1.05$:
+$$t = \frac{-8 \pm \sqrt{64 - 4(-4.9)(-1.05)}}{2(-4.9)} = \frac{-8 \pm \sqrt{43.42}}{-9.8} = \frac{8 \mp 6.59}{9.8}$$
+So $t \approx 0.14$ s or $t \approx 1.49$ s. At 0.14 s, the ball is still
+rising past rim height. A ball cannot drop through the hoop from below, so
+the time that matters is 1.49 s, on the way down.
 \end{Answer}

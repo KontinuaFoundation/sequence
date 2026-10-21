@@ -99,6 +99,140 @@ The derivative of a composition of functions is:\index{chain rule}
 \frac{d}{dx}(f(g(x))) = f'(g(x)) \cdot g'(x)
 \end{equation}
 
+\section{Derivatives of Trigonometric Functions}
+\index{derivatives!of trigonometric functions}
+
+In the trigonometric functions chapter, you saw that the slope of the sine
+curve at any point equals the cosine there, and that the slope of the cosine
+curve is $-\sin$. Now you have the tools to prove it and to use it.
+
+\begin{Exercise}
+    [title=Derivative of cosine, label=trigderiv1]
+    Use the limit definition of a derivative to show that $\frac{d}{dx} \cos{x} 
+    = -\sin{x}$
+\end{Exercise}
+\begin{Answer}
+    [ref=trigderiv1]
+    We start by writing out the limit: 
+    $$\frac{d}{dx}\cos{x}=\lim_{h \to 0}\frac{\cos(x+h)-\cos{x}}{h}$$
+
+    Applying the sum formula for $\cos(x+h)$, we get:
+    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\sin{x}\sin{h}-\cos{x}}{h}$$
+
+    Rearranging to group the $\cos{x}$ and applying the Difference Rule:
+    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\cos{x}}{h} - \lim_{h \to 0}\frac{\sin{x}\sin{h}}{h}$$
+
+    Applying the Constant Multiple Rule:
+    $$=\cos{x}\lim_{h \to 0}\frac{\cos{h}-1}{h} - \sin{x}\lim_{h \to 0}\frac{\sin{h}}{h}$$
+
+    Recalling that $\lim_{h \to 0}\frac{\sin{h}}{h} = 1$,
+    $$=\cos{x}\lim_{h \to 0}\frac{\cos{h}-1}{h}-\sin{x} \cdot 1$$
+
+    Recalling that $\lim_{h \to 0}\frac{\cos{h}-1}{h}=0$:
+    $$=\cos{x} \cdot0 -\sin{x} = -\sin{x}$$
+
+    Therefore, $\frac{d}{dx}\cos{x}=-\sin{x}$
+\end{Answer}
+
+The derivatives of all the trigonometric functions are presented below:
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ $\frac{d}{dx}\sin{x}=\cos{x}$ & $\frac{d}{dx}\csc{x}=-\csc{x} \cdot \cot{x}$ \\ 
+ $\frac{d}{dx}\cos{x}=-\sin{x}$ & $\frac{d}{dx}\sec{x}= \sec{x} \cdot \tan{x}$  \\ 
+ $\frac{d}{dx}\tan{x}=\sec^2{x}$ & $\frac{d}{dx}\cot{x}=-\csc^2{x}$  \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Example}: Find the derivative of $f(x)$ if $f(x) = x^2\sin{x}$
+\textbf{Solution}: Using the product rule, we find that: 
+$$\frac{d}{dx}f(x)=(x^2)\frac{d}{dx}(\sin{x})+(\sin{x})\frac{d}{dx}(x^2)$$
+
+Taking the derivatives:
+$$=x^2(\cos{x})+2x(\sin{x})$$
+% this seems a bit too difficult if the student has not learned derivative rules before this
+\begin{Exercise}[title = Derivatives of trig functions, label=trigderiv2]
+    Find the derivative of the following functions:
+    \begin{enumerate}
+        \item $f(x) = \frac{\sec{x}}{1+\tan{x}}$
+        \item $y=\sec{t}\tan{t}$
+        \item $f(\theta) = \frac{\theta}{4-\tan{\theta}}$
+        \item $f(t) = 2\sec{t} - \csc{t}$
+        \item $f(\theta) = \frac{\sin{\theta}}{1+\cos{\theta}}$
+        \item $f(x) = \sin{x}\cos{x}$
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Answer}
+    [ref=trigderiv2]
+    \begin{enumerate}
+        \item $\frac{\sec{x}(\tan{x}-1)}{(1+\tan{x})^2}$
+        \item $\sec{t}[\sec^2{t}+\tan^2{t}]$
+        \item $\frac{4-\tan{\theta}+\theta \sec^2{\theta}}{(4-\tan{\theta})^2}$
+        \item $2\sec{t}\tan{t}+\csc{t}\cot{t}$
+        \item $\frac{1}{1+\cos{\theta}}$
+        \item $\cos^2{x} - \sin^2{x}$
+    \end{enumerate}
+\end{Answer}
+
+\section{Derivatives of Inverse Trigonometric Functions}
+
+The inverse trigonometric functions from volume 10 have derivatives that
+contain no trig functions at all:
+
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+	\hline
+	$f$ & $f'$\\
+	\hline
+	$\arcsin{x}$ & $\frac{1}{\sqrt{1 - x^2}}$\\
+	\hline
+	\index{arccosine}$\arccos{x}$ & $ - \frac{1}{\sqrt{1 - x^2}}$\\
+	\hline
+	\index{arctangent}$\arctan{x}$ & $\frac{1}{1 + x^2}$\\
+	\hline
+	arccsc $x$ & $ - \frac{1}{x\sqrt{x^2-1}}$\\
+	\hline
+	\index{arcsecant}arcsec $x$ & $\frac{1}{x\sqrt{x^2-1}}$\\
+	\hline
+	arccot $x$ & $ - \frac{1}{1+x^2}$\\
+	\hline
+\end{tabular}
+\end{center}
+
+\textbf{Worked example.} What is the slope of $y = \arcsin x$ at
+$x = \frac{1}{2}$?
+
+\textbf{Solution.} $\frac{1}{\sqrt{1 - \frac{1}{4}}} = \frac{1}{\sqrt{3/4}} = \frac{2}{\sqrt{3}} \approx 1.155$.
+
+
+%derivatives have not been defined up to here
+\begin{Exercise}[label=invtrig1]
+Find $f'$. Simplify your answer. 
+\begin{enumerate}
+\item $f(x) = (\arctan{x})^2$
+\item $f(x) = x\text{arcsec }(x^3)$
+\item $f(x) = \arcsin{\frac{1}{x}}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=invtrig1]
+\begin{enumerate}
+\item By the chain rule, $f'(x) = 2\arctan{x} \times \frac{d}{dx}\arctan{x} = 2\arctan{x}\frac{1}{1 + x^2}$
+\item By the Product rule, $f'(x) = x \frac{d}{dx}\text{arcsec }(x^3) + \text{arcsec }(x^3)$. Further, by the chain rule, $\frac{d}{dx}\text{arcsec }(x^3) = \frac{1}{(x^3)\sqrt{(x^3)^2-1}} \times \frac{d}{dx}(x^3) = \frac{3x^2}{x^3\sqrt{x^6-1}}$. Therefore, $f'(x) = \frac{3}{\sqrt{x^6-1}} + \text{arcsec }(x^3)$
+\item By the chain rule, $f'(x) = \frac{1}{\sqrt{1-(1/x)^2}} \times \left(- \frac{1}{x^2}\right) = - \frac{1}{x^2\sqrt{1-\frac{1}{x^2}}} = -\frac{1}{|x|\sqrt{x^2 - 1}}$
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={Derivative of Arctangent}, label=itrig_deriv1]
+Find the derivative of $\arctan x$ at $x = 1$.
+\end{Exercise}
+\begin{Answer}[ref=itrig_deriv1]
+$\frac{d}{dx}\arctan x = \frac{1}{1 + x^2}$. At $x = 1$, this is $\frac{1}{2}$.
+\end{Answer}
+
 \section{Practice}
 \begin{Exercise}[label=deriv_rules1]
 If $f$ is the function given, find $f'$. 
@@ -112,8 +246,7 @@ If $f$ is the function given, find $f'$.
 \begin{Answer}[ref=deriv_rules1]
 	\begin{enumerate}
 		\item $\frac{dy}{dx} = \frac{d}{dx}[x\sin{x}] = x\frac{d}{dx}\sin{x} 
-		+ \sin{x}\frac{d}{dx}x = x(-\cos{x}) + \sin{x}(1) = \sin{x} - 
-		x\cos{x}$
+		+ \sin{x}\frac{d}{dx}x = x\cos{x} + \sin{x}(1) = x\cos{x} + \sin{x}$
     	\item By the chain rule, $f'(x) = 5(x^3 - \cos{x})^4 \cdot 
     	\frac{d}{dx}(x^3 - \cos{x}) = 5(x^3 - \cos{x})^4 \cdot (3x^2 + 
     	\sin{x})$

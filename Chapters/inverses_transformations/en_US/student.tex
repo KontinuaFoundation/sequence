@@ -2,19 +2,21 @@
 
 
 \section{Inverses}
-\textbf{Worked example: an inverse function.}
-Let $f(x) = 2x + 1$. Solve $y = 2x + 1$ for $x$ to get $x = \frac{y - 1}{2}$, so $f^{-1}(x) = \frac{x - 1}{2}$. Check: $f(f^{-1}(x)) = 2\left(\frac{x-1}{2}\right) + 1 = x$.
 
-\subsection{Inverses}
+Put on your socks, then your shoes. To undo that, you take off your shoes,
+then your socks. Undoing is a big idea in math, and for functions it is
+called the inverse.
 
-Some functions have \index{inverse function}inverse functions. If a function $f$ is a machine that turns
-number $x$ into $y$, the inverse (usually denoted $f^{-1}$) is the machine that turns $y$ back
-into $x$.
+If a function $f$ is a machine that turns $x$ into $y$, its
+\index{inverse function}\newterm{inverse}, written $f^{-1}$, is the machine
+that turns $y$ back into $x$.
 
-For example, let $f(x) = 5x + 1$. Its inverse is
-$f^{-1}(x) = (x - 1)/5$. (Spot check it: $f(3) = 16$ and $f^{-1}(16) = 3$)
+For example, let $f(x) = 5x + 1$. The rule is ``multiply by 5, then add 1.''
+To undo it, subtract 1, then divide by 5: $f^{-1}(x) = (x - 1)/5$. Spot
+check: $f(3) = 16$ and $f^{-1}(16) = 3$.
 
-Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =  \sqrt[3]{x}$. Let us plot the function (solid line) and its inverse (dashed):
+Does $f(x) = x^3$ have an inverse? Yes: $f^{-1}(x) = \sqrt[3]{x}$. Here is
+the function (solid) and its inverse (dashed):
 
 \begin{figure}[H]
   \centering
@@ -34,27 +36,31 @@ Does the function $f(x) = x^3$ have an inverse? Yes, $f^{-1}(x) =  \sqrt[3]{x}$.
       \addplot[thick,no marks,sdkblue,dashed] expression[domain=-3:0,samples=100]{-1 * (-1 * x)^(1/3)};
     \end{axis}
   \end{tikzpicture}
-  \caption{The function $f(x) = x^3$ and it is inverse.}
+  \caption{The function $f(x) = x^3$ and its inverse.}
   \label{fig:inv1}
 \end{figure}
 
 
-The inverse is the same as the function, just with its axes swapped.
-The inverse function is \emph{reflected} across the line $y=x$. \index{reflections}
-This tells us how to solve for an inverse: We swap $x$ and $y$ and
-solve for $y$.
+The inverse is the same curve with the axes swapped: every point $(a, b)$
+on $f$ becomes $(b, a)$ on $f^{-1}$. Swapping coordinates
+\emph{reflects}\index{reflections} the graph across the line $y=x$.
 
-For example, if you are given the function $f(x) = 5x + 1$, its graph
-is all $(x,y)$ such that $y = 5x + 1$.  The graph of its inverse is
-all $(x, y)$, such that $x = 5y + 1$. Solving for $y$ gives you $y = (x -
-  1)/5$. So we can say that $f^{-1}(x) = (x - 1)/5$, QED.
+That gives a recipe for finding an inverse: swap $x$ and $y$, then solve
+for $y$.
 
-Not every function has an inverse.  For example, $f(x) = x^2$.  Note
-that $f(2) = f(-2) = 4$.  What would $f^{-1}(4)$ be? 2 or -2?  This
-implies the ``horizontal line test'': If any horizontal line contains
-more than one point of a function's graph, that function has no
-inverse. If a function passes the horizontal line test, it is called
-\index{one-to-one function}"one-to-one", meaning there is exactly one $x$ that gives each $y$. \\
+\textbf{Worked example.} Find the inverse of $f(x) = 2x + 1$.
+
+\textbf{Solution.} Write $y = 2x + 1$ and swap: $x = 2y + 1$. Solve for
+$y$: $y = \frac{x - 1}{2}$. So $f^{-1}(x) = \frac{x - 1}{2}$. Check:
+$f(f^{-1}(x)) = 2\left(\frac{x-1}{2}\right) + 1 = x$. The inverse undoes
+the function, just as it should.
+
+Not every function has an inverse. Take $f(x) = x^2$: $f(2) = f(-2) = 4$.
+What would $f^{-1}(4)$ be, 2 or $-2$? There is no way to choose. This gives
+the \newterm{horizontal line test}: if any horizontal line hits a function's
+graph more than once, the function has no inverse. A function that passes
+is \index{one-to-one function}\newterm{one-to-one}: each output comes from
+exactly one input.
 \index{horizontal line test}
 \begin{figure}[H]
   \centering
@@ -78,20 +84,16 @@ inverse. If a function passes the horizontal line test, it is called
 \end{figure}
 
 
-In some problems, you need an inverse, but you do not need the
-whole domain, so you trim the domain to a set you can define an
-inverse on. This allow you to make claims such as ``If we restrict the domain to
-the nonnegative numbers, the function $f(x) = x^2 - 5$ has an inverse:
-$f^{-1}(x) =\sqrt{x + 5}$.
+Sometimes you can rescue an inverse by trimming the domain. If we keep only
+the nonnegative inputs, $f(x) = x^2 - 5$ passes the horizontal line test,
+and its inverse is $f^{-1}(x) = \sqrt{x + 5}$.
 
-This raises the question: What is the domain of the inverse function $f^{-1}$?
+What is the domain of $f^{-1}$? Run every input in the domain of $f$
+through the machine and collect what comes out. That set is the
+\textit{image}, or \textit{range}\index{range}, of $f$.
 
-If we let $X$ be the domain of $f$, we can run every member of $X$
-through ``the machine'' and gather them in a set on the other
-side. This set would be the \textit{image} of the $f$ "machine". (This is the \textit{range} of $f$.)\index{range}
-
-What is the image of $f(x) = x^2 - 5$? It is the set of all real
-numbers greater than or equal to -5. We write this:
+The range of $f(x) = x^2 - 5$ is the set of all real numbers greater than
+or equal to $-5$. We write this:
 
 \begin{equation*}
   \{ x \in {\rm I\!R} | x \geq -5 \}
@@ -100,10 +102,9 @@ numbers greater than or equal to -5. We write this:
 Now we can say: \textbf{The range (or image) of the function is the domain
   of the inverse function.}
 
-In inverse functions, the domain and range get swapped:
-the domain of the function is the range of the inverse function, and visa versa.
-In our example, we can use any number greater
-than or equal to -5 as input into the inverse function.
+The swap goes both ways: the domain of $f$ is the range of $f^{-1}$. In our
+example, you can feed any number greater than or equal to $-5$ into
+$f^{-1}$.
 
 \begin{figure}[H]
   \centering
@@ -172,7 +173,7 @@ than or equal to -5 as input into the inverse function.
 
   To prevent any horizontal line from containing more than one point of
   the graph, you would need to use the left or the right side --- either
-  $\{x \in {\rm I\!R}  | x \leq 3\}$ or $\{x {\rm I\!R}| x \geq 3\}$. Most people will choose the
+  $\{x \in {\rm I\!R}  | x \leq 3\}$ or $\{x \in {\rm I\!R}| x \geq 3\}$. Most people will choose the
   right side; the rest of the solution will assume that you did too.
 
   To find the inverse we swap $x$ and $y$: $x = (y -3)^2 + 2$
@@ -187,7 +188,8 @@ than or equal to -5 as input into the inverse function.
 
 \begin{Exercise}[label=invfunc1]
   A function is given by a table of values, a graph, or a written description.
-  Determine whether it is one-to-one.
+  Determine whether it is one-to-one. For the tables, assume the function
+  changes smoothly between the listed points.
   \begin{enumerate}
     \item
           \begin{tabular}{|c|c|c|c|c|c|c|}\hline
@@ -228,21 +230,23 @@ than or equal to -5 as input into the inverse function.
 
 \begin{Answer}[ref=invfunc1]
   \begin{enumerate}
-    \item This function is not one-to-one. From $x=3$ to $x=4$, the
-          function increases from 3.6 to 5.3, which means it must pass through
-          $f(x_1)=4.0$. From $x=4$ to $x=5$, the function decreases from 5.3 to
-          2.8, which means it must pass through $f(x_2) = 4.0$ again.
-    \item This function is not one-to-one by a similar argument in the
-          above solution
-    \item This function is not one-to-one, because it fails the horizontal
-          line test
-    \item This function is one-to-one, because it passes the horizontal
-          line test
+    \item Not one-to-one. The quickest reason: $f(2) = f(6) = 2.0$. Also,
+          from $x=3$ to $x=4$ the function rises from 3.6 to 5.3, so it passes
+          through 4.0; from $x=4$ to $x=5$ it falls to 2.8, so it passes
+          through 4.0 again.
+    \item Not one-to-one, even though no value in the table repeats. The
+          function rises to 3.5 at $x=4$, then falls to 3.1 at $x=5$. Any
+          value between 3.1 and 3.5, such as 3.2, is reached once on the way
+          up and again on the way down.
+    \item Not one-to-one: the curve is symmetric about the $y$-axis, so a
+          horizontal line through it hits twice.
+    \item One-to-one: the curve only goes down, so it passes the horizontal
+          line test.
     \item $f(t)$ would not be one-to-one because the football must pass
           through each height (except the peak height) both on the way up and
-          on the way back down
-    \item $v(t)$ would be one-to-one because a falling object only speeds
-          up. Therefore, every time has a unique speed.
+          on the way back down.
+    \item $v(t)$ is one-to-one because a falling object only speeds up, so
+          each speed happens at exactly one time.
   \end{enumerate}
 \end{Answer}
 
@@ -302,8 +306,11 @@ which prints the key in the corner.
 \end{Answer}
 
 \section{Transforming Functions}
-Recall how we could translate, mirror, or rotate shapes and they would still be congruent shapes? We can do the same with functions, but the functions are not always equal.
-Let us say we gave you the graph of a function $f$, like this:
+Remember sliding, flipping, and turning shapes in geometry? You can do the
+same to the graph of a function. Change the formula a little, and the graph
+moves in a predictable way.
+
+Here is the graph of a function $f$:
 \begin{figure}[H]
     \centering
         \begin{tikzpicture}
@@ -322,7 +329,8 @@ Let us say we gave you the graph of a function $f$, like this:
     \label{fig:graphNoShift}
 \end{figure}
 
-We then tell you that the function is $g(x) = f(x) + 1.5$.  Can you guess what the graph of $g$ would look like? It is the same graph, just translated up 1.5:
+Now let $g(x) = f(x) + 1.5$. Can you guess what the graph of $g$ looks
+like? It is the same curve, lifted up 1.5:
 \begin{figure}[H]
     \centering
 
@@ -340,20 +348,22 @@ We then tell you that the function is $g(x) = f(x) + 1.5$.  Can you guess what t
         \addplot[no marks,sdkblue] expression[domain=-2:2,samples=100]{x^2 + 1.5} node[below, yshift=-6mm] {$g(x)$};
         \end{axis}\end{tikzpicture}
 
-    \caption{Shifted graph of $f(x) + 1.2$.}
+    \caption{$f(x)$ dashed and $g(x) = f(x) + 1.5$ solid.}
     \label{fig:example-inverses_transformations}
 \end{figure}
 
 
-There are four kinds of \index{function transformations}transformations that we do all the time:
+Four \index{function transformations}transformations come up all the
+time:
 \begin{itemize}
-\item Translation up and down in the direction of $y$ axis (the one you just saw)
-\item Translation left and right in the direction of the $x$ axis
-\item Scaling up and down along the $y$ axis
-\item Scaling up and down along the $x$ axis
+\item Translating up and down (the one you just saw)
+\item Translating left and right
+\item Stretching or squishing along the $y$ axis
+\item Stretching or squishing along the $x$ axis
 \end{itemize}
 
-Next, we will demonstrate each of the four using the graph of $\sin(x)$.
+We will show each one on the graph of $\sin(x)$, which you will meet
+properly in the trigonometry chapters. For now, just enjoy the wave.
 
 \subsection{Translation up and down}
 
@@ -405,9 +415,11 @@ Here is the graph of $\sin(x) - 0.5$:
 
 \subsection{Translation left and right}
 
-When you add a positive number to $x$ before running it through $f$,\index{translation!horizontal}
-you translate the graph to the left by that amount. Adding a negative
-number translates the graph to the right.
+When you add a positive number to $x$ before running it through
+$f$,\index{translation!horizontal} the graph moves \emph{left} by that
+amount. Subtracting moves it \emph{right}. This feels backward at first.
+Here is why: $f(x + 2)$ reaches any given output 2 units sooner than $f(x)$
+does, so every feature arrives 2 units to the left.
 
 Here is the graph of $\sin(x - \pi/6)$:
 \begin{figure}[H]
@@ -449,17 +461,14 @@ Here is the graph of $\sin(x - \pi/6)$:
     \label{fig:translationRight}
 \end{figure}
 
-Notice the sign:
-\begin{itemize}
-\item Adding to $x$ before processing with the function translates the graph to the \emph{left}.
-\item Subtracting from $x$ before processing with the function translates the graph to the \emph{right}
-\end{itemize}
+The solid curve sits $\frac{\pi}{6}$ to the right of the dashed one, even
+though the formula has a minus sign.
 
 \subsection{Scaling up and down in the $y$ direction}
 
-To scale the function up and down, you multiply the result of the
-function by a constant.  If the constant is larger than 1, it
-stretches the function up and down.
+To stretch a graph vertically, multiply the output by a constant. A
+constant larger than 1 stretches the graph taller; one between 0 and 1
+squishes it flatter.
 
 Here is $y = 2\sin(x)$:
 \begin{figure}[H]
@@ -497,17 +506,16 @@ Here is $y = 2\sin(x)$:
           plot (\x,{sin(deg{\x}) * 2.0});
     \end{tikzpicture}
 
-    \caption{Scaling up and down in the y-direction requires a scalar outside of the function.}
+    \caption{$\sin(x)$ dashed and $2\sin(x)$ solid.}
     \label{fig:scaleUp}
 \end{figure}
 
-With a wave like this, we speak of its \newterm{amplitude}\index{amplitude}, which you
-can think of as its height. The baseline that this wave oscillates
-around is zero. The maximum distance that it gets from that baseline
-is its amplitude.  Thus, the amplitude here has been increased from 1
-to 2.
+A wave's \newterm{amplitude}\index{amplitude} is how far it swings from its
+baseline. This wave swings around 0, and multiplying by 2 raised its
+amplitude from 1 to 2.
 
-If you multiply by a negative number, the function gets flipped.  Here is $y = -0.5 \sin(x)$:
+Multiply by a negative number, and the graph flips upside down. Here is
+$y = -0.5 \sin(x)$:
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[
@@ -542,16 +550,18 @@ If you multiply by a negative number, the function gets flipped.  Here is $y = -
           domain=-6.5:6.5,samples=300,variable=\x] 
           plot (\x,{sin(deg{\x}) * -0.5});
     \end{tikzpicture}
-    \caption{Scaling down and flipping or mirroring the function using $y=-0.5\sin(x)$.}
+    \caption{$\sin(x)$ dashed and $-0.5\sin(x)$ solid: squished and flipped.}
     \label{fig:example_2}
 \end{figure}
 
-Amplitude is never negative.  Thus, the amplitude of this wave is 0.5.
+Amplitude is a distance, so it is never negative. The amplitude of this
+wave is 0.5.
 
 \subsection{Scaling up and down in the $x$ direction}
 
-If you multiply $x$ by a number larger than 1 before running it
-through the function, the graph gets compressed toward zero.
+Multiply $x$ by a number larger than 1 before running it through the
+function, and the graph squishes toward the $y$ axis. Everything happens
+sooner.
 
 Here is $y = \sin(3x)$:
 \begin{figure}[H]
@@ -588,19 +598,21 @@ Here is $y = \sin(3x)$:
           domain=-6.5:6.5,samples=300,variable=\x] 
           plot (\x,{sin(deg{\x} * 3)});
     \end{tikzpicture}
-    \caption{A solid $\sin(3x)$ compared to a solid $\sin(x)$ graph.}
+    \caption{$\sin(x)$ dashed and $\sin(3x)$ solid.}
     \label{fig:compressedSin}
 \end{figure}
 
-The distance between two peaks of a wave is known as its
-\newterm{wavelength}\index{wavelength}.  The original wave had a wavelength of $2\pi$.
-The compressed wave has a wavelength of $2\pi/3$.
+The distance from one peak to the next is the
+\newterm{wavelength}\index{wavelength}. The original wave has wavelength
+$2\pi$; the squished wave has wavelength $\frac{2\pi}{3}$. Three waves now
+fit where one used to.
 
-If you multiply $x$ by a number smaller than 1, it will stretch the function out, away from the $y$ axis.
+Multiply $x$ by a number between 0 and 1, and the graph stretches away from
+the $y$ axis. Multiply $x$ by a negative number, and the graph flips across
+the $y$ axis.
 
-If you multiply $x$ by a negative number, it will flip the function around the $y$ axis.
-
-Here is $y = 2^{(-0.5x)}$. Notice that it has flipped around the $y$ axis and is stretched out along the $x$ axis.
+Here is $y = 2^{-0.5x}$. It is flipped across the $y$ axis and stretched out
+along the $x$ axis.
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -624,14 +636,15 @@ Here is $y = 2^{(-0.5x)}$. Notice that it has flipped around the $y$ axis and is
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{transformation_r.png}
-    \caption{A table of different transforms on a function}
+    \caption{Where common transformations send a point $(x, y)$.}
     \label{fig:transformation_r}
 \end{figure}
 
 \subsection{Order is important!}
 
-We can combine these \index{order of transformations}transformations. This allows us, for example, to
-translate a function up 2, then scale along the $y$ axis by 3.
+You can combine \index{order of transformations}transformations. For
+example, you can translate a function up 1, then stretch it vertically by
+2.
 
 Here is $y = 2.0 (\sin(x) + 1)$:
 \begin{figure}[H]
@@ -680,7 +693,7 @@ A function is often a series of steps. Here are the steps in $f(x) = 2(\sin(x) +
 \item Add 1 to that
 \item Multiply that by 2
 \end{enumerate}
-Note that this function can be distributed into $f(x) = 2\sin(x) + 2$ by bringing the 2 in both of the steps.
+Distributing the 2 gives the same function: $f(x) = 2\sin(x) + 2$.
 
 What if we change the order? Here are the steps in $g(x) = 2\sin(x) + 1$:
 \begin{enumerate}
@@ -731,8 +744,8 @@ plot (\x,{2.0 * (sin(deg{\x}) + 1)});
 \end{figure}
 
 
-The moral: You can do multiple transformations of your function, but
-the order in which you do them is important.
+The two curves differ by 1 everywhere. The moral: when you combine
+transformations, order matters. It is socks and shoes all over again.
 
 \begin{Exercise}[title={Transforms}, label=sine_transform]
 
@@ -792,29 +805,36 @@ This wave has an amplitude of 2; its baseline has been translated up to 3.
 This wave has wavelength of $\pi$. A sine wave usually has a
 wavelength of $2\pi$, so we need to compress the $x$ axis by a factor of 2.
 
-The wave first crosses its baseline at $pi/4$.  The sine wave starts
-by crossing its baseline, so we need to translate the curve right by
-$\pi/4$.
+The crest is at $\frac{\pi}{2}$, so the wave crosses its baseline on the
+way up a quarter wavelength earlier, at $\frac{\pi}{2} - \frac{\pi}{4} =
+\frac{\pi}{4}$. A plain sine wave crosses its baseline on the way up at 0,
+so we translate right by $\frac{\pi}{4}$: replace $x$ with
+$x - \frac{\pi}{4}$.
 
-$$f(x) = 2 \sin(2x - \frac{\pi}{4}) + 3$$
+$$f(x) = 2 \sin\left(2\left(x - \frac{\pi}{4}\right)\right) + 3 = 2\sin\left(2x - \frac{\pi}{2}\right) + 3$$
+
+Check: $f\left(\frac{\pi}{2}\right) = 2\sin\left(\frac{\pi}{2}\right) + 3 = 5$
+and $f(\pi) = 2\sin\left(\frac{3\pi}{2}\right) + 3 = 1$. Watch the
+parentheses: $2\sin(2x - \frac{\pi}{4}) + 3$ shifts right by only
+$\frac{\pi}{8}$.
 
 \end{Answer}
 
 \subsection{Effects on even and odd Functions}
-Now that you have worked with transformations like shifts and scalings, you can use \index{symmetry}symmetry to quickly assess how those changes affect a function.
+Which transformations keep a function \index{symmetry}even or odd?
 \begin{enumerate}
-    \item Vertical shifts (like \( f(x) + c \)) do not change whether a function is even or odd — but they break symmetry about the origin or y-axis. Example: \( x^2 + 1 \) is still \index{even function}even, but it is not symmetric about the origin.
-    \item Horizontal shifts (like \( f(x - c) \)) also typically destroy even/odd symmetry. Example: \( f(x) = \sin(x) \) is \index{odd function}odd. But \( f(x) = \sin(x - \pi/2) \) is neither even nor odd.
-    \item Vertical scalings (like \( a \cdot f(x) \)) preserve symmetry type. Example: \( x^2 \) versus \( 3x^2 \).
-    \item Horizontal scalings (like \( f(bx) \)) preserve symmetry as long as the center of the transformation stays aligned. Example: \( f(x) = x^3 \) is odd. \( f(x) = (2x)^3 \) is still odd.
+    \item Vertical shifts ($f(x) + c$) keep an \index{even function}even
+          function even: $x^2 + 1$ is still a mirror image across the
+          $y$-axis. They break oddness: $x^3$ is \index{odd function}odd, but
+          $x^3 + 1$ is not.
+    \item Horizontal shifts ($f(x - c)$) usually break both. $\sin(x)$ is
+          odd, but $\sin(x - \frac{\pi}{4})$ is neither. (Careful:
+          $\sin(x - \frac{\pi}{2}) = -\cos(x)$, which happens to be even.
+          Always check.)
+    \item Vertical stretches ($a f(x)$) and horizontal stretches ($f(bx)$)
+          keep the type: $3x^2$ is even, and $(2x)^3$ is odd.
 \end{enumerate}
-
-Remember these key ideas:
-\begin{enumerate}
-    \item Reflecting an even function over the y-axis? It remains unchanged.
-    \item Reflecting an odd function over the origin? Still unchanged.
-    \item But any shift left or right often breaks the symmetry, so check \( f(-x) \) again if you have applied one.
-\end{enumerate}
+When in doubt, compute $f(-x)$ and compare.
 
 \begin{Exercise}[title={Inverse of a Cube}, label=inv1]
 Let $f(x) = x^3$. Find $f^{-1}(8)$.

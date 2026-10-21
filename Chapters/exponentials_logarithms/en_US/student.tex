@@ -1,13 +1,17 @@
 \chapter{Exponentials and Logarithms}
 
 
-\section{Exponents}
-\textbf{Worked example: exponents and logarithms.}
-$2^{10} = 1024$, so $\log_2 1024 = 10$. Also, $e^{\ln 5} = 5$. A logarithm undoes an exponent: $\log_b(b^x) = x$.
+Fold a sheet of paper in half, and it is twice as thick. Fold it again:
+four times. If you could fold it 42 times, it would reach the Moon. That
+is the power of repeated multiplication, and this chapter is about the
+tools for handling it: exponents, and their opposites, logarithms. With
+them, you can figure out when your savings will double, how long a glowing
+watch keeps glowing, and how fast a video is going viral.
 
-Let us take quick look at exponents. Ancient scientists started coming up
-with a lot of formulas that involved multiplying the same number
-several times. For example, if they knew that a sphere was $r$
+\section{Exponents}
+
+Let us start with a quick review. Long ago, scientists noticed that their
+formulas kept multiplying the same number by itself. For example, if they knew that a sphere was $r$
 centimeters in radius, its volume in milliliters was
 
 $$V = \frac{4}{3} \times \pi \times r \times r \times r$$
@@ -46,7 +50,7 @@ Mathematicians \textit{love} this rule, so we keep extending the idea
 of exponents to keep this rule true. For example, at some point,
 someone asked ``What about $5^0$?'' According to the rule, $5^{2}$
 must equal $5^{(2 + 0)}$ which must equal
-$\left(5^2\right)\left(5^0\right)$.  Thus, $5^2$ must be 1. So
+$\left(5^2\right)\left(5^0\right)$.  Thus, $5^0$ must be 1. So
 mathematicians declared ``Anything to the power of 0 is 1''.\index{exponents!zero}
 
 We do not typically assume that $0^0 = 1$. It is just too
@@ -72,7 +76,7 @@ $$\frac{x^5}{x^2} = x^3$$
 
 What about $5^{\frac{1}{3}}$? By the beloved rule, we know that $5^{\frac{1}{3}}5^{\frac{1}{3}}5^{\frac{1}{3}}$ must equal $5^1$. \index{nth root}Thus, $5^{\frac{1}{3}} = \sqrt[3]{5}$.\index{exponents!fractions}
 
-We say that for any $a$ and $b$ not equal to zero and any $c$ greater than zero,
+We say that for any positive $a$, any $b$, and any positive integer $c$,
 
 \[
 \large {a^{\frac{b}{c}}} = \left(\sqrt[c]{a}\right)^{b}=\left(\sqrt[c]{a^b}\right)
@@ -99,8 +103,6 @@ If these ideas are new to you (or maybe you are just having trouble remembering 
 watch the Khan Academy's \textbf{Intro to rational exponents} video at
 \url{https://youtu.be/lZfXc4nHooo}.
 
-%https://www.pinterest.com/pin/800796377464592621/
-% This could be made into a latex table
 
 
 \section{Logarithms}
@@ -123,10 +125,24 @@ Try this one: What is the logarithm base 2 of 1/16?
 
 You know that $2^{-4} = \frac{1}{16}$, so $\log_{2} \frac{1}{16} = -4$.
 
+\textbf{Worked example.} Find $\log_2 1024$ and $\log_{10} 0.001$.
+
+\textbf{Solution.} $2^{10} = 1024$, so $\log_2 1024 = 10$. And
+$10^{-3} = 0.001$, so $\log_{10} 0.001 = -3$. A logarithm just answers the
+question ``what power?''
+
+\begin{Exercise}[title={Solve for the Exponent}, label=exp1]
+Solve $3^x = 81$. Then find $\log_5 125$ and $\log_4 2$.
+\end{Exercise}
+\begin{Answer}[ref=exp1]
+$81 = 3^4$, so $x = 4$. Since $5^3 = 125$, $\log_5 125 = 3$. Since
+$4^{1/2} = 2$, $\log_4 2 = \frac{1}{2}$.
+\end{Answer}
+
 \subsection{Logarithms in Python}
 
-Most calculators have pretty limited logarithm capabilities, but
-python has a nice \pyfunction{log} function that lets you specify both
+Most calculators have limited logarithm buttons, but
+Python has a nice \pyfunction{log} function that lets you specify both
 the argument and the base. Start python, import the math module, and try taking a few logarithms:\index{log!in python}
 
 \begin{minted}{python}
@@ -137,8 +153,8 @@ the argument and the base. Start python, import the math module, and try taking 
 -4.0
 \end{minted}
 
-Let us say that a friend offers you 5\% interest per year on your
-investment for as long as you want. You wonder, ``How many years
+Say a friend offers you 5\% interest per year on your investment for as
+long as you want. Each year, your money is multiplied by 1.05. You wonder, ``How many years
 before my investment is 100 times as large?'' You can solve this problem with logarithms:
 
 \begin{minted}{python}
@@ -161,7 +177,8 @@ Notice that the logarithm of 1 is always zero, and $\log_b b = 1$.
 
 $$\log_b a c = \log_b a + \log_b c$$
 
-This follows from the fact that $b^{a + c} = b^a b^c$. What about a \index{logarithm!quotient rule}quotient?
+This follows from the exponent rule $b^{x + y} = b^x b^y$: logarithms
+are exponents, so multiplying numbers adds their logarithms. What about a \index{logarithm!quotient rule}quotient?
 
 $$\log_b \frac{a}{c} = \log_b a - \log_b c$$
 
@@ -193,15 +210,15 @@ You should get 3.
 
 \subsection{Natural Logarithm}
 
-When you learn about circles, you are told that the circumference of a
-circle is about 3.141592653589793 times its diameter.  Because we use
+The circumference of a circle is about 3.141592653589793 times its
+diameter.  Because we use
 this unwieldy number a lot, we give it a name: We say ``The
 circumference of a circle is $\pi$ times its diameter.''
 
 There is a second unwieldy number that we will eventually use a great deal in
 solving problems. It is about 2.718281828459045 (but the digits
-actually go on forever, just like $\pi$). We call this number $e$. (We are
-not going to talk about why $e$ is special quite yet, but we will soon.)\index{e}\index{logarithm!natural}
+actually go on forever, just like $\pi$). We call this number $e$. (You will see where $e$ comes from in the section on continuous compound
+interest.)\index{e}\index{logarithm!natural}
 
 Most calculators have a button labeled ``ln''. That is the
 \textit{natural logarithm} button. It takes the log in base $e$.\index{ln}
@@ -236,89 +253,10 @@ Spreadsheets also have the \index{exponential function}function \pyfunction{EXP(
 $e^x$.  For example, \pyfunction{EXP(2)} returns 7.38905609893065.
 
 
-\section{Exponential Decay}
-In a previous chapter, we saw that an investment of $P$ getting
-\index{compound interest}compound interest with an annual interest rate of $r$, grows
-exponentially. At the end of year $t$, your balance would be
-
-$$P\left(1 + r\right)^t$$
-
-\index{exponential growth}Because $r$ is positive, this number grows as time passes. You get a
-nice exponential growth curve that looks something like this:
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{exponential_growth.png}
-    \caption{A diagram showing (exponential) compound interest.}
-    \label{fig:exponential_growth}
-\end{figure}
-
-This is \$30 invested with a 10\% annual interest rate. So, the formula
-for the balance after $t$ years would be
-
-$$(30)(1.1)^t$$
-
-What if $r$ were negative? This would be \textit{exponential decay}.
-
-\subsection{Radioactive Decay}
-
-Until around 1970, there were companies making watches whose faces and
-hands were coated with radioactive paint. The paint usually contained
-radium. When a radium atom decays, it gives off some energy, loses two
-protons and two neutrons, and becomes a different element
-(radon). Some of the energy given off is visible light. Thus, these
-watches glow in the dark.\index{radioactive decay}
-
-How many of the radium atoms in the paint decay each century? About 4.24\%.
-
-Notice the quantity of atoms lost is proportional to the number of
-atoms you have. This is exponential decay. If we assume that we start
-with a million radium atoms, the number of atoms decreases over time like this:
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{radium_decay.png}
-    \caption{A diagram showing the decay and half life of radium.}
-    \label{fig:radium_decay}
-\end{figure}
- 
-\begin{itemize}
-\item We start with 1,000,000 atoms.
-\item At 16 centuries, we have only 500,000 (half as many) left.
-\item 16 centuries after that, we have only 250,000 (half again) left.
-\item 16 centuries after that, we have only 125,000 (half again) left.
-\end{itemize}
-
-A nuclear chemist would say that radium has a \textit{half-life} of
-1,600 years; its lifespan decreases by half its original amount every 1,600 years. Note that this means that if you bought a watch with
-glowing hands in 1960, it will be glowing half as brightly in the year
-3560.\index{half-life}
-
-How do we calculate the amount of radium left at the end of century
-$t$? If you start with $P$ atoms, at the end of the $t$-th century, you
-will have
-
-$$P\left(1 - 0.0424\right)^t$$
-
-This is exponential decay.\index{exponential decay}
-% \includegraphics[width=0.7\textwidth]{radium_decay.png} INCLUDED Twice
-
-\subsection{Model Exponential Decay}
-
-Let us say you get hired to run a company with 480,000
-employees. Each year, $1/8$ of your employees leave the company for
-one reason or another (retirement, quitting, etc.). For some reason, you never
-hire any new employees.
-
-Make a spreadsheet that indicates how many of the original 480,000
-employees will still be around at the end of each year for the next 12. Next, make a
-bar graph from that data.
-
-%FIXME finish this chapter?
-
-
 \section{Compound Interest}
-When you loan money to someone, you typically charge them some sort of
-interest. The most common loan of this sort is what the bank calls a
-``savings account''.  Any money you put in the account is loaned to
+When you lend money, you usually charge interest. You may not think of it
+this way, but a savings account is a loan: you lend your money to the
+bank.  Any money you put in the account is loaned to
 the bank. The bank then lends it to someone else, who pays interest to
 the bank. The bank gives some of that interest to you.
 % Diagram needed
@@ -385,15 +323,11 @@ Because $n$ is an exponent, we call this \textit{exponential growth}.
 There are few things as terrifying to a scientist as
 the phrase ``The population is undergoing exponential growth''.\index{exponential growth}
 
-If the \index{principal}principal is not compounded annually, we can modify the equation to account for that by changing $n$.
-
-$$n = m t$$
-
-Where $t$ is the frequency of the compounding, called the period: (1: annually, 12: monthly, 52: weekly, 365: daily), and $m$ is the number of periods. 
-This equation becomes
-$$P_n = P_0 (1+\frac{r}{n})^{nt}$$
-We will see these two terms pop up in other areas of the curriculum like circular motion and waves.
-% Diagram/ Explain
+Many banks compound more often than once a year. If the bank compounds
+$k$ times a year (12 for monthly, 365 for daily), it pays $\frac{r}{k}$
+each time, and it does that $kt$ times in $t$ years. Your
+\index{principal}principal $P_0$ grows to
+$$P = P_0 \left(1+\frac{r}{k}\right)^{kt}$$
 
 \subsection{Sensitivity to interest rate}
 
@@ -414,29 +348,37 @@ Now edit the second interest rate to be 8\%:
 \includegraphics[width=0.6\textwidth]{AtBiggerInterestRate.png}
 
 \subsection{Continuous Compound Interest}
-Let us say, hypothetically, that we compound interest on a given balance for an \emph{indefinite} amount of time. Then, we take the formula $$P_n = P_0 (1+\frac{r}{n})^{nt}$$
+Monthly beats yearly, and daily beats monthly. What if the bank compounded
+every hour? Every second? Does your money grow without limit?
 
-What if we divide our time period into infinite chunks? This would mean splitting our $n$ into much smaller pieces. We can use calculus notation to find the limit of this:
-\begin{equation*}
-  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{r}{n})^{nt}
-\end{equation*}
-we can create a variable $x=\frac{n}{r}$. We do this so that we eliminate some other dummy variables. Now we have
-\begin{equation*}
-  \lim_{n \rightarrow \infty} P_0 (1+\tfrac{1}{x})^{xrt}
-\end{equation*}
-as we can eliminate $n$ with $n=xr$.
+Try it with a 100\% interest rate for one year, starting with \$1. If the
+bank compounds $k$ times, you end with $\left(1 + \frac{1}{k}\right)^k$
+dollars:
 
-Now we can isolate parts of our compound interest equation into the limit, and extract variables out.
+\begin{center}
+\begin{tabular}{l|r|l}
+Compounding & $k$ & $\left(1 + \frac{1}{k}\right)^k$ \\
+\hline
+yearly & 1 & 2 \\
+monthly & 12 & 2.613\ldots \\
+daily & 365 & 2.7146\ldots \\
+every second & 31{,}536{,}000 & 2.7182818\ldots
+\end{tabular}
+\end{center}
 
-\begin{equation*}
-  P_0 \left(\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}\right)^{rt}
-\end{equation*}
+The answers creep up, but they never pass 2.71828\ldots. That number is
+$e$! It is the most money \$1 can earn in a year at 100\% interest, no
+matter how often the bank compounds. This is the real reason $e$ shows up
+everywhere growth and decay happen.
 
-
-Fun math fact: $\lim_{n \rightarrow \infty} (1+\tfrac{1}{x})^{x}$ is equal to the mathematical constant $e$. We are going to dive into this in the \emph{logs} chapter! For now, just understand that it is a constant in mathematics that describes many growth or decay values. With that, we can simplify the equation as the \index{continuous compounding}continuous compound interest equation (\ref{eq:continuous_compound})
+With interest rate $r$ for $t$ years, compounding ``infinitely often''
+gives the \index{continuous compounding}\newterm{continuous compound
+interest} formula:
 \begin{equation}\label{eq:continuous_compound}
-  P_0e^{rt}
+  P = P_0e^{rt}
 \end{equation}
+(In the calculus volumes, you will learn to make ``infinitely often''
+precise with a limit.)
 
 \subsection{Practice Exercises}
 
@@ -456,8 +398,8 @@ Alternatively, in Sheets/Excel, we can use \texttt{=FV(0.05, 8, 0, -1500)} to sa
 
 \begin{Exercise}[label=compoundinterest2]
 A bank offers two savings accounts, both with a stated annual interest
-rate of 6\%. Account A compounds monthly ($t = 12$) and Account B
-compounds daily ($t = 365$). If you deposit \$3000 into each account,
+rate of 6\%. Account A compounds monthly ($k = 12$) and Account B
+compounds daily ($k = 365$). If you deposit \$3000 into each account,
 which account has the higher balance after 5 years, and by how much?
 
 Create two columns in Excel/Sheets showing the balance after each year
@@ -467,12 +409,12 @@ interest formula for monthly and daily compounding.
 \end{Exercise}
 
 \begin{Answer}[ref=compoundinterest2]
-Using $P_n = P_0 (1+\frac{r}{n})^{nt}$ with $P_0 = 3000$, $r = 0.06$, and $n = 5$ years:
+Using $P = P_0 (1+\frac{r}{k})^{kt}$ with $P_0 = 3000$, $r = 0.06$, and $t = 5$ years:
 
-Account A (monthly, $t=12$):
+Account A (monthly, $k=12$):
 $$P = 3000 \left(1+\frac{0.06}{12}\right)^{12 \times 5} \approx \$4046.55$$
 
-Account B (daily, $t=365$):
+Account B (daily, $k=365$):
 $$P = 3000 \left(1+\frac{0.06}{365}\right)^{365 \times 5} \approx \$4049.48$$
 
 \begin{figure}[H]
@@ -485,9 +427,101 @@ the more frequently interest is compounded, the closer the balance
 gets to the continuous compounding limit, $P_0 e^{rt}$.
 \end{Answer}
 
+\section{Exponential Decay}
+In the last section, an investment of $P$ earning
+\index{compound interest}compound interest at an annual rate $r$ grew
+exponentially. At the end of year $t$, the balance is
+
+$$P\left(1 + r\right)^t$$
+
+\index{exponential growth}Because $r$ is positive, this number grows as time passes. You get a
+nice exponential growth curve that looks something like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{exponential_growth.png}
+    \caption{A diagram showing (exponential) compound interest.}
+    \label{fig:exponential_growth}
+\end{figure}
+
+This is \$30 invested with a 10\% annual interest rate. So, the formula
+for the balance after $t$ years would be
+
+$$(30)(1.1)^t$$
+
+What if $r$ were negative? This would be \textit{exponential decay}.
+
+\subsection{Radioactive Decay}
+
+Until around 1970, there were companies making watches whose faces and
+hands were coated with radioactive paint. The paint usually contained
+radium. When a radium atom decays, it gives off some energy, loses two
+protons and two neutrons, and becomes a different element
+(radon). Some of the energy given off is visible light. Thus, these
+watches glow in the dark.\index{radioactive decay}
+
+How many of the radium atoms in the paint decay each century? About 4.24\%.
+
+Notice the quantity of atoms lost is proportional to the number of
+atoms you have. This is exponential decay. If we assume that we start
+with a million radium atoms, the number of atoms decreases over time like this:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{radium_decay.png}
+    \caption{A diagram showing the decay and half life of radium.}
+    \label{fig:radium_decay}
+\end{figure}
+ 
+\begin{itemize}
+\item We start with 1,000,000 atoms.
+\item At 16 centuries, we have only 500,000 (half as many) left.
+\item 16 centuries after that, we have only 250,000 (half again) left.
+\item 16 centuries after that, we have only 125,000 (half again) left.
+\end{itemize}
+
+A nuclear chemist would say that radium has a \textit{half-life} of
+1,600 years: every 1,600 years, half of whatever radium remains decays.
+(Check: $(1 - 0.0424)^{16} \approx 0.50$.) This means that if you bought a watch with
+glowing hands in 1960, it will be glowing half as brightly in the year
+3560.\index{half-life}
+
+How do we calculate the amount of radium left at the end of century
+$t$? If you start with $P$ atoms, at the end of the $t$-th century, you
+will have
+
+$$P\left(1 - 0.0424\right)^t$$
+
+This is exponential decay.\index{exponential decay}
+
+\subsection{Model Exponential Decay}
+
+\begin{Exercise}[title={A shrinking company}, label=exp_decay_company]
+You are hired to run a company with 480,000 employees. Each year, $\frac{1}{8}$
+of the employees leave (they retire, quit, or move away). For some reason,
+you never hire anyone new.
+
+Make a spreadsheet showing how many of the original 480,000 employees are
+still around at the end of each of the next 12 years, and make a bar graph
+of the data. Then write a formula for the number left after $t$ years, and
+use logarithms to find when the company first drops below half its size.
+\end{Exercise}
+\begin{Answer}[ref=exp_decay_company]
+Each year, $\frac{7}{8}$ of the employees stay, so after $t$ years there
+are $480{,}000(0.875)^t$. The spreadsheet starts 480,000, 420,000, 367,500,
+321,562, \ldots{} and ends with about 96,680 after 12 years.
+
+Half the company is left when $(0.875)^t = 0.5$:
+$$t = \frac{\log 0.5}{\log 0.875} \approx 5.19$$
+So the company first drops below half its size during year 6 (after 6
+years, 215,422 remain).
+\end{Answer}
+
+
 \definecolor{kontinuablue}{HTML}{005892}
 
-Certain relationships between two variables do not run in a straight line. Populations grow exponentially. Radioactive substances decay exponentially. When you try to fit a straight line to data like this, you may get a regression line, but the \textit{line of best fit} will be wrong or non-existent. Logarithm models can straighten out curved relationships, allowing you to use linear regression techniques on data that is not linear in its raw form.
+Real data often curves. Populations grow exponentially, and radioactive
+substances decay exponentially. You can force a line of best fit through
+curved data, but it will be the wrong model. Logarithms can straighten
+curves out, so you can use the line-fitting tools you already know.
 
 \section{Exponential Models}
 
@@ -626,7 +660,9 @@ print(f"Percent growth per day: {percent_growth:.1f}%")
 print(f"Estimated starting views: {starting_views:.1f} thousand")
 \end{minted}
 
-This gives a growth factor of about $2.087$, a growth rate of $108.7$ percent per day, and $4{,}027$ thousand views. 
+This gives a growth factor of about $2.087$ (a growth rate of $108.7$
+percent per day) and a starting value of about $4.027$ thousand views,
+matching the by-hand work. 
 
 \begin{Exercise}[title={Medication Concentration}, label=med_decay]
 
@@ -844,9 +880,4 @@ When you are unsure which model fits, try both transformations and compare. Grap
 
 These two transformations show up often outside the classroom: population growth tends to follow an exponential pattern, while relationships like body mass and metabolic rate, or a planet's distance from the sun and its orbital period, tend to follow a power model.
 
-\begin{Exercise}[title={Solve for the Exponent}, label=exp1]
-Solve $3^x = 81$.
-\end{Exercise}
-\begin{Answer}[ref=exp1]
-Write $81 = 3^4$. Then $x = 4$.
-\end{Answer}
+
