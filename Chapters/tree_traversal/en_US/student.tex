@@ -7,15 +7,15 @@
 
 % FIXME adding stacks and queues as prereqs even though they dont exist yet
 
-Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \newterm{traversals} based on the order in which the nodes are visited.
+Trees can be ``traversed'' in a few different ways. When we say traversing a tree, we mean that we are visiting and extracting data from each node in a tree. We classify these \index{tree traversal}\newterm{traversals} based on the order in which the nodes are visited.
 
-This chapter will discuss \newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \newterm{level-order}. Each level is traversed in sequential order.
+This chapter will discuss \index{breadth-first search}\newterm{breadth-first search}, also known as \newterm{BFS}, which traverses in a \index{level-order traversal}\newterm{level-order}. Each level is traversed in sequential order.
 
-Alternatively, there is \newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
+Alternatively, there is \index{depth-first search}\newterm{depth-first search} (\newterm{DFS}), which travels as far down a branch as possible before backtracking and checking other branches. Within DFS there are 3 common traversal methodologies: \newterm{in-order}, \newterm{pre-order} and \newterm{post-order}.
 
-While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires you do have a preselected node a your \emph{start node}.
+While the demonstrations for these traversals will be for trees, they work the same for any given graph, under one condition: using DFS or BFS on a \emph{graph} requires that you have a preselected node as your \emph{start node}.
 \section{BFS}
-Let's look at running BFS on a tree. Starting out with this tree:
+Let us look at running BFS on a tree. Starting out with this tree:
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[
@@ -43,7 +43,7 @@ Let's look at running BFS on a tree. Starting out with this tree:
     \label{fig:originalTree}
 \end{figure}
 
-To perform BFS, we use a \newterm{queue}, which follows a first-in, first-out (\newterm{FIFO}) order. We begin by placing the root node into the queue. At each step, we remove the front node from the queue, visit it, and then add all of its children to the \emph{back} of the queue. %FIXME ensure queues are defined before this point, or expand on them in the future.
+To perform BFS, we use a \newterm{queue}, which follows a first-in, first-out (\newterm{FIFO}) order. We begin by placing the root node into the queue. At each step, we remove the front node from the queue, visit it, and then add all of its children to the \emph{back} of the queue. (Queues are from the Stacks and Queues chapter.)
 
 \begin{figure}[H]
     \centering
@@ -86,7 +86,7 @@ Here, we visit the root node first, which is Alan. After visiting Alan, we add i
 
     \caption{Step 2: Visit Brad, then add its children (Dean, Emily) to the queue.}
 \end{figure}
-We continue this process, visiting Connie next and adding its children, Faith and Gordon, to the queue. The queue now contains Connie, Dean, and Emily. Here is a step trace of the BFS traversal:
+After visiting Brad, the queue holds Connie, Dean, and Emily. Next we visit Connie and add her children, Faith and Gordon, to the back. Here is a step trace of the BFS traversal:
 \begin{center}
     \begin{tabular}{c|c|c}
         Step  & Queue                        & Output (visited)           \\
@@ -148,7 +148,7 @@ The steps are fairly simple:
 \end{enumerate}
 
 
-There are 3 orders in which we can traverse/search the deepest tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
+There are 3 orders in which we can traverse the whole tree. We will look at \texttt{pre-order}, \texttt{post-order}, and \texttt{in-order}.
 
 
 However, these orders essentially perform the same basic three tasks,
@@ -160,7 +160,7 @@ However, these orders essentially perform the same basic three tasks,
 
 The recursion terminates when we reach a leaf. At this point, the algorithm returns to the previous call, which is how \emph{backtracking} occurs. This backtracking is done via the stack we had mentioned previously.
 
-\subsection{Pre-order}
+\subsection{Pre-order}\index{pre-order traversal}
 In \texttt{pre-order} traversal, we visit the node \emph{before} exploring its subtrees.
 The order is:
 \[
@@ -174,7 +174,7 @@ Using our original tree, the pre-order results are:
 \begin{center}
     Alan, Brad, Dean, Emily, Connie, Faith, Gordon
 \end{center}
-\subsection{Post-order}
+\subsection{Post-order}\index{post-order traversal}
 In \texttt{post-order} traversal, we visit the node \emph{after} exploring both subtrees.
 The order is:
 \[
@@ -188,7 +188,7 @@ The post-order traversal of our original tree is
 \begin{center}
     Dean, Emily, Brad, Faith, Gordon, Connie, Alan
 \end{center}
-\subsection{In-order}
+\subsection{In-order}\index{in-order traversal}
 In \texttt{in-order} traversal, we visit the node \emph{between} exploring its subtrees.
 The order is:
 \[
@@ -196,7 +196,7 @@ The order is:
 \]
 
 We visit the node \emph{between} its subtrees because the correct interpretation of the node depends on partially processed children.
-In-order only makes sense for binary trees, because it returns the \emph{sorted order} of the binary search tree. It depends on left and right subchildren. This would be like the alphabetical order of our dictionary example from the previous chapter.
+In-order makes sense only for binary trees, since it needs a left and a right subtree to put the node between. On a binary search tree, in-order visits the keys in \emph{sorted order}: run it on the word tree from the previous chapter and you get the words alphabetically.
 
 The in-order traversal of our original tree becomes
 \begin{center}
@@ -206,7 +206,7 @@ The in-order traversal of our original tree becomes
 
 The previous sections (pre-order, in-order, and post-order) describe \emph{when} a node is visited during a depth-first traversal.
 
-The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
+The following algorithm instead describes the general \emph{mechanism} of depth-first search. This implementation corresponds to a pre-order traversal. The right child is pushed first, so the left child is popped first. Other traversal orders (in-order and post-order) require additional state and cannot be obtained by simple reordering alone.
 \begin{algorithm}
     \caption{Depth-First Search (DFS) - Iterative on a Tree}
     \begin{algorithmic}
@@ -216,11 +216,11 @@ The following algorithm instead describes the general \emph{mechanism} of depth-
         \While{$S$ is not empty}
         \State node $=$ \Call{Pop}{$S$}
         \State visit(node)\Comment{V}
-        \If{node.left $\neq$ null}
-        \State \Call{Push}{$S$, node.left}\Comment{L}
-        \EndIf
         \If{node.right $\neq$ null}
         \State \Call{Push}{$S$, node.right}\Comment{R}
+        \EndIf
+        \If{node.left $\neq$ null}
+        \State \Call{Push}{$S$, node.left}\Comment{L}
         \EndIf
         \EndWhile
         \EndProcedure
@@ -230,16 +230,16 @@ The following algorithm instead describes the general \emph{mechanism} of depth-
 DFS is particularly useful for solving problems like connected-component detection in graphs and maze-solving.
 
 \section{Recursive vs Iterative Traversal}
-As we've established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let's look at DFS recursively.
+As we have established, trees are recursively defined structures, and as such, our algorithms for them can be defined as such too. This allows us to implement searches and traversals in two ways: \newterm{recursive} and \newterm{iterative}. Let us look at DFS recursively.
 
 Importantly, they do not change the traversal order (pre-, in-, post-order); they only change how the traversal is implemented.
 
-A \newterm{recursive traversal} relies on the program's \emph{call stack} (recall from the Advanced Python Syntax chapter). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
+A \index{recursive traversal}\newterm{recursive traversal} relies on the program's \emph{call stack} (recall it from the Introduction to C and Recursion chapters). Each time the algorithm explores a subtree, it makes a function call, and the system automatically remembers where to return when that call finishes. This matches the recursive definition of a tree, where each subtree is itself a tree. This allows us to get rid of the stack in DFS and solely rely on a computer's call stack.
 
 \begin{Exercise}[title={Recursive DFS}, label={ex:recur_dfs}]
     Take a look at the Iterative DFS code above.
 
-    How can we rewrite the pseudocode to be recursively define, taking advantage of a inherent recursive structure? Try pre-order recursively first. Assume the tree is a binary tree.
+    How can we rewrite the pseudocode recursively, taking advantage of the tree's recursive structure? Try pre-order recursively first. Assume the tree is a binary tree.
 \end{Exercise}
 
 
@@ -262,7 +262,7 @@ A \newterm{recursive traversal} relies on the program's \emph{call stack} (recal
     This algorithm defines a depth-first search on a binary tree. Because the node is visited before its subtrees, it corresponds specifically to a pre-order traversal.
 \end{Answer}
 
-Note that we can create recursive DFS just by reordering the three operations (\texttt{V}, \texttt{L}, \texttt{R}).
+Here is the advantage of the recursive version: to get in-order or post-order, just move the \texttt{visit} line (\texttt{L, V, R} or \texttt{L, R, V}). The iterative version cannot be changed that simply.
 
 What about BFS? BFS is typically implemented iteratively because it relies on a queue. While recursive versions exist, they still depend on a queue and offer little conceptual advantage, so we omit them here.
 \subsection{Pre-order and Post-order Numbering}
@@ -275,7 +275,7 @@ Pre-order numbers capture the order in which nodes are discovered, while post-or
 \begin{Exercise}[title={DFS Pseudocode}, label={ex:pre_post1}]
 
 
-    Alter the \emph{recursive} DFS pseudocode to include an assignment of preorder and post order numbers for every node.
+    Alter the \emph{recursive} DFS pseudocode to include an assignment of pre-order and post-order numbers for every node. Use one shared counter that starts at 1.
 
 
 \end{Exercise}

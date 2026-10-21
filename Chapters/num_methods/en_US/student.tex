@@ -14,13 +14,12 @@ avoid the most common errors people make when summarizing data.
 
 \section{Why Numerical Summaries Matter}
 
-Look back at the scatter plot from the previous chapter. To draw the
-line of best fit through that data, two quantities appeared in the
-formula: $S_x$ and $S_y$, the standard deviations of the two variables.
-The slope of the regression line depends directly on them. Before you
-can apply any of the methods in the next chapter, you need to know
-exactly what those quantities are and how to compute them. That is what
-this chapter is for.
+Think back to the line of best fit from the data tools chapter. Its slope
+depends on two quantities, $S_x$ and $S_y$: the standard deviations of
+the two variables. Standard deviations show up in almost every
+statistical method you will meet later, from polls to clinical trials. This
+chapter explains exactly what they measure and how to compute them, along
+with the other key numbers that summarize data.
 
 There are three families of numerical measures, each answering a
 different question about a data set:
@@ -41,12 +40,12 @@ one of the central ideas of this chapter.
 
 \subsection{Summation Notation}
 
-Nearly every numerical measure involves adding things up. Before
+\index{summation notation}Nearly every numerical measure involves adding things up. Before
 computing anything, we need a compact way to write sums.
 
 Suppose you record the daily sales at a shop over $n$ days, calling
 them $X_1, X_2, \ldots, X_n$. Writing out every term quickly becomes
-unwieldy. The Greek capital letter $\Sigma$ (read as ''sigma '') gives
+unwieldy. The Greek capital letter $\Sigma$ (read as ``sigma'') gives
 us a cleaner way:
 
 \[
@@ -68,7 +67,7 @@ Ben's total score is
 \]
 
 This notation will appear in every formula in this chapter. When you
-see $\sum X_i$, read it as ''add up all the values of $X$. ''
+see $\sum X_i$, read it as ``add up all the values of $X$.''
 
 \begin{Exercise}[title={Summation Practice}, label={ex:summation_practice}]
 Sasha records the daily high temperatures (in degrees Celsius)
@@ -110,7 +109,7 @@ now expressed as a formula.
 
 When the data represent an entire \newterm{population}\index{population}
 of $N$ values, the mean is denoted by the Greek letter $\mu$ (read
-``mu ''):
+``mu''):
 
 \[
 \mu = \frac{\displaystyle\sum_{i=1}^{N} X_i}{N}
@@ -118,7 +117,7 @@ of $N$ values, the mean is denoted by the Greek letter $\mu$ (read
 
 When the data are a \newterm{sample}\index{sample} of $n$ values drawn
 from a larger population, the mean is denoted $\bar{X}$ (read
-``X-bar ''):
+``X-bar''):
 
 \[
 \bar{X} = \frac{\displaystyle\sum_{i=1}^{n} X_i}{n}
@@ -319,7 +318,7 @@ improves on this by focusing on the middle 50\% of the data:
 IQR = Q_3 - Q_1
 \]
 
-For the dealership data, $Q_1 = 9$, $Q_3 = 21$, so $IQR = 12$ cars.
+Here $Q_1$ is the median of the lower half of the data, and $Q_3$ is the median of the upper half. For the 14 dealership values, the lower half is the 7 smallest values, $\{2, 3, 7, 9, 11, 11, 14\}$, so $Q_1 = 9$. The upper half is $\{17, 20, 20, 21, 23, 23, 24\}$, so $Q_3 = 21$. Therefore $IQR = 12$ cars. Some software uses a different rule for quartiles, so its values may differ slightly from these.
 Because IQR ignores the tails entirely, it is a resistant measure, so outliers do not affect it. When the median is the appropriate measure
 of center, IQR is the matching measure of spread.
 
@@ -350,7 +349,7 @@ The \newterm{sample variance}\index{sample variance} is denoted $s^2$:
 s^2 = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2}{n-1}
 \]
 
-We divide by $n - 1$ rather than $n$ when working with a sample.
+\index{Bessel's correction}We divide by $n - 1$ rather than $n$ when working with a sample.
 Dividing by $n$ would systematically underestimate the true population
 spread because a sample tends to cluster closer to its own mean than
 the full population does. Subtracting one corrects for that.
@@ -364,7 +363,7 @@ brings the units back to the same scale as the original data:
 s = \sqrt{s^2}
 \]
 
-A population standard deviation is denoted $\sigma$ (``sigma ''); a
+A population standard deviation is denoted $\sigma$ (``sigma''); a
 sample standard deviation is denoted $s$.
 
 \subsubsection*{Computing Standard Deviation by Hand}
@@ -415,7 +414,7 @@ standard deviation.
 
 Hand computation is worth doing once, so the mechanics stay visible.
 After that, software does the arithmetic. Python's built-in
-\texttt{statistics} module computes the same sample variance and
+\index{statistics module}\texttt{statistics} module computes the same sample variance and
 standard deviation directly:
 
 % corresponding script: checking_work_with_python.py
@@ -631,7 +630,7 @@ median.
 
 \subsection{Effects of Outliers}
 
-You have heard this term used all over our Statistics chapters! An \newterm{outlier}\index{outlier} is a value that sits far from the
+An \newterm{outlier}\index{outlier} is a value that sits far from the
 rest of the data. You saw the numerical definition in the graphical
 chapter: any value more than $1.5 \times IQR$ below $Q_1$ or above
 $Q_3$ is flagged as an outlier.
@@ -665,7 +664,7 @@ everything from scratch.
 The rules depend on whether you are adding a constant or multiplying
 by one.
 
-\textbf{Adding a constant $a$ to every value.} Shifting every
+\index{linear transformation}\textbf{Adding a constant $a$ to every value.} Shifting every
 observation by the same amount shifts the measures of center and
 position by the same amount. Measures of spread are unaffected,
 because the distances between values do not change.
@@ -889,7 +888,7 @@ sales of $\bar{X} \approx 14.64$ cars and standard deviation $s \approx
 \end{enumerate}
 \end{Answer}
 
-Key Points: % Not sure if this should be standard inclusion for all chapters yet, but working on adding this to most chapters and sections -Cheery
+\textbf{Key points:}
 \begin{itemize}
     \item A z-score expresses a value as a number of standard
     deviations above or below the mean
@@ -948,7 +947,9 @@ observations. The 13th is 23 and the 14th is 24:
 P_{90} = \frac{23 + 24}{2} = 23.5 \text{ cars}
 \]
 
-On 90\% of days, the dealership sold 23.5 or fewer cars.
+Roughly 90\% of days fall at or below 23.5 cars. (With only 14 days, the
+match is not exact: 12 of the 14 days, about 86\%, are at or below
+23.5.)
 
 To find $P_{10}$:
 
@@ -962,7 +963,7 @@ Halfway between the 1st observation (2) and the 2nd (3):
 P_{10} = \frac{2 + 3}{2} = 2.5 \text{ cars}
 \]
 
-On 10\% of days, the dealership sold 2.5 or fewer cars.
+Roughly 10\% of days fall at or below 2.5 cars.
 
 \subsection*{Quartiles and the Five-Number Summary}
 
@@ -977,12 +978,11 @@ chapter. Here is the formal connection:
     \item $Q_3 = P_{75}$: 75\% of values fall at or below $Q_3$
 \end{itemize}
 
-In practice, quartiles are computed by splitting the sorted data into
+\index{quartiles!median-of-halves method}In practice, quartiles are computed by splitting the sorted data into
 a lower half and an upper half and taking the median of each. For
 even $n$, split the data at the midpoint with no overlap. For odd
 $n$, exclude the median from both halves.
 
-%Might change dealership to something more inclusive in the final version, but keeping it for now -Cheery
 
 For the dealership data, split at the midpoint ($n = 14$, so seven
 values on each side):
@@ -1028,7 +1028,7 @@ $2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24$
     \item On what percentage of days did the dealership sell at most
     21 cars?
     \item A sales consultant tells Daniel that a day with 17 cars
-    sold falls in the ''third quarter '' of the distribution. Verify
+    sold falls in the ``third quarter'' of the distribution. Verify
     this by identifying which quarter 17 belongs to.
     \item Daniel wants to flag the bottom 10\% of days as
     underperforming. Using $P_{10} = 2.5$ cars, how many of the 14
@@ -1042,8 +1042,10 @@ $2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24$
     falls halfway between the 7th observation (14) and the 8th (17):
     $P_{50} = \dfrac{14+17}{2} = 15.5$. This matches the median
     exactly.
-    \item $Q_3 = P_{75} = 21$, so 75\% of days had 21 or fewer cars
-    sold.
+    \item Count them: 11 of the 14 days had 21 or fewer cars, so
+    $\frac{11}{14} \approx 79\%$. (Since $Q_3 = 21$, you could also
+    estimate about 75\%; with small data sets the quartiles are only
+    approximate percentages.)
     \item $Q_1 = 9$ and $Q_3 = 21$. The value 17 lies between $Q_2
     = 15.5$ and $Q_3 = 21$, placing it in the third quarter (between
     the median and $Q_3$). The consultant is correct.
@@ -1055,8 +1057,8 @@ $2,\ 3,\ 7,\ 9,\ 11,\ 11,\ 14,\ 17,\ 20,\ 20,\ 21,\ 23,\ 23,\ 24$
 
 \subsection{Computing with Python}
 
-You have now worked with all four families of numerical measures by
-hand: center, spread, shape, and standing. In practice, you will
+You have now computed measures of center, spread, and position by
+hand. In practice, you will
 rarely compute them this way. Python's built-in \texttt{statistics}
 module handles all of them directly, using the dealership data set
 from throughout this chapter:
@@ -1078,7 +1080,10 @@ print("Q1, Q2, Q3:", q1, q2, q3)
 
 This prints a mean of 14.642857142857142, a median of 15.5, a
 variance of 57.17, and a standard deviation of 7.56, matching this
-chapter's hand-computed values exactly.
+chapter's hand-computed values. The quartiles come out as 8.5, 15.5, and
+21.5: \texttt{statistics.quantiles} uses the percentile formula, not the
+median-of-halves method, which is why its $Q_1$ and $Q_3$ differ slightly
+from ours.
 
 
 

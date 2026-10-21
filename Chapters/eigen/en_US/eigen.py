@@ -1,14 +1,13 @@
-# import numpy to perform operations on vector
 import numpy as np
-from numpy.linalg import eig
 
-a = np.array([[2, 2, 4], 
-              [1, 3, 5],
-              [2, 3, 4]])
-eigenvalue,eigenvector = eig(a)
+A = np.array([[5, 4],
+              [1, 2]])
+values, vectors = np.linalg.eig(A)
 
-# The values are not in any particular order
-print('Eigenvalues:', eigenvalue)
+print("Eigenvalues:", values)
+print("Eigenvectors (one per column):")
+print(vectors)
 
-# The eig function returns the normalize vectors
-print('Eigenvectors:', eigenvector)
+# Check the first pair: A v should equal lambda v
+v = vectors[:, 0]
+print(A @ v, values[0] * v)

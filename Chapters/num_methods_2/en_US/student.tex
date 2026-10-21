@@ -1,10 +1,37 @@
-\chapter{Applying Numerical Methods to Bivariate Data} %This could a whole chapter on its own. 
+\chapter{Applying Numerical Methods to Bivariate Data}
+
+Do students who sleep more get better grades? Do taller parents have
+taller kids? Does more experience mean a bigger paycheck? Each question is
+about two variables at once, which statisticians call \newterm{bivariate
+data}. In the last chapter, you summarized one variable with numbers like
+the mean and standard deviation. Now you will summarize the relationship
+between two.
+
 \section{Review of Scatter Plots}
+
+The first step with bivariate data is always a picture. In a
+\newterm{scatter plot}\index{scatter plot}, each individual becomes one
+point: its $x$-coordinate is one variable and its $y$-coordinate is the
+other. When you look at a scatter plot, describe three things:
+\begin{itemize}
+\item \textbf{Direction:} Do the points trend upward (as $x$ grows, $y$
+      tends to grow) or downward?
+\item \textbf{Form:} Do the points follow a straight line, a curve, or no
+      pattern at all?
+\item \textbf{Strength:} Do the points hug the pattern closely, or are they
+      widely scattered?
+\end{itemize}
+Also watch for \newterm{outliers}, points that sit far from the overall
+pattern.
+
+The variable you use to predict is the \newterm{explanatory} (or
+independent) variable, and it goes on the $x$-axis. The variable you are
+trying to predict is the \newterm{response} (or dependent) variable, and it
+goes on the $y$-axis.
 
 \section{Correlation Coefficient}
 
-In the previous section, we used scatterplots to visually judge whether
-two variables are related. But how do we move beyond "this looks like a
+A scatter plot lets you judge a relationship by eye. But how do we move beyond "this looks like a
 strong relationship" to something we can actually calculate and compare?
 That is exactly what the \newterm{correlation coefficient}\index{correlation coefficient} gives us.
 
@@ -64,7 +91,7 @@ coefficient.
 \end{enumerate}
 \end{Answer}
 
-\textbf{Direction}
+\index{correlation!direction}\textbf{Direction}
 
 Now that we know $r$ always falls between $-1$ and $+1$, the first
 thing to read from it is direction. The sign of $r$ tells you
@@ -164,7 +191,7 @@ Age of a car & Resale value & Negative \\
 \end{tabular}
 \end{Answer}
 
-\textbf{Strength}
+\index{correlation!strength}\textbf{Strength}
 
 Direction tells us which way a relationship goes, but not how strong
 it is. For that, we look at the numeric value of $r$, ignoring its
@@ -354,16 +381,29 @@ correlation between two variables does not mean one causes the other
 to change.
 
 \begin{Exercise}[title={Interpreting a Computed $r$}, label={ex:workedex}]
-
-%Insert exercise
-
-
+A researcher records the number of hours each of 40 students spent on
+social media in a week and their score on a science test. She finds
+$r = -0.62$.
+\begin{enumerate}
+\item Describe the direction and strength of the relationship.
+\item A news story reports: ``Social media lowers test scores!'' Does
+      $r = -0.62$ support that headline? Explain.
+\item The researcher converts hours to minutes and recomputes $r$. What
+      value does she get?
+\end{enumerate}
 \end{Exercise}
 
 \begin{Answer}[ref={ex:workedex}]
-
-%Insert answer
-
+\begin{enumerate}
+\item Negative and strong: students who spent more time on social media
+      tended to score lower.
+\item No. Correlation does not show causation. Another variable could be
+      behind both; for example, students with less time for homework might
+      both use social media more and study less. Only a controlled
+      experiment could show that social media itself lowers scores.
+\item Still $-0.62$. Changing units (multiplying every value by 60) does
+      not change $r$, because correlation has no units.
+\end{enumerate}
 \end{Answer}
 
 \section{Linear Regression}
@@ -380,8 +420,8 @@ two variables, so you can use the value of one to predict the value of the other
 When one variable depends on or is explained by another, we call the variable being
 predicted the \newterm{dependent variable}\index{dependent variable}. The variable doing the
 explaining is the \newterm{independent variable}\index{independent variable}. In our example,
-starting salary is the response variable and years of experience is the independent
-variable. It would make little sense to say that a teacher's salary determines
+starting salary is the dependent (response) variable and years of experience is
+the independent (explanatory) variable. It would make little sense to say that a teacher's salary determines
 how many years they have worked.
 
 The linear relation between two variables is described by the
@@ -428,8 +468,9 @@ Slope & $\beta$ & $b$ \\
 %An example here would be good.
 
 
-Now, no data will ever fall perfectly on a straight line. A student who studies ten
-hours might score differently than the line predicts. The difference between what
+Real data never falls perfectly on a straight line. Two teachers with the same
+experience might earn different salaries, and neither will land exactly on the
+line. The difference between what
 the model predicts and what is actually observed is called the
 \newterm{residual}\index{residual}, or \newterm{error}\index{error}, and is denoted
 $e$:
@@ -472,7 +513,7 @@ small as possible across all observations.
 \subsubsection{The Least-Squares Regression Line}
 
 Every straight line you could draw through a scatterplot will produce a different
-set of residuals. Some lines will over-predict for certain point and under-predict
+set of residuals. Some lines will over-predict for certain points and under-predict
 for others. We want to know: which line does the best job overall? The answer is
 the \newterm{least-squares regression line}\index{least-squares regression line},
 also called the \newterm{line of best fit}\index{line of best fit}. It is the line
@@ -685,9 +726,8 @@ Each teacher's years of experience at the time of hiring and their starting sala
 
 Before doing any calculations, look at the data. As years of experience increase,
 starting salaries appear to rise steadily. There are no obvious outliers, and the
-values are spread across a reasonable range of experience levels. A scatterplot
-would confirm whether this relationship is linear and this is! There is a strong
-positive linear relationship between experience and starting salary.
+values are spread across a reasonable range of experience levels. A scatterplot (figure \ref{fig:nm2-scatter-lsrl}) confirms it: there is a
+strong positive linear relationship between experience and starting salary.
 
 From the data, we have $n = 10$ pairs of measurements. Using a calculator or
 software, we can obtain the following summary statistics:
@@ -828,9 +868,9 @@ near the top of the output under \textbf{R Square}.
 \textbf{Computing in Python}
 
 Python can produce the same regression results as Excel, and a little more
-besides. The code below uses two libraries: \texttt{numpy} for the summary
-statistics and \texttt{scipy} for the regression, and \texttt{matplotlib} to
-draw the scatterplot with the line of best fit.
+besides. The code below uses \texttt{scipy} for the regression, \texttt{numpy} to
+make the points of the line, and \texttt{matplotlib} to draw the scatterplot
+with the line of best fit.
 
 \begin{minted}{python}
 import numpy as np

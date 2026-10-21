@@ -2,10 +2,14 @@
 
 Watch CS Dojo's \textbf{Introduction to Lists in Python} video at \url{https://www.youtube.com/watch?v=tw7ror9x32s}
 
-To review, Python list is an indexed collection. The indices start at
+Your playlist, your contacts, the scores in a video game's leaderboard:
+programs are full of lists. In this chapter, you will review Python lists
+and then use them to store, evaluate, print, and plot polynomials.
+
+To review, a \index{Python!list}Python list is an indexed collection. The \index{indexing!zero-based}indices start at
 zero. You can create a list using square brackets.
 
-You are now going to write a program that makes an array of
+You are now going to write a program that makes a list of
 strings. Type this code into a file called \filename{faves.py}:
 
 \begin{minted}{python}
@@ -45,9 +49,12 @@ favorites[3] = "Gloves"
 \end{minted}
 \end{Answer}
 
-\section{Evaluating Polynomials in Python}
+\section{Evaluating Polynomials in Python}\index{polynomial!evaluating}
 
-First, before you go any further, you need to know that raising a
+\textbf{Worked example: evaluating a polynomial.} Let $p(x) = 2x^2 + 3x + 1$. Then $p(2) = 2(4) + 3(2) + 1 = 15$.
+
+
+\index{exponentiation}First, before you go any further, you need to know that raising a
 number to a power is done with ** in Python.  For example, to get
 $5^2$, you would write \texttt{5**2}.
 
@@ -92,12 +99,12 @@ def polynomial_to_string(pn):
     ...Your Code Here...
 
 pn_test = [-12.0, 10.0, 0.0, 1.0]
-print(polynomial_to_string(pn1))
+print(polynomial_to_string(pn_test))
 \end{minted}
 
 This would output:
 \begin{minted}{python}
-1.0x**3 + 10.0x + -12.0
+1.0x^3 + 10.0x + -12.0
 \end{minted}
 This is not as simple as you might hope. In particular:
 \begin{itemize}
@@ -152,15 +159,17 @@ Note that in a list $n$ items, the indices go from 0 to $n-1$. When
 we are walking the list backwards, we start at \pyfunction{len(pn) -
   1} and stop at zero.
 
-Look over the code and google the functions you aren't familiar
-with. For example, if you want to know about the \pyfunction(join)
-function, google for ``python join''.
+Look over the code and google the functions you are not familiar
+with. For example, if you want to know about the \pyfunction{join}
+function, search for ``python join''. (In short,
+\mintinline{python}{" + ".join(["a", "b", "c"])} makes the string
+\texttt{"a + b + c"}.)
 
 Now, change your code to use the new function:
 \begin{minted}{python}
 pn1 = [-12.0, 10.0, -3.0, 1.0]
 y = evaluate_polynomial(pn1, 4.0)
-print("y =", polynomial\_to\_string(pn1))
+print("y =", polynomial_to_string(pn1))
 print("    When x is 4.0, y is", y)
 \end{minted}
 
@@ -178,7 +187,7 @@ Using the function that you just wrote, add a few lines of code to
 \begin{minted}{python}
 pn2 = [2.5, 5.0, -2.0, -7.0, 4.0]
 y = evaluate_polynomial(pn2, 8.5)
-print("Polynomia 2: When x is 8.5, y is", y)
+print("Polynomial 2: When x is 8.5, y is", y)
 
 pn3 = [-9.0, 0.0, 0.0, 0.0, 0.0, 5.0]
 y = evaluate_polynomial(pn3, 2.0)
@@ -186,14 +195,14 @@ print("Polynomial 3: When x is 2.0, y is", y)
 \end{minted} 
 \end{Answer}
 
-\section{Plot the polynomial}
+\section{Plot the polynomial}\index{plotting!polynomials}
 
 We can evaluate a polynomial at many points and plot them on a
 graph. You are going to write the code to do this.  Create a new file
 called \filename{plot\_polynomial.py}. Copy your \pyfunction{evaluate\_polynomial}
 function into the new file.
 
-Add a line at the beginning of the program that imports the plotting library matplotlib:
+Add a line at the beginning of the program that imports the plotting library \index{matplotlib}matplotlib:
 \begin{minted}{python}
 import matplotlib.pyplot as plt
 \end{minted}
@@ -252,7 +261,7 @@ $ pip3 install matplotlib
   \vspace{20mm}
   
   Where does your polynomial cross the x-axis? The places where a
-  polynomial crosses the x-axis are called \emph{its roots}. Later in
+  polynomial crosses the x-axis are called \index{roots of a polynomial}\emph{its roots}. Later in
   the course, you will learn techniques for finding the roots of a
   polynomial.
 \end{Exercise}
@@ -260,7 +269,16 @@ $ pip3 install matplotlib
   The polynomial crosses the y-axis at 6. When x is zero, all the terms are zero except the
   last one. Thus, you can easily tell that $x^3 - 7x + 6$ will cross the y-axis at $y=6$.
 
-  Looking at the graph, you tell that the curve crosses the y-axes
-  near -3, 1 and 2. If you plug those numbers into the polynomial, you
-  would find that it evaluates to zero at each one. Thus, $x=-3$, $x=1$, and $x=2$ are roots.
+  Looking at the graph, you can tell that the curve crosses the x-axis
+  near $-3$, 1, and 2. If you plug those numbers into the polynomial, you
+  would find that it evaluates to zero at each one. Thus, $x=-3$, $x=1$, and $x=2$ are roots. (In fact,
+$x^3 - 7x + 6 = (x + 3)(x - 1)(x - 2)$, which you can check by
+multiplying.)
+\end{Answer}
+
+\begin{Exercise}[title={Cubic Polynomial}, label=pl4]
+Let $p(x) = x^3 - x$. Find $p(3)$.
+\end{Exercise}
+\begin{Answer}[ref=pl4]
+$p(3) = 27 - 3 = 24$.
 \end{Answer}

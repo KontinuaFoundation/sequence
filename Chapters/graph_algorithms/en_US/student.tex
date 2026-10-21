@@ -9,10 +9,16 @@
 %  adjacency matrices [prereq matrices and lin alg.] https://github.com/KontinuaFoundation/sequence/issues/303
 
 % note, eliminate dijkstra and binarys search as their own chapters
-This chapter is an overview of other graph algorithms, proofs, and concepts that are important to know. We will first cover adjacency matrices, then Prim's algorithm for minimum spanning trees, isomorphism, and topological sorting for directed acyclic graphs (DAGs). A lot of these are very advanced graph theory topics, so you won't be tested on too heavily of these topics. Many of these appear on AP/IB exams, or in advanced college level CS classes.
+How does a power company wire a town with the least cable? How does a
+video game character find its way around walls? How does a build system
+know which tasks can run at the same time? Each is a graph problem. This
+chapter is a tour: adjacency matrices, Prim's algorithm for minimum
+spanning trees, A* search, isomorphism, the Traveling Salesperson Problem,
+topological sorting, and some classic proofs. Several of these ideas are
+advanced; you will meet them again in college computer science.
 \section{Adjacency Matrices}
 
-Recall that we can represent graphs as lists of data called adjacency lists. In code, this could look like the following:
+Recall that we can represent graphs as lists of data called \index{adjacency list}adjacency lists. In code, this could look like the following:
 \begin{itemize}
 	\item A: [B, C]
 	\item B: [A, D]
@@ -46,7 +52,7 @@ This represents the following graph
 	\label{fig:adjacency1}
 \end{figure}
 
-We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
+We could also represent the same data as a \newterm{matrix}, which we have covered in linear algebra. The \index{adjacency matrix}\newterm{adjacency matrix} is 2D array (as compared to an adjacency list, which consists of multiple 1D arrays) where \mintinline{python}|matrix[i][j]| indicates whether an edge exists from vertex $i$ to vertex $j$. Commonly, \mintinline{python}|matrix[i][j]| $=1$ if and only if the edge from vertex $i$ to vertex $j$ exists, else \mintinline{python}|matrix[i][j]| $=0$.\footnote{If the edges are weighted, the matrix[i][j] is equal to the weight, or 0 if the edge does not exist.}The above graph in Figure~\ref{fig:adjacency1} can be represented as:
 
 $$\begin{array}{c} A=
 		\begin{bmatrix}
@@ -56,7 +62,7 @@ $$\begin{array}{c} A=
 			0 & 1 & 0 & 0
 		\end{bmatrix}\end{array}$$
 
-For \emph{undirected} graphs, the adjacency matrix is symmetric, and thusly $n\times n$, meaning that the transpose of matrix is the same matrix!
+For \emph{undirected} graphs, the adjacency matrix is symmetric: it equals its own transpose.
 
 $$A = A^T$$
 \begin{figure}[H]
@@ -84,9 +90,9 @@ $$A = A^T$$
 	\caption{A simple graph with an added loop on vertex D.}
 	\label{fig:adjacency2}
 \end{figure}
-By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, there are two edges from vertex (D) to itself in Figure~\ref{fig:adjacency2}, so the corresponding diagonal entry is (2).
+By convention, a diagonal entry such as \mintinline{python}|matrix[k][k]|, where ($k \in \mathbb{Z}$), is non-zero only if there is a loop from a vertex to itself. The value of the entry represents the number of such loops. In this case, Figure~\ref{fig:adjacency2} shows one loop on vertex D, so the diagonal entry is 1. (Some texts count an undirected loop twice and use 2.)
 
-For \emph{directed} graphs, the adjacency matrix on appears a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
+For \emph{directed} graphs, the adjacency matrix looks a bit different. A \newterm{directed adjacency matrix} represents a directed graph, where edges have a direction (arrows). When $A_{ij} = 1$, then an edge exists from vertex $i$ to vertex $j$.
 
 \begin{figure}[H]
 	\centering
@@ -169,23 +175,37 @@ Notice how, now, $A \ne A^T$, because the edges are directional.
 		\draw (E) -- node[lbl] {3} (F);
 		\draw (E) -- node[lbl] {7} (G);
 		\draw (F) -- node[lbl] {4} (G);
-		\draw (F) -- node[lbl] {4} (G);
 
 	\end{tikzpicture}
 
 
 \end{Answer}
 % Strengths of an adjacency matrix
-\section{Prim's Algorithm and Kruskal's Algorithm for Minimum Spanning Trees}
-Prim's Algorithm is minimum spanning tree
+\section{Prim's Algorithm for Minimum Spanning Trees}
+A \newterm{spanning tree} of a connected graph is a tree that includes every vertex, using some of the edges. A \newterm{minimum spanning tree} (MST) is a spanning tree whose edge weights add up to the smallest possible total. MSTs are used to connect cities, computer networks, or power grids with the least amount of cable.
 
-FIXME https://github.com/KontinuaFoundation/sequence/issues/315
+\textbf{Prim's Algorithm} builds the MST one edge at a time:
+\begin{enumerate}
+\item Start with any vertex in the tree.
+\item Among all edges that connect the tree to a vertex outside it, choose the cheapest.
+\item Add that edge and its new vertex to the tree.
+\item Repeat until every vertex is in the tree.
+\end{enumerate}
+
+\textbf{Worked example.} Run Prim's algorithm on the weighted graph from the adjacency matrix exercise, starting at $A$. The cheapest edge out of $\{A\}$ is $A$–$C$ (2), so add $C$. Out of $\{A, C\}$, the cheapest edge is $C$–$B$ (1), so add $B$. Out of $\{A, B, C\}$, the cheapest is $B$–$D$ (5), so add $D$. Out of $\{A, B, C, D\}$, the cheapest is $D$–$E$ (2), so add $E$. Then $E$–$F$ (3) is cheapest, so add $F$. Last, $F$–$G$ (4) is cheaper than $E$–$G$ (7), so add $G$. The tree edges are $A$–$C$, $C$–$B$, $B$–$D$, $D$–$E$, $E$–$F$, and $F$–$G$. Their total weight is $2 + 1 + 5 + 2 + 3 + 4 = 17$.
+
+\begin{Exercise}[title={Prim's Algorithm from G}, label={ex:prim1}]
+Use the same weighted graph from the adjacency matrix exercise. Start at $G$ and list the edges in the order Prim's algorithm adds them. What is the total weight of the minimum spanning tree?
+\end{Exercise}
+\begin{Answer}[ref={ex:prim1}]
+Add $G$–$F$ (4), then $F$–$E$ (3), then $E$–$D$ (2), then $D$–$B$ (5), then $B$–$C$ (1), then $C$–$A$ (2). The total weight is $4 + 3 + 2 + 5 + 1 + 2 = 17$, which matches the worked example.
+\end{Answer}
 
 
 \section{A* (A-star) Search Algorithm}
 % moved from shortest path to graph algorithms so that priority queues can be introduced first.
 
-The last shortest path we will discuss in this chapter is the \newterm{A-star Algorithm}, more commonly represented as \newterm{A* Algorithm}. In essence, it is an extension of Dijkstra's Algorithm in combination with a \emph{priority-based heuristic function}. A heuristic is an introduced estimated cost from any node to the goal.
+The last shortest path we will discuss in this chapter is the \index{A* search}\newterm{A-star Algorithm}, more commonly represented as \newterm{A* Algorithm}. In essence, it is an extension of Dijkstra's Algorithm in combination with a \emph{priority-based heuristic function}. A heuristic is an introduced estimated cost from any node to the goal.
 
 The key behind this implementation is the following function
 \[
@@ -194,7 +214,7 @@ The key behind this implementation is the following function
 where
 \begin{itemize}
 	\item $g(n)$: the cost of the path from the start node (usually $S$) to the current node $n$
-	\item $h(n)$: the \newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
+	\item $h(n)$: the \index{heuristic}\newterm{heuristic} function that estimates the remaining cost from $n$ to the goal (usually $E$)
 	\item $f(n) = g(n) + h(n)$: the estimated total cost of a path from $S$ to $E$ passing through node $n$
 \end{itemize}
 
@@ -208,20 +228,19 @@ When moving from a node $u$ to an adjacent node $v$, the path cost is \emph{upda
 \]
 
 where $c(u,v)$ is the cost of traversing the edge from $u$ to $v$. As we discussed in the chapter on Dijkstra's, we have a decision to make upon each visit to a node:
-Each time we visit a node, we have a decision to make:
 \[
 	\text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
 \]
 \subsection{The Heuristic Function $h(n)$}
 The heuristic $h(n)$ function depends on the problem domain. Its purpose is to estimate the remaining cost from node $n$ to the goal. While this is a difficult task, we can use basic algebra to make an informed guess.
 
-For example, in a map-based pathfinding problem, $h(n)$ may be the straight-line distance, or \newterm{Euclidean distance} between node $n$ and the goal. Since the actual path cannot be shorter than the Euclidean distance, this provides a reasonable estimate of the remaining cost. If a nodes location is represented on a 2D plane (such as a map or graph) $(x_n, y_n)$ and the goal location as $(x_g, y_g)$, the Euclidean Heuristic
+For example, in a map-based pathfinding problem, $h(n)$ may be the straight-line distance, or \newterm{Euclidean distance} between node $n$ and the goal. Since the actual path cannot be shorter than the Euclidean distance, this provides a reasonable estimate of the remaining cost. If a node's location is represented on a 2D plane (such as a map or graph) $(x_n, y_n)$ and the goal location as $(x_g, y_g)$, the Euclidean Heuristic
 $$h(n) = \sqrt{(x_g-x_n)^2 + (y_g-y_n)^2}$$
 
-Alternatively, many 2D games use a similar either \newterm{taxicab distance} (typically for 4-way movement),
+Many 2D games instead use \newterm{taxicab distance} (for 4-way movement),
 $$h(n) = |x_g-x_n| + |y_g-y_n|$$
 or \newterm{Chebyshev distance} (typically for 8-way movement in a game)
-$$d = \max(|x_2 - x_1|,\ |y_2 - y_1|)$$
+$$h(n) = \max(|x_g - x_n|,\ |y_g - y_n|)$$
 which takes the maximum of the horizontal and vertical movements.
 
 Sometimes, graphs without direct spatial meaning become more difficult to work with because there is no obvious notion of distance between two nodes.
@@ -232,12 +251,12 @@ In many cases, however, no suitable heuristic is known. In these situations, the
 $$h(n) = 0$$
 for all nodes $n$. Substituting this into the A* evaluation function gives
 $$f(n) = g(n)$$
-which causes A* to reduce to to Dijkstra's algorithm. While this guarantees an optimal path, it loses the efficiency gains that a good heuristic can provide.
+which causes A* to reduce to Dijkstra's algorithm. While this guarantees an optimal path, it loses the efficiency gains that a good heuristic can provide.
 
 There is an important property that the Heuristic Function must satisfy:
 $$h(n) \leq \text{true remaining cost}$$
 
-When an admissible heuristic is used (such that $h(n) \leq \text{true remaining cost}$), A* is guaranteed to find an optimal path if one exists.
+When an \index{admissible heuristic}admissible heuristic is used (such that $h(n) \leq \text{true remaining cost}$), A* is guaranteed to find an optimal path if one exists.
 
 \subsection{The Total Estimated Distance $f(n)$ and Priority Queues}
 
@@ -257,23 +276,23 @@ As with Dijkstra's algorithm, A* maintains a priority queue containing nodes tha
 	\text{priority}(n) = f(n)
 \]
 
-At each step, the node with the smallest $f(n)$ value is removed from the priority queue and explored. When a neighboring node is discovered, its path cost $g(n)$ is updated, a new heuristic estimate $h(n)$ is calculated, and a new value of $f(n)$ is computed.
+At each step, the node with the smallest $f(n)$ value is removed from the priority queue and explored. When a neighboring node is discovered, its path cost $g$ is updated, a new heuristic estimate $h(n)$ is calculated, and a new value of $f(n)$ is computed.
 
 There are some good references about this in your digital resources, as well as a fun Minecraft-based explanation \href{https://www.youtube.com/watch?v=Zg0Cxn8AVZA}{here}.
 
 \section{Injection, Surjection, Bijection, and Isomorphism}
 
-Let's talk about Graph Isomorphism. To do this, we must first introduce the terms of \newterm{injection}, \newterm{surjection}, and \newterm{bijection}. These are types of functions in set theory as well as mathematics.
+Let us talk about Graph Isomorphism. To do this, we must first introduce the terms of \newterm{injection}, \newterm{surjection}, and \newterm{bijection}. These are types of functions in set theory as well as mathematics.
 
 \begin{definition}[Injection]
-	A function $f : A\rightarrow B$ is injective if different inputs always produce different outputs. Importantly, this means no two integers map to the same output.
+	A function $f : A\rightarrow B$ is injective if different inputs always produce different outputs. Importantly, this means no two inputs map to the same output.
 \end{definition}
 
 \begin{definition}[Surjection]
 	A function $f : A\rightarrow B$ is surjective if every element of B is hit by at least one element of A. In essence, all of the elements of B are covered.
 \end{definition}
 \begin{definition}[Bijection]
-	A function $f : A\rightarrow B$ is bijective if it is both injective and surjective. Ultimately, the function creates no collisions and hits all functions of B.
+	A function $f : A\rightarrow B$ is bijective if it is both injective and surjective. Ultimately, the function creates no collisions and hits every element of B.
 \end{definition}
 
 \begin{Exercise}[title={Bijective, Surjective, Injective Exercise}, label={ex:bi_sur_in}]
@@ -306,7 +325,7 @@ Let's talk about Graph Isomorphism. To do this, we must first introduce the term
 		\item Bijective. Every element of the codomain is reached exactly once.
 	\end{enumerate}
 \end{Answer}
-Now, let's talk about \newterm{Isomorphism}. A \newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
+Now, let us talk about \newterm{Isomorphism}. A \index{graph isomorphism}\newterm{graph isomorphism} is a bijection between the vertex sets of two graphs that preserves adjacency. Thus, an isomorphism not only matches vertices one-to-one, but also preserves the structure of the graph.
 
 \begin{definition}[Graph Isomorphism]
 	Let $G=(V_G,E_G)$ and $H=(V_H,E_H)$ be graphs. An isomorphism from $G$ to $H$ is a bijection
@@ -417,7 +436,7 @@ If any of these differ, the graphs are not isomorphic:
 \begin{itemize}
 	\item Number of vertices
 	\item Number of edges
-	\item Degree sequence (if degree sequences are intact, it does not guarantee isomorphism)
+	\item Degree sequence (matching degree sequences do not guarantee isomorphism)
 	\item Number of connected components
 	\item Number of cycles of a given length
 	\item Chromatic number
@@ -436,7 +455,7 @@ A common example that you will not be tested on but is important to know is the 
 
 Now, given two graphs $G$ and $H$, how can we determine $G$ contain a subgraph isomorphic to $H$, a graph of smaller to equal size to $G$?
 
-This may be easy if $G$ and $H$ are pretty small, but the math becomes infinitely harder as the number of vertices and edges go up.
+This may be easy if $G$ and $H$ are pretty small, but the math becomes much harder as the number of vertices and edges go up.
 
 We can simplify this by transforming the inputs of a clique problem to inputs of the subgraph isomorphism problem.
 
@@ -461,9 +480,9 @@ Therefore,
 This shows that every instance of the Clique problem can be transformed into an instance of the Subgraph Isomorphism problem. We call this an \newterm{algorithmic reduction}.\footnote{Algorithmic Reductions are the basis of a set of problems called P, NP, and NP-Complete. See \href{https://youtu.be/eHZifpgyH_4}{this video} for more.} 
 
 \section{Travelling Salesperson Problem and Nearest Neighbour}
-FIXME https://github.com/KontinuaFoundation/sequence/issues/312
+The Travelling Salesperson Problem (TSP) asks for the shortest route that visits every city exactly once and returns to the start. It is NP-hard: no fast algorithm is known that always finds the best route, and with just 20 cities there are about $6 \times 10^{16}$ possible tours. A simple heuristic is the \newterm{nearest neighbour} method. Start at a city. Repeatedly go to the closest city you have not visited yet, and return to the start at the end. This is fast and often gives a reasonable route, but it may not be the shortest.
 \section{Topological Sort and DAGs}
-Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
+Another common use of graph algorithms is sorting them in a meaningful order. Specifically, we can sort directed graphs in a way that tells us exactly what order vertices need to be ``visited'' or operated on. We call this a \index{topological sort}\newterm{Topological Sorting} of the graph. A \newterm{topological order} is a linear ordering of the vertices in a graph such that for every directed edge $u \rightarrow v$ from vertex $u$ to vertex $v$, vertex $u$ comes before vertex $v$ in the ordering. The most common usage for this is scheduling jobs, queueing tasks with dependencies, or creating tentative project schedules.
 
 To do this, we are going to use Python's \texttt{Graphlib}, and its \texttt{TopologicalSorter} module.
 
@@ -522,7 +541,7 @@ will produce the following error \index{Cycle Error}
 \begin{minted}{python}
 graphlib.CycleError: ('nodes are in a cycle', ['C', 'Z', 'A', 'C'])
 \end{minted}
-The exception reports one cycle that prevents the ordering from being constructed. In this case, $C\rightarrow Z\rightarrow A\rightarrow C$ forms a directed cycle.
+The exception reports one cycle that prevents the ordering from being constructed (the exact cycle printed may vary). In this case, $C\rightarrow Z\rightarrow A\rightarrow C$ forms a directed cycle.
 
 We can also introduce tasks that can be done in parallel. Create the following file \mintinline{python}|parallel_dag.py|
 \begin{minted}{python}
@@ -533,15 +552,7 @@ tasks = {
     "Build Backend": {"Compile"},
     "Test": {"Build Frontend", "Build Backend"},
     "Deploy": {"Test"},
-}from graphlib import TopologicalSorter
-tasks = {
-    "Compile": set(),
-    "Build Frontend": {"Compile"},
-    "Build Backend": {"Compile"},
-    "Test": {"Build Frontend", "Build Backend"},
-    "Deploy": {"Test"},
 }
-from graphlib import TopologicalSorter
 
 ts = TopologicalSorter(tasks)
 ts.prepare()
@@ -565,18 +576,17 @@ Running this code outputs the following
 ('Test',)
 ('Deploy',)
 \end{minted}
-showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently (this is similar to running circuits in parallel!).
+showing us that our sort outputs which ones can happen at the same time. In software development, many tasks have dependencies but can still be executed in parallel when those dependencies are satisfied. Topological sorting helps determine both the required execution order and which tasks may be performed concurrently .
 \section{Proofs}
 % CONTENT PROBLEMS FROM CSC 349 from CAL POLY SLO
 %FIXME https://github.com/KontinuaFoundation/sequence/issues/342 
 This section will be a set of proofs or algorithm design problems for graph-related concepts that are important to know. At the basis level, these are just practice problems for graph understand, but can be applied in many real world scenarios.
 
-\subsection{Example 1: Bipartite} %FIXME Example environment
+\subsection{Example 1: Bipartite}
 
 \begin{mdframed}[frametitle = {Bipartite Graph}, style = important]
 
-A \newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitioned into two sets $(V = V_1 \cup V_2)$ and $(V_1 \cap V_2 = empty)$ such that there are no edges between vertices in the same set.
-FIXME Diagram
+A \index{bipartite graph}\newterm{Bipartite Graph} is a graph $G = (V,E)$ such that $V$ can be partitioned into two sets $(V = V_1 \cup V_2)$ and $(V_1 \cap V_2 = \emptyset)$ such that there are no edges between vertices in the same set.
 \end{mdframed}
 
 \begin{theorem}\label{thm:bipartite}
@@ -590,9 +600,9 @@ Design pseudocode for an algorithm that determines whether or not an undirected 
 
 \texttt{FindOdd$(G, e)$}
 \begin{algorithmic}[1]
-\Require $G$, a graph on which DFS has been run; $e = (x,y)$, a back edge
+\Require $G$, a graph on which DFS has been run; $\text{level}(v)$, the depth of each vertex $v$ in the DFS tree; $e = (x,y)$, a back edge
 \Ensure \textbf{true} if $e$ creates a cycle of odd length, \textbf{false} otherwise
-\If{$\text{pre}(x) - \text{post}(y) \equiv 0 \pmod 2$}
+\If{$\text{level}(x) - \text{level}(y) \equiv 0 \pmod 2$}
     \State \Return \textbf{true}
 \Else
     \State \Return \textbf{false}
@@ -616,7 +626,7 @@ Assuming \texttt{FindOdd} exists, we can make the following pseudocode.
 \end{algorithmic}
 \end{Answer}
 
-While you don't have to go through it on your own, here is the outline of how we can do a proof by contradiction for a graph, specifically proving theorem \ref{thm:bipartite}.
+While you do not have to go through it on your own, here is the outline of how we can do a proof by contradiction for a graph, specifically proving theorem \ref{thm:bipartite}.
 \begin{proof}
 
 First, suppose \(G\) is bipartite. Then its vertices can be partitioned into two sets
@@ -633,7 +643,7 @@ valid bipartition.
 Assume for contradiction that there is an edge \((u,v)\) where \(u\) and \(v\) are in the
 same set. Then \(u\) and \(v\) have distances from \(s\) with the same parity. Taking
 shortest paths from \(s\) to \(u\) and from \(s\) to \(v\), together with the edge
-\((u,v)\), creates a cycle of odd length. This contradicts the assumption that \(G\)
+\((u,v)\), gives a closed walk of odd length, and every odd closed walk contains an odd cycle. This contradicts the assumption that \(G\)
 has no odd cycles.
 
 Thus no edge connects two vertices in the same set, so each connected component is
@@ -664,26 +674,25 @@ $e = (u, v)$, and determines whether $G$ has a cycle containing $e$.
 \end{Answer}
 
 \begin{Exercise}[title={Leaf Removal}, label={ex:proofs_leaf}]
-\textbf{Proof the following statement:}
+\textbf{Prove the following statement:}
 In any connected undirected graph, there is a vertex whose removal leaves the graph connected.
-\vspace*{20mm}
 \end{Exercise}
 \begin{Answer}[ref={ex:proofs_leaf}]
 \begin{proof}
-Run DFS on given graph $G$. Find a leaf, $l$ in the output DFS tree (sometimes called the explore tree). Remove $l$ from the graph. Run DFS on the graph ($G' = G / \{l\}$). If the DFS tree is connected, then we are done. If not, then there is a vertex $v$ in the DFS tree that is not connected to the rest of the graph. This means that $v$ was only connected to $l$ in the original graph. But this contradicts the fact that $l$ was a leaf in the DFS tree, since $v$ would have been explored before $l$. Since a leaf must exist, removing it from the explore tree does not create a new tree. Therefore, there must be a vertex whose removal leaves the graph connected.
+Build a DFS tree $T$ of $G$. $T$ spans $G$, so if $G$ has at least two vertices, $T$ has at least two leaves. Let $l$ be a leaf of $T$. Removing a leaf from a tree leaves a tree, so $T - l$ is connected. Every vertex other than $l$ is in $T - l$, and $T - l$ uses only edges of $G - l$. So $G - l$ is connected, and removing $l$ is the vertex we need.
 \end{proof}
 \end{Answer}
 
 Sometimes, we may need to create new graphs as counterexamples to disprove a statement. Consider the following:
-\begin{theorem}
-An graph $G$ is \newterm{strongly connected} if every vertex is reachable from every other vertex.
-\end{theorem}
-Another way to say this is that a select vertex of the graph has a path to every other vertex on the graph. Often, this comes up in finding \emph{subgraphs} of graphs that are strongly connected, called \newterm{strongly connected components}.
+\begin{definition}[Strongly Connected]
+A directed graph $G$ is \index{strongly connected}\newterm{strongly connected} if every vertex is reachable from every other vertex.
+\end{definition}
+Strongly connected components are the largest subgraphs that are strongly connected. They come up when we study directed graphs, for example, when we want to know which groups of web pages can all reach each other.
 \begin{Exercise}[title={Strongly Connected Graphs}, label={ex:proofs_strongly_connected}]
 Create an example of a strongly connected directed graph $G = (V,E)$ such that, for every $v \in V$,
 removing $v$ from $G$ leaves a directed graph that is not strongly connected. 
 
-\textit{Hint: the simplest answer is usually the best. Start with one vertex.}
+\textit{Hint: the simplest answer is usually the best. Try a single cycle.}
 \end{Exercise}
 \begin{Answer}[ref={ex:proofs_strongly_connected}]
 
@@ -704,6 +713,11 @@ removing $v$ from $G$ leaves a directed graph that is not strongly connected.
 		\draw (C) to[bend left=20] (A);
 
 	\end{tikzpicture}
+
+A directed triangle $A \to B \to C \to A$. You can get from any vertex to any
+other by going around the cycle, so it is strongly connected. Remove any
+one vertex, say $A$, and only the edge $B \to C$ is left: you can reach
+$C$ from $B$ but not $B$ from $C$.
 \end{Answer}
 % Prove the following theorem:
 % 

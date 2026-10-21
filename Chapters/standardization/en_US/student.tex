@@ -1,44 +1,63 @@
 \chapter{Standardizing Data}
 
+\section{The Standard Score}\index{standardization}
+\newterm{Standardization} rescales a variable so that its mean is 0 and its standard deviation is 1.
+For a variable $X$ with mean $\mu$ and standard deviation $\sigma$,
+$$Z = \frac{X - \mu}{\sigma}$$
+Each value $Z$ is the number of standard deviations the original value lies above or below the mean.
+This is the same $z$-score used in the chapter on describing data. Think of a math test and a science test with different averages and spreads. The $z$-score shows how well you did compared with your classmates on each test.
 
-Data standardization is a preprocessing step in many machine learning algorithms. Standardization transforms the variables in the dataset to have a mean of zero and a standard deviation of one.
+\section{A Worked Example}
+Take the values $2, 4, 6, 8$. The mean is $\mu = 5$. Using the population standard deviation,
+$\sigma = \sqrt{\frac{(-3)^2 + (-1)^2 + 1^2 + 3^2}{4}} = \sqrt{5} \approx 2.236$. The standardized values are
+$$\frac{2 - 5}{2.236} \approx -1.342, \quad \frac{4 - 5}{2.236} \approx -0.447, \quad
+\frac{6 - 5}{2.236} \approx 0.447, \quad \frac{8 - 5}{2.236} \approx 1.342$$
+The new values have mean 0 and standard deviation 1.
 
-The standardization of a variable $X$ is calculated as follows:
-
-\begin{equation}
-Z = \frac{X - \mu}{\sigma}
-\end{equation}
-
-where:
+\section{Why Standardize?}
+Standardization matters for methods that combine several features. In those methods, a feature with
+large numbers can dominate the calculation simply because of its units. Standardization puts the features on
+the same scale.
 \begin{itemize}
-\item $Z$ is the standardized variable.
-\item $X$ is the original variable.
-\item $\mu$ is the mean of $X$.
-\item $\sigma$ is the standard deviation of $X$.
+\item \textbf{Gradient descent} converges faster when all features have similar scales, because the cost
+function is less stretched.
+\item \textbf{Distance-based methods}, such as k-nearest neighbors, depend on the scale of each feature.
+\item \textbf{Regularized regression} and \textbf{principal components} are sensitive to scale, so their
+results change with the units of the inputs.
+\item \textbf{Coefficients} become easier to compare. In a standardized regression, each coefficient is the change in
+the response, in standard deviations, for a one-standard-deviation increase in that predictor.
 \end{itemize}
 
-\section{Why Do We Standardize Data?}
+\section{Cautions}
+Standardization does not change the shape of a distribution. It only sets the mean to 0 and the standard deviation to 1.
+Tree-based models, such as decision trees, are not affected by monotone rescaling of a feature, so they do not need
+standardization. Compute $\mu$ and $\sigma$ from the training data only, and then apply the same values to the
+validation and test data. Otherwise, information from the test set leaks into training.
 
-There are several reasons why standardization is essential:
+\begin{Exercise}[label=std1, title=Standardize a value]
+A data set has mean 50 and standard deviation 10. What is the standardized value of 65?
+\end{Exercise}
+\begin{Answer}[ref=std1]
+$Z = \frac{65 - 50}{10} = 1.5$.
+\end{Answer}
 
-\subsection{Homogeneity of Variances}
+\begin{Exercise}[label=std2, title=Leakage]
+A student computes $\mu$ and $\sigma$ from all the data, then splits it into training and test sets. What is the problem?
+\end{Exercise}
+\begin{Answer}[ref=std2]
+The test data helped determine the scaling, so information from the test set has leaked into training.
+The fix is to compute $\mu$ and $\sigma$ from the training set only.
+\end{Answer}
 
-Some statistical techniques assume that all variables have the same variance. Standardizing the data ensures this assumption.
+\begin{Exercise}[label=std3, title=Which test went better?]
+You scored 85 on a math test (class mean 75, standard deviation 5) and 90 on a
+science test (class mean 85, standard deviation 10). Relative to your class,
+which test went better?
+\end{Exercise}
+\begin{Answer}[ref=std3]
+Math: $Z = \frac{85 - 75}{5} = 2$. Science: $Z = \frac{90 - 85}{10} = 0.5$. Your
+math score is two standard deviations above the mean, while your science score is
+only half a standard deviation above. Math went better, even though the raw score
+was lower.
+\end{Answer}
 
-\subsection{Interpreting Coefficients}
-
-In regression analysis, standardizing allows us to interpret the coefficients of the predictors as the change in the response variable associated with a one-standard-deviation increase in the predictor.
-
-\subsection{Algorithm Convergence}
-
-For many machine learning algorithms (like gradient descent), standardization can help the algorithm converge more quickly to the optimum.
-
-\subsection{Comparing Variables}
-
-Standardization puts different variables on the same scale, allowing for meaningful comparisons. For example, it would be challenging to compare a variable measured in kilograms with another measured in kilometers without standardization.
-
-\subsection{Preventing Numerical Instabilities}
-
-Standardizing can help prevent numerical instabilities in computations, particularly when dealing with high-dimensional data.
-
-Remember, though standardization is useful and necessary in many situations, it's not always required. For instance, tree-based models are scale-invariant and don't require standardization. 

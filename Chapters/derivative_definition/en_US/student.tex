@@ -1,27 +1,178 @@
-\chapter{Derivatives}
+\chapter{The Definition of the Derivative}
 
-In calculus, the derivative of a function represents the rate at which the 
-function is changing at a particular point. It is a fundamental concept that 
-has vast applications in various fields, including physics.\index{derivative}
+Glance at a car's speedometer and it says 60 km/h. But what does that
+mean? Speed is distance divided by time, and at a single instant the car
+covers no distance in no time. Zero divided by zero is not 60. Making
+sense of ``speed right now'' took Newton and Leibniz, and the tool they
+used is the \newterm{derivative}\index{derivative}. You already have the
+key ingredient: limits (Chapter~\ref{chap:limits}).
 
-\section{Definition}
+\section{Differentiation}
 
-The derivative of a function $f(x)$ at a point $x$ is defined as the limit:
+Finding the slope between two points on a graph, at $x = a$ and $x = b$,
+is easy:
+
+$$m = \frac{f(b) - f(a)}{b - a}$$
+
+\begin{figure}[H]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (1, 0.25) -- (3, 2.251);
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$b$};
+	\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
+	\draw (3,2.251) node[right] {$f(b)$};
+	\draw (1,0.25) circle (0.05);
+	\draw (3, 2.251) circle (0.05);
+	\draw (2, 0.25) node[above]{$b - a$};
+	\draw (3, 1.25) node[right] {$f(b) - f(a)$};
+	\end{tikzpicture}
+    \caption{The slope of point $a$ using points $a$ and $b$.}
+    \label{fig:btoaslope}
+\end{figure}
+
+If we want to find the slope at $a$, we take the limit of this as the 
+$b$ goes to $a$:
+
+$$f'(a) = \lim_{b \to a}\frac{f(b) - f(a)}{b - a}$$
+
+This idea is usually expressed using $h$ as the difference 
+between $b$ and $a$:
+
+\begin{figure}[H]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (1, 0.25) -- (3, 2.251);
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw [dashed] (3, 2.251) -- (3, 0) node[below]{$a + h$};
+	\draw [dashed] (1,0.25) -- (3, 0.25) node[right] {$f(a)$};
+	\draw (3,2.251) node[right] {$f(a + h)$};
+	\draw (1,0.25) circle (0.05);
+	\draw (3, 2.251) circle (0.05);
+	\draw (2, 0.25) node[above]{$h$};
+	\draw (3, 1.25) node[right] {$f(a + h) - f(a)$};
+	\end{tikzpicture}
+    \caption{Limit of a point using $h$ difference.}
+    \label{fig:limitSlopeH}
+\end{figure}
+
+The formula then becomes:
+
+$$f'(a) = \lim_{h \rightarrow 0}\frac{f(a + h) - f(a)}{h}$$
+
+\index{tangent line!slope of}As $h$ decreases to very close to zero, almost infinitesimal, what we are finding is the slope of the tangent line to point $a$. 
+\begin{figure}[H]
+    \centering
+	\begin{tikzpicture} [scale=2]
+	\draw[->,thick,sdkblue] (0,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[<->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,{\x * \x * 0.25});
+	\draw [sdkblue] (0, -0.25) -- (3, 1.25) node[midway, right]{slope = $f'(a)$};;
+	\draw [dashed] (1,0.25) -- (1, 0) node[below]{$a$};
+	\draw (1,0.25) circle (0.05);
+	\end{tikzpicture}
+    \caption{Slope at $a$ as $h$ approaches 0.}
+    \label{fig:tangentSlope}
+\end{figure}
+
+\subsection{Differentiability}
+
+Warning: Not every function is differentiable everywhere.  For
+example, if $f(x) = |x|$, you get a \index{corner (not differentiable)}corner at zero.
+
+\begin{figure}[H]
+    \centering
+	\begin{tikzpicture} [scale=1]
+	\draw[->,thick,sdkblue] (-4,0) -- (4,0) node[right] {$x$};
+	\draw[->,thick,sdkblue] (0,0) -- (0, 3.45) node[above] {$y$};
+	% curve
+	\draw[->,thick,draw=black, domain=0:3.7,samples=300,variable=\x]  
+	plot (\x,\x);
+	\draw[<-,thick,draw=black, domain=-3.7:0,samples=300,variable=\x]  
+	plot (\x,{-1 * \x});
+	\end{tikzpicture}    
+	\caption{Absolute value function.}
+    \label{fig:absGraph}
+\end{figure}
+
+
+To the left of zero, the slope is -1. To the right of zero, the slope
+is 1.  At zero?  The derivative is not defined because the slopes are two different numbers. 
+
+If a function has a derivative everywhere, it is said to be
+\index{differentiable}\newterm{differentiable}. Generally, you can think of differentiable
+functions as smooth --- their graphs have no corners or sharp turns. Another place where a \index{vertical tangent}function
+is not differentiable is at a vertical tangent, as the slope reaches $\pm \infty$. 
+
+\index{differentiability!implies continuity}It is important to note: if $f$ is differentiable at $a$, it \emph{must} also be continuous at $a$. 
+
+Likewise, if $f$ is not continuous at $a$ it is not differentiable. An example of this is a \index{jump discontinuity}jump discontinuity. 
+
+\begin{Exercise}[label=diff1]
+	[This problem was originally presented as a no-calculator, 
+	multiple-choice question on the 2012 AP Calculus BC exam.] Let $f$ 
+	be the function defined by $f(x) = \sqrt{|x - 2|}$ for all $x$. 
+	Classify each of the following statements as true or false. 
+	\begin{enumerate}
+		\item $f$ is continuous at $x = 2$. 
+		\item $f$ is differentiable at $x = 2$.
+		\item $\lim_{x \to 2} f(x) = 0$.
+		\item $x = 2$ is a vertical asymptote of the graph of $f(x)$. 
+	\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=diff1]
+\begin{enumerate}
+\item True. $f(2)$ exists and $\lim_{x \to 2^+}f(x) = \lim_{x \to 2^-}f(x) = f(2) = 0$.
+\item False. The graph has a vertical cusp at $x=2$. On the right, $f'(x) \to +\infty$, and on the left, $f'(x) \to -\infty$. The derivative is unbounded there, so $f$ is not differentiable at $x = 2$.
+\item True. $\sqrt{|2-2|} = \sqrt{0} = 0$.
+\item False. $f(2) = 0$ and $\lim_{x \to 2} f(x) = 0$. The function is finite at $x = 2$, so there is no vertical asymptote.
+\end{enumerate}
+\end{Answer}
+
+\subsection{Using the definition of derivative}\index{derivative!limit definition}
+
+Let us say that you want to know the slope of $f(x) = -3x^2$ at $x = 2$.
+Using the definition of the derivative, that would be:
+
+$$f'(2) = \lim_{h \to 0}\frac{f(2 + h) - f(2)}{h} 
+= \lim_{h \to 0}\frac{-3(2 + h)^2- \left(-3(2)^2\right)}
+{h} $$
+$$= \lim_{h \to 0}\frac{-12 - 12h - 3h^2 + 12}{h}
+= \lim_{h \to 0}\frac{-12h - 3h^2}{h}
+= \lim_{h \to 0}\left(-12 - 3h\right) = -12$$
+
+Notice the trick: once the $f(a)$ terms cancel, every remaining term has
+an $h$ in it. Divide out the $h$, and the limit is easy.
+
+
+\section{The Derivative}
+
+Put together, the derivative of a function $f(x)$ at a point $x$ is the \index{difference quotient}limit:
 
 \begin{equation}
 f'(x) = \lim_{{h \to 0}} \frac{f(x+h) - f(x)}{h}
 \end{equation}
 
-provided this limit exists. In words, the derivative of $f$ at $x$ is the 
-limit of the rate of change of $f$ at $x$ as the change in $x$ approaches zero. 
-The derivative of a function is equal to the slope  of the function. The 
-derivative of a function, $f(x)$, is denoted as $f'(x)$ (read out loud as "f 
-prime of x") or $df/dx$. The origin of this definition was shown in the 
-previous chapter, Differentiation. 
+provided this limit exists. In words: the derivative is the rate at which
+$f$ is changing at $x$, which is the slope of the graph there. We write it
+$f'(x)$ (read ``f prime of x'') or $\frac{df}{dx}$.
 \index{derivative!definition of}
 
-\subsection{Estimating the Derivative}
-Consider the function $f(x) = x^2$. Suppose we want to write an equation for a 
+\subsubsection{Estimating the Derivative}
+Consider the function $f(x) = x^2$. Suppose we want to write an equation for a \index{tangent line}
 line that is tangent to the curve at $x = 2$ (see figure \ref{fig:tangent}). 
 We already have a point that the line passes through: $(2, 4)$. To write an 
 equation for the tangent line, we would need to know its slope, $m$. 
@@ -41,8 +192,8 @@ equation for the tangent line, we would need to know its slope, $m$.
 \end{figure}
 
 We can estimate the slope by choosing points on either side of $P$, drawing a 
-line through those points, and calculating the slope of that secant line (it 
-is a secant line because it intersects the curve more than once). See figure 
+line through those points, and calculating the slope of that secant line (a
+\newterm{secant line}\index{secant line} crosses the curve at two points). See figure 
 \ref{fig:secant} for a visualization. 
 
 \begin{figure}[H]
@@ -109,12 +260,12 @@ A graph of the data is shown in figure \ref{fig:falling}.
     \label{fig:falling}
 \end{figure}
 
-Suppose we wanted to estimate the velocity of the falling object at $t = 
+\index{average velocity}Suppose we wanted to estimate the velocity of the falling object at $t = 
 1.5\text{s}$. Recall that velocity is given by the change in position divided 
 by the change in time. We can select data points on either side of $t = 
 1.5\text{s}$ and use them to find the average velocity from $t = 1\text{s}$ 
 and $t = 2\text{s}$ (see figure \ref{fig:velocity}):
-$$v = \frac{h_2 - h_2}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
+$$v = \frac{h_2 - h_1}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
 2\text{s} - 1\text{s}} = -14.7 \frac{\text{m}}{\text{s}}$$
 
 \begin{figure}[H]
@@ -137,9 +288,14 @@ $$v = \frac{h_2 - h_2}{t_2 - t_1} = \frac{30.4\text{m} - 45.1\text{m}}{
     \end{tikzpicture}
     \caption{The slope of the line connecting the data points on either side 
     of $t = 1.5\text{s}$ is approximately the velocity of the falling object 
-    at $t = \text{s}$}
+    at $t = 1.5\text{s}$}
     \label{fig:velocity}
 \end{figure}
+
+The object was dropped from 50 m, so its height is $h = 50 - 4.9t^2$, and its
+true velocity at $t = 1.5$ s is $-14.7$ m/s. Our estimate is spot on. (For a
+parabola, the slope between two points spaced evenly on either side always
+equals the slope in the middle. For other curves it is just close.)
 
 \textbf{Example}: A 1000-gallon tank drains from the bottom in 30 minutes. The 
 volume left in the tank is recorded every 5 minutes, as shown in the data 
@@ -161,7 +317,7 @@ $30$ & $0$\\\hline
 
 \textbf{Solution}: To estimate $V'(15)$, we find the slope of the line 
 connecting the data points on either side of $t = 15$:
-$$V'(15) \approx \frac{111\text{gal} - 444text{gal}}{20\text{min} - 10
+$$V'(15) \approx \frac{111\text{gal} - 444\text{gal}}{20\text{min} - 10
 \text{min}}$$
 $$V'(15) \approx \frac{-333\text{gal}}{10\text{min}}$$
 $$V'(15) \approx -33.3 \frac{\text{gal}}{\text{min}}$$
@@ -202,7 +358,7 @@ draining faster at $t = 15$ than at $t = 25$.
 
 \begin{Answer}[ref=slope1]
 	To estimate the slope at $t = 12$, we can use the data at $t = 9$ and $t = 
-	15$. The slope of the line connecting those points is approximate of the 
+	15$. The slope of the line connecting those points is approximately the 
 	slope at $t = 12$. $$\frac{y_2 - y_1}{x_2 - x_1} = \frac{67.9 - 61.8}{15 - 9} 
 	= \frac{6.1}{6} = 1.017$$ The units for the numerator are degrees Fahrenheit 
 	and for the denominator are minutes. Therefore, the estimated slope has units 
@@ -211,46 +367,47 @@ draining faster at $t = 15$ than at $t = 25$.
 	temperature at about 1 degree Fahrenheit per minute. 
 \end{Answer}
 
-\section{The Derivative as a Function}
+\subsection{The Derivative as a Function}\index{derivative!as a function}
 We have seen how to estimate the value of a derivative at a specific point on 
 a graph. Suppose we wanted to describe the slope of a graph everywhere. That 
 is: can we find a function, $g(x)$ that describes the slope of another 
 function, $f(x)$, over the domain of $f$? Using the definition of a 
 derivative, we can.
 \index{power rule}
-You have already seen an algorithm to find the derivatives of polynomial 
-functions (see chapter Differentiating Polynomials FIXME can this be linked). Recall that for a 
-function, $f(x) = x^n$, the derivative is $f'(x) = nx^{n - 1}$. Here is the 
-proof:
+Here is a shortcut you will use constantly in the next chapter: if
+$f(x) = x^n$, where $n$ is a positive integer, then $f'(x) = nx^{n - 1}$.
+For example, the derivative of $x^5$ is $5x^4$. This is called the
+\newterm{power rule}. Here is why it works:
 $$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
 $$f'(x) = \lim_{h \to 0} \frac{(x + h)^n - x^n}{h}$$
 
-In order to expand the polynomial, $(x + h)^n$, we'll need to apply the 
+\index{binomial theorem}In order to expand the polynomial, $(x + h)^n$, we will need to apply the 
 Binomial Theorem, which tells us that:
 $$(a + b)^n = a^n + na^{n - 1}b + \frac{n(n - 1)}{2!}a^{n - 2}b^2 + \frac{n(n 
 - 1)(n - 2)}{3!}a^{n - 3}b^3 + \cdots + nab^{n - 1} + b^n$$
 
 Substituting this into our limit definition of a derivative, we see that:
 $$f'(x) = \lim_{h \to 0} \frac{x^n + nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 
-+ \cdots nxh^{n-1} + h^n - x^n}{h}$$
++ \cdots + nxh^{n-1} + h^n - x^n}{h}$$
 $$f'(x) = \lim_{h \to 0} \frac{nx^{n-1}h + \frac{n(n-1)}{2!}x^{n-2}h^2 + 
-\cdots nxh^{n-1} + h^n}{h}$$
-$$f'(x) = \lim_{h \to 0} nx^{n-1} + \frac{n(n-1)}{2!}x^{n-2}h + \cdots nxh^{
-n-2} + h^{n-1}$$
+\cdots + nxh^{n-1} + h^n}{h}$$
+$$f'(x) = \lim_{h \to 0} \left( nx^{n-1} + \frac{n(n-1)}{2!}x^{n-2}h + \cdots + nxh^{
+n-2} + h^{n-1} \right)$$
+Every term except the first has an $h$ in it, so they all vanish as $h \to 0$:
 $$f'(x) = nx^{n-1}$$
 
 \textbf{Example}: Use the limit definition of a derivative to find $f'(x)$ if 
 $f(x) = 2x^3 - x^2$. 
 
 \textbf{Solution}: According to the limit definition, $f'$ is:
-$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \frac{\left[ 2\left( x + 
+$$f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = \lim_{h \to 0} \frac{\left[ 2\left( x + 
 h \right)^3 - \left( x + h \right)^2 \right] - \left[ 2x^3 - x^2 \right]}{h}$$
 $$f'(x) = \lim_{h \to 0} \frac{\left[ 2 \left( x^3 + 3 h x^2 + 3 h^2 x + h^3 
 \right) - \left( x^2 + 2xh + h^2 \right) \right] - 2 x^3 + x^2}{h}$$
-$$f'(x) = \lim_{h \to 0} \frac{2x^3 - 2x^3 + 6 h x^2 + 6 h^2 x + 6 h^3 - x^2 + 
+$$f'(x) = \lim_{h \to 0} \frac{2x^3 - 2x^3 + 6 h x^2 + 6 h^2 x + 2 h^3 - x^2 + 
 x^2 -2 x h - h^2}{h}$$
-$$f'(x) = \lim_{h \to 0} \frac{6 h x^2 + 6 h^2 x + 6 h^3 - 2 x h - h^2}{h}$$
-$$f'(x) = \lim_{h \to 0} 6 x^2 + 6 h x + 6 h^2 - 2x - h = 6 x^2 - 2 x$$
+$$f'(x) = \lim_{h \to 0} \frac{6 h x^2 + 6 h^2 x + 2 h^3 - 2 x h - h^2}{h}$$
+$$f'(x) = \lim_{h \to 0} \left( 6 x^2 + 6 h x + 2 h^2 - 2x - h \right) = 6 x^2 - 2 x$$
 
 Therefore, if $f(x) = 2x^3 - x^2$, then $f'(x) = 6x^2 - 2x$. 
 
@@ -292,8 +449,8 @@ Use the limit definition of a derivative to find an equation for $f'(x)$.
     x^2 + 2xh + h^2 - 1 \right) \left( 2x - 3 \right) - \left( x^2 - 1 \right) 
     \left( 2x + 2h - 3 \right)}{\left( 2x - 3 \right) \left(2x + 2h - 3 \right)
     } \right]$$
-    $$f'(x) = \left( \frac{1}{h} \right) \left[ \frac{2x^3 + 4x^2h + 2xh^2 - 
-    2x - 3x^2 - 6xh - 3h^2 + 3 \left( 2x^3 + 2x^2h - 3x^2 - 2x - 2h + 3 
+    $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{2x^3 + 4x^2h + 2xh^2 - 
+    2x - 3x^2 - 6xh - 3h^2 + 3 - \left( 2x^3 + 2x^2h - 3x^2 - 2x - 2h + 3 
     \right)}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} \right]$$
     $$f'(x) = \lim_{h \to 0} \left( \frac{1}{h} \right) \left[ \frac{2x^2h + 
     2xh^2 - 6xh - 3h^2 + 2h}{\left( 2x - 3 \right) \left( 2x + 2h - 3 \right)} 
@@ -304,445 +461,42 @@ Use the limit definition of a derivative to find an equation for $f'(x)$.
 \end{enumerate}
 \end{Answer}
 
+\section{Exercises}
 
-
-\section{Applications in Mathematics}
-\subsection{l'H\^{o}pital's Rule}
-\index{l'H\^{o}pital's rule}
-Consider the function $h(x) = \frac{\ln{x}}{x-1}$ and suppose we are interested 
-in the behavior of $h(x)$ around $x=1$. As x approaches 0 and the denominator $x-1$
-also approaches 0. This gives the an indeterminate result: $$\lim_{x \to 1}\frac{\ln{x}}{x-1} = \frac{0}{0}$$ 
-This is exactly the situation where L'H\^{o}pital's Rule applies.
-
-In Chapter 3, we will learn about Quotient Rule, which when directly 
-applied will give this indeterminate form! Keep an eye out for that.  
-
-Now, looking at the graph of $h(x)$ (see figure \ref{fig:lhospital}), we can guess 
-that $\lim_{x \to 1} \frac{\ln{x}}{x-1} = 1$. 
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-\begin{axis}
-    [clip=true,
-    xmin=0, xmax=4,
-    ymin=0, ymax=4,
-    axis lines=left
-    ]
-    \addplot[blue, domain=0.01:4, samples=100]{ln(x)/(x-1)};
-    \addplot[samples=50, black, dashed] coordinates{(1, 0)(1,1)};
-    \addplot[samples=50, black, dashed] coordinates{(0, 1)(1,1)};
-    \addplot[mark=*, fill=white, draw=blue] coordinates{(1, 1)};
-\end{axis}
-\end{tikzpicture}
-\caption{$h(x) = \frac{\ln{x}}{x - 1}$}
-\label{fig:lhospital}
-\end{figure}
-
-Let's examine the numerator and denominator separately: we'll define $f(x) = 
-\ln{x}$ and $g(x) = x - 1$ (see figure \ref{fig:zoom1}). 
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale = 0.5]
-    \begin{axis}
-    [clip=false,
-    xmin=0, xmax=3,
-    ymin=-1, ymax=2,
-    axis lines = center]
-    \addplot[blue, samples=100, domain=1/e:3]{ln(x)}
-    node[right, pos=1]{$f(x) = \ln{x}$};
-    \addplot[red, samples=100, domain=0:3]{x-1}
-    node[right, pos=1]{$g(x) = x - 1$};
-    \end{axis}
-\end{tikzpicture}
-\caption{Examining each part of $\frac{\ln{x}}{x-1}$ separately}
-\label{fig:zoom1}
-\end{figure}
-
-If we zoom in very far around $x=1$, the graphs begin to look linear (see 
-figure \ref{fig:zoom2}):
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale = 0.5]
-    \begin{axis}
-    [clip=false,
-    xmin=0.9, xmax=1.1,
-    ymin=-0.1, ymax=0.1,
-    axis lines = center]
-    \addplot[blue, samples=100, domain=0.9:1.1]{ln(x)}
-    node[right, pos=0.9]{$f(x) = \ln{x}$};
-    \addplot[red, samples=100, domain=0.9:1.1]{x-1}
-    node[right, pos=1]{$g(x) = x - 1$};
-    \end{axis}
-\end{tikzpicture}
-\caption{As we zoom in, the graph of $\ln{x}$ appears linear}
-\label{fig:zoom2}
-\end{figure}
-
-We can approximate these graphs as linear functions with slopes $m_1$ and 
-$m_2$, so that the blue curve is approximated as $y=m_1(x-1)$ and the red 
-curve is approximated as $y=m_2(x-1)$. The ratio of the functions would then 
-be 
-$$\frac{m_1(x-1)}{m_2(x-1)}=\frac{m_1}{m_2}$$ 
-
-which is the same as the ratio of the derivatives of our linear approximations. 
-This suggests l'Hopital's rule, that the limit of a ratio is the same as the 
-limit of the ratio of the derivatives for certain indeterminate forms: 
-$$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$.
-
-Let's apply l'Hopital's rule to our limit of $h(x)$:
-$$\lim_{x\to 1} \frac{\ln{x}}{x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx} 
-\ln{x}}{\frac{d}{dx} (x - 1)} = \lim_{x \to 1} \frac{\frac{1}{x}}{1}=1$$
-
-Notice our result with l'H\^{o}pital's rule matches our guess based on the graph 
-of $h(x) = \frac{\ln{x}}{x-1}$. 
-
-L'Hospital's rule also applies to the indeterminate result $\frac{\pm \infty}
-{\pm \infty}$. For a limit of the form $\lim_{x\to a}\frac{f(x)}{g(x)}$, 
-l'H\^{o}pital's rule applies if:
-\begin{enumerate}
-    \item the original limit is of the indeterminate form $\frac{0}{0}$ or 
-    $\frac{\pm \infty}{\pm \infty}$
-    \item $f$ and $g$ are differentiable on an interval containing $a$ (but 
-    possibly not differentiable at $a$)
-    \item $g'(x) \neq 0$ on said interval
-\end{enumerate}
-
-\textbf{Example}: Determine $\lim_{x \to \infty} \frac{e^x}{x^2}$.
-
-\textbf{Solution}: We begin by evaluating the limit:
-$$\lim_{x \to \infty} \frac{e^x}{x^2} = \frac{e^{\infty}}{\infty^2} = 
-\frac{\infty}{\infty}$$
-
-This is an indeterminate form that we can apply l'Hopital's rule to:
-$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}x^2} = \lim_{x \to 
-\infty} \frac{e^x}{2x}$$
-
-Evaluating this limit, we get another indeterminate form:
-$$=\frac{e^{\infty}}{2 \cdot \infty} = \frac{\infty}{\infty}$$
-
-Don't panic! We can apply l'H\^{o}pital's rule again (in fact, we can apply 
-l'H\^{o}pital's rule as many times as needed to evaluate a limit, as long as we 
-keep getting $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$):
-$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}2x} = \lim_{x \to 
-\infty} \frac{e^x}{2} = \frac{\infty}{2} = \infty$$
-
-and therefore, $\lim_{x \to \infty} \frac{e^x}{x^2} = \infty$.
-
-\begin{Exercise}[label=LH1]
-What is $\lim_{x \to 0} \frac{\tan{x} - x}{x^3}$?
+\begin{Exercise}[label=dfn1, title={Limit definition at a point}]
+Use the limit definition of the derivative to find $f'(3)$ for $f(x) = x^2$.
 \end{Exercise}
-
-\begin{Answer}[ref=LH1]
-First, let's confirm that l'H\^{o}pital's rule applies here:
-$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \frac{0 - 0}{0} = \frac{0}{0}$$
-
-Therefore, we can apply l'H\^{o}pital's rule:
-$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\tan{x} - x)}{\frac{d}{dx}x^3}$$
-$$= \lim_{x \to 0} \frac{\sec^2{x} - 1}{3x^2} = \frac{1 - 1}{0} = \frac{0}{0}$$
-
-which is an indeterminate form. We apply l'H\^{o}pital's rule again:
-$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
-$$= \lim_{x \to 0} \frac{2\tan{x}\sec^2{x}}{6x} = \frac{2(0)(1^2)}{6 \cdot 0} = \frac{0}{0}$$
-
-which is also an indeterminate form. We apply l'H\^{o}pital's rule again:
-$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(2\tan{x}\sec^2{x})}{\frac{d}{dx}6x}$$
-$$= \lim_{x \to 0} \frac{2\sec^2{x}[2\tan^2{x} + \sec^2{x}]}{6} = \frac{2 \cdot 1 \cdot [2 \cdot 0 + 1]}{6}$$
-$$= \frac{2}{6} = \frac{1}{3}$$
+\begin{Answer}[ref=dfn1]
+Compute $\frac{f(3+h) - f(3)}{h} = \frac{(3+h)^2 - 9}{h} = 6 + h$. As $h \to 0$, this approaches $6$, so $f'(3) = 6$.
 \end{Answer}
 
-Note that this rule only applies if it is in \emph{indeterminate form}. The most common indeterminate forms are
-\begin{equation*}
-\frac{0}{0}
-\quad \text{and} \quad
-\frac{\infty}{\infty},
-\end{equation*}
-which you may end up with when evaluating quotients!
+\begin{Exercise}[label=dfn2, title={Limit definition for a reciprocal}]
+Use the limit definition to find $f'(2)$ for $f(x) = \frac{1}{x}$.
+\end{Exercise}
+\begin{Answer}[ref=dfn2]
+$\frac{\frac{1}{2+h} - \frac{1}{2}}{h} = \frac{-1}{2(2+h)} \to -\frac{1}{4}$ as $h \to 0$. So $f'(2) = -\frac{1}{4}$.
+\end{Answer}
 
-However, indeterminate forms can also appear in other ways. Some common
-examples include:
-\begin{equation*}
-0 \cdot \infty, \quad
-\infty - \infty, \quad
-0^0, \quad
-1^\infty, \quad
-\infty^0.
-\end{equation*}
-
-These expressions are indeterminate because their values cannot be
-determined without evaluating further. In many cases, such limits can be
-rewritten into a quotient that results in either
-\begin{equation*}
-\frac{0}{0}
-\quad \text{or} \quad
-\frac{\infty}{\infty}.
-\end{equation*} This allows l’Hôpital’s Rule to be applied!
-
-Example: Evaluate
-\begin{equation*}
-\lim_{x \to 0^+} x \ln x.
-\end{equation*}
-
-Solution:
-As $x \to 0^+$, we have $x \to 0$ and $\ln x \to -\infty$, producing the
-indeterminate form
-\begin{equation*}
-0 \cdot (-\infty).
-\end{equation*}
-
-Rewrite the expression as a quotient:
-\begin{equation*}
-x \ln x = \frac{\ln x}{1/x}.
-\end{equation*}
-
-Now the limit has the form
-\begin{equation*}
-\frac{-\infty}{\infty},
-\end{equation*}
-so l’Hôpital’s Rule applies. Differentiate the numerator and denominator:
-\begin{equation*}
-\lim_{x \to 0^+} \frac{\ln x}{1/x}
-= \lim_{x \to 0^+} \frac{1/x}{-1/x^2}.
-\end{equation*}
-
-Simplifying,
-\begin{equation*}
-\lim_{x \to 0^+} (-x) = 0.
-\end{equation*}
-
-Therefore,
-\begin{equation*}
-\lim_{x \to 0^+} x \ln x = 0.
-\end{equation*}
-
-
-\begin{Exercise}[label = LH2]
-Evaluate each of the following limits, using l'H\^{o}pital's rule where needed.
+\begin{Exercise}[label=dfn_fall, title={The Falling Object}]
+The falling object in this chapter has height $y(t) = 50 - 4.9t^2$.
 \begin{enumerate}
-\item $\lim_{x \to 3} \frac{x-3}{x^2-9}$
-\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9}$
-\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}}$
-\item $\lim_{x \to \pi} \frac{1 + \cos{x}}{1 - \cos{x}}$
-\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1}$
+\item Use the table to estimate its velocity at $t = 2.5$ s.
+\item Use the limit definition to find $y'(t)$, then compute $y'(2.5)$.
 \end{enumerate}
 \end{Exercise}
-
-\begin{Answer}[ref=LH2]
+\begin{Answer}[ref=dfn_fall]
 \begin{enumerate}
-\item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
-\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
-\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit does not require l'H\^{o}pital's rule because it is evaluable
-\item $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \frac{1 \cdot \sin{1 - 1}}{2(1)^2 - 1 - 1} = \frac{0}{0}$, so we apply l'Hospital's rule: $\lim_{x \to 1} \frac{x\sin{x - 1}}{2x^2 - x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx}(x\sin{x-1}}{\frac{d}{dx}(2x^2 - x - 1} = \lim_{x \to 1} \frac{x \cdot \cos{x - 1} + \sin{x - 1}}{4x - 1} = \frac{1 \cdot \cos{0} + \sin{0}}{4 - 1} = \frac{1 \cdot 1 + 0}{-3} = \frac{-1}{3}$. 
+\item $\frac{5.9 - 30.4}{3 - 2} = -24.5$ m/s.
+\item
+$$y'(t) = \lim_{h \to 0}\frac{\left[50 - 4.9(t+h)^2\right] - \left[50 - 4.9t^2\right]}{h}
+= \lim_{h \to 0}\frac{-9.8th - 4.9h^2}{h} = \lim_{h \to 0}(-9.8t - 4.9h) = -9.8t$$
+So $y'(2.5) = -24.5$ m/s, matching the estimate.
 \end{enumerate}
 \end{Answer}
 
-\subsection{Mean Value Theorem}
-
-The Mean Value Theorem (MVT) states that on an interval $[a, b]$ where a 
-continuous function $f$ is differentiable on an open interval $(a, b)$, there 
-is at least one point where the tangent line to $f$ has the same slope as a 
-line connecting the points $(a, f(a))$ and $(b, f(b))$. Consider the graph of 
-$f(x) = x^2$ (see figure \ref{fig:MVT1}). The line connecting the points 
-$(-1, 1)$ and $(2, 4)$ has a slope of $\frac{1}{2}$. MVT tells us there must 
-be \textit{at least one} point, $c$, on the interval $x \in (-1, 2)$ where 
-$f'(c) = \frac{1}{2}$. We can find this point by setting $f'(x)$ equal to 
-$\frac{1}{2}$: 
-$$2x = \frac{1}{2} \rightarrow x = \frac{1}{4}$$
-
-Examining the figure \ref{fig:MVT1}, you can see that the tangent at 
-$f(\frac{1}{4})$ (the black line) is parallel to the red line connecting 
-$(-1, f(-1))$ and $(2, f(2))$. 
-
-\begin{figure}[H]
-\begin{tikzpicture}
-    \begin{axis}
-        [ymin=-2, xmin=-2, xmax=2, axis lines = left]
-        \addplot[blue, samples=50]{x^2};
-        \addplot[red, mark=*]coordinates {(-1, 1)};
-        \addplot[red, mark=*] coordinates {(2, 4)};
-        \addplot[domain=-2:2, red] coordinates{(-1, 1)(2, 4)};
-        \addplot[black, mark=*] coordinates{(0.5, 0.25)};
-        \addplot[black, domain=-2:2, samples=50
-        ]{x-0.25};
-    \end{axis}
-\end{tikzpicture}
-\caption{$f(x) = x^2$}
-\label{fig:MVT1}
-\end{figure}
-
-Note that MVT doesn't tell us \textit{where} $f'(x)$ is parallel to the line 
-connecting $(a, f(a))$ and $(b, f(b))$, just that some value $c$ exists that 
-satisfies the condition. 
-
-\textbf{Example}: Consider a hammer thrown upwards at 5 $\frac{m}{s^2}$ on 
-Earth (where the acceleration due to gravity is approximately $-9.8 
-\frac{m}{s^2}$). 
-
-\textbf{Solution}: We can use the MVT to show that there must be some point in 
-the hammer's path upwards where the velocity of the hammer is exactly equal to 
-its average velocity as it flies through the air. 
-
-The hammer's rise can be described with the function $y(t) = 5t-4.9t^2$. The 
-hammer reaches its peak at approximately $t=0.51$. So, we are looking for some 
-value, $c$, such that $$y'(c) = \frac{y(0.51) - y(0)}{0.51 - 0} = \frac{5(0.51) 
-- 4.9(0.51^2)}{0.51} = \frac{1.2755}{0.51} = 2.5$$
-
-Solving $y'(t) = 5-9.8t = 2.5$, we find that the $c$ that satisfies the MVT is 
-approximately $0.255$. This result is illustrated in figure \ref{fig:hammer}:
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-    \begin{axis}[ymin=0,ymax=1.4, xmin=0, xmax=1.2, axis lines=left]
-    \addplot[blue, samples=50, domain=0:1.2]{5*x-4.9*x^2};
-    \addplot[mark=*, red] coordinates{(0,0)};
-    \addplot[mark=*, red] coordinates{(0.51, 1.275)};
-    \addplot[red, samples=50]coordinates{(0,0) (0.51, 1.275)};
-    \addplot[black, samples=50]{2.5*(x-0.255)+0.9564};
-    \addplot[mark=*, black]coordinates{(0.255, 0.9564)};
-    \end{axis}
-\end{tikzpicture}
-\caption{The height of a hammer tossed upwards at $5 \frac{m}{s}$}
-\label{fig:hammer}
-\end{figure}
-
-\subsubsection{MVT Practice}
-\begin{Exercise}
-[label=MVT1]
-AT 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
-$50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:340 PM, the car's 
-acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\begin{Exercise}[label=dfn3, title={Differentiability at a corner}]
+Is $f(x) = |x|$ differentiable at $x = 0$? Justify your answer with the definition.
 \end{Exercise}
-\begin{Answer}
-[ref=MVT1]
-The speed of a car must a continuous, differentiable function, since your car 
-can't "jump" from one speed to another: it must smoothly accelerate from one 
-speed to another. Therefore, the Mean Value Theorem applies. The average 
-acceleration from 3:30 PM to 3:40 PM is given by:
-$$\frac{\text{change in speed}}{\text{change in time}} = \frac{50 \frac{mi}{hr}
- - 30\frac{mi}{hr}}{3:40PM - 3:30PM}$$ 
-Simplifying and converting minutes to hours, we see the average acceleration is:
-$$\frac{20\frac{mi}{hr}}{\frac{1}{6}hr} = 120\frac{mi}{hr^2}$$
-
-Therefore, by MVT, there must be some time between 3:30 and 3:40 PM where the 
-car's acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\begin{Answer}[ref=dfn3]
+No. The right-hand limit $\lim_{h \to 0^+} \frac{|h|}{h} = 1$ and the left-hand limit $\lim_{h \to 0^-} \frac{|h|}{h} = -1$ differ, so the limit does not exist.
 \end{Answer}
-
-\begin{Exercise}
-[label=MVT2]
-Find the number $c$ that satisfies the MVT on the given interval. 
-
-(a) $f(x) = \sqrt{x}$, $[0, 4]$
-
-(b)$f(x) = e^{-x}$, $[0,2]$
-
-(c)$f(x) = \ln{x}$, $[1,4]$	
-\end{Exercise}
-
-\begin{Answer}
-[ref=MVT2]
-(a) For the domain given, $f(x)$ is defined and differentiable. Finding the 
-slope of the secant line connecting the endpoints:
-$$\frac{f(b)-f(a)}{b-a}=\frac{\sqrt{4}-\sqrt{0}}{4-0}=\frac{2}{4}=\frac{1}{2}$$
-
-So we are looking for some number $c$ such that $f'(c) = \frac{1}{2}$. Let's 
-find $f'(x)$:
-$$f'(x) = \frac{d}{dx}\sqrt{x}=\frac{1}{2\sqrt{x}}$$
-
-Setting this equal to $\frac{1}{2}$ to find $c$:
-$$f'(c) = \frac{1}{2\sqrt{c}}=\frac{1}{2}$$
-$$\sqrt{c}=1$$
-$$c=1$$
-
-(b)For the domain given, $f(x)$ is defined and differentiable. Finding the 
-slope of the secant line connecting the endpoints:
-$$\frac{f(2) - f(0)}{2 - 0}=\frac{e^{-2} - e^{0}}{2}=\frac{1 - e^{2}}{2e^{2}} 
-\approx -0.432$$
-
-And find $f'(x)$:
-$$f'(x) = -e^{-x}$$
-According to MVT, there must be some $c$ such that $f'(c) \approx-0.432$:
-$$-e^{-c} \approx -0.432$$
-$$e^{-c}\approx 0.432$$
-$$-c \approx \ln{0.432}$$
-$$c \approx -\ln{0.432} \approx 0.839$$
-
-(c) For the domain given, $f(x)$ is defined and differentiable. Finding the 
-secant line connecting the endpoints:
-$$\frac{f(b) - f(a)}{b - a}=\frac{\ln{4} - \ln{1}}{4 - 1} = \frac{\ln{4}}{3} 
-\approx 0.462$$
-
-And find $f'(x)$:
-$$f'(x) = \frac{1}{x}$$
-
-According to MVT, there must be some $c$ such that $f'(c) \approx 0.462$
-$$f'(c) = \frac{1}{c} \approx 0.462$$
-$$c \approx \frac{1}{0.462} = 2.164$$
-\end{Answer}
-
-
-
-\section{Applications in Physics}
-
-In physics, derivatives play a vital role in describing how quantities change 
-with respect to one another.
-
-\subsection{Velocity and Acceleration}
-
-In kinematics, the derivative of the position function with respect to time 
-gives the velocity function, and further taking the derivative of the velocity 
-function gives the acceleration function. For example, if $s(t)$ represents 
-the position of an object at time $t$, then the velocity $v(t)$ and 
-acceleration $a(t)$ are given by:
-
-\begin{equation}
-v(t) = \frac{ds}{dt} \quad \text{and} \quad a(t) = \frac{dv}{dt} = \frac{d^2s}{dt^2}
-\end{equation}
-
-\subsubsection{Practice}
-
-A particle's motion is described by $s(t) = t^3-6t^2+6t$, where $t$ is measured 
-in seconds and $s$ is measured in meters. Answer the following questions about 
-the particle's motion:
-\begin{Exercise}[label=velacc1]
-Find the velocity at time $t$.
-\end{Exercise}
-
-\begin{Answer}[ref=velacc1]
-Velocity is the derivative of position. Therefore, $v(t) = s'(t) = 3t^2-12t+6$.
-\end{Answer}
-
-\begin{Exercise}[label=velacc2]
-What is the velocity after 2s? After 4s?
-\end{Exercise}
-
-\begin{Answer}[ref=velacc2]
-$$v(2) = 3(2)^2-12(2)+6=-6 \frac{m}{s}$$
-$$v(4) = 3(4)^2-12(4)+6=6\frac{m}{s}$$
-\end{Answer}
-
-\begin{Exercise}[label=velacc3]
-When is the particle at rest?
-\end{Exercise}
-
-\begin{Answer}[ref=velacc3]
-When the particle is at rest, $v(t) = 0$. 
-$$3t^2-12t+6=0$$
-$$3(t^2-4t+2)=0$$
-$$t^2-4t+2=0$$
-This is not easily factorable, so we will use the quadratic formula: $$t=\frac{-(-4)\pm\sqrt{(-4)^2-4(1)(2)}}{2(1)}$$
-$$x=\frac{4\pm\sqrt{16-8}}{2}=2\pm\sqrt{2}\approx0.586, 3.414$$
-Therefore, the particle is at rest at 0.586s and 3.414s.
-\end{Answer}
-
-\subsection{Force and Momentum}
-
-In mechanics, the derivative of the momentum of an object with respect to time gives the net force acting on the object, as stated by Newton's second law of motion:
-
-\begin{equation}
-F = \frac{dp}{dt}
-\end{equation}
-
-where $F$ is the force, $p$ is the momentum, and $t$ is the time.

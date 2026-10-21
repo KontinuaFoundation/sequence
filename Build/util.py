@@ -201,7 +201,7 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
         out.write(_read(support_dir / "draftmsg.tex"))
         out.write(_read(support_dir / "bookfooter.tex"))
 
-    cmd = [tool, "-halt-on-error", "-shell-escape", output_tex_path.name]
+    cmd = [tool, "--halt-on-error", "--shell-escape", output_tex_path.name]
 
     chapter_id = chap_dir.parent.name
     log_path = INTERMEDIATE_DIR / f"{chapter_id}.log"

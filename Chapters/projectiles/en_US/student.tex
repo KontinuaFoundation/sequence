@@ -1,37 +1,44 @@
 \chapter{Projectile Motion}
 \index{projectile motion}
-A projectile is an object that, once thrown or dropped, continues to move only 
-under the influence of gravity. Throwing a baseball, shooting a cannon, and 
-diving off a high diving board are all examples. NASA flight planners use 
-projectile motion to plan flight paths for space vehicles, such as sending 
-rovers to Mars. You've already learned how to describe and model 
-one-dimensional projectile motion in the Falling Bodies chapter. Now, we 
-consider projectiles that also have horizontal motion, and therefore are 
-moving in two dimensions. 
+A basketball arcing toward the hoop, a soccer ball off a goal kick, a diver
+leaving the high board: each is a \newterm{projectile}, an object that,
+once launched, moves under the influence of gravity alone. NASA uses the
+same physics to aim rovers at Mars.
 
-First, we will compare the motion of projectiles that are dropped versus 
-horizontally launched from the same height. This will frame our discussion of 
-the important concept of independence of motion: the vertical and horizontal 
-motions of a projectile can be considered and described independent from each 
-other. This will allow you to predict how far horizontally launched objects 
-will travel before hitting the ground. Next, you'll learn to describe the 
-motion of projectiles launched at an angle (like some heavy ground artillery). 
-Finally, you'll use what you've learned to create a model of any projectile motion. 
+In the kinematics chapter, you handled objects that fall straight down. Now
+we add sideways motion. The key idea is surprisingly simple: the sideways
+motion and the up-and-down motion ignore each other. Once you see that, you
+can predict where a ball will land, how high it will go, and what angle
+sends it farthest. At the end, you will write a simulation that handles any
+projectile, even one slowed by air. 
 
 \section{Comparing Projectiles}
-This video was mentioned at the end of the kinematics chapter: \url{https://www.youtube.com/watch?v=zMF4CD7i3hg}.
-From the video, we can see that the addition of horizontal motion does not effect how fast an object is acted upon by gravity. Both objects hit the ground at the same time, regardless of whether horizontal motion was added or not. This is because of a concept called \emph{independence of motion}.
+Hold one coin on your fingertip and another on the edge of a table. Flick
+the table coin off sideways at the same moment you drop the other one.
+Listen: they hit the floor at the same time. This video shows the same
+experiment with balls: \url{https://www.youtube.com/watch?v=zMF4CD7i3hg}.
+
+Adding sideways speed does not change how fast an object falls. This is
+called \emph{independence of motion}.
 
 
 \section{Independence of Motion}
 \index{independence of motion}
-In projectile motion, such as a ball being thrown off of a cliff, the horizontal and vertical components of motion are independent of each other. This means that horizontal motion (and forces in the horizontal direction) do not affect vertical motion (and forces in the vertical direction), and vice versa. This is because gravity only acts in the vertical direction.\footnote{This holds true for objects on sloped surfaces. Gravitational motion is just separated into components parallel and perpendicular to the slope. This will be covered in a future chapter.}
+For a projectile, the horizontal and vertical parts of the motion are
+independent. Gravity pulls only downward, so it changes only the vertical
+velocity. Nothing pushes sideways (if we ignore air resistance), so the
+horizontal velocity never changes.
 
-If you recall the falling bodies chapter, you know that the vertical motion of an object in free fall is described by the equations of uniformly accelerated motion, with a constant acceleration of $9.8 \frac{m}{s^2}$ downward (this may simplified to $10 \frac{m}{s^2}$ for simplicity in many calculations).
+Vertically, the projectile behaves exactly like the falling objects in the
+kinematics chapter: constant acceleration of $9.8 \frac{m}{s^2}$ downward.
+(We often round to $10 \frac{m}{s^2}$ to make the arithmetic easier.)
 
-In the horizontal direction, if we ignore air resistance (a common practice for elementary physics), there are no forces acting on the object. This means that the object will continue to move at a constant velocity in the horizontal direction. Note that from launch to landing, the time must be the same for both components. Take a minute to think about why this is if you are unsure.
+Horizontally, it coasts at constant speed.
 
-Because the horizontal and vertical motions are independent of each other, we can use different equations to describe the motion in each direction (See Figure~\ref{independenceOfMotionEqs}). % FIXME double check this figure
+The two motions are tied together by just one thing: time. The ball lands
+when its vertical motion says it hits the ground, and that same moment ends
+its horizontal travel. So we use separate equations for each direction
+(figure \ref{independenceOfMotionEqs}) and connect them through $t$.
 \begin{figure}
     \centering
     \begin{tabular}{|c|c|}
@@ -48,7 +55,8 @@ Because the horizontal and vertical motions are independent of each other, we ca
 \index{projectile motion!equations of}
 Note that the velocity in the horizontal direction is \emph{\textbf{constant}}, while the velocity in the vertical direction is \emph{\textbf{not constant}} due to the acceleration of gravity ($9.8 \frac{m}{s^2}$ downward).
 
-Let's take a look at some simple graphs comparing x motions and y motions, shown in Figures~\ref{fig:indep_motion_x} and \ref{fig:indep_motion_y}. Note that these are a general representation of projectile motion, and the scales or values may not be accurate. % FIXME figures may not be linked
+Figures \ref{fig:indep_motion_x} and \ref{fig:indep_motion_y} sketch the
+shapes of the graphs. (The scales are only illustrative.)
 
 \begin{figure}[H]
 \centering
@@ -95,7 +103,7 @@ Let's take a look at some simple graphs comparing x motions and y motions, shown
 \end{tikzpicture}
 \caption*{x-acceleration vs. time}
 \end{minipage}
-\caption{Vertical motion graphs}
+\caption{Horizontal motion graphs}
 \label{fig:indep_motion_x}
 \end{figure}
 
@@ -173,7 +181,7 @@ Imagine a ball is thrown horizontally off of a cliff. The ball has an initial ho
     \label{fig:horiz_launch}
 \end{figure}
 
-Let's calculate the change in $y$. 
+Let us calculate the change in $y$. 
 
 The vertical motion can be described by the equation:
 
@@ -199,9 +207,10 @@ Calculating this gives:
 \Delta y = -125 m
 \]
 
-So the ball falls a vertical distance of $122.5$ m from its origin before hitting the ground.
+So the ball falls 125 m before hitting the ground. The cliff is 125 m
+tall.
 
-Now let's calculate the change in $x$.
+Now let us calculate the change in $x$.
 The horizontal motion can be described by the equation:
 
 \[
@@ -240,7 +249,10 @@ So the rock lands $24$ meters from the base of the cliff, and the cliff is $45$ 
 \end{Answer}
 
 \subsection{Newton's Cannon and Escape Velocity}
-A real world application of horizontally launched projectiles is a thought experiment known as Newton's cannon (sometimes called Newton's cannonball). Newton theorized that a cannon on the top of a mountain above Earth's atmosphere could launch a cannonball at some high velocity could do one of three things:
+Isaac Newton imagined a cannon on top of a mountain so tall that it pokes
+above the atmosphere. This thought experiment is called
+\index{Newton's cannon}Newton's cannon. Fire the cannonball horizontally,
+and one of three things happens:
 \begin{itemize}
     \item The cannonball would not have enough horizontal velocity, and fall back to the Earth. 
     \item The cannonball would get shot at enough velocity to be in continuous orbit around the Earth. (This is how satellites stay in orbit around the Earth!).
@@ -249,28 +261,39 @@ A real world application of horizontally launched projectiles is a thought exper
 
 Take a look at this simulation of Newton's cannon: \url{https://physics.weber.edu/schroeder/software/NewtonsCannon.html}. Then, watch this video: \url{https://www.youtube.com/watch?v=ALRdYPMpqQs}.
 
-At anywhere below $7000$ m/s, the cannonball falls back to Earth. In a range of $7,000$ m/s to $8,000$ m/s (the simulation doesn't go above $8,000$ m/s), the cannonball enters an orbit around the Earth. For Earth, the escape velocity is $\approx \,11,200$ m/s.
+Here is the beautiful part. The cannonball is always falling. But Earth
+is round, so the ground curves away beneath it. Fire it fast enough (about
+7,900 m/s near Earth's surface), and the ground curves away exactly as fast
+as the ball falls. The ball falls forever without landing. That is an
+orbit. The International Space Station is doing this right now. For Earth,
+the escape velocity is about 11,200 m/s.
 
 For any given planet, the escape velocity can be calculated using the formula:
 $${\displaystyle v_{\text{e}}={\sqrt {\frac {2GM}{d}}}}$$
 where $G$ is the gravitational constant, $M$ is the mass of the planet, and $d$ is the distance from the center of the planet to the object. We will cover this in more detail in the orbits chapter.
 \index{Escape Velocity}
-\section{Projectiles launched at an Angle}
+\section{Projectiles Launched at an Angle}
+
 \index{projectile motion!at an angle}
 \subsection{From the Ground}
 
-Now, let's imagine a ball is launched from the ground at an angle.
+Now, let us imagine a ball is launched from the ground at an angle.
 The angle of launch influences both horizontal and vertical components of the initial velocity. 
-We can use trigonometry to separate the initial velocity into its horizontal and vertical components.
+We can use trigonometry to separate the \index{components of velocity}initial velocity into its horizontal and vertical components.
 
 \[            
 v_{0x} = v_0 \cos(\theta) \qquad \qquad
 v_{0y} = v_0 \sin(\theta) 
 \]
 
-In the previous section, when an object is thrown directly horizontally, $\theta = 0 ^\circ$, so $v_{0x} = v_0$. However, we now have $v_{0}$ being separated into two components, so the $v_{0x}$ will be less than $v_0$, as $\cos(\theta)$ and $\sin(\theta)$ are always less than or equal to 1.
+A horizontal throw is the special case $\theta = 0^\circ$: then
+$v_{0x} = v_0$ and $v_{0y} = 0$. At any other angle, the launch speed is
+shared between the two directions, so each component is smaller than $v_0$.
 
-The vertical component of $v_0$ is the initial velocity, $v_{0y}$. This component, unlike $v_{0x}$, is constantly changing due to gravity, at a rate of $-9.8 \frac{m}{s^2}$. The peak of an object being launched at some angle is when $v_{0y}$ is equal to 0. 
+The horizontal velocity stays $v_{0x}$ the whole flight. The vertical
+velocity $v_y$ starts at $v_{0y}$ and drops by $9.8 \frac{m}{s}$ every
+second. At the peak, $v_y = 0$: the ball has stopped rising and has not
+started falling. 
 
 
 \begin{center}
@@ -300,7 +323,9 @@ $$
 v_{0x} = (20) \cos(30^\circ) \approx 17.32 \text{ m/s}, \qquad v_{0y} = (20) \sin(30^\circ) = 10 \text{ m/s}
 $$
 
-It is important to note that the upwards velocity and downwards velocity are equal in magnitude at any given height (given the same vertical initial and final height), but \emph{opposite in direction}, due to the symmetric nature of projectile motion.
+Projectile paths are \index{symmetry}symmetric. At any given height, the
+ball is rising on the way up exactly as fast as it is falling on the way
+down. The way down is a mirror image of the way up.
 
 \begin{center}
     \begin{tikzpicture}[scale=2.5]
@@ -339,26 +364,37 @@ It is important to note that the upwards velocity and downwards velocity are equ
     
     \end{tikzpicture}
 \end{center}
-One last formula of note is the range formula, describing the horizontal range of any object launched at an angle on \emph{level ground}:
+When the ball lands at the same height it was launched from (level
+ground), its horizontal distance, or \newterm{range}, has a neat formula.
+You will derive it in Exercise \ref{projectiles_angle2}.
 \begin{mdframed}[frametitle={Range Formula},style=important]
     \begin{equation}
         R = \frac{v_0^2 \sin(2\theta)}{g}
     \end{equation}
-    where the object starts and lands at the same vertical height. 
+    where the object starts and lands at the same height.
 \end{mdframed}
+
+\textbf{Worked example.} A ball is launched at $20$ m/s at $30^\circ$
+above horizontal on level ground. Take $g = 9.8$ m/s$^2$. How high does it
+go, and how far?
+
+\textbf{Solution.} $v_{0y} = 20 \sin 30^\circ = 10$ m/s. At the peak,
+$v_y = 0$, so the rise time is $\frac{10}{9.8} \approx 1.02$ s and the
+height is $\frac{(10)^2}{2(9.8)} \approx 5.1$ m. The range is
+$R = \frac{20^2 \sin 60^\circ}{9.8} = \frac{400 \cdot 0.866}{9.8} \approx 35.3$ m.
 \index{Range}
 
 \begin{Exercise}[title=Projectile Motion at an angle, label=projectiles_angle1]
 A pumpkin is launched at $25$ m/s at an angle of $40^\circ$ above the horizontal. Find (a) the peak height of the pumpkin, and (b) the horizontal distance the pumpkin travels before hitting the ground. Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity. You may assume the ground is level the entire time. 
 \end{Exercise}
 \begin{Answer}[ref=projectiles_angle1]
-Let's first find the horizontal and vertical components of the initial velocity:
+Let us first find the horizontal and vertical components of the initial velocity:
 \begin{align*}
 v_{0x} &= (25) \cos(40^\circ) \approx 19.15 \text{ m/s}, \\
 v_{0y} &= (25) \sin(40^\circ) \approx 16.07 \text{ m/s}.
 \end{align*}
 
-(a) To find the peak height, we can use the vertical motion equations. Taking it in two steps, let's first find the time to reach the peak height, where the vertical velocity $v_y = 0$:
+(a) To find the peak height, we can use the vertical motion equations. Taking it in two steps, let us first find the time to reach the peak height, where the vertical velocity $v_y = 0$:
 \begin{align*}
     v_y = v_{0y} + (-g) t \\
     0 = 16.07 - 10t \\
@@ -371,7 +407,7 @@ Now, we can use this time to find the peak height using the vertical displacemen
     \Delta y &\approx 12.91 \text{ m}
 \end{align*}
 
-(b) To find the total horizontal distance traveled, we first need the total time of flight. Since the motion is symmetric, the total time will be twice the time to reach the peak height:
+(b) To find the total horizontal distance traveled, we first need the total \index{time of flight}time of flight. Since the motion is symmetric, the total time will be twice the time to reach the peak height:
 \[
 t_{total} = 2t_{peak} \approx 2(1.607) \approx 3.214 \text{ s} = 3.21 \text{ s}
 \]
@@ -384,18 +420,22 @@ So, the peak height of the pumpkin is approximately \(12.91\) m, and the horizon
 \end{Answer}
 
 \begin{Exercise}[title=Launch Angle for Maximum Range, label=projectiles_angle2]
-(a) At what angle should you launch for an object to go the furthest given a maximum launch velocity? 
+(a) At what \index{launch angle}angle should you launch for an object to go the furthest given a maximum launch velocity? 
 (b) How can you get the same horizontal distance with two different launch angles?
 \end{Exercise}
 \begin{Answer}[ref=projectiles_angle2]
-To maximize the horizontal distance of a projectile being launched, the vertical and horizontal components must be proportionally equal. This is only possible at a launch angle of $45^\circ$. Let's prove this mathematically.
+\index{maximum range}There is a trade-off. Aim low, and the ball moves
+fast sideways but lands quickly. Aim high, and it stays up a long time but
+barely moves sideways. The best compromise is $45^\circ$. Here is the
+proof.
 
 Let the initial launch speed be $v$ and the launch angle be $\theta$. The horizontal and vertical velocity components are
 \[
 v_x = v \cos\theta, \qquad v_y = v \sin\theta.
 \]
 
-The vertical motion kinematics equation can be solved for: 
+The ball lands when its height returns to zero: $v \sin\theta \, t -
+\frac{1}{2} g t^2 = 0$, or
 \[
 0 = t\Big(v \sin\theta - \tfrac{1}{2} g t\Big)
 \]
@@ -413,11 +453,14 @@ R_x = v_x \cdot t = v \cos\theta \cdot \frac{2 v \sin\theta}{g}
 
 The function $\sin(2\theta)$ reaches its maximum value of 1 when $2\theta = 90^\circ$, or $\theta = 45^\circ$. Therefore, the optimal launch angle for maximum horizontal distance is $45^\circ$.
 
-The range equation above can result can result in two different values: $\theta$ and $90^\circ-\theta$. There are two ways to get a certain horizontal launch distance, one at an angle less than $45^\circ$ and one at an angle greater than $45^\circ$. For example, a projectile launched at $30^\circ$ will travel the same horizontal distance as one launched at $60^\circ$, assuming the same initial velocity. However, the projectile launched at $30^\circ$ will spend less time in the air and have a lower peak height than the one launched at $60^\circ$.
+(b) Since $\sin(2\theta) = \sin(180^\circ - 2\theta) = \sin(2(90^\circ -
+\theta))$, the angles $\theta$ and $90^\circ - \theta$ give the same range. There are two ways to get a certain horizontal launch distance, one at an angle less than $45^\circ$ and one at an angle greater than $45^\circ$. For example, a projectile launched at $30^\circ$ will travel the same horizontal distance as one launched at $60^\circ$, assuming the same initial velocity. However, the projectile launched at $30^\circ$ will spend less time in the air and have a lower peak height than the one launched at $60^\circ$.
 \end{Answer}
 
 \begin{Exercise}[title=Projectile Motion at an angle, label=projectiles_angle3]
-There is a target 100 meters away. I must shoot a bow at 14 meters per second. At what angle will I be able to hit my target? If I cannot hit the target, calculate the velocity needed to reach the target. Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity. You may assume the ground is level the entire time.
+A target is 100 meters away. Your bow launches arrows at 14 meters per
+second. At what angle should you aim? If you cannot reach the target,
+what is the slowest launch speed that could? Use $-10 \frac{m}{s^2}$ for the acceleration due to gravity. You may assume the ground is level the entire time.
 \end{Exercise}
 
 \begin{Answer}[ref=projectiles_angle3]
@@ -442,37 +485,39 @@ So at an assumed launch angle of $45^\circ$, a minimum launch speed of approxima
 
 
 
-% %FIXME question for finding accel on a planet - questionbank??
 \subsection{From a Height Above the Ground}
-Now we can imagine a ball being launched at some angle from a height above the ground. This is similar to the horizontally launched projectile, except now we have an initial vertical velocity component.
+Now launch at an angle from a height, like throwing a ball from the top of
+the bleachers.
 
-Let's say a ball is launched from a height of $50$ m at an angle of $30^\circ$ above the horizontal with an initial velocity of $20$ m/s. We can find the horizontal and vertical components of the initial velocity as follows:
-%FIXME diagram
+\textbf{Worked example.} A ball is launched from a height of $50$ m at
+$30^\circ$ above the horizontal at $20$ m/s. Use $g = 10 \frac{m}{s^2}$.
+Find its peak height, how long it flies, and where it lands.
 
+\textbf{Solution.} The components of the initial velocity are
 
 $$v_{0x} = (20) \cos(30^\circ) \approx 17.32 \text{ m/s}, \qquad v_{0y} = (20) \sin(30^\circ) = 10 \text{ m/s}.$$
-The vertical motion can be described by the equation:
-\[\Delta y = y_0 + v_{0y} t + \frac{1}{2} (-g) t^2 = 50+ 10t - 5t^2\]
+Measure height from the ground, so the ball starts at $y_0 = 50$ m:
+\[y = y_0 + v_{0y} t + \frac{1}{2} (-g) t^2 = 50 + 10t - 5t^2\]
 
-Likewise, the horizontal motion of the projectile can be described by the equation:
-\[\Delta x = v_{0x} t = 17.32t\]
+Horizontally:
+\[x = v_{0x} t = 17.32t\]
 
 To find the peak of the projectile, we can set $v_y = 0$ and solve for $t$:
 \begin{align*}
     v_y &= v_{0y} + (-g) t \\
-    0 &= 10 - 5t^2 \\
-    t_{peak} &= \sqrt{2} \text{ s} \approx 1.414 \text{ s}
+    0 &= 10 - 10t \\
+    t_{peak} &= 1 \text{ s}
 \end{align*}
 
 Substituting this time into the vertical and horizontal equations, we can find the peak height and horizontal distance at the peak:
 \[
-\Delta y = 50 + 10(\sqrt{2}) - 5(\sqrt{2})^2 = 50 + 10\sqrt{2} - 10 = 40 + 10\sqrt{2} \approx 54.14 \text{ m}
+y = 50 + 10(1) - 5(1)^2 = 55 \text{ m}
 \]
 \[
-\Delta x = 17.32(\sqrt{2}) \approx 24.49 \text{ m}
+x = 17.32(1) = 17.32 \text{ m}
 \]
 
-And to find the total time of flight, we can set $\Delta y = 0$ and solve for $t$:
+The ball lands when $y = 0$:
 \begin{align*}
     0 &= 50 + 10t - 5t^2 \\
     0 &= -5t^2 + 10t + 50 \\
@@ -481,12 +526,83 @@ And to find the total time of flight, we can set $\Delta y = 0$ and solve for $t
 
 Using the quadratic formula, we find:
 \begin{align*}
-    t &= \frac{- \left(\right. - 2 \left.\right) \pm \sqrt{\left(\right. - 2 \left.\right)^{2} - 4 \left(\right. 1 \left.\right) \left(\right. - 10 \left.\right)}}{2 \left(\right. 1 \left.\right)} \\ 
+    t &= \frac{2 \pm \sqrt{(-2)^2 - 4(1)(-10)}}{2(1)} \\
     &= \frac{2 \pm \sqrt{4 + 40}}{2} \\
     &= \frac{2 \pm \sqrt{44}}{2} \\
     &= 1 \pm \sqrt{11} \approx 4.32 \text{ s (taking the positive root)}
 \end{align*}
 
-\section{Simulating Projectile Motion}
-% python script? -- not sure what to put here
+(The negative root, about $-2.32$ s, is when a ball on this same path would
+have left the ground before the launch. It is not part of our flight.)
 
+In 4.32 s, the ball travels $x = 17.32(4.32) \approx 74.8$ m sideways.
+
+\section{Simulating Projectile Motion}
+
+Formulas are great for clean problems. Real projectiles feel air
+resistance, and then the formulas stop working. A simulation does not
+care. It chops time into tiny steps and, in each one, nudges the position by
+the velocity and the velocity by the acceleration.
+
+Create \filename{projectile.py}:
+
+\begin{minted}{python}
+import math
+import matplotlib.pyplot as plt
+
+g = 9.8          # m/s^2
+dt = 0.001       # s, the size of each time step
+speed = 20.0     # m/s
+angle = math.radians(45)
+
+x, y = 0.0, 0.0
+vx = speed * math.cos(angle)
+vy = speed * math.sin(angle)
+xs, ys = [x], [y]
+
+while y >= 0:
+    x += vx * dt     # move
+    y += vy * dt
+    vy -= g * dt     # gravity changes only the vertical velocity
+    xs.append(x)
+    ys.append(y)
+
+print(f"Range: {x:.1f} m")
+plt.plot(xs, ys)
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
+plt.gca().set_aspect("equal")
+plt.show()
+\end{minted}
+
+Run it. It prints \texttt{Range: 40.8 m} and draws the arc. The range
+formula agrees: $\frac{20^2 \sin 90^\circ}{9.8} \approx 40.8$ m. Notice
+that \mintinline{python}{vx} never changes inside the loop. That is
+independence of motion, written in Python.
+
+\begin{Exercise}[title={Adding air}, label=proj_drag]
+Air resistance pushes against the velocity, and it grows with the square of
+the speed. Replace the line \mintinline{python}{vy -= g * dt} with
+\begin{minted}{python}
+    k = 0.01                       # drag strength, per meter
+    s = math.hypot(vx, vy)         # current speed
+    vx -= k * s * vx * dt
+    vy -= (g + k * s * vy) * dt
+\end{minted}
+What is the range now? Try several angles between $30^\circ$ and
+$50^\circ$. Is $45^\circ$ still the best?
+\end{Exercise}
+\begin{Answer}[ref=proj_drag]
+At $45^\circ$, the range drops from 40.8 m to about 31.36 m. Trying angles
+shows the best angle is now a little lower: $43^\circ$ gives about 31.43 m. Drag steals speed
+the whole time the ball is in the air, so a slightly flatter, shorter
+flight wins. That is why the best launch angle for a real soccer ball or
+golf ball is below $45^\circ$.
+\end{Answer}
+
+\begin{Exercise}[title={Range at 45 Degrees}, label=proj1]
+A ball is launched at $20$ m/s at $45^\circ$. Take $g = 9.8$ m/s$^2$. What is its range?
+\end{Exercise}
+\begin{Answer}[ref=proj1]
+$R = \frac{v^2 \sin 90^\circ}{g} = \frac{400}{9.8} \approx 40.8$ m.
+\end{Answer}

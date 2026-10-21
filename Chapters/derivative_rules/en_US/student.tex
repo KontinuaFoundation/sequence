@@ -11,9 +11,12 @@
 \definecolor{kgBrown}{HTML}{90582F}
 
 
-Derivatives play a key role in calculus, providing us with a means of
-calculating rates of change and the slopes of curves (Figure~\ref{fig:tangent-line}). In this chapter, we present
-some common rules used to calculate derivatives.
+\index{rate of change}You can now differentiate any polynomial in your head. But what about
+$\sqrt{x^2 + 1}$, or $x\sin{x}$, or $\frac{e^x}{x}$? Grinding through the
+limit definition every time would be miserable. Instead, a handful of
+rules lets you take apart any function built by multiplying, dividing, and
+nesting simpler ones. Each rule gives the slope of the tangent line
+(Figure~\ref{fig:tangent-line-derivative_rules}).
 
 \begin{figure}[H]
 \centering
@@ -52,25 +55,18 @@ some common rules used to calculate derivatives.
   \node[above left] at (\tA,\fA) {$(a, f(a))$};
 \end{tikzpicture}
 \caption{The tangent line touches the curve $y = f(x)$ at the point $(a, f(a))$ and has slope $f'(a)$.}
-\label{fig:tangent-line}
+\label{fig:tangent-line-derivative_rules}
 \end{figure}
 
-\section{Constant Rule}
+\section{Constant, Sum, and Power Rules}
 
-The derivative of a constant is zero. If $c$ is a constant and $x$ is
-a variable, then:\index{constant rule}
-
-\begin{equation}
-\frac{d}{dx}c = 0
-\end{equation}
-
-\section{Power Rule}
-
-For any real number $n$, the derivative of $x^n$ is:\index{power rule}
-
-\begin{equation}
-\frac{d}{dx}x^n = nx^{n-1}
-\end{equation}
+You met these in the last chapter. If $c$ is a constant:\index{constant rule}\index{power rule}
+\begin{align}
+\frac{d}{dx}c &= 0\\
+\frac{d}{dx}\left(c f\right) &= c f'\\
+\frac{d}{dx}\left(f + g\right) &= f' + g'\\
+\frac{d}{dx}x^n &= nx^{n-1} \quad \text{for any real number } n
+\end{align}
 
 \section{Product Rule}
 
@@ -80,8 +76,19 @@ The derivative of the product of two functions is:\index{product rule}
 \frac{d}{dx}(fg) = f'g + fg'
 \end{equation}
 
-where $f'$ and $g'$ denote the derivatives of $f$ and $g$,
-respectively.
+Notice that it is \emph{not} $f'g'$. To see why, picture a rectangle $f$
+wide and $g$ tall, with both sides growing. In a tiny moment, the width
+grows by a sliver and the height grows by a sliver. The area gains a
+strip along the top ($f$ times the change in $g$) and a strip down the
+side ($g$ times the change in $f$). The little corner where the two strips
+overlap is a sliver times a sliver, so small it vanishes in the limit.
+
+\textbf{Example:} Find $\frac{d}{dx}\left[x^3(2x + 1)\right]$.
+
+\textbf{Solution:} With $f = x^3$ and $g = 2x + 1$:
+$$3x^2(2x + 1) + x^3(2) = 8x^3 + 3x^2$$
+Check by expanding first: $x^3(2x+1) = 2x^4 + x^3$, whose derivative is
+$8x^3 + 3x^2$. It matches.
 
 \section{Quotient Rule}
 
@@ -91,6 +98,15 @@ The derivative of the quotient of two functions is:\index{quotient rule}
 \frac{d}{dx}\left(\frac{f}{g}\right) = \frac{f'g - fg'}{g^2}
 \end{equation}
 
+Because of the minus sign, order matters. Students remember it with a
+chant: ``low d-high minus high d-low, over the square of what is
+below.''
+
+\textbf{Example:} Find $\frac{d}{dx}\frac{x}{x^2 + 1}$.
+
+\textbf{Solution:}
+$$\frac{(1)(x^2 + 1) - x(2x)}{(x^2 + 1)^2} = \frac{1 - x^2}{(x^2 + 1)^2}$$
+
 \section{Chain Rule}
 
 The derivative of a composition of functions is:\index{chain rule}
@@ -98,6 +114,198 @@ The derivative of a composition of functions is:\index{chain rule}
 \begin{equation}
 \frac{d}{dx}(f(g(x))) = f'(g(x)) \cdot g'(x)
 \end{equation}
+
+Think of gears. If gear A turns 3 times for every turn of gear B, and gear
+B turns 2 times for every turn of gear C, then gear A turns $3 \times 2 =
+6$ times for every turn of gear C. Rates of change multiply. If we write
+$u = g(x)$ and $y = f(u)$, the chain rule looks like fractions canceling:
+$$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
+
+In practice: take the derivative of the outside function (leaving the
+inside alone), then multiply by the derivative of the inside.
+
+\textbf{Example:} Find $\frac{d}{dx}(x^2 + 1)^5$.
+
+\textbf{Solution:} The outside is $u^5$; the inside is $u = x^2 + 1$.
+$$5(x^2 + 1)^4 \cdot 2x = 10x(x^2 + 1)^4$$
+(You could expand $(x^2+1)^5$ first, but that is a lot of work.)
+
+\textbf{Example:} Find $\frac{d}{dx}\sqrt{3x + 1}$.
+
+\textbf{Solution:} Write it as $(3x + 1)^{1/2}$:
+$$\frac{1}{2}(3x + 1)^{-1/2} \cdot 3 = \frac{3}{2\sqrt{3x + 1}}$$
+
+\section{Exponentials and Logarithms}
+\index{exponential function!derivative of}\index{natural logarithm!derivative of}
+
+Here is what makes $e$ special: $e^x$ is its own derivative. At every
+point, the slope of $y = e^x$ equals its height.
+\begin{align}
+\frac{d}{dx}e^x &= e^x\\
+\frac{d}{dx}\ln{x} &= \frac{1}{x} \quad (x > 0)
+\end{align}
+
+With the chain rule, $\frac{d}{dx}e^{kx} = ke^{kx}$. For any other base,
+rewrite $a^x = e^{x\ln{a}}$, which gives $\frac{d}{dx}a^x = a^x\ln{a}$.
+
+\textbf{Example:} A colony of bacteria has a population of $P(t) = 100e^{0.3t}$
+after $t$ hours. How fast is it growing at $t = 5$?
+
+\textbf{Solution:} $P'(t) = 30e^{0.3t}$, so $P'(5) = 30e^{1.5} \approx 134$
+bacteria per hour. Notice that $P' = 0.3P$: the colony always grows at
+30\% of its current size per hour. That is what exponential growth means.
+
+\begin{Exercise}[title={Exponential Derivatives}, label=deriv_explog]
+Find the derivative of each function.
+\begin{enumerate}
+\item $f(x) = 5e^{2x}$
+\item $g(x) = \ln{(x^2 + 1)}$
+\item $h(x) = 2^x$
+\item $k(x) = xe^{x}$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=deriv_explog]
+\begin{enumerate}
+\item $f'(x) = 10e^{2x}$
+\item By the chain rule, $g'(x) = \frac{1}{x^2 + 1} \cdot 2x = \frac{2x}{x^2 + 1}$
+\item $h'(x) = 2^x\ln{2}$
+\item By the product rule, $k'(x) = e^x + xe^x = (1 + x)e^x$
+\end{enumerate}
+\end{Answer}
+
+\section{Derivatives of Trigonometric Functions}
+\index{derivatives!of trigonometric functions}
+
+In the trigonometric functions chapter, you saw that the slope of the sine
+curve at any point equals the cosine there, and that the slope of the cosine
+curve is $-\sin$. Now you have the tools to prove it and to use it.
+
+\begin{Exercise}
+    [title=Derivative of cosine, label=trigderiv1]
+    Use the limit definition of a derivative to show that $\frac{d}{dx} \cos{x} 
+    = -\sin{x}$
+\end{Exercise}
+\begin{Answer}
+    [ref=trigderiv1]
+    We start by writing out the limit: 
+    $$\frac{d}{dx}\cos{x}=\lim_{h \to 0}\frac{\cos(x+h)-\cos{x}}{h}$$
+
+    Applying the sum formula for $\cos(x+h)$, we get:
+    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\sin{x}\sin{h}-\cos{x}}{h}$$
+
+    Rearranging to group the $\cos{x}$ and applying the Difference Rule:
+    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\cos{x}}{h} - \lim_{h \to 0}\frac{\sin{x}\sin{h}}{h}$$
+
+    Applying the Constant Multiple Rule:
+    $$=\cos{x}\lim_{h \to 0}\frac{\cos{h}-1}{h} - \sin{x}\lim_{h \to 0}\frac{\sin{h}}{h}$$
+
+    Recalling that $\lim_{h \to 0}\frac{\sin{h}}{h} = 1$,
+    $$=\cos{x}\lim_{h \to 0}\frac{\cos{h}-1}{h}-\sin{x} \cdot 1$$
+
+    Recalling that $\lim_{h \to 0}\frac{\cos{h}-1}{h}=0$:
+    $$=\cos{x} \cdot0 -\sin{x} = -\sin{x}$$
+
+    Therefore, $\frac{d}{dx}\cos{x}=-\sin{x}$
+\end{Answer}
+
+The derivatives of all the trigonometric functions are presented below:
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ $\frac{d}{dx}\sin{x}=\cos{x}$ & $\frac{d}{dx}\csc{x}=-\csc{x} \cdot \cot{x}$ \\ 
+ $\frac{d}{dx}\cos{x}=-\sin{x}$ & $\frac{d}{dx}\sec{x}= \sec{x} \cdot \tan{x}$  \\ 
+ $\frac{d}{dx}\tan{x}=\sec^2{x}$ & $\frac{d}{dx}\cot{x}=-\csc^2{x}$  \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Example}: Find the derivative of $f(x)$ if $f(x) = x^2\sin{x}$
+\textbf{Solution}: Using the product rule, we find that: 
+$$\frac{d}{dx}f(x)=(x^2)\frac{d}{dx}(\sin{x})+(\sin{x})\frac{d}{dx}(x^2)$$
+
+Taking the derivatives:
+$$=x^2(\cos{x})+2x(\sin{x})$$
+% this seems a bit too difficult if the student has not learned derivative rules before this
+\begin{Exercise}[title = Derivatives of trig functions, label=trigderiv2]
+    Find the derivative of the following functions:
+    \begin{enumerate}
+        \item $f(x) = \frac{\sec{x}}{1+\tan{x}}$
+        \item $y=\sec{t}\tan{t}$
+        \item $f(\theta) = \frac{\theta}{4-\tan{\theta}}$
+        \item $f(t) = 2\sec{t} - \csc{t}$
+        \item $f(\theta) = \frac{\sin{\theta}}{1+\cos{\theta}}$
+        \item $f(x) = \sin{x}\cos{x}$
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Answer}
+    [ref=trigderiv2]
+    \begin{enumerate}
+        \item $\frac{\sec{x}(\tan{x}-1)}{(1+\tan{x})^2}$
+        \item $\sec{t}[\sec^2{t}+\tan^2{t}]$
+        \item $\frac{4-\tan{\theta}+\theta \sec^2{\theta}}{(4-\tan{\theta})^2}$
+        \item $2\sec{t}\tan{t}+\csc{t}\cot{t}$
+        \item $\frac{1}{1+\cos{\theta}}$
+        \item $\cos^2{x} - \sin^2{x}$
+    \end{enumerate}
+\end{Answer}
+
+\section{Derivatives of Inverse Trigonometric Functions}
+
+The inverse trigonometric functions from volume 10 have derivatives that
+contain no trig functions at all:
+
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+	\hline
+	$f$ & $f'$\\
+	\hline
+	$\arcsin{x}$ & $\frac{1}{\sqrt{1 - x^2}}$\\
+	\hline
+	\index{arccosine}$\arccos{x}$ & $ - \frac{1}{\sqrt{1 - x^2}}$\\
+	\hline
+	\index{arctangent}$\arctan{x}$ & $\frac{1}{1 + x^2}$\\
+	\hline
+	arccsc $x$ & $ - \frac{1}{x\sqrt{x^2-1}}$\\
+	\hline
+	\index{arcsecant}arcsec $x$ & $\frac{1}{x\sqrt{x^2-1}}$\\
+	\hline
+	arccot $x$ & $ - \frac{1}{1+x^2}$\\
+	\hline
+\end{tabular}
+\end{center}
+
+\textbf{Worked example.} What is the slope of $y = \arcsin x$ at
+$x = \frac{1}{2}$?
+
+\textbf{Solution.} $\frac{1}{\sqrt{1 - \frac{1}{4}}} = \frac{1}{\sqrt{3/4}} = \frac{2}{\sqrt{3}} \approx 1.155$.
+
+
+%derivatives have not been defined up to here
+\begin{Exercise}[label=invtrig1]
+Find $f'$. Simplify your answer. 
+\begin{enumerate}
+\item $f(x) = (\arctan{x})^2$
+\item $f(x) = x\text{arcsec }(x^3)$
+\item $f(x) = \arcsin{\frac{1}{x}}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=invtrig1]
+\begin{enumerate}
+\item By the chain rule, $f'(x) = 2\arctan{x} \times \frac{d}{dx}\arctan{x} = 2\arctan{x}\frac{1}{1 + x^2}$
+\item By the Product rule, $f'(x) = x \frac{d}{dx}\text{arcsec }(x^3) + \text{arcsec }(x^3)$. Further, by the chain rule, $\frac{d}{dx}\text{arcsec }(x^3) = \frac{1}{(x^3)\sqrt{(x^3)^2-1}} \times \frac{d}{dx}(x^3) = \frac{3x^2}{x^3\sqrt{x^6-1}}$. Therefore, $f'(x) = \frac{3}{\sqrt{x^6-1}} + \text{arcsec }(x^3)$
+\item By the chain rule, $f'(x) = \frac{1}{\sqrt{1-(1/x)^2}} \times \left(- \frac{1}{x^2}\right) = - \frac{1}{x^2\sqrt{1-\frac{1}{x^2}}} = -\frac{1}{|x|\sqrt{x^2 - 1}}$
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={Derivative of Arctangent}, label=itrig_deriv1]
+Find the derivative of $\arctan x$ at $x = 1$.
+\end{Exercise}
+\begin{Answer}[ref=itrig_deriv1]
+$\frac{d}{dx}\arctan x = \frac{1}{1 + x^2}$. At $x = 1$, this is $\frac{1}{2}$.
+\end{Answer}
 
 \section{Practice}
 \begin{Exercise}[label=deriv_rules1]
@@ -112,8 +320,7 @@ If $f$ is the function given, find $f'$.
 \begin{Answer}[ref=deriv_rules1]
 	\begin{enumerate}
 		\item $\frac{dy}{dx} = \frac{d}{dx}[x\sin{x}] = x\frac{d}{dx}\sin{x} 
-		+ \sin{x}\frac{d}{dx}x = x(-\cos{x}) + \sin{x}(1) = \sin{x} - 
-		x\cos{x}$
+		+ \sin{x}\frac{d}{dx}x = x\cos{x} + \sin{x}(1) = x\cos{x} + \sin{x}$
     	\item By the chain rule, $f'(x) = 5(x^3 - \cos{x})^4 \cdot 
     	\frac{d}{dx}(x^3 - \cos{x}) = 5(x^3 - \cos{x})^4 \cdot (3x^2 + 
     	\sin{x})$
@@ -128,16 +335,16 @@ If $f$ is the function given, find $f'$.
 \end{Exercise}
 \begin{Answer}[ref=deriv_rules2]
     $f'(x) = \frac{d}{dx}(7x) - \frac{d}{dx}(3) + \frac{d}{dx}(\ln{x})
-    = 7 - 0 + \frac{1}{x} = 7 - \frac{1}{x}$
+    = 7 - 0 + \frac{1}{x} = 7 + \frac{1}{x}$
     and
-    $f'(1) = 7-\frac{1}{1} = 6$
+    $f'(1) = 7 + \frac{1}{1} = 8$
 \end{Answer}
 	
 \begin{Exercise}[label=deriv_rules3]
 	[This question was originally presented as a multiple-choice, 
 	no-calculator question on the 2012 AP Calculus BC exam.] The position 
 	of a particle in the $xy$-plane is given by the parametric equations 
-	$x(t) = t^3-3t^2$ and $y(t) = 12t-3t^2$. State a coordinate point 
+	\index{parametric motion}$x(t) = t^3-3t^2$ and $y(t) = 12t-3t^2$. \index{particle at rest}State a coordinate point 
 	$(x,y)$ at which the particle is at rest. 
 \end{Exercise}
 	
@@ -149,10 +356,10 @@ If $f$ is the function given, find $f'$.
 	We can solve $y' = 0$ for $t$ and find that the $y$-velocity is $0$ 
 	when $t=2$. Substituting $t=2$ into our expression for $x'$, we find 
 	$x'(2) = 3(2)^2 - 6(2) = 0$. Therefore, the particle is at rest when 
-	$t=0$. To find the $xy$-coordinate, we substitute $t=2$ into $x(t)$ 
+	$t=2$. To find the $xy$-coordinate, we substitute $t=2$ into $x(t)$ 
 	and $y(t)$:\\
 	$$x(2) = (2)^3 - 3(2)^2 = 8 - 12 = -4$$
-	$$y(2) = 12(2) - 6(2) = 24 - 12 = 12$$
+	$$y(2) = 12(2) - 3(2)^2 = 24 - 12 = 12$$
 	Therefore, the particle is at rest when it is located at $(-4, 12)$. 
 \end{Answer}
 
@@ -165,7 +372,7 @@ If $f$ is the function given, find $f'$.
     [ref=deriv_rules4]
     $f(g(x)) = \sqrt{(3x - 2)^2 - 4} = \sqrt{9x^2 - 12x}$ and 
     $\frac{d}{dx}f(g(x)) = \frac{18x - 12}{2\sqrt{9x^2 - 12x}}$. 
-    Substituting $x = 3$, we find $f'(g(x)) = \frac{18(3) - 12}{2
+    Substituting $x = 3$, we find $(f \circ g)'(3) = \frac{18(3) - 12}{2
     \sqrt{9(3)^2 - 12(3)}} = \frac{42}{2\sqrt{45}} = 
     \frac{21}{3\sqrt{5}} = \frac{7}{\sqrt{5}}$
 \end{Answer}
@@ -222,12 +429,12 @@ If $f$ is the function given, find $f'$.
     The velocity of the particle is given by $v(t) = x'(t) = \cos{t} 
     + \sin{t}$. Setting $v(t) = 0$, we find:
     $$\cos{t} = -\sin{t}$$ 
-    which is true for $ t = \frac{3\pi + 4n}{4}$, where $n$ is an 
+    which is true for $t = \frac{3\pi}{4} + n\pi$, where $n$ is an 
     integer. Therefore, the first time the velocity is $0$ is $t_0 = 
     \frac{3\pi}{4}$. \\
     (b) To find the acceleration at $t=\frac{3\pi}{4}$, we take the 
     derivative of the velocity function to yield the acceleration 
-    function. $$a(t) = v'(t) = -\sin{t} + \cos{t}$$. Substituting $t =
+    function. $$a(t) = v'(t) = -\sin{t} + \cos{t}$$ Substituting $t =
     \frac{3\pi}{4}$, we find the acceleration is $-\sin{\frac{3\pi}{4}}
      + \cos{\frac{3\pi}{4}} = \frac{-\sqrt{2}}{2} - \frac{\sqrt{2}}{2} 
      = -\sqrt{2}$
@@ -235,7 +442,7 @@ If $f$ is the function given, find $f'$.
 
 \begin{Exercise}
     [label=deriv_rules8]
-    The graph of $y=e^(\tan{x}) - 2$ crosses the x-axis at one point 
+    The graph of $y=e^{\tan{x}} - 2$ crosses the x-axis at one point 
     on the interval $[0, 1]$. What is the slope of the graph at this 
     point?
 \end{Exercise}
@@ -257,13 +464,13 @@ If $f$ is the function given, find $f'$.
     The function $f$ is defined by $f(x) = \sqrt{25-x^2}$ for $-5 \leq 
     x \leq 5$. \\
     (a) Find $f'(x)$. \\
-    (b) Write an equation for the line tangent to the graph at $x = -3$. 
+    (b) \index{tangent line!equation of}Write an equation for the line tangent to the graph at $x = -3$. 
 \end{Exercise}
 \begin{Answer}
     [ref=deriv_rules9]
     (a) Apply the chain rule to find $f'(x)$ 
     $$f'(x) = \frac{1}{2\sqrt{25 - x^2}} \cdot(-2x) = \frac{-x}{
-    \sqrt{25-x^2}}$$. \\
+    \sqrt{25-x^2}}$$
     (b) First, substitute $x=-3$ into $f'(x)$ 
     $$f'(-3) = \frac{-(-3)}{\sqrt{25 - (-3)^2}} = \frac{3}{\sqrt{16}} 
     = \frac{3}{4}$$
@@ -293,7 +500,7 @@ If $f$ is the function given, find $f'$.
 \begin{Exercise}[label=deriv_rules11]
 	[This question was originally presented as a multiple-choice, 
 	calculator-allowed question on the 2012 AP Calculus BC exam.]
-	Let $f$ and $g$ be the functions given by $f(x) = e^{x}$ and $g(x) = 
+	\index{exponential function!derivative of}Let $f$ and $g$ be the functions given by $f(x) = e^{x}$ and $g(x) = 
 	x^4$. On what intervals is the rate of change of $f(x)$ greater than 
 	the rate of change of $g(x)$?
 \end{Exercise}
@@ -315,8 +522,452 @@ If $f$ is the function given, find $f'$.
 	\cup (7.384, \infty)$.
 \end{Answer}
 
+\section{Applications of Derivatives}
+\subsection{Applications in Mathematics}
+\subsubsection{l'H\^{o}pital's Rule}
+\index{l'H\^{o}pital's rule}
+Consider the function $h(x) = \frac{\ln{x}}{x-1}$ and suppose we are interested 
+in the behavior of $h(x)$ around $x=1$. As $x$ approaches 1, the numerator
+$\ln{x}$ approaches 0, and so does the denominator $x-1$. Plugging in gives
+the \index{indeterminate form}indeterminate result $\frac{0}{0}$, which could
+turn out to be anything. This is exactly the situation where l'H\^{o}pital's
+rule applies.
+
+Now, looking at the graph of $h(x)$ (see figure \ref{fig:lhospital}), we can guess 
+that $\lim_{x \to 1} \frac{\ln{x}}{x-1} = 1$. 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}
+    [clip=true,
+    xmin=0, xmax=4,
+    ymin=0, ymax=4,
+    axis lines=left
+    ]
+    \addplot[blue, domain=0.01:4, samples=100]{ln(x)/(x-1)};
+    \addplot[samples=50, black, dashed] coordinates{(1, 0)(1,1)};
+    \addplot[samples=50, black, dashed] coordinates{(0, 1)(1,1)};
+    \addplot[mark=*, fill=white, draw=blue] coordinates{(1, 1)};
+\end{axis}
+\end{tikzpicture}
+\caption{$h(x) = \frac{\ln{x}}{x - 1}$}
+\label{fig:lhospital}
+\end{figure}
+
+Let us examine the numerator and denominator separately: we will define $f(x) = 
+\ln{x}$ and $g(x) = x - 1$ (see figure \ref{fig:zoom1}). 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale = 0.5]
+    \begin{axis}
+    [clip=false,
+    xmin=0, xmax=3,
+    ymin=-1, ymax=2,
+    axis lines = center]
+    \addplot[blue, samples=100, domain=1/e:3]{ln(x)}
+    node[right, pos=1]{$f(x) = \ln{x}$};
+    \addplot[red, samples=100, domain=0:3]{x-1}
+    node[right, pos=1]{$g(x) = x - 1$};
+    \end{axis}
+\end{tikzpicture}
+\caption{Examining each part of $\frac{\ln{x}}{x-1}$ separately}
+\label{fig:zoom1}
+\end{figure}
+
+If we zoom in very far around $x=1$, the graphs begin to look linear (see 
+figure \ref{fig:zoom2}):
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale = 0.5]
+    \begin{axis}
+    [clip=false,
+    xmin=0.9, xmax=1.1,
+    ymin=-0.1, ymax=0.1,
+    axis lines = center]
+    \addplot[blue, samples=100, domain=0.9:1.1]{ln(x)}
+    node[right, pos=0.9]{$f(x) = \ln{x}$};
+    \addplot[red, samples=100, domain=0.9:1.1]{x-1}
+    node[right, pos=1]{$g(x) = x - 1$};
+    \end{axis}
+\end{tikzpicture}
+\caption{As we zoom in, the graph of $\ln{x}$ appears linear}
+\label{fig:zoom2}
+\end{figure}
+
+We can approximate these graphs as linear functions with slopes $m_1$ and 
+$m_2$, so that the blue curve is approximated as $y=m_1(x-1)$ and the red 
+curve is approximated as $y=m_2(x-1)$. The ratio of the functions would then 
+be 
+$$\frac{m_1(x-1)}{m_2(x-1)}=\frac{m_1}{m_2}$$ 
+
+which is the same as the ratio of the derivatives of our linear approximations. 
+This suggests l'H\^{o}pital's rule, that the limit of a ratio is the same as the 
+limit of the ratio of the derivatives for certain indeterminate forms: 
+$$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$
+Careful: this is the derivative of the top over the derivative of the
+bottom, not the quotient rule.
+
+Let us apply l'H\^{o}pital's rule to our limit of $h(x)$:
+$$\lim_{x\to 1} \frac{\ln{x}}{x - 1} = \lim_{x \to 1} \frac{\frac{d}{dx} 
+\ln{x}}{\frac{d}{dx} (x - 1)} = \lim_{x \to 1} \frac{\frac{1}{x}}{1}=1$$
+
+Notice our result with l'H\^{o}pital's rule matches our guess based on the graph 
+of $h(x) = \frac{\ln{x}}{x-1}$. 
+
+L'H\^{o}pital's rule also applies to the indeterminate result $\frac{\pm \infty}
+{\pm \infty}$. For a limit of the form $\lim_{x\to a}\frac{f(x)}{g(x)}$, 
+l'H\^{o}pital's rule applies if:
+\begin{enumerate}
+    \item the original limit is of the indeterminate form $\frac{0}{0}$ or 
+    $\frac{\pm \infty}{\pm \infty}$
+    \item $f$ and $g$ are differentiable on an interval containing $a$ (but 
+    possibly not differentiable at $a$)
+    \item $g'(x) \neq 0$ on said interval
+\end{enumerate}
+
+\textbf{Example}: Determine $\lim_{x \to \infty} \frac{e^x}{x^2}$.
+
+\textbf{Solution}: We begin by evaluating the limit:
+$$\lim_{x \to \infty} \frac{e^x}{x^2} = \frac{e^{\infty}}{\infty^2} = 
+\frac{\infty}{\infty}$$
+
+This is an indeterminate form that we can apply l'H\^{o}pital's rule to:
+$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}x^2} = \lim_{x \to 
+\infty} \frac{e^x}{2x}$$
+
+Evaluating this limit, we get another indeterminate form:
+$$=\frac{e^{\infty}}{2 \cdot \infty} = \frac{\infty}{\infty}$$
+
+Do not panic! We can apply l'H\^{o}pital's rule again (in fact, we can apply 
+l'H\^{o}pital's rule as many times as needed to evaluate a limit, as long as we 
+keep getting $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$):
+$$= \lim_{x \to \infty} \frac{\frac{d}{dx}e^x}{\frac{d}{dx}2x} = \lim_{x \to 
+\infty} \frac{e^x}{2} = \frac{\infty}{2} = \infty$$
+
+and therefore, $\lim_{x \to \infty} \frac{e^x}{x^2} = \infty$.
+
+\begin{Exercise}[label=LH1]
+What is $\lim_{x \to 0} \frac{\tan{x} - x}{x^3}$?
+\end{Exercise}
+
+\begin{Answer}[ref=LH1]
+First, let us confirm that l'H\^{o}pital's rule applies here:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \frac{0 - 0}{0} = \frac{0}{0}$$
+
+Therefore, we can apply l'H\^{o}pital's rule:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\tan{x} - x)}{\frac{d}{dx}x^3}$$
+$$= \lim_{x \to 0} \frac{\sec^2{x} - 1}{3x^2} = \frac{1 - 1}{0} = \frac{0}{0}$$
+
+which is an indeterminate form. We apply l'H\^{o}pital's rule again:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(\sec^2{x} - 1)}{\frac{d}{dx}3x^2}$$
+$$= \lim_{x \to 0} \frac{2\tan{x}\sec^2{x}}{6x} = \frac{2(0)(1^2)}{6 \cdot 0} = \frac{0}{0}$$
+
+which is also an indeterminate form. We apply l'H\^{o}pital's rule again:
+$$\lim_{x \to 0} \frac{\tan{x} - x}{x^3} = \lim_{x \to 0} \frac{\frac{d}{dx}(2\tan{x}\sec^2{x})}{\frac{d}{dx}6x}$$
+$$= \lim_{x \to 0} \frac{2\sec^2{x}[2\tan^2{x} + \sec^2{x}]}{6} = \frac{2 \cdot 1 \cdot [2 \cdot 0 + 1]}{6}$$
+$$= \frac{2}{6} = \frac{1}{3}$$
+\end{Answer}
+
+Note that this rule only applies if it is in \emph{indeterminate form}. The most common indeterminate forms are
+\begin{equation*}
+\frac{0}{0}
+\quad \text{and} \quad
+\frac{\infty}{\infty},
+\end{equation*}
+which you may end up with when evaluating quotients!
+
+However, \index{indeterminate form}indeterminate forms can also appear in other ways. Some common
+examples include:
+\begin{equation*}
+0 \cdot \infty, \quad
+\infty - \infty, \quad
+0^0, \quad
+1^\infty, \quad
+\infty^0.
+\end{equation*}
+
+These expressions are indeterminate because their values cannot be
+determined without evaluating further. In many cases, such limits can be
+rewritten into a quotient that results in either
+\begin{equation*}
+\frac{0}{0}
+\quad \text{or} \quad
+\frac{\infty}{\infty}.
+\end{equation*} Then l'H\^{o}pital's rule applies.
+
+\textbf{Example:} Evaluate
+\begin{equation*}
+\lim_{x \to 0^+} x \ln x.
+\end{equation*}
+
+\textbf{Solution:}
+As $x \to 0^+$, we have $x \to 0$ and $\ln x \to -\infty$, producing the
+indeterminate form
+\begin{equation*}
+0 \cdot (-\infty).
+\end{equation*}
+
+Rewrite the expression as a quotient:
+\begin{equation*}
+x \ln x = \frac{\ln x}{1/x}.
+\end{equation*}
+
+Now the limit has the form
+\begin{equation*}
+\frac{-\infty}{\infty},
+\end{equation*}
+so l'H\^{o}pital's rule applies. Differentiate the numerator and denominator:
+\begin{equation*}
+\lim_{x \to 0^+} \frac{\ln x}{1/x}
+= \lim_{x \to 0^+} \frac{1/x}{-1/x^2}.
+\end{equation*}
+
+Simplifying,
+\begin{equation*}
+\lim_{x \to 0^+} (-x) = 0.
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+\lim_{x \to 0^+} x \ln x = 0.
+\end{equation*}
+
+
+\begin{Exercise}[label = LH2]
+Evaluate each of the following limits, using l'H\^{o}pital's rule where needed.
+\begin{enumerate}
+\item $\lim_{x \to 3} \frac{x-3}{x^2-9}$
+\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9}$
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}}$
+\item $\lim_{x \to \pi} \frac{1 + \cos{x}}{1 - \cos{x}}$
+\item $\lim_{x \to 1} \frac{x\sin{(x - 1)}}{2x^2 - x - 1}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=LH2]
+\begin{enumerate}
+\item $\lim_{x \to 3} \frac{x-3}{x^2-9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 3} \frac{x-3}{x^2-9} = \lim_{x \to 3} \frac{1}{2x} = \frac{1}{6}$
+\item $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule. $\lim_{x \to 1/2} \frac{6x^2 + 5x - 4}{4x^2 + 16x - 9} = \lim_{x \to 1/2} \frac{12x + 5}{8x + 16} = \frac{11}{20}$
+\item $\lim_{x \to 0^+} \frac{\ln{x}}{\sqrt{x}} = \frac{-\infty}{0} = -\infty$. This limit is not indeterminate, so l'H\^{o}pital's rule does not apply (and is not needed).
+\item $\frac{1 + \cos{\pi}}{1 - \cos{\pi}} = \frac{1 - 1}{1 + 1} = \frac{0}{2} = 0$. Not indeterminate, so just plug in.
+\item $\frac{1 \cdot \sin{0}}{2 - 1 - 1} = \frac{0}{0}$, so we apply l'H\^{o}pital's rule: $\lim_{x \to 1} \frac{x\cos{(x - 1)} + \sin{(x - 1)}}{4x - 1} = \frac{1 \cdot 1 + 0}{4 - 1} = \frac{1}{3}$.
+\end{enumerate}
+\end{Answer}
+
+\subsubsection{Mean Value Theorem}\index{mean value theorem}
+
+The Mean Value Theorem (MVT) states that on an interval $[a, b]$ where a 
+continuous function $f$ is differentiable on an open interval $(a, b)$, there 
+is at least one point where the tangent line to $f$ has the same slope as a 
+line connecting the points $(a, f(a))$ and $(b, f(b))$. Consider the graph of 
+$f(x) = x^2$ (see figure \ref{fig:MVT1}). The line connecting the points 
+$(-1, 1)$ and $(2, 4)$ has a slope of $\frac{1}{2}$. MVT tells us there must 
+be \textit{at least one} point, $c$, on the interval $x \in (-1, 2)$ where 
+$f'(c) = \frac{1}{2}$. We can find this point by setting $f'(x)$ equal to 
+$\frac{1}{2}$: 
+$$2x = \frac{1}{2} \rightarrow x = \frac{1}{4}$$
+
+Examining the figure \ref{fig:MVT1}, you can see that the tangent at 
+$f(\frac{1}{4})$ (the black line) is parallel to the red line connecting 
+$(-1, f(-1))$ and $(2, f(2))$. 
+
+\begin{figure}[H]
+\begin{tikzpicture}
+    \begin{axis}
+        [ymin=-2, xmin=-2, xmax=2, axis lines = left]
+        \addplot[blue, samples=50]{x^2};
+        \addplot[red, mark=*]coordinates {(-1, 1)};
+        \addplot[red, mark=*] coordinates {(2, 4)};
+        \addplot[domain=-2:2, red] coordinates{(-1, 1)(2, 4)};
+        \addplot[black, mark=*] coordinates{(0.5, 0.25)};
+        \addplot[black, domain=-2:2, samples=50
+        ]{x-0.25};
+    \end{axis}
+\end{tikzpicture}
+\caption{$f(x) = x^2$}
+\label{fig:MVT1}
+\end{figure}
+
+Note that MVT does not tell us \textit{where} $f'(x)$ is parallel to the line 
+connecting $(a, f(a))$ and $(b, f(b))$, just that some value $c$ exists that 
+satisfies the condition. 
+
+\textbf{Example}: A hammer is tossed straight up at 5 $\frac{m}{s}$ on 
+Earth (where the acceleration due to gravity is approximately $-9.8 
+\frac{m}{s^2}$). Show that at some moment on the way up, its velocity
+equals its average velocity for the climb.
+
+\textbf{Solution}: 
+The hammer's rise can be described with the function $y(t) = 5t-4.9t^2$. The 
+hammer reaches its peak at approximately $t=0.51$. So, we are looking for some 
+value, $c$, such that $$y'(c) = \frac{y(0.51) - y(0)}{0.51 - 0} = \frac{5(0.51) 
+- 4.9(0.51^2)}{0.51} = \frac{1.2755}{0.51} = 2.5$$
+
+Solving $y'(t) = 5-9.8t = 2.5$, we find that the $c$ that satisfies the MVT is 
+approximately $0.255$. This result is illustrated in figure \ref{fig:hammer}:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[ymin=0,ymax=1.4, xmin=0, xmax=1.2, axis lines=left]
+    \addplot[blue, samples=50, domain=0:1.2]{5*x-4.9*x^2};
+    \addplot[mark=*, red] coordinates{(0,0)};
+    \addplot[mark=*, red] coordinates{(0.51, 1.275)};
+    \addplot[red, samples=50]coordinates{(0,0) (0.51, 1.275)};
+    \addplot[black, samples=50]{2.5*(x-0.255)+0.9564};
+    \addplot[mark=*, black]coordinates{(0.255, 0.9564)};
+    \end{axis}
+\end{tikzpicture}
+\caption{The height of a hammer tossed upwards at $5 \frac{m}{s}$}
+\label{fig:hammer}
+\end{figure}
+
+\subsubsection{MVT Practice}
+\begin{Exercise}
+[label=MVT1]
+At 3:30 PM, a car's speedometer reads $30 \frac{mi}{hr}$. At 3:40 PM, it reads 
+$50\frac{mi}{hr}$. Show that at some time between 3:30 and 3:40 PM, the car's 
+acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\end{Exercise}
+\begin{Answer}
+[ref=MVT1]
+The speed of a car must be a continuous, differentiable function, since your car 
+cannot "jump" from one speed to another: it must smoothly accelerate from one 
+speed to another. Therefore, the Mean Value Theorem applies. The average 
+acceleration from 3:30 PM to 3:40 PM is given by:
+$$\frac{\text{change in speed}}{\text{change in time}} = \frac{50 \frac{mi}{hr}
+ - 30\frac{mi}{hr}}{3:40PM - 3:30PM}$$ 
+Simplifying and converting minutes to hours, we see the average acceleration is:
+$$\frac{20\frac{mi}{hr}}{\frac{1}{6}hr} = 120\frac{mi}{hr^2}$$
+
+Therefore, by MVT, there must be some time between 3:30 and 3:40 PM where the 
+car's acceleration is exactly $120 \frac{mi}{hr^2}$. 
+\end{Answer}
+
+\begin{Exercise}
+[label=MVT2]
+Find the number $c$ that satisfies the MVT on the given interval. 
+
+(a) $f(x) = \sqrt{x}$, $[0, 4]$
+
+(b)$f(x) = e^{-x}$, $[0,2]$
+
+(c)$f(x) = \ln{x}$, $[1,4]$	
+\end{Exercise}
+
+\begin{Answer}
+[ref=MVT2]
+(a) For the domain given, $f(x)$ is defined and differentiable. Finding the 
+slope of the secant line connecting the endpoints:
+$$\frac{f(b)-f(a)}{b-a}=\frac{\sqrt{4}-\sqrt{0}}{4-0}=\frac{2}{4}=\frac{1}{2}$$
+
+So we are looking for some number $c$ such that $f'(c) = \frac{1}{2}$. Let us 
+find $f'(x)$:
+$$f'(x) = \frac{d}{dx}\sqrt{x}=\frac{1}{2\sqrt{x}}$$
+
+Setting this equal to $\frac{1}{2}$ to find $c$:
+$$f'(c) = \frac{1}{2\sqrt{c}}=\frac{1}{2}$$
+$$\sqrt{c}=1$$
+$$c=1$$
+
+(b)For the domain given, $f(x)$ is defined and differentiable. Finding the 
+slope of the secant line connecting the endpoints:
+$$\frac{f(2) - f(0)}{2 - 0}=\frac{e^{-2} - e^{0}}{2}=\frac{1 - e^{2}}{2e^{2}} 
+\approx -0.432$$
+
+And find $f'(x)$:
+$$f'(x) = -e^{-x}$$
+According to MVT, there must be some $c$ such that $f'(c) \approx-0.432$:
+$$-e^{-c} \approx -0.432$$
+$$e^{-c}\approx 0.432$$
+$$-c \approx \ln{0.432}$$
+$$c \approx -\ln{0.432} \approx 0.839$$
+
+(c) For the domain given, $f(x)$ is defined and differentiable. Finding the 
+secant line connecting the endpoints:
+$$\frac{f(b) - f(a)}{b - a}=\frac{\ln{4} - \ln{1}}{4 - 1} = \frac{\ln{4}}{3} 
+\approx 0.462$$
+
+And find $f'(x)$:
+$$f'(x) = \frac{1}{x}$$
+
+According to MVT, there must be some $c$ such that $f'(c) \approx 0.462$
+$$f'(c) = \frac{1}{c} \approx 0.462$$
+$$c \approx \frac{1}{0.462} = 2.164$$
+\end{Answer}
+
+
+
+\subsection{Applications in Physics}
+
+In physics, derivatives play a vital role in describing how quantities change 
+with respect to one another.
+
+\subsubsection{Velocity and Acceleration}
+
+In kinematics, the derivative of the position function with respect to time 
+gives the velocity function, and further taking the derivative of the velocity 
+function gives the acceleration function. For example, if $s(t)$ represents 
+the position of an object at time $t$, then the velocity $v(t)$ and 
+acceleration $a(t)$ are given by:
+
+\begin{equation}
+v(t) = \frac{ds}{dt} \quad \text{and} \quad a(t) = \frac{dv}{dt} = \frac{d^2s}{dt^2}
+\end{equation}
+
+\subsubsection{Practice}
+
+A particle's motion is described by $s(t) = t^3-6t^2+6t$, where $t$ is measured 
+in seconds and $s$ is measured in meters. Answer the following questions about 
+the particle's motion:
+\begin{Exercise}[label=velacc1]
+Find the velocity at time $t$.
+\end{Exercise}
+
+\begin{Answer}[ref=velacc1]
+Velocity is the derivative of position. Therefore, $v(t) = s'(t) = 3t^2-12t+6$.
+\end{Answer}
+
+\begin{Exercise}[label=velacc2]
+What is the velocity after 2s? After 4s?
+\end{Exercise}
+
+\begin{Answer}[ref=velacc2]
+$$v(2) = 3(2)^2-12(2)+6=-6 \frac{m}{s}$$
+$$v(4) = 3(4)^2-12(4)+6=6\frac{m}{s}$$
+\end{Answer}
+
+\begin{Exercise}[label=velacc3]
+When is the particle at rest?
+\end{Exercise}
+
+\begin{Answer}[ref=velacc3]
+When the particle is at rest, $v(t) = 0$. 
+$$3t^2-12t+6=0$$
+$$3(t^2-4t+2)=0$$
+$$t^2-4t+2=0$$
+This is not easily factorable, so we will use the quadratic formula: $$t=\frac{-(-4)\pm\sqrt{(-4)^2-4(1)(2)}}{2(1)}$$
+$$t=\frac{4\pm\sqrt{16-8}}{2}=2\pm\sqrt{2}\approx0.586, 3.414$$
+Therefore, the particle is at rest at 0.586s and 3.414s.
+\end{Answer}
+
+\subsubsection{Force and Momentum}
+
+In mechanics, the derivative of the momentum of an object with respect to time gives the net force acting on the object, as stated by Newton's second law of motion:
+
+\begin{equation}
+F = \frac{dp}{dt}
+\end{equation}
+
+where $F$ is the force, $p$ is the momentum, and $t$ is the time.
+
+
 \section{Conclusion}
 
-These rules form the basis for calculating derivatives in
-calculus. Many more complex rules and techniques are built upon these
-fundamental rules.
+\index{derivative!rules summary}With the constant, sum, power, product,
+quotient, and chain rules, plus the derivatives of $\sin$, $\cos$, $e^x$,
+and $\ln{x}$, you can differentiate nearly any function you can write
+down. Everything else in differential calculus is built on these.

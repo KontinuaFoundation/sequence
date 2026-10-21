@@ -1,45 +1,43 @@
 \chapter{Neural Networks for Classification}
 
-Neural Networks can also be used for classification tasks, which
-involve predicting a discrete class label output for an instance. The
-process of using a Neural Network for classification is similar to
-using it for regression, but there are key differences in the output
-layer and loss function.\index{neural net classifiers}
+\section{The Output Layer}\index{neural network!classification}
+Classification uses the same network as regression, but the output layer and the loss change. The output is a probability, not a number.
+For two classes, a single output neuron uses the sigmoid activation, $\sigma(z) = \frac{1}{1 + e^{-z}}$, which lies between 0 and 1.
+For more than two classes, the output layer has one neuron per class, and the \newterm{softmax} activation turns the outputs into probabilities
+that sum to 1.
 
-\section{Neural Networks for Classification}
+\section{Cross-Entropy Loss}\index{cross-entropy}
+The usual loss for classification is cross-entropy. For a binary label $y \in \{0, 1\}$ and predicted probability $p$,
+$$L = -\left[y \ln p + (1 - y)\ln(1 - p)\right]$$
+If the true label is 1, the loss is $-\ln p$. It is small when the network assigns high probability to the correct class, and large when $p$ is small. Think of a weather forecast that gives a 10 percent chance of rain on a day that turns out rainy. The forecast was confidently wrong, and cross-entropy punishes it heavily.
 
-For a binary classification problem, where the output can be either of
-two classes, the output layer of the neural network typically consists
-of a single neuron with a sigmoid activation function, which squashes
-the output between 0 and 1. This output can be interpreted as the
-probability that the instance belongs to a particular class.
+\section{A Worked Example}
+A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Then $z = 1$, and the predicted probability is
+$$p = \sigma(1) = \frac{1}{1 + e^{-1}} \approx 0.731$$
+If the true label is $y = 1$, the cross-entropy loss is $-\ln(0.731) \approx 0.313$.
 
-For a multi-class classification problem, where the output can be one
-of more than two classes, the output layer typically has as many
-neurons as there are classes, and a softmax activation function is
-used, which gives the probability distribution over the classes.
+\subsection{Softmax with Three Classes}
+A network that sorts photos into cat, dog, or bird produces three raw scores, say
+$z = (2, 1, 0)$. Softmax exponentiates each score and divides by the total:
+$$e^2 \approx 7.389, \quad e^1 \approx 2.718, \quad e^0 = 1, \qquad \text{total} \approx 11.107$$
+$$P(\text{cat}) \approx \frac{7.389}{11.107} \approx 0.665, \quad P(\text{dog}) \approx 0.245, \quad P(\text{bird}) \approx 0.090$$
+The probabilities sum to 1, and the largest score gets the largest probability. If
+the photo really is a cat, the cross-entropy loss is $-\ln(0.665) \approx 0.408$.
 
-Here is the basic process:
+\section{Training and Prediction}
+Training repeats the same steps as in regression: feedforward, loss, backpropagation, and a weight update. Once trained, a new instance is classified by
+computing $p$ and predicting the class with the larger probability. A threshold of 0.5 is common for binary outputs.
 
-\begin{itemize}
+\begin{Exercise}[label=nnc1, title=Compute a probability]
+A neuron has $z = 0$. What is the predicted probability of class 1?
+\end{Exercise}
+\begin{Answer}[ref=nnc1]
+$\sigma(0) = \frac{1}{1+1} = 0.5$.
+\end{Answer}
 
-\item \textbf{Feedforward:} Compute the output of the network given
-  the input features, just as in regression.
-
-\item \textbf{Loss Calculation:} Calculate the loss (difference
-  between the network's prediction and the actual class). For
-  classification tasks, common loss functions include Cross-Entropy
-  Loss.
-
-\item \textbf{Backpropagation:} Update the network's weights to
-  minimize the loss, the same way as in regression.
-
-\item \textbf{Iteration:} Repeat the feedforward, loss calculation,
-  and backpropagation steps for a number of epochs (complete passes
-  through the dataset) or until the loss converges to a minimum.
-
-\end{itemize}
-
-Once trained, the neural network can classify a new instance by
-performing a feedforward pass and predicting the class with the
-highest probability in the output layer.
+\begin{Exercise}[label=nnc2, title=Loss of a wrong prediction]
+A network predicts $p = 0.1$ for an example whose true label is 1. What is the cross-entropy loss?
+\end{Exercise}
+\begin{Answer}[ref=nnc2]
+$-\ln(0.1) \approx 2.303$. The loss is large because the network gave the correct class a low probability.
+\end{Answer}

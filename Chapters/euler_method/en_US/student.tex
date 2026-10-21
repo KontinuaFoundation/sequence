@@ -1,8 +1,12 @@
 \chapter{Euler's Method}
 \index{Euler's method}
-How do computers approximate the solution to a differential equation that 
-cannot be explicitly solved? Let's consider the differential equation 
-$$\frac{dy}{dx} = x + y \text{ with initial condition } y(0) = 1$$.
+Imagine driving at night with a speedometer that updates only every few
+seconds. Between readings, you assume your speed stays the same and estimate
+how far you have gone. Euler's method approximates a differential equation the
+same way: read the slope, take a step, read the slope again.
+
+Let us consider the differential equation 
+$\frac{dy}{dx} = x + y$ with initial condition $y(0) = 1$.
 
 This means the solution passes through the point (0, 1). Additionally, the 
 slope of the solution is $\frac{dy}{dx} = 0 + 1 = 1$ at that point. This means 
@@ -27,12 +31,12 @@ approximation grows.
 \end{figure}
 
 How can we make a better approximation? Suppose we stop the first 
-approximation at $x = 1.5$, re-evaluate $\frac{dy}{dx}$, and use that to make 
+approximation at $x = 0.5$, re-evaluate $\frac{dy}{dx}$, and use that to make 
 a second linear approximation. When $x = 0.5$, $L(x) = 0.5 + 1 = 1.5$. Taking 
 the point $(0.5, 1.5)$, then $\frac{dy}{dx} = 0.5 + 1.5 = 2$. We can then 
 write a second linear approximation, $L_2(x) = 2(x - 0.5) + 1.5 = 2x - 1 + 1.5 
 = 2x + 0.5$. As you can see (figure \ref{fig:euler2}), this new approximation 
-is closer than our first approximation. We call this an approximation with a 
+is closer than our first approximation. We call this an approximation with a \index{step size} 
 step size of 0.5.
 
 \begin{figure}[H]
@@ -78,10 +82,9 @@ the approximation gets closer and closer to the true solution.
 \end{figure}
 
 In general, Euler's method is a numerical process similar to sketching a 
-solution on a slope field. One begins at the given initial value, proceeds for 
-a short step in the direction indicated by the slope field. You adjust the 
-slope of your approximation based on the value of the slope field at the end 
-of each step. 
+solution on a \index{slope field}slope field. You begin at the initial value and take a short step in the direction the
+slope field points. At the end of each step, you read the slope again and
+turn.
 
 For a first-order differential equation, let $\frac{dy}{dx} = F(x, y)$ and 
 $y(x_0) = y_0$. If we have step size $h$, then our successive $x$-values are 
@@ -115,7 +118,7 @@ figure \ref{fig:eulervis}).
 \end{figure}
 
 Continuing, once we have found $y_1$, we can then define $x_2 = x_1 + h$ and 
-$y_2 = y_1 + hF(x_1, y_1)$. And in general, for an initial-value problem when 
+$y_2 = y_1 + hF(x_1, y_1)$. And in general, for an \index{initial value problem}initial-value problem when 
 $\frac{dy}{dx} = F(x, y)$ and $y(x_0) = y_0$, we can make an approximation 
 with step size $h$ where:
 $$y_n = y_{n-1} + hF(x_{n-1},y_{n-1})$$
@@ -144,7 +147,28 @@ n & $x_n$ & $y_n$ & $F(x_n, y_n)$ \\\hline
 \end{tabular}
 \end{center}
 
-Therefore, $y(1) \approx 3.4696$.
+Therefore, $y(1) \approx 3.465$. The exact solution is $y = 3e^x - 2x - 2$, which gives $y(1) \approx 4.155$. Euler's method is low here because the solution curves upward, and a straight-line step falls below a curve that bends up.
+
+A computer does not mind taking thousands of tiny steps:
+\begin{minted}{python}
+def euler(F, x0, y0, h, steps):
+    x, y = x0, y0
+    for _ in range(steps):
+        y = y + h * F(x, y)
+        x = x + h
+    return y
+
+F = lambda x, y: 2 * x + y
+for steps in [5, 50, 500]:
+    print(steps, euler(F, 0, 1, 1 / steps, steps))
+\end{minted}
+\begin{verbatim}
+5 3.46496
+50 4.074764087220816
+500 4.146705561955173
+\end{verbatim}
+Each tenfold cut in the step size shrinks the error (compared with
+$4.1548$) by about a factor of ten.
 
 \textbf{Example}: This problem was originally presented as a no-calculator, 
 multiple-choice question on the 2012 AP Calculus BC exam. Let $y = f(x)$ be 
@@ -169,7 +193,7 @@ So the approximate value of $f(2)$ is $\frac{7}{4}$.
 
 \begin{Exercise}[label = eulercircuit]
 
-In the previous chapter on slope fields, we discussed the behavior of inductors in electronic circuits. As you may recall, capacitors also exhibit more complex behavior than regular resistors. Consider a circuit with a resistor and capacitor (see figure below). Let the resistor have resistance R ohms and the capacitor have capacitance C farads. By Kirchhoff's law, we know that:
+In the slope fields chapter, we discussed the behavior of inductors in electronic circuits. As you may recall, capacitors also exhibit more complex behavior than regular resistors. \index{RC circuit}Consider a circuit with a resistor and capacitor (see figure below). Let the resistor have resistance R ohms and the capacitor have capacitance C farads. By \index{Kirchhoff's law}Kirchhoff's law, we know that:
 $$RI + \frac{Q}{C} = V$$
 where Q is the charge on each side of the capacitor and $\frac{Q}{C}$ is the voltage drop across the capacitor. Recall that current is the change in charge over time. Therefore, $I = \frac{dQ}{dt}$, and we can write the differential equation:
 $$R \frac{dQ}{dt} + \frac{1}{C}Q = V$$
@@ -202,11 +226,11 @@ When the switch is first closed, there is no charge (that is, $Q(0) = 0$). If th
 \end{Exercise}
 
 \begin{Answer}[ref = eulercircuit]
-Substituting the given values, we find that $(5)\frac{dQ}{dT} + \frac{1}{0.05}Q = 60$. Solving for $\frac{dQ}{dt}$:
+Substituting the given values, we find that $(5)\frac{dQ}{dt} + \frac{1}{0.05}Q = 60$. Solving for $\frac{dQ}{dt}$:
 $$(5) \frac{dQ}{dt} + (20)Q = 60$$
 $$\frac{dQ}{dt} + 4Q = 12$$
 $$\frac{dQ}{dt} = 12 - 4Q$$
-We also know that $Q(0) = 0$. Using Euler's method with step size $h = 0.1$, $Q(0.1) \approx Q(0) + h \left[12 - 4Q(0) \right] = 0 + 0.1 \left[12 - 4(0) \right] = 1.2$. And $Q(0.2) \approx Q(0.1) + h \left[12 - 4Q(0.1) \right] = 1.2 + 0.1 \left[12 - 4(1.2) \right] = 1.92$. And $Q(0.3) \approx Q(0.2) + h \left[12 - 4Q(0.2) \right] = 1.92 + 0.1 \left[ 12 - 4(1.92) \right] = 2.352$. And $Q(0.4) \approx Q(0.3) + h \left[12 - 4Q(0.3) \right] = 2.352 + 0.1 \left[ 12 - 4(2.352) \right] = 2.6112$. And finally, $Q(0.5) \approx Q(0.4) + h \left[12 - 4Q(0.4) \right] = 2.6112 + 0.1 \left[12 - 4(2.6112) \right] = 2.76672$. Because we are finding a charge, the unit it Coulombs (C), so our final answer is $Q(0.5) \approx 2.77 C$.
+We also know that $Q(0) = 0$. Using Euler's method with step size $h = 0.1$, $Q(0.1) \approx Q(0) + h \left[12 - 4Q(0) \right] = 0 + 0.1 \left[12 - 4(0) \right] = 1.2$. And $Q(0.2) \approx Q(0.1) + h \left[12 - 4Q(0.1) \right] = 1.2 + 0.1 \left[12 - 4(1.2) \right] = 1.92$. And $Q(0.3) \approx Q(0.2) + h \left[12 - 4Q(0.2) \right] = 1.92 + 0.1 \left[ 12 - 4(1.92) \right] = 2.352$. And $Q(0.4) \approx Q(0.3) + h \left[12 - 4Q(0.3) \right] = 2.352 + 0.1 \left[ 12 - 4(2.352) \right] = 2.6112$. And finally, $Q(0.5) \approx Q(0.4) + h \left[12 - 4Q(0.4) \right] = 2.6112 + 0.1 \left[12 - 4(2.6112) \right] = 2.76672$. Because we are finding a charge, the unit is coulombs (C), so our approximate answer is $Q(0.5) \approx 2.77 C$. The exact solution is $Q(t) = 3(1 - e^{-4t})$, which gives $Q(0.5) \approx 2.59 C$. Euler's method is high here because the charge curve bends downward, and the straight-line steps stay above it.
 \end{Answer}
 
 \begin{Exercise}[label = euler1]

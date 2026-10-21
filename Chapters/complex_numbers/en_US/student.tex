@@ -1,76 +1,189 @@
 \chapter{Complex Numbers}
 
-Complex numbers are an extension of real numbers, which in turn
-are an extension of rational numbers. In mathematics, the set of
-complex numbers is a number system that extends the real number line
-to a full two dimensions, using the imaginary unit, which is denoted by
-$i$, with the property that $i^2 = -1$.\index{Complex Numbers}
-
-An imaginary number is a number that is a multiple of the imaginary unit $i$.
-For example, $5i$ and $-3i$ are both imaginary numbers. While imaginary numbers are a 
-subset of complex numbers (with real part equal to zero), not all complex numbers are 
-imaginary. Complex numbers can have both a real and an imaginary part, while imaginary 
-numbers specifically refer to those with no real part.
+In the last chapter, you met quadratics like $x^2 + 2x + 5 = 0$ that have
+no real solutions, because the formula asks for the square root of a
+negative number. For centuries, mathematicians simply gave up at that
+point. Then a few brave ones asked: what if we just \emph{invent} a square
+root of $-1$ and see what happens? What happened was one of the most useful
+ideas in all of mathematics. Electrical engineers use it to design the
+power grid, and physicists use it to describe the atom.
 
 \section{Definition}
 
-A complex number is a number of the form $a + bi$, where $a$ and $b$
-are real numbers, and $i$ is the imaginary unit, with the property
-that $i^2 = -1$. The real part of the complex number is $a$, and the
-imaginary part is $bi$.
+The \index{imaginary unit}\newterm{imaginary unit} $i$ is a number with
+the property
+$$i^2 = -1$$
+No real number does that, which is why $i$ got the (unfortunate) name
+``imaginary.'' It is no more imaginary than negative numbers, which
+also seemed absurd when they were new.
 
-\section{Why Are Complex Numbers Necessary?}
+A \index{complex number}\newterm{complex number}\index{Complex Numbers} is
+a number of the form $a + bi$, where $a$ and $b$ are real numbers. The
+number $a$ is the \index{real part}\newterm{real part}, and $b$ is the
+\index{imaginary part}\newterm{imaginary part}. For example, $3 - 2i$ has
+real part 3 and imaginary part $-2$.
 
-Complex numbers are essential to many fields of science and
-engineering. Here are a few reasons why:
+Every real number is a complex number with imaginary part 0: $7 = 7 + 0i$.
+A complex number with real part 0, like $5i$ or $-3i$, is called an
+\index{imaginary number}\newterm{imaginary number}.
 
-\subsection{Roots of Negative Numbers}
+With $i$, every negative number has square roots. For example,
+$\sqrt{-9} = \sqrt{9}\sqrt{-1} = 3i$. Check: $(3i)^2 = 9i^2 = -9$.
 
-In the real number system, the square root of a negative number does
-not exist, because there is no real number that you can square to get a
-negative number. The introduction of the imaginary unit $i$, which has
-the property that $i^2 = -1$, allows us to take square roots of
-negative numbers and gives rise to complex numbers.
+\textbf{Worked example.} Solve $x^2 + 2x + 5 = 0$.
 
-\subsection{Polynomial Equations}
+\textbf{Solution.} The quadratic formula gives
+$$x = \frac{-2 \pm \sqrt{4 - 20}}{2} = \frac{-2 \pm \sqrt{-16}}{2} = \frac{-2 \pm 4i}{2} = -1 \pm 2i$$
+Check $x = -1 + 2i$:
+$(-1 + 2i)^2 + 2(-1 + 2i) + 5 = (1 - 4i + 4i^2) - 2 + 4i + 5 = 1 - 4 - 2 + 5 = 0$.
+It works!
 
-The fundamental theorem of algebra states that every non-constant
-polynomial equation with complex coefficients has a complex root. This
-theorem guarantees that polynomial equations of degree $n$ always have
-$n$ roots in the complex plane.
+\section{The Complex Plane}
+\index{complex plane}
+Real numbers live on a line. Complex numbers need a whole plane. Plot
+$a + bi$ at the point $(a, b)$: the real part goes left and right, and the
+imaginary part goes up and down.
 
-\subsection{Physics and Engineering}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \draw[->] (-4,0) -- (4,0) node[right] {real};
+  \draw[->] (0,-3) -- (0,3.5) node[above] {imaginary};
+  \foreach \x in {-3,...,3} \draw (\x,0.08) -- (\x,-0.08);
+  \foreach \y in {-2,...,3} \draw (0.08,\y) -- (-0.08,\y);
+  \filldraw[sdkblue] (3,2) circle (2pt) node[above right] {$3 + 2i$};
+  \filldraw[sdkblue] (-2,1) circle (2pt) node[above left] {$-2 + i$};
+  \filldraw[sdkblue] (0,-2) circle (2pt) node[right] {$-2i$};
+  \filldraw[sdkblue] (2,0) circle (2pt) node[below] {$2$};
+  \draw[dashed] (0,0) -- (3,2);
+\end{tikzpicture}
+\end{center}
 
-In physics and engineering, complex numbers are used to represent
-waveforms in control systems, in quantum mechanics, and many other
-areas. Their properties make many mathematical manipulations more
-convenient.
+The distance from $0$ to $a + bi$ is the \newterm{magnitude} (or absolute
+value) of the number. By the Pythagorean theorem,
+$$|a + bi| = \sqrt{a^2 + b^2}$$
+For example, $|3 + 4i| = \sqrt{9 + 16} = 5$.
 
-\section{Adding Complex Numbers}
+\section{Adding and Subtracting}
 
-The addition of complex numbers is straightforward. If we have two
-complex numbers $z_1 = a + bi$ and $z_2 = c + di$, their sum is
-defined as:
-
+To \index{complex numbers!addition}add complex numbers, add the real parts
+and add the imaginary parts:
 \begin{equation}
-z_1 + z_2 = (a + c) + (b + d)i
+(a + bi) + (c + di) = (a + c) + (b + d)i
+\end{equation}
+For example, $(2 + 3i) + (4 - i) = 6 + 2i$. Subtraction works the same way:
+$(2 + 3i) - (4 - i) = -2 + 4i$.
+
+In the complex plane, adding is just adding vectors, tip to tail.
+
+\section{Multiplying}
+
+To \index{complex numbers!multiplication}multiply, expand just as you would
+$(x + 2)(x + 3)$, then replace $i^2$ with $-1$:
+\begin{equation}
+(a + bi)(c + di) = ac + adi + bci + bdi^2 = (ac - bd) + (ad + bc)i
 \end{equation}
 
-In other words, you add the real parts to get the real part of the
-sum, and add the imaginary parts to get the imaginary part of the sum.
+\textbf{Worked example.} Multiply $(2 + 3i)(1 - i)$.
 
-\section{Multiplying Complex Numbers}
+\textbf{Solution.}
+$(2 + 3i)(1 - i) = 2 - 2i + 3i - 3i^2 = 2 + i + 3 = 5 + i$.
+The key step is $-3i^2 = -3(-1) = +3$.
 
-The multiplication of complex numbers is a bit more involved. If we
-have two complex numbers $z_1 = a + bi$ and $z_2 = c + di$, their
-product is defined as:
+Here is something beautiful. Multiplying by $i$ \emph{rotates} a number a
+quarter turn counterclockwise around 0. Try it: $(2 + i) \cdot i = 2i + i^2
+= -1 + 2i$. Plot both points, and you will see a $90^\circ$ turn. Multiply
+by $i$ twice, and you turn $180^\circ$, which is the same as multiplying by
+$-1$. That is exactly why $i^2 = -1$.
 
-\begin{equation}
-z_1 \cdot z_2 = (a + bi) \cdot (c + di) = ac + adi + bci - bd = (ac - bd) + (ad + bc)i
-\end{equation}
+It also explains the powers of $i$:
+$$i^1 = i, \quad i^2 = -1, \quad i^3 = -i, \quad i^4 = 1, \quad i^5 = i, \ldots$$
+Every four quarter turns bring you back where you started.
 
-Note the last term comes from $i^2 = -1$. You multiply the real parts
-and the imaginary parts just as you would in a binomial
-multiplication, and remember to replace $i^2$ with $-1$. See the Khan academy video
-in the digital resources for a more in-depth explanation.
+\begin{Exercise}[title={Square a Complex Number}, label=cx1]
+Find $(1 + i)^2$. Then find $(1 + i)^4$.
+\end{Exercise}
+\begin{Answer}[ref=cx1]
+$(1 + i)^2 = 1 + 2i + i^2 = 1 + 2i - 1 = 2i$. So
+$(1 + i)^4 = (2i)^2 = 4i^2 = -4$.
+\end{Answer}
 
+\section{Conjugates and Division}
+
+The \index{complex conjugate}\newterm{conjugate} of $a + bi$ is
+$a - bi$: same real part, opposite imaginary part. A number times its
+conjugate is always a real number:
+$$(a + bi)(a - bi) = a^2 - abi + abi - b^2i^2 = a^2 + b^2$$
+
+That is the trick for dividing. Multiply the top and bottom by the
+conjugate of the bottom, and the $i$ disappears from the denominator.
+
+\textbf{Worked example.} Compute $\frac{3 + 4i}{1 + 2i}$.
+
+\textbf{Solution.} The conjugate of $1 + 2i$ is $1 - 2i$:
+$$\frac{3 + 4i}{1 + 2i} \cdot \frac{1 - 2i}{1 - 2i} = \frac{3 - 6i + 4i - 8i^2}{1 + 4} = \frac{11 - 2i}{5} = 2.2 - 0.4i$$
+Check by multiplying back: $(1 + 2i)(2.2 - 0.4i) = 2.2 - 0.4i + 4.4i - 0.8i^2 = 3 + 4i$.
+
+\section{Complex Numbers in Python}
+
+Python has complex numbers built in. Engineers write $j$ instead of $i$
+(because $i$ often stands for electric current), and Python follows them:
+\begin{minted}{python}
+z = 2 + 3j
+w = 1 - 1j
+print(z * w)       # (5+1j)
+print(abs(3 + 4j)) # 5.0
+print(z.conjugate())  # (2-3j)
+\end{minted}
+
+\section{Why Complex Numbers Matter}
+
+\textbf{Every polynomial has roots.} The \index{fundamental theorem of
+algebra}\newterm{fundamental theorem of algebra} says that every polynomial
+of degree $n$ has exactly $n$ complex roots (counting repeated roots more
+than once). With real numbers alone, even $x^2 + 1 = 0$ has no solution.
+With complex numbers, nothing is ever missing.
+
+\textbf{Rotations and waves.} Since multiplying by a complex number rotates
+and stretches, complex numbers are a perfect language for anything that
+spins or oscillates. Electrical engineers describe alternating current with
+them, and the equations of quantum mechanics are written in them.
+
+\begin{Exercise}[title={Practice}, label=cx2]
+Simplify each expression.
+\begin{enumerate}
+\item $(5 + 2i) - (3 - 4i)$
+\item $(2 - i)(3 + 2i)$
+\item $i^{27}$
+\item $|-5 + 12i|$
+\item $\frac{2 + i}{1 - i}$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=cx2]
+\begin{enumerate}
+\item $2 + 6i$
+\item $6 + 4i - 3i - 2i^2 = 8 + i$
+\item $27 = 4 \cdot 6 + 3$, so $i^{27} = i^3 = -i$.
+\item $\sqrt{25 + 144} = 13$
+\item $\frac{(2 + i)(1 + i)}{(1 - i)(1 + i)} = \frac{2 + 3i + i^2}{2} = \frac{1 + 3i}{2} = 0.5 + 1.5i$
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={Complex roots}, label=cx3]
+Solve $x^2 + 4x + 13 = 0$. Check one of your answers.
+\end{Exercise}
+\begin{Answer}[ref=cx3]
+$x = \frac{-4 \pm \sqrt{16 - 52}}{2} = \frac{-4 \pm \sqrt{-36}}{2} = \frac{-4 \pm 6i}{2} = -2 \pm 3i$.
+
+Check $-2 + 3i$: $(-2 + 3i)^2 = 4 - 12i + 9i^2 = -5 - 12i$, and
+$4(-2 + 3i) = -8 + 12i$. Adding 13: $-5 - 12i - 8 + 12i + 13 = 0$.
+\end{Answer}
+
+\begin{Exercise}[title={Quarter turns}, label=cx4]
+Plot $z = 3 + i$. Then plot $iz$, $i^2z$, and $i^3z$. What shape do the
+four points make?
+\end{Exercise}
+\begin{Answer}[ref=cx4]
+$iz = 3i + i^2 = -1 + 3i$, $i^2z = -3 - i$, and $i^3z = 1 - 3i$. Each is a
+quarter turn from the last around 0, so the four points are the corners of
+a square centered at 0.
+\end{Answer}

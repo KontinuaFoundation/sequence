@@ -1,42 +1,28 @@
-# MaxCut Problem
 import numpy as np
-import scipy 
 from scipy.linalg import sqrtm
-# cvxpy is a python module for solving optimization problems
-import cvxpy as cp
+import cvxpy as cp     # a module for solving optimization problems
 
-# define the edges of the graph
-edges = [(0,1),
-        (0,2),
-        (1,3),
-        (1,4),
-        (2,3),
-        (3,4)]
+edges = [(0, 1), (0, 2), (1, 3), (1, 4), (2, 3), (3, 4)]
+n = 5
 
-#  Declare the matrix X to be positive semidefinite
-X = cp.Variable((5,5),symmetric=True)
+# X is the matrix of dot products x_i . x_j; it must be positive semidefinite
+X = cp.Variable((n, n), symmetric=True)
 constraints = [X >> 0]
+# Unit vectors: each x_i . x_i = 1
+constraints += [X[i, i] == 1 for i in range(n)]
 
-# Set diagonals to 1 to get unit vectors
-constraints += [
-    X[i,i] == 1 for i in range(5)
-]
-
-# Set the objective function
-objective = sum(05.*(1 - X[i,j]) for (i,j)in edges)
-
-# Set up the problem to maximize using the objective function and
-# keeping within the set constraints
+objective = sum(0.5 * (1 - X[i, j]) for (i, j) in edges)
 prob = cp.Problem(cp.Maximize(objective), constraints)
+print("Relaxed value:", round(prob.solve(), 3))
 
-# Returns a positive semidefinite matrix
-print(prob.solve())
+# Recover the vectors: the rows of the square root of X
+vectors = np.real(sqrtm(X.value))
 
-# To get the vectors take square root of the matrix
-x = sqrtm(X.value)
+# Round: slice the sphere with a random plane through the origin
+rng = np.random.default_rng(1)
+normal = rng.standard_normal(n)
+side = np.sign(vectors @ normal)
+print("Sides:", side)
 
-# Generate a random hyperplane
-u = np.random.randn(5) # normal to random hyperplane
-
-# Pick values according to which side of the hyperplane the vectors are on
-x = np.sign(x @ u) 
+cut = sum(1 for (i, j) in edges if side[i] != side[j])
+print("Edges cut:", cut)

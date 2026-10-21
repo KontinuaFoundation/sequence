@@ -1,35 +1,63 @@
 \chapter{Boosting}
 
+\section{Learning from Mistakes}\index{boosting}
+\newterm{Boosting} combines many weak learners into one strong learner. A weak learner is only a little better than guessing.
+Each new learner is trained to focus on the examples the earlier learners got wrong. Think of studying for a test. After each practice test, you spend more time on the problems you missed. Boosting mainly reduces bias.
 
-Boosting is a machine learning ensemble meta-algorithm primarily used
-to reduce bias, and to a lesser extent variance, in supervised
-learning. It works by iteratively learning weak classifiers and adding
-them to a final strong classifier in a way that the subsequent weak
-learners try to correct the mistakes of the previous ones.\index{Boosting}
-
-\section{AdaBoost}
-
-AdaBoost, short for Adaptive Boosting, is one of the first and
-simplest boosting algorithms. Given a set of $n$ training examples
-$(x_1, y_1), \ldots, (x_n, y_n)$ where $y_i$ are binary outputs, the
-algorithm works as follows:\index{AdaBoost}
-
+\section{AdaBoost}\index{AdaBoost}
+\newterm{AdaBoost} (adaptive boosting) works with labels $y_i \in \{-1, +1\}$. It keeps a weight $w_i$ for each training point.
 \begin{enumerate}
-    \item Initialize weights $w_i = 1/n$ for $i = 1, \ldots, n$.
-    \item For $t = 1$ to $T$:
-    \begin{itemize}
-        \item Train a weak learner $h_t$ using the weighted examples.
-        \item Compute the weighted error $\epsilon_t = \sum_{i:h_t(x_i) \neq y_i} w_i$.
-        \item Set $\alpha_t = \frac{1}{2} \log \left(\frac{1-\epsilon_t}{\epsilon_t}\right)$.
-        \item Update the weights: $w_i = w_i \exp(-\alpha_t y_i h_t(x_i))$ for $i = 1, \ldots, n$, and normalize them so that they sum to one.
-    \end{itemize}
-    \item The final model is $H(x) = \text{sign}\left(\sum_{t=1}^{T} \alpha_t h_t(x)\right)$.
+\item Start with equal weights, $w_i = \frac{1}{n}$.
+\item For $t = 1, \ldots, T$: train a weak learner $h_t$ on the weighted data, compute its weighted error
+$\varepsilon_t = \sum_{i:\, h_t(x_i) \ne y_i} w_i$, and set
+$$\alpha_t = \frac{1}{2}\ln\frac{1 - \varepsilon_t}{\varepsilon_t}$$
+\item Increase the weights of the misclassified points and decrease the others:
+$w_i \leftarrow w_i e^{-\alpha_t y_i h_t(x_i)}$, then normalize so the weights sum to 1.
 \end{enumerate}
+The final classifier is the sign of the weighted vote, $H(x) = \operatorname{sign}\left(\sum_t \alpha_t h_t(x)\right)$.
 
-\section{Gradient Boosted Trees}
+\subsection{A Worked Round}
+Four points have weights $\frac{1}{4}$ each. A weak learner misclassifies only the fourth point, so $\varepsilon_1 = \frac{1}{4}$ and
+$$\alpha_1 = \frac{1}{2}\ln\frac{3/4}{1/4} = \frac{1}{2}\ln 3 \approx 0.549$$
+The three correct points have weight $\frac{1}{4} e^{-0.549} \approx 0.144$ before normalizing, and the misclassified point has weight
+$\frac{1}{4} e^{0.549} \approx 0.433$. Normalizing (the total is $0.144 \cdot 3 + 0.433 = 0.866$), the misclassified point now has weight
+$0.5$, and each correct point has weight $\frac{1}{6} \approx 0.167$. The next learner is forced to focus on the point that was missed.
 
-Gradient Boosted Trees is a generalization of boosting to arbitrary
-differentiable loss functions. It works by sequentially adding
-predictors to an ensemble, each one correcting its predecessor by
-fitting the new predictor to the residual errors.\index{Gradient Boosted Trees}
+\section{Gradient Boosting}\index{gradient boosted trees}
+\newterm{Gradient boosting} generalizes this idea to any differentiable loss. Each new tree is fit to the negative gradient of the loss at the
+current predictions. For squared-error loss, this gradient is just the residual, so each tree is fit to the errors of the ensemble so far.
+
+\textbf{Example}: Three houses sell for 3, 5, and 10 (in hundreds of thousands of dollars).
+Start by predicting the mean, 6, for every house. The residuals are $-3$, $-1$, and $4$.
+Suppose the first tree learns these residuals exactly. With a learning rate of $0.5$, each
+prediction moves halfway toward its target: $6 + 0.5(-3) = 4.5$, $6 + 0.5(-1) = 5.5$, and
+$6 + 0.5(4) = 8$. The new residuals are $-1.5$, $-0.5$, and $2$, half as big. The next tree
+fits these, and so on.
+
+\section{Cautions}
+Boosting can overfit if the number of rounds is too large. The validation set is used to choose the number of rounds, and the
+learning rate (the fraction of each tree's correction that is actually applied) is usually made
+small to slow the fit.
+
+\begin{Exercise}[label=bst1, title=Compute alpha]
+A weak learner has weighted error $\varepsilon = 0.1$. What is $\alpha$?
+\end{Exercise}
+\begin{Answer}[ref=bst1]
+$\alpha = \frac{1}{2}\ln\frac{0.9}{0.1} = \frac{1}{2}\ln 9 \approx 1.099$.
+\end{Answer}
+
+\begin{Exercise}[label=bst2, title=Which points gain weight?]
+After a round of AdaBoost, which points have their weights increased?
+\end{Exercise}
+\begin{Answer}[ref=bst2]
+The points that were misclassified by $h_t$. Since $y_i h_t(x_i) = -1$ for those points, $e^{-\alpha_t y_i h_t(x_i)} = e^{\alpha_t} > 1$.
+\end{Answer}
+
+\begin{Exercise}[label=bst3, title=A coin-flip learner]
+A weak learner has weighted error $\varepsilon = 0.5$. What is $\alpha$, and what does that mean?
+\end{Exercise}
+\begin{Answer}[ref=bst3]
+$\alpha = \frac{1}{2}\ln\frac{0.5}{0.5} = \frac{1}{2}\ln 1 = 0$. A learner that does no better than
+flipping a coin gets no vote in the final classifier.
+\end{Answer}
 

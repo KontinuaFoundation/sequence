@@ -1,11 +1,15 @@
 \chapter{Polar Coordinates}
 
-We have already seen how to plot a function with $(x,y)$ coordinates. For 
-every $x$ that we put into a function, it returns a $y$. These pairs of 
-coordinates tell us where on the $xy$-plane to graph the function. This 
-coordinate system, where $x$ and $y$ are oriented horizontally and vertically, 
-is called the \textit{Cartesian} coordinate system. It can be used to describe 
-2D space, but it is not the only way. 
+\index{polar coordinates}Picture a radar screen in an air traffic control
+tower. A sweeping line circles the screen, and each plane shows up as a
+blip. The controller does not say ``that plane is 3 km east and 4 km
+north''; they say ``that plane is 5 km out, at this heading.'' Distance and
+direction: that is the idea behind polar coordinates.
+
+So far we have located points with $(x,y)$ coordinates: how far to go
+horizontally and how far vertically. This is the
+\index{Cartesian coordinate system}\textit{Cartesian} coordinate system.
+It is not the only way to describe 2D space.
 
 \begin{figure}[H]
 \centering
@@ -68,7 +72,7 @@ and so on.
     \end{figure}
 
 We can use trigonometry to find the appropriate angle of rotation for our 
-Cartesian point. There are many ways to do this, but using $\arctan$ is the 
+Cartesian point. There are many ways to do this, but using \index{arctangent}$\arctan$ is the 
 most straightforward. Recall that:
 $$\tan{\theta} = \frac{opposite}{adjacent}$$
 
@@ -80,7 +84,7 @@ Cartesian point), which means:
 $$\tan{\theta} = \frac{2}{1}$$
 $$\theta = \arctan{2} \approx 1.107\text{ radians}$$
 
-\section{Plotting Polar Coordinate Points}
+\section{Plotting Polar Coordinate Points}\index{polar coordinates!plotting}
 How do we plot polar coordinate points? Begin by locating the angle given by the second coordinate (remember, the angle is measured counterclockwise from the horizontal). Your point will lie somewhere on this line. Next, move outwards along the angle by the radius given by the first coordinate. 
 
 \textbf{Example}: Plot the polar coordinate point $(2, \frac{\pi}{3})$. 
@@ -125,7 +129,7 @@ Then, move your finger or pencil along the line $\theta = \frac{\pi}{3}$ until y
 \end{figure}
 
 \begin{Exercise}[label = polarplot]
-Plot the following polar coordinate points on the provided polar axis (hint: negative angles are taken counterclockwise):
+Plot the following polar coordinate points on the provided polar axis (hint: negative angles are measured clockwise):
 \begin{enumerate}
 \item $(1, \pi)$
 \item $(1.5, \frac{\pi}{2})$
@@ -166,8 +170,12 @@ Plot the following polar coordinate points on the provided polar axis (hint: neg
     \end{tikzpicture}
 \end{Answer}
 
-\section{Equivalent Points}
-Unlike the Cartesian coordinate system, two different coordinates may lie at the same location. Consider the points $(1, \frac{\pi}{4})$ and $(-1, \frac{5\pi}{4})$ (see figure \ref{fig:eqpoints}). When a radius is negative, you move \textit{backwards} back over the origin, like a mirror image. 
+\section{Equivalent Points}\index{polar coordinates!equivalent points}
+Unlike the Cartesian coordinate system, two different coordinates may lie at the same location. Consider the points $(1, \frac{\pi}{4})$ and $(-1, \frac{5\pi}{4})$ (see figure \ref{fig:eqpoints}). When a radius is negative, you move \textit{backwards} through the origin, like a mirror image.
+
+Going all the way around also gets you back where you started: $(1,
+\frac{\pi}{4})$, $(1, \frac{9\pi}{4})$, and $(1, -\frac{7\pi}{4})$ are all
+the same point. Every point has infinitely many names in polar coordinates.
 
 \begin{figure}[H]
 \centering
@@ -220,7 +228,7 @@ Unlike the Cartesian coordinate system, two different coordinates may lie at the
     \label{fig:eqpoints}
     \end{figure}
 
-\section{Changing coordinate systems}
+\section{Changing coordinate systems}\index{polar coordinates!converting}
 
 \subsection{Cartesian to Polar}
 From the example above, you should see that a given Cartesian coordinate, 
@@ -242,14 +250,15 @@ root. Finding $\theta$:
 $$\theta = \arctan{\frac{4}{-3}}$$
 
 When you evaluate the $\arctan$ with a calculator, you are likely to get back 
-$\theta = -0.928$. Recall that $tan{\theta} = \tan{\theta \pm n\pi}$, where $n$ 
+$\theta = -0.928$. Recall that $\tan{\theta} = \tan{(\theta \pm n\pi)}$, where $n$ 
 is an integer. We know our Cartesian point, $(-3, 4)$, is in the II quadrant, 
 while the angle $-0.928$ radians would fall in the IV quadrant. So, clearly, 
 $-0.928$ radians is not correct. Most calculators restrict the output of 
 $\arctan$ to angles between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$, because 
 there are actually multiple angles where $\tan{\theta} = -\frac{4}{3}$. Since 
-$\tan{\theta} = \tan{\theta \pm n \pi}$, we also know that:
-$$\arctan{-\frac{4}{3}} = -0.928 \pm n \pi$$
+$\tan{\theta} = \tan{(\theta \pm n \pi)}$, every angle of the form
+$$\theta = -0.928 + n \pi$$
+has $\tan{\theta} = -\frac{4}{3}$.
 
 Another possible $\theta$ is $-0.928 + \pi \approx 2.214$, which does fall 
 in the appropriate quadrant. This means the polar coordinates $(5, 2.214)$ are the 
@@ -335,15 +344,13 @@ Convert the following polar coordinates to Cartesian coordinates:
 \item $(0, -2)$. $x = 2 \cdot \cos{\frac{3\pi}{2}} = 2 \cdot 0 = 0$ and $y = 2 
 \cdot \sin{\frac{3\pi}{2}} = 2 \cdot -1 = -2$.
 \item $(-1,1)$. $x = \sqrt{2} \cdot \cos{\frac{3\pi}{4}} = \sqrt{2} \cdot - 
-\frac{\sqrt{2}}{2} = \frac{2}{2} = -1$ and $y = \sqrt{2} \cdot \sin{\frac{3
+\frac{\sqrt{2}}{2} = -\frac{2}{2} = -1$ and $y = \sqrt{2} \cdot \sin{\frac{3
 \pi}{4}} = \sqrt{2} \cdot \frac{\sqrt{2}}{2} = \frac{2}{2} = 1$. 
 \item $(\frac{3\sqrt{2}}{2}, -\frac{3\sqrt{2}}{2})$. $x = 3 \cdot \cos{-\frac{
 \pi}{4}} = 3 \cdot \frac{\sqrt{2}}{2} = \frac{3\sqrt{2}}{2}$ and $y = 3 \cdot 
 \sin{-\frac{\pi}{4}} = 3 \cdot -\frac{\sqrt{2}}{2} = -\frac{3\sqrt{2}}{2}$.
-\item $(-\frac{3}{2}, -\frac{3\sqrt{3}}{2})$. $x = (-3) \cdot \cos{\frac{\pi}{3
-}} = (-3) \cdot \frac{1}{2} = -\frac{3}{2}$ and $y = (-3) \cdot \sin{\frac{\pi
-}{3}} = (-3) \cdot \frac{\sqrt{3}}{2} = - \frac{3\sqrt{3}}{2}$.
-\item $(0, -2)$. $x = 2 \cdot \cos{-\frac{pi}{2}} = 2 \cdot 0 = 0$ and $y = 2 
+\item $(-\frac{3}{2}, \frac{3\sqrt{3}}{2})$. $x = (-3)\cos{(-\frac{\pi}{3})} = (-3)\left(\frac{1}{2}\right) = -\frac{3}{2}$ and $y = (-3)\sin{(-\frac{\pi}{3})} = (-3)\left(-\frac{\sqrt{3}}{2}\right) = \frac{3\sqrt{3}}{2}$. (The negative radius flips the point from quadrant IV to quadrant II.)
+\item $(0, -2)$. $x = 2 \cdot \cos{-\frac{\pi}{2}} = 2 \cdot 0 = 0$ and $y = 2 
 \cdot \sin{-\frac{\pi}{2}} = 2 \cdot -1 = -2$. 
 \end{enumerate}
 \end{Answer}
@@ -374,8 +381,7 @@ domain restriction and be in the correct quadrant.
 2$. $\arctan{\frac{-1}{\sqrt{3}}} = -\frac{\pi}{6} + n\pi$. We take $\theta = 
 \frac{11\pi}{6}$ to satisfy the domain restriction and have the point in the 
 correct quadrant. 
-\item $(6, \pi)$. $r = \sqrt{(-6)^2 + 0^2} = 6$. $\arctan{\frac{0}{-6}} = \pi 
-+ n\pi$. We take $\theta = \pi$ to satisfy the domain restriction. 
+\item $(6, \pi)$. $r = \sqrt{(-6)^2 + 0^2} = 6$. $\arctan{\frac{0}{-6}} = 0 + n\pi$. We take $\theta = \pi$ to satisfy the domain restriction. 
 \item $(2\sqrt{2}, \frac{5\pi}{4})$. $r = \sqrt{(-2)^2 + (-2)^2} = \sqrt{8} = 
 2\sqrt{2}$. $\arctan{\frac{-2}{-2}} = \arctan{1} = \frac{\pi}{4} + n\pi$. We 
 take $\theta = \frac{5\pi}{4}$ to satisfy the domain restriction and be in the 
@@ -385,15 +391,41 @@ correct quadrant.
 
 
 
-\section{Circles in Polar Coordinates}
+In Python, \pyfunction{math.atan2(y, x)} does the quadrant bookkeeping for
+you. \pyfunction{math.atan2(4, -3)} returns 2.214 directly.
+
+\begin{Exercise}[title={Air Traffic Control}, label=polar_radar]
+A radar dish sits at the origin, with east along the positive $x$-axis and
+north along the positive $y$-axis. Distances are in km.
+\begin{enumerate}
+\item A plane shows up at $(12, \frac{5\pi}{6})$. How far east (or west)
+and north (or south) of the radar is it?
+\item A drone is 5 km west and 12 km south of the radar. Give its polar
+coordinates with $0 \leq \theta < 2\pi$.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=polar_radar]
+\begin{enumerate}
+\item $x = 12\cos{\frac{5\pi}{6}} = 12 \cdot \left(-\frac{\sqrt{3}}{2}\right)
+= -6\sqrt{3} \approx -10.4$ and $y = 12 \sin{\frac{5\pi}{6}} = 6$. The plane
+is about 10.4 km west and 6 km north.
+\item The drone is at $(-5, -12)$. $r = \sqrt{25 + 144} = 13$ km.
+$\arctan{\frac{-12}{-5}} \approx 1.176$, but that is in quadrant I and the
+drone is in quadrant III, so $\theta \approx 1.176 + \pi \approx 4.318$. The
+drone is at $(13, 4.318)$.
+\end{enumerate}
+\end{Answer}
+
+\section{Circles in Polar Coordinates}\index{polar equations!circles}
 Many conic sections, including circles, are simpler to express as polar 
 functions than as Cartesian functions. Consider a circle with a radius of $2$ 
 centered about the origin. The polar function for this is $r = 2$ for all 
-$\theta$. Let's write a Cartesian function for the same circle. 
+$\theta$. Let us write a Cartesian function for the same circle. 
 
 We know that for every point on the circle, the distance to the origin is $2$. 
 This means that, by the Pythagorean theorem, 
-$$r^2 = x^2 + y^2$$.
+$$r^2 = x^2 + y^2$$
 
 (see figure \ref{fig:circle2})
 
@@ -427,7 +459,7 @@ Notice that this is really two equations: $y = \sqrt{2^2 - x^2}$ and $y = -\sqrt
 As seen above, the equation of a circle with radius $R$ centered on the origin 
 is simply $r = R$ in polar coordinates. What if we want a circle centered 
 somewhere else? Polar coordinates are best when a circle is bisected by the 
-$x$ or $y$ axis. Consider the polar equation $r = 3 \sin{\theta}$. Let's use a 
+$x$ or $y$ axis. Consider the polar equation $r = 3 \sin{\theta}$. Let us use a 
 table to find some points and plot the function:
 
 \begin{center}
@@ -520,7 +552,7 @@ a rough plot on the blank polar axis below:
 
     
 \textbf{Solution}: This plot will look like a circle of radius 0.5 centered at 
-$(0.5, 0)$ (in polar coordinates). 
+the Cartesian point $(0.5, 0)$. 
 
 \begin{center}
 \begin{tikzpicture}
@@ -563,7 +595,7 @@ Sketch the following polar functions on the provided polar axis for $0 \leq
     \end{tikzpicture}
 \end{Exercise}
 
-\begin{Answer}[ref = circles2]
+\begin{Answer}[ref=circles]
 \begin{enumerate}
 \item $r = 3$
 
@@ -658,4 +690,64 @@ line $\theta = \pi$ extends in both directions
 \end{enumerate}
 \end{Answer}
 
-% do we want to include a section about petals and flowers in polar coordinates? would be good for polar integration prep
+\section{Roses}\index{polar equations!roses}
+
+Change $r = \cos{\theta}$ to $r = \cos{(3\theta)}$ and something lovely
+happens: a flower with three petals.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{polaraxis}[width=6cm, ymax=1.1, xticklabel=$\pgfmathprintnumber{\tick}^\circ$]
+\addplot[domain=0:180, samples=200, data cs=polar, thick, blue] (x, {cos(3*x)});
+\end{polaraxis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{polaraxis}[width=6cm, ymax=1.1, xticklabel=$\pgfmathprintnumber{\tick}^\circ$]
+\addplot[domain=0:360, samples=300, data cs=polar, thick, red] (x, {cos(2*x)});
+\end{polaraxis}
+\end{tikzpicture}
+\caption{$r = \cos{(3\theta)}$ has three petals; $r = \cos{(2\theta)}$ has four.}
+\label{fig:roses}
+\end{figure}
+
+Curves of the form $r = a\cos{(n\theta)}$ or $r = a\sin{(n\theta)}$ are
+called \newterm{roses}\index{rose curve}. Each petal is $|a|$ long. If $n$
+is odd, the rose has $n$ petals. If $n$ is even, it has $2n$ petals. (When
+$n$ is odd, the negative values of $r$ retrace petals you have already
+drawn; when $n$ is even, they draw new ones.)
+
+You can draw these in Python. Matplotlib has a polar mode:
+
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+theta = np.linspace(0, 2 * np.pi, 500)
+r = np.cos(3 * theta)
+
+ax = plt.subplot(projection='polar')
+ax.plot(theta, r)
+plt.show()
+\end{minted}
+
+Polar graphs will be back when you learn to find areas with calculus: a
+petal is much easier to describe with $r$ and $\theta$ than with $x$ and
+$y$.
+
+\begin{Exercise}[title={Petals}, label=polar_roses]
+How many petals does each rose have, and how long is each petal?
+\begin{enumerate}
+\item $r = 3\cos{(5\theta)}$
+\item $r = 2\sin{(4\theta)}$
+\item $r = 4\sin{(2\theta)}$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref=polar_roses]
+\begin{enumerate}
+\item 5 is odd: 5 petals, each 3 long.
+\item 4 is even: 8 petals, each 2 long.
+\item 2 is even: 4 petals, each 4 long.
+\end{enumerate}
+\end{Answer}

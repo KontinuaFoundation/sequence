@@ -1,51 +1,79 @@
 \chapter{Linear Regression and Gradient Descent}
 
-Linear regression models can be fitted using an optimization algorithm
-known as gradient descent. This is especially useful when the number
-of features is large, making the normal equation computationally
-expensive.\index{linear regression}
+\section{Why Iterate?}\index{gradient descent}
+The least squares solution is a formula, $\mathbf{b} = (X^TX)^{-1}X^T\mathbf{y}$. For many features, forming and solving
+$X^TX$ is expensive. \newterm{Gradient descent} reaches nearly the same answer by repeated small steps, which can scale to
+very large problems. Think of walking down a hill in fog. You feel the slope under your feet and take a small step downhill, then repeat.
 
-In gradient descent, we start with an initial guess for the model
-parameters and iteratively update these parameters to minimize the
-cost function, which is usually the mean squared error (MSE) for
-linear regression. For a linear regression model with parameters
-$\mathbf{\theta}$, the update rule is given by \index{gradient descent}
+\section{The Cost Function}
+The cost for linear regression is the mean squared error:
+$$J(\boldsymbol{\theta}) = \frac{1}{n}\sum_{i=1}^n (\mathbf{x}_i^T\boldsymbol{\theta} - y_i)^2$$
+In matrix form, its gradient is
+$$\nabla J(\boldsymbol{\theta}) = \frac{2}{n} X^T(X\boldsymbol{\theta} - \mathbf{y})$$
 
-\[
-\mathbf{\theta} := \mathbf{\theta} - \alpha \nabla J(\mathbf{\theta})
-\]
+\section{The Update Rule}
+Start with a guess $\boldsymbol{\theta}_0$, usually zero. At each step, move against the gradient, scaled by the \newterm{learning rate} $\alpha$:
+$$\boldsymbol{\theta} := \boldsymbol{\theta} - \alpha \nabla J(\boldsymbol{\theta})$$
+If $\alpha$ is too large, the steps overshoot and the cost can grow. If $\alpha$ is too small, progress is slow.
 
-where $\alpha$ is the learning rate and $\nabla J(\mathbf{\theta})$ is
-the gradient of the cost function evaluated at $\mathbf{\theta}$. For
-MSE, the gradient is given by
+\section{A Worked Step}
+Use the quiz data from the Simple Linear Regression chapter: $x = 1, \ldots, 5$ and $y = 2.1, 3.9, 6.2, 7.8, 10.1$.
+With $X$ having a column of ones and the $x$ values, and $\boldsymbol{\theta}_0 = (0, 0)$, we have
+$X\boldsymbol{\theta}_0 - \mathbf{y} = -\mathbf{y}$. Then $X^T(-\mathbf{y}) = (-30.1, -110.2)$, so with $n = 5$,
+$$\nabla J(\boldsymbol{\theta}_0) = \frac{2}{5}(-30.1, -110.2) = (-12.04, -44.08)$$
+With $\alpha = 0.01$,
+$$\boldsymbol{\theta}_1 = (0, 0) - 0.01(-12.04, -44.08) = (0.1204, 0.4408)$$
+The true solution is $(0.05, 1.99)$, so the steps move toward it.
 
-\[
-\nabla J(\mathbf{\theta}) = \frac{2}{n} \mathbf{X}^T (\mathbf{X}\mathbf{\theta} - \mathbf{y})
-\]
+\section{Letting the Computer Walk}
+By hand, two steps is plenty. A computer can take thousands:
+\begin{minted}{python}
+import numpy as np
 
-where $\mathbf{X}$ is the feature matrix, $\mathbf{y}$ is the vector
-of target values, and $n$ is the number of observations.
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2.1, 3.9, 6.2, 7.8, 10.1])
+X = np.column_stack([np.ones(len(x)), x])
 
-\section{Standardizing Inputs}
+def descend(alpha, steps):
+    theta = np.zeros(2)
+    for _ in range(steps):
+        gradient = 2 / len(y) * X.T @ (X @ theta - y)
+        theta = theta - alpha * gradient
+    return theta
 
-Standardizing inputs can improve the performance of gradient
-descent. By ensuring all features have a similar scale, we can avoid a
-situation where the cost function has a very elongated shape, causing
-gradient descent to take a long time to converge.\index{standardizing data}
+print(descend(0.05, 50))
+print(descend(0.05, 5000))
+print(descend(0.1, 50))
+\end{minted}
+\begin{verbatim}
+[0.24846555 1.93502823]
+[0.05 1.99]
+[ -3074524.42217419 -11100007.21998943]
+\end{verbatim}
+With $\alpha = 0.05$, 50 steps get close and 5000 steps land on the least squares
+answer. Doubling the learning rate to $0.1$ makes every step overshoot by more than
+the last, and after 50 steps the parameters are in the millions. That is the
+``too large'' failure from the update rule, live.
 
-More specifically, standardization transforms the features so they
-have a mean of 0 and a standard deviation of 1. This is done by
-subtracting the mean and dividing by the standard deviation for each
-feature:
+\section{Standardizing First}
+The gradient descent convergence depends on the scale of the features. If one feature is in thousands and another is in fractions,
+the cost surface is stretched into a narrow valley, and steps along the valley are very slow. Standardize the features first, so
+the cost surface is more round and gradient descent converges faster. The chapter on standardization gives the formula.
 
-\[
-x'_i = \frac{x_i - \mu_i}{\sigma_i}
-\]
+\begin{Exercise}[label=gd1, title=One more step]
+Starting from $\boldsymbol{\theta}_1 = (0.1204, 0.4408)$, take one gradient step with $\alpha = 0.01$ on the quiz data.
+Find $\boldsymbol{\theta}_2$, rounding to four decimal places.
+\end{Exercise}
+\begin{Answer}[ref=gd1]
+The predictions are $X\boldsymbol{\theta}_1 = (0.5612, 1.0020, 1.4428, 1.8836, 2.3244)$. The residuals
+$X\boldsymbol{\theta}_1 - \mathbf{y} = (-1.5388, -2.8980, -4.7572, -5.9164, -7.7756)$. Then
+$X^T(X\boldsymbol{\theta}_1 - \mathbf{y}) = (-22.886, -84.150)$, so $\nabla J = \frac{2}{5}(-22.886, -84.150) = (-9.1544, -33.660)$ and
+$\boldsymbol{\theta}_2 = (0.1204, 0.4408) - 0.01(-9.1544, -33.660) = (0.2119, 0.7774)$.
+\end{Answer}
 
-where $x_i$ is a feature vector, and $\mu_i$ and $\sigma_i$ are its
-mean and standard deviation, respectively.
-
-By standardizing the inputs, each feature contributes approximately
-proportionately to the final distance, helping the gradient descent
-algorithm converge more quickly and efficiently.
-
+\begin{Exercise}[label=gd2, title=Learning rate]
+What happens to gradient descent if $\alpha$ is made very large?
+\end{Exercise}
+\begin{Answer}[ref=gd2]
+The steps overshoot the minimum. The parameters can oscillate or diverge, and the cost can increase instead of decrease.
+\end{Answer}

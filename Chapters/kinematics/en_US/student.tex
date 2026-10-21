@@ -1,13 +1,128 @@
 \chapter{Kinematics}
 
-How can we describe the motion of objects other than falling bodies? Kinematics 
-is the description of motion. 
+
+\section{Introductory Motion Concepts}
+\subsection{Position, Velocity, Acceleration}
+
+To talk about motion, we need words for \emph{where} something is, \emph{how fast} it is going, and \emph{how quickly} that is changing.
+
+\newterm{Position}\index{position} is where an object is, measured from a reference point called the \newterm{origin}. You get to choose the origin and the directions, the same way you might say ``the library is two blocks north of school.'' Positions come in different numbers of dimensions:
+
+\begin{itemize}
+    \item 1D: moving along a straight line, like a train on a track ($x$)
+    \item 2D: moving on a flat surface, like a hockey puck on ice ($x$, $y$)
+    \item 3D: moving through space, like a drone ($x$, $y$, $z$)
+\end{itemize}
+
+\emph{Distance} is how much ground you cover. \newterm{Displacement}\index{displacement} is how far you end up from where you started, and in which direction. Walk 10 m east and then 10 m back, and you have traveled 20 m but your displacement is zero. A change in position is written $\Delta x$ (horizontal) or $\Delta y$ (vertical). Because displacement has a size and a direction, it is a vector. You may also see it written $\mathbf s$.
+
+%FIXME exercise workbook problem
+
+Average \newterm{velocity}\index{velocity ! average}, written $\vec{\mathbf{v}}$ or $\mathbf{v}$, is displacement divided by the time it took. Displacement is a vector, so velocity is too.
+
+Average \index{speed}\emph{speed} drops the direction: it is distance divided by time, so it is a \emph{scalar}. Speed is the size of the velocity; velocity is speed plus a direction, such as 30 m/s north.
+
+A car's speedometer shows \emph{instantaneous} speed: how fast you are going right now, not averaged over the whole trip. Think of measuring the change in position over a shorter and shorter time interval. In calculus, that limit is the \newterm{derivative} of position, $\vec{\mathbf{v}} = \tfrac{d\mathbf{s}}{dt}$.
+
+\index{acceleration}\emph{Acceleration}, $\mathbf a$, is how fast the velocity changes: $\mathbf a = \tfrac{d\mathbf v}{dt}$, which is the second derivative of position, $\tfrac{d^2\mathbf s}{dt^2}$. Do not worry about the calculus yet; you will meet derivatives properly later. For now, remember the chain: position changes because of velocity, and velocity changes because of acceleration.
+
+So a statement like ``at 3 seconds, the ball is moving at 5 m/s and speeding up by 2 m/s every second'' gives the velocity and the acceleration at one instant.
+%FIXME in book examples
+
+\subsection{1D Motion Diagrams}
+\index{motion diagram}A \emph{motion diagram} is a strobe photo on paper. Imagine snapping a picture of a ball once every second as it drops and bounces back up. Put all the snapshots on one page, and you can see at a glance where the ball was and whether it was speeding up or slowing down. Motion diagrams usually use three symbols:
+\begin{itemize}
+    \item $\cdot$ for position representation
+    \item $\rightarrow$ for velocity vectors
+    \item $\implies$ for acceleration vectors
+\end{itemize}
+
+Here is the ball dropping and bouncing back up. The upward trip is shifted sideways so the two trips do not overlap. Red arrows show acceleration, green arrows show velocity, and blue dots show position at equal time steps.
+\begin{center}
+    
+    \begin{tikzpicture}[point/.style={circle,draw=blue,text=blue}, vel/.style={draw=green!70!black}, acc/.style={draw=red,very thick, double distance=2pt}]
+    
+        \node[point] (A) at (0,10) {A};
+        \node[point] (B) at (0, 8) {B};
+        \node[point] (C) at (0, 6) {C};
+        \node[point] (D) at (0, 3) {D};
+        \node[point] (E) at (0, 0) {E};
+        % upwards accel
+        \node[point] (F) at (1, 0) {F};
+        \node[point] (G) at (1, 2) {G};
+        \node[point] (H) at (1, 3.5) {H};
+        \node[point] (I) at (1, 4.75) {I};
+        \node[point] (J) at (1, 5.5) {J};
+        
+        \node (Acc1) at (-0.8, 10) {};
+        \node (Acc2) at (-0.8, 8) {};
+        \node (Acc3) at (-0.8, 6) {};
+        \node (Acc4) at (-0.8, 4) {};
+        \node (Acc5) at (-0.8, 2) {};
+        \node (Acc11) at (-0.8, .1) {};
+        
+        \node (Acc6) at (1.8, 0) {};
+        \node (Acc7) at (1.8, 2) {};
+        \node (Acc8) at (1.8, 4) {};
+        \node (Acc9) at (1.8, 6) {};
+        % \node (Acc10) at (1.8, 8) {};
+    	
+    	
+        \draw[vel, <-] (E) -- (D);
+        \draw[vel, <-] (D) -- (C);
+        \draw[vel, <-] (C) -- (B);
+        \draw[vel, <-] (B) -- (A);
+        \draw[vel, ->] (F) -- (G);
+        \draw[vel, ->] (G) -- (H);
+        \draw[vel, ->] (H) -- (I);
+        \draw[vel, ->] (I) -- (J);
+        
+        \draw[acc, ->] (Acc1) -- (Acc2); 
+        \draw[acc, ->] (Acc2) -- (Acc3); 
+        \draw[acc, ->] (Acc3) -- (Acc4); 
+        \draw[acc, ->] (Acc4) -- (Acc5); 
+        \draw[acc, ->] (Acc5) -- (Acc11); 
+        
+        \draw[acc, <-] (Acc6) -- (Acc7); 
+        \draw[acc, <-] (Acc7) -- (Acc8); 
+        \draw[acc, <-] (Acc8) -- (Acc9); 
+        % \draw[acc, <-] (Acc9) -- (Acc10);
+    \end{tikzpicture}
+    
+\end{center}
+Notice that in the above example, acceleration is constant throughout the motion, represented by the equally sized red arrows.
+
+If the velocity does not change, there is no acceleration, and so no red arrows. 
+    
+Here is another motion diagram, representing an object moving forwards with constant velocity.
+\begin{center}
+        \begin{tikzpicture}[point/.style={circle,draw=blue,text=blue}, vel/.style={draw=green!70!black}, acc/.style={draw=red,very thick, double distance=2pt}]
+        
+            \node[point] (A) at (2, 0) {A};
+            \node[point] (B) at (4, 0) {B};
+            \node[point] (C) at (6, 0) {C};
+            \node[point] (D) at (8, 0) {D};
+            \node[point] (E) at (10, 0) {E};
+    
+            \draw[vel, ->] (A) -- (B);
+            \draw[vel, ->] (B) -- (C);
+            \draw[vel, ->] (C) -- (D);
+            \draw[vel, ->] (D) -- (E);
+        \end{tikzpicture}
+\end{center}
+
+% could also talk about newton's first law here, but it fits more in the same (following) chapter
+% FIXME in-book exercises
+
+
+\section{Kinematics}\index{kinematics}
+\emph{Kinematics} is the description of motion: where things are, how fast they go, and how that changes. A handful of equations covers any motion with constant acceleration, from a sprinter leaving the blocks to a skateboard rolling down a ramp.
 
 %intro explaining usefulness of kinematics
 %derive kinematics eqs from concrete examples
 
 
-\begin{mdframed}[frametitle = {Kinematic Equations}, style=important]
+\index{kinematic equations}\begin{mdframed}[frametitle = {Kinematic Equations}, style=important]
 \begin{equation} % 1.1
     x_f = x_0 + v_0 t + \frac{1}{2}at^2
 \end{equation}
@@ -20,22 +135,22 @@ is the description of motion.
 \begin{equation} % 1.4
     v_f^2 = v_0^2 + 2a\left(x_f - x_0 \right)
 \end{equation}
-\begin{equation} %1.3
-    \Delta x - x_0 = v_{\text{avg}}t
+\begin{equation} %1.5
+    x_f - x_0 = v_{\text{avg}}t
 \end{equation}
-Note that $v_0$ and $v_i$ are synonymous, some professors will use $v_0$ to mean ``velocity not`` or initial velocity.
+You may also see $v_i$ for the initial velocity $v_0$ (read ``v-naught'').
 \end{mdframed}
 
-Note that each equation is missing a certain variable (or two)
+Each equation leaves out at least one variable. That is the trick to choosing one: pick the equation that skips the quantity you do not know and do not care about.
 \begin{itemize}
-    \item (5.1) is missing $v_f$. 
-    \item (5.2) is missing $x_i$ or $x_f$
-    \item (5.3) is missing $a$
-    \item (5.4) is missing $t$
-    \item (5.5) is missing $a$
-\end{itemize} 
+    \item $x_f = x_0 + v_0 t + \frac{1}{2}at^2$ has no $v_f$.
+    \item $v_f = v_0 + at$ has no position.
+    \item $x_f = x_0 + \frac{1}{2}(v_f + v_0)t$ has no $a$.
+    \item $v_f^2 = v_0^2 + 2a(x_f - x_0)$ has no $t$.
+    \item $x_f - x_0 = v_{\text{avg}}t$ has no $a$ and works with the average velocity.
+\end{itemize}
 
-It is important to note that these equations only work when the acceleration is held constant, which is referred to as \newterm{uniformly accelerated motion}. 
+These equations only work when the acceleration stays constant, which is called \newterm{uniformly accelerated motion}\index{uniformly accelerated motion}. A car braking smoothly qualifies; a car in stop-and-go traffic does not. 
 
 \textbf{Example}: Terri and Jerry are running a race. Terri has a maximum 
 acceleration of 3.4 $m/s^2$ and a top speed of 9.2 $m/s$. Jerry has a maximum 
@@ -62,15 +177,15 @@ Total (s) & & \\\hline
 \end{tabular}
 \end{center}
 
-We'll begin with Terri's first leg. Taking the starting line as $x = 0$, we know 
+We will begin with Terri's first leg. Taking the starting line as $x = 0$, we know 
 that:
 $$x_0 = 0\text{ }m$$
 $$v_0 = 0\text { } \frac{m}{s}$$
 $$a = 3.4\text{ }\frac{m}{s^2}$$
 
 And since we want to know how long it takes Terri to reach her top speed, we 
-also know that $v_f = 9.2$ $m/s$. Since we don't know how far Terri will run 
-before she reaches her top speed (and we're not looking for that quantity), we 
+also know that $v_f = 9.2$ $m/s$. Since we do not know how far Terri will run 
+before she reaches her top speed (and we are not looking for that quantity), we 
 need to select an equation that does not include $x$:
 $$v_f = v_0 + at$$
 $$9.2 \frac{m}{s} = 0 \frac{m}{s} + \left(3.4 \frac{m}{s^2} \right)t$$
@@ -81,7 +196,7 @@ speed:
 $$t = \frac{v_f}{a} = \frac{8.7 \frac{m}{s}}{3.7 \frac{m}{s^2}} \approx 2.4
 \text{ }s$$
 
-Let's go ahead and record this in our table:
+Let us go ahead and record this in our table:
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
@@ -95,7 +210,7 @@ Total (s) & & \\\hline
 Now that we know how much time it takes each runner to reach their top speed, we 
 need to figure out how much time it takes them to complete the race from the 
 point at which each reaches their top speed. To do this, we will first have to 
-find \textit{where} each runner hits their top speed. (This is because we can't 
+find \textit{where} each runner hits their top speed. (This is because we cannot 
 use $v_f = v_0 + at$ to find a time anymore, since from now on the runners' 
 accelerations are zero, and all the other equations involve $x$.) For each 
 runner, we know $a$, $v_0$, $v_f$, $x_0$, and $t$. You could choose any equation, 
@@ -115,7 +230,7 @@ $$x_f = \frac{\left( 8.7 \frac{m}{s} \right) \left( 2.4 \text{ }s \right)}{2}
 
 Now that we know where they reach their top speed, we can take that position as 
 $x_0$ and find how long it takes each runner to reach the finish line at $x_f = 
-200\text{ }m$. Since $a = 0$ $m/s^2$, we can use:
+200\text{ }m$. Since $a = 0$ $m/s^2$, we can use the constant-velocity equation\index{constant velocity}:
 $$x_f = x_0 + v_0 t$$
 
 Rearranging to solve for $t$:
@@ -141,9 +256,9 @@ Total (s) & 23.1 & 24.2 \\\hline
 \end{tabular}
 \end{center}
 
-\section{Graphing Motion}
+\subsection{Graphing Motion}
 
-\subsection{Motion Diagrams}
+\subsubsection{Motion Diagrams}
 %explanation of constant time interval motion diagrams
 
 \textbf{Example}: Create a motion diagram of a ball rolling with a constant 
@@ -170,11 +285,11 @@ long as the distance covered each time interval increases as time passes.
 \end{tikzpicture}   
 \end{center}
 
-\subsection{Position-Time and Velocity-Time Graphs}
+\subsubsection{Position-Time and Velocity-Time Graphs}
 
 %interpretation of x-t and v-t graphs without explicit calculus
 
-In the example problem above, graphs of each runner's motion would allow us to 
+In the example problem above, \index{position-time graph}graphs of each runner's motion would allow us to 
 immediately see who would win. We can describe Terri's and Jerry's runs with 
 piecewise functions:
 $$x_{Terri}(t) = \begin{cases}
@@ -272,7 +387,7 @@ all positive values) in terms of:
 \begin{enumerate}
     \item displacement from $t = 0\text{ }s$ to $t = 10\text{ }s$.
     \item instantaneous velocity at $t = 7.5\text{ }s$.
-    \item distance traveled from $t = 0\text{ }s$ to $t = 10\text{ }s$
+    \item \index{distance}distance traveled from $t = 0\text{ }s$ to $t = 10\text{ }s$
 \end{enumerate}
 \end{Exercise}
 
@@ -306,14 +421,8 @@ all positive values) in terms of:
 \end{Answer}
 
 
-\section{Separation of Components}
-In the current chapter, we have learned how to use kinematics to describe 
-one-dimensional motion. In the next chapter, you will learn to describe 
-two-dimensional motion. It turns out that you can treat the different dimensions 
-(horizontal and vertical motion) separately! Consider this scenario: A cannonball 
-is shot from a cliff and the same instant an identical cannonball is dropped from 
-the same cliff (see...). If the cannon is aimed horizontally, which cannonball 
-will hit the ground first?
+\subsection{Separation of Components}
+So far we have described motion along a line. In a later chapter, you will describe motion in two dimensions, and here is the surprise: you can treat the \index{horizontal and vertical motion}horizontal and vertical motions separately! Try this puzzle. A cannon on a cliff fires a cannonball straight out, horizontally. At the same instant, someone drops an identical cannonball from the same height. Which one hits the ground first?
 
 %FIXME image of cannon example
 
@@ -324,4 +433,557 @@ the same time? Then, take a look at this video:
 from the same height at the same time. One is dropped from rest while the other 
 is launched horizontally (that is, its initial velocity is entirely in the 
 $x$-direction). Based on the video, was your cannonball prediction correct? 
-We'll learn to explain this phenomenon in the next chapter. 
+You will learn to explain this in a later chapter. 
+
+
+\section{Falling Bodies}
+\index{free fall}Toss a hammer straight up. From the moment it leaves your hand until it lands, gravity pulls it toward the center of the earth with a constant acceleration, on the way up, at the top, and on the way down.
+
+\includegraphics[width=1\textwidth]{hammerFall.png}
+
+\emph{Acceleration} can be defined as change in velocity. If the hammer leaves your
+hand with a velocity of 12 meters per second upward, one second later,
+it will be rising, and its velocity will have slowed to 2.2 meters per
+second. One second after that, the hammer will be falling at a rate of
+7.6 meters per second. Every second the hammer's velocity is changing by
+9.8 meters per second, and that change is always toward the center of
+the earth. When the hammer is going up, gravity is slowing it down by
+9.8 meters per second, each second it is in the air.  When the hammer is coming down,
+gravity is increasing the speed of its descent by 9.8 meters per second.\index{acceleration}
+% Connect to vectors
+%right now vectors is after falling bodies, suggest we hint at vectors and in vectors recall this to give students something familiar to anchor them when vectors are introduced
+
+
+\includegraphics[width=.8\textwidth]{hammerTime.png}
+
+\index{acceleration!due to gravity}Acceleration due to gravity on earth is a constant negative 9.8 meters per second per second:
+\begin{equation*}
+a = -9.8 \frac{m}{s^2}  
+\end{equation*}
+(Why is it negative? We are talking about height, which is generally considered to be increasing as
+you go away from the center of the earth. Since ``up" is the positive direction, we take ``down" as a negative direction. Therefore, since gravity pulls things ``down", the acceleration due to gravity is considered negative.)
+
+\subsection{Calculating the Velocity}
+
+Given that the acceleration is constant, it makes sense that the
+velocity is a straight line. Assuming once again that the hammer
+leaves your hand at 12 meters per second, let us create a quick data table and 
+graph of the hammer's velocity. Every second, we will subtract 9.8 m/s from the 
+previous velocity. 
+
+\begin{center}
+\begin{tabular}{|c|c|}\hline
+Time elapsed (s) & Velocity (m/s)\\\hline
+0 & 12\\\hline
+1 & 2.2\\\hline
+2 & -7.6\\\hline
+\end{tabular}
+\end{center}
+
+Here is a plot of these data with a dashed fit line:
+\begin{center}
+\begin{tikzpicture}
+\draw[thick, black, latex-latex] (-0.5, 0) -- (6.5, 0) node[below] {$t(s)$};
+\draw[thick, black, latex-latex] (0, -3.5) -- (0, 3.5) node[left] {$v(m/s)$};
+\draw[] (2, -0.15) -- (2, 0.15) node[below, yshift=-0.35cm] {1};
+\draw[] (4, -0.15) -- (4, 0.15) node[below, yshift=-0.35cm] {2};
+\draw[] (6, -0.15) -- (6, 0.15) node[below, yshift=-0.35cm] {3};
+\draw[] (0.15, 1) -- (-0.15, 1) node[left] {4};
+\draw[] (0.15, 2) -- (-0.15, 2) node[left] {8};
+\draw[] (0.15, 3) -- (-0.15, 3) node[left] {12};
+\draw[] (0.15, -1) -- (-0.15, -1) node[left] {-4};
+\draw[] (0.15, -2) -- (-0.15, -2) node[left] {-8};
+\draw[] (0.15, -3) -- (-0.15, -3) node[left] {-12};
+
+\draw[black, fill=black] (0, 3) circle (0.075cm);
+\draw[black, fill=black] (2, 0.55) circle (0.075cm);
+\draw[black, fill=black] (4, -1.9) circle (0.075cm);
+\draw[thin, dashed] (0, 3) -- (4.9, -3);
+\end{tikzpicture}
+\end{center}
+
+We can find an equation for the line: $v = 12 - 9.8t$. What is this saying? It 
+says that at any time, $t$, after $t=0s$, the velocity of the hammer is its 
+starting velocity (12 m/s) plus the acceleration (-9.8 m/s$^2$) multiplied by 
+the time elapsed ($t$). (Why did we say ``plus" instead of ``minus"? Well, 
+since the acceleration \textit{is negative}, $v_0-9.8t$ is the same as $v_0 + 
+\left( -9.8t \right)$, and we are really adding the negative acceleration. When 
+the acceleration is positive, we will see a plus sign!)
+
+\begin{Exercise}[title={When is the apex of flight?}, label=vapex]
+  Given the hammer's velocity is calculated as $12 - 9.8t$, at what time (in 
+  seconds) does it stop rising and begin to fall?
+\end{Exercise}
+\begin{Answer}[ref=vapex]
+  At its apex, the hammer's velocity is $0 m/s$, so we will find the time 
+  where $v=0m/s$:
+  $$0 \frac{m}{s} = 12 \frac{m}{s} - 9.8 \frac{m}{s^2} \cdot t$$
+  $$t = \frac{12 \frac{m}{s}}{9.8 \frac{m}{s^2}} \approx 1.22s$$
+\end{Answer}
+
+We can generalize this to other falling bodies. For any falling object with 
+initial velocity  $v_0$ and constant acceleration $a$, its velocity is given 
+by:
+$$v(t) = v_0 + a \cdot t$$
+
+\textbf{Example}: The acceleration due to gravity on the Moon is approximately 
+1.63 m/s$^2$. If a hammer tossed upwards on the Moon takes 3.4 seconds to reach 
+its apex, what was the hammer's initial velocity?
+
+\textbf{Solution}: We know that $a = -1.63 m/s^2$ and $t = 3.4s$. Substituting 
+and solving the velocity equation:
+$$0 \frac{m}{s} = v_0 + \left( -1.63 \frac{m}{s^2} \right) \left( 3.4 s \right)$$
+$$v_0 = \left( 1.63 \cdot 3.4 \right) \frac{m}{s} \approx 5.5 \frac{m}{s}$$
+
+This hammer must have been tossed upwards with an initial velocity of 
+approximately 5.5 m/s.
+
+\subsubsection{Air Resistance}
+
+We have been ignoring something: the air. As the hammer moves, the air pushes back on it. This force is called \emph{air resistance}\index{air resistance}. For a big, fast object like an airplane, it is huge. For a dense, slow object like a hammer tossed by hand, it is small enough to ignore.
+
+Consider two otherwise identical pieces of paper: one completely flat and 
+unfolded, the other balled up as tightly as possible. If you dropped them both 
+from the same height, which would hit the ground first? Intuitively, you know 
+the balled-up paper would: but \textit{why}? Since the papers have the same 
+mass, you know that the force of gravity is the same on both papers! However, 
+if you give this a try (go ahead, all you need are two sheets of printer paper 
+and a safe place to drop them from), the acceleration of the two papers is 
+different. 
+
+We can apply \index{Newton's Second Law}Newton's Second Law to explain our observations. First, let us draw 
+diagrams to represent the forces acting on the papers:
+
+\begin{center}
+    \begin{tikzpicture}
+        %crumpled paper
+        \draw[] (1.02, 1.94) -- (1.24, 2.08) --(1.52, 1.82) -- (1.69, 1.68) -- 
+        (1.56, 1.43);
+        \draw[] (1.52, 1.82) -- (1.71, 1.89) -- (2.04, 1.7) -- (2.03, 1.67) -- 
+        (2.02, 1.54);
+        \draw[] (2.03, 1.67) -- (2.23, 1.25) -- (2.05, 0.97) -- (1.94, 0.81) -- 
+        (1.56, 1.17) -- (1.83, 1.27);
+        \draw[] (2.05, 0.97) -- (2.22, 0.64) -- (1.88, 0.18) -- (1.57, 0.14) -- 
+        (1.29, 0.33);
+        \draw[] (1.88, 0.18) -- (1.93, 0.52) -- (1.66, 0.66);
+        \draw[] (0.93, 1.32) -- (0.88, 1.08) -- (1.21, 1.22) -- (1.36, 0.92) -- 
+        (1.29, 0.57) -- (1.47, 0.4) -- (1.29, 0.33) -- (0.99, 0.21) -- 
+        (0.73, 0.17) -- (0.32, 0.58) -- (0.41, 0.83);
+        \draw[] (0.88, 0.5) -- (0.74, 0.82) -- (0.48, 0.72) -- (0.41, 0.83) -- 
+        (0.14, 1.21) -- (0.29, 1.58) -- (0.83, 1.735);
+        \draw[] (0.37, 1.15) -- (0.45, 1.39) -- (0.29, 1.58);
+        \draw[] (0.62, 1.68) -- (0.6, 1.92) -- (0.79, 2.02) -- (1.02, 1.94) -- 
+        (1.23, 1.83) -- (1.1, 1.73) -- (1.35, 1.56);
+        \draw[blue, thick, -latex] (1.135, 2.01) -- (1.135, 2.26) 
+        node[above, black, font = \tiny] {$F_{\text{air resistance}} << 
+        F_{\text{weight}}$};
+        \draw[red, thick, -latex] (1.135, 0.27) -- (1.135, -1) 
+        node[below, black, font = \tiny] {$F_{\text{weight}}$};
+
+        %flat paper
+        \draw[] (-0.55, 1.03) -- (-4.55, 1.03) -- (-4.5, 0.97) -- (-0.5, 0.97) 
+        -- cycle;
+        \draw[blue, thick, -latex] (-2.55, 1.03) -- (-2.55, 2.2) 
+        node[above, black, font = \tiny] {$F_{\text{air resistance}} \approx 
+        F_{\text{weight}}$};
+        \draw[red, thick, -latex] (-2.55, 0.97) -- (-2.55, -0.28) 
+        node[below, black, font = \tiny] {$F_{\text{weight}}$};
+        \end{tikzpicture}
+\end{center}
+
+For the crumpled paper, the decrease in surface area results in very little air 
+resistance. As a result, the net force on the crumpled paper is approximately 
+equal to the paper's weight. 
+$$F_{\text{net}}^{\text{crumpled}} = F_{\text{air resistance}} + 
+F_{\text{weight}} \approx F_{\text{weight}}$$
+$$F_{\text{net}}^{\text{crumpled}} = ma_{\text{crumpled}} \approx 
+F_{\text{weight}} = mg$$
+$$a_{\text{crumpled}} \approx g$$
+
+Thus, you observe the crumpled paper to fall at nearly -9.8 m/s$^2$. The flat 
+paper, on the other hand, has a much larger surface area, and therefore 
+experiences significantly more air resistance. Thus, the observed acceleration 
+of the flat paper is much slower:
+$$F_{\text{net}}^{\text{flat}} = F_{\text{air resistance}} + 
+F_{\text{weight}}$$
+$$ma_{\text{flat}} = F_{\text{air resistance}} + mg$$
+$$a_{\text{flat}} = \frac{F_{\text{air resistance}}}{m} + g$$
+
+Since $g<0$ and $F_{\text{air resistance}}$ is positive, the greater the air 
+resistance the slower the paper falls. 
+% Relate to f=ma
+%here's an F=ma example for air resistance that students can observe at home
+
+\subsection{Calculating Position}
+
+\index{position}If you let go of the hammer when it is 2 meters
+above the ground, the height of the hammer is given by:
+\begin{equation*}
+  p = -\frac{9.8}{2}t^2 + 12t + 2
+\end{equation*}
+
+Here is a graph of this function:
+
+\begin{tikzpicture}
+    \begin{axis}[
+        xmin=-1.2,xmax=3.5,
+        ymin=-13,ymax=13,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$t$},
+        ylabel={$p$},
+      ]
+      \addplot[no marks,sdkblue,dashed,<-] expression [domain=-0.7:0,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
+      \addplot[no marks,sdkblue] expression [domain=0:2.58,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
+      \addplot[no marks,sdkblue,dashed,->] expression [domain=2.58:3,samples=100] 
+      {(-4.9)*(x^2) + 12 * x + 2};
+    \end{axis}
+\end{tikzpicture}
+
+
+How do we know? \textbf{The change in position between time
+  $0$ and any time $t$ is equal to the area under the velocity graph
+  between $x = 0$ and $x = t$.}
+
+Let us use the velocity graph to figure out how much the position has
+changed in the first second of the hammer's flight. Here is the
+velocity graph with the area under the graph for the first second filled
+in:
+
+\usepgfplotslibrary{fillbetween}
+
+\begin{tikzpicture}
+    \begin{axis}[
+        xmin=-0.25,xmax=2.75,
+        ymin=-13,ymax=13,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$t$},
+        ylabel={$v$},
+      ]
+      \addplot[no marks,sdkblue, name path=f] 
+      	expression[domain=0:2.25,samples=100]
+      	{x * (-9.8) + 12} node[left] {$12 - 9.8t$};
+      \path[name path=xaxis] (axis cs:0,0) -- (axis cs:1,0);
+      \addplot[
+        thick,
+        color=sdkblue,
+        fill=sdkblue, 
+        fill opacity=0.05
+    ]
+    fill between[
+        of=f and xaxis,
+        soft clip={domain=0:1},
+    ];
+    \addplot[dashed,gray] coordinates {(0,12)(1,12)};
+    \addplot[dashed,gray] coordinates {(1,12)(1,0)};
+    \end{axis}
+\end{tikzpicture}
+
+The blue filled region is the area of the dashed rectangle minus that
+empty triangle in its upper left.  The height of the rectangle is
+twelve and its width is the amount of time the hammer has been in
+flight ($t$). The triangle is $t$ wide and $9.8t$ tall. Thus, the
+area of the blue region is given by $12t - \frac{1}{2}9.8 t^2$.
+
+That is the change in position. Where was it originally? 2 meters off
+the ground. This means the height is given by $p = 2 + 12t - \frac{1}{2}9.8t^2$.
+We usually write terms so that the exponent decreases, so:
+
+$$p = - \frac{1}{2}9.8t^2 + 12t + 2$$
+
+Finding the area under the curve like this is called
+\textit{integration}. We say ``To find a function that gives the
+change in position, we just integrate the velocity function.''  Much
+of the study of calculus is learning to integrate different sorts of
+functions.\index{integration}
+
+One important note about integration: Any time the curve drops under
+the $x$-axis, the area is considered negative. (Which makes sense,
+right? If the velocity is negative, the hammer's position is
+decreasing.)
+
+
+\begin{tikzpicture}
+    \begin{axis}[
+        xmin=-0.25,xmax=2.75,
+        ymin=-13,ymax=13,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=<->,
+        xlabel={$t$},
+        ylabel={$v$},
+      ]
+      \addplot[no marks,sdkblue, name path=f] 
+      expression[domain=0:2.25,samples=100]
+      {x * (-9.8) + 12} node[left] {$12 - 9.8t$};
+      \path[name path=xaxis] (axis cs:0,0) -- (axis cs:2.25,0);
+      \addplot[
+        thick,
+        color=sdkblue,
+        fill=sdkblue, 
+        fill opacity=0.05
+      ]
+      fill between[
+        of=f and xaxis,
+        soft clip={domain=0:1.2245},
+      ];
+      \addplot[
+        thick,
+        color=red,
+        fill=red, 
+        fill opacity=0.07
+      ]
+      fill between[
+        of=f and xaxis,
+        soft clip={domain=1.2245:2.1},
+      ];
+    \end{axis}
+\end{tikzpicture}
+
+
+\subsection{Quadratic functions}
+
+Functions of the form $f(x) = a x^2 + b x + c$ are called 
+\newterm{quadratic functions}. 
+If $a > 0$, the ends go up.
+If $a < 0$, the ends go down.\index{quadratic functions}
+
+
+\begin{tikzpicture}
+  \begin{axis}[
+      xmin=-2.2,xmax=1.2,
+      ymin=-2,ymax=3,
+      axis x line=middle,
+      axis y line=middle,
+      axis line style=<->,
+    ]
+    \addplot[no marks,sdkblue] expression [domain=-2:1,samples=100] 
+    	{(2)*(x^2) + 2 * x - 1};
+  \end{axis}
+  \node[right] at (1,4) {$2x^2 + 2x - 1$};
+\end{tikzpicture}
+\hspace{4mm}
+\begin{tikzpicture}
+  \begin{axis}[
+    xmin=-1.5,xmax=1.5,
+    ymin=-2,ymax=1.5,
+    axis x line=middle,
+    axis y line=middle,
+    axis line style=<->,
+  ]
+  \addplot[no marks,sdkblue] 
+  	expression [domain=-1.5:1.5,samples=100] 
+  	{(-1.2)*(x^2) + 0.5 * x + 1};
+\end{axis}
+\node[right] at (0.5,1) {$-1.2 x^2 + 0.5 x + 1$};
+\end{tikzpicture}
+
+The graph of a quadratic function is a \index{parabola}\newterm{parabola}.
+
+\subsection{Simulating a falling body in Python}
+
+Now you are going to write some Python code that simulates the flying hammer. 
+First, we are just going to print out the position, speed, and acceleration of 
+the hammer for every 1/100th of a second after it leaves your hand. (Later, we 
+will make a graph.)
+
+Create a file called \filename{falling.py} and type this into it:
+
+\begin{minted}{python}
+# Acceleration on earth
+acceleration = -9.8 # m/s/s
+
+# Size of time step
+time_step = 0.01 # seconds
+
+# Initial values
+speed = 12  # m/s upward
+height = 2  # m above the ground
+current_time = 0.0  # seconds after release
+
+# Is the hammer still aloft?
+while height > 0.0:
+
+    # Show the values
+    print(f"{current_time:.2f} s:")
+    print(f"\tacceleration: {acceleration:.2f} m/s/s")
+    print(f"\tspeed: {speed:.2f} m/s")
+    print(f"\theight: {height:.2f} m")
+
+    # Update height
+    height = height + time_step * speed
+
+    # Update speed
+    speed = speed + time_step * acceleration
+
+    # Update time
+    current_time = current_time + time_step
+
+
+print(f"Hit the ground: Complete")
+\end{minted}
+
+When you run it, you will see something like this:
+\begin{minted}{python}
+0.00 s:
+	acceleration: -9.80 m/s/s
+	speed: 12.00 m/s
+	height: 2.00 m
+0.01 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.90 m/s
+	height: 2.12 m
+0.02 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.80 m/s
+	height: 2.24 m
+0.03 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.71 m/s
+	height: 2.36 m
+...
+2.60 s:
+	acceleration: -9.80 m/s/s
+	speed: -13.48 m/s
+	height: 0.20 m
+2.61 s:
+	acceleration: -9.80 m/s/s
+	speed: -13.58 m/s
+	height: 0.07 m
+Hit the ground: Complete
+\end{minted}
+
+Note that the acceleration is not changing at all, but it is changing
+the speed, and the speed is changing the height.
+
+We can see that the hammer in our simulation hits the ground just
+after 2.61 seconds.
+
+\subsubsection{Graphs and Lists}
+
+Now, we are going to graph the acceleration, speed, and height using a
+library called matplotlib. However, to make the graphs, we
+need to gather all the data into lists.\index{matplotlib}
+
+For example, we will have a list of speeds, and the first three
+entries will be 12.0, 11.9, and 11.8.\index{lists, python}
+
+We create an empty list and assign it to a variable like this:
+\begin{minted}{python}
+x = []
+\end{minted}
+
+Next, we can add items like this:
+\begin{minted}{python}
+x.append(3.14)
+\end{minted}
+
+To get the first time back, we can ask for the object at index 0.
+\begin{minted}{python}
+y = x[0]
+\end{minted}
+Note that the list starts at 0. If you have 32 items in the list,
+the first item is at index 0; the last item is at index 31.
+
+Duplicate the file \filename{falling.py} and name the new copy 
+\filename{falling\_graph.py}
+
+We are going to make a plot of the height over time. At the start of the 
+program, you will import the matplotlib library.  At the end of the program, 
+you will create a plot and show it to the user.
+
+In \filename{falling\_graph.py}, add the bold code:
+
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+# Acceleration on earth
+acceleration = -9.8 # m/s/s
+
+# Size of time step
+time_step = 0.01 # seconds
+
+# Initial values
+speed = 12  # m/s upward
+height = 2  # m above the ground
+current_time = 0.0  # seconds after release
+
+# Create empty lists
+accelerations = []
+speeds = []
+heights = []
+times = []
+
+# Is the hammer still aloft?
+while height > 0.0:
+
+    # Add the data to the lists
+    times.append(current_time)
+    accelerations.append(acceleration)
+    speeds.append(speed)
+    heights.append(height)
+    
+    # Update height
+    height = height + time_step * speed
+
+    # Update speed
+    speed = speed + time_step * acceleration
+
+    # Update time
+    current_time = current_time + time_step
+
+# Make a plot
+fig, ax = plt.subplots()
+fig.suptitle("Falling Hammer")
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Height (m)")
+ax.plot(times, heights)
+plt.show()
+\end{minted}
+
+When you run the program, you should see a graph of the height over time.
+
+\includegraphics[width=0.7\linewidth]{heightplot.png}
+
+It is more interesting if we can see all three: acceleration, speed, and height. 
+So, let us make three stacked plots. Change the plotting code in 
+\filename{falling\_graph.py} to:\index{matplotlib!subplots}
+
+\begin{minted}{python}
+# Make a plot with three subplots
+fig, ax = plt.subplots(3,1)
+fig.suptitle("Falling Hammer")
+
+# The first subplot is acceleration
+ax[0].set_ylabel("Acceleration (m/s/s)")
+ax[0].plot(times, accelerations)
+
+# Second subplot is speed
+ax[1].set_ylabel("Speed (m/s)")
+ax[1].plot(times, speeds)
+
+# Third subplot is height
+ax[2].set_xlabel("Time (s)")
+ax[2].set_ylabel("Height (m)")
+ax[2].plot(times, heights)
+plt.show()
+\end{minted}
+
+You will now get plots of all three variables:
+
+\includegraphics[width=0.8\linewidth]{stackedplot.png}
+
+This is what we expected, right? The acceleration is a constant negative 
+number. The speed is a straight line with a negative slope. The height is a 
+parabola. \textbf{The slope of the height graph is the speed, and the slope of the speed graph is acceleration.}
+
+A natural question at this point is ``When exactly will the hammer hit the
+ground?''  In other words, when does $height = 0$? The values of $t$ where a 
+function is zero are known as its \index{roots}\textit{roots}. Height is given by a quadratic 
+function. In a later chapter, you will learn a trick for finding the roots of 
+any quadratic function.

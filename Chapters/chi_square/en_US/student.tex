@@ -81,7 +81,7 @@ $\chi^2_{0.01}(3) = 11.345$ and $\chi^2_{0.10}(6) = 10.645$.
 
 \section{The Chi-Square Test for Goodness of Fit}
 
-$\chi^2$ measures how far a set of observed counts strays from what was expected, and the $\chi^2$ distribution that tells you how large that statistic can get just by chance. Putting the two together gives you a full hypothesis test: the \newterm{chi-square goodness-of-fit test}\index{chi-square goodness-of-fit test}, used to check whether observed categorical data match a claimed distribution across categories.
+$\chi^2$ measures how far a set of observed counts strays from what was expected, and the $\chi^2$ distribution tells you how large that statistic can get just by chance. Putting the two together gives you a full hypothesis test: the \newterm{chi-square goodness-of-fit test}\index{chi-square goodness-of-fit test}, used to check whether observed categorical data match a claimed distribution across categories.
 
 \subsection{Conditions}
 
@@ -131,7 +131,7 @@ A bakery believes weekday demand for its most popular pastry is the same on all 
 \begin{Answer}[ref={ex:chisq-gof-bakery}]
 $H_0$: best-selling days are equally likely across the 5 weekdays ($p_i = 0.20$ for each). $H_a$: at least one weekday's true proportion differs from 0.20.
 
-Conditions: counts, so assume the 220 weekdays behave as a random sample of best-selling-day outcomes; expected count per day is $220/5 = 44$, which is at least 5 for every category. Conditions apply!
+Conditions: counts, so assume the 220 weekdays behave as a random sample of best-selling-day outcomes; expected count per day is $220/5 = 44$, which is at least 5 for every category. The conditions are met.
 
 With $k = 5$, $df = 4$. Expected count for every weekday is 44. The test statistic is
 \[
@@ -143,7 +143,7 @@ From Table~\ref{tab:chisq-critical}, $\chi^2_{0.05}(4) = 9.488$. Since $2.5 < 9.
 
 \section{The Chi-Square Test for Independence}
 
-Let’s say you have two categorical variables measured on the same individuals, how would you figure out if they are related? Does a customer's preferred way of reaching support have anything to do with how satisfied they end up? Does a plant's soil type have anything to do with which color it blooms? These questions call for the \newterm{chi-square test of independence}\index{chi-square test of independence}.
+Suppose you have two categorical variables measured on the same individuals. How would you figure out whether they are related? Does a customer's preferred way of reaching support have anything to do with how satisfied they end up? Does a plant's soil type have anything to do with which color it blooms? These questions call for the \newterm{chi-square test of independence}\index{chi-square test of independence}.
 
 \subsection{Contingency Tables}
 
@@ -153,7 +153,7 @@ Data for this test is organized into a \newterm{contingency table}\index{conting
 
 \subsection{Conditions}
 
-Same as for the goodness-of-fit test. These conditions are adjusted for two variables instead of one.
+The conditions are the same as for the goodness-of-fit test, adjusted for two variables instead of one.
 
 \begin{itemize}
     \item The data are counts of individuals falling into each combination of categories.
@@ -188,7 +188,7 @@ where $r$ is the number of rows and $c$ is the number of columns.
 
 \textbf{Example}
 
-A garden center runs a season-long trial to see whether the type of fertilizer used on its potted plants is related to how well those plants ultimately grow. Across 240 plants split evenly into three fertilizer groups, garden staff rated each plant's growth as thriving, average, or struggling. The results:
+A garden center wants to know whether the fertilizer its customers use is related to how well their plants grow. It surveys a random sample of 240 customers, recording each customer's fertilizer type and rating the customer's plant as thriving, average, or struggling. (It happens that exactly 80 customers used each type.) The results:
 
 \begin{table}[H]
 \centering
@@ -208,7 +208,7 @@ The garden center's horticulturist runs a chi-square test for independence at $\
 
 \textbf{State:} $H_0$: fertilizer type and growth outcome are independent. $H_a$: fertilizer type and growth outcome are not independent.
 
-\textbf{Plan:} This is a chi-square test of independence. The data are counts, the 240 plants were assigned to fertilizer groups and rated independently of one another, and every expected count (computed below) is well above 5. With $r = 3$ rows and $c = 3$ columns, $df = (3-1)(3-1) = 4$.
+\textbf{Plan:} This is a chi-square test of independence. The data are counts, the 240 customers were a random sample and were rated independently of one another, and every expected count (computed below) is well above 5. With $r = 3$ rows and $c = 3$ columns, $df = (3-1)(3-1) = 4$.
 
 \textbf{Do:} Using $E_{ij} = \frac{(\text{row total})(\text{column total})}{240}$, every expected count in this table works out to 28, 30, or 22, since all three row totals equal 80:
 
@@ -235,17 +235,16 @@ Suppose the horticulturist looks at the same table and writes: "Since the observ
 \end{Exercise}
 
 \begin{Answer}[ref={ex:chisq-indep-fertilizer}]
-No. The horticulturist is reasoning from the raw observed differences alone rather than from the test statistic and critical value. Even though the observed counts are not perfectly equal across groups, $\chi^2 = 0.917$ is far below the critical value of $9.488$, so those differences are well within what random variation alone would produce. The correct conclusion is: there is not sufficient evidence that fertilizer type and growth outcome are associated; fail to reject $H_0$. It's also worth noting that failing to reject $H_0$ does not \emph{prove} the two variables are independent,so it only means this data set didn't provide strong enough evidence of a relationship.
+No. The horticulturist is reasoning from the raw observed differences alone rather than from the test statistic and critical value. Even though the observed counts are not perfectly equal across groups, $\chi^2 = 0.917$ is far below the critical value of $9.488$, so those differences are well within what random variation alone would produce. The correct conclusion is: there is not sufficient evidence that fertilizer type and growth outcome are associated; fail to reject $H_0$. It is also worth noting that failing to reject $H_0$ does not \emph{prove} the two variables are independent, so it only means this data set did not provide strong enough evidence of a relationship.
 \end{Answer}
 
 \section{The Chi-Square Test for Homogeneity of Proportions}
 
 The test for independence and test for homogeneity for proportions are almost identical. They use the same test statistic, same $df = (r-1)(c-1)$, same table lookup. The differences include the question being asked and how the data were collected.
 
-%A test for independence starts with \emph{one} sample and measures \emph{two} 
-% categorical variables on each individual in it. In this case, 
+A test for independence starts with \emph{one} sample and measures \emph{two} categorical variables on each individual in it.
 
-A \newterm{chi-square test for homogeneity}\index{chi-square test for homogeneity}, by contrast, starts with \emph{separate, independent samples}, one from each of several populations or groups, and measures categorical variable on each. 
+A \newterm{chi-square test for homogeneity}\index{chi-square test for homogeneity}, by contrast, starts with \emph{separate, independent samples}, one from each of several populations or groups, and measures a categorical variable on each individual. 
 
 \subsection{Conditions and Hypotheses}
 

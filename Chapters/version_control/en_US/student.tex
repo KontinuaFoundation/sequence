@@ -1,0 +1,81 @@
+\chapter{Version Control with Git}
+
+\section{Why Use Version Control?}\index{version control}\index{Git}
+Have you ever saved files named \texttt{essay\_final.docx}, \texttt{essay\_final2.docx}, and \texttt{essay\_REALLY\_final.docx}? Programmers have the same problem, only worse: one change can break code that worked yesterday, and you need a way back. \newterm{Git}
+records the history of a project so you can compare and undo changes. A project
+tracked by Git is a \newterm{repository}.
+
+\section{Creating a Repository}
+Make a folder for your project, then run:
+
+\begin{minted}{text}
+git init
+\end{minted}
+
+This creates a hidden \texttt{.git} folder that stores the history. Nothing is
+recorded yet.
+
+\section{Saving a Snapshot: Commits}\index{commit}
+A \newterm{commit} is a saved snapshot of the files you chose to track. Create a file
+and save it:
+
+\begin{minted}{text}
+echo "hello" > notes.txt
+git add notes.txt
+git commit -m "Add notes"
+\end{minted}
+
+\texttt{git add} stages a file, which means it will be included in the next
+commit. \texttt{git commit} saves the staged files with a message that
+describes the change. Write messages that explain why the change was made.
+
+To see the history, run \texttt{git log --oneline}. Each commit has a short
+identifier and its message.
+
+\textbf{Worked example: a first commit.} Start in an empty folder and run \texttt{git init}. Create the file, stage it, and commit it:
+\begin{minted}{text}
+echo "hello" > notes.txt
+git add notes.txt
+git commit -m "Add notes"
+git log --oneline
+\end{minted}
+The last command shows one line for each commit. Your line will show a different identifier, but it will show your message: \texttt{Add notes}. The identifier is a short form of the commit's unique hash.
+
+\section{Branches}\index{branch}
+A \newterm{branch} is a separate line of work. Making a branch lets you try an
+idea without changing the main line of your project:
+
+\begin{minted}{text}
+git branch new-idea
+git switch new-idea
+\end{minted}
+
+Commits made on \texttt{new-idea} do not appear on the main branch. Run
+\texttt{git switch} with the name of the main branch to return to it. If the
+idea works, you can merge it back in. If it does not, you can delete the branch.
+
+\section{A Routine for Each Session}
+\begin{enumerate}
+\item Check what changed with \texttt{git status}.
+\item Stage the files you want to save with \texttt{git add}.
+\item Commit them with a clear message.
+\item Repeat after each small step that works.
+\end{enumerate}
+
+\begin{Exercise}[label=vc1, title=Record a change]
+You edit \texttt{notes.txt} and want to save the change. Which three commands do
+you run, in order?
+\end{Exercise}
+\begin{Answer}[ref=vc1]
+\texttt{git status} (optional, to check), then \texttt{git add notes.txt}, then
+\texttt{git commit -m "Describe the change"}.
+\end{Answer}
+
+\begin{Exercise}[label=vc2, title=Branch or main?]
+You want to try a new version of a function without risking the working code.
+What should you do?
+\end{Exercise}
+\begin{Answer}[ref=vc2]
+Create a branch with \texttt{git branch} and switch to it with \texttt{git switch}.
+Work and commit there. Switch back to the main branch if the experiment fails.
+\end{Answer}

@@ -1,72 +1,99 @@
-\chapter{Poisson and Exponential Probability Distributions}
+\chapter{Poisson and Exponential Distributions}
 
-In this chapter, we will explore two essential probability
-distributions: the Poisson distribution and the exponential
-distribution. These distributions play a crucial role in modeling
-random events and phenomena, providing insights into the occurrence of
-events over time or in a discrete set of outcomes.
+\section{Counting Events}\index{Poisson distribution}
+On a typical Friday night, a pizza shop gets about 12 orders an hour. Some
+hours bring 8, some bring 17. How many delivery drivers should it
+schedule? And after one order comes in, how long until the next? Two
+distributions answer these questions: one counts events, the other times
+the gaps between them.
 
-The Poisson distribution is widely used to describe the number of
-events that occur within a fixed interval of time or space. It is
-particularly useful when dealing with rare events or events that occur
-independently at a constant average rate. For example, the Poisson
-distribution can model the number of customer arrivals at a store in a
-given hour, the number of phone calls received by a call center in a
-day, or the number of defects in a production process.
+The \newterm{Poisson distribution} models the number of events that occur in a fixed interval of time or space,
+when events happen independently at a constant average rate $\lambda$. Customer arrivals in an hour, calls to a
+help desk in a day, and defects on a production line are typical examples. If $X$ counts the events, then
+$$P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}, \qquad k = 0, 1, 2, \ldots$$
+The probabilities sum to 1, because $\sum_k \frac{\lambda^k}{k!} = e^{\lambda}$.
 
-The Poisson distribution is characterized by a single parameter, often
-denoted as $\lambda$, which represents the average rate of event
-occurrences in the specified interval. The probability mass function
-of the Poisson distribution gives the probability of observing a
-specific number of events within that interval.
+\subsection{A Worked Example}
+A store averages $\lambda = 3$ customers per hour. The probability of no customers in an hour is
+$$P(X = 0) = e^{-3} \approx 0.0498$$
+The probability of exactly two customers is
+$$P(X = 2) = \frac{e^{-3} \cdot 3^2}{2!} \approx 0.224$$
+The probability of at most two customers is $P(X \le 2) \approx 0.423$, and the probability of at least one customer is
+$1 - 0.0498 \approx 0.950$.
 
-On the other hand, the exponential distribution is used to model the
-time between events occurring at a constant average rate. It is
-commonly employed in reliability analysis, queuing theory, and
-survival analysis. For example, the exponential distribution can
-represent the time between customer arrivals at a service desk, the
-lifespan of electronic components, or the duration between consecutive
-earthquakes.
+\section{Mean and Variance}
+A Poisson random variable has the same mean and variance:
+$$E[X] = \lambda, \qquad \operatorname{Var}(X) = \lambda$$
+So the store with $\lambda = 3$ expects 3 customers per hour, with variance 3 and standard deviation about 1.73.
 
-The exponential distribution is characterized by a parameter often
-denoted as $\lambda$, which represents the average rate of event
-occurrence. The probability density function of the exponential
-distribution describes the likelihood of observing a specific time
-interval between events.
+\section{Waiting Times}\index{exponential distribution}
+The \newterm{exponential distribution} models the time $T$ until the next event, when events occur at a constant rate $\lambda$.
+Unlike a count, a waiting time can be any positive number, like 1.37
+minutes, so $T$ is a \emph{continuous} random variable. The chance of
+waiting \emph{exactly} 1.37000\ldots\ minutes is zero; instead we ask about
+ranges, like $P(T > 3)$. The \emph{density} $f(t)$ describes how the
+probability is spread out (you will study densities in the Continuous
+Distributions chapter). For the exponential distribution, the density and the tail probability are
+$$f(t) = \lambda e^{-\lambda t}, \qquad P(T > t) = e^{-\lambda t}, \qquad t \ge 0$$
+Its mean is $E[T] = \frac{1}{\lambda}$, and its variance is $\operatorname{Var}(T) = \frac{1}{\lambda^2}$.
 
-In this chapter, we will explore the following key aspects of the
-Poisson and exponential probability distributions:
+\subsection{A Worked Example}
+Calls arrive at a rate of $\lambda = 0.5$ per minute, so the average time between calls is 2 minutes. The probability that the next
+call takes more than 3 minutes is
+$$P(T > 3) = e^{-0.5 \cdot 3} = e^{-1.5} \approx 0.223$$
+The probability that a call arrives within one minute is $P(T \le 1) = 1 - e^{-0.5} \approx 0.393$.
 
-\begin{itemize}
-\item Probability mass function and probability density function: We
-  will dive into the mathematical representation of these
-  distributions and learn how to calculate probabilities and densities
-  for specific events or time intervals.
+\section{The Connection}
+If events form a Poisson process with rate $\lambda$, then the number of events in an interval of length $t$ is Poisson with mean
+$\lambda t$, and the waiting time to the first event is exponential with rate $\lambda$. These are two views of the same process.
+For example, the probability of no calls in 2 minutes is
+$P(X = 0) = e^{-0.5 \cdot 2} = e^{-1}$, which equals $P(T > 2) = e^{-1}$.
 
-\item Mean and variance: We will discuss how to calculate the mean and
-  variance of the Poisson and exponential distributions, providing
-  measures of central tendency and variability.
+\section{The Memoryless Property}\index{memoryless property}
+The exponential distribution is the only continuous distribution with the \newterm{memoryless} property:
+$$P(T > s + t \mid T > s) = P(T > t)$$
+Knowing that 3 minutes have passed without a call says nothing about the remaining wait. For the example above,
+$P(T > 5 \mid T > 3) = \frac{e^{-2.5}}{e^{-1.5}} = e^{-1} \approx 0.368$, which equals $P(T > 2)$.
 
-\item Applications and examples: We will examine real-world scenarios
-  where these distributions find practical applications. From
-  analyzing customer arrival patterns to modeling equipment failure
-  rates, we will explore a range of contexts where the Poisson and
-  exponential distributions prove valuable.
+\section{Assumptions}
+These models are reasonable only when the events are roughly independent, the rate is roughly constant, and two events
+rarely happen at exactly the same moment. A rush hour that doubles the arrival rate, or a machine that wears out, violates the
+constant-rate assumption, and the models must then use a rate that changes over time.
 
-\item Relationship between the Poisson and exponential distributions:
-  We will explore the connection between these distributions, as the
-  exponential distribution can emerge as the waiting time between
-  events following a Poisson process.
+\begin{Exercise}[label=pe1, title=Poisson probability]
+A call center averages 3 calls per hour. What is the probability of exactly 5 calls in an hour?
+\end{Exercise}
+\begin{Answer}[ref=pe1]
+$P(X = 5) = \frac{e^{-3} \cdot 3^5}{5!} \approx 0.101$.
+\end{Answer}
 
-\item Limitations and assumptions: We will also discuss the
-  assumptions and limitations associated with the Poisson and
-  exponential distributions, helping you understand when these models
-  are suitable and when alternative approaches may be necessary.
-\end{itemize}
+\begin{Exercise}[label=pe2, title=Exponential tail]
+Using the rate of 0.5 calls per minute from the example, find the probability that the next call takes more than 4 minutes.
+\end{Exercise}
+\begin{Answer}[ref=pe2]
+$P(T > 4) = e^{-0.5 \cdot 4} = e^{-2} \approx 0.135$.
+\end{Answer}
 
-By developing a solid understanding of the Poisson and exponential
-probability distributions, you will gain powerful tools for modeling
-and analyzing random events in various fields. These distributions
-provide valuable insights into event occurrences, time intervals, and
-rates, supporting decision-making processes and improving our
-understanding of stochastic phenomena.
+\begin{Exercise}[label=pe3, title=Mean and variance]
+The time between arrivals at a counter is exponential with mean 4 minutes. Find the rate $\lambda$, the variance, and the probability that the next arrival takes more than 4 minutes.
+\end{Exercise}
+\begin{Answer}[ref=pe3]
+$\lambda = \frac{1}{4} = 0.25$ per minute. The variance is $\frac{1}{\lambda^2} = 16$. The probability is $P(T > 4) = e^{-0.25 \cdot 4} = e^{-1} \approx 0.368$.
+\end{Answer}
+
+\begin{Exercise}[label=pe4, title=Pizza Drivers]
+A pizza shop averages 12 orders per hour on Friday nights. Use a Poisson
+model.
+\begin{enumerate}
+\item What is the expected number of orders in a 15-minute period?
+\item What is the probability of no orders in a 15-minute period?
+\item What is the average wait between orders, in minutes?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=pe4]
+\begin{enumerate}
+\item 15 minutes is a quarter hour, so $\lambda t = 12 \times 0.25 = 3$ orders.
+\item $P(X = 0) = e^{-3} \approx 0.050$, about 5\%.
+\item The rate is $\frac{12}{60} = 0.2$ orders per minute, so the mean wait is $\frac{1}{0.2} = 5$ minutes.
+\end{enumerate}
+\end{Answer}

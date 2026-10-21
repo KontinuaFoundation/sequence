@@ -1,12 +1,8 @@
-\chapter{Advanced Python Syntax and Libraries}
+\chapter{Advanced Python Syntax}
 \section{Where did we leave off?}
-In the previous Introduction to Python chapter, We started by installing Python and setting up VSCode, then practiced using the console (terminal) to execute \mintinline{python}{.py} files. Recall that runs code \textbf{sequentially}, one line at a time, and that output appears in the console.
+In the Introduction to Python chapter, you installed Python and VS Code, ran programs from the console, and learned that Python runs code \textbf{sequentially}, one line at a time. You printed output, stored data in variables of different types, did arithmetic, read input, made decisions with conditionals, repeated work with loops, and handled strings and lists. That is enough to write real programs.
 
-We can output to the screen with \mintinline{python}{print()}, including how Python formats output by default and how to customize it. Next, we introduced variables and common datatypes such as strings, integers, floats, booleans, lists, and dictionaries.
-
-Mathematical operations, including arithmetic operators were demonstrated. We played with in \mintinline{python}{str()} and the method to get input from the console, \mintinline{python}{input()}. Finally, we worked with conditionals and loops to control program flow, then introduced strings and lists as sequence types, and worked with them. With these tools, you should now be able to write basic Python programs that read input, store data, make decisions, repeat actions, and produce useful output. 
-
-Let's now build on this foundation with some more advanced concepts, such as functions, classes, and libraries. We will also cover error handling, and experiment with basic graphing ability using the Matplotlib library.
+Now we add the tools that let programs grow without becoming a mess: functions, classes, error handling, and recursion.
 
 \section{Functions}
 \index{functions}
@@ -66,6 +62,17 @@ greet("Chicago")
 \end{minted}
 
 \subsection{Return Values}
+\textbf{Worked example: a function that returns a value.}
+\begin{minted}{python}
+def rectangle_area(width, height):
+    return width * height
+
+area = rectangle_area(3, 4)
+print(area)
+print(rectangle_area(2.5, 2))
+\end{minted}
+The first call returns \mintinline{python}{12}, and the second returns \mintinline{python}{5.0}. The output is \mintinline{text}{12} and then \mintinline{text}{5.0}. The result is a number that the caller can store or print. Because \mintinline{python}{2.5} is a float, the product is a float too.
+
 \index{functions!return}
 Some functions \emph{return} a value. Returning a value allows the function to produce a result
 that can be stored in a variable or used in an expression.
@@ -88,13 +95,13 @@ Output:
 \end{minted}
 
 
-We can alter the function to expect a certain parameter type, such as integers, and return a specific type as well:
+We can alter the function to expect a certain parameter type\index{type hints}, such as integers, and return a specific type as well:
 \begin{minted}{python}
 def add(a: int, b: int) -> int:
     return a + b
 \end{minted}
 
-It is important to note that Python won't raise a TypeError if you pass in the wrong type, but this is a helpful way to document your code for other programmers, which you may often work with, and yourself.
+It is important to note that Python will not raise a TypeError if you pass in the wrong type, but this is a helpful way to document your code for other programmers, which you may often work with, and yourself.
 
 We can force the parameters to be a certain type, and raise an error if the wrong type is passed in:
 \begin{minted}{python}
@@ -297,7 +304,7 @@ Output (example):
 <__main__.Person object at 0x7f9c1a3d>
 \end{minted}
 
-This actually is the object's memory address in the computer's memory, but it may be a bit tedious want to print that and manually search ever byte. Instead, to control how an object is printed, we can define the special method
+That long number is where the object lives in the computer's memory, which is not much help to a human. To control how an object is printed, define the special method
 \mintinline{python}{__str__}.
 
 \begin{minted}{python}
@@ -337,7 +344,7 @@ Classes allow us to:
     \item \mintinline{python}{__init__} initializes new objects
     \item Methods define behavior for objects
     \item \mintinline{python}{__str__} controls how objects are printed
-    \item This was only a foundation of OOP; more advance concepts exist and are stronger in other programming languages such as Java and C++
+    \item This is only the foundation of OOP; you will meet more advanced ideas, such as inheritance, later
 \end{itemize}
 
 \begin{Exercise}[label=classes1, title=Tracing an Object]
@@ -387,222 +394,12 @@ class Book:
 \end{minted}
 \end{Answer}
 
-\section{Libraries}
-\index{libraries}
-A \emph{library} is a collection of pre-written code that provides additional
-functionality without requiring you to write everything from scratch. Python
-includes many built-in libraries that can be used to perform common tasks such as
-mathematical calculations, data handling, and visualization. You'll often find that code you are seeking can be found through an open-source library which already exists.
-
-To use a library, it must first be imported.
-
-\subsection{Importing Libraries}
-
-The simplest way to import a library is using the \mintinline{python}{import} keyword.
-
-\begin{minted}{python}
-import math
-print(math.sqrt(16))
-\end{minted}
-
-In this example, the \mintinline{python}{math} library provides access to mathematical
-functions such as square roots.
-
-It is also possible to import specific values or functions from a library.
-
-\begin{minted}{python}
-from math import pi
-print(pi)
-\end{minted}
-
-This allows direct access to \mintinline{python}{pi} without referencing the library name.
-
-\subsection{Summary}
-
-\begin{itemize}
-    \item Libraries extend Python's functionality
-    \item The \mintinline{python}{import} keyword is used to load libraries
-    \item Specific components can be imported directly when needed
-\end{itemize}
-
-\section{Matplotlib}
-Matplotlib is the most widely used plotting library in Python. It can produce simple charts quickly (line plots, scatter plots, bar charts, histograms) and also supports publication-quality figures with precise control over labels, legends, and layout. We will use it widely throughout this course to visualize data, create simulations for proving formulas, and experiment with datasets. 
-\index{matplotlib}\index{creating charts in python|see{matplotlib}}
-\subsection{Installing and importing}
-If you are working locally, you can install Matplotlib with:
-\begin{minted}{bash}
-pip install matplotlib
-\end{minted}
-
-In most scripts, you will import the plotting interface \texttt{pyplot}:
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-\end{minted}
-
-\subsection{A simple line graph}
-A line plot is ideal for showing how a value changes over time or across an ordered variable. Let's create \texttt{line.py} 
-
-\begin{minted}{python}
-import matplotlib.pyplot as plt # the matplotlib library, which we will call using plt
-
-# two lists containing values
-x = [0, 1, 2, 3, 4, 5]
-y = [0, 1, 4, 9, 16, 25]
-
-# a 2d plot, used for line graphs
-plt.plot(x, y)
-# add a title to our plot
-plt.title("A Simple Line Plot")
-# add axis labels
-plt.xlabel("x")
-plt.ylabel("y = x^2")
-plt.show() # pops up a new window
-\end{minted}
-Running \mintinline{bash}|python3 line.py| will open a new \emph{interactive window} in your computer, with the following image:
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{line.png}
-    \caption{The output of line.py.}
-    \label{fig:line}
-\end{figure}
-
-\subsection{Labels, legends, and grids}
-A plot is more useful when it clearly communicates what each element represents. Let's add on to \texttt{line.py} by creating \texttt{lineTwoOutputs.py} and adding labels, a legend, and another set of data. 
-
-
-\begin{minipage}[t]{0.44\textwidth}
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-
-x = [0, 1, 2, 3, 4, 5]
-y1 = [0, 1, 4, 9, 16, 25]
-y2 = [0, 1, 8, 27, 64, 125]
-
-plt.plot(x, y1, label="x^2")
-plt.plot(x, y2, label="x^3")
-
-plt.title("Two Functions on One Axes")
-plt.xlabel("x")
-plt.ylabel("value")
-plt.grid(True)
-plt.legend()
-plt.show()
-\end{minted}
-\end{minipage}
-\begin{minipage}[t]{0.54\textwidth}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{lineTwoOutputs.png}
-    \caption{$y=x^2$ and $y=x^3$ on the same graphed.}
-    \label{fig:lineTwoOutputs}
-\end{figure}
-\end{minipage}
-\subsection{Visualizing Relationships with scatter plots}
-Scatter plots are excellent for showing how two variables relate (for example, height and weight). 
-
-This very basic scatter plot shows the relationship between studying time and score.
-
-\begin{minipage}[t]{0.44\textwidth}
-    
-    \begin{minted}{python}
-    import matplotlib.pyplot as plt
-
-    hours = [1, 2, 3, 4, 5, 6]
-    scores = [55, 60, 66, 72, 78, 85]
-
-    plt.scatter(hours, scores)
-    plt.title("Study Time vs. Score")
-    plt.xlabel("hours studied")
-    plt.ylabel("score")
-    plt.show()
-    \end{minted}
-\end{minipage}
-\begin{minipage}[t]{0.54\textwidth}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{scatter.png}
-    \caption{A scatterplot generated by matplotlib from the given data.}
-    \label{fig:scatter}
-\end{figure}
-\end{minipage}
-
-
-\subsection{Histograms and Distributions}
-A histogram shows how values are distributed and how common different ranges are.
-
-\begin{minipage}[t]{0.44\textwidth}
-
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-# a set of data, for example maybe these are all test scores
-data = [4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 11, 12]
-
-# creates a histogram plot
-plt.hist(data, bins=5)
-plt.title("Histogram of Values")
-plt.xlabel("value")
-plt.ylabel("frequency")
-plt.show()
-\end{minted}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.54\textwidth}
-    
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{histogram.png}
-    \caption{A histogram of a set of data.}
-    \label{fig:histogram}
-\end{figure}
-        
-\end{minipage}
-
-\subsection{The object-oriented approach (recommended)}
-Matplotlib has two main styles:
-\begin{itemize}
-  \item \textbf{State-based} (using \texttt{plt.plot}, \texttt{plt.title}, \dots): quick and convenient.
-  \item \textbf{Object-oriented} (creating a \texttt{Figure} and \texttt{Axes}): more explicit and easier to scale.
-\end{itemize}
-
-For multi-plot layouts or different analysis of datasets, prefer the object-oriented approach:
-    
-\begin{minted}{python}
-import matplotlib.pyplot as plt
-
-x = [0, 1, 2, 3, 4, 5]
-y1 = [0, 1, 4, 9, 16, 25]
-y2 = [0, 1, 8, 27, 64, 125]
-
-# two figures, side by side. axes becomes an indexable list
-fig, axes = plt.subplots(nrows=1, ncols=2)
-
-axes[0].plot(x, y1)
-axes[0].set_title("x^2")
-axes[0].set_xlabel("x")
-axes[0].set_ylabel("value")
-
-axes[1].plot(x, y2)
-axes[1].set_title("x^3")
-axes[1].set_xlabel("x")
-axes[1].set_ylabel("value")
-
-fig.suptitle("Two Subplots")
-fig.tight_layout()
-plt.show()
-\end{minted}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{lineOOP.png}
-    \caption{The two plots, generated side by side.}
-    \label{fig:lineOOP}
-\end{figure}
-
 \section{Errors}
-Even the most experienced programmers can make mistakes. If the code seems to run into issues, your code may crash or output an \newterm{error}\index{Errors}. Python reports errors by raising a halt in the console output, which include a message explaining the problem and the exact line where it occurred. By learning how to read and interpret these messages, you'll be able to \newterm{debug}, or fix issues, in your programs more efficiently and write more reliable code.
+Everyone writes buggy code, even experts. When something goes wrong, Python stops and prints an \newterm{error}\index{Errors} message that names the problem and the line where it happened. Learning to read these messages is the fastest way to \newterm{debug}, or fix, your programs.
 
-You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}. 
+You will encounter two main types of errors in your code: \textbf{Syntax Errors} and \textbf{Runtime Errors/Exceptions}\index{exceptions}. 
 \begin{itemize}
-    \item Syntax errors occur when your the formatting, or \newterm{syntax}. These errors can usually be found before your code is compiled.
+    \item \emph{Syntax errors} happen when your code breaks Python's grammar rules, or \newterm{syntax}. Python catches them before the program even starts running.
     \item Runtime Errors, or \emph{Exceptions}, occur when operations in your code cause an invalid calculation, or attempt to do an invalid action. These can range anywhere from basic misnamed variables to imported libraries crashing from incorrect data.
 \end{itemize}
 
@@ -628,7 +425,7 @@ py_compile.PyCompileError:   File "./prog.py", line 2
 SyntaxError: '(' was never closed
 \end{minted}
 
-We notice that every opening parentheses, bracket, or brace must have a closing supplement. Without out, we run into Syntax Errors, letting us know our format is off. 
+Every opening parenthesis, bracket, or brace needs a matching closing one. Forget one, and you get a syntax error. 
 
 Another type of Syntax Error can be found in incorrect indentation. Take for example the following code:
 \begin{minted}{python}
@@ -646,7 +443,7 @@ py_compile.PyCompileError: Sorry: IndentationError: expected an indented block a
 
 Here, there is no indentation (usually obtained by pressing the \verb|Tab| key on your keyboard) for lines under the conditional statement. This causes a Syntax Error to be raised.
 \subsection{Exceptions}
-Let's say I try to run the following code:
+Let us say I try to run the following code:
 
 \begin{minted}{python}
     print(x)
@@ -660,7 +457,7 @@ Traceback (most recent call last):
 NameError: name 'x' is not defined
 \end{minted}
 
-You have encountered a \emph{NameError}, because \mintinline{python}{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \mintinline{python}{x} after you try and print it, Python will not understand what you are trying to print. Let's look at another example:
+You have encountered a \emph{NameError}\index{NameError}, because \mintinline{python}{x} was not assigned before it was attempted to be printed. This brings up an important note on Python code: \textbf{code is executed line-by-line, sequentially}. So even if you define \mintinline{python}{x} after you try and print it, Python will not understand what you are trying to print. Let us look at another example:
 
 \subsection{Try-Except}
 \index{try-except}
@@ -675,7 +472,7 @@ except ZeroDivisionError:
 \end{minted}
 Here, we attempt to divide 10 by some input number $x$. There are two \mintinline{python}{Exceptions} that could cause this to fail:
 \begin{itemize}
-    \item The user inputs a string of characters, or anything that isn't an integer
+    \item The user inputs a string of characters, or anything that is not an integer
     \item The user inputs 0, an invalid divisor.
 \end{itemize}
 We use a \mintinline{python}{Try-Except} block to check for different errors generated, similar to an if statement. The try block surrounds a block of code that may cause faulty runtime output or errors. 
@@ -700,9 +497,9 @@ Name two errors that could occur when this code is run. For each error, explain 
 \end{Answer}
 
 \section{Recursive Functions}
-As we briefly mentioned in the proofs chapter, \newterm{recursion} is the process of having a given function call itself over an over. Imagine you are making a phone call, but you have the phone that you are speaking into as well as the phone you are calling. If you put them next to each other and say ``Hello!'', it will cause ``Hello!'' to be spoken by the phone speaker into the microphone phone infinitely, until you hang up on one of the phones.\index{recursion}
+As we mentioned in the proofs chapter, \newterm{recursion} is when a function calls itself. Picture two mirrors facing each other: each reflection contains a smaller reflection, which contains a smaller one, and so on.\index{recursion}
 
-A \newterm{recursive function} can be as simple as this
+A \newterm{recursive function}\index{recursive function} can be as simple as this
 \begin{minted}{python}
 def foo():
     # recursive call
@@ -715,15 +512,15 @@ However, doing this may cause you to get an error as follows
 \begin{minted}{python}
 RecursionError: maximum recursion depth exceeded
 \end{minted}
-What does this mean? Well, we did not create a way to get out of our recursive call once we start running. Your computer would call this function \mintinline{python}|foo()| forever until it either runs out of battery or the memory's call stack is hitting a maximum.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That's where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case} or \newterm{base condition}.
-A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let's look at the famous Fibonacci sequence.\index{fibonacci}
+What does this mean? Well, we did not create a way to get out of our recursive call once we start running. The function would call itself forever, so Python gives up after about 1,000 nested calls and raises a \mintinline{python}|RecursionError|.\footnote{In Java, you may get a \mintinline{java}|StackOverflowError|. In C or C++, you may get a message saying \mintinline{C}|Segmentation fault (core dumped)|. In programming languages much closer to memory, we say that the call stack reaches a maximum, or is \textit{overflowed}. The call stack is one which is governed by the amount of RAM or random access memory. That is where the website \href{https://stackoverflow.com/questions}{Stack Overflow} gets its name!}To prevent this, our recursive functions need to have an exit condition, called a \newterm{base case}\index{base case} or \newterm{base condition}.
+A base case is defined as a terminating condition that does not use a recursive call to provide an answer. This allows you to exit the function at some time, instead of continually calling a function forever. Let us look at the famous Fibonacci sequence.\index{fibonacci}
 
 The fibonacci sequence is a sequence of numbers where each term $F_n$ is defined by adding the previous two terms:
 \begin{equation*}
   \mathrm{fib}(n) = \begin{cases}
     0 & n=0\\
     1 & n=1\\
-    \mathrm{fib}(n-1)-\mathrm{fib}(n-2)& n \ge 2 \text{ and } n \in \mathbb{Z}
+    \mathrm{fib}(n-1)+\mathrm{fib}(n-2)& n \ge 2 \text{ and } n \in \mathbb{Z}
   \end{cases}
 \end{equation*}
 
@@ -731,21 +528,21 @@ In sequence notation we write the base cases as:
 $$F_0 = 0, \quad F_1=1$$
 $$F_n = F_{n-1} + F_{n-2}$$
 
-If we did not have a base case, how would we start defining the terms? Simply, we couldn't. There would be no way to define recursively-called previous terms explicitly as we wouldn't have a definite value for them.
+If we did not have a base case, how would we start defining the terms? Simply, we could not. There would be no way to define recursively-called previous terms explicitly as we would not have a definite value for them.
 
 \subsection{Binary Search and Divide-and-Conquer Algorithms}
-If you look up information about recursive functions, you will find their most common use: \newterm{divide-and-conquer algorithms}. Divide-and-conquer algorithms are those that are run recursively to reduce problems into smaller versions of the same problem. As we talked about, problems involving trees, graphs, arrays are all best done with recursive functions as these are all structures that can be defined as smaller versions of the same structure.\index{recursion}
+If you look up information about recursive functions, you will find their most common use: \newterm{divide-and-conquer algorithms}. Divide-and-conquer algorithms are those that are run recursively to reduce problems into smaller versions of the same problem. Trees, graphs, and sorted arrays are natural fits, because each can be split into smaller pieces of the same kind.\index{recursion}
 
-A very common example of this is searching for a word in a dictionary. Let's say you are looking for the word \textit{keyboardist}. For example purposes, let's say this specific dictionary is $2048$ pages long (this will help our math). One way to find the word \textit{keyboardist} would be to search every individual page. This would be referred to as an \newterm{iterative} approach. This wouldn't take too long if we were searching for the word \textit{apple}, but what about \textit{zebra}? We would be searching almost all $2048$ pages before reaching the word! 
+A very common example of this is searching for a word in a dictionary. Let us say you are looking for the word \textit{keyboardist}. For example purposes, let us say this specific dictionary is $2048$ pages long (this will help our math). One way to find the word \textit{keyboardist} would be to search every individual page. This is called a \newterm{linear search}. This would not take too long if we were searching for the word \textit{apple}, but what about \textit{zebra}? We would be searching almost all $2048$ pages before reaching the word! 
 
-There is a much quicker and more efficient approach. Say we flip to approximately middle of the dictionary, page $1024$. The first word is \textit{muffin}. The word \textit{keyboardist} must be to left of this of this page, since we know the dictionary is alphabetically sorted and \textit{k} comes before \textit{m}. Let's split the $1024$ remaining pages in half; we flip to page $512$. The first word in page 512 is \textit{committee}. We need to go back towards the original middle, since \textit{c} comes before \textit{k}. So now we know \textit{keyboardist} must lie somewhere between pages $512$ and $1024$.
+There is a much quicker and more efficient approach. Say we flip to approximately middle of the dictionary, page $1024$. The first word is \textit{muffin}. The word \textit{keyboardist} must be to left of this of this page, since we know the dictionary is alphabetically sorted and \textit{k} comes before \textit{m}. Let us split the $1024$ remaining pages in half; we flip to page $512$. The first word in page 512 is \textit{committee}. We need to go back towards the original middle, since \textit{c} comes before \textit{k}. So now we know \textit{keyboardist} must lie somewhere between pages $512$ and $1024$.
 
 We split that interval in half again and flip to page $768$. Suppose the first word there is \textit{gracious}. Since \textit{g} comes before \textit{k}, we know our word must be farther to the right, so we now restrict our search to pages $768$ through $1024$. We continue in this way, each time cutting the remaining search region in half and deciding whether to move left or right depending on alphabetical order.
 
-Eventually, we get to \textit{keyboardist} on page $980$. This method is much faster because every comparison eliminates about half of the remaining pages. Instead of checking pages one by one, we narrow the possibilities dramatically with each step. This process is a \newterm{divide-and-conquer} approach called \newterm{binary search}. Notice that at each step, we aren't actually doing one static action. We are reducing the possible page entries by half, and then recalling the same comparison on the function repeatedly until we reach our target. This is what makes our function a divide-and-conquer recursive algorithm. 
+Eventually, we get to \textit{keyboardist} on page $980$. This method is much faster because every comparison eliminates about half of the remaining pages. Instead of checking pages one by one, we narrow the possibilities dramatically with each step. This process is a \newterm{divide-and-conquer}\index{divide-and-conquer} approach called \newterm{binary search}\index{binary search}. Notice that at each step, we are not actually doing one static action. We are reducing the possible page entries by half, and then recalling the same comparison on the function repeatedly until we reach our target. This is what makes our function a divide-and-conquer recursive algorithm. 
  %ADD: O notation?
 
-Let's look at what a binary search for a list looks like in python:
+Let us look at what a binary search for a list looks like in python:
 \begin{minted}{python}
 def binary_search(arr, target, left, right):
     if left > right:
@@ -761,9 +558,9 @@ def binary_search(arr, target, left, right):
         return binary_search(arr, target, mid + 1, right)
 \end{minted}
 
-Let's prove this algorithm is correct, just as we talked about in the proofs chapter. Since this algorithm is recursive and it functions by operating on smaller versions of itself, the best proof to use here is a \textit{proof by induction}.
+Let us prove this algorithm is correct, just as we talked about in the proofs chapter. Since this algorithm is recursive and it functions by operating on smaller versions of itself, the best proof to use here is a \textit{proof by induction}.
 \begin{theorem}
-    For any indices $left$ and $right$, \mintinline{python}|binary_search(arr, target, left, right)| returns in index $i$ with $left \le i \le right$ and \mintinline{python}|arr[i] = target| if the target occurs within \mintinline{python}|arr[left...right]|, or returns $-1$ if the target is not found within the array.
+    For any indices $left$ and $right$, \mintinline{python}|binary_search(arr, target, left, right)| returns an index $i$ with $left \le i \le right$ and \mintinline{python}|arr[i] = target| if the target occurs within \mintinline{python}|arr[left...right]|, or returns $-1$ if the target is not found within the array.
 \end{theorem}
 \begin{proof}
 
@@ -776,12 +573,12 @@ Let's prove this algorithm is correct, just as we talked about in the proofs cha
     \paragraph{Inductive Step.}
     Now consider an interval of length $n > 0$, so $left \le right$. The function computes $mid = \left\lfloor \frac{left + right}{2} \right\rfloor$. There are three cases:
     \begin{itemize}
-        \item \mintinline{python}|arr[mid] == target|: If the target we are searching for is at the middle of the new computed index, we correctly return the that index on line $8$.
-        \item \mintinline{python}|target < arr[mid]|: Because the array is sorted, every element at positions $left, left+1, \dots, mid$ is \emph{at most} \mintinline{python}|arr[mid]|, so all of them are greater than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[left...mid-1]|. The function then calls \mintinline{python}|binary_search(arr, target, left, mid - 1)|. The new interval has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Hence the original call is also correct.
+        \item \mintinline{python}|arr[mid] == target|: If the target we are searching for is at the middle of the new computed index, we correctly return that index on line $8$.
+        \item \mintinline{python}|target < arr[mid]|: Because the array is sorted, every element at positions $mid, mid+1, \dots, right$ is \emph{at least} \mintinline{python}|arr[mid]|, so all of them are greater than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[left...mid-1]|. The function then calls \mintinline{python}|binary_search(arr, target, left, mid - 1)|. The new interval has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Hence the original call is also correct.
         
-        \item \mintinline{python}|target > arr[mid]|: Again, because the array is sorted, every element at positions $mid, mid+1, \dots, right$ is \emph{at least} arr[mid], so all of them are greater than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[mid+1...right]|. The function then calls \mintinline{python}|binary_search(arr, target, mid + 1, right)|. The new interval, again, has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Therefore, the original call is also correct.
+        \item \mintinline{python}|target > arr[mid]|: Again, because the array is sorted, every element at positions $left, left+1, \dots, mid$ is \emph{at most} \mintinline{python}|arr[mid]|, so all of them are less than the target. Therefore, if the target exists at all in \mintinline{python}|arr[left...right]|, it must lie in \mintinline{python}|arr[mid+1...right]|. The function then calls \mintinline{python}|binary_search(arr, target, mid + 1, right)|. The new interval, again, has length strictly smaller than $n$, so by the inductive hypothesis, that recursive call gives the correct answer. Therefore, the original call is also correct.
     \end{itemize}
-    \paragraph{Conclusion.} The proof covers all possible recursive calls and all of them accurately reduce the interval length in half. By induction on the interval length $n$, the function is correct for every valid call. 
+    \paragraph{Conclusion.} The proof covers every case, and each recursive call searches a strictly shorter interval. By induction on the interval length $n$, the function is correct for every valid call. 
 \end{proof}
 
 \begin{Exercise}[title={Recursive Factorial}, label={ex:factorial}]

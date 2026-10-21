@@ -1,0 +1,162 @@
+\chapter{Recursion}
+
+\section{What Recursion Means}\index{recursion}
+A \index{recursion}\newterm{recursive} function is a function that calls itself. Think of Russian nesting dolls. To find the smallest doll, you open the big doll, then open the next one, and so on, until you reach a doll that does not open.
+Many problems can be split into a smaller copy of the same problem. Recursion
+solves the big problem by solving the smaller one and then combining the answers.
+
+Every recursive function needs two parts:
+\begin{itemize}
+\item A \index{base case}\newterm{base case}, which returns an answer directly
+without calling the function again.
+\item A \newterm{recursive case}, which calls the function on a smaller input.
+\end{itemize}
+If the base case is missing, or if the recursive case never gets closer to it,
+the function calls itself forever.
+
+\section{Factorial}
+The factorial $n!$ is $n \cdot (n - 1)!$, with $0! = 1$. That definition is
+recursive, and the code is almost the same:
+
+\begin{minted}{python}
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120
+\end{minted}
+
+The base case is \pyvar{n == 0}. Each call makes the input one smaller, so it
+reaches the base case after $n$ calls.
+
+\section{The Call Stack}\index{call stack}
+Each time a function is called, Python stores a \newterm{frame} on the call
+stack. The frame holds that call's variables. When the call returns, its frame
+is removed. For \pyfunction{factorial(3)}, the stack grows to four frames:
+\texttt{factorial(3)}, \texttt{factorial(2)}, \texttt{factorial(1)}, and
+\texttt{factorial(0)}. Then the answers return back up the stack: $1$, $1$, $2$, and $6$.
+
+\section{Binary Search, Recursively}\index{binary search!recursive}
+\newterm{Binary search} finds an item in a \emph{sorted} list the way you
+look up a word in a dictionary: open to the middle, decide which half the
+word must be in, and repeat on that half. Each step throws away half of
+what is left, so even a million items take only about 20 steps. It is
+naturally recursive. Look at the middle item. If it matches, return its
+index. Otherwise, search only the half that could contain the target.
+
+\begin{minted}{python}
+def binary_search(items, target, low, high):
+    if low > high:
+        return -1
+    mid = (low + high) // 2
+    if items[mid] == target:
+        return mid
+    elif items[mid] < target:
+        return binary_search(items, target, mid + 1, high)
+    else:
+        return binary_search(items, target, low, mid - 1)
+
+data = [1, 3, 5, 7, 9, 11]
+print(binary_search(data, 7, 0, len(data) - 1))  # 3
+print(binary_search(data, 4, 0, len(data) - 1))  # -1
+\end{minted}
+
+The first base case, \pyvar{low > high}, handles a target that is not in the
+list. The second, \pyvar{items[mid] == target}, handles a match.
+
+\section{Recursive Traversal of a Tree}\index{depth-first search!recursive}
+A \emph{tree} is a structure like a family tree or the folders on your
+computer: each node can have children, which can have children of their
+own. (You will study trees in detail in the next chapter.) A tree is
+naturally recursive: each child is the root of a smaller tree. To visit every node, visit the node, then visit each of its
+subtrees.
+
+\begin{minted}{python}
+class Node:
+    def __init__(self, name, children=None):
+        self.name = name
+        self.children = children or []
+
+def visit(node):
+    names = [node.name]
+    for child in node.children:
+        names.extend(visit(child))
+    return names
+
+tree = Node('a', [Node('b', [Node('d')]), Node('c')])
+print(visit(tree))  # ['a', 'b', 'd', 'c']
+\end{minted}
+
+A node with no children is the base case. Its loop does nothing, so it
+returns just its own name.
+
+\section{The Cost of Repeated Work}\index{Fibonacci numbers}
+The Fibonacci numbers are defined by $F(n) = F(n-1) + F(n-2)$, with $F(0) = 0$
+and $F(1) = 1$. A direct recursive version is short:
+
+\begin{minted}{python}
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+\end{minted}
+
+It is correct, but it is slow. The call for \texttt{fib(10)} makes 177 calls in
+total, and \texttt{fib(15)} makes 1,973. The same smaller values are computed
+again and again. The number of calls grows exponentially with $n$.
+
+\newterm{Memoization} fixes this by saving each answer the first time it is
+computed:
+
+\begin{minted}{python}
+def fib_memo(n, memo=None):
+    if memo is None:
+        memo = {}
+    if n < 2:
+        return n
+    if n not in memo:
+        memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    return memo[n]
+
+print(fib_memo(80))  # 23416728348467685
+\end{minted}
+
+\begin{Exercise}[label=rec1, title=Trace the calls]
+Write out every call made by \texttt{factorial(3)}, in order, and then the value
+returned by each call.
+\end{Exercise}
+\begin{Answer}[ref=rec1]
+Calls: \texttt{factorial(3)}, \texttt{factorial(2)}, \texttt{factorial(1)},
+\texttt{factorial(0)}. Returns: $1$, then $1 \cdot 1 = 1$, then $2 \cdot 1 = 2$,
+then $3 \cdot 2 = 6$.
+\end{Answer}
+
+\begin{Exercise}[label=rec2, title=Sum a list]
+Write a recursive function \pyfunction{total(items)} that returns the sum of a list.
+What is its base case?
+\end{Exercise}
+\begin{Answer}[ref=rec2]
+\begin{minted}{python}
+def total(items):
+    if len(items) == 0:
+        return 0
+    return items[0] + total(items[1:])
+\end{minted}
+The base case is the empty list, whose sum is 0.
+\end{Answer}
+
+\begin{Exercise}[label=rec4, title=Counting calls]
+How many calls does \texttt{fib(5)} make in total? Use the formula that the number of calls for \texttt{fib(n)} is $2F(n+1) - 1$, where $F$ is the Fibonacci sequence, and check the answer by counting the calls.
+\end{Exercise}
+\begin{Answer}[ref=rec4]
+$F(6) = 8$, so the formula gives $2 \cdot 8 - 1 = 15$ calls. Counting: \texttt{fib(5)} calls \texttt{fib(4)} and \texttt{fib(3)}, and so on. The total is 15, which matches the formula.
+\end{Answer}
+
+\begin{Exercise}[label=rec3, title=Missing base case]
+What happens when \pyfunction{factorial(-1)} is called, using the code above?
+\end{Exercise}
+\begin{Answer}[ref=rec3]
+The value $-1$ never reaches the base case $n = 0$. Each call goes to $-2$, $-3$,
+and so on, until Python raises a \texttt{RecursionError}.
+\end{Answer}

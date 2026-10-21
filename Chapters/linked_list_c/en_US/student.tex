@@ -2,14 +2,14 @@
 
 \section{From C to C++}
 
-In this chapter we are going to transition from stand C programming to C++. Why C++? Because it is a more modern version of C++ that allows for a deeper insight into the structures that we put into the memory of the computer. C++ differs in that it allows for object-oriented programming, which is a programming paradigm that uses "objects" to represent data and methods. This allows for more complex data structures and algorithms to be implemented in a more organized and efficient manner. To do this, we will be utilizing \newterm{classes}, which we briefly covered in our Advanced Python chapter. In C++, classes are defined using the \texttt{struct} keyword.
+Your music app's playlist knows which song comes next, and the next button just follows that link. That chain of ``this one, then that one'' is a \emph{linked list}, one of the most important data structures in computing. We will build it in C++, a language that extends C with object-oriented features such as \index{classes!C++}\newterm{classes}, which you met in the Classes chapter. In C++, you can define a class with the \texttt{struct} keyword, which works much like \texttt{class}.
 
-There are two additional keyword differences you should be aware of regarding C vs C++. The primary one is the usage of the keyword \newterm{new}, which does not exist in C. In C, we have \texttt{malloc()}, which frees up a given amount of memory in bytes, and \texttt{sizeof}, which returns the size in bytes of a data structure.
+One keyword difference matters right away: the keyword \index{new operator}\newterm{new}, which does not exist in C. In C, we have \texttt{malloc()}, which allocates a given number of bytes on the heap and returns a pointer to them, and \texttt{sizeof}, which returns the size in bytes of a data structure.
 \begin{minted}{C}
     // C : what you already know
     struct Car *n = malloc(sizeof(struct Car));
 \end{minted}
-C++ combines these two commands into one, called \texttt{new}.
+C++ combines these two commands into one, called \texttt{new}. Memory you get with \texttt{new} is released with \texttt{delete}, the C++ version of \texttt{free}.
 \begin{minted}{cpp}
     // C++ : same thing, no sizeof, no cast
     Car* n = new Car();
@@ -19,10 +19,10 @@ Here is a helpful video on some of the deeper differences that we will not be co
 
 \section{Linked Lists}
 
-A \newterm{linked list} is a linear data structure where each element is a
-separate object, called a \newterm{node}. Each node holds its own data and the
-address of the next node, called a \newterm{successor}, thus forming a chain-like structure. 
-The first node in the list is called the \newterm{head}. The head is the only node you need to keep a direct reference to, since every other node can be reached by following successors from it. The last node, the one whose successor pointer is empty, is called the \newterm{tail}.
+A \index{linked list}\newterm{linked list} is a linear data structure where each element is a
+separate object, called a \index{node}\newterm{node}. Each node holds its own data and the
+address of the next node, called a \index{successor node}\newterm{successor}, thus forming a chain-like structure. 
+The first node in the list is called the \index{head node}\newterm{head}. The head is the only node you need to keep a direct reference to, since every other node can be reached by following successors from it. The last node, the one whose successor pointer is empty, is called the \index{tail node}\newterm{tail}.
 
 A simple node in a linked list can be represented in C++ as follows:
 
@@ -172,12 +172,15 @@ In this example, we first create three nodes using the `new` keyword,
 which dynamically allocates memory. We then assign data to the nodes
 and link them using the 'next' pointer.
 
-\includegraphics[width=1\textwidth]{playlist.png}
-\includegraphics[width=1\textwidth]{playlistList.png}
+\begin{figure}[H]
+\centering
 \includegraphics[width=1\textwidth]{playlistCombined.png}
+\caption{A playlist as a linked list. Each song points to the next one; the last song's pointer is empty ($\emptyset$), so the player knows to stop.}
+\label{fig:playlist}
+\end{figure}
 
 \section{Doubly Linked Lists}
-Now that we have established the basics of linked lists, we can move on to a more complex structure: the \newterm{doubly linked list}. Doubly linked lists are strong because each node now has two pointers: the same next pointer, and now, the \newterm{predecessor}, which we will call \texttt{prev}.
+Now that we have established the basics of linked lists, we can move on to a more complex structure: the \index{doubly linked list}\newterm{doubly linked list}. Doubly linked lists are useful because each node now has two pointers: the same next pointer, and now, the \index{predecessor node}\newterm{predecessor}, which we will call \texttt{prev}.
 
 \begin{minted}{cpp}
 struct DoublyNode {
@@ -240,10 +243,11 @@ struct DoublyNode {
 
 Given this structure, we can traverse the entire list starting at the tail to the head or from the head to the tail. 
 
-Let's construct some code to analyze where the nodes would be in memory. We will create a doubly linked list with four nodes, and then we will print out the addresses of each node and their respective next and previous pointers.
+Let us construct some code to analyze where the nodes would be in memory. We will create a doubly linked list with four nodes, and then we will print out the addresses of each node and their respective next and previous pointers.
 
-Write the following code for the doubly linked list. There is a full file in your digital resources, here is a snippet of the code to get you started.
+Write the following code, placing it after the \texttt{DoublyNode} definition above.
 \begin{minted}{cpp}
+#include <iostream>
 
 int main() {
     // Create nodes
@@ -290,7 +294,7 @@ int main() {
 }
 \end{minted}
 
-When you run this, you'll get real addresses like these (yours specific addresses will differ!):
+When you run this, you will get real addresses like these (your addresses will differ):
 
 \begin{minted}{text}
 head   is at: 0x100c9dca0   prev: 0 (nullptr)   next: 0x100c9dbc0
@@ -303,10 +307,75 @@ sizeof(DoublyNode) = 24 bytes
 
 Computer memory is comprised of a very long string of bytes, and each byte has its own address. This line is a large, contiguous stream of ones and zeros when you get to the core of it. Often, programmers separate it into chunks of certain sizes so that we can make them look similar to grids of memory, like matrices. 
 
-Look closely at \texttt{second} and \texttt{third}: \texttt{0x100c9dbe0 - 0x100c9dbc0 = 0x20}, which is \textbf{32} in decimal, not 24 bytes like \texttt{sizeof(DoublyNode)} had provided. The same is true between \texttt{third} and \texttt{tail}. Why, then, is the a difference between the 32 stored bytes and 24 bytes we would expect our memory to take up?
+Look closely at \texttt{second} and \texttt{third}: \texttt{0x100c9dbe0 - 0x100c9dbc0 = 0x20}, which is \textbf{32} in decimal, not 24 bytes like \texttt{sizeof(DoublyNode)} had provided. The same is true between \texttt{third} and \texttt{tail}. Why, then, is there a difference between the 32 stored bytes and 24 bytes we would expect our memory to take up?
 
-\texttt{DoublyNode} holds an \texttt{int} (4 bytes) plus two pointers (8 bytes each on a 64-bit machine), for 24 bytes total. But heap allocators don't hand out memory in exactly the size you ask for, they \emph{round each allocation up} to a boundary of 16 bytes. Since 24 isn't a multiple of 16, the allocator rounds it up to the next one: 32. Your struct only uses 24 of those bytes; the other 8 are allocator \newterm{padding} that \texttt{sizeof()} never shows you. This is why the command new combines \texttt{malloc} and \texttt{sizeof}, and then proceeds to calculate the next multiple of 16 bytes to allocate. 
+\texttt{DoublyNode} holds an \texttt{int} (4 bytes), 4 bytes of \index{struct padding}padding so that the pointers are aligned to 8 bytes, and two pointers (8 bytes each on a 64-bit machine), for 24 bytes total. \texttt{malloc} does not hand out memory in exactly the size you ask for: the allocator \emph{rounds each allocation up}, and in this run it gives 32 bytes. Your struct only uses 24 of those bytes; the other 8 are allocator \index{memory!padding}\newterm{padding} that \texttt{sizeof()} never shows you. The command \texttt{new} combines \texttt{malloc} and \texttt{sizeof} so that you do not have to compute the size yourself. 
 
-Compare this to the \texttt{Node} struct from the previous section, which only has one pointer and one integer. It is 12 bytes, but memory allocation rounds it up to 16 bytes. This is why the addresses of the nodes in a linked list are not always exactly the size of the struct apart from each other. The addresses, too, may not always be consecutive.
+Compare this to the \texttt{Node} struct from the previous section, which has one pointer and one integer. The pointer and integer take 12 bytes, but the compiler adds 4 bytes of padding so that the struct's size is a multiple of its 8-byte alignment, and \texttt{sizeof(Node)} is 16. This is why the addresses of the nodes in a linked list are not always exactly the size of the struct apart from each other. The addresses, too, may not always be consecutive.
 
-Alternatively, comparing this to data structures in Python like Lists, we can see that Python's lists are more like arrays than linked lists. Python's lists are implemented as dynamic arrays, which means that they are contiguous blocks of memory that can grow and shrink in size. This allows for fast access to elements by index, but can be less efficient for inserting or deleting elements in the middle of the list, as it may require shifting elements around in memory. In contrast, linked lists allow for efficient insertion and deletion of elements at any position in the list, but require more memory overhead (like temporary variables) due to the additional pointers needed to link the nodes together.
+Alternatively, comparing this to data structures in Python like Lists, we can see that Python's lists are more like arrays than linked lists. Python's lists are implemented as dynamic arrays, which means that they are contiguous blocks of memory that can grow and shrink in size. This allows for fast access to elements by index, but can be less efficient for inserting or deleting elements in the middle of the list, as it may require shifting elements around in memory. In contrast, once you have a pointer to a spot in a linked list, inserting or deleting there takes just a couple of pointer changes, with nothing to shift. The costs: finding the 500th element means following 500 pointers, and every node carries extra memory for its pointers.
+
+\section{Exercises}
+
+\begin{Exercise}[title={Walking the List}, label=ll_print]
+Write a function \texttt{void printList(Node* head)} that prints every value
+in a singly linked list, and a function \texttt{int length(Node* head)} that
+counts its nodes.
+\end{Exercise}
+\begin{Answer}[ref=ll_print]
+Start at the head and follow \texttt{next} until you reach \texttt{nullptr}:
+\begin{minted}{cpp}
+void printList(Node* head) {
+    for (Node* n = head; n != nullptr; n = n->next) {
+        std::cout << n->data << " ";
+    }
+    std::cout << std::endl;
+}
+
+int length(Node* head) {
+    int count = 0;
+    for (Node* n = head; n != nullptr; n = n->next) {
+        count++;
+    }
+    return count;
+}
+\end{minted}
+\end{Answer}
+
+\begin{Exercise}[title={Adding to the Front}, label=ll_push]
+Write \texttt{Node* pushFront(Node* head, int value)}, which creates a new
+node holding \texttt{value}, puts it at the front of the list, and returns
+the new head. Use it to build the list 1, 2, 3. Why is adding at the front
+of a linked list fast, while adding at the front of a Python list is slow?
+\end{Exercise}
+\begin{Answer}[ref=ll_push]
+\begin{minted}{cpp}
+Node* pushFront(Node* head, int value) {
+    Node* n = new Node();
+    n->data = value;
+    n->next = head;
+    return n;
+}
+\end{minted}
+Push 3, then 2, then 1. Adding at the front changes just one pointer, no
+matter how long the list is. A Python list is a contiguous array, so
+inserting at the front means shifting every element over one slot.
+\end{Answer}
+
+\begin{Exercise}[title={Cleaning Up}, label=ll_delete]
+Write \texttt{void deleteList(Node* head)} that frees every node. Why must
+you save \texttt{head->next} before deleting \texttt{head}?
+\end{Exercise}
+\begin{Answer}[ref=ll_delete]
+\begin{minted}{cpp}
+void deleteList(Node* head) {
+    while (head != nullptr) {
+        Node* nextNode = head->next;   // save it before deleting!
+        delete head;
+        head = nextNode;
+    }
+}
+\end{minted}
+After \texttt{delete head}, that memory no longer belongs to you, so reading
+\texttt{head->next} would be reading freed memory. Save the pointer first.
+\end{Answer}

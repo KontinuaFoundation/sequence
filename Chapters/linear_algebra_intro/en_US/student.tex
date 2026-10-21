@@ -1,33 +1,34 @@
 \chapter{Introduction to Linear Algebra}
 
-Welcome to the world of linear algebra, a branch of mathematics that relies on 
-vectors, matrices, and linear transformations. You are familiar with most of 
-these concepts, so in this workbook you will see how you can use them together 
-to solve problems.  \index{linear algebra}
+Every time you rotate your phone and the screen turns, apply a filter to a
+photo, or play a video game where the camera swings around a 3D world, a
+computer is doing linear algebra: millions of multiplications and
+additions on grids of numbers, every second. Linear algebra is the
+mathematics of vectors, matrices, and linear transformations. You have met
+all three already; in this book you will see how they work together.  \index{linear algebra}
 
-Let's review what you know.
+Let us review what you know.
 
 \begin{itemize}
-\item \textbf{Vectors}. In workbook 7, you saw how vectors can represent 
+\item \textbf{Vectors}. Earlier, you saw how vectors can represent 
 forces, as well as how to add and multiply them to figure out such things as 
 rocket engine force and direction. 
-\item \textbf{Matrices}. In workbook 3, you learned to use spreadsheets to 
+\item \textbf{Matrices}. In the data tools chapter, you learned to use spreadsheets to 
 solve problems numerically, such as how to figure out the number of barrels a 
 cooper has to produce to achieve a certain take-home pay. Spreadsheets are 
 essentially matrices --- a row by column structure that contains values. 
-\item \textbf{Linear transformations}. When you studied congruence in workbook 
-5, you were introduced to a few linear transformations, such as translation 
-and reflection. 
+\item \textbf{Linear transformations}. When you studied congruence, you met transformations such as rotation, reflection, and translation. Rotations and reflections
+that keep the origin fixed are linear; translation, as you will see, is not. 
 \end{itemize}
 
-\section{What's With the Linear?}
+\section{What is With the Linear?}
 
-You might be thinking, “Hey, haven't I been doing algebra already?” 
+You might be thinking, ``Have I not been doing algebra all along?'' 
 
 You have! You have come a long way in your problem solving journey. You have 
 used algebra to solve simple equations like $7x + 10 = 24$ and quadratic 
 equations like $4x^{2} + 9x + 31 = 0$. What distinguishes linear algebra is 
-the focus on linear combinations. Any equation with a power greater than 1, 
+the focus on \index{linear combinations}linear combinations. Any equation with a power greater than 1, 
 such as a quadratic, is nonlinear.
 \index{nonlinear operations}
 Want to see what we will be covering? Take a look at 3blue1brown's website with papers and videos on Linear Algebra: 
@@ -37,18 +38,21 @@ We will first take a look at linear combinations
 
 \section{Linear Combinations}
 
-You won't see any \textbf{sin}, \textbf{cos}, or \textbf{tan} operations in 
-this section. Linear operations do not use trigonometric functions; those 
-operations are all nonlinear. A linear combination consists solely of addition and 
-scalar multiplication. You will see that linear combinations allow you to 
+A \newterm{linear combination} uses only two operations: adding things
+together and multiplying them by numbers (scalars). For example, $3\mathbf{u}
++ 2\mathbf{v}$ is a linear combination of the vectors $\mathbf{u}$ and
+$\mathbf{v}$. No squaring, no square roots, no $\sin$ of a variable. An
+operation is \newterm{linear}\index{linear operation} if it plays nicely
+with both: doing it to a sum gives the sum of the results, and doing it to
+a scaled input gives a scaled result. You will see that linear combinations allow you to 
 solve many types of problems in science and engineering. Before we get deep 
-into the numbers, let's take a look at a few linear operations you can perform 
+into the numbers, let us take a look at a few linear operations you can perform 
 on images. This will give you an intuition for the underlying math. After 
-that, we'll take a look at some numbers.
+that, we will take a look at some numbers.
 
 \section{Image Operations}
 \index{linear image operations}
-The simplest image, a bitmap, can be represented by a two-dimensional matrix 
+\index{bitmap}The simplest image, a bitmap, can be represented by a two-dimensional matrix 
 of values --- either 0 for black, or 1 for white. Grayscale images are also 
 represented by a two-dimensional matrix of values, but the values typically 
 range from 0 to 255. 0 is black, 255 is white, and the values in between 
@@ -60,9 +64,9 @@ red values (R), another for green values (G), and the third for blue values
 (B). The combination of R, G, and B determines the color you see.
 
 Working with images means working with millions of pixels. Fortunately, 
-modern techniques make this a snap. Let's look at some common operations on an 
+modern techniques make this a snap. Let us look at some common operations on an 
 image of a rocket.
-Flipping is a linear operation.
+Flipping is a linear operation: each pixel just moves to a new spot.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{flying-rocket.png}
@@ -73,15 +77,14 @@ Flipping is a linear operation.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{rocket-flipped.png}
-    \caption{The rocket being flipped involves a binary linear equation.}
+    \caption{The rocket, flipped upside down.}
     \label{fig:rocket_flipped}
 \end{figure}
 
-Next, the image is rotated 90 degrees. This rotation is linear, but if you 
-want to rotate it at an angle that isn't a multiple of 90, you would need 
-trigonometry. This would be treading into nonlinear territory, but that happens 
-in the field of linear algebra. You will learn about nonlinear extensions 
-later, which use trigonometric functions and imaginary numbers.
+Next, the image is rotated 90 degrees. Rotation is linear too, at any angle.
+To rotate by an angle that is not a multiple of 90, you will need $\cos\theta$
+and $\sin\theta$, but those are just fixed numbers once you pick the
+angle. The rotation itself only multiplies and adds coordinates.
 
 \begin{figure}[H]
     \centering
@@ -90,26 +93,28 @@ later, which use trigonometric functions and imaginary numbers.
     \label{fig:rocket-rotated}
 \end{figure}
 
-Inversion is an interesting linear operation that involves redefining the red, 
-green, and blue values, such that the new value is 1.0 minus the old value. 
-The resulting black background gives the impression the rocket is in deep 
-space, don't you think?
+Inversion replaces each red, green, and blue value with 1.0 minus the old
+value. The white background turns black, and the rocket seems to fly
+through deep space. Strictly speaking, inversion is not linear: because of
+the ``1.0 minus,'' inverting a black pixel (0) gives white (1), not 0.
+Operations like this, a linear operation plus a shift, are called
+\newterm{affine}\index{affine transformation}. Translation is affine for the
+same reason.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{rocket-inverted.png}
-    \caption{Inverting the rocket replaces each pixel with a "opposite" color.}
+    \caption{Inverting the rocket replaces each pixel with its ``opposite'' color.}
     \label{fig:rocket-inverted}
 \end{figure}
 
-It is possible to redefine the red, green, and blue values in many ways. Visit 
-the NASA website and search for false color images. NASA and other scientists 
+It is possible to redefine the red, green, and blue values in many ways. Visit
+the \index{false color images}NASA website and search for false color images. NASA and other scientists 
 redefine colors to communicate such things as the amount of vegetation or 
 water in an area, the temperatures of the sun's surface, and so on. 
 Photographers often do this for artistic effect. For example, the image on the 
-left was taken with an infrared camera. (This infrared is not the same as 
-thermal kind you have likely seen before. This is the infrared that is emitted 
-by living plants.) The image is further processed to swap channels. For 
+left was taken with an infrared camera. (This is near-infrared light, not the thermal infrared that heat cameras
+see. Healthy plants reflect near-infrared strongly.) The image is further processed to swap channels. For 
 example, the matrix representing red might be swapped with the matrix 
 representing blue. The image on the right shows the image after swapping color 
 values. All these swapping operations are linear.
@@ -123,7 +128,7 @@ values. All these swapping operations are linear.
 
 \section{The Numbers Behind Some Image Operations}
 \index{matrices}
-You will see a few \newterm{matrices} in this section. Let's first look at how a 
+You will see a few \newterm{matrices} in this section. Let us first look at how a 
 spreadsheet can be represented as a matrix. Recall the barrel-making shop 
 example. This is part of that spreadsheet. 
 \begin{figure}[H]
@@ -157,7 +162,7 @@ zeros and ones. This is a matrix for a 10 pixel by 10 pixel image. Why use
 decimal points when this is obviously a matrix of integers? It turns out that 
 when you use tools like Python to process matrices, you must be conscious of 
 data types. Most of the Python methods we use for image operations expect 
-floating points. A few expect integer types, but you'll see how to handle type 
+floating points. A few expect integer types, but you will see how to handle type 
 conversion later, in the section on Python. 
 
 $$\begin{bmatrix}
@@ -183,11 +188,10 @@ you can see the pattern.
     \label{fig:normal}
 \end{figure}
 
-We can create an inverse of this image by changing all the values in the matrix 
-so that 0 becomes 1 and 1 becomes 0. (Technically this is not the way you would 
-invert a matrix, as you will see in the Python section. For this example, you 
-will get the same visual result, but when you start inverting matrices 
-programmatically, you will learn the formal definition.)
+We can invert this image by changing all the values in the matrix so that 0
+becomes 1 and 1 becomes 0. (Do not confuse this with the \emph{inverse of a
+matrix}, which you will meet later and which means something entirely
+different.)
 
 $$\begin{bmatrix}
 1. & 1. & 1. & 1. & 0. & 1. & 1. & 1. & 0. & 1\\
@@ -207,8 +211,8 @@ When converted to an image and enlarged, it looks like this:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{inverse.png}
-    \caption{Inversion of the linear matrix.}
-    \label{fig:example}
+    \caption{The inverted bitmap.}
+    \label{fig:example-linear_algebra_intro}
 \end{figure}
 
 Rotating the original matrix by 90 degrees gives this:
@@ -231,11 +235,11 @@ This is the resulting enlarged image:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{rotate90.png}
-    \caption{Rotating the image by 90deg.}
+    \caption{The bitmap rotated $90^\circ$ counterclockwise.}
     \label{fig:rotate90matrix}
 \end{figure}
 
-You'll transpose many matrices in the upcoming pages. It requires swapping 
+You will transpose many matrices in the upcoming pages. It requires swapping 
 rows for columns. 
 
 $$\begin{bmatrix}
@@ -261,10 +265,10 @@ The resulting image looks like this:
 
 What about adding images? That fits the definition of a linear combination. 
 Recall that grayscale images have values from 0 to 255. To make things simple, 
-let's define two matrices with values ranging from 0.0 to 1.0. When we want a 
+let us define two matrices with values ranging from 0.0 to 1.0. When we want a 
 grayscale image, it is easy to multiply the matrix by 255. 
 
-Let's call this matrix $f$.
+Let us call this matrix $f$.
 
 $$\begin{bmatrix}
 1.0 & 0.5 & 0.0\\
@@ -280,7 +284,7 @@ When multiplied by 255 and converted to a grayscale image:
     \label{fig:fBitmap}
 \end{figure}
 
-Let's call this matrix $g$:
+Let us call this matrix $g$:
 
 $$\begin{bmatrix}
 0.5 & 0.0 & 0.0\\
@@ -321,80 +325,82 @@ When multiplied by 255 and converted to grayscale, we get:
     \label{fig:fgBitmapAdded}
 \end{figure}
 
-Let's go back to the first small grayscale image (from Figure~\ref{fig:fBitmap}):
+Let us go back to the first small grayscale image (from Figure~\ref{fig:fBitmap}):
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{fBitmap.png}
-    \caption{Figure 11, repeated.}
+    \caption{Figure~\ref{fig:fBitmap}, repeated.}
 \end{figure}
 
-If you want to keep the pattern in the first column, you could multiply the 
-matrix by a vector, [1.0 0.0 0.0]. The 1.0 will keep the values in the first 
-column, but the 0.0 will knock out the other values because 0.0 times anything 
-equals 0.0.
+To keep only the first column, multiply each row of the matrix, entry by
+entry, by the vector $[1.0\ 0.0\ 0.0]$. The 1.0 keeps the values in the
+first column; the 0.0s knock out the rest, because 0.0 times anything is
+0.0.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{onechannel.png}
-    \caption{Multiplying channels by 0 results in them being represented as black bitmaps, while 1 keeps them the same.}
+    \caption{Multiplying columns by 0 turns them black, while 1 keeps them the same.}
     \label{fig:onechannel}
 \end{figure}
 
-What do you think will happen if you use the vector $[0.0\, 1.0\, 0.0]$ or 
-$[0.0\, 0.0\, 1.0]$? You'll get a chance later to use Python to perform image 
-operations.
+What do you think will happen if you use the vector $[0.0\ 1.0\ 0.0]$ or 
+$[0.0\ 0.0\ 1.0]$? In a color image, the same trick with the red, green, and
+blue values isolates one color channel.
 
-All the operations we performed on these images satisfy the requirement for 
-linear combinations: preserving addition and scalar multiplication. 
+Except for inversion, all of these operations are linear: they preserve
+addition and scalar multiplication.
 
 
 \section{Applications of Linear Algebra}
 
-So far you've seen how linear operations on matrices can process images by:
+So far you have seen how linear operations on matrices can process images by:
 \begin{itemize}
 \item multiplying a matrix using a scalar (e.g., normalize, change the range)
 \item adding one matrix to another to get a composite image 
 \item multiplying two matrices to perform a transform (e.g., flipping)
-\item multiplying a matrix with a vector (isolating a channel)
+\item multiplying entry by entry (isolating a column or a channel)
 \end{itemize}
 
-Many areas in engineering and science rely on the matrix operations defines by 
+Many areas in engineering and science rely on the matrix operations defined by 
 linear algebra. Besides image processing, linear algebra is used for: 
 \begin{itemize}
 \item \textbf{Computer Graphics}. When you play a video game or watch the latest CG 
 animation, matrix operations transform objects in the scene to make them appear 
 as if moving, getting closer, and so on. You can represent the vertices of 
 objects as vectors, and then apply a transformation matrix.
-\item \textbf{Data Analysis}. We live in an era in which it's easy to collect so much 
-data that it's difficult to make sense of the data by just looking at it. You 
+\item \textbf{Data Analysis}. We live in an era in which it is easy to collect so much 
+data that it is difficult to make sense of the data by just looking at it. You 
 can represent the data in matrix form and then find a solution vector. For 
 example, scientists use this technique to figure out the effectiveness of drug 
 treatments on disease.
 \item \textbf{Economics}. Take a look at financial section of any news organization and 
-you'll see headlines such as "Economic Data Points to Faster Growth" or "Is 
+you will see headlines such as "Economic Data Points to Faster Growth" or "Is 
 the Inflation Battle Won?" Economists can use systems of linear equations to 
 represent economic indicators, such as consumer consumption, government 
 spending, investment rate, and gross national product. By using various methods 
-that you'll learn about later, they can get a good idea of the state of the 
+that you will learn about later, they can get a good idea of the state of the 
 economy.
-\item \textbf{Engineering}. Engineers couldn't do without linear algebra. For example, 
+\item \textbf{Engineering}. Engineers could not do without linear algebra. For example, 
 the orbital dynamics of space travel relies on it. Engineers must predict and 
 calculate the motion of planetary bodies, satellites, and spacecraft. By 
 solving systems of linear equations engineers can make sure that a spacecraft 
 travels to its destination without running into a satellite or space rock.
 \end{itemize}
 
-\section{Let's Observe the Sun!}
-India recently sent the Aditya spacecraft on a mission to study the Sun. 
+\section{Let us Observe the Sun!}
+In 2023, India launched the Aditya-L1 spacecraft to study the Sun. 
 Without a thorough understanding of linear algebra (among other things), the 
 engineers would not have accomplished the amazing feat of getting Aditya in a 
 stable orbit around a Lagrange point. 
 
-In previous chapters you learned about gravity and its effects. A Lagrange point is a point in space between two bodies (e.g. Earth and Sun) 
-where there is gravitational equilibrium. With the right trajectory, a 
+In previous chapters you learned about gravity and its effects. A \index{Lagrange point}Lagrange point is a spot where the pulls of two bodies
+(here, the Earth and the Sun) balance so that a spacecraft can keep pace
+with the Earth around the Sun. Aditya-L1 went to L1, about 1.5 million km
+from Earth toward the Sun. With the right trajectory, a 
 spacecraft will orbit around a Lagrange point in a stable position that 
-doesn’t require much energy to maintain. That’s called a Halo orbit. Because 
-that there are no fueling stations in space, a Halo orbit will allow Aditya to 
+does not require much energy to maintain. This is called a \index{Halo orbit}halo orbit. Because 
+there are no fueling stations in space, a Halo orbit will allow Aditya to 
 maintain position for about 5 years. Pretty good mileage!
 
 \begin{figure}[H]
@@ -404,7 +410,7 @@ maintain position for about 5 years. Pretty good mileage!
     \label{fig:adityaOrbit}
 \end{figure}
 
-Aditya’s engineers had to calculate a looping maneuver that would precisely 
+Aditya's engineers had to calculate a looping maneuver that would precisely 
 inject the Aditya spacecraft into the Halo orbit. They determined the angles 
 and burn times for the thrust engine. If they were wrong in one direction, the 
 spacecraft would fly off to the sun. The other direction would send the 
@@ -414,30 +420,26 @@ understanding of vectors and linear algebra.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{gimbalEngine.png}
-    \caption{The gimbal of the rocket engine.}
+    \caption{A gimbaled engine tilts by a small angle $\theta$ to steer the rocket.}
     \label{fig:gimbalEngine}
 \end{figure}
 
 \section{Images in Python}
 One of the wonderful things about python is the availability of libraries for 
-specialized computation. The Python Imaging Library, PIL, is what you'll use 
+specialized computation. The \index{Python Imaging Library}Python Imaging Library, PIL, is what you will use 
 to create images, read existing images from disk, and perform operation on 
-images. To create and manipulate arrays, you will use NumPy. 
+images. To create and manipulate arrays, you will use \index{NumPy}NumPy. 
 
-Create a file called \filename{image\_creation.py} and enter this code:
+Create a file called \filename{image\_creation.py} and enter this code. It
+makes each of the images in this chapter:
 
 \begin{minted}{python}
-# Import necessary modules
 import numpy as np
-import PIL
 from PIL import Image
-from PIL import ImageOps
 
-# Create a 10 by 10 pixel bitmap Image. 
-# Using a decimal point ensure python see the values as floating point numbers
-# Some image operations assume floats
-
-bitmapArray = np.array([
+# A 10 by 10 bitmap: 0 is black, 1 is white.
+# The decimal points make these floating-point numbers.
+bitmap = np.array([
 [0., 0., 0., 0., 1., 0., 0., 0., 1., 0.],
 [0., 0., 0., 0., 1., 1., 1., 1., 1., 1.],
 [0., 0., 0., 0., 1., 0., 0., 0., 1., 0.],
@@ -449,50 +451,63 @@ bitmapArray = np.array([
 [0., 0., 0., 0., 1., 0., 0., 0., 1., 0.],
 [0., 0., 0., 0., 1., 0., 0., 0., 1., 0.]])
 
-# Image.fromarray assumes a range of 0 to 255, so scale by 255
+def show(array):
+    # Scale 0-1 up to 0-255, convert to bytes, and enlarge 20x so you can see it
+    pixels = (array * 255).astype(np.uint8)
+    Image.fromarray(pixels).resize((200, 200), Image.NEAREST).show()
 
-myImage = Image.fromarray(bitmapArray*255)
-myImage.show()
-
-# A window opens with an image so tiny you might think nothing is there
-# Zoom in to see the pattern  
-
-# Transpose the array, create an image, and then show it. 
-# Note that you operate on the original array (not the image)
-# Remember to zoom in to see the pattern 
-
-myImageTransposed = bitmapArray.transpose()
-myImageTransposed.show()
-
-# Invert the array. You'll use the NumPy invert method.
-# The invert method assumes integer values. You need to convert the data type
-# Numpy has a method for that
-
-intBitmapArray = np.asarray(bitmapArray,dtype="int")
-invertedArray = np.invert(intBitmapArray)
-
-# Take a look at the array
-
-invertedArray
-
-# The values range from -2 to -1. Image values are positive.
-# You need to change the range so the values are from 0 to 255
-# Further you need to change back to floating point values because
-# the PIL method requires them
-
-invertedArray = (invertedArray + 2)*1.0
-invertedImage = Image.fromarray(255*invertedArray)
-invertedImage.show()
-
-# Zoom in on the image and compare the pattern with the original
-
+show(bitmap)              # the original
+show(bitmap.transpose())  # rows become columns
+show(np.rot90(bitmap))    # rotated 90 degrees counterclockwise
+show(np.flipud(bitmap))   # flipped upside down
+show(1.0 - bitmap)        # inverted: black becomes white
 \end{minted}
 
 
-FIXME this needs improvement
 \section{Exercise}
 
-Create a python program that creates matrix $f$ and matrix $g$ from the 
-previous section, and then performs all the operations shown in that section. 
-If you are not sure how to accomplish something, consult the online 
-documentation for the PIL and NumPy python libraries. 
+\begin{Exercise}[title={Linear or Not?}, label=la_linear]
+An operation $T$ is linear if $T(a + b) = T(a) + T(b)$ and $T(ca) = cT(a)$
+for all inputs $a$, $b$ and numbers $c$. Which of these operations on numbers
+are linear?
+\begin{enumerate}
+\item $T(x) = 3x$
+\item $T(x) = 3x + 1$
+\item $T(x) = x^2$
+\item $T(x) = -x$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=la_linear]
+\begin{enumerate}
+\item Linear: $3(a + b) = 3a + 3b$ and $3(ca) = c(3a)$.
+\item Not linear: $T(1 + 1) = 7$, but $T(1) + T(1) = 8$. (It is affine.)
+\item Not linear: $T(1 + 1) = 4$, but $T(1) + T(1) = 2$.
+\item Linear. (This is a reflection.)
+\end{enumerate}
+A quick test: a linear operation always sends 0 to 0. That alone rules out
+$3x + 1$.
+\end{Answer}
+
+\begin{Exercise}[title={Matrix Operations in Python}, label=la_matrices]
+Using NumPy, create the matrices $f = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$ and $g = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$. Compute $f + g$, the matrix product $f g$, and the transpose $f^T$.
+\end{Exercise}
+\begin{Answer}[ref=la_matrices]
+\begin{minted}{python}
+import numpy as np
+
+f = np.array([[1, 2], [3, 4]])
+g = np.array([[0, 1], [1, 0]])
+print(f + g)
+print(f @ g)
+print(f.T)
+\end{minted}
+The output is:
+\begin{minted}{text}
+[[1 3]
+ [4 4]]
+[[2 1]
+ [4 3]]
+[[1 3]
+ [2 4]]
+\end{minted}
+\end{Answer}

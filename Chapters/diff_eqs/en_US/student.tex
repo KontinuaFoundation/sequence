@@ -1,9 +1,12 @@
 \chapter{Differential Equations}
 
-Differential equations are equations involving an unknown function and
-its derivatives. They play a crucial role in mathematics, physics,
-engineering, economics, and other disciplines due to their ability to
-describe change over time or in response to changing conditions.\index{differential equations}
+Most laws of nature do not tell you where something \emph{is}. They tell
+you how it \emph{changes}. A cup of cocoa cools faster when it is hotter. A
+rumor spreads faster when more people at school know it. A spring pulls
+harder the farther you stretch it. Each of these is a
+\textbf{differential equation}: an equation that relates an unknown
+function to its own derivatives. Solving one means working backward from
+``how it changes'' to ``what it is.'' \index{differential equations}
 
 \section{Ordinary Differential Equations}
 
@@ -21,7 +24,7 @@ Here, $y$ is the function of the independent variable $x$, and
 $\frac{dy}{dx}$ represents its first derivative.
 
 A real-world example of the application of differential equations is an 
-oscillating spring (or any harmonic motion). When a spring is stretched, the 
+oscillating spring (or any \index{harmonic motion}harmonic motion). When a spring is stretched, the 
 restoring force (the force pulling or pushing it back to its neutral position) 
 is proportional to the distance by which the spring has been stretched (see 
 Figure~\ref{spring}). Mathematically, we say that
@@ -68,7 +71,7 @@ $k$).
     \label{spring}
     \end{figure}
 
-Recall that Newton's Second Law tells us that force is equal to mass 
+Recall that \index{Newton's second law}Newton's Second Law tells us that force is equal to mass 
 times acceleration, and that acceleration is the second derivative of position. 
 We can then write the differential equation:
 $$m \frac{d^2x}{dt^2} = -kx$$
@@ -79,9 +82,8 @@ rewrite the equation to isolate the second derivative:
 $$\frac{d^2x}{dt^2} = -\frac{k}{m}x$$
 
 In everyday language, this is saying that the second derivative is proportional 
-to the original function, just negative. There are two trigonometric functions 
-that have this property, take a second to see if you remember and write down 
-your guess. 
+to the original function, just negative. Two trigonometric functions have this property. Can you
+name them before reading on? 
 
 The sine and cosine functions both have the property $\frac{d^2x}{dt^2} \propto 
 -x(t)$ (recall that $\propto$ means ``proportional to"). 
@@ -90,9 +92,14 @@ The sine and cosine functions both have the property $\frac{d^2x}{dt^2} \propto
 differential equation $\frac{d^2x}{dt^2} = \frac{-k}{m}x$.
 
 \textbf{Solution}: Let $x(t) = \sin{Ct}$. Then $\frac{dx}{dt} = C\cos{Ct}$ and 
-$\frac{d^2x}{dt^2} = -C^2\sin{t}$. This implies that $C^2 = \frac{k}{m}$ and 
+$\frac{d^2x}{dt^2} = -C^2\sin{Ct}$. This implies that $C^2 = \frac{k}{m}$ and 
 $C = \pm \sqrt{\frac{k}{m}}$. So, a solution to the differential equation 
-$\frac{d^2x}{dt^2} = \frac{-k}{m}x$ is $x(t) = \sin{\sqrt{\frac{k}{m}}t}$. 
+$\frac{d^2x}{dt^2} = \frac{-k}{m}x$ is $x(t) = \sin{\sqrt{\frac{k}{m}}t}$.
+The same check works for $\cos{\sqrt{\frac{k}{m}}t}$, and in fact every
+solution has the form
+$$x(t) = A\cos{\sqrt{\tfrac{k}{m}}\,t} + B\sin{\sqrt{\tfrac{k}{m}}\,t}$$
+where the constants $A$ and $B$ come from where the mass starts and how fast it
+is moving at $t = 0$. 
 
 \subsection{Population Growth}
 Another real-world application of differential equations is modeling population 
@@ -100,7 +107,7 @@ growth. Under ideal conditions (unlimited food, no predators, disease-free,
 etc.), the population of a species grows at a rate proportional to the current 
 population size. We can identify two variables:
 $$t = \text{ time (the independent variable)}$$
-$$P = \text{ the number pf individuals in the population (the dependent 
+$$P = \text{ the number of individuals in the population (the dependent 
 variable)}$$
 
 So, what is the rate of growth? Recall that a rate is change over time. In 
@@ -110,10 +117,10 @@ differential equation:
 $$\frac{dP}{dt} = kP$$
 
 where k is a proportionality constant. This is called \textbf{natural growth} 
-or \textbf{logarithmic growth}\index{natural growth}\index{logarithmic growth}. 
+or \textbf{exponential growth}\index{natural growth}. 
 To find a solution, we must answer the question: What function's derivative is 
 a constant multiple of itself? Recall that we have seen that the derivative of 
-the exponential function $e^{kt}$ is $ke^{kt}$. Setting $P(t) = Ce^{kt}$ 
+the exponential function $e^{kt}$ is $ke^{kt}$. Setting $P(t) = \index{exponential growth}Ce^{kt}$ 
 (where $C$ is some constant), we see that the derivative is $\frac{dP}{dt} = 
 kCe^{kt} = kP(t)$ (see figure \ref{expdiff}). You can determine C from initial 
 conditions. 
@@ -216,10 +223,10 @@ A population is modeled by the differential equation $\frac{dP}{dt} = 1.2P
 \item 4200
 \item Logically, we can say that the population will increase if it is below 
 the carrying capacity (that is, $P < 4200$), but we can also prove it 
-mathematically: $\frac{dP}{dt} < 0 \rightarrow 1.2P \left( 1 - \frac{P}{4200} 
-\right) < 0 \rightarrow P \left( 1 - \frac{P}{4200} \right) < 0$. Since we are 
+mathematically: $\frac{dP}{dt} > 0 \rightarrow 1.2P \left( 1 - \frac{P}{4200} 
+\right) > 0 \rightarrow P \left( 1 - \frac{P}{4200} \right) > 0$. Since we are 
 talking about population, we can assume that $P > 0$ and continue: $1 - 
-\frac{P}{4200} < 0 \rightarrow 1 < \frac{P}{4200} \rightarrow 4200 < P$, which 
+\frac{P}{4200} > 0 \rightarrow \frac{P}{4200} < 1 \rightarrow P < 4200$, which 
 is the result we expected. 
 \item Similarly, we know the population should be decreasing when $P$ is 
 greater than the carrying capacity of $4200$.
@@ -229,7 +236,7 @@ and solving. The solutions are $P(t) = 0$ and $P(t) = 4200$.
 \end{Answer}
 
 \begin{Exercise}[label = logdiff2]
-[This problem was originally presented as a calculator-allowed, free response 
+[This problem was originally presented as a multiple-choice 
 question on the 2012 AP Calculus BC exam.] Let $k$ be a positive constant. 
 Which of the following is a logistic differential equation?\\
 (a) $\frac{dy}{dt} = kt$\\
@@ -246,7 +253,7 @@ variable. (e) is the only logistic differential equation, with $m = 1$.
 \end{Answer}
 
 
-\subsection{Separable Differential Equations}
+\subsection{Separable Differential Equations}\index{separable differential equation}
 Sometimes, differential equations can be explicitly solved. A 
 first-order differential equation is separable if $\frac{dy}{dx}$ can 
 be written as a function of $x$ times a function of $y$. Symbolically, 
@@ -255,24 +262,24 @@ $$\frac{dy}{dx} = g(x)f(y)$$
 
 The equations may be solvable by separating the $x$ from the $y$ and 
 integrating each side. For our generic form, we can separate the 
-variables thusly if $f(y) \neq 0$: 
+variables like this if $f(y) \neq 0$: 
 $$\frac{dy}{dx}\frac{1}{f(y)} = g(x)$$ 
-$$\frac{1}{f(y)}dy = g(x) dx$$ \\
-Integrating both sides: $$\int \frac{1}{f(y)}\,dy = \int g(x)\,dx$$.
+$$\frac{1}{f(y)}dy = g(x) dx$$
+Integrating both sides: $$\int \frac{1}{f(y)}\,dy = \int g(x)\,dx$$
 
-Let's look at the example $\frac{dy}{dx} = \frac{x^2}{y}$. We can 
+Let us look at the example $\frac{dy}{dx} = \frac{x^2}{y}$. We can 
 separate the variables by multiplying both sides by $y dx$: 
-$$y dy = x^2 dx$$\\
+$$y dy = x^2 dx$$
 Integrating both sides: 
 $$\int y\,dy = \int x^2\,dx$$
-$$\frac{1}{2}y^2 + C_1 = \frac{1}{3}x^3 + C_2$$ \\
+$$\frac{1}{2}y^2 + C_1 = \frac{1}{3}x^3 + C_2$$
 We can combine the constants by defining $C = C_2 - C_1$. Making this 
 substitution and solving for $y$, we find: 
 $$y^2 = \frac{2}{3} x^3 + 2C$$ 
-$$y = \sqrt{\frac{2}{3} x^3 + 2C}$$\\
+$$y = \pm\sqrt{\frac{2}{3} x^3 + 2C}$$
 Noting that $2C$ is also a constant (which we will call $K$ for 
 convenience), we find the general solution is 
-$$y = \sqrt{\frac{2}{3} x^3 + K}$$ \\
+$$y = \pm\sqrt{\frac{2}{3} x^3 + K}$$
 A graph showing the solution for several values of $K$ is in figure 
 \ref{fig:solutions}.
 
@@ -306,11 +313,12 @@ $x$. The practice problem below is an example of this.
 \end{Exercise}
 
 \begin{Answer}[ref = diffeq1]
-	$$\frac{dy}{dx} dx = \frac{3x^2}{2y + \sin{y}} dx$$
-	$$(2y + \sin{y})(dy) = \frac{3x^2}{2y + \sin{y}}(2y + \sin{y})(dx)$$
-	$$(2y + \sin{y})dy = (3x^2)dx$$
+	Multiply both sides by $(2y + \sin{y})\,dx$:
+	$$(2y + \sin{y})\,dy = 3x^2\,dx$$
 	$$\int 2y\,dy + \int \sin{y}\,dy = \int 3x^2\,dx$$
 	$$y^2 - \cos{y} = x^3 + C$$
+	There is no way to solve this for $y$ with algebra, so we leave the
+	solution in this implicit form.
 \end{Answer}
 
 \begin{Exercise}[label = diffeq2]
@@ -354,9 +362,9 @@ faster when it has a mass of $40$ grams.
 $\frac{d^2 B}{dt^2} < 0$ and the graph of $B$ should be concave down. The 
 graph shown has a concave up portion, so it cannot represent $B(t)$. 
 \item $\frac{dB}{dt} = \frac{1}{5} \left( 100 - B \right) \rightarrow 
-\frac{dB}{100 - B} = \frac{1}{5} dt \rightarrow \int \left(100 - B \right)\,dB 
-= \int \frac{1}{5}\,dt \rightarrow -\ln{100 - B} = \frac{t}{5} + C \rightarrow 
-e^{\frac{-t}{5} + C} = 100 - B \rightarrow ke^{\frac{-t}{5}} = 100 - B 
+\frac{dB}{100 - B} = \frac{1}{5} dt \rightarrow \int \frac{dB}{100 - B} 
+= \int \frac{1}{5}\,dt \rightarrow -\ln{(100 - B)} = \frac{t}{5} + C \rightarrow 
+e^{\frac{-t}{5} - C} = 100 - B \rightarrow ke^{\frac{-t}{5}} = 100 - B 
 \rightarrow B(t) = 100 - ke^{\frac{-t}{5}}$. Setting $B(0) = 20$ to find $k$: 
 $20 = 100 - ke^{0} \rightarrow 20 = 100 - k \rightarrow k = 80$. So, the 
 particular solution is $B(t) = 100 - 80e^{\frac{-t}{5}}$
@@ -376,17 +384,202 @@ describes \textit{linear} growth in the size of the population?\\
 \end{Exercise}
 
 \begin{Answer}[ref = popgrowth]
-(A). (a), (b), and (c) are all separable equations. But only the solution to A 
-is linear ($P(t) = 200t + C$). (d) is logarithmic, or natural growth and (e) 
-is also not linear.
+(a). Integrating gives $P(t) = 200t + C$, a line: the population gains 200
+every unit of time. Choice (b) gives $100t^2 + C$ and (c) gives
+$\frac{100}{3}t^3 + C$, which are not linear. Choice (d) is exponential growth,
+and (e) blows up even faster.
 \end{Answer}
 
 
+\section{Mass-Spring Systems and Linear Differential Equations}\index{mass-spring system}
+In the springs and simple harmonic motion chapter, you saw that the motion of a mass attached to a spring can be modeled using differential equations. Here, we will examine this connection more
+closely.
+\subsection{Undamped Simple Harmonic Motion}
+Starting from Newton's Second Law and Hooke's Law, $F = -kx$, we get the differential equation for simple harmonic motion:
+\begin{equation}
+	m\frac{d^{2}x}{dt^{2}}+ kx = 0. \label{eq:basicshm}
+\end{equation}
+The term $m\,\frac{d^{2}x}{dt^{2}}$ comes directly from \textit{Newton's Second
+Law}, representing the net force required to accelerate the mass. The term $kx$ arises from \textit{Hooke's Law}, which states that the spring exerts a restoring
+force proportional to displacement and directed toward equilibrium. Equation~\eqref{eq:basicshm} is a \index{differential equation!second-order}\textbf{second-order linear differential equation
+with constant coefficients}. It describes an ideal mass-spring
+system that oscillates forever, with nothing slowing it down and nothing pushing it.
+What if friction also acts on the mass? We add another force term.
+\subsection{Introducing Damping}\index{damping}
+Real systems are often influenced by additional forces. One common example is a
+\textbf{damping force}, such as friction or air resistance, which opposes the motion
+of the mass. A typical damping force is proportional to the velocity and can
+be written as
+\[
+	F_{d}(t) = -c\,\frac{dx}{dt},
+\]
+where $c$ is the damping coefficient. Including this force in Newton's Second Law modifies our differential equation. Instead of the undamped equation~\eqref{eq:basicshm},
+we obtain:
+\begin{align}
+	m a(t)                                     & = -c\,v(t) - k\,x(t) \label{eq:forcebalance} \\
+	m\frac{d^{2}x}{dt^{2}}+ c\frac{dx}{dt}+ kx & = 0 \label{eq:dampedmassspring}
+\end{align}
+This is still a second-order linear differential equation with constant coefficients, but its solutions behave very differently. Depending on the value of $c$,
+the system may oscillate with decreasing amplitude, fail to oscillate at all,
+or return to equilibrium as quickly as possible. To see which, guess a solution of the form $x = e^{rt}$. Substituting gives
+$e^{rt}(mr^2 + cr + k) = 0$, and since $e^{rt}$ is never zero, $r$ must solve
+the \textbf{characteristic equation}\index{characteristic equation}
+$mr^2 + cr + k = 0$. The quadratic formula gives
+\[
+	r = \frac{-c \pm \sqrt{c^{2}- 4mk}}{2m}
+\]
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Characteristic Roots}               & \textbf{Homogeneous Solution}                                                 & \textbf{Damping Type}  \\
+		\hline
+		$r_{1}\neq r_{2}$, real, both negative & $y_{h}= C_{1}e^{r_1 t}+ C_{2}e^{r_2 t}$                                       & Overdamped             \\
+		\hline
+		$r$ real, repeated                          & $y_{h}= (C_{1}+ C_{2}t)e^{rt}$                                                & Critically damped      \\
+		\hline
+		$r = \alpha \pm i\beta$, $\alpha < 0$       & $y_{h}= e^{\alpha t}\!\left( C_{1}\cos(\beta t) + C_{2}\sin(\beta t) \right)$ & Underdamped            \\
+		\hline
+		$r = \pm i \beta$                           & $y_{h}= C_{1}\cos(\beta t) + C_{2}\sin(\beta t)$                              & Simple Harmonic Motion \\
+		\hline
+	\end{tabular}
+	\caption{Classification of solutions to the damped harmonic oscillator based
+	on characteristic roots.}
+\end{table}
+The sign of $c^2 - 4mk$ decides everything: positive means overdamped (think
+of a screen door closer), zero means critically damped (a car's shock
+absorbers), and negative means underdamped (a plucked guitar string).
+
+In general, the position of the mass is $y(t) = y_{h}(t) + y_{p}(t)$, where $y_{h}$ is the homogeneous solution (the part we found by setting the right side to $0$), and $y_{p}$ is
+the particular solution, which depends on any external forcing. In
+this section, we focused on the homogeneous solution. If the equation~\eqref{eq:dampedmassspring}
+had a forcing function $F(t)$ on the right side, we would need to find a
+particular solution $y_{p}$ to account for that.
+
+\begin{Exercise}
+	[title={Linear Systems 1}, label={ex:id_diff_eq}]
+
+	A $2 \, \text{kg}$ mass is attached to a spring with $k=200 \, \text{N/m}$ with
+	no damping. Which differential equation describes the motion?
+
+	\begin{enumerate}
+		\item $x'' + 100x = 0$
+
+		\item $x'' + 10x = 0$
+
+		\item $x'' + 200x = 0$
+
+		\item $2x'' + 100x = 0$
+	\end{enumerate}
+\end{Exercise}
+\begin{Answer}
+	[ref={ex:id_diff_eq}] The correct differential equation is $x'' + 100x = 0$.
+	This is derived from the equation of motion for any simple harmonic oscillator:
+	$m x'' + k x = 0$, where $m = 2 \, \text{kg}$ and $k = 200 \, \text{N/m}$. Dividing
+	by $m$, we get $x'' + \frac{k}{m}x = 0$, which simplifies to $x'' + 100x = 0$.
+\end{Answer}
+
+\begin{Exercise}
+	[title={Linear Systems 2}, label={ex:diff_eq2}] \par
+	\smallskip
+	% FIXME FORMATTING: this is messing up the working space, need to fix the formatting
+
+	Answer the following questions about the graph below, which shows the position
+	of a mass on a spring as a function of time. The equation of motion for this system
+	is given by:
+	\[
+		x(t) = 0.15e^{-0.40t}\cos(4t + 0.30)
+	\]
+
+	\begin{figure}[H]
+		\begin{tikzpicture}[scale=0.7]
+			\draw[very thin, color=gray] (-8,-4) grid (0,4);
+
+			\draw[color=orange, domain=-8:0, samples=200]
+				plot
+				(\x,{0.15*exp(-0.40*\x)*cos(deg(4*\x+0.30))});
+		\end{tikzpicture}
+	\end{figure}
+	\begin{itemize}
+		\item Is this system undergoing simple harmonic motion, or is it damped? If it
+			is damped, is it underdamped, overdamped, or critically damped?
+
+		\item What would need to be changed in the equation of motion to make this system
+			undergo simple harmonic motion instead?
+	\end{itemize}
+\end{Exercise}
+\begin{Answer}
+	[ref={ex:diff_eq2}]
+	\begin{itemize}
+		\item This system is damped. Specifically, it is underdamped because the amplitude
+			of oscillation decreases over time.
+
+		\item To make this system undergo simple harmonic motion, we would need to
+			remove the damping term from the equation of motion. This means setting the
+			damping coefficient $c$ to zero in the differential equation, which would
+			eliminate the exponential decay factor in the position function. The equation
+			becomes $x(t) = 0.15\cancel{e^{-0.40t}}\cos(4t + 0.30) \rightarrow x(t) = 0
+			.15\cos(4t + 0.30)$
+	\end{itemize}
+\end{Answer}
+
+\begin{Exercise}
+	[title={Linear Systems 3}, label={ex:diff_eq3}]
+
+	Given that a unit (1 kg) mass obeys:
+	\[
+		x''+16x=0,\quad x(0)=0.20,\quad v(0)=x'(0)=0
+	\]
+
+	\begin{enumerate}
+		\item Solve for $x(t)$
+
+		\item Find the acceleration, $a(t)$, and the velocity, $v(t)$, as functions of
+			time.
+	\end{enumerate}
+\end{Exercise}
+\begin{Answer}
+	[ref={ex:diff_eq3}]
+	\begin{enumerate}
+		\item Notice that the system equation is linear as it is defined with an $x''$
+			and $x$.The general solution to the differential equation $x'' + 16x = 0$ is
+			of the form $x(t) = A\cos(4t) + B\sin(4t)$. This comes from the idea that
+			the characteristic equation $r^{2}+ 16 = 0$ has roots $r = \pm 4i$, where the
+			$\beta$ term is $4$. Using the initial conditions $x(0) = 0.20$ and
+			$v(0) = x'(0) = 0$, we find our velocity equation to be $v(t)=x'(t)=-4A\sin
+			(4t)+4B\cos(4t)$.
+
+			From $x(0)=A\cos 0 + B\sin 0 = A(1)+B(0)=A=0.20$, we find that $A=0.20$.
+
+			From $v(0)=-4A\sin 0 + 4B\cos 0 = -4(0.20)(0)+4B(1)=4B=0$, we find that $B=
+			0$.
+
+			Therefore, the solution is:
+			\[
+				x(t) = 0.20\cos(4t)
+			\]
+
+		\item Differentiate once for velocity and again for acceleration:
+			\[
+				v(t) = x'(t) = -0.80\sin(4t)
+			\]
+			\[
+				a(t) = v'(t) = -3.20\cos(4t)
+			\]
+
+			Since cosine and sine functions oscillate between -1 and 1 (regardless of
+			angular frequency $\omega = 4$), the maximum velocity is $0.80$ m/s and
+			the maximum acceleration is $3.20 \, \textrm{m/s}^{2}$.
+	\end{enumerate}
+\end{Answer}
+% many more exercises being created in the question bank for this chap
+
 \section{Partial Differential Equations}
 
-Partial differential equations (PDEs), on the other hand, involve a
-function of multiple independent variables and their partial
-derivatives. An example of a PDE is the heat equation, a second-order
+Everything so far has been an ordinary differential equation: one
+independent variable, usually time. Partial differential equations (PDEs) involve a
+function of several independent variables and their partial
+derivatives. An example of a PDE is the \index{heat equation}heat equation, a second-order
 PDE:\index{partial differential equations} \index{PDEs}
 
 \begin{equation}
@@ -398,6 +591,14 @@ variables $x$ and $t$, $\frac{\partial u}{\partial t}$ is the first
 partial derivative of $u$ with respect to $t$, and $\frac{\partial^2
   u}{\partial x^2}$ is the second partial derivative of $u$ with
 respect to $x$.
+
+Picture a metal rod with one end in a campfire. Here $u(x,t)$ is the
+temperature at position $x$ along the rod at time $t$. The second derivative
+$\frac{\partial^2 u}{\partial x^2}$ is positive where the temperature curve is
+concave up, meaning a spot is colder than the average of its neighbors. The
+equation says that such a spot warms up. Heat flows to even out the bumps, and
+the constant $\alpha$ says how quickly that happens (it is large for copper
+and small for wood).
 %this is mostly covered in the vector calculus / partial derivatives chapter
 
 

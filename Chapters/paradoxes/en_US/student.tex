@@ -1,20 +1,34 @@
-\chapter{Laws, Paradoxes, Thought Experiments, and the Illusions}
+\chapter{Laws, Paradoxes, Thought Experiments, and Illusions}
 % placing this in book 11 as of april 2026
 % I want this closer to the beginning as it is something all students should know generally. removing the following prerequisites since they are minor terms in the chapter. Generally these were prereqs but were only used once or twice so it was removed.
 % probability_independent
 % series
 % parametric functions for the mobius strip
-A \newterm{paradox} is a statement that contradicts itself or defies intuition. Paradoxes often arise in mathematics, physics, and philosophy, challenging our realities and understanding of reality and logic. \index{paradox}
+How many people must be in a room before two of them probably share a
+birthday? Most people guess around 180. The real answer is 23. Your
+intuition is a wonderful tool, but it can be fooled, and the places where
+it gets fooled are some of the most interesting places in math and
+science.
 
-We are going to talk about them here to introduce the idea of proofs by contradiction, which is a powerful tool in mathematics. A proof by contradiction assumes that the statement we want to prove is false and then shows that this assumption leads to a logical contradiction. We are also going to talk about a multitude of paradoxes in fields such as mathematics, physics, computer science, and architecture.
+A \newterm{paradox} is a statement or situation that seems to contradict
+itself or defies intuition.\index{paradox} Some paradoxes are real
+contradictions, which tell us that some assumption must be wrong. Others
+only \emph{feel} impossible, and studying them sharpens your intuition.
 
-Some of these will also be \newterm{thought experiments}. Thought experiments involve considering an imaginary scenario that tests a theory or argument, and many times, one that would be rare or impossible to test. Scientists use this to refute past (incorrect) knowledge, establish new theories, or even provide scenarios about human nature\footnote{\url{https://en.wikipedia.org/wiki/Trolley_problem}}. Doing this allows engineers to isolate variables, look at edge cases, improve intution of what \textit{should} happen, and consider how breakthroughs could occur. In fact, Isaac Newton used a thought experiment comparing a falling apple and the Moon to help develop his theory of universal gravitation (recall the Newton's cannon idea). In many of our physics scenarios, we imagine a \textit{frictionless surface}. This will never truly exist, all materials involve some sort of friction, so we consider this a thought experiment.
+Some of the puzzles in this chapter are \newterm{thought
+experiments}\index{thought experiment}: imaginary scenarios that test an
+idea when a real experiment would be hard or impossible. You have already
+used them. Newton's cannon on a mountaintop is a thought experiment, and so
+is every frictionless surface in your physics problems.
 
-Further, some statements which this chapter explores is laws of science and mathematics. Some of these laws are not intuitive,
+Paradoxes are also closely tied to \newterm{proof by contradiction}, from
+the proofs chapter: assume a statement, show that it leads to a
+contradiction, and conclude that the assumption was false. Let us start
+with a contradiction you can picture.
 
-If you recall, we talked in the proofs chapter about the different types of proofs, specifically proofs by contradiction. We will now talk about some examples of proofs by contradiction, and how they relate to paradoxes. We will use proofs by contradiction to prove many of our paradoxes.
+\section{The Barber}
 
-The Barber's Paradox is a self-referential paradox that arises in set theory and logic.
+\index{Barber's paradox}The Barber's Paradox is a self-referential paradox that arises in set theory and logic.
 
 The paradox is often stated as follows
 \begin{theorem}
@@ -25,9 +39,10 @@ Well there are two cases to consider:
     \item If the barber shaves himself, then according to the definition, he is now someone who \textit{shaves himself}. The rule says the barber only shaves people who do not shave themselves. This is a contradiction because the barber cannot both shave himself and not shave himself at the same time.
     \item If the barber does not shave himself, then according to the definition, he is someone who does not shave himself. The rule says the barber shaves all those who do not shave themselves. This means the barber must shave himself, which again leads to a contradiction because he cannot both shave himself and not shave himself at the same time.
 \end{itemize}
-The reason this is a paradox is that no matter which path you take, you end up at a contradiction. The barber cannot exist under those rules. A paradox will often arise from statements that are self-referential or involve circular definitions, which is the case here. It is important to note that some paradoxes that we will talk about will have resolutions, but the Barber's Paradox is an example of a paradox that does not have a resolution.
-
-In proofs by contraction we often intentionally create a contradiction to prove a theorem. In the Barber's Paradox, we assumed the two possible cases for the barber (shaving himself or not shaving himself) and showed that both lead to a contradiction.
+No matter which case you try, you reach a contradiction. That is a proof
+by contradiction: assuming such a barber exists leads to nonsense, so no
+such barber can exist. Paradoxes like this one often come from statements
+that refer to themselves.
 
 \section{Mathematical Paradoxes}
 \subsection{Russell's Paradox}\index{Russell's Paradox}\index{set theory}
@@ -35,19 +50,25 @@ Russell's Paradox is a paradox within set theory. It arises from the statement t
 \begin{theorem}
     Consider the set of all sets that do not contain themselves. Does this set contain itself?
 \end{theorem}
-Let's consider some simple sets. The set of all apples \emph{is not} an apple, it is a list of apples. Similarly, the set of all of ideas \emph{is} an idea, it is a concept.
-For Russell's statement, let's create a master set $R$ that contains only the sets that do not contain themselves. There are two cases:
+Most sets do not contain themselves. The set of all apples is not an
+apple. But some sets seem to: the set of all ideas is itself an idea.
+For Russell's statement, let us create a master set $R$ that contains only the sets that do not contain themselves. There are two cases:
 \begin{itemize}
     \item If $R$ is not a member of itself, then its definition entails that it is a member of itself. $\rightarrow \leftarrow$
     \item If $R$ is a member of itself, then it is not a member of itself, since it is the set of all sets that are not members of themselves. $\rightarrow \leftarrow$
 \end{itemize}
 Using symbols from our sets chapter,
-\[\text{Let } R = \{x | x \not \in x\}\text{. Then }  R\in R\iff R\not \in R. \text{This is a } \rightarrow \leftarrow\]
+\[\text{Let } R = \{x \mid x \not \in x\}\text{. Then }  R\in R\iff R\not \in R.\]
+This is the barber's paradox in set form. Bertrand Russell found it in
+1901, and it shook the foundations of mathematics. Mathematicians fixed it
+by making the rules for building sets stricter, so that ``the set of all
+sets that do not contain themselves'' is simply not allowed.
 
 \subsection{Simpson's Paradox}
-Simpson's Paradox is a phenomenon in statistics where a trend or correlation that appears in several different groups of data can disappear or reverse when the groups are combined. Let's look at an example.\index{Simpson's paradox}
+Simpson's Paradox is a phenomenon in statistics where a trend or correlation that appears in several different groups of data can disappear or reverse when the groups are combined. Let us look at an example.\index{Simpson's paradox}
 
-Imagine we are comparing two hospitals, Hospital A and Hospital B, for their success rates in completing an operational surgery. We have the following data:
+Imagine you are choosing between two hospitals for an operation, and you
+compare their survival rates. We have the following data:
 
 \begin{table}[!ht]
     \centering
@@ -59,7 +80,7 @@ Imagine we are comparing two hospitals, Hospital A and Hospital B, for their suc
     \end{tabular}
 \end{table}
 
-From this, we see that the same number of patients were treated at both hospitals, but Hospital B has a higher survival rate. This would lead us to think that Hospital B is the better hospital, due to money, education of doctors, or whatever factor. However, let's look at the data when separated by those with \textit{high-risk} surgeries versus those with \textit{low-risk} surgeries.
+From this, we see that the same number of patients were treated at both hospitals, but Hospital B has a higher survival rate. Hospital B looks better. However, let us look at the data when separated by those with \textit{high-risk} surgeries versus those with \textit{low-risk} surgeries.
 
 Patients that had low-risk surgeries, or were in good health, are given by following data
 \begin{table}[H]
@@ -82,9 +103,9 @@ And those with poor health and high-risk surgeries:
     \end{tabular}
 \end{table}
 
-Looking at the data based on the health categorization, Hospital A is actually better in both categories. This ``paradox'' occurs due the unaccounted, \textbf{independent variable}: the incoming health of the patient. Hospital A took on the harder cases (90\% of their patients are high-risk). Hospital B, although it initially was thought to be the better hospital, mainly took on those with good health (90\% were low-risk).
+Looking at the data based on the health categorization, Hospital A is actually better in both categories. This ``paradox'' occurs because of an unaccounted \textbf{confounding variable}: the incoming health of the patient. Hospital A took on the harder cases (90\% of their patients are high-risk). Hospital B, although it initially was thought to be the better hospital, mainly took on those with good health (90\% were low-risk).
 
-For fun, let's plot this using pandas and matplotlib libraries in Python. The code is as follows:
+For fun, let us plot this using the pandas, matplotlib, and seaborn libraries in Python. The code is as follows:
 \begin{minted}{python}
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -119,7 +140,7 @@ ax2.set_title('Total (B Wins)')
 plt.tight_layout()
 plt.show()
 \end{minted}
-This creates two bar plots with opposing regression lines:
+This creates two bar plots whose trends point in opposite directions:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{hospitals.png}
@@ -127,26 +148,64 @@ This creates two bar plots with opposing regression lines:
     \label{fig:simpsons}
 \end{figure}
 \subsection{Monty Hall Problem}
-Watch the following video the introduce the \href{https://www.youtube.com/watch?v=cXqDIFUB7YU}{Monty Hall Problem}.\index{Monty Hall Problem}
+This video introduces the \href{https://www.youtube.com/watch?v=cXqDIFUB7YU}{Monty Hall Problem}.\index{Monty Hall Problem}
 
 The problem is as follows:
 \begin{theorem}
-    You are on a game show and are given the choice of three doors. Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, ``Do you want to switch to door No. 2?'' Is it to your advantage to switch your choice?
+    You are on a game show and are given the choice of three doors. Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what is behind the doors, opens another door, say No. 3, which has a goat. He then says to you, ``Do you want to switch to door No. 2?'' Is it to your advantage to switch your choice?
 \end{theorem}
 
-ADD: an adobe illustration of the doors and the host opening one of them, and the probabilities of each door having the car after the host opens one.
+Two doors are left, so it seems like a 50/50 coin flip. It is not. You
+should switch, and switching wins $\frac{2}{3}$ of the time.
 
-Your choice of Door No. 1 has a 1/3 chance of being the car and a 2/3 chance of being a goat. When the host opens Door No. 3, which has a goat, the probability of each door changes! Even though there are two doors left, the probability is \textit{50/50}. The probability of the car being behind Door No. 1 remains 1/3, while the probability of the car being behind Door No. 2 \emph{increases to 2/3}. Therefore, it is to your advantage to switch to Door No. 2, as it has a higher probability of containing the car.
+Here is why. When you first pick, you have a $\frac{1}{3}$ chance of
+picking the car and a $\frac{2}{3}$ chance of picking a goat. Now think
+about what the host does. He knows where the car is, and he always opens a
+goat door that you did not pick.
+\begin{itemize}
+\item If you picked the car ($\frac{1}{3}$ of the time), switching loses.
+\item If you picked a goat ($\frac{2}{3}$ of the time), the host must open
+      the \emph{other} goat door, so the remaining door has the car.
+      Switching wins.
+\end{itemize}
+The host's choice is not random, and that is what gives you information.
+When this puzzle appeared in a magazine in 1990, thousands of readers,
+including many with math PhDs, wrote in to insist the answer was wrong. It
+was right.
+
+\begin{Exercise}[title={Let the computer play}, label=par_monty]
+Write a Python program that plays the Monty Hall game 100,000 times with
+the always-switch strategy and prints the fraction of wins. Hint: switching
+wins exactly when your first pick was not the car.
+\end{Exercise}
+\begin{Answer}[ref=par_monty]
+\begin{minted}{python}
+import random
+
+wins = 0
+games = 100_000
+for _ in range(games):
+    car = random.randint(1, 3)
+    pick = random.randint(1, 3)
+    if pick != car:   # switching wins when the first pick was a goat
+        wins += 1
+print(wins / games)
+\end{minted}
+It prints a number close to 0.667 (for example, 0.6672).
+\end{Answer}
 
 
 \subsection{Birthday Problem}
-The birthday problem is a famous problem in probability and combinatorics. It goes as follows:
+\index{birthday problem}The birthday problem is a famous problem in probability and combinatorics. It goes as follows:
 \begin{theorem}
     In a group of $n$ people, what is the probability that at least two people share the same birthday?
 \end{theorem}
-The answer is often surprising to people because it is much higher than most people expect. Only $23$ people are needed to guarantee a \textit{majority}, where greater than $50\%$ chance that at least two people share a birthday. Let's prove this.
+With just 23 people, the chance that two share a birthday is better than
+50\%. (We ignore February 29 and assume every birthday is equally
+likely.) Let us prove it.
 
-Let $P(A)$ the probability that a group of $k$ people do \emph{not} share a birthday. Further, let $P(B) = \neg P(A)= 1 - P(A)$ be the probability that at least two people share a birthday. We want to find the smallest $k$ such that $P(B) > 0.5$, as this constitutes a majority.
+Let $P(A)$ be the probability that no two of $k$ people share a birthday,
+and let $P(B) = 1 - P(A)$ be the probability that at least two do. We want to find the smallest $k$ such that $P(B) > 0.5$, as this constitutes a majority.
 
 If there are only two people in a room(meaning $k=2$), the probability that there does not exist a shared birthday is $P(A) = \tfrac{364}{365}$, meaning the probability that there is a shared birthday is $P(B) = 1 - P(A) = \tfrac{1}{365}$. If there are three people in a room, the probability that there does not exist a shared birthday is $P(A) = \tfrac{364}{365} \cdot \tfrac{363}{365}$, meaning the probability that there is a shared birthday is $P(B) = 1 - P(A) = 1 - \tfrac{364}{365} \cdot \tfrac{363}{365}$.
 
@@ -166,11 +225,11 @@ Equivalently,
 
 Computing this product gives
 \[
-    P(A)\approx 0.5073 \quad \text{when } k=22,
+    P(A)\approx 0.5243 \quad \text{when } k=22,
 \]
 so
 \[
-    P(B)\approx 1-0.5073=0.4927<0.5.
+    P(B)\approx 1-0.5243=0.4757<0.5.
 \]
 But for $k=23$,
 \[
@@ -181,13 +240,29 @@ so
     P(B)\approx 1-0.4927=0.5073>0.5.
 \]
 
-Thus, the smallest number of people needed so that the probability of at least two sharing a birthday exceeds $50\%$ is $23$ people. Much smaller than most people expect!
+So 23 people is the smallest group with a better-than-even chance of a
+shared birthday. Why so few? Because with 23 people there are
+$\frac{23 \times 22}{2} = 253$ different \emph{pairs} of people, and any
+one of those pairs could match.
+
+\begin{Exercise}[title={Your class}, label=par_birthday]
+A class has 30 students. What is the probability that at least two share a
+birthday? Use a calculator or a short Python loop.
+\end{Exercise}
+\begin{Answer}[ref=par_birthday]
+$$1 - \frac{365}{365} \cdot \frac{364}{365} \cdots \frac{336}{365} \approx 0.706$$
+About 71\%. With 50 people, it is about 97\%, and with 70 people it is
+99.9\%.
+\end{Answer}
 
 \subsection{Zeno's Paradoxes}
-Zeno was a Greek philosopher who is famous for his paradoxes, who created challenging thought experiments and paradoxes that question our understand of motion, space, physics, and time. Zeno's paradoxes are often used to illustrate the concept of \textit{infinity} and the nature of space and time.
+\index{Zeno's paradoxes}Zeno of Elea was a Greek philosopher, around 450
+BCE, famous for thought experiments that question our understanding of
+motion, space, and time. Zeno's paradoxes are often used to illustrate the concept of \textit{infinity} and the nature of space and time.
 
 \subsubsection{The Dichotomy Paradox}
-His most famous paradoxes include is called the \textit{Dichotomy Paradox}, which he stated as
+His most famous is the \index{dichotomy paradox}\textit{Dichotomy
+Paradox}:
 \begin{quote}
     That which is in locomotion must arrive at the half-way stage before it arrives at the goal.
 \end{quote}
@@ -195,7 +270,10 @@ This paradox suggests that before an object can reach its destination, it must f
 
 So then, how is motion possible?
 
-The resolution to Zeno's paradoxes lies in the concept of \newterm{limits} and \newterm{infinite series}. In modern mathematics, we understand that an infinite number of steps can be completed in a finite amount of time if the steps get smaller and smaller. If we consider the remaining distance to be covered as $1 \, \mathrm{unit}$, the first step is $\frac{1}{2}$, the second step is $\frac{1}{4}$, the third step is $\frac{1}{8}$, and so on. The total distance covered after $n$ steps can be expressed as a \newterm{geometric series}:
+The resolution is that an infinite number of steps can add up to a finite
+total if the steps shrink fast enough. (In the calculus volumes, this idea
+becomes \newterm{limits} and \newterm{infinite series}.) Each step also
+takes less time than the one before, so the total time is finite, too. If we consider the remaining distance to be covered as $1 \, \mathrm{unit}$, the first step is $\frac{1}{2}$, the second step is $\frac{1}{4}$, the third step is $\frac{1}{8}$, and so on. The total distance covered after $n$ steps can be expressed as a \newterm{geometric series}:
 \[
     S = \sum_{n=1}^{\infty} \frac{1}{2^n} = 1
 \]
@@ -206,42 +284,82 @@ $$\frac{1}{2}S = \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \cdots$$
 $$S - \frac{1}{2}S = \frac{1}{2}$$
 $$\frac{1}{2}S = \frac{1}{2}    \quad \implies \quad    S = 1$$
 
+All the infinitely many steps add up to exactly the whole distance.
+
+\begin{Exercise}[title={Another infinite sum}, label=par_zeno]
+Use the same trick to find
+$S = \frac{1}{3} + \frac{1}{9} + \frac{1}{27} + \cdots$.
+\end{Exercise}
+\begin{Answer}[ref=par_zeno]
+Multiply by $\frac{1}{3}$: $\frac{1}{3}S = \frac{1}{9} + \frac{1}{27} +
+\cdots$. Subtract: $S - \frac{1}{3}S = \frac{1}{3}$, so $\frac{2}{3}S =
+\frac{1}{3}$ and $S = \frac{1}{2}$.
+\end{Answer}
+
 
 \section{Physics and Time Travel Paradoxes}
-A lot of what we have touched are counter-intuitive mathematical equations. Now we can look at some physics paradoxes and thought experiments that may mess with your brain a bit. A lot of these actually involve a concept called superposition.
+Now for some physics paradoxes and thought experiments that may mess with
+your brain a bit.
 
 \subsection{Schrödinger's Cat}
-Erwin Schrödinger was a physicist with thoughts on quantum superposition, subatomic events, and early quantum theory. This thought experiment arose in a discussion with Albert Einstein, Niels Bohr, and Werner Heisenberg, all physicists from Europe working towards quantum development.
+Erwin Schrödinger was one of the founders of quantum mechanics. In 1935,
+in letters with Albert Einstein, he invented a thought experiment to show
+how strange the theory becomes when you apply it to everyday objects.
 
 The thought experiment is as follows:
 \begin{quote}
-    Schrödinger imagined placing a cat in a sealed box with a device triggered by a quantum event (such as the decay of an atom, which depends on an electron-level process, or radioactive gunpowder, which Einstein preferred). The event has a 50\% chance of happening and a 50\% chance of staying dormant. If the event occurs, the cat dies; if not, it lives. However, you do not know whether the cat is alive or not until the box is opened. Schrödinger states that, the moment before the box is opened, the cat is equal parts dead and alive.
+    Schrödinger imagined placing a cat in a sealed box with a device triggered by a quantum event (such as the decay of a radioactive atom). The event has a 50\% chance of happening and a 50\% chance of staying dormant. If the event occurs, the cat dies; if not, it lives. However, you do not know whether the cat is alive or not until the box is opened. According to quantum mechanics, until the box is opened, the cat is in a
+mix of dead and alive.
 \end{quote}
-Why is this? Well, the cat, in Schrödinger's world, is theoretically governed by quantum physics and quantum position. \textbf{Quantum Superposition} states that an object, usually an electron, exists in a \textbf{superposition of states}, such that it occupies multiple positions or energy states until it is measured. Before measurement, the electron is not in one definite state; instead, it is described by a wavefunction that encodes multiple possibilities simultaneously. If electrons are fired at a barrier with two narrow slits and then detected on a screen behind it, they produce an interference pattern, one with alternating covered and uncovered regions. This is characteristic of wave behavior, showing that electrons are travelling in waves. Further, when we talk about nonpolar covalent bonds, the electrons are present in both atoms simultaneously. \index{superposition}\index{Schrödinger's cat}
+Why? In quantum mechanics, a tiny particle like an electron can be in a
+\textbf{superposition} of states: it does not have one definite position
+or energy until it is measured. Instead, it is described by a
+\emph{wavefunction} that holds all the possibilities at once. This is not
+just theory. Fire electrons one at a time at a barrier with two narrow
+slits, and the screen behind slowly fills with bright and dark bands, an
+interference pattern that only waves make. Each electron somehow goes
+through both slits.
 
-We say that the cat is in a superposition of both equally possible dead or alive states. There is a great video on Schrödinger's Cat and its relation to quantum physics by TedEd in your digital resources, check it out!
+The atom in the box is in a superposition of decayed and not decayed. If
+the cat's fate is tied to the atom, the cat must be in a superposition too.
+Schrödinger thought that was absurd, and that was his point: something
+about how quantum rules connect to the everyday world needed explaining.
+Physicists still debate what really happens. \index{superposition}\index{Schrödinger's cat}
+
+There is a great TED-Ed video on Schrödinger's cat in your digital
+resources.
 
 \subsubsection{Arrow Paradox}
-A very similar problem on superposition of an arrow comes from Zeno (who we talked about earlier) is the \textit{Arrow Paradox}:\index{arrow paradox}
+Zeno has another paradox about motion, the \textit{Arrow Paradox}:\index{arrow paradox}
 \begin{quote}
     If everything when it occupies an equal space is at rest at that instant of time, and if that which is in locomotion is always occupying such a space at any moment, the flying arrow is therefore motionless at that instant of time and at the next instant of time but if both instants of time are taken as the same instant or continuous instant of time then it is in motion.
 \end{quote}
 
-In short, this is a fancy way of saying that if we look at an arrow in flight at any single instantaneous moment, it will appear to be at rest, and it occupies a specific position in space. In this tiny instant of time (recall $dt$ from calculus), the arrow is neither moving to where it is, nor to where it is not. This seems to suggest that the arrow is motionless at every instant of time, and therefore, it cannot be in motion.
+In short: take a snapshot of a flying arrow. In that single instant, it
+sits in one spot, not moving. But the flight is made of nothing but
+instants. So when does it move?
 
-However, the solution to this paradox lies in the concept of limits. Motion is not just about being at a specific position at an instant, but about the change in position over time. The arrow's motion can be understood as a continuous process, where its position changes smoothly over time, even though at any single instant it may appear to be at rest, just as single points on a curve can be thought of as having no length, but the curve itself can have a infinite length.
+The resolution is that motion is not something that happens \emph{in} an
+instant; it is the change in position \emph{across} instants. Velocity is
+the change in position divided by the change in time, and you need two
+moments to measure it. Each instant is like a single point on a line: it
+has no length, yet the line made of points does. In calculus, you will
+learn how to talk about speed \emph{at} an instant, using limits.
 
 \subsection{Time Travel Paradoxes}\index{time travel paradoxes}\index{grandfather paradox}
-While we know (as of writing this chapter) that time travel is not real, it is fun to think about and arises in pop culture such as movies a lot! Time travel paradoxes are thought experiments which arise from the contradiction that arises within time travel or the foreknowledge of the future. Time travel raises logical problems because it allows events to influence their own causes.
+As far as anyone knows, traveling back in time is impossible, but it shows
+up in movies all the time. Time travel raises logical problems because it
+lets events change their own causes.
 
-The most well-known example is the \textbf{grandfather paradox}. Suppose a person travels back in time and prevents their grandfather from having children killing their grandfather. This would mean the time traveler is never born, as one of the time traveler's parents are never conceived. The time traveler, then, could not have gone back in time to interfere in the first place. The sequence of events becomes logically inconsistent: the same action both must and must not occur. This is a contradiction ($\rightarrow \leftarrow$), as we talked about, and many people use this as an argument to prove that time travel cannot logically exist.
+The most well-known example is the \textbf{grandfather paradox}. Suppose a person travels back in time and prevents their grandfather
+from ever having children. This would mean the time traveler is never born, as one of the time traveler's parents are never conceived. The time traveler, then, could not have gone back in time to interfere in the first place. The sequence of events becomes logically inconsistent: the same action both must and must not occur. This is a contradiction ($\rightarrow \leftarrow$), as we talked about, and many people use this as an argument to prove that time travel cannot logically exist.
 
 Another time travel paradox is preventing Abraham Lincoln's assassination. Imagine a time traveler goes back to 1865 and prevents Lincoln's assassination. At first glance, this seems like a straightforward intervention. However, if Lincoln survives, the historical conditions that motivated the time traveler to go back, such as learning about the assassination in the first place, no longer exist. This creates a contradiction: if Lincoln was never assassinated, why would the traveler have made the journey to stop it?
 
 
 More generally, these are consistency paradoxes, where altering the past creates contradictions in the timeline. In physics, these scenarios contradict our existing knowledge, meaning either constraints exist to preserve consistency, or our understanding of time and causality is incomplete.
 \section{Architecture and Geometry Paradoxes}
-Architecture and geometric paradoxes come with their own set of paradoxes, often warming visual perception and challenging our understanding of space and geometry.
+Some paradoxes trick your eyes instead of your logic.
 \subsection{Penrose Steps}\index{penrose steps}
 % could be wrapfig
 \begin{figure}[H]
@@ -251,7 +369,7 @@ Architecture and geometric paradoxes come with their own set of paradoxes, often
     \caption{Penrose steps diagram from Wikipedia - By Sakurambo - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=794844}
     \label{fig:penrose}
 \end{figure}
-The penrose steps are an architectural paradox that creates the illusion of an infinite staircase.\footnote{Christopher Nolan famously reconstructed this illusion in his film Inception (2010). If you are interested, the scene can be found \href{https://www.youtube.com/watch?v=BjLzIfDpGhs}{here} and behind the scenes \href{https://youtu.be/HzdK_JC2BE4}{here}.} The steps appear to be continuously ascending or descending, but in reality, they form a closed loop. This paradox is achieved through clever use of perspective and geometry, creating an optical illusion that tricks the viewer's perception of space.
+The Penrose steps are an impossible figure that creates the illusion of an infinite staircase.\footnote{Christopher Nolan famously reconstructed this illusion in his film Inception (2010). If you are interested, the scene can be found \href{https://www.youtube.com/watch?v=BjLzIfDpGhs}{here} and behind the scenes \href{https://youtu.be/HzdK_JC2BE4}{here}.} The steps appear to be continuously ascending or descending, but in reality, they form a closed loop. This paradox is achieved through clever use of perspective and geometry, creating an optical illusion that tricks the viewer's perception of space.
 
 
 \subsection{Mobius Strip}\index{mobius strip}
@@ -299,7 +417,16 @@ The penrose steps are an architectural paradox that creates the illusion of an i
     \label{fig:mobius}
 \end{figure}
 
-The mobius strip is a piece of paper is a \textit{surface} that is said to have one side and one boundary. It is formed most easily (you can do this at home!) by taking a strip of paper, giving it a half twist, and then taping the ends together. The resulting shape is a non-orientable surface, meaning that it has only one side and one edge. If you were to start drawing a line down the middle of the strip, you would find that you return to your starting point after traversing the entire length of the strip, without ever lifting your pen. There is no \textit{inside} or \textit{outside} to the mobius strip.
+A M\"obius strip is a surface with only one side and only one edge. You
+can make one right now: take a strip of paper, give it a half twist, and
+tape the ends together. Draw a line down the middle without lifting your
+pen. You will cover \emph{both} sides of the paper, traveling twice the
+length of the strip, before you return to where you started. There is no
+inside or outside.
+
+Now try this: cut along the line you drew. You might expect two strips.
+You get one long strip with two full twists. (Try cutting \emph{that} one
+down the middle, too.)
 
 If you are curious, the mobius strip is defined by the following parametric equations:
 $$\mathbf{r}(u,v) =
@@ -308,13 +435,30 @@ $$\mathbf{r}(u,v) =
     (1 + v\cos \tfrac{u}{2})\sin u,\;
     v\sin \tfrac{u}{2}
     \bigr)$$
-where $u$ ranges from $0$ to $2\pi$ and $v$ ranges from $-1$ to $1$. Do not worry, this is not something you need to know how to do at all! We will cover parametric in a future workbook.
+where $u$ ranges from $0$ to $2\pi$ and $v$ ranges from $-1$ to $1$. Do not worry about this yet; you will learn parametric equations in a
+later volume.
 \subsection{Coastline paradox}
-The \newterm{coastline paradox} highlights an issue in measuring irregular geometric objects; their length is changes under changes in measurement scale. Unlike smooth curves in classical Euclidean geometry, natural coastlines exhibit intricate, self-similar structure across many scales. As the measuring unit becomes smaller, more of this fine structure is resolved, and the total measured length increases. This originated in the 1950's when a Lewis Fry Richardson was researching how border lengths could effect the likelihood of war, and there was a discrepancy between the Portuguese measurement of Spain's border compared to the Spanish. Simply, the shorter the unit (or ruler), the longer the measured border; the Spanish and Portuguese geographers were simply using different rulers. However, as the ``ruler length'' approaches zero, the length grows infinity, rather than approaching a finite value!
+How long is the coast of Britain? It depends on your ruler. That is the
+\newterm{coastline paradox}\index{coastline paradox}. Measure with a
+100 km ruler, and you skip over every bay. Use a 1 km ruler, and you follow
+the bays, but skip the coves. Use a 1 m ruler, and you trace every rock.
+Each smaller ruler finds more wiggles, so the measured length keeps
+growing.
 
-ADD: Diagram from tikz of coastline
+Lewis Fry Richardson noticed this in the 1950s while studying whether the
+length of a border between two countries affects their chances of going
+to war. He found that Spain and Portugal reported very different lengths
+for their shared border. Neither was wrong: they had used different
+rulers. For a smooth curve, shrinking the ruler makes the measurement
+settle down to one answer. For a coastline, it never settles; the length
+just keeps growing.
 
-This phenomenon contradicts with calculus and its ideas on the definition of arc length. In calculus, the length of a curve ($y = f(x)$) over an interval is defined as the definite integral $\int f(x)\, dx$ between two points, which often leads to a finite value for smooth or simple functions. The coastline paradox demonstrates that this limiting process fails for highly irregular sets; the coastlines are not ``smooth'' enough. Consequently, arc length integrals cannot be utilized, and alternative methodologies are used to find the length of these areas, termed fractal surface perimeters.
+
+In calculus, you will learn to find the exact length of smooth curves. A
+coastline is not smooth: zoom in, and it looks just as wiggly as before.
+Shapes like this are called \newterm{fractals}, and mathematicians measure
+them by how quickly their length grows as the ruler shrinks, a number
+called the \emph{fractal dimension}.
 
 %  \subsection{Ship of Theseus}
 % leaving this out for now but could add in future - Arjan, April 2026
@@ -322,18 +466,29 @@ This phenomenon contradicts with calculus and its ideas on the definition of arc
 \section{Computer Science Paradoxes and Laws}
 %ADD: Intro to computer science paradoxes
 \subsection{Moravec's Paradox}
-\newterm{Hans Moravec}, a pioneer in robotics and Artificial Intelligence, wrote in 1988,
+\index{Moravec's paradox}\newterm{Hans Moravec}, a pioneer in robotics and Artificial Intelligence, wrote in 1988,
 \begin{quote}
     it is comparatively easy to make computers exhibit adult level performance on intelligence tests or playing checkers, and difficult or [near] impossible to give them the skills of a one-year-old when it comes to perception and mobility
 \end{quote}
 
-What he means by this statement, referred to as the \newterm{Moravec's Paradox} is that tasks that are \emph{easy} for humans are \emph{hard} for machines, and tasks that are \emph{hard} for humans are relatively \emph{easy} for machines.
+This is \newterm{Moravec's paradox}: tasks that are \emph{hard} for
+humans are often \emph{easy} for machines, and tasks that are \emph{easy}
+for humans are often \emph{hard} for machines.
 
-A good example of this is chess. Chess robots have been being developed since the 1980's, and in 1997, a machine called Deep Blue by IBM defeated a world champion grandmaster in chess. Typically, chess has been a level of skill attributed to the most intelligent humans. However, contrary to what would arbitrarily think, chess is one of the easiest tasks for a computer to do.
+Chess is the classic example. We think of chess as a sign of great
+intelligence, yet in 1997 IBM's Deep Blue beat the world champion, Garry
+Kasparov. Multiplying huge numbers, searching millions of possibilities,
+and solving many kinds of equations turned out to be easy for computers,
+too. But for decades, no robot could fold laundry, walk across a messy room,
+or recognize a friend's face in a crowd, things a young child does without
+thinking.
 
-Along with chess comes proving mathematical theorems, brute-force algorithms, multiplying large numbers, or even integration, all of which were generally thought of as difficult tasks to humans but for computers are the most simple. Why is this the case? Well, simply put, humans have skills that have naturally become second nature, or unconscious, to us, like movement, recognizing a friend's face, settings goals, etc. Humans naturally want to automate that which is not in tune with this unconscious behavior, like solving integrals, identifying the best path to hit all capitals of the United States, or even just take the best billiards shot.
-
-Intuitively, this means the best way for humans to learn is to practice cognitive skills like reading carefully, practicing problems, or explaining ideas, in order to continue gaining mastery through repetition. Recognizing patterns or spotting errors takes practice and is harder to master for humans, but it takes human-centric skills to maintain and develop.
+Why? Moravec's explanation is evolution. Seeing, moving, and grasping have
+been polished by hundreds of millions of years of evolution, so they feel
+effortless to us; the hard work happens out of sight. Abstract reasoning
+like chess and algebra is new, so we do it slowly and consciously, and it
+feels hard. Computers have no such history, so ``hard'' and ``easy'' mean
+something completely different to them.
 \subsection{Neural Scaling Law}
 Imagine you are working for a factory that is producing pencils. With a single, static, automatic assembly line, you make pencils at a rate of $100$ pencils per hour. By adding a second assembly line, you are now able to make pencils at $200$ pencils per hour, double the rate it was previously. This shows that generally, production scales \emph{linearly}.
 
@@ -357,7 +512,18 @@ However, not all systems scale this cleanly. Suppose instead that each additiona
         \end{axis}
     \end{tikzpicture}
 \end{wrapfigure}
-Neural scaling laws behave more like this second scenario. Say you have a neural network model with a set of training params $N,D,C,L$, which stand for number of parameters, size of dataset, cost of computing, and a loss function, respectively. As you increase a model's size, the amount of data it sees, or the compute used to train it, performance improves steadily, not linearly. Early increases lead to large gains, while later increases produce smaller, more incremental improvements. Importantly, the improvement is still predictable and consistent, which is why researchers can estimate how much better a system will perform if they scale it up. Consequently, just overloading the model with a higher, almost infinite, magnitude of parameters will lead to a plateau of performance. The graph of performance vs parameters looks similar to an upside-down hockey stick, it scales really well for a while when parameters are being increased up to a point, but then it gradually decreases in rate of improvement of time.
+\index{neural scaling laws}AI models like the ones behind chatbots
+behave more like this second factory. Researchers track four quantities:
+the number of parameters in the model ($N$), the size of the training data
+($D$), the amount of computing used to train it ($C$), and the model's
+error, called the \emph{loss} ($L$). As $N$, $D$, or $C$ grows, the loss
+shrinks, but with diminishing returns: each tenfold increase buys a
+smaller improvement than the last. The surprising part is how
+\emph{predictable} it is. The loss follows a smooth power law, the kind of
+curve you straightened with a log-log plot in the exponentials chapter.
+So researchers can test small models and predict how well a giant one will
+do before spending millions of dollars to build it. These predictable
+patterns are called \newterm{neural scaling laws}.
 
 %FIXME upside-down hock stick
 

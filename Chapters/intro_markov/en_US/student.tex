@@ -1,15 +1,15 @@
 \chapter{Introduction to Markov Chains}
 \section{Markov Chains}
-Today was a \texttt{Sunny} day. However, I would like to know if it will be \texttt{Sunny} tomorrow. These are two categorical states of the weather.
+Today was a \texttt{Sunny} day. Will tomorrow be \texttt{Sunny} too? Your phone's keyboard faces a similar question every time it guesses your next word, and Google faced it when it decided which web pages matter most. All three use the same tool. These are two categorical states of the weather.
 
 How can I predict the weather? In this case, we are trying to determine values of \emph{uncertainty}. We are uncertain of the weather the next day, or even, the weather in the next 5 days. How many days previously do I need to know the weather to make an accurate prediction?
 
-This is the question that Russian mathematician Andrey Markov curious about:
+This is the question that Russian mathematician Andrey Markov was curious about:
 \begin{quote}
     How much history of a state do you need to predict a current state?
 \end{quote}
 
-His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states. Generally, this chapter will deal with \newterm{discrete-time Markov chains}, where the process evolves in discrete time steps. We will discuss continuous-time Markov chains in a later chapter.
+His discovery was the following: you only need to know the \text{current state} to predict the \textit{next state}. This is now known as the \index{Markov property}\newterm{Markov property}. We say a process is \newterm{Markovian} if, given the current state, knowledge of past states provides no additional information about the next state. This requires that the future state depends only on the present state and not on the sequence of events that preceded it. In other words, the process has no memory of past states. Generally, this chapter will deal with \newterm{discrete-time Markov chains}, where the process evolves in discrete time steps. 
 
 Suppose there are 3 days: Yesterday, Today, and Tomorrow. Information about Yesterday's weather does not provide any additional information about Tomorrow's weather once we know Today's weather.
 
@@ -21,7 +21,7 @@ $$
 
 While weather, in reality, is not perfectly Markovian, this property allows us to model and predict it using a simplified framework. In a Markov chain, we can represent the states (\texttt{Sunny}, \texttt{Rainy}, \texttt{Cloudy}) and the probabilities of transitioning from one state to another.
 
-Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Notice the special $S$ in the notation $\mathcal{S}$, which stands for \textit{state space}.
+Suppose we classify the weather as either \texttt{Sunny} or \texttt{Rainy}. We would call the \index{state space}\newterm{state space} $\mathcal{S} = \{\texttt{Sunny}, \texttt{Rainy}\}$. Notice the special $S$ in the notation $\mathcal{S}$, which stands for \textit{state space}.
 
 Based on historical observations, we might estimate the following probabilities:
 
@@ -32,7 +32,7 @@ Based on historical observations, we might estimate the following probabilities:
 
 These probabilities completely describe our Markov chain. Once we know today's weather, we can predict the probabilities for tomorrow's weather without needing to know what happened last week.
 
-The states and transitions probabilities can be represented using a \newterm{Markov chain}, also called a \newterm{state diagram},(which looks similar to a graph!):
+The states and transitions probabilities can be represented using a \index{Markov chain}\newterm{Markov chain}, also called a \newterm{state diagram},(which looks similar to a graph!):
 
 \begin{figure}[H]
     \centering
@@ -69,28 +69,14 @@ where $X_0, X_1, \ldots, X_n$ are states of a given process at times $0, 1, \ldo
 
 As the number of states increases, the Markov chain can become more complex. However, the Markov property still holds, allowing us to model and analyze processes in the form of a matrix of transition probabilities. This matrix, known as the \newterm{transition matrix}, captures the probabilities of moving from one state to another in a compact form.
 
-% Takes up entire page
 \begin{Exercise}[title={Frank's Hot Dog Chain}, label={ex:markov_1}]
     Frank is opening a new hot dog stand. Depending on how much they like his hot dogs, new customers have a chance of becoming a regular customer. If they do not like them, they may become an inactive customer.
 
-    A new customer has a:
-    \begin{itemize}
-        \item 40\% chance of remaining new,
-        \item 50\% chance of becoming regular,
-        \item 10\% chance of becoming inactive.
-    \end{itemize}
-    A regular customer has a:
-    \begin{itemize}
-        \item 10\% chance of reverting to new,
-        \item 80\% chance of staying regular,
-        \item 10\% chance of becoming inactive.
-    \end{itemize}
-    An inactive customer has a:
-    \begin{itemize}
-        \item 20\% chance of returning as new,
-        \item 30\% chance of becoming regular,
-        \item 50\% chance of remaining inactive.
-    \end{itemize}
+    A new customer has a 40\% chance of remaining new, a 50\% chance of becoming regular, and a 10\% chance of becoming inactive.
+
+    A regular customer has a 10\% chance of reverting to new, an 80\% chance of staying regular, and a 10\% chance of becoming inactive.
+
+    An inactive customer has a 20\% chance of returning as new, a 30\% chance of becoming regular, and a 50\% chance of remaining inactive.
 
     Assuming the $X_n$ are the states at of the $n$-th visit to the store (such that $X_0 \implies \text{First Visit}$),
     \begin{enumerate}
@@ -148,7 +134,7 @@ As the number of states increases, the Markov chain can become more complex. How
 
 \section{Transition Matrices}
 
-A \newterm{transition matrix} (also sometimes called a \newterm{stochastic matrix}) records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
+A \index{transition matrix}\newterm{transition matrix} (also sometimes called a \newterm{stochastic matrix}) records the probability of moving from one state to another in a Markov chain. Each row corresponds to the \emph{current state}, and each column corresponds to the \emph{next state}.
 
 A transition matrix $P$ for a Markov chain with $n$ states can be represented as follows:
 \[
@@ -258,7 +244,7 @@ where $P^k_{ij}$ is the entry in row $i$ and column $j$ of the matrix $P^k$. Thi
 \[
     \text{Probability Distribution after $k$ steps} = P^{k}
 \]
-Note that this is only possible square matrices, which means the number of states must be the same for the current and next state. This is a common assumption in Markov chains, as it allows us to model processes where the set of possible states does not change over time.
+Note that only square matrices are possible here, which means the number of states must be the same for the current and next state. This is a common assumption in Markov chains, as it allows us to model processes where the set of possible states does not change over time.
 \begin{Exercise}[title={Chemical Change}, label={ex:markov_3}]
     A chemical changes colors approximately every 30 minutes. The state space of this chemical is $\mathcal{S} = \{\text{Green}, \text{Blue}\}$.
 
@@ -306,25 +292,26 @@ Note that this is only possible square matrices, which means the number of state
     So $$P^3_{\text{Blue},\text{Green}} = P(X_{n+3}=\text{Green}\mid X_n=\text{Blue})=0.111$$, which means that if the chemical is currently blue, there is an 11.1\% chance it will be green after 90 minutes.
 \end{Answer}
 \section{Steady State Distribution}
-For many Markov chains, these probabilities eventually stabilize (recall \textbf{Law of Large Numbers}, $P^k$ as $k \rightarrow \infty$) as we request more and more transitions or future states (recall Law of Large Numbers). That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
+For many Markov chains, these probabilities eventually stabilize as $k \rightarrow \infty$. That is, after a large number of transitions, the proportion of the probability of each state approaches a fixed value. This long-run behavior is known as the \index{steady-state distribution}\newterm{steady-state distribution} or \newterm{equilibrium distribution} of the Markov chain.
 
-A steady-state distribution has a special property: applying the transition matrix does not change it. If $\mathbf{x}$ is a steady-state vector and $P$ is the transition matrix, then
+A steady-state distribution has a special property: applying the transition matrix does not change it. Because each \emph{row} of $P$ describes where you go \emph{from}, we write a distribution as a row vector $\pi$ and multiply on the left. If $\pi$ is a steady-state distribution, then
 
 \[
-    P\mathbf{x}=\mathbf{x}.
+    \pi P = \pi.
 \]
 
-In other words, once the chain reaches equilibrium, the probabilities remain unchanged from one time step to the next. This equation is also the eigenvector equation with eigenvalue $1$. Therefore, steady-state distributions can be found by determining the eigenvector corresponding to the eigenvalue $1$ and then normalizing its entries so that they sum to $1$.
+In other words, once the chain reaches equilibrium, the probabilities remain unchanged from one time step to the next. Transposing gives $P^T \pi^T = \pi^T$: this is the eigenvector equation for $P^T$ with eigenvalue $1$. So steady-state distributions can be found by finding that eigenvector and then scaling its entries so that they sum to $1$.
+
+\textbf{Worked example.} For the weather chain, let $\pi = (s, r)$. Then $\pi P = \pi$ says $0.8s + 0.4r = s$, so $0.4r = 0.2s$, or $s = 2r$. Since $s + r = 1$, $\pi = \left(\frac{2}{3}, \frac{1}{3}\right)$. In the long run, two days out of three are sunny, no matter what the weather is today.
 
 The following example illustrates how eigenvectors can be used to determine the long-run proportion of time a Markov chain spends in each state.
 
 \begin{Exercise}[title={Markov Chain in the form of Transition Matrix}, label={ex:transition_eigen}]
     \textit{This question is taken from an IB practice exam.}
-    A Markov Chain has two possible states, \texttt{A} and \texttt{B}. The transition matrix $P$ is given by:
+    A Markov Chain has two possible states, \texttt{A} and \texttt{B}. The transition matrix $P$ is given by (each row sums to 1):
     $$\begin{array}{c} P=
             \begin{bmatrix}
-                p   & 1-q \\
-                1-p & q
+                p & 1-p \\ 1-q & q
             \end{bmatrix}\end{array}$$
     Given one of the eigenvalues is $1$.
     \begin{enumerate}
@@ -337,35 +324,21 @@ The following example illustrates how eigenvectors can be used to determine the 
 \begin{Answer}[ref={ex:transition_eigen}]
 
     \begin{enumerate}
-        \item We want to solve for $P\mathbf{x}=\mathbf{x}$. Let $\begin{array}{c} \mathbf{x}=
-                      \begin{bmatrix}
-                          x \\
-                          y
-                      \end{bmatrix}\end{array}$. Then we have
-              $$\begin{bmatrix}
-                      p   & 1-q \\
-                      1-p & q
-                  \end{bmatrix}
+        \item A steady-state distribution is a row vector $\pi = (x, y)$ with $\pi P = \pi$. Then we have
+              $$\begin{bmatrix} x & y \end{bmatrix}
                   \begin{bmatrix}
-                      x \\
-                      y
+                      p & 1-p \\ 1-q & q
                   \end{bmatrix}
                   =
-                  \begin{bmatrix}
-                      x \\
-                      y
-                  \end{bmatrix}$$
-              Then this gives us the following system of equations:
+                  \begin{bmatrix} x & y \end{bmatrix}$$
+              This gives us the following system of equations:
               \begin{align*}
                   px+(1-q)y & =x \\
                   (1-p)x+qy & =y
               \end{align*}
-              $$x=1-q, \qquad y=1-p$$
-              Therefore, the eigenvector corresponding to the eigenvalue $1$ is
-              $$\begin{bmatrix}
-                      1-q \\
-                      1-p
-                  \end{bmatrix}$$
+              The first equation gives $(1-q)y = (1-p)x$, so $x = 1-q$ and $y = 1-p$ (up to scaling).
+              Therefore, the vector that solves $\pi P = \pi$ (up to scaling) is
+              $$\begin{bmatrix} 1-q & 1-p \end{bmatrix}$$
 
         \item Normalizing it gives us $(1-q)+(1-p)=2-p-q$. Therefore, the steady-state distribution is
               $$\begin{bmatrix}
@@ -379,11 +352,11 @@ The following example illustrates how eigenvectors can be used to determine the 
 \end{Answer}
 \section{Applications}
 % add a general application paragraph
-\subsection{PageRank}
+\subsection{PageRank}\index{PageRank}
 
 Imagine an individual browsing the internet. They start on a random webpage and click on links to navigate to other pages. The probability of moving from one webpage to another can be modeled as a Markov chain, where each webpage represents a state and the links between pages represent transitions with certain probabilities.
 
-In this case, each page is a \emph{state} and each link from one page to another represents a \emph{transition} with a certain probability. The transition probabilities can be determined based on the structure of the web, such as the number of links on each page and the likelihood of a user clicking on those links. If a page has more links, the probability of transitioning to any particular linked page is lower. For example, if page $i$ has 3 \newterm{outgoing links}, the probability of transitioning to each linked page would be $\frac{1}{3}$. The more links to a given page that exist (called \newterm{incoming links}), the more ``important'' that webpage is. Since these links are directed and each form a Markov Chain, recognize that this is \emph{directed graph}.
+In this case, each page is a \emph{state} and each link from one page to another represents a \emph{transition} with a certain probability. The transition probabilities can be determined based on the structure of the web, such as the number of links on each page and the likelihood of a user clicking on those links. If a page has more links, the probability of transitioning to any particular linked page is lower. For example, if page $i$ has 3 \newterm{outgoing links}, the probability of transitioning to each linked page would be $\frac{1}{3}$. The more links to a given page that exist (called \newterm{incoming links}), the more ``important'' that webpage is. The pages and links form a \emph{directed graph}.
 
 Now, if we want to find the long-run proportion of time a user spends on each webpage, we can use the \emph{steady-state distribution} of this Markov chain. The steady-state distribution will give us the PageRank of each webpage, which is a measure of its importance based on the structure of the web. A few issues arise in this model, such as the presence of \emph{dead ends} (pages with no outgoing links) and \emph{spider traps} (sets of pages that link to each other but not to the rest of the web). To find the ultimate page rank, we can use a modified version of the transition matrix that consists of a stabilized probability
 \[
@@ -397,13 +370,13 @@ There may be an additional \newterm{damping factor} ($d$) that is introduced to 
 \]
 where $J$ is the all-ones matrix and $n$ is the number of pages. This ensures the resulting chain is irreducible and aperiodic, so the steady-state distribution exists and is unique.
 \subsection{Hidden Markov Models and NLP}
-\newterm{Hidden Markov Models} (HMMs) are an expanded version of a Markov Process. In addition to having probabilities about transition from state to state, it also has influencing \newterm{observations}, called \newterm{emissions}. An emission is a \emph{visible} output generated by those the states in play, often which are hidden or not visible.
+\index{hidden Markov model}\newterm{Hidden Markov Models} (HMMs) are an expanded version of a Markov Process. In addition to having probabilities about transition from state to state, it also has influencing \newterm{observations}, called \newterm{emissions}. An emission is a \emph{visible} output generated by those the states in play, often which are hidden or not visible.
 
 Assume you have a patient in a hospital with two possible states: $\mathcal{S} = \{\text{Sick}, \text{Healthy}\}$. You cannot know the exact state at a current time with certainty. However, you have three observable factors: $\mathcal{O} = \text{no fever}, \text{fever}, \text{cough}$. You may also see the emission states symbolized with $\mathcal{E}$.
 
-For each state change observation (for this example, lets say once a day), you need both the transition matrix and the \newterm{emission matrix}. We will define the transition matrix $T$ and emission matrix $E$ as follows:
+For each state change observation (for this example, once a day), you need both the transition matrix and the \index{emission matrix}\newterm{emission matrix}. We will define the transition matrix $T$ and emission matrix $E$ as follows:
 % sick | healthy
-\[S = \begin{bmatrix}
+\[T = \begin{bmatrix}
         0.8 & 0.2 \\ % sick
         0.3 & 0.7 % healthy
     \end{bmatrix}, \qquad
@@ -447,7 +420,7 @@ while another is
 The goal of an HMM is to infer the most likely hidden state sequence that generated the observed emissions.
 
 % omitting since I believe it is not relevant to an intro chapter on such.
-While we won't discuss them in this book, there are algorithms such as the Forward and Viterbi algorithms that can track and guess that most likely future state given the states available, or most likely emissions given a set of states. These use \emph{dynamic programming}, a method that programming similar to excel processing.
+While we will not discuss them in this book, there are algorithms such as the Forward and Viterbi algorithms that can track and guess that most likely future state given the states available, or most likely emissions given a set of states. These use \emph{dynamic programming}, a method that breaks a problem into smaller overlapping pieces and stores the results.
 
 \subsection{Natural Language Processing}
 Another strong use of HMM is the basics of Natural Language Processing, and ultimately, predictive AI text, such as recommended words above your phone's keyboard.
@@ -460,9 +433,9 @@ The observations are the words themselves:
 
 $$\mathcal{O}=\{\text{dog},\text{runs},\text{fast},\dots \}$$
 
-Suppose we are given the sentence \texttt{dog runs fast}. The observations are known, but the hidden states are not. One possible hidden-state sequence is
+Suppose we are given the sentence \texttt{dog runs fast}. The observations are known, but the hidden states are not. One possible hidden-state sequence, with \texttt{fast} as an adjective, is
 
-$$\texttt{Noun}\rightarrow \texttt{Verb}\rightarrow \texttt{Adverb}$$
+$$\texttt{Noun}\rightarrow \texttt{Verb}\rightarrow \texttt{Adjective}$$
 
 The transition matrix models how likely one grammatical tag is to follow another. For example,
 
@@ -470,8 +443,8 @@ $$P(\text{Verb} \,| \,\text{Noun})=0.6$$
 
 might represent that verbs frequently follow nouns in the natural spoken language. The emission matrix models how likely a word is to be generated by a particular tag. For example,
 
-$$P(\texttt{dog}∣\text{Noun})=0.4,
-P(\texttt{runs}∣\text{Verb})=0.5$$
+$$P(\texttt{dog} \mid \text{Noun})=0.4,
+P(\texttt{runs} \mid \text{Verb})=0.5$$
 
 \begin{Exercise}[title={NLP Exercise}, label={ex:nlp}]
 

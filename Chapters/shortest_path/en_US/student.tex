@@ -1,4 +1,4 @@
-\chapter{Finding Shortest Paths}
+\chapter{Finding Shortest Paths}\index{shortest path}
 \section{Introduction — BFS revisited}
 
 We have seen BFS as a way to search graphs (or trees). It is a pretty simple process: 
@@ -9,7 +9,7 @@ We have seen BFS as a way to search graphs (or trees). It is a pretty simple pro
     \item keep going until either all nodes are marked \emph{visited} or a provided \emph{target node} is reached.
 \end{itemize}
 
-There is an issue here: what if the graph is weighted, and the paths are not equally weighted? For example, see this graph:
+There is an issue here: what if the \index{weighted graph}graph is weighted, and the paths are not equally weighted? For example, see this graph:
 \begin{figure}[H]
   \centering
 
@@ -36,9 +36,9 @@ There is an issue here: what if the graph is weighted, and the paths are not equ
 
 BFS, here, would prefer $A \rightarrow C$, since it has an edge count of $1$, whereas $A \rightarrow B \rightarrow C$ has an edge count of $2$. However, the true shortest path, by weight, is $A \rightarrow B \rightarrow C$, with a weight of $3$. 
 
-So BFS has a major limitation: it cannot handle weighted graphs. This is why we started it out on trees; typically trees do not have a set edge weight, so we were not limited by the order in which it expands. 
+So \index{BFS!limitations}BFS has a major limitation: it cannot handle weighted graphs. This is why we started it out on trees; typically trees do not have a set edge weight, so we were not limited by the order in which it expands. 
 
-To handle weighted graphs, we use a new algorithm that expands off of BFS, called \newterm{Dijkstra's Algorithm}. Dijkstra's Algorithm avoids the limitation of weights that BFS had by enqueueing the nodes in order of current shortest known distance.
+To handle weighted graphs, we use a new algorithm that expands off of BFS, called \index{Dijkstra's algorithm}\newterm{Dijkstra's Algorithm}. Dijkstra's Algorithm avoids the limitation of weights that BFS had by enqueueing the nodes in order of current shortest known distance.
 
 \section{Dijkstra's Algorithm}
 
@@ -184,7 +184,7 @@ marked with \$22.
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{step2.png}
 %     \caption{Marking each node with the cost to get to that city from the origin.}
-%     \label{fig:step2}
+%     \label{fig:step2-shortest_path-2}
 % \end{figure}
 
 Now, the cheapest unvisited node is San Diego, so you mark its
@@ -197,14 +197,14 @@ Bakersfield via San Diego.  Because the new route is cheaper, you
 change the price to the lower value.
 
 (What does it mean that a node is ``visited''?  If a node is marked
-visited, it is marked with a price that won't get any smaller.)
+visited, it is marked with a price that will not get any smaller.)
 
 You continue visiting the cheapest unvisited node until all the
 nodes have been visited.  Then you know every node has been marked
 with its lowest price.
 
 In a big graph, each node may be marked several times in this process
---- each time with a lower price from a cheaper router.
+--- each time with a lower price from a cheaper route.
 
 Of course, once you have the price, you will ask, ``What is the route
 that gets me that price?''  So, we will also mark each node with the
@@ -248,7 +248,7 @@ node.  This is easy to do as we execute the algorithm.
 
         \end{tikzpicture}
     \caption{Marking each node with a previous pointer.}
-    \label{fig:example}
+    \label{fig:example-shortest_path}
 \end{figure}
 
 Now, to figure out the cheapest route from Long Beach to Bakersfield,
@@ -260,8 +260,17 @@ Notice that the path between Los Angeles to Bakersfield is not used once we add 
 \begin{Answer}[ref={ex:deliv_1}]
 Los Angeles $\rightarrow$ Bakersfield is not chosen because it does not give the best known cost to Bakersfield. The \pyvar{prev} pointer for Bakersfield goes to San Diego instead, since $\mathdollar21 < \mathdollar22$.
 
-The tree that is generated is called a \newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
+The tree that is generated is called a \index{predecessor tree}\newterm{predecessor tree} or \newterm{explored tree} of the resulting edges formed by only the previous edges. We can use this to track shortest paths from a given origin node.
 \end{Answer}
+\begin{Exercise}[title={Dijkstra's Algorithm by Hand}, label={ex:dijk2}]
+Run Dijkstra's algorithm from $A$ on this weighted undirected graph: $A$–$B$ costs 2, $A$–$C$ costs 5, $B$–$C$ costs 1, $C$–$D$ costs 2, and $B$–$D$ costs 6. Give the final cost to each node, and the cheapest path from $A$ to $D$.
+\end{Exercise}
+\begin{Answer}[ref={ex:dijk2}]
+Start with $A = 0$. Visit $A$: $B$ is 2 and $C$ is 5. Visit $B$ (cost 2): through $B$, $C$ becomes $2 + 1 = 3$, which is less than 5, so $C = 3$. Also $D = 2 + 6 = 8$. Visit $C$ (cost 3): through $C$, $D$ becomes $3 + 2 = 5$, which is less than 8, so $D = 5$. Visit $D$.
+
+The costs are $A = 0$, $B = 2$, $C = 3$, and $D = 5$. The cheapest path to $D$ is $A \rightarrow B \rightarrow C \rightarrow D$.
+\end{Answer}
+
 \subsection{Implementation}
 
 We do not actually want to sully our graph objects with the three additional pieces of information we need:
@@ -270,13 +279,13 @@ We do not actually want to sully our graph objects with the three additional pie
           called the \pyvar{dist}, from ``distance''.
     \item The neighbor who gives us the current minimal cost. This is
           usually called \pyvar{prev}, from ``previous''.
-    \item Whether the city is visited or now.
+    \item Whether the city is visited or not.
 \end{itemize}
 So, we will keep them in collections external to the graph.
 
 For example, to keep track of the \pyvar{dist}, we will have a
 \pyvar{dist} dictionary. Each node will be a key, the current minimal
-cost will be the value.  If the node hasn't received even a first
+cost will be the value.  If the node has not received even a first
 cost, we will put in infinity as the cost.
 
 (After the algorithm is run, if the cost of a node is still infinity,
@@ -345,7 +354,7 @@ Each time we visit a node, we have a decision to make:
 \[
 \text{if }dist[u]+w(u,v)<dist[v]\text{ then update }dist[v]
 \]
-This action, the core foundation of Dijkstra's, is done in lines 16-21. In Dijkstra's, the node with the minimum tentative distance can also be finalized, provided all edge weights are non-negative. Nodes left at infinity are not reachable from the chosen root node. 
+This action, the core foundation of Dijkstra's, is the last part of the loop above. In Dijkstra's, the node with the minimum tentative distance can also be finalized, provided all edge weights are non-negative. Nodes left at infinity are not reachable from the chosen root node. 
 
 Append some code to your \filename{cities.py} that tests this method:
 
@@ -416,17 +425,18 @@ if nyc_cost < math.inf:
     print(f"*** Total cost from Long Beach to NYC: ${nyc_cost:.2f} ***")
 
     path_to_nyc = graph.shortest_path(prev, nyc)
-    print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc ***}")
+    print(f"*** Cheapest path from Long Beach to NYC: {path_to_nyc} ***")
 else:
     print("You can't get to NYC from Long Beach")
 \end{minted}
 
 This should look like this:
 \begin{minted}{text}
+*** Total cost from Long Beach to NYC: $52.00 ***
 *** Cheapest path from Long Beach to NYC: [(node:Long Beach, edges:1),
 (node:Los Angeles, edges:3), (node:Denver, edges:3), (node:Cleveland, edges:4),
 (node:New York City, edges:3)] ***
-\end{text}
+\end{minted}
 
 % \subsection{Making it faster}
 
@@ -482,10 +492,37 @@ The algorithm works as follows:
     \item Repeat the previous step $|V| - 1$ times, where $|V|$ is the
       number of vertices in the graph.
     \item After the above steps, if you can still find a shorter path,
-      there exists a negative cycle.
+      there exists a \index{negative cycle}negative cycle.
 \end{enumerate}
 
 If the graph does not contain a negative cycle reachable from the
 source, the shortest paths are well-defined, and Bellman-Ford will
 correctly calculate them. If a negative cycle is reachable, no
-solution exists, but Bellman-Ford will detect it.
+solution exists (you could loop forever, getting ``cheaper'' each time),
+but Bellman-Ford will detect it.
+
+Why would an edge ever be negative? Think of costs that can be refunds: a
+delivery route that earns a rebate, or a currency trade that gains money.
+Bellman-Ford is slower than Dijkstra's, about $|V| \cdot |E|$ steps, so use
+it only when you need it.
+
+\begin{Exercise}[title={When Dijkstra Fails}, label={ex:bellman}]
+A directed graph has edges $A \to B$ costing 1, $A \to C$ costing 3,
+$C \to B$ costing $-3$, and $B \to D$ costing 1.
+\begin{enumerate}
+\item Run Dijkstra's algorithm from $A$. What cost does it give for $D$?
+\item What is the true cheapest cost to $D$? What went wrong?
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref={ex:bellman}]
+\begin{enumerate}
+\item Visit $A$: $B = 1$, $C = 3$. Visit $B$ (cost 1, now final): $D = 2$.
+Visit $D$ (cost 2). Visit $C$ (cost 3): the route to $B$ through $C$ costs
+$3 - 3 = 0$, but $B$ is already finalized, so nothing changes. Dijkstra
+reports $D = 2$.
+\item $A \to C \to B \to D$ costs $3 - 3 + 1 = 1$. Dijkstra assumed that a
+finalized node can never get cheaper, which is true only when every edge
+is nonnegative. Bellman-Ford keeps relaxing every edge and finds $B = 0$
+and $D = 1$.
+\end{enumerate}
+\end{Answer}

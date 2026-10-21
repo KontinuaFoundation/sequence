@@ -1,13 +1,22 @@
 \chapter{Trigonometric Functions}
 
-As mentioned in an earlier chapter, in a right triangle where one angle is $\theta$,
-the sine of $\theta$ is the length of the side opposite $\theta$
-divided by the length of the hypotenuse.
+Sound, light, tides, a swinging pendulum, the alternating current in your
+walls: they all rise and fall in the same smooth pattern. That pattern is
+the sine wave, and this chapter shows where it comes from.
 
-The sine function is defined for any real number. We treat that real number
-$\theta$ as an angle, we draw a ray from the origin out to the unit
-circle. The $y$ value of that point is the sine. For example,
-the $\sin(\frac{4\pi}{3})$ is $-\sqrt{3}/2$ (see figure \ref{fig:sine}).
+You already know that in a right triangle with an angle $\theta$, the
+\index{sine}sine of $\theta$ is the opposite side divided by the
+hypotenuse. That definition only works for angles between 0 and
+$\frac{\pi}{2}$. Here is one that works for every real number.
+
+Treat the number $\theta$ as an angle. Draw a ray from the origin at angle
+$\theta$, measured counterclockwise from the positive $x$-axis, out to the
+\index{unit circle}\newterm{unit circle} (the circle of radius 1 centered
+at the origin). The $y$ value of the point where the ray hits the circle is
+$\sin(\theta)$. For example, $\sin(\frac{4\pi}{3}) = -\frac{\sqrt{3}}{2}$
+(see figure \ref{fig:sine}). For angles between 0 and $\frac{\pi}{2}$, this
+matches the triangle definition: the hypotenuse is 1, so opposite over
+hypotenuse is just the height.
 
 \begin{figure}[H]
 \centering
@@ -29,16 +38,12 @@ the $\sin(\frac{4\pi}{3})$ is $-\sqrt{3}/2$ (see figure \ref{fig:sine}).
 \end{figure}
 
 
-(Note that in this section, we will be using radians instead of
-degrees unless otherwise noted. While degrees are more familiar to most
-people, engineers and mathematicians nearly always use radians when
-solving problems. Your calculator should have a radians mode and a
-degrees mode; you want to be in radians mode.)
+From here on, angles are in radians unless we say otherwise. Engineers and
+mathematicians nearly always use radians. Put your calculator in radians
+mode now; forgetting is the most common trig mistake there is.
 
-Similarly, we define cosine using the unit circle. To find the cosine
-of $\theta$, we draw a ray from the origin at the angle $\theta$. The
-$x$ component of the point where the ray intersects the unit circle is
-the cosine of $\theta$ (shown in figure \ref{fig:cosine}).
+The \index{cosine}cosine of $\theta$ is the $x$ value of the same point
+(figure \ref{fig:cosine}).
 
 \begin{figure}
 \centering
@@ -61,15 +66,38 @@ the cosine of $\theta$ (shown in figure \ref{fig:cosine}).
 \label{fig:cosine}
 \end{figure}
 
-From this description, it is easy to see why $\sin(\theta)^2 +
-\cos(\theta)^2 = 1$. They are the legs of a right triangle with a
-hypotenuse of length 1.
+Three facts fall right out of the picture:
+\begin{itemize}
+\item \index{Pythagorean identity}$\sin^2(\theta) + \cos^2(\theta) = 1$.
+      The cosine and sine are the legs of a right triangle whose hypotenuse
+      is the radius, 1.
+\item $\sin(\theta + 2\pi) = \sin(\theta)$. Go once around the circle, and
+      you are back where you started.
+\item $\cos(\theta) = \sin(\theta + \frac{\pi}{2})$. Turn the picture a
+      quarter turn and see.
+\end{itemize}
 
-It should also be easy to see why $\sin(\theta) = \sin(\theta +
-2\pi)$: Each time you go around the circle, you come back to where
-you started.
+\textbf{Worked example.} Find $\sin(\frac{\pi}{2})$ and
+$\cos(\frac{\pi}{2})$.
 
-Can you see why $\cos(\theta) = \sin(\theta + \pi/2)$? Turn the picture sideways.
+\textbf{Solution.} An angle of $\frac{\pi}{2}$ points straight up, to
+$(0, 1)$. So $\cos(\frac{\pi}{2}) = 0$ and $\sin(\frac{\pi}{2}) = 1$.
+
+\begin{Exercise}[title={Around the circle}, label=trig_unit_circle]
+Without a calculator, find $\sin(\pi)$, $\cos(\pi)$, $\sin(\frac{3\pi}{2})$,
+and $\cos(2\pi)$. Then use the Pythagorean identity to find
+$\cos(\theta)$ if $\sin(\theta) = 0.6$ and $\theta$ is between 0 and
+$\frac{\pi}{2}$.
+\end{Exercise}
+\begin{Answer}[ref=trig_unit_circle]
+An angle of $\pi$ points to $(-1, 0)$, so $\sin(\pi) = 0$ and
+$\cos(\pi) = -1$. An angle of $\frac{3\pi}{2}$ points to $(0, -1)$, so
+$\sin(\frac{3\pi}{2}) = -1$. An angle of $2\pi$ is a full turn, back to
+$(1, 0)$, so $\cos(2\pi) = 1$.
+
+$\cos^2(\theta) = 1 - 0.6^2 = 0.64$, so $\cos(\theta) = 0.8$ (positive,
+because the point is in the first quadrant).
+\end{Answer}
 
 \section{Graphs of sine and cosine}
 
@@ -109,9 +137,9 @@ tl/.style = {% tick labels
     \caption{$y=\sin(x)$.}
     \label{fig:sineGraph}
 \end{figure}
-It looks like waves, right? It goes forever to the left and
-right. Remembering that $\cos(\theta) = \sin(\theta + \pi/2)$, we can
-guess what the graph of $y = \cos(x)$ looks like:
+Waves! The pattern repeats every $2\pi$, forever in both directions.
+Since $\cos(\theta) = \sin(\theta + \frac{\pi}{2})$, the cosine graph is
+the same wave slid $\frac{\pi}{2}$ to the left:
 \begin{figure}[H]
     
 \centering
@@ -144,7 +172,7 @@ tl/.style = {% tick labels
       domain=-6.5:6.5,samples=300,variable=\x] plot (\x,{cos(deg{\x})});
 \end{tikzpicture}
     \caption{$y=\cos(x)$.}
-    \label{fig:sineGraph}
+    \label{fig:sineGraph-trig_functions-2}
 \end{figure}
 \section{Plot cosine in Python}
 
@@ -169,19 +197,19 @@ ax.set_title("Cosine")
 plt.show()
 \end{minted}
 
-This will plot 32 points on the cosine wave between 0 and 8. When you
-run it, you should see something like this:
+This plots 32 points on the cosine wave between 0 and 8. Run it, and you
+should see something like this:
 
 \includegraphics[width=0.8\textwidth]{cospy.png}
 
-\section{Derivatives of trigonometric functions}
+\section{The slope of a sine wave}
 
-Here is a wonderful property of sine and cosine functions: At any point 
-$\theta$, the slope of the sine graph at $\theta$ equals $cos(\theta)$.
+Here is a wonderful fact. At any $\theta$, the slope of the sine graph
+equals $\cos(\theta)$.
 
-For example, we know that $\sin(4\pi/3) = -(1/2)\sqrt{3}$ and
-$\cos(4\pi/3) = -1/2$. If we drew a line tangent to the sine curve at
-this point, it would have a slope of -1/2:
+For example, $\sin(\frac{4\pi}{3}) = -\frac{\sqrt{3}}{2}$ and
+$\cos(\frac{4\pi}{3}) = -\frac{1}{2}$. A line tangent to the sine curve at
+that point has slope $-\frac{1}{2}$:
 
 \begin{tikzpicture}[
 tl/.style = {% tick labels
@@ -213,103 +241,37 @@ tl/.style = {% tick labels
 (5.188790204786391,-1.366025403784439) node [right] {slope = -1/2} ;
 \end{tikzpicture}
 
-We say ``The derivative of the sine function is the cosine function.''
+Check it at the top of the wave, $\theta = \frac{\pi}{2}$: the curve is
+flat there, and sure enough $\cos(\frac{\pi}{2}) = 0$.
 
-Can you guess the derivative of the cosine function? For any $\theta$, the 
-slope of the graph of the $\cos(\theta)$ is $-\sin(\theta)$.
-
-\begin{Exercise}
-    [title=Derivatives of Trig Functions Practice 1, label=trigderiv1]
-    Use the limit definition of a derivative to show that $\frac{d}{dx} \cos{x} 
-    = -\sin{x}$
-\end{Exercise}
-\begin{Answer}
-    [ref=trigderiv1]
-    We start by writing out the limit: 
-    $$\frac{d}{dx}\cos{x}=\lim_{h \to 0}\frac{\cos{x+h}-\cos{x}}{h}$$
-
-    Applying the sum formula for $cos(x+h)$, we get:
-    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\sin{x}\sin{h}-\cos{x}}{h}$$
-
-    Rearranging to group the $\cos{x}$ and applying the Difference Rule:
-    $$=\lim_{h \to 0}\frac{\cos{x}\cos{h}-\cos{x}}{h} - \lim_{h \to 0}\frac{\sin{x}\sin{h}}{h}$$
-
-    Applying the Constant Multiple Rule:
-    $$=\cos{x}\lim_{h \to 0}\frac{\cos{h}-1}{h} - \sin{x}\lim_{h \to 0}\frac{\sin{h}}{h}$$
-
-    Recalling that $\lim_{h \to 0}\frac{\sin{h}}{h} = 1$,
-    $$=\cos{x}\lim_{h \to a}\frac{\cos{h}-1}{h}-\sin{x} \cdot 1$$
-
-    Recalling that $\lim_{h \to 0}\frac{\cos{h}-1}{h}=0$:
-    $$=\cos{x} \cdot0 -\sin{x} = -\sin{x}$$
-
-    Therefore, $\frac{d}{dx}\cos{x}=-\sin{x}$
-\end{Answer}
-
-The derivatives of all the trigonometric functions are presented below:
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- $\frac{d}{dx}\sin{x}=\cos{x}$ & $\frac{d}{dx}\csc{x}=-\csc{x} \cdot \cot{x}$ \\ 
- $\frac{d}{dx}\cos{x}=-\sin{x}$ & $\frac{d}{dx}\sec{x}= \sec{x} \cdot \tan{x}$  \\ 
- $\frac{d}{dx}\tan{x}=\sec^2{x}$ & $\frac{d}{dx}\cot{x}=-\csc^2{x}$  \\ 
- \hline
-\end{tabular}
-\end{center}
-
-\textbf{Example}: Find the derivative of $f(x)$ if $f(x) = x^2\sin{x}$
-\textbf{Solution}: Using the product rule, we find that: 
-$$\frac{d}{dx}f(x)=(x^2)\frac{d}{dx}(\sin{x})+(\sin{x})\frac{d}{dx}(x^2)$$
-
-Taking the derivatives:
-$$=x^2(\cos{x})+2x(\sin{x})$$
-% this seems a bit too difficult if the student has not learned derivative rules before this
-\begin{Exercise}[title = Derivatives of Trig Functions 2, label=trigderiv2]
-    Find the derivative of the following functions:
-    \begin{enumerate}
-        \item $f(x) = \frac{\sec{x}}{1+\tan{x}}$
-        \item $y=\sec{t}\tan{t}$
-        \item $f(\theta) = \frac{\theta}{4-\tan{\theta}}$
-        \item $f(t) = 2\sec{t} - \csc{t}$
-        \item $f(\theta) = \frac{\sin{\theta}}{1+\cos{\theta}}$
-        \item $f(x) = \sin{x}\cos{x}$
-    \end{enumerate}
-\end{Exercise}
-
-\begin{Answer}
-    [ref=trigderiv2]
-    \begin{enumerate}
-        \item $\frac{\sec{x}(\tan{x}-1)}{(1+\tan{x})^2}$
-        \item $\sec{t}[\sec^2{t}+\tan^2{t}]$
-        \item $\frac{4-\tan{\theta}+\theta \sec^2{\theta}}{(4-\tan{\theta})^2}$
-        \item $2\sec{t}\tan{t}+\csc{t}\cot{t}$
-        \item $\frac{2}{(1+\cos{\theta})^2}$
-        \item $\cos^2{x} - \sin^2{x}$
-    \end{enumerate}
-\end{Answer}
-
+In calculus, the slope function is called the \emph{derivative}, so we say
+``\index{derivatives!of trigonometric functions}the derivative of sine is
+cosine.'' And the slope of the cosine graph? It is $-\sin(\theta)$. You
+will prove both in the calculus chapters.
 
 \section{A weight on a spring}
 
-Let's say you fill a rollerskate with heavy rocks and attach it to the
-wall with a stiff spring.  If you push the skate toward the wall and
-release it, it will roll back and forth. Engineers would say ``The skate will oscillate.''
-%FIXME diagram
-Intuitively, you can probably guess:
+Fill a roller skate with heavy rocks and attach it to a wall with a stiff
+spring. Push the skate toward the wall and let go. It rolls back and forth;
+engineers say it \emph{oscillates}.
+
+You can probably guess:
 \begin{itemize}
 \item If the spring is stronger, the skate will oscillate more times per minute.
 \item If the rocks are lighter, the skate will oscillate more times per minute.
 \end{itemize}
 
-The force that the spring exerts on the skate is proportional to how
-far its length is from its relaxed length. When you buy a spring, the
-manufacturer advertises its ``spring rate'', which is in pounds per
-inch or newtons per meter.  If a spring has a rate of 5 newtons per
-meter, that means that if you stretch or compress it 10 cm, it will push
-back with a force of 0.5 newtons. If you stretch or compress it 20 cm,
-it will push back with a force of 1 newton.
+The force from the spring is proportional to how far it is stretched or
+squeezed from its relaxed length. Springs are sold by their
+``\index{spring rate}spring rate,'' in pounds per inch or newtons per
+meter. A spring with a rate of 5 newtons per meter pushes back with 0.5
+newtons when you squeeze it 10 cm, and with 1 newton when you squeeze it
+20 cm.
 
-Let's write a simulation of the skate-on-a-spring. Duplicate \filename{cos.py}, and name the new copy \filename{spring.py}.  Add code to implement the simulation:
+Let us simulate the skate. Copy \filename{cos.py} to \filename{spring.py}
+and add the simulation. Every hundredth of a second, the code nudges the
+position by the velocity, finds the spring force from the new position,
+and nudges the velocity by the acceleration:
 
 \begin{minted}{python}
 import numpy as np
@@ -318,12 +280,12 @@ import matplotlib.pyplot as plt
 until = 8.0
 
 # Constants
-mass = 100 # kg
-spring_constant = -1 # newtons per meter displacement
+mass = 4.0 # kg of skate and rocks
+spring_rate = 4.0 # newtons per meter
 time_step = 0.01 # s
 
 # Initial state
-displacement = 1.0 # height above equilibrium in meters
+displacement = 1.0 # meters from the relaxed position
 velocity = 0.0
 time = 0.0 # seconds
 
@@ -340,9 +302,9 @@ while time <= until:
     # Calculate the next state
     time += time_step
     displacement += time_step * velocity
-    force = spring_constant * displacement 
+    force = -spring_rate * displacement
     acceleration = force / mass
-    velocity += acceleration
+    velocity += time_step * acceleration
 
 # Make a plot of cosine
 thetas = np.linspace(0, until, 32)
@@ -361,41 +323,42 @@ ax.set_ylabel("Displacement (m)")
 ax.legend()
 plt.show()
 \end{minted}
-When you run it, you should get a plot of your spring and the cosine graph on the same plot.
+Run it. The skate's position and the cosine curve land right on top of
+each other.
 
 \includegraphics[width=0.8\textwidth]{springpy.png}
 
-The position of the skate is following a cosine curve. Why?
-
-Because a sine or cosine waves happen whenever the acceleration of 
-an object is proportional to -1 times its displacement. Or in symbols:
+\index{simple harmonic motion}Why does the skate follow a cosine curve?
+Sine and cosine waves appear whenever an object's acceleration is
+proportional to $-1$ times its displacement:
 
 $$a \propto - p$$
 
 where $a$ is acceleration and $p$ is the displacement from equilibrium.
 
-Remember that if you take the derivative of the displacement, you get
-the velocity. And if you take the derivative of that, you get
-acceleration. So, the weight on the spring must follow a function $f$ such that
+Velocity is the slope of the position graph, and acceleration is the
+slope of the velocity graph. So the skate's position must follow a function
+$f$ whose slope-of-the-slope is proportional to $-f$:
 
 $$f(t) \propto - f''(t)$$
 
-Remember that the derivative of the $\sin(\theta)$ is $\cos(\theta)$.
+Cosine does exactly that. Its slope is $-\sin$, and the slope of $-\sin$
+is $-\cos$. Take the slope twice, and you get the original function times
+$-1$.
 
-And the derivative of the $\cos(\theta)$ is $- \sin(\theta)$
+That is why sine waves are everywhere. Anything that gets pushed back
+toward the middle harder the farther it strays (a spring, a guitar string,
+a swing, the air in a flute) moves in a sine wave.
 
-These sorts of waves have an almost-magical power: Their
-acceleration is proportional to -1 times their displacement.
-
-Thus, sine waves of various magnitudes and frequencies are ubiquitous
-in nature and technology.
+In our simulation, the spring rate and mass are equal, which makes the
+wave line up exactly with $\cos(t)$. A stiffer spring or lighter skate
+gives a faster wave, just as you guessed.
 
 \section{Integral of sine and cosine}
 
-If we take the area between the graph and the $x$ axis of the cosine
-function (and if the function is below the $x$ axis, it counts as
-negative area), from 0 to $4\pi/3$, we find that it is equal to
-$-(1/2)\sqrt{3}$.
+Now look at area. Take the area between the cosine graph and the $x$ axis
+from 0 to $\frac{4\pi}{3}$, counting area below the axis as negative. The
+total is $-\frac{\sqrt{3}}{2}$, which is exactly $\sin(\frac{4\pi}{3})$.
 
 \begin{tikzpicture}[
 tl/.style = {% tick labels                                                                                               
@@ -431,20 +394,7 @@ tl/.style = {% tick labels
        \draw[thick, draw=black] (4.188790204786391, 1) -- (4.188790204786391,-1) node [right]{area=$-(1/2)\sqrt{3}$};
 \end{tikzpicture}
 
-We say ``The integral of the cosine function is the sine function.'' 
+That is no coincidence. The area under cosine from 0 to any $\theta$ is
+always $\sin(\theta)$. In calculus, we say ``\index{integrals!of
+trigonometric functions}the integral of cosine is sine.'' 
 
-% again, might be too difficult having not introduced 
-\subsection{Integrals of Trig Functions Practice}
-
-\begin{Exercise}[label=inttrig1]
-	Evaluate the following integrals:
-	\begin{enumerate}
-		\item $\int \sec{x}\tan{x} \,dx$
-	\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref=inttrig1]
-	\begin{enumerate}
-		\item $\sec{x}+C$
-	\end{enumerate}
-\end{Answer}

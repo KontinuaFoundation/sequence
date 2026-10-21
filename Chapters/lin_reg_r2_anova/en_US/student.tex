@@ -1,56 +1,111 @@
 \chapter{Evaluating the Fit of a Linear Regression Model}
 
-The fit of a linear regression model can be evaluated using several
-statistical metrics. Three common ones include the residuals, the
-coefficient of determination (R-squared or $R^2$), and the root mean
-squared error (RMSE).
+Any two columns of numbers can be fed to a regression, and you will always get
+a line. The real question is whether the line is any good. This chapter gives
+you the tools to grade a fit: residual plots, $R^2$, RMSE, and the ANOVA table.
 
-\section{Residuals}
+\section{Residuals}\index{residual!plot}
+The residual for observation $i$ is $e_i = y_i - \hat{y}_i$, the observed value
+minus the predicted value. A \newterm{residual plot} graphs $e_i$ against $\hat{y}_i$
+or against $x_i$. If the line fits well, the residuals scatter randomly around
+zero with no clear pattern. A curve in the residual plot means a straight line is the wrong model.
 
-Residuals are the differences between the observed and predicted
-values. For an observation $i$, the residual $e_i$ is calculated as\index{residual}
+\section{Sums of Squares}
+Three sums of squares measure the variation in $y$:
+$$SS_{tot} = \sum (y_i - \bar{y})^2, \qquad SS_{res} = \sum (y_i - \hat{y}_i)^2, \qquad
+SS_{reg} = \sum (\hat{y}_i - \bar{y})^2$$
+Here $SS_{tot}$ is the total variation, $SS_{res}$ is the variation the line does not
+explain, and $SS_{reg}$ is the variation the line explains. For a least squares line
+with an intercept, they add up:
+$$SS_{tot} = SS_{reg} + SS_{res}$$
 
-\[
-e_i = y_i - \hat{y}_i
-\]
+\section{Coefficient of Determination}\index{R-squared}
+The coefficient of determination is
+$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}}$$
+It is the proportion of the variation in $y$ that the line explains. If the
+line fits perfectly, $SS_{res} = 0$ and $R^2 = 1$. If the line does no better than
+predicting $\bar{y}$ for every point, $SS_{res} = SS_{tot}$ and $R^2 = 0$. Think of guessing a friend's quiz score by always saying the class average. You explain nothing, so $R^2 = 0$.
 
-where $y_i$ is the observed value and $\hat{y}_i$ is the predicted
-value. By plotting these residuals against the predicted values, we
-can visually inspect the model's fit. Ideally, the residuals should be
-randomly scattered around zero, and there should be no clear pattern
-in the residual plot.
+For a simple linear regression, $R^2$ is the square of the correlation $r$ between
+$x$ and $y$.
 
-\section{R-Squared ($R^2$)}
+\subsection{Example}
+For the quiz data in the simple linear regression chapter, $SS_{res} = 0.107$ and
+$SS_{tot} = 39.708$. So
+$$R^2 = 1 - \frac{0.107}{39.708} \approx 0.997$$
+About 99.7\% of the variation in quiz scores is explained by hours of study.
+This is a very high value. In real data, $R^2$ is often much lower.
 
-R-squared is a statistical measure that represents the proportion of
-the variance in the dependent variable that can be predicted from the
-independent variables. It provides a measure of how well the model's
-predictions fit the data. $R^2$ is calculated as \index{$R^2$}
+\section{Root Mean Squared Error}\index{RMSE}\index{root mean squared error}
+The root mean squared error (RMSE) measures the typical size of a prediction error,
+in the units of $y$:
+$$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2} = \sqrt{\frac{SS_{res}}{n}}$$
+For the quiz data, $RMSE = \sqrt{0.107/5} \approx 0.146$ points. Some textbooks divide by
+$n - 2$ instead of $n$ when estimating error variance in regression. This chapter
+uses $n$ so that RMSE is the root of the average squared error.
 
-\[
-R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
-\]
+\section{The ANOVA Table}\index{ANOVA!regression}
+Statistical software summarizes the sums of squares in an \newterm{analysis of
+variance} (ANOVA) table. Each sum of squares is divided by its degrees of
+freedom to get a mean square, and the ratio of the two mean squares is the
+$F$ statistic:
 
-where $SS_{res}$ is the sum of squares of residuals and $SS_{tot}$ is
-the total sum of squares. An $R^2$ value of 1 indicates a perfect fit,
-while an $R^2$ of 0 indicates that the model does not explain any of
-the variability of the response data around its mean.
+\begin{center}
+\begin{tabular}{l|c|c|c|c}
+Source & SS & df & MS & $F$ \\
+\hline
+Regression & $SS_{reg}$ & $1$ & $MS_{reg} = SS_{reg}/1$ & $MS_{reg}/MS_{res}$ \\
+Residual & $SS_{res}$ & $n - 2$ & $MS_{res} = SS_{res}/(n-2)$ & \\
+Total & $SS_{tot}$ & $n - 1$ & & \\
+\end{tabular}
+\end{center}
 
-\section{Root Mean Squared Error (RMSE)}
+A large $F$ means the line explains much more variation than the leftover
+noise does. For the quiz data, $SS_{reg} = 39.601$, $SS_{res} = 0.107$, and
+$n - 2 = 3$, so
+$$F = \frac{39.601/1}{0.107/3} \approx 1110$$
+The $p$-value for this $F$ (with 1 and 3 degrees of freedom) is about $0.00006$,
+strong evidence that the slope is not zero. In simple linear regression, this
+$F$-test gives the same $p$-value as the $t$-test for the slope.
 
-RMSE is a frequently used measure of the differences between the
-values predicted by a model and the values actually observed. It's the
-square root of the average of squared differences between prediction
-and actual observation. RMSE is calculated as \index{RMSE} \index{Root
-  Mean Squared Error}
+\section{Limits of These Measures}
+A high $R^2$ does not mean the model is correct. It can be high for a curved pattern
+fit with a line, or when a single extreme point drives the fit. Always look at the
+residual plot too. Also, $R^2$ never decreases when you add more predictors, so
+it cannot be used alone to compare models with different numbers of predictors.
 
-\[
-RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
-\]
+\begin{Exercise}[label=lr2_1, title=Compute R-squared]
+A regression has $SS_{res} = 25$ and $SS_{tot} = 100$. What is $R^2$, and what does it mean?
+\end{Exercise}
+\begin{Answer}[ref=lr2_1]
+$R^2 = 1 - \frac{25}{100} = 0.75$. The line explains 75\% of the variation in $y$.
+\end{Answer}
 
-A lower RMSE indicates a better fit to the data.
+\begin{Exercise}[label=lr2_2, title=A model that predicts the mean]
+Explain why $R^2 = 0$ for a model that predicts $\bar{y}$ for every observation.
+\end{Exercise}
+\begin{Answer}[ref=lr2_2]
+Such a model has $\hat{y}_i = \bar{y}$, so $SS_{res} = \sum (y_i - \bar{y})^2 = SS_{tot}$.
+Then $R^2 = 1 - \frac{SS_{tot}}{SS_{tot}} = 0$.
+\end{Answer}
 
-It's important to note that these metrics should not be used in
-isolation to evaluate the model's fit. They should be used in
-combination along with the understanding of the underlying problem and
-domain knowledge.
+\begin{Exercise}[label=lr2_3, title=Read a residual plot]
+A residual plot shows residuals that are large and positive for small $\hat{y}$,
+negative in the middle, and large and positive again for large $\hat{y}$. What does
+this suggest about the model?
+\end{Exercise}
+\begin{Answer}[ref=lr2_3]
+The pattern is curved, not random. A straight line does not describe the
+relationship, and a model with a curved term, or a transformation of the
+variables, would be a better choice.
+\end{Answer}
+
+\begin{Exercise}[label=lr2_4, title=Fill in an ANOVA table]
+A regression on $n = 12$ points has $SS_{tot} = 80$ and $SS_{res} = 20$. Find
+$SS_{reg}$, $R^2$, and $F$.
+\end{Exercise}
+\begin{Answer}[ref=lr2_4]
+$SS_{reg} = 80 - 20 = 60$ and $R^2 = 60/80 = 0.75$. The residual degrees of
+freedom are $12 - 2 = 10$, so $F = \frac{60/1}{20/10} = 30$.
+\end{Answer}
+

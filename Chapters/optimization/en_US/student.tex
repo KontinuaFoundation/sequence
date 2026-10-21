@@ -10,16 +10,16 @@
 \definecolor{kgGreen}{HTML}{4B9751}
 \definecolor{kgBrown}{HTML}{90582F}
 
-Optimization is a branch of mathematics that involves finding the best
-solution from all feasible solutions. In the field of operations
-research, optimization plays a crucial role. Whether it is minimizing
-costs, maximizing profits, or reducing the time taken to perform a
-task, optimization techniques are employed to make decisions
-effectively and efficiently.\index{optimization}
+What ticket price brings in the most money for the school dance? What
+shape of soda can uses the least aluminum? How should you fence a garden
+to enclose the most area? Each of these asks for the \emph{best} value of
+something, and finding it is called \newterm{optimization}\index{optimization}.
 
-In this chapter, the primary goal is to find the maximum or minimum
-value of a function, often referred to as the objective function, by finding the point on the graph where the derivative is equal to zero. 
-This is usually referred to as the critical point! \index{critical point}
+The quantity you are trying to make as large or as small as possible is
+the \index{objective function}\newterm{objective function}. The key idea
+is one you met in the last volume: at a smooth peak or valley, the
+derivative is zero. So we look for the \index{critical point}critical
+points, where $f'(x) = 0$.
 
 At a critical point where the derivative is zero, the graph of the
 function has a horizontal tangent line. At such a point, the function
@@ -32,8 +32,10 @@ may be reaching a peak or a valley (Figure~\ref{fig:duck-hiker}).
 \label{fig:duck-hiker}
 \end{figure}
 
-Most critical points correspond to a maximum or minimum, and some are
-points of inflection instead (Figure~\ref{fig:critical-point-types}). This is when the second derivative of the point is also equal to zero! You will see this in a few examples!
+Not every critical point is a peak or a valley. At some, like $x = 0$ on
+$y = x^3$, the graph flattens out for a moment and keeps going: a
+\index{inflection point}horizontal point of inflection
+(Figure~\ref{fig:critical-point-types}).
 
 \begin{figure}[H]
 \centering
@@ -107,6 +109,8 @@ points of inflection instead (Figure~\ref{fig:critical-point-types}). This is wh
 
 \section{Extrema}
 
+
+
 There are two types of extrema: relative extrema and absolute extrema.
 
 A relative maximum or minimum occurs when the function reaches a peak
@@ -119,7 +123,7 @@ function takes on a given interval. \index{absolute extrema} \index{absolute max
 An absolute maximum or minimum can occur either at a critical point or
 at an endpoint of the interval.
 
-For this reason, when solving optimization problems on a restricted
+For this reason, when solving \index{closed interval method}optimization problems on a restricted
 domain, it is important to test both critical points and endpoints (Figure~\ref{fig:closed-interval-extrema}).
 
 \begin{figure}[H]
@@ -164,33 +168,28 @@ If the second derivative is always positive or always negative on an
 interval, then any critical point in that interval must be an absolute
 minimum or absolute maximum, respectively.
 
-\section{Solving Optimization Problems}
+\section{A Strategy for Optimization Problems}\index{optimization!general strategy}
 
-Optimization problems apply the ideas of derivatives, critical points,
-and extrema to real situations. Although the context of each problem may
-be different, the method used to solve them follows the same general
-pattern.
-
-\section{General Strategy for Solving Optimization Problems}
-
-Most calculus optimization problems follow these steps:
+The stories change, but the steps do not:
 
 \begin{enumerate}
 \item Identify the quantity to be optimized.
-\item Write an equation for the objective function. Sometimes, you might be given an equation already. In that case, you will skip this step.  For word problems, you will typically be required to write the equations yourself. 
+\item Write an equation for the objective function. \index{optimization!word problems}In word problems, this is usually the hard part, and a sketch helps.
 \item Use the given constraints to rewrite the function using one
 variable.
 \item Determine the appropriate domain.
 \item Find the derivative of the function.
 \item Find critical points by setting the derivative equal to zero.
+\item Check that each one is a maximum or minimum (second derivative test), and check the endpoints of the domain.
 \item Interpret the result in the context of the problem.
 \end{enumerate}
 
 When solving optimization problems, some common mistakes include
 forgetting to define variables, not using the constraints of the
 problem appropriately, misinterpreting or failing to interpret the
-final answer, and giving answers without appropriate units. For word problems, be very vigilant about how your answer relates back to the question given! 
-It serves as a small check for accuracy.
+final answer, and giving answers without units. Ask yourself whether
+the answer makes sense: a fence with negative length means something went
+wrong.
 
 \subsection{Example}
 
@@ -277,10 +276,10 @@ f(3) = 3^2 - 6(3) + 5 = -4.
 Therefore, the function has a minimum value of $-4$ at $x = 3$.
 \end{Answer}
 
-Now, let's look at a word example:
+Now, let us look at a word example:
 \subsection*{Example}
 
-The cost, in dollars, of producing $x$ units of a product is given by the
+\index{optimization!cost minimization}The cost, in dollars, of producing $x$ units of a product is given by the
 function
 \[
 C(x) = 2x^2 - 24x + 100.
@@ -359,7 +358,7 @@ minimum cost is \$28 (Figure~\ref{fig:cost-minimum}).
 \end{figure}
 
 \begin{Exercise}[label = optimization2]
-A rectangular enclosure is to be built using 60 units of fencing. Three
+\index{optimization!enclosure problem}A rectangular enclosure is to be built using 60 units of fencing. Three
 sides of the enclosure require fencing, while the fourth side is along
 a wall and does not require fencing.
 
@@ -420,7 +419,56 @@ Substituting $y = 15$ into the constraint gives
 x = 60 - 2(15) = 30.
 \]
 
-Therefore, the enclosure has dimensions 30 units by 15 units.
+Therefore, the enclosure has dimensions 30 units by 15 units, and its maximum area is $30 \times 15 = 450$ square units.
+\end{Answer}
+
+\subsection*{Example: The Soda Can}
+\index{optimization!soda can}
+A soda can holds 355 cm$^3$. What radius and height use the least
+aluminum?
+
+\textbf{Solution:} We want to minimize the surface area of a cylinder
+with radius $r$ and height $h$: two circular ends plus the side.
+$$A = 2\pi r^2 + 2\pi r h$$
+The constraint is the volume: $\pi r^2 h = 355$, so $h = \frac{355}{\pi
+r^2}$. Substituting,
+$$A(r) = 2\pi r^2 + 2\pi r \cdot \frac{355}{\pi r^2} = 2\pi r^2 + \frac{710}{r}$$
+The domain is $r > 0$. Differentiate and set equal to zero:
+$$A'(r) = 4\pi r - \frac{710}{r^2} = 0 \quad\Rightarrow\quad r^3 = \frac{710}{4\pi} \quad\Rightarrow\quad r \approx 3.84 \text{ cm}$$
+$A''(r) = 4\pi + \frac{1420}{r^3} > 0$, so this is a minimum. The height
+is $h = \frac{355}{\pi (3.84)^2} \approx 7.67$ cm, exactly twice the radius:
+the best can is as tall as it is wide.
+
+Real soda cans are about 6.6 cm wide and 12 cm tall. They use about 2\%
+more aluminum than the ideal, but they are easier to hold, and their
+thick ends are cheaper to make small.
+
+\begin{Exercise}[title={The Open Box}, label=optimization_box]
+\index{optimization!open box}
+You have a 30 cm by 30 cm square of cardboard. You cut a square of side $x$
+from each corner and fold up the sides to make an open box. What value of
+$x$ gives the largest volume? What is that volume?
+\end{Exercise}
+\begin{Answer}[ref=optimization_box]
+The base is $(30 - 2x)$ by $(30 - 2x)$ and the height is $x$, so
+$V(x) = x(30 - 2x)^2$ with $0 < x < 15$. By the product and chain rules,
+$$V'(x) = (30 - 2x)^2 + x \cdot 2(30 - 2x)(-2) = (30 - 2x)(30 - 6x)$$
+$V' = 0$ at $x = 15$ (an endpoint, where the volume is 0) and $x = 5$. So
+cut 5 cm squares: $V(5) = 5 \cdot 20^2 = 2{,}000$ cm$^3$.
+\end{Answer}
+
+\begin{Exercise}[title={The School Dance}, label=optimization_dance]
+\index{optimization!revenue}
+At \$10 a ticket, 300 students come to the school dance. For every \$1 the
+price goes up, 20 fewer students come. What ticket price brings in the
+most money? How many students come, and what is the revenue?
+\end{Exercise}
+\begin{Answer}[ref=optimization_dance]
+Let $p$ be the price increase in dollars. Revenue is price times attendance:
+$$R(p) = (10 + p)(300 - 20p) = 3000 + 100p - 20p^2$$
+$R'(p) = 100 - 40p = 0$ gives $p = 2.5$, and $R'' = -40 < 0$, so it is a
+maximum. Charge \$12.50; 250 students come, for \$3,125 in revenue (up
+from \$3,000).
 \end{Answer}
 
 \section{Helpful Table for Optimization Problems}
@@ -431,7 +479,7 @@ Therefore, the enclosure has dimensions 30 units by 15 units.
 \hline
 $f'(c) \neq 0$ &
 The graph has a non-horizontal tangent &
-Not a maximum or minimum \\
+Not a maximum or minimum (unless $c$ is an endpoint) \\
 \hline
 $f'(c) = 0$ &
 The graph has a horizontal tangent &
@@ -439,7 +487,7 @@ Possible maximum, minimum, or neither \\
 \hline
 $f'(c)$ does not exist &
 The graph may have a corner, cusp, or vertical tangent &
-Possible maximum or minimum so run second derivative test to check! \\
+Possible maximum or minimum; check the sign of $f'$ on each side \\
 \hline
 $f'(c) = 0$ and $f''(c) > 0$ &
 Graph is concave up at $c$ &
@@ -457,14 +505,11 @@ Could be max, min, or neither \\
 \end{center}
 
 
-% FIXME Using python to find absolute extrema, derivative test. Also update these sections. 
 
 \section{Using Python to Visualize Your Optimization Problem}
-You may be familiar with the use of Python to find the derivative of functions. We are going 
-to use Python to supplement your knowledge of Optimization problems! 
-Below is a script that can be used to visualize what your world problems may be asking you to do! 
-This script will help you with finding the first derivative, performing the second derivative test, 
-and graphs of your equations showing these points. 
+The \pyfunction{sympy} library does algebra and calculus symbolically,
+the way you do on paper. The script below takes the derivative, solves
+$f'(x) = 0$, runs the second derivative test, and plots the result.
 
 \begin{minted}{python}
 import sympy as sp
@@ -527,7 +572,7 @@ plt.show()
 \end{minted}
 
 \begin{Exercise}[label = optimization3]
-The Python script below uses derivatives to locate and classify a
+The Python script above uses derivatives to locate and classify a
 critical point of a function.
 
 \begin{enumerate}

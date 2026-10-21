@@ -1,8 +1,14 @@
 \chapter{First and Second Derivatives and the Shape of a Function}
+A roller coaster designer cares about three things: where the track is
+high, where it is climbing or falling, and where it curves up (pressing
+riders into their seats) or curves down (lifting them out). The first and
+second derivatives answer all three questions without drawing a single
+point.
+
 \section{Using first derivatives to describe a function}
 \subsection{Critical Values}
 
-Let's re-examine our graph showing the height of a hammer tossed in the air:
+Let us re-examine our graph showing the height of a hammer tossed in the air:
 \index{critical values}
 
 \begin{figure}[H]
@@ -18,7 +24,7 @@ Let's re-examine our graph showing the height of a hammer tossed in the air:
 
 
 As you can see, the hammer reaches its peak around $t \approx 0.5s$ (see 
-figure \ref{ref:hammerh}). Let's add tangent lines just before and after the 
+figure \ref{ref:hammerh}). Let us add tangent lines just before and after the 
 peak of the hammer's path, so we can more easily examine how the slope of the 
 graph changes:
 
@@ -62,7 +68,7 @@ $$f'(x) = 12x(x-2)(x+1)$$
 To determine where $f'(x)>0$, we start by finding where $f'(x)=0$ (in this 
 case, this is true when $x=-1, 0, 2$). These values of $x$ are called \textit{
 critical values}, and we will use them to divide $f'(x)$ into intervals. 
-(Critical values are also called critical numbers, and we will use both in 
+(\index{critical numbers}Critical values are also called critical numbers, and we will use both in 
 this text.) On each of these intervals, $f'(x)$ must be always positive or 
 always negative. This is shown in the graph below:
 
@@ -84,7 +90,7 @@ always negative. This is shown in the graph below:
 As you can see in figure \ref{fig:critval1}, $f'(x)>0$ on two intervals: $x 
 \in (-1, 0) $ and $x \in (2, \infty)$. These are open intervals because $f'(x) 
 = 0$ at $x = -1$, $x = 0$, and $x = 2$. But what if we had a more complex 
-function, or didn't have the resources to graph it? 
+function, or did not have the resources to graph it? 
 
 We can use a table to help us analyze the value of $f'(x)$ (and therefore the behavior of $f(x)$). For 
 each interval around the critical values, we can determine if $f'(x)$ is 
@@ -106,7 +112,7 @@ $2<x$ & positive & positive & positive & positive & increasing\\
 
 
 Notice the table method yields the same result as examining the graph: $f(x)$ 
-is increasing for $x\in (0, -1)$ and $x \in (2, \infty)$, which can also be 
+is increasing for $x\in (-1, 0)$ and $x \in (2, \infty)$, which can also be 
 written as $x \in (-1, 0) \cup (2, \infty)$. 
 
 
@@ -119,8 +125,9 @@ written as $x \in (-1, 0) \cup (2, \infty)$.
 	Recall that critical values are values of $x$ where $g'(x) =0$ or is 
 	undefined. We need to find an expression for $g'(x)$, set it equal to zero 
 	when $x=\frac{2}{3}$, and solve for $k$. 
-	$$g'(x) = x^(2)[k*\exp{kx}]+\exp{kx}[2x]$$
-	$$g'(\frac{2}{3})=(\frac{2}{3})^2[k*\exp{\frac{2k}{3}}]+\frac{4}{3}\exp{\frac{
+	By the product and chain rules,
+	$$g'(x) = x^2 \cdot ke^{kx} + 2xe^{kx}$$
+	$$g'(\frac{2}{3})=(\frac{2}{3})^2 ke^{\frac{2k}{3}}+\frac{4}{3}\exp{\frac{
 	2k}{3}}=0$$
 	$$\frac{4k}{9}e^{\frac{2k}{3}}+\frac{4}{3}e^{\frac{2k}{3}}=0$$
 	$$(\frac{4k}{9}+\frac{4}{3})e^{\frac{2k}{3}}=0$$
@@ -181,10 +188,11 @@ this to estimate the value of the derivative at that point.
 
 You should notice that all of the tangent lines are horizontal. Since the 
 tangent lines at these local extrema have a slope of $0$, that tells us $f'(x) 
-= 0$ at these points as well. In fact, for \textit{all} local minima and maxima, 
-the value of the derivative is zero at that point. However, the converse 
+= 0$ at these points as well. In fact, at \textit{every} local minimum or maximum of a smooth function,
+the derivative is zero. (At a sharp corner, like the bottom of $|x|$, the
+derivative does not exist instead.) However, the converse 
 statement is not necessarily true; just because the derivative is zero at 
-some $x = c$, it does not mean there is a local extrema at $f(c)$. Consider 
+some $x = c$, it does not mean there is a local extremum at $x = c$. Consider 
 $f(x) = x^3+3$, shown in figure  \ref{fig:nonextrema}:
 
 \begin{figure}[H]
@@ -223,7 +231,7 @@ If $f(x)$ changes from increasing to decreasing, then $f'(x)$ is changing from
 positive to negative (i.e. crossing the x-axis). Look at the derivative of 
 $f(x) = \sin{x}$, $f'(x)=\cos{x}$, presented in figure \ref{fig:fprimecos}. 
 The x-values where local extrema exist on $f(x)$ are marked in red (recall 
-$\sin{x} = \pm 1$ when $x=\frac{n\pi}{2}$):
+$\sin{x} = \pm 1$ when $x=\frac{\pi}{2} + n\pi$):
 
 \begin{wrapfigure}{r}{5cm}  % r = right side, width = 5cm
     \centering
@@ -244,14 +252,13 @@ If $f'(x)$ is negative to the left of $x=c$ and positive to the right, then
 $f(x)$ has a local minimum at $x=c$. On the other hand, if $f'(x)$ is positive 
 to the left of $x=c$ and negative to the right, then $f(x)$ has a local 
 maximum at $x=c$. Any value of $x=c$ where $f'(c) = 0$ is called a \textbf{
-critical number} or a \textbf{critical value}. Values where $f(c)$ does not 
-exist are also a critical numbers. 
+critical number} or a \textbf{critical value}. Values in the domain where $f'(c)$ does not 
+exist are also critical numbers. 
 
 \subsection{Practice: Interval of Increasing and Decreasing, Local Extrema}
 \begin{Exercise}
     [label=incdec1]
-    Let $f$ be the function given by $f(x) = 300x-x^3$. On which of the 
-    following intervals is $f$ increasing?
+    Let $f$ be the function given by $f(x) = 300x-x^3$. On what interval is $f$ increasing?
 \end{Exercise}
 
 \begin{Answer}
@@ -279,7 +286,7 @@ Then, find all local minimum and/or maximum values of $f(x)$.
 
 \begin{Answer}[ref=locext1]
 Given $f(x)=x^3-3x^2-9x+4$, it follows that $f'(x)=3x^2-6x-9$. Factoring, we 
-find that $f'(x) = 9(x-3)(x+1)$ and $f'(x) = 0$ when $x=3$ and $x=-1$. We 
+find that $f'(x) = 3(x-3)(x+1)$ and $f'(x) = 0$ when $x=3$ and $x=-1$. We 
 construct our table to help us analyze the value of $f'(x)$ and behavior of 
 $f(x)$ on the whole domain of the function:
 \begin{center}
@@ -299,10 +306,10 @@ changes from negative to positive, $f(x)$ has a local minimum at $x=3$.
 
 
 \subsection{Global Extrema}
-Now that we've learned how to identify local minima and maxima, let's expand 
+Now that we have learned how to identify local minima and maxima, let us expand 
 the discussion to include global extrema. A global extreme is an absolute 
 minimum or maximum value of a function over a particular interval or the entire 
-domain of the function. Let's examine the graph of $f(x) = x^4-5x^3+6x^2$ over 
+domain of the function. Let us examine the graph of $f(x) = x^4-5x^3+6x^2$ over 
 the domain $x \in [-1,4]$.
 
 \index{global extrema}
@@ -348,7 +355,7 @@ maximum value is 32 at $x=4$ and the global minimum is -1.623 at $x=2.593$.
 If a function is continuous on an interval, then there must exist a global 
 maximum and global minimum on that interval. These global extrema may also be 
 local extrema (as is the case for $f(2.593)$ in the example above) or not (as 
-is the case for $f(4)$). Applying the Closed Interval Method is a 
+is the case for $f(4)$). Applying the \index{closed interval method}Closed Interval Method is a 
 straightforward way to identify global (absolute) extrema. 
 
 To find the global 
@@ -360,7 +367,7 @@ extrema of a continuous function, $f$, on a closed interval $[a, b]$:
 	the smallest of the values is the absolute minimum.
 \end{enumerate}
 
-Let's use the Closed Interval Method to determine the global extrema for the 
+Let us use the Closed Interval Method to determine the global extrema for the 
 function $g(x) = x-3\sin{x}$ on the interval $x \in [0, 2\pi]$.
 
 To find the value of $g$ at any critical numbers, we must first identify the 
@@ -415,7 +422,7 @@ $$x=e$$
 Finding the value of $f(x)$ at $x=e$: 
 $$f(e) = \frac{\ln{e}}{e}=\frac{1}{e}$$
 Because the domain of $f(x)$ is on an \textit{open interval}, instead of 
-checking the endpoints directly, we'll take the limits as $x$ approaches $0$ 
+checking the endpoints directly, we will take the limits as $x$ approaches $0$ 
 and $\infty$.
 $$\lim_{x\to 0}\frac{\ln{x}}{x}=-\infty<\frac{1}{e}$$
 $$\lim_{x \to \infty}\frac{\ln{x}}{x}=0<\frac{1}{e}$$
@@ -555,7 +562,7 @@ Find the global minimum and maximum values on the stated interval.
 \end{Answer}
 
 
-\section{Sketching f from f'}
+\section{Sketching f from f'}\index{sketching f from f'}
 Now that we know how the shape of $f$ is related to the value of $f'$, we can 
 predict the shape of $f$ if we are given $f'$. Take the example $f'(x) = -(x-1)
 (x-5)$, shown in figure \ref{fig:sketchf1}:
@@ -572,13 +579,13 @@ predict the shape of $f$ if we are given $f'$. Take the example $f'(x) = -(x-1)
 \end{figure}
 
 Using the graph of $f'$, we can construct an approximate sketch of $f$. First, 
-let's identify the critical numbers. Where does $f'=0$? Take a second to 
+let us identify the critical numbers. Where does $f'=0$? Take a second to 
 examine the graph of $f'$ above and jot down what you think the critical 
 numbers are.
 
 You should recall that critical numbers are x-values where $f'=0$. Examining 
 the graph of $f'$, we see that $f'=0$ at $x=1$ and $x=5$. We can now use a 
-table to describe the behavior of $f$:
+table to describe the behavior of $f$ (remember the minus sign in front of $f'$):
 
 \begin{tabular}{c|c|c|c|c}
 $x$ & $x-1$ & $x-5$ & $f'$ & behavior of $f$\\
@@ -707,7 +714,7 @@ answers are reasonable estimates.]
 
 \section{Using second derivatives to describe a function}
 \subsection{Concavity}
-Let's examine two increasing functions, $f(x) = \frac{x^2}{2}$ and $g(x) = 
+Let us examine two increasing functions, $f(x) = \frac{x^2}{2}$ and $g(x) = 
 \sqrt{x}$:
 \begin{figure}
 \centering
@@ -727,7 +734,7 @@ $f(x)$ looks like a bowl. On the other hand, $g(x)$ looks like an upside-down
 bowl. These shapes are called \textit{concave up} (in the case of $f(x)$) and 
 \textit{concave down} (in the case of $g(x)$). Both functions are increasing on 
 the interval $x \in [0, 4]$, and therefore both $f'(x)$ and $g'(x)$ are 
-positive on the stated interval. Let's look at their second derivatives, $f''(x
+positive on the stated interval. Let us look at their \index{derivative!second}second derivatives, $f''(x
 )$ and $g''(x)$:
 \index{concavity!concave up}
 \index{concavity!concave down}
@@ -770,7 +777,7 @@ and $g(x) = x^2$, which both have first derivatives equal to $0$ at $x=0$:
 
 When the graph is concave up, there is a local minimum where the first 
 derivative equals $0$. When the graph is concave down, there is a local 
-maximum where the first derivative equals $0$. This is summarized with the 
+maximum where the first derivative equals $0$. This is summarized with the\index{second derivative test} 
 Second Derivative Test:
 
 Suppose $f''$ is continuous near $c$. Then,
@@ -780,14 +787,14 @@ Suppose $f''$ is continuous near $c$. Then,
 \end{enumerate}
 
 
-\subsection{Inflection Points}
+\subsection{Inflection Points}\index{inflection point}
 If $f$ is concave up when $f''>0$ and concave down when $f''<0$, what about 
 when $f''=0$? This is the value at which $f$ changes from concave up to concave 
 down (or vice versa), which is called an \textit{inflection point}. Similar to 
 local extrema with $f'$, if there is an inflection point at $x=c$, then $f''(c)
 =0$, but the converse is not necessarily true. To check if $x=c$ is an 
 inflection point, then $f''$ should change signs on either side of $x=c$ (
-either from positive to negative to from negative to positive). 
+either from positive to negative or from negative to positive). 
 
 Look at the graph of $f(x) = x^4-4x^3$. The concave up areas are shown in red, 
 and the concave down in blue:
@@ -805,7 +812,7 @@ and the concave down in blue:
 \end{axis}
 \end{tikzpicture}
 \end{figure}
-Let's examine $f''$ to confirm the inflection points are at $(0, 0)$ and $(2, 
+Let us examine $f''$ to confirm the inflection points are at $(0, 0)$ and $(2, 
 -16)$. First, we note that $f''(x) = 12x^2-24x$. Factoring, we see that $f''(x) 
 = 12x(x-2)$, which has zeroes at $x=0$ and $x=2$. For $x<0$, $f''>0$, and for 
 $0<x<2$, $f''<0$; therefore, there is an inflection point in $f$ at $(0, 0)$. 
@@ -851,11 +858,11 @@ the interval(s) (to three decimal places) for which $f$ is concave down.
 Since the question asks about concavity, we need to examine the second derivative:
 $$f''(x) = \frac{d}{dx} f'(x) = \frac{d}{dx} \left[ e^{(x^4 - 2x^2 + 1)} - 2 
 \right]$$
-$$f''(x) = \left( x^4 - 2x^2 + 1 \right) e^{(x^4 - 2x^2 + 1)} \left(4x^3 - 4x 
-\right)$$
+By the chain rule,
+$$f''(x) = e^{(x^4 - 2x^2 + 1)} \left(4x^3 - 4x \right)$$
 
-The second derivative equals zero when $x^4 - 2x^2 + 1 = (x^2 - 1)^2 = 0$ or 
-$4x^3 - 4x = 4(x)(x^2-1) = 0$, which gives roots $x = 0$, $x = 1$, and $x = 
+The exponential is never zero, so the second derivative equals zero only when
+$4x^3 - 4x = 4x(x^2-1) = 0$, which gives roots $x = 0$, $x = 1$, and $x = 
 -1$. So the intervals we need to test are $(-1.5, -1)$, $(-1, 0)$, $(0, 1)$, 
 and $(1, 1.5)$. To test $x \in (-1.5, -1)$, we will substitute $x = -1.25$ 
 into $f''(x)$:
@@ -903,7 +910,7 @@ exist and $f$ is not differentiable at $x = 0$.
 \item True. The graph of $f(x)$ is concave up for $x \in (0, 2)$, which means 
 the second derivative is positive. 
 \item True. Recall that critical values are where derivatives equal 0 or do 
-not exist. Since we have established that $f(x)$ does not exist at $x = 0$, 
+not exist. Since we have established that $f'(x)$ does not exist at $x = 0$, 
 then there is a critical value at $x = 0$. 
 \end{enumerate}
 \end{Answer}
@@ -917,13 +924,13 @@ statements as true or false and explain your answer.
 \begin{enumerate}
 \item $f$ has a relative minimum at $x = -3$.
 \item The graph of $f$ has a point of inflection at $x = -2$.
-\item The graph of $f$ is concave down for $0 < x < 4$.
+\item The graph of $f$ is concave down for $0 < x < 2$.
 \end{enumerate}
 
 \begin{tikzpicture}
 	\begin{axis}[xmin = -4.25, xmax = 4.25, ymin = -5, ymax = 5, axis lines = 
 	center, xlabel = $x$, x label style = {anchor = north}, xtick = {-4, -3, -2, 
-	-1, 1, 2, 3, 4}, xticklabels = { , , , , 1, , , }, ylabel = $f(x)$, ytick = 
+	-1, 1, 2, 3, 4}, xticklabels = { , , , , 1, , , }, ylabel = $f'(x)$, ytick = 
 	\empty]
         \addplot[blue, thick, domain = -4:-2]{-1*(x + 1.75)^2 + 1.55};
         \draw[blue, thick] (-2, 1.5) parabola (-1, 3);
@@ -937,13 +944,12 @@ statements as true or false and explain your answer.
 
 \begin{Answer}[ref = shape2]
 \begin{enumerate}
-\item True. $f'(3) = 0$ and $f'$ has a positive slope, which means there is a 
-local extreme and $f$ is concave up at $x = 3$. Therefore, there is a local 
-minimum at $x = 3$.
+\item True. $f'(-3) = 0$, and $f'$ changes from negative to positive there,
+so $f$ switches from decreasing to increasing: a local minimum at $x = -3$.
 \item False. Though it appears that $f'' = 0$ at $x = -2$, the slope of $f'$ 
 is positive before and after. Therefore, $f''$ does not cross the $x$-axis 
 and there is not an inflection point at $x = -2$. 
-\item True. For $ 0 < x < 4$, the slope of $f'$ is negative, which means 
+\item True. For $ 0 < x < 2$, the slope of $f'$ is negative, which means 
 $f''$ is negative, which means $f$ is concave down. 
 \end{enumerate}
 \end{Answer}

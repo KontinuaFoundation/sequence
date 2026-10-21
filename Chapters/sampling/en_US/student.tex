@@ -3,8 +3,16 @@
 
 \section{Planning a Study}
 
-Transit routes, school schedules, and drug approvals all rest on data, and each decision is only as good as the data behind it. 
+Every day, decisions get made based on data. A city council votes on a new transit route based on ridership surveys. 
+A school principal adjusts the lunch schedule based on student feedback. A pharmaceutical company decides 
+whether to release a new drug based on clinical trial results. In every case, the quality of the decision 
+depends entirely on the quality of the data behind it.
+
 A study plan states what question you are answering, how you will gather information, and whom you will gather it from.
+
+
+
+
 
 \begin{figure}[H]
     \centering
@@ -20,18 +28,23 @@ A study plan states what question you are answering, how you will gather informa
     you want to learn about. The population is defined by the question you are asking.
 
     \item[\newterm{frame}\index{frame}] Also called a sampling frame. A list of all the members 
-    of the population from which a sample will be drawn. The frame and the population often differ slightly. A school's enrollment database, a city's voter registration list, 
-    and a company's customer records are all examples of frames.
+    of the population from which a sample will be drawn. The frame and the population often differ slightly. A school's enrollment database, a city's voter registration list, and a company's customer records are all examples of frames.
 
     \item[\newterm{sample}\index{sample}] The part of the population that is actually studied. 
     You collect data from the sample and use it to draw conclusions about the population.
 
     \item[\newterm{sample survey}\index{sample survey}] The process of collecting information from a 
-    sample. The information gathered is then used to make inferences about population parameters.
+    sample. The information gathered is then used to make inferences about \index{population parameter}population parameters.
 
     \item[\newterm{census}\index{census}] The process of collecting information from every member of the population 
     rather than just a sample. A census gives complete information, but it comes at a cost.
 \end{description}
+
+\textbf{Worked example.} A survey interviews 200 of the 1,000 households in a
+town. What fraction of the population is in the sample? Is this a census?
+
+\textbf{Solution.} $\frac{200}{1000} = 20\%$ of the households. It is not a
+census, because 800 households were not asked.
 
 \begin{figure}[H]
     \centering
@@ -221,10 +234,10 @@ the same size has the same chance of being picked. An SRS can be drawn in two wa
 Chance, rather than convenience or judgment, must decide who is selected. Three ways to do this:
 
 \begin{itemize}
-    \item Assign every member of the population a number. Use a random number table, entering at any random point and reading 
+    \item Assign every member of the population a number. Use a \index{random number table}random number table, entering at any random point and reading 
     numbers sequentially. Select members whose numbers appear, skipping values outside your range and any repeats, until you have 
     the sample size you need.
-    \item Use a calculator. On a TI-84, \texttt{MATH} $\to$ \texttt{PRB} $\to$ \texttt{5:randInt(} generates random integers. 
+    \item Use a calculator. On a \index{TI-84!randInt}TI-84, \texttt{MATH} $\to$ \texttt{PRB} $\to$ \texttt{5:randInt(} generates random integers. 
     The command \texttt{randInt(1,500,30)} produces 30 random integers between 1 and 500. Ignore repeats.
     \item Use a physical randomization device. Write each member's identifier on an identical slip of paper, mix thoroughly in a 
     container, and draw without looking until the sample is complete.
@@ -307,7 +320,7 @@ print(f"Sample mean (n=20): {sample_mean:,.0f}")
 
 \section{Other Random Sampling Methods}
 
-An SRS can be expensive or imprecise for some populations. Three other random methods appear regularly on the AP exam.
+An SRS can be expensive or imprecise for some populations. Three other random methods are common, and all three appear regularly on the AP exam.
 
 In \newterm{systematic sampling}\index{systematic sampling}, you list the population, choose a random start, and then pick 
 every $k$th member. To sample 40 students from 800, start at a random number between 1 and 20, then take every 20th student. 
@@ -531,10 +544,11 @@ This suits populations spread over a wide area, where reaching everyone is expen
 
 Strata and clusters are both groups, but they play opposite roles:
 
-\begin{description}
-    \item[\newterm{strata}\index{strata}] Groups that differ from each other and are similar within. Take a random sample from every stratum.
-    \item[\newterm{clusters}\index{clusters}] Groups that each resemble the whole population. Randomly select some clusters and include every member of each.
-\end{description}
+\textbf{It is important to understand the difference between strata and clusters.} 
+\newterm{Strata}\index{strata} are groups that are different from each other but similar within, and you sample from all of them. 
+\newterm{Clusters}\index{clusters} are groups that are similar to the whole population, and you sample only some of them but take 
+everyone inside those.
+
 
 \begin{Exercise}[title={Identifying Sampling Methods}, label={ex:samplingid}]
 Identify the sampling method used in each scenario: SRS, systematic, stratified, or cluster.
@@ -561,6 +575,8 @@ A film festival puts all 900 registered attendee names in a database and uses so
     \item Water utility: Systematic sampling. Random start followed by every 25th unit.
     \item Film festival: Simple random sample. Every possible group of 90 attendees is equally likely.
 \end{itemize}
+
+
 \end{Answer}
 
 \textbf{Computing in Python}
@@ -609,9 +625,7 @@ print(srs[["student_id", "grade", "score"]])
 \item Stratified random sample. Draw 3 students from each grade level.
 
 \begin{minted}{python}
-stratified = df.groupby("grade", group_keys=False).apply(
-    lambda x: x.sample(n=3)
-)
+stratified = df.groupby("grade").sample(n=3)
 print(f"Stratified mean: {stratified['score'].mean():.1f}")
 print(stratified[["student_id", "grade", "score"]])
 \end{minted}
@@ -652,6 +666,10 @@ True mean & \multicolumn{4}{c|}{79.7} \\
     \item Which method gives the most stable estimate? Why does the stratified sample tend to stay closer to the true mean than the SRS?
     \item Why does the cluster mean vary the most?
 \end{enumerate}
+
+
+
+
 \end{Exercise}
 \begin{Answer}[ref={ex:sampling-compare}]
 \begin{enumerate}
@@ -660,7 +678,17 @@ True mean & \multicolumn{4}{c|}{79.7} \\
     \item The stratified sample. Every grade is always represented, and scores vary less within a grade than across the whole school, so the estimate stays close to the true mean from run to run.
     \item The cluster sample is a single grade, so its mean depends entirely on which grade is chosen. The grades differ in score, so the cluster mean can land far from 79.7.
 \end{enumerate}
+
+\textbf{More detail.} Your runs will differ, because each run draws new random samples. The answers below describe what the code produces. For the data set created with seed 42, the true mean is 79.7, and the grade means are 70.3 (9th), 76.5 (10th), and 92.4 (11th).
+\begin{enumerate}
+    \item \textbf{SRS.} An SRS of 9 students usually includes all three grades, but not always. For a given grade, the chance that none of its 10 students is chosen is about 1.2\%, so the chance that some grade is missing is about 3.5\%.
+    \item \textbf{Stratified.} Every grade contributes three students, so the sample mean is usually close to 79.7. Over many repeated draws, the stratified mean has a standard deviation of about 1.6 points, compared with about 3.0 points for the SRS.
+    \item \textbf{Cluster.} The cluster mean is the mean of the one grade chosen, so it is about 70.3 for 9th grade, 76.5 for 10th, or 92.4 for 11th. Over many repeated draws, its standard deviation is about 9.3 points.
+    \item \textbf{Table.} Your runs will vary, but expect the stratified means to fall within about 3 points of 79.7, the SRS means within about 5 points, and the cluster means at one of the three grade means. The cluster method is the least stable.
+    \item \textbf{Why.} The stratified sample is more stable because it always includes every grade, so differences between grades cannot shift the mean much. The cluster sample is the least stable because the whole sample comes from a single grade, and the grade means differ by about 22 points.
+\end{enumerate}
 \end{Answer}
+
 
 \section{Bias in Surveys}
 
@@ -724,3 +752,12 @@ Identify the most likely type of bias in each scenario and explain why it applie
     \item Response bias. The formal appearance of the interviewers creates social pressure to give a health-conscious answer. Respondents adjust their reported behavior to match what they believe the interviewers expect.
 \end{enumerate}
 \end{Answer}
+
+
+\begin{Exercise}[title={Sample Fraction}, label=samp6]
+A survey of $25$ drivers is taken from a list of $300$ drivers. What percent of the drivers are in the sample?
+\end{Exercise}
+\begin{Answer}[ref=samp6]
+$\frac{25}{300} \approx 8.3\%$.
+\end{Answer}
+

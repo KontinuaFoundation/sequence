@@ -1,27 +1,29 @@
 \chapter{Data Tables and pandas}
-Much of the data that you will encounter in your career will come to
-you as a table.  Some of these tables are spreadsheets, some are in
-relational databases, and some will come to you as CSV files.
+Your school keeps a table of every student: name, grade, schedule. A
+streaming service keeps a table of every song you have played. Most of the
+data you will ever work with arrives as a table: a spreadsheet, a database,
+or a plain text file. In this chapter, you will learn pandas, the Python
+library that data scientists use to read, clean, and question tables.
 
-Typically, each column will represent an attribute (like height or
-acreage) and each row will represent an entity (like a person or a
-farm). You might get a table like this:
+Each column holds one attribute (like height or acreage), and each row
+holds one thing (like a person or a farm). Here is a table about houses:
 
 \begin{tabular}{c | c | c | c}
   \texttt{property\_id} & \texttt{bedrooms} & \texttt{square\_meters} & \texttt{estimated\_value} \\
   \hline
-  7927 &  3 & 921.4 & \$ 294,393 \\
-  9329 &  2 & 829.1 & \$ 207,420 \\
+  7927 &  3 & 121.4 & \$ 294,393 \\
+  9329 &  2 & 82.9 & \$ 207,420 \\
 \end{tabular}
 
-In most cases, one of the columns is guaranteed to be unique. We call this
-the \newterm{primary key}.  In this table, \texttt{property\_id} is
+Usually one column is guaranteed to be different in every row. We call it
+the \newterm{primary key}\index{primary key}, and it works like a student
+ID number.  In this table, \texttt{property\_id} is
 the primary key; every property has one, and no two properties have
 the same \texttt{property\_id}.
 
 \section{Data types}
 
-Each column in a table has a type, and these usually correspond pretty nicely with types in Python.
+Each column has a type, and the types match Python's types nicely.
 
 Here are some common datatypes:
 \index{datatypes}
@@ -30,7 +32,7 @@ Here are some common datatypes:
   \hline
   Integer & int & \texttt{910393} \\
   Float & float & \texttt{-23.19} \\
-  String & string & \texttt{'Fred'} \\
+  String & str & \texttt{'Fred'} \\
   Boolean & bool & \texttt{False} \\
   Date & datetime.date & \texttt{2019-12-04} \\
   Timestamps & datetime.datetime & \texttt{2022-06-10T14:05:22Z} \\
@@ -49,28 +51,49 @@ sense to have a negative value.
 Sometimes a column can only be one of a few values. For example, if
 you ran a bike rental shop, each bicycle's status would be ``available'',
 ``rented'', or ``broken''.  Any other values in that column would not
-be allowed.  We often call these columns \newterm{categorical}.
+be allowed.  We often call these columns \newterm{categorical}\index{categorical variable}.
 
 \section{pandas}
 
-\index{pandas}
-The Python community works with tables of data \emph{very} often, so it
-created the pandas library for reading, writing, and manipulating
-tables of data.
 
-When working with tables, you sometimes need to go through them
-row-by-row. However, for large datasets, this is very slow. pandas
-makes it easy (and very fast) to say things like ``Delete every row
-that doesn't have a value for height'' instead of requiring you to
-step through the whole table.
+
+\index{pandas}
+Python programmers work with tables so often that they built a library
+just for them: pandas. You could loop through a table one row at a time,
+but for a table with millions of rows, that is slow. pandas lets you say
+things like ``delete every row that has no value for height'' in one line,
+and it runs fast.
 
 In pandas, there are two datatypes that you use a lot:
 \begin{itemize}
-\item a \texttt{Series} is a single column of data.
-\item a \texttt{DataFrame} is a table of data: it has a \texttt{Series} for each column.
+\item a \index{Series}\texttt{Series} is a single column of data.
+\item a \index{DataFrame}\texttt{DataFrame} is a table of data: it has a \texttt{Series} for each column.
 \end{itemize}
 
-In the digital resources, you will fined \filename{bikes.csv}. If you
+\textbf{Worked example.} Build a small DataFrame of test scores and find
+the average.
+\begin{minted}{python}
+import pandas as pd
+
+scores = pd.DataFrame({"name": ["Ana", "Ben", "Cy"], "score": [88, 92, 75]})
+print(scores["score"].mean())
+\end{minted}
+The output is \mintinline{text}{85.0}. Square brackets pick out the
+\texttt{score} column (a Series), and \mintinline{python}{mean()} averages
+it.
+
+\begin{Exercise}[title={Highest Score}, label=pd1]
+Using the \texttt{scores} DataFrame above, write code that prints the highest score.
+\end{Exercise}
+\begin{Answer}[ref=pd1]
+\begin{minted}{python}
+print(scores["score"].max())
+\end{minted}
+The output is \mintinline{text}{92}.
+\end{Answer}
+
+In the digital resources, you will find \filename{bikes.csv}, a table
+about the bikes in a rental shop. If you
 look at it in a text editor, it will start like this:
 \begin{minted}{python}
 bike_id,brand,size,purchase_price,purchase_date,status
@@ -81,23 +104,22 @@ bike_id,brand,size,purchase_price,purchase_date,status
 \end{minted}
 
 The first line is a header; it tells you the name of each column.
-Next, the each bike is represented by values which are separated by commas. (Thus the name: CSV stands
+Each line after that is one bike, with its values separated by commas. (Thus the name: \index{comma-separated values}CSV stands
 for ``Comma-Separated Values''.)
 
 \section{Reading a CSV with pandas}
 
-Let's make a program that reads \filename{bikes.csv} into a pandas
+Let us make a program that reads \filename{bikes.csv} into a pandas
 dataframe.  Create a file called \filename{report.py} in the same
 folder as \filename{bikes.csv}.
 
-First, we will read in the csv file. pandas has one series that acts
-as the primary key; it calls this one the index. When reading in the
-file, we will tell it to use the \texttt{bike\_id} as the index
-series.
+pandas treats one column as the primary key and calls it the
+\index{pandas!index}\newterm{index}. When we read the file, we will tell
+pandas to use \texttt{bike\_id} as the index.
 
 If you ask a dataframe for its shape, it returns a tuple containing
 the number of rows and the number of columns. To confirm that we have
-actually read the data in, let's print those numbers.  Add these lines
+actually read the data in, let us print those numbers.  Add these lines
 to \filename{report.py}:
 
 \begin{minted}{python}
@@ -113,19 +135,19 @@ print(f"Bikes: {row_count:,}")
 print(f"Columns: {col_count}")
 \end{minted}
 
-Build it and run it. You should see something like this:
+Run it. You should see:
 \begin{minted}{python}
 *** Basics ***
 Bikes: 998
 Columns: 5
 \end{minted}
 
-Note that your table actually has six columns. The index series is
-not included in the shape.
+The file has six columns, but the shape says five. The index does not
+count as a column.
 
 \section{Looking at a Series}
 
-Let's get the lowest, the highest, and the mean purchase price of the
+Let us get the lowest, the highest, and the mean purchase price of the
 bikes.  The purchase price is a series, and you can ask the dataframe
 for it. Add these lines to the end of your program:
 
@@ -162,13 +184,14 @@ each brand from most to least common:
 
 \begin{minted}{python}
 *** Brands ***
+brand
 Canyon        192
 BMC           173
 Cannondale    170
 Trek          166
 GT            150
 Giant         147
-Name: brand, dtype: int64
+Name: count, dtype: int64
 \end{minted}
 
 \pyfunction{value\_counts} returns a Series.  To format this better, we
@@ -176,8 +199,8 @@ need to learn about accessing individual rows in a series.
 
 \section{Rows and the index}
 
-In an array, you ask for data using the location (as an int) of the
-item you want. You can do this in pandas using \pyfunction{iloc}. Add
+In a list, you ask for an item by its position. pandas does that with
+\pyfunction{iloc} (``integer location''). Add
 this to the end of your program:
 
 \begin{minted}{python}
@@ -199,12 +222,12 @@ status             available
 Name: 5636248, dtype: object
 \end{minted}
 
-Notice that the data coming back is actually another series.
+The row comes back as another Series.
 
-The last line says that the name (the value for the index column) for
-this row is 5636248.  In pandas, we usually use this to locate
-particular rows.  For example, there is a row with \texttt{bike\_id}
-equal to 2969341. Let's ask for one entry from the 
+The last line says that this row's name (its index value) is 5636248.
+Usually we find rows by their index, not their position, using
+\pyfunction{loc}. For example, there is a bike with \texttt{bike\_id}
+2969341. Let us ask for its brand:
 
 \begin{minted}{python}
 print("\n*** Some Bike ***")
@@ -228,10 +251,9 @@ brand = df.loc[2969341, 'brand'] # One call with both row and value
 
 \section{Changing data}
 
-One of your attributes needs cleaning up. Every bike should have a
-status, and it should be one of the following strings:''available'',
-``rented'', or ``broken''.  Get counts for each unique value in
-status:
+Real data is messy. Every bike should have a status, and it should be one
+of ``available'', ``rented'', or ``broken''. Let us count each value that
+actually appears:
 
 \begin{minted}{python}
 print("\n*** Status ***")
@@ -255,9 +277,8 @@ This will show you:
 1 bikes are "Available"
 \end{minted}
 
-Right away, we can see two easily fixable problems: Someone typed
-``Available'' instead of ``available''.  Right after you read the CSV
-in, fix this in the data frame:
+Somebody typed ``Available'' with a capital A, and somebody else typed
+``Flat tire.'' Right after you read the CSV, fix the first problem:
 
 \begin{minted}{python}
 mask = df['status'] == 'Available'
@@ -273,7 +294,8 @@ When you use \pyfunction{loc} with this sort of mask, you are saying
 ``Give me all the rows for which the mask is True.''  So, the
 assignment only happens in the one problematic row.
 
-Let's get rid of the mask variable and do the same for turning \texttt{Flat tire} into \texttt{Broken}:
+You do not need the \texttt{mask} variable. Here is the same fix in one
+line, plus one that turns \texttt{Flat tire} into \texttt{broken}:
 
 \begin{minted}{python}
 df.loc[df['status'] == 'Available', 'status'] = 'available'
@@ -288,15 +310,15 @@ Now those problems are gone:
 297 bikes are "available"
 \end{minted}
 
-What about the rows with no values for status? If we were pretty certain
-that the bikes were available, we could just set them to 'available':
+What about the 7 bikes with no status? If we were sure they were
+available, we could fill in the blanks:
 
 \begin{minted}{python}
 missing_mask = df['status'].isnull()
 df.loc[missing_mask, 'status'] = 'available'
 \end{minted}
 
-Or maybe we would print out the IDs of the bikes so that we could go look for them:
+Or we could print their IDs so someone can go find them:
 
 \begin{minted}{python}
 missing_mask = df['status'].isnull()
@@ -304,7 +326,8 @@ missing_ids = list(df[missing_mask].index)
 print(f"These bikes have no status:{missing_ids}")
 \end{minted}
 
-However, let's just keep the rows where the status is not null:
+Instead, let us just keep the rows where the status is not null. The
+\texttt{\textasciitilde} flips every True to False and every False to True:
 \begin{minted}{python}
 missing_mask = df['status'].isnull()
 df = df[~missing_mask]
@@ -320,7 +343,8 @@ Run the program and open \filename{bikes2.csv} in a text editor.
 
 \section{Derived columns}
 
-Let's say that you want to add a column with age of the bicycle in days:
+Now add a new column, the age of each bike in days, so that
+\filename{bikes2.csv} starts like this:
 \begin{minted}{python}
 bike_id,brand,size,purchase_price,purchase_date,status,age_in_days
 5636248,GT,57,277.99,1986-09-07,available,13061
@@ -328,9 +352,10 @@ bike_id,brand,size,purchase_price,purchase_date,status,age_in_days
 7971254,Cannondale,54,292.25,1978-02-28,available,16174
 \end{minted}
 
-Your first problem is that the \texttt{purchase\_date} column looks
-like a date, but really it is a string. So, you need to convert it to a
-date.  You can do this by applying a function to every item in the series:
+First problem: \texttt{purchase\_date} looks like a date, but pandas read
+it as a string. Convert it by applying a function to every item in the
+Series. (Add \mintinline{python}{import datetime} at the top of your
+program.)
 \begin{minted}{python}
 df['purchase_date'] = df['purchase_date'].apply(lambda s: datetime.date.fromisoformat(s))
 \end{minted}
@@ -338,7 +363,7 @@ df['purchase_date'] = df['purchase_date'].apply(lambda s: datetime.date.fromisof
 (With pandas, there is often more than one way to do things.  pandas
 has a \pyfunction{to\_datetime} function that converts every entry in
 a sequence to a \pytype{datetime} object. Here is another way to
-convert the string column in to a date column:
+convert the string column into a date column:
 \begin{minted}{python}
 df['purchase_date'] = pd.to_datetime(df['purchase_date']).dt.date
 \end{minted}
@@ -350,9 +375,32 @@ today = datetime.date.today()
 df['age_in_days'] = df['purchase_date'].apply(lambda d: (today - d).days)
 \end{minted}
 
-When you run this, the new \filename{bikes.csv} will have an \texttt{age\_by\_date} column.
+Run it, and \filename{bikes2.csv} will have an \texttt{age\_in\_days}
+column. (Your numbers will be bigger than ours; the bikes keep getting
+older.)
 
+\begin{Exercise}[title={Big bikes}, label=pd_big]
+Right after reading \filename{bikes.csv}, how many bikes have a size of 57
+or more? Hint: \mintinline{python}{df['size'] >= 57} is a mask, and
+adding up a mask counts its True values.
+\end{Exercise}
+\begin{Answer}[ref=pd_big]
+\begin{minted}{python}
+big = df['size'] >= 57
+print(big.sum())
+\end{minted}
+It prints \mintinline{text}{313}.
+\end{Answer}
 
-
-
-
+\begin{Exercise}[title={The fanciest bike}, label=pd_max]
+Which bike has the highest purchase price? Print its \texttt{bike\_id} and
+brand. Hint: a Series has a method \pyfunction{idxmax} that returns the
+index of its largest value.
+\end{Exercise}
+\begin{Answer}[ref=pd_max]
+\begin{minted}{python}
+best = df['purchase_price'].idxmax()
+print(best, df.loc[best, 'brand'])
+\end{minted}
+It prints \mintinline{text}{5728868 Canyon}: a \$377.70 Canyon.
+\end{Answer}

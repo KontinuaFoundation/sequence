@@ -1,28 +1,29 @@
 \chapter{Power Series}
 
-Consider the function $f(x) = \frac{1}{1-x}$. This looks similar to the value 
-of convergent geometric series, $\sum_{n=1}^\infty ar^{n-1} = \frac{a}{1-r}$. 
+When your calculator shows $\sin(0.3)$ or $e^{1.7}$, it is not looking anything up.
+It is adding up a polynomial with enough terms to get every digit right.
+Polynomials are the only functions a chip really knows how to evaluate: just
+multiply and add. This chapter shows how to turn other functions into
+``infinitely long polynomials.''
+
+Consider the function $f(x) = \frac{1}{1-x}$. This looks like the sum of a
+convergent geometric series, $\sum_{n=1}^\infty ar^{n-1} = \frac{a}{1-r}$. 
 If we let $a = 1$ and $r = x$, then we see that $\sum_{n=1}^\infty x^{n-1} = 
 \frac{1}{1-x}$. We can reindex to begin at $n=0$ and see that:
 $$\frac{1}{1-x} = \sum_{n=0}^\infty x^n$$
 
-This is a \textbf{power series}. \index{power series}We use power series in place of functions for many 
-applications, such as integrals where an explicit antiderivative don't exist, solving 
-differential equations, and computer scientists representing functions on 
-computers. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
-f(x)\,dx$? We can't directly use u-substitution, and this is not a derivative of 
-any inverse trigonometric function. [You may have realized we could integrate 
-this explicitly by using partial fractions, but this is not true for other 
-functions, and we are using this as a demonstration anyway.] One way to 
-evaluate this integral would be to represent $f(x)$ as a power series, then 
-integrate the series. This is easier, since we know how to take the integral 
-of any polynomial ($\int x^n\,dx = \frac{1}{n+1}x^{n+1} + C$). First, we 
-discuss what power series are further.
+This is a \textbf{power series}. \index{power series}We use power series in place of functions to
+evaluate integrals with no explicit antiderivative, to solve differential
+equations, and to compute functions on computers. Consider $f(x) = \frac{1}{1-x^2}$. What is $\int 
+f(x)\,dx$? A $u$-substitution does not work, and it is not the derivative of an inverse
+trigonometric function. (Partial fractions would work here, but for many
+functions nothing works.) Another approach: write $f(x)$ as a power series and
+integrate term by term, since we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1} + C$.
+We will come back to this integral at the end of the chapter.
 
 \section{Power Series}
 Power series are series of the form
-$$\sum_{n=0}^\infty c_n x^n = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + \cdots + c_n 
-x^n$$
+$$\sum_{n=0}^\infty c_n x^n = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + \cdots$$
 
 for some fixed $x$. Depending on $x$, the series may converge or diverge. For 
 example, the power series $\sum_{n=0}^\infty x^n$ converges for $ -1 < x < 1$ 
@@ -32,22 +33,20 @@ converges for $|r|<1$.
 
 The form given above is for a power series centered on $0$, but a power series 
 can be centered on any value, $a$. In that case, it looks like this:
-$$\sum_{n=0}^\infty c_n (x - a)^n = c_0 + c_1(x - a) + c_2(x - a)^2 + \cdots + 
-c_n(x - a)^n$$
+$$\sum_{n=0}^\infty c_n (x - a)^n = c_0 + c_1(x - a) + c_2(x - a)^2 + \cdots$$
 
-Which we say is a \textit{power series in }$(x - a)$, or a \textit{power 
+which we call is a \textit{power series in }$(x - a)$, or a \textit{power 
 series centered at }$a$, or a \textit{power series about }$a$. 
 
 \textbf{Example}: Find a power series representation for $f(x) = \frac{2x - 4}{
 x^2 - 4x +3}$. 
 
 \textbf{Solution}: Since we know $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$, we 
-will use partial fractions to decompose the function into two fractions. (The 
-process is left as an exercise for the student.) We find that:
+will use \index{partial fractions}partial fractions to decompose the function into two fractions. (Try it yourself.) We find that:
 $$\frac{2x - 4}{x^2 - 4x + 3} = \frac{1}{x - 1} + \frac{1}{x-3}$$
 Noting that $\frac{1}{x-1} = (-1) \cdot\frac{1}{1-x}$, we can say that:
 $$\frac{1}{x-1} = (-1) \cdot \sum_{n=0}^\infty x^n$$
-Now, let's look at $\frac{1}{x-3}$. We can show that:
+Now, let us look at $\frac{1}{x-3}$. We can show that:
 $$\frac{1}{x-3} = \frac{\frac{1}{3}}{\frac{x}{3}-1} = \frac{1}{3} \frac{1}{
 \frac{x}{3}-1} = \frac{-1}{3} \frac{1}{1-\frac{x}{3}}$$
 Substituting $\frac{x}{3}$ for $x$ into $\frac{1}{1-x} = \sum_{n=0}^\infty 
@@ -58,7 +57,10 @@ $$\frac{1}{x-3} = \left( \frac{-1}{3} \right) \sum_{n=0}^\infty \left(
 \frac{x}{3} \right)^n$$
 Adding the terms, we see that:
 $$\frac{1}{x-1} + \frac{1}{x-3} = (-1) \sum_{n=0}^\infty x^n + \left( 
-\frac{-1}{3} \right) \sum_{n=0}^\infty \left( \frac{x}{3} \right)^n$$
+\frac{-1}{3} \right) \sum_{n=0}^\infty \left( \frac{x}{3} \right)^n
+= -\sum_{n=0}^\infty \left(1 + \frac{1}{3^{n+1}}\right) x^n$$
+The first series needs $|x| < 1$ and the second needs $|x| < 3$, so the
+combined series represents $f$ when $|x| < 1$.
 
 \section{Power Series Convergence}
 Sometimes, you will be asked to find one or more values of $x$ 
@@ -68,7 +70,7 @@ then find $x$ such that the test is passed.
 \textbf{Example}: For what values of $x$ is the series $\sum_{n=0}^\infty n!x^n$ 
 convergent?
 
-\textbf{Solution}: We will apply the Ratio Test (since there is a factorial in 
+\textbf{Solution}: We will apply the \index{ratio test}Ratio Test (since there is a factorial in 
 the series) and find $x$ such that $\lim_{n \to \infty} \left| \frac{a_{n+1}}{
 a_n} \right| < 1$. 
 $$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = \lim_{n \to 
@@ -86,43 +88,32 @@ such that:
 $$\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1$$
 $$\lim_{n \to \infty} \left| \frac{\frac{(x-4)^{n+1}}{2(n+1)}}{\frac{(x-4)^n}{
 2n}} \right| < 1$$
-$$\lim_{n \to \infty} \left| \frac{(x-4)(x-4)^n}{2n + 2} \cdot \frac{2n}{(x-4)^
-n} \right| < 1$$
 $$\lim_{n \to \infty} \left| \frac{(x-4)(x-4)^n(2n)}{(x-4)^n(2n+2)} \right| < 
 1$$
 $$\lim_{n \to \infty} \left| \frac{(x-4)(2n)}{2n + 2} \right| < 1$$
-$$\lim_{n \to \infty} \left| \frac{2(x-4)}{2 + \frac{2}{n}} \right| < 1$$
-$$2 \cdot \lim_{n \to \infty} \left| \frac{x-4}{1+ \frac{1}{n}} \right| < 1$$
-$$2 \cdot \left| x-4 \right| < 1$$
-$$\left| x-4 \right| < \frac{1}{2}$$\\
+$$\lim_{n \to \infty} \left| \frac{x-4}{1 + \frac{1}{n}} \right| < 1$$
+$$\left| x-4 \right| < 1$$
 Which is true when 
-$$-\frac{1}{2} < x-4 < \frac{1}{2}$$
-$$3.5 < x < 4.5$$
+$$-1 < x-4 < 1$$
+$$3 < x < 5$$
 
-We are not done yet, though! We know the series converges for $3.5 < x < 4.5$ 
-and diverges for $x < 3.5$ and $x > 4.5$. What about when $x = 3.5$ and $x = 
-4.5$? (These are the cases where the Ratio Test is indeterminate, because 
+We are not done yet, though! We know the series converges for $3 < x < 5$ 
+and diverges for $x < 3$ and $x > 5$. What about when $x = 3$ and $x = 5$? 
+(These are the cases where the Ratio Test is indeterminate, because 
 $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = 1$.) We need to test 
-each case. Substituting $x = 3.5$ into the series yields:
-$$\sum_{n=1}^\infty \frac{(3.5-4)^n}{2n} = \sum_{n=1}^\infty \frac{\left( 
-\frac{-1}{2} \right)^n}{2n}$$
-$$= \sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$$
-This is an alternating series, so we apply the alternating series test. First, 
+each case. Substituting $x = 3$ into the series yields:
+$$\sum_{n=1}^\infty \frac{(3-4)^n}{2n} = \sum_{n=1}^\infty \frac{(-1)^n}{2n}$$
+This is an alternating series, so we apply the \index{alternating series test}alternating series test. First, 
 we check that $|a_{n+1}| < |a_n|$:
-$$\frac{1}{(n+1) \cdot 2^{n+2}}  < \frac{1}{n \cdot 2^{n+1}}$$
+$$\frac{1}{2(n+1)} < \frac{1}{2n}$$
 Which is true for all $n > 0$. Next, we check if $\lim_{n \to \infty} |a_n| = 0$:
-$$\lim_{n \to \infty} \frac{1}{n \cdot 2^{n+1}} = \frac{1}{\infty} = 0$$
-Therefore, $\sum_{n=1}^\infty \frac{(-1)^n}{n \cdot 2^{n+1}}$ is convergent 
-and $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ is convergent for $x = 3.5$. Next, we 
-test $x=4.5$ for convergence:
-$$\sum_{n=1}^\infty \frac{(4.5-4)^n}{2n} = \sum_{n=1}^\infty \left( 
-\frac{1}{2} \right)^n \cdot \frac{1}{2n} = \sum_{n=1}^\infty \left( 
-\frac{1}{2} \right)^{n+1} \frac{1}{n}$$
-This series is less than the harmonic series $\sum_{n=1}^\infty \frac{1}{n}$ 
-for all $n$. We know the harmonic series diverges, therefore, by the direct 
-comparison test, $\sum_{n=1}^\infty \left( \frac{1}{2} \right)^{n+1} 
-\frac{1}{n}$ must also diverge. So, our final answer to the original question 
-is that the series is convergent fort $3.5 \leq x < 4.5$. 
+$$\lim_{n \to \infty} \frac{1}{2n} = 0$$
+Therefore, $\sum_{n=1}^\infty \frac{(-1)^n}{2n}$ is convergent, and the power 
+series converges for $x = 3$. Next, we test $x = 5$:
+$$\sum_{n=1}^\infty \frac{(5-4)^n}{2n} = \sum_{n=1}^\infty \frac{1}{2n}$$
+This is half of the harmonic series $\sum_{n=1}^\infty \frac{1}{n}$, which 
+diverges. So the series diverges for $x = 5$. Our final answer to the original 
+question is that the series is convergent for $3 \leq x < 5$. 
 
 \subsection{Radius of Convergence}
 There are three possible outcomes when testing a power series $\sum_{n=0}^
@@ -173,27 +164,27 @@ of convergence:
 \item $(a - R, a + R)$
 \item$[a - R, a + R)$
 \item$(a - R, a + R]$
-\item$[a - R, a + r]$
+\item$[a - R, a + R]$
 \end{enumerate}
 
 It is important to check each endpoint to determine the interval of convergence individually. 
 
 In the example of $\sum_{n=1}^\infty \frac{(x-4)^n}{2n}$ (shown above), 
-$a = 4$ and $R = 0.5$, and we found that the power series is convergent for 
-$x \in [3.5, 4.5)$. 
+$a = 4$ and $R = 1$, and we found that the power series is convergent for
+$x \in [3, 5)$.
 
-\textbf{Example}: For what values of $x$ is the Bessel function $J_0 (x) = 
+\textbf{Example}: For what values of $x$ is the \index{Bessel function}Bessel function $J_0 (x) = 
 \sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{2^{2n}(n!)^2}$ convergent? 
 
 \textbf{Solution}: Because there is a factorial, we will apply the Ratio Test:
 $$\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| <  1$$
 $$\lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1} x^{2(n + 1)}}{2^{2(n + 1
-)}((n + 1)!)^2}}{frac{(-1)^n x^{2n}}{2^{2n}(n!)^2}} \right| < 1$$
-$$\lim_{n \to \infty} \frac{x^{2n} x^2 2^{2n} n! n!}{2^{2n} 2^2 (n = 1)! (n + 
+)}((n + 1)!)^2}}{\frac{(-1)^n x^{2n}}{2^{2n}(n!)^2}} \right| < 1$$
+$$\lim_{n \to \infty} \frac{x^{2n} x^2 2^{2n} n! n!}{2^{2n} 2^2 (n + 1)! (n +
 1)! x^{2n}} < 1$$
 $$\lim_{n \to \infty} \frac{x^2 n! n!}{2^2 (n + 1)n! (n + 1)n!} < 1$$
 $$\lim_{n \to \infty} \frac{x^2}{4(n + 1)^2} = 0 < 1$$
-Because $lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = 0$ for all 
+Because $\lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right| = 0$ for all 
 $x$, the Bessel function $J_0 (x) = \sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{2^{
 2n}(n!)^2}$ is convergent for all real values of $x$, and the interval of 
 convergence is $(-\infty, \infty)$. 
@@ -235,7 +226,7 @@ of the series $\sum_{n=0}^\infty \frac{(x - 4)^{2n}}{3^n}$?
 \end{Exercise}
 
 \begin{Answer}[ref = radconv1]
-Since this sum has terms to the $n^{th}$ power, we will apply the Root Test, 
+Since this sum has terms to the $n^{th}$ power, we will apply the \index{root test}Root Test, 
 which states a series is convergent if $\lim_{n \to \infty} \sqrt[n]{\left| 
 a_n \right|} < 1$. 
 $$\lim_{n \to \infty} \sqrt[n]{\left| \frac{(x - 4)^{2n}}{3^n} \right|} < 1$$
@@ -274,7 +265,7 @@ $$\sum_{n=0}^\infty \frac{(-1)^n (-1)^{2n+1}}{2n+3} = \sum_{n=0}^\infty \frac{
 When $x = -1$, the series is an alternating series such that $\left| a_{n+1} 
 \right| < \left|a_n \right|$ and $\lim_{n \to \infty} a_n = 0$. Therefore, the 
 series converges for $x = -1$.
-$$\sum_{n=1}^\infty (-1)^n \frac{(1)^{2n+1}}{2n+3} = \sum_{n=1}^\infty \frac{
+$$\sum_{n=0}^\infty (-1)^n \frac{(1)^{2n+1}}{2n+3} = \sum_{n=0}^\infty \frac{
 (-1)^n}{2n+3}$$
 which is also an alternating series such that $\left| a_{n+1} \right| < \left| 
 a_n \right|$ and $\lim_{n \to \infty} a_n = 0$. Therefore, the series 
@@ -287,18 +278,16 @@ which can also be written as $-1 \leq x \leq 1$.
 You can integrate and differentiate power series. Let $f(x) = \sum_{n=0}^\infty 
 c_n (x-a)^n$. Recall that $f(x)$ is just a very long polynomial and that the 
 derivative of a polynomial $x^n$ is $n \cdot x^{n-1}$. We can then state that:
-$$\frac{d}{dx}f(x) = \frac{d}{dx} \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots 
-+ c_n(x-a)^n \right]$$
-$$f'(x) = 0 + c_1 + 2c_2(x-a)^1 + \cdots + n c_n(x-a)^{n-1}$$
-$$f'(x) = \sum_{n=1}^\infty c_n(x-a)^{n-1}$$
+$$\frac{d}{dx}f(x) = \frac{d}{dx} \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + c_3(x-a)^3 + \cdots \right]$$
+$$f'(x) = 0 + c_1 + 2c_2(x-a)^1 + 3c_3(x-a)^2 + \cdots$$
+$$f'(x) = \sum_{n=1}^\infty n c_n(x-a)^{n-1}$$
 
 which is true when $x$ is in the interval of convergence for the series. 
 
 Similarly, we know $\int x^n\,dx = \frac{1}{n+1}x^{n+1}$. We can then say that:
-$$\int f(x) \,dx = \int \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots + c_n(x-a)
-^n\right],dx$$
+$$\int f(x) \,dx = \int \left[c_0 + c_1(x-a)^1 + c_2(x-a)^2 + \cdots\right]\,dx$$
 $$\int f(x)\,dx = C + c_0(x-a) + \frac{c_1}{2}(x-a)^2 + \frac{c_2}{3}(x-a)^3 + 
-\cdots \frac{c_n}{n+1}(x-a)^{n+1}$$
+\cdots$$
 $$\int f(x)\,dx = C + \sum_{n=0}^\infty \frac{c_n}{n+1}(x-a)^{n+1}$$
 
 Where $C$ is the integration constant. Again, this is true when $x$ is in the 
@@ -309,7 +298,7 @@ differentiating $\frac{1}{1-x}$.
 
 \textbf{Solution}: Recall that $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$ when 
 $|x|<1$. 
-$$\frac{1}{1-x} = \sum_{n=1}^\infty x^n$$
+$$\frac{1}{1-x} = \sum_{n=0}^\infty x^n$$
 Differentiating both sides:
 $$\frac{d}{dx} \left[ \frac{1}{1-x} \right] = \frac{d}{dx} \sum_{n=0}^\infty 
 x^n$$
@@ -318,9 +307,9 @@ nx^{n-1}$$
 $$\frac{1}{(1-x)^2} = \sum_{n=1}^\infty nx^{n-1}$$
 Reindexing to begin at $n = 0$
 $$\frac{1}{(1-x)^2} = \sum_{n=0}^\infty (n+1)x^n$$
-Because $\sum_{n=0}^\infty$ has a radius of convergence of 1, so does $\sum_{
+Because $\sum_{n=0}^\infty x^n$ has a radius of convergence of 1, so does $\sum_{
 n=0}^\infty (n+1)x^n$. We can confirm our series makes sense by plotting the 
-partials sums for $n = 3, 5, and 7$ with the original function (see figure 
+partial sums for $n = 3$, $5$, and $7$ with the original function (see figure 
 \ref{power1}).
 
 \Needspace{12\baselineskip}  % force include space to make figure avoid floating to next page
@@ -341,14 +330,14 @@ partials sums for $n = 3, 5, and 7$ with the original function (see figure
             \addlegendentry{$\sum_{n=1}^7 nx^{n-1}$};
         \end{axis}
     \end{tikzpicture}
-    \caption{The function $f(x) = \frac{1}{(1-x)^2}$ is equal to the power 
-    series $\sum_{n=1}^\infty nx^{n-1}$}
+    \caption{Partial sums of $\sum_{n=1}^\infty nx^{n-1}$ hug
+    $f(x) = \frac{1}{(1-x)^2}$ more closely as terms are added, for $|x| < 1$}
     \label{power1}
 \end{figure}
 
 \textbf{Example}: Find a power series representing $\ln{(1+x)}$. 
 
-\textbf{Solution}: We know that $\frac{d}{dx} \frac{1}{1-x} = \ln{(1-x)}$. 
+\textbf{Solution}: We know that $\frac{d}{dx} \ln{(1+x)} = \frac{1}{1+x}$.
 Replacing $x$ with $-x$, we see that:
 $$\frac{1}{1-(-x)} = \frac{1}{1+x} = \sum_{n=0}^\infty (-x)^n$$
 which converges for $|x| < 1$. We can then integrate both sides:
@@ -370,10 +359,32 @@ Find a power series representation for $f(x) = \arctan{x}$.
 Recall that $\frac{d}{dx} \arctan{x} = \frac{1}{1+x^2}$. Replacing $x$ with 
 $-x^2$, we see that $\frac{1}{1 + x^2} = \frac{1}{1- (-x^2)} = \sum_{n=0}^
 \infty \left[ -x^2 \right]^n = \sum_{n=0}^\infty (-1)^n x^{2n}$. Then we can 
-also say that $\arctan{x} = \int \frac{1}{1 + x^2}\,dx = \int \left[ sum_{n=0}
-^\infty (-1)^n x^{2n} \right]\,dx$. Evaluating the integral, $\int \left[ sum_
+also say that $\arctan{x} = \int \frac{1}{1 + x^2}\,dx = \int \left[ \sum_{n=0}
+^\infty (-1)^n x^{2n} \right]\,dx$. Evaluating the integral, $\int \left[ \sum_
 {n=0}^\infty (-1)^n x^{2n} \right]\,dx = \sum_{n=0}^\infty (-1)^n \int 
 x^{2n}\,dx = C + \sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{2n+1}$. Knowing that 
 $\arctan{0} = 0$, we find that $C = 0$ and $\arctan{x} = \sum_{n=0}^\infty 
 \frac{(-1)^n x^{2n+1}}{2n+1}$. 
 \end{Answer}
+
+\textbf{Example}: Back to the opening question. Find $\int \frac{1}{1-x^2}\,dx$
+as a power series.
+
+\textbf{Solution}: Replace $x$ with $x^2$ in the geometric series:
+$$\frac{1}{1-x^2} = \sum_{n=0}^\infty x^{2n} = 1 + x^2 + x^4 + \cdots \qquad (|x| < 1)$$
+Integrate term by term:
+$$\int \frac{1}{1-x^2}\,dx = C + x + \frac{x^3}{3} + \frac{x^5}{5} + \cdots = C + \sum_{n=0}^\infty \frac{x^{2n+1}}{2n+1}$$
+No partial fractions needed.
+
+\begin{Exercise}[label = seriescalc2]
+Use the series for $\ln(1+x)$ to estimate $\ln(1.1)$ with three terms. How
+close is it to the calculator value?
+\end{Exercise}
+
+\begin{Answer}[ref = seriescalc2]
+With $x = 0.1$: $0.1 - \frac{0.01}{2} + \frac{0.001}{3} \approx 0.0953333$.
+The calculator gives $\ln(1.1) \approx 0.0953102$, so the error is about
+$0.000023$. The next term, $\frac{0.0001}{4} = 0.000025$, bounds the error, just
+as the Alternating Series Test promises.
+\end{Answer}
+

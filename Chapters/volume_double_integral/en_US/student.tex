@@ -1,47 +1,23 @@
 \chapter{Double Integrals over Rectangular Regions}
 
-In this chapter, we extend this powerful idea into higher dimensions using the 
-tools of multiple integration. While single integration enables us to calculate
-the area under a curve or the volume under a surface, multiple integration 
-allows us to calculate volumes in three dimensions, and even hypervolumes in 
-higher dimensions.
+How much snow is sitting on a rectangular roof after a storm? If the snow were
+the same depth everywhere, you would multiply area by depth. But drifts pile up
+in some places and thin out in others, so the depth is a function $f(x,y)$ of
+position. To get the total, you need to add up depth over a two-dimensional
+region. That is a \textbf{double integral}.
 
-First, we will discuss double integration, which allows us to find the volume 
-under a surface in three dimensions. This method involves slicing the solid 
-into infinitesimally small columns, and summing the volumes of these columns.
-
-In a subsequent chapter, we will cover triple integration, a tool that lets us 
-find the volume of more complicated solids in three-dimensional space. The 
-idea is similar to double integration.
-
-To properly implement these techniques, we will also discuss the different 
-coordinate systems that can be used in multiple integration, such as 
-rectangular, cylindrical, and spherical coordinates, and when it's advantageous
-to use one system over another.
-
-By the end of this chapter, you will have a deeper understanding of the 
-techniques of multiple integration and how to apply them to find the volumes 
-of various types of solids. The methods we study here will serve as a 
-foundation for many topics in higher mathematics and physics, including 
-electromagnetism, fluid dynamics, and quantum mechanics.
+The idea is the same one you used for area under a curve: chop the region into
+tiny pieces, approximate each piece, add them up, and take a limit. In one
+variable the pieces were thin rectangles. Now they are thin columns. In this
+chapter we integrate over rectangles; later chapters handle curved regions,
+polar coordinates, and three dimensions.
 
 \section{Double Integrals}
-Double integrals extend single-variable integration to functions of two 
-variables, allowing us to calculate quantities like area, volume, and mass 
-over a two-dimensional region. By integrating a function across a specified 
-domain in the xy-plane, they help analyze how a quantity changes in both 
-dimensions. Common in physics, engineering, and economics, double integrals 
-involve setting up limits for the region and performing two successive 
-integrations, often tailored to the region's geometry. We begin by discussing 
-double integrals over rectangular regions, then extending that discussion to 
-regions of any general shape. Finally, we discuss applications of double 
-integrals. 
-
-\subsection{Over Rectangular Regions}
+\subsection{Over Rectangular Regions}\index{double integral!rectangular regions}
 Suppose there is some function, $z = f(x,y)$, that is defined over the 
 rectangular region, \textit{R}, defined by $\textit{R} = [a, b] \times [c,d] = 
 \{(x,y)| a \leq x \leq b, c \leq y \leq d\}$, and $f$ is such that $f \geq 0$ 
-for all $(x, y) \in \mathbb{R}$. So, the graph of $f$ is a surface that lies 
+for all $(x, y) \in R$. Think of $R$ as a rectangular garden and $f(x,y)$ as the height of the ground above each point. So, the graph of $f$ is a surface that lies 
 above the rectangular region, \textit{R} (see figure \ref{fig:f_on_R}). 
 
 \begin{figure}[H]
@@ -76,16 +52,16 @@ above the rectangular region, \textit{R} (see figure \ref{fig:f_on_R}).
     \label{fig:f_on_R}
 \end{figure}
 
-Let's call the solid that fills the space between the $xy$-plane and the 
+Let us call the solid that fills the space between the $xy$-plane and the 
 surface $z = f(x,y)$ \textit{S}. Formally, this is written as
 $$\textit{S} = \{ (x, y, z) \in \mathbb{R}^3 | 0 \leq z \leq f(x, y), (x, y) 
-\in \mathbb{R}\}$$
+\in R\}$$
 
 How can we find the volume of the solid, \textit{S}? We will apply what we 
-learned about Riemann sums and definite integrals in two dimensions to this 
+learned about \index{Riemann sum!two dimensions}Riemann sums and definite integrals in two dimensions to this 
 three-dimensional problem. 
 
-First, we divide \textit{R} into rectangular subregions. We do this by 
+First, we divide \textit{R} into \index{subrectangles}rectangular subregions. We do this by 
 dividing the interval $[a, b]$ into \textit{m} subintervals with width $\Delta 
 x = (b - a)/m$ and the interval $[c, d]$ into \textit{n} subintervals with 
 width $\Delta y = (d - c) / n$. Drawing lines through these divisions parallel 
@@ -126,12 +102,10 @@ $\Delta A = \Delta x \Delta y$ (see figure \ref{fig:subrectangles}).
 \end{figure}
 
 Each subrectangle is defined by:
-$$\textit{R}_{ij} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] - \{ (x, y) | x_{
+$$\textit{R}_{ij} = \{ (x, y) | x_{
 i - 1} \leq x \leq x_i, y_{j - 1} \leq y \leq y_j \}$$ 
 
-Since $f(x,y)$ in continuous over the \textit{R}, there is some point, $(x_{ij}
-^*, y_{ij}^*)$, equal to the average value of $f(x,y)$ over the subrectangle. 
-We can approximate the volume between the $xy$-plane and $z = f(x,y)$ over
+In each subrectangle, pick a sample point $(x_{ij}^*, y_{ij}^*)$. We can approximate the volume between the $xy$-plane and $z = f(x,y)$ over
 the subrectangle as a column with base area $\Delta A$ and height $f(x_{ij}^*, 
 y_{ij}^*)$ (see figure \ref{fig:one_column}) and the volume of the column is 
 given by:
@@ -184,16 +158,16 @@ $$V_{ij} = f(x_{ij}^*, y_{ij}^*) \Delta A$$
 Therefore, the approximate volume of the solid, \textit{S}, that lies 
 between the region, \textit{R}, and $z = f(x,y)$ is the sum of all the columns 
 over $i$ and $j$:
-$$V_{\textit{S}} \approx \sum_{i = 1}^n \sum_{j = 1}^n f(x_{ij}^*, y_{ij}^*) 
+$$V_{\textit{S}} \approx \sum_{i = 1}^m \sum_{j = 1}^n f(x_{ij}^*, y_{ij}^*) 
 \Delta A$$
 
 Just like with the area under a curve, we get the true volume by taking the
-limit as $n \to \infty$, which becomes a \textbf{double integral}\index{double 
+limit as $m$ and $n$ go to $\infty$, which becomes a \textbf{double integral}\index{double 
 integral}:
 
 \begin{mdframed}[style = important, frametitle = {Volume of a Solid over a 
 Region}]
-$$V_{\textit{S}} = \lim_{n \to \infty} \sum_{i = 1}^n \sum_{j = 1}^n f(x_{ij}^*
+$$V_{\textit{S}} = \lim_{m, n \to \infty} \sum_{i = 1}^m \sum_{j = 1}^n f(x_{ij}^*
 , y_{ij}^*) \Delta A = \iint_{\textit{R}} f(x, y)\,dA$$
 \end{mdframed}
 
@@ -203,11 +177,11 @@ $$V_{\textit{S}} = \lim_{n \to \infty} \sum_{i = 1}^n \sum_{j = 1}^n f(x_{ij}^*
 To be able to evaluate the double integral as outlined above, we must first 
 discuss iterated integrals. Iterated integrals happen when you evaluate two 
 single integrals, one inside the other. Consider some function, $g(x, y)$. We 
-could integrate that function from $x = q$ to $x = r$ thusly:
+could integrate that function from $x = q$ to $x = r$:
 $$\int_q^r g(x, y)\,dx$$
 Notice that we are integrating with respect to $x$, so $y$ terms will be 
-treated as constants (recall partial differentiation: this is the opposite 
-process). Let's call the result of this first integral $A(y)$:
+treated as constants (this reverses a partial derivative in $x$).
+Let us call the result of this first integral $A(y)$:
 $$A(y) = \int_q^r g(x, y)\,dx$$
 
 We can then integrate the resulting function, $A(y)$, from $y = s$ to $y = t$:
@@ -223,9 +197,9 @@ $$\int_s^t \int_q^r g(x, y)\,dx\,dy$$
 \textbf{Solution}: We can re-write this to more explicitly show the inner and 
 outer integrals:
 $$\int_0^3 \left[ \int_1^2 x y^2\,dy \right]\,dx$$
-As you can see, the inner integral is with respect to $y$. Let's isolate and 
+As you can see, the inner integral is with respect to $y$. Let us isolate and 
 evaluate the inner integral:
-$$\int_1^2 x y^2\,dy = x \int_1^2 y^2\,dy = x \left[ \frac{1}{3}y^2 \right]_{y 
+$$\int_1^2 x y^2\,dy = x \int_1^2 y^2\,dy = x \left[ \frac{1}{3}y^3 \right]_{y 
 = 1}^{y = 2}$$
 $$= \frac{x}{3} \left[ 2^3 - 1^3 \right] = \frac{x}{3} \left[ 8 - 1 \right] = 
 \frac{7x}{3}$$
@@ -239,8 +213,7 @@ $$\int_0^3 \left[ \int_1^2 x y^2\,dy \right]\,dx = \int_0^3 \left[ \frac{7x}{3}
 $$= \frac{7}{3} \left[ \frac{1}{2}x^2 \right]_{x = 0}^{x = 3} = \frac{7}{6} 
 \left[ 3^2 - 0^2 \right] = \frac{7 \cdot 9}{6} = \frac{21}{2}$$
 
-\begin{Exercise}[title = {Order of Evaluating Iterated Integrals}, label = 
-iterate 1]
+\begin{Exercise}[title = {Order of Evaluating Iterated Integrals}, label = iterate_1]
 Show that $\int_0^3 \int_1^2 x y^2\,dy\,dx = \int_1^2 \int_0^3 x y^2 \,dx\,dy$.
 \end{Exercise}
 
@@ -298,7 +271,7 @@ d\theta\,dt = \left( \int_0^3 t^2\,dt \right) \times \left( \int_0^{\pi/2}
 \end{enumerate}
 \end{Answer}
 
-\section{Fubini's Theorem for Double Integrals}
+\section{Fubini's Theorem for Double Integrals}\index{Fubini's theorem}
 
 Fubini's Theorem states that for a 
 function, $f$, that is continuous over the rectangular region, \textit{R}, the 
@@ -312,6 +285,16 @@ If $f$ is continuous on the rectangle $R = \{ \left( x, y \right) | a \leq x
 $$\iint_R f(x,y)\,\,dA = \int_a^b \int_c^d f(x,y)\,dy\,dx = \int_c^d \int_a^b 
 f(x,y)\,dx\,dy$$
 \end{mdframed}
+
+\textbf{Example}: Back to the snowy roof. The roof covers
+$R = [0, 10] \times [0, 6]$ (in meters), and wind piles the snow so that its depth is
+$f(x, y) = 0.2 + 0.05x$ meters. How much snow is on the roof?
+
+\textbf{Solution}: By Fubini's Theorem, integrate in either order. Doing $y$ first:
+$$\int_0^{10} \int_0^6 (0.2 + 0.05x)\,dy\,dx = \int_0^{10} 6(0.2 + 0.05x)\,dx
+= \left[1.2x + 0.15x^2\right]_0^{10} = 12 + 15 = 27$$
+There are $27$ cubic meters of snow. (At roughly $100$ kg per cubic meter for fresh
+snow, that is about $2.7$ metric tons.)
 
 \begin{Exercise}[title={Applying Fubini's Theorem},label = fubini_1]
 Rewrite the following double integrals as iterated integrals.
@@ -377,7 +360,7 @@ $u = \cos{\theta}$ and $-du = \sin{\theta} d\theta$: $\frac{\pi}{6} \int_0^{\pi
 /3} \frac{\sin{\theta}}{\cos{\theta}}\,d\theta = -\frac{\pi}{6}\int_{\theta = 0
 }^{\theta = \pi/3} \frac{1}{u}\,du = -\frac{\pi}{6} \ln{u}|_{\theta = 0}^{
 \theta = \pi/3} = -\frac{\pi}{6} \left[ \ln{ \left( \cos{\theta} \right)} 
-\right]_{\theta = o}^{\theta = \pi/3} = \frac{\pi}{6} \left[ \ln{\left( \cos{0} 
+\right]_{\theta = 0}^{\theta = \pi/3} = \frac{\pi}{6} \left[ \ln{\left( \cos{0} 
 \right) - \ln{ \left( \cos{\frac{\pi}{3}} \right)}} \right] = \frac{\pi}{6} 
 \left[ \ln{1} - \ln{\frac{1}{2}} \right] = \frac{\pi}{6} \ln{\frac{1}{1/2}} = 
 \frac{\pi}{6} \ln{2}$
@@ -393,7 +376,7 @@ $$\int_0^{\pi/6} \int_0^{\pi/3} x \sin{ \left( x + y \right) }\,dy\,dx =
 $$= \int_0^{\pi/6} \left[ \int_0^{\pi/3} x \sin{x} \cos{y}\,dy + \int_0^{\pi/3}
 x \cos{x} \sin{y}\,dy \right]\,dx$$
 
-Let's designate $\int_0^{\pi/3} x \sin{x} \cos{y}\,dy$ as integral \textbf{A}, 
+Let us designate $\int_0^{\pi/3} x \sin{x} \cos{y}\,dy$ as integral \textbf{A}, 
 and $\int_0^{\pi/3} x \cos{x} \sin{y}\,dy$ as integral \textbf{B}. First, we 
 will evaluate integral \textbf{A}:
 $$\int_0^{\pi/3} x \sin{x} \cos{y}\,dy = x \sin{x} \int_0^{\pi/3} \cos{y}\,dy$$
@@ -418,7 +401,7 @@ Again, we will designate $\int_0^{\pi/6} x \sin{x}\,dx$ as integral \textbf{C}
 and $\int_0^{\pi/6} x \cos{x}\,dx$ as integral \textbf{D}. We start by using 
 integration by parts to evaluate integral \textbf{C}:
 
-Let $u = x$ and $dv = \sin{x} dx$. Then, $v = -cos{x}$ and $du = dx$. Therefore:
+Let $u = x$ and $dv = \sin{x} dx$. Then, $v = -\cos{x}$ and $du = dx$. Therefore:
 $$\int_0^{\pi/6} x \sin{x}\,dx = \left[ x \left(- \cos{x} \right) \right]_{x = 
 0}^{x = \pi/6} - \int_0^{\pi/6} \left( - \cos{x} \right)\,dx$$
 $$= \left[ \frac{\pi}{6} \left(- \cos{\frac{\pi}{6}} \right) \right] - \left[ 

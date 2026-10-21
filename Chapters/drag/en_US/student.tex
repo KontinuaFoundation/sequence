@@ -1,42 +1,44 @@
 \chapter{Drag}
 
-The very first computers were created to do calculations of how
-artillery would fly when shot at different angles. The calculations
-were similar to the ones you did earlier for the flying
-hammer, with two important differences:
-\begin{itemize}
-\item They were interested in two dimensions: the height and the distance across the ground.
-\item However, artillery flies a lot faster than a hammer, so they also had to worry about drag from the air.
-\end{itemize}
+One of the first electronic computers, ENIAC, was built during World War
+II to calculate how artillery shells fly. Why did the army need a computer
+for that? You already know the projectile formulas. The trouble is that a
+shell flies hundreds of meters per second, and at that speed the air
+pushes back hard. With air resistance, the neat formulas stop working, and
+the only way to get answers is to simulate the flight one tiny step at a
+time. That is exactly what you will do in this chapter.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{cannon.png}
-    \caption{A cannonball shot has a parabolic trajectory.}
+    \caption{Without air, a cannonball would follow a parabola. With air resistance, the path is shorter and steeper on the way down.}
     \label{fig:cannon}
 \end{figure}
 \section{Wind resistance}
+
+
 \index{wind resistance}
-The first thing they did was put one of the shells in a wind tunnel.
-They measured how much force was created when they pushed 1 m/s of
-wind over the shell. Let's say it was 0.1 newtons.
+Engineers start by putting a shell in a wind tunnel and measuring the
+force when air blows past it at 1 m/s. Say it is 0.1 newtons.
 
 One of the interesting things about the drag from the air (often
 called \newterm{wind resistance}) is that it increases with the
-\emph{square} of the speed. Thus, if the wind pushing on the shell is
+\index{drag!quadratic}\emph{square} of the speed. Thus, if the wind pushing on the shell is
 3 m/s, instead of 1 m/s, the resistance is $3^2 \times 0.1 = 0.9$
 newtons.
 
 (Why? Intuitively, three times as many air molecules are hitting the
 shell and each molecule is hitting it three times harder.)
 
-So, if a shell is moving with the velocity vector $v$, the force
-vector of the drag points in the exact opposite direction. If $\mu$ is
-the force of wind resistance of the shell at 1 m/s, then the magnitude
-of the drag vector is $\mu |v|^2$ with $\mu$ being the wind resistance force.
+Drag always points exactly opposite the velocity. If $\mu$ is the drag
+force at 1 m/s, then at speed $|v|$ the drag has magnitude $\mu |v|^2$.
+As a vector, that is
+$$\vec{F}_{\text{drag}} = -\mu |v| \vec{v}$$
+(The vector $\vec{v}$ points along the motion and has length $|v|$, so
+$\mu|v|\vec{v}$ has length $\mu|v|^2$; the minus sign flips it backward.)
 
 \section{Initial velocity and acceleration due to gravity}
 
-Let's say a shell is shot out of a tube at $s$ m/s, and the tube
+Let us say a shell is shot out of a tube at $s$ m/s, and the tube
 is tilted $\theta$ radians above level. The initial velocity
 will be given by the vector $[s \cos(\theta), s \sin(\theta)]$
 
@@ -61,10 +63,10 @@ $$F = m a$$
 
 $$a = \frac{F}{m}$$
 
-Let's figure out the net force on the shell, so that we can calculate the acceleration vector.
+Let us figure out the net force on the shell, so that we can calculate the acceleration vector.
 
-If the shell has a mass of $b$, the force due to gravity will be in the
-downward direction, with a magnitude of $9.8 b$ newtons.
+If the shell has a mass of $m$, the force of gravity points down with
+a magnitude of $9.8 m$ newtons.
 
 To get the net force, we will need to add the force due to gravity
 with the force due to wind resistance.
@@ -75,63 +77,68 @@ Create a file called \filename{artillery.py}.
 
 \begin{minted}{python}
 import numpy as np
-    import matplotlib.pyplot as plt
-    
-    # Constants
-    mass = 45 # kg
-    start_speed = 300.0 # m/s
-    theta = np.pi/5 # radians (36 degrees above level)
-    time_step = 0.01 # s
-    wind_resistance = 0.05 # newtons in 1 m/s wind
-    force_of_gravity = np.array([0.0, -9.8 * mass]) # newtons
-    
-    # Initial state
-    position = np.array([0.0, 0.0]) # [distance, height] in meters
-    velocity = np.array([start_speed * np.cos(theta), start_speed * np.sin(theta)])
-    time = 0.0 # seconds
-    
-    # Lists to gather data
-    distances = []
-    heights = []
-    times = []
-    
-    # While shell is aloft
-    while position[1] >= 0:
-        # Record data
-        distances.append(position[0])
-        heights.append(position[1])
-        times.append(time)
-    
-        # Calculate the next state
-        time += time_step
-        position += time_step * velocity
-    
-        # Calculate the net force vector
-        force = force_of_gravity - wind_resistance * velocity**2
-    
-        # Calculate the current acceleration vector
-        acceleration = force / mass
-    
-        # Update the velocity vector   
-        velocity += time_step * acceleration
-    
-    print(f"Hit the ground {position[0]:.2f} meters away at {time:.2f} seconds.")
-    
-    # Plot the data
-    fig, ax = plt.subplots()
-    ax.plot(distances, heights)
-    ax.set_title("Distance vs. Height")
-    ax.set_xlabel("Distance (m)")
-    ax.set_ylabel("Height (m)")
-    plt.show()        
+import matplotlib.pyplot as plt
+
+# Constants
+mass = 45 # kg
+start_speed = 300.0 # m/s
+theta = np.pi/5 # radians (36 degrees above level)
+time_step = 0.01 # s
+wind_resistance = 0.05 # newtons in 1 m/s wind
+force_of_gravity = np.array([0.0, -9.8 * mass]) # newtons
+
+# Initial state
+position = np.array([0.0, 0.0]) # [distance, height] in meters
+velocity = np.array([start_speed * np.cos(theta), start_speed * np.sin(theta)])
+time = 0.0 # seconds
+
+# Lists to gather data
+distances = []
+heights = []
+times = []
+
+# While shell is aloft
+while position[1] >= 0:
+    # Record data
+    distances.append(position[0])
+    heights.append(position[1])
+    times.append(time)
+
+    # Calculate the next state
+    time += time_step
+    position += time_step * velocity
+
+    # Drag points opposite the velocity, with size wind_resistance * speed**2
+    speed = np.linalg.norm(velocity)
+    force = force_of_gravity - wind_resistance * speed * velocity
+
+    # Calculate the current acceleration vector
+    acceleration = force / mass
+
+    # Update the velocity vector   
+    velocity += time_step * acceleration
+
+print(f"Hit the ground {position[0]:.2f} meters away at {time:.2f} seconds.")
+
+# Plot the data
+fig, ax = plt.subplots()
+ax.plot(distances, heights)
+ax.set_title("Distance vs. Height")
+ax.set_xlabel("Distance (m)")
+ax.set_ylabel("Height (m)")
+plt.show()
 \end{minted}
 
 When you run it, you should get a message like:
 \begin{minted}{python}
-Hit the ground 1696.70 meters away at 20.73 seconds.
+Hit the ground 1519.46 meters away at 19.34 seconds.
 \end{minted}
 
-You should also see a plot of the shell's path:
+Without air, the same shell would travel
+$\frac{300^2 \sin 72^\circ}{9.8} \approx 8{,}700$ meters. Air resistance
+cuts the range by more than 80\%! You should also see a plot of the
+shell's path. Notice that it is not a parabola: it comes down more
+steeply than it went up.
 
 \includegraphics[width=0.8\textwidth]{artillery.png}
 
@@ -139,8 +146,17 @@ You should also see a plot of the shell's path:
 \index{terminal velocity}
 If you shot the shell very, very high in the sky, it would keep accelerating 
 toward the ground until the force of gravity and the force of the wind resistance were equal.
-The speed at which this happens is called the \newterm{terminal velocity}.  The terminal velocity of a
-falling human is about 53 m/s.
+The speed at which this happens is called the \newterm{terminal
+velocity}. A skydiver falling belly-down reaches about 53 m/s (190 km/h).
+Opening the parachute increases the drag so much that the terminal
+velocity drops to about 5 m/s, a safe landing speed.
+
+\textbf{Worked example.} A skydiver and gear have a mass of 80 kg and a
+drag of $\mu = 0.28$ N at 1 m/s. What is the terminal velocity?
+
+\textbf{Solution.} At terminal velocity, drag equals weight:
+$0.28 v^2 = (80)(9.8) = 784$, so $v = \sqrt{\frac{784}{0.28}} = \sqrt{2800}
+\approx 53$ m/s.
 %FIXME expand 
 
 Note that kinematic equations do not apply to terminal velocity, because the acceleration is not constant. Instead, we can use the fact that at terminal velocity, the force of wind resistance equals the force of gravity.
@@ -158,4 +174,24 @@ Solving for $s$, we get $s = \sqrt{\frac{441}{0.05}}$
 
 Thus, terminal velocity should be about 94 m/s.
 
+\end{Answer}
+
+\begin{Exercise}[title={Parachute}, label=drag2]
+When the skydiver from the worked example opens the parachute, the drag
+constant becomes $\mu = 30$ N at 1 m/s. What is the new terminal velocity?
+\end{Exercise}
+\begin{Answer}[ref=drag2]
+$30 v^2 = 784$, so $v = \sqrt{\frac{784}{30}} \approx 5.1$ m/s.
+\end{Answer}
+
+\begin{Exercise}[title={Without air}, label=drag3]
+In \filename{artillery.py}, set \mintinline{python}{wind_resistance = 0}
+and run it again. How far does the shell go now? Compare it with the range
+formula from the projectiles chapter.
+\end{Exercise}
+\begin{Answer}[ref=drag3]
+About 8,700 m (the simulation gives a value very close to
+$\frac{300^2 \sin 72^\circ}{9.8} \approx 8{,}734$ m). The simulation and the
+formula agree when there is no drag, which is a good check that the code is
+right.
 \end{Answer}

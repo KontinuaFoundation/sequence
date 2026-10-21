@@ -1,19 +1,14 @@
 \chapter{Evaluating Classification Systems}
 
-The confusion matrix is a tabular method used in machine learning to
-evaluate the performance of a classification model. It allows for the
-visualization of the model's performance and to compute various
-performance metrics.\index{confusion matrix}
+A model that predicts ``no one has the flu'' is right most days in July. That
+does not make it a good model. To judge a classifier, you need to count not just
+how often it is right, but \emph{how} it is wrong. This chapter shows you how.
 
-\section{Definition of a Confusion Matrix}
+\section{The Confusion Matrix}\index{confusion matrix}
+A \newterm{confusion matrix} compares a classifier's predictions with the true classes.
+For a binary problem, one class is called positive and the other negative. The four cells are:
 
-A confusion matrix is a specific table layout that presents the
-performance of a classification model. For a binary classification
-problem, it is a 2x2 matrix that compares the actual and the predicted
-classifications.
-
-\begin{table}[h]
-\centering
+\begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
  & Actual Positive & Actual Negative \\
@@ -23,30 +18,66 @@ Predicted Positive & True Positive (TP) & False Positive (FP) \\
 Predicted Negative & False Negative (FN) & True Negative (TN) \\
 \hline
 \end{tabular}
-\end{table}
+\end{center}
 
-\section{Performance Metrics}
+A false positive is a false alarm. A false negative is a missed case.
 
-Using the confusion matrix, we can compute several performance metrics:
-
+\section{Performance Metrics}\index{accuracy}\index{precision}\index{recall}
+Each metric answers a different question:
 \begin{itemize}
-\item \textbf{Accuracy:} The proportion of correct predictions (both
-  true positives and true negatives) among the total number of cases
-  examined. It is calculated as $(TP + TN) / (TP + TN + FP + FN)$.
-
-\item \textbf{Precision:} The proportion of positive identifications
-  that were actually correct. It is calculated as $TP / (TP + FP)$.
-
-\item \textbf{Recall (Sensitivity):} The proportion of actual
-  positives that were identified correctly. It is calculated as $TP /
-  (TP + FN)$.
-
-\item \textbf{Specificity:} The proportion of actual negatives that
-  were identified correctly. It is calculated as $TN / (TN + FP)$.
-
-\item \textbf{F1 Score:} The harmonic mean of precision and recall. It
-  tries to find the balance between precision and recall. $F1 = 2 *
-  (Precision * Recall) / (Precision + Recall)$.
+\item \textbf{Accuracy} is the fraction of all predictions that are correct:
+$\frac{TP + TN}{TP + TN + FP + FN}$.
+\item \textbf{Precision} is the fraction of positive predictions that are correct:
+$\frac{TP}{TP + FP}$.
+\item \textbf{Recall} (also called sensitivity) is the fraction of actual positives that are found:
+$\frac{TP}{TP + FN}$.
+\item \textbf{Specificity} is the fraction of actual negatives that are correctly identified:
+$\frac{TN}{TN + FP}$.
+\item \textbf{$F_1$ score} is the harmonic mean of precision and recall:
+$F_1 = \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$.
 \end{itemize}
 
-\
+\section{A Worked Example}
+A screening test is run on 200 people. The results are $TP = 40$, $FP = 10$,
+$FN = 20$, and $TN = 130$. Then:
+\begin{itemize}
+\item Accuracy $= \frac{40 + 130}{200} = 0.85$.
+\item Precision $= \frac{40}{50} = 0.80$. Of the 50 people flagged, 40 were truly positive.
+\item Recall $= \frac{40}{60} \approx 0.667$. The test found 40 of the 60 true positives.
+\item Specificity $= \frac{130}{140} \approx 0.929$.
+\item $F_1 = \frac{2(0.80)(0.667)}{0.80 + 0.667} \approx 0.727$.
+\end{itemize}
+The accuracy looks good, but the test misses one third of the people who have the condition.
+For this reason, accuracy alone can hide a poor classifier, especially when one class is rare.
+
+\section{Choosing a Metric}
+The right metric depends on the cost of each error. For a screening test, a missed case
+(a false negative) is often the more serious error, so recall matters most. For a spam
+filter, a false positive means a real email is lost, so precision matters most. The
+$F_1$ score balances the two, and it is useful when both matter. Think of a smoke detector. A false positive means burnt toast sets off the alarm.
+A false negative means a real fire goes unnoticed. The second error is far worse,
+so smoke detectors are built for high recall, and we put up with the occasional
+toast alarm.
+
+\begin{Exercise}[label=conf1, title=Compute the metrics]
+A classifier has $TP = 30$, $FP = 5$, $FN = 15$, and $TN = 50$. Compute the accuracy and the precision.
+\end{Exercise}
+\begin{Answer}[ref=conf1]
+Accuracy $= \frac{30 + 50}{100} = 0.80$. Precision $= \frac{30}{35} \approx 0.857$.
+\end{Answer}
+
+\begin{Exercise}[label=conf2, title=Which error matters?]
+A test detects a dangerous disease. Which metric should be the main goal, and why?
+\end{Exercise}
+\begin{Answer}[ref=conf2]
+Recall (sensitivity). A false negative means a sick person is told they are healthy,
+which is the more serious error in screening.
+\end{Answer}
+
+\begin{Exercise}[label=conf3, title=Accuracy can mislead]
+In a dataset where 95\% of cases are negative, a classifier always predicts negative. What is its accuracy, and what is its recall?
+\end{Exercise}
+\begin{Answer}[ref=conf3]
+Accuracy is 0.95, which sounds high. Recall is $\frac{0}{TP + FN} = 0$, because it
+finds none of the positive cases.
+\end{Answer}

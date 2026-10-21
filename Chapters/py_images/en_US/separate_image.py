@@ -1,4 +1,4 @@
-import imageio
+import imageio.v3 as iio
 import sys
 import os
 import numpy as np
@@ -10,7 +10,7 @@ if len(sys.argv) < 2:
 
 # Read the image
 path = sys.argv[1]
-image = imageio.imread(path)
+image = iio.imread(path)
 
 # What is the filename?
 filename = os.path.basename(path)
@@ -36,6 +36,6 @@ for i in range(3):
     # Save to a file
     new_filename = f"{colors[i]}_{filename}"
     print(f"Writing {new_filename}")
-    imageio.imwrite(new_filename, newimage)
+    iio.imwrite(new_filename, newimage)
 
 

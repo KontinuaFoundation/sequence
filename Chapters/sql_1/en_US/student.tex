@@ -1,18 +1,26 @@
 \chapter{Data tables in SQL}
 
-Most organizations keep their data as tables inside a relational
-database management system (compared to pandas, CSV, or spreadsheets). Developers talk to those systems using a
+Every time you log in to a website, check your grades online, or buy
+something with a card, a program somewhere asks a database a question,
+probably in a language called SQL. It has been the standard way to talk
+to data for fifty years, and it is still one of the most useful skills a
+programmer can have.
+
+\index{relational database}Most organizations keep their data as tables
+inside a \newterm{relational database management system}, rather than in
+CSV files or spreadsheets. Developers talk to those systems using a
 language called SQL (``Structured Query Language'').
 \index{SQL}
 
 Some relational database managers are pricey products you may have
 heard of before, such as Oracle or Microsoft SQL Server. Some are free, such as
 PostgreSQL or MySQL. These are server software that client programs
-talk to over a company's network.\footnote{It should be noted that many notetaking and file storage applications allow you to run SQL-like queries to search your files to meet certain criteria. For example, Obsidian, the Markdown notetaking app, has a plugin called Dataview, which allows you to run searches for notes matching certain \emph{metadata} attribute criteria. See more about this here: https://github.com/blacksmithgu/obsidian-dataview}
+talk to over a company's network.
 \index{SQLite}
 
-There is a library, called \texttt{sqlite}, that lets us create files that hold
-tables. We can use SQL to create, edit, and browse those tables.
+There is also a small, free database, called \texttt{sqlite}, that keeps
+all its tables in a single file. It runs inside nearly every phone and web
+browser on the planet. We can use SQL to create, edit, and browse those tables.
 sqlite is free, fast, and very easy to install. We will use sqlite
 instead of a networked database management system.
 
@@ -58,7 +66,8 @@ sqlite> select * from bike;
 
 You will see 1000 rows of data!
 
-The SQL language is not case-sensitive, so you can also write it like this:
+SQL keywords and table names are not case-sensitive, so you can also
+write it like this:
 \begin{minted}{sql}
 sqlite> SELECT * FROM BIKE;  
 \end{minted}
@@ -67,9 +76,11 @@ Often, you will see SQL with just the SQL keywords in all caps:
 \begin{minted}{sql}
 sqlite> SELECT * FROM bike;  
 \end{minted}
-The semicolon is not part of SQL, but it tells sqlite that you are done writing a command and that it should be executed.
+(The values inside quotes \emph{are} case-sensitive: \texttt{'GT'} and
+\texttt{'gt'} are different brands to SQL.) The semicolon marks the end of
+a command; it tells sqlite that you are done typing and it should run.
 
-SQL lets you choose which columns you would like to see. The asterisk (FIXME) used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the dataframe:
+SQL lets you choose which columns you would like to see. The asterisk used above signifies all columns, and the \verb|bike_id, brand| only gets the bike's id and brand from the table:
 \begin{minted}{sql}
 sqlite> SELECT bike_id, brand FROM bike;
 4997391|GT
@@ -79,7 +90,7 @@ sqlite> SELECT bike_id, brand FROM bike;
 ...
 \end{minted}
 
-Using WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
+Using \index{WHERE}WHERE, SQL lets you use conditions to decide which rows you would like to see, and can be combined with the common operators \verb|AND|, \verb|OR|, and \verb|NOT|:
 \begin{minted}{sql}
 sqlite> SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';
 4997391|GT|57|269.61|2009-05-03|rented
@@ -91,7 +102,7 @@ sqlite> SELECT * FROM bike WHERE purchase_date > '2009-01-01' AND brand = 'GT';
 3019205|GT|58|262.94|2009-08-22|available  
 \end{minted}
 
-Using DISTINCT, SQL lets you get just one copy of each value:
+Using \index{DISTINCT}DISTINCT, SQL lets you get just one copy of each value:
 \begin{minted}{sql}
 sqlite> SELECT DISTINCT status FROM bike;
 rented
@@ -105,8 +116,14 @@ out
 Rented
 \end{minted}
 
-You can also edit these rows. For example, if you wanted every status
-that is \texttt{Busted} to be changed to \texttt{broken}, you can use an \verb|UPDATE| statement with a \verb|SET|:
+Look at that list. The blank line is a bike with no status at all
+(SQL calls a missing value \texttt{NULL}). And someone has been typing
+whatever they felt like: \texttt{Busted}, \texttt{Flat tire},
+\texttt{Rented} with a capital R. Real data is messy.
+
+You can fix it by editing rows. To change every \texttt{Busted} to
+\texttt{broken}, use an \index{UPDATE}\verb|UPDATE| statement with a
+\verb|SET|:
 
 \begin{minted}{sql}
 sqlite> UPDATE bike SET status='broken' WHERE status='Busted';
@@ -120,26 +137,49 @@ out
 Rented
 \end{minted}
 
-You can insert new rows:
+You can \index{INSERT}insert new rows:
 \begin{minted}{sql}
 sqlite> INSERT INTO bike (bike_id, brand, size, purchase_price, purchase_date, status)
   ...> VALUES (1, 'GT', 53, 123.45, '2020-11-13', 'available');
 sqlite> SELECT * FROM bike WHERE bike_id = 1;
 1|GT|53|123.45|2020-11-13|available
 \end{minted}
-Note that the bike\_id here must be \emph{unique}. 
+The \texttt{bike\_id} must be \emph{unique}: it is the primary key, and
+sqlite will refuse a second bike with the same ID.
 
-You can delete rows:
+You can \index{DELETE}delete rows:
 \begin{minted}{sql}
 sqlite> DELETE FROM bike WHERE bike_id = 1;
 sqlite> SELECT * FROM bike WHERE bike_id = 1;
 \end{minted}
 
+Be careful: \verb|UPDATE| and \verb|DELETE| without a \verb|WHERE|
+clause change or delete \emph{every} row in the table, and there is no
+undo.
+
 To get out of sqlite, type \texttt{.exit}.
+
+\begin{Exercise}[title={Clean up the statuses}, label=sql_clean]
+Write \verb|UPDATE| statements that change \texttt{Flat tire} to
+\texttt{broken} and \texttt{Rented} to \texttt{rented}. Then run
+\verb|SELECT DISTINCT status FROM bike;| to check your work. Which strange
+values are left?
+\end{Exercise}
+\begin{Answer}[ref=sql_clean]
+\begin{minted}{sql}
+UPDATE bike SET status='broken' WHERE status='Flat tire';
+UPDATE bike SET status='rented' WHERE status='Rented';
+\end{minted}
+After these, the distinct values are \texttt{rented}, \texttt{broken},
+\texttt{available}, \texttt{NULL} (shown as a blank line), \texttt{good},
+and \texttt{out}. Nobody knows what \texttt{good} or \texttt{out} were
+supposed to mean, so you would have to ask someone at the shop before
+fixing those.
+\end{Answer}
 
 \begin{Exercise}[title={SQL Query}, label=sql_where]
  Execute an SQL query that returns the \texttt{bike\_id} (no other
- columns) of every Trek bike that cost more than \$300.
+ columns) of every Trek bike that cost more than \$330.
 \end{Exercise}
 \begin{Answer}[ref=sql_where]
 \begin{minted}{sql}
@@ -147,16 +187,16 @@ SELECT bike_id FROM bike WHERE purchase_price > 330 AND brand='Trek'
 \end{minted}
 \end{Answer}
 
-\section{Using SQL from Python}
+\section{Using SQL from Python}\index{sqlite3 (Python library)}
 
 The people behind sqlite created a library for Python that lets you
 execute SQL and fetch the results from inside a python program.
 
-Let's create a simple program that fetches and displays the bike ID
-and purchase date of every Trek bike that cost more than \$300.
+Let us create a simple program that fetches and displays the bike ID
+and purchase date of every Trek bike that cost more than \$330.
 
 Create a file called \filename{report.py}:
-\begin{minted}{sql}
+\begin{minted}{python}
 import sqlite3 as db
 
 con = db.connect('bikes.db')
@@ -165,7 +205,6 @@ cur = con.cursor()
 cur.execute("SELECT bike_id, purchase_date FROM bike WHERE purchase_price > 330 AND brand='Trek'")
 rows = cur.fetchall()
 
-today = datetime.date.today()
 for row in rows:
   print(f"Bike {row[0]}, purchased {row[1]}")
 

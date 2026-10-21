@@ -1,6 +1,15 @@
 \chapter{Inverse Trigonometric Functions}
 
-Recall from the chapter on functions that an inverse of a function is a machine that turns $y$ back into $x$. The inverses of trigonometric functions are essential to solving certain integrals (you will learn in a future chapter why integrals are useful --- for now, trust us that they are!). Let's begin by discussing the $\sin$ function and its inverse, $\sin^{-1}$, also called $\arcsin$. (Note: this is not saying $\sin$ to the power of $-1$, it is a method of stating the inverse of the function).
+A wheelchair ramp must be gentle: building codes allow it to rise at most
+1 meter for every 12 meters it runs. What angle is that? You know
+$\tan\theta = \frac{1}{12}$. To get from the ratio back to the angle, you
+need to run tangent backward. That is what inverse trigonometric functions
+do.
+
+In the inverses chapter, an inverse was a machine that turns $y$ back into
+$x$.\index{inverse trigonometric functions} Let us start with $\sin$ and
+its inverse, $\sin^{-1}$, also called \index{arcsine}$\arcsin$. (Careful:
+$\sin^{-1} x$ means the inverse function, not $\frac{1}{\sin x}$.)
 
 \begin{center}
 	\begin{figure}
@@ -27,7 +36,11 @@ Recall from the chapter on functions that an inverse of a function is a machine 
 	\end{figure}
 \end{center}
 
-Examine the graph of $\sin{x}$ in figure \ref{fig:sinhline}. See how the dashed horizontal line crosses the function at many points? This means the function $\sin{x}$ is not one-to-one. In other words, there is not a unique $x$-value for every $y$-value. This means that if we do not restrict the domain of $\arcsin{x}$, the result will not be a function (see figure \ref{fig:arcsinvline}). In figure \ref{fig:arcsinvline}, you can see that just reflecting the graph across $y=x$ fails the vertical line test: an $x$ value has more than one $y$ value.
+There is a problem. In figure \ref{fig:sinhline}, the dashed line
+$y = \frac{2}{3}$ crosses the sine wave again and again. So $\sin x$ is not
+one-to-one: many angles have a sine of $\frac{2}{3}$. Reflect the whole
+sine graph across $y = x$, and the result fails the vertical line test
+(figure \ref{fig:arcsinvline}).
 
 \begin{center}
 	\begin{figure}
@@ -38,8 +51,8 @@ Examine the graph of $\sin{x}$ in figure \ref{fig:sinhline}. See how the dashed 
 			ymin=-360,
 			ymax=720, 
 			ytick={-360, -180, 0, 180, 360, 540, 720}, 
-			yticklabels={$-\pi$, $\frac{-\pi}{2}$, $0$, 
-			$\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$}, 
+			yticklabels={$-2\pi$, $-\pi$, $0$, 
+			$\pi$, $2\pi$, $3\pi$, $4\pi$}, 
 			ylabel=$y$,
 			xmin = -1.25, 
 			xmax=1.25, 
@@ -59,44 +72,144 @@ Examine the graph of $\sin{x}$ in figure \ref{fig:sinhline}. See how the dashed 
 	\end{figure} 
 \end{center}
 
-\section{Derivatives of Inverse Trigonometric Functions}
+\section{Restricting the Domain}
+
+The fix, just as with $x^2$ in the inverses chapter, is to use only part of
+the sine graph. We keep the piece from $-\frac{\pi}{2}$ to $\frac{\pi}{2}$.
+On that piece, sine climbs steadily from $-1$ to $1$, hitting every value
+exactly once. So:
+
+\begin{mdframed}[style=important, frametitle={Arcsine}]
+$\arcsin x$ is the angle between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$
+whose sine is $x$. Its domain is $-1 \le x \le 1$.
+\end{mdframed}
 
 \begin{center}
-\begin{tabular}{ |c|c| }
-	\hline
-	$f$ & $f'$\\
-	\hline
-	$\arcsin{x}$ & $\frac{1}{\sqrt{1 - x^2}}$\\
-	\hline
-	$\arccos{x}$ & $ - \frac{1}{\sqrt{1 - x^2}}$\\
-	\hline
-	$\arctan{x}$ & $\frac{1}{1 + x^2}$\\
-	\hline
-	arccsc $x$ & $ - \frac{1}{x\sqrt{x^2-1}}$\\
-	\hline
-	arcsec $x$ & $\frac{1}{x\sqrt{x^2-1}}$\\
-	\hline
-	arccot $x$ & $ - \frac{1}{1+x^2}$\\
-	\hline
+\begin{tikzpicture}
+\begin{axis}[axis lines=center, xlabel=$x$, ylabel=$y$,
+  xmin=-1.6, xmax=1.8, ymin=-1.8, ymax=1.8,
+  xtick={-1,1}, ytick={-1.571,1.571},
+  yticklabels={$-\frac{\pi}{2}$,$\frac{\pi}{2}$},
+  width=7cm, height=7cm]
+\addplot[gray, dashed, domain=-1.571:1.571, samples=60]{sin(deg(x))};
+\addplot[sdkblue, thick, domain=-1:1, samples=60]{rad(asin(x))};
+\addplot[gray, dotted, domain=-1.6:1.6]{x};
+\end{axis}
+\end{tikzpicture}
+
+The restricted sine (dashed) and its inverse, $\arcsin x$ (solid). They are
+reflections across $y = x$ (dotted).
+\end{center}
+
+\index{arccosine}Cosine needs a different piece, because between
+$-\frac{\pi}{2}$ and $\frac{\pi}{2}$ cosine goes up and then down. Cosine
+falls steadily from 1 to $-1$ between $0$ and $\pi$, so we use that piece.
+\index{arctangent}Tangent is steady between $-\frac{\pi}{2}$ and
+$\frac{\pi}{2}$, and it takes on every real number there.
+
+\begin{center}
+\begin{tabular}{l|l|l}
+Function & Input $x$ & Output angle \\
+\hline
+$\arcsin x$ & $-1 \le x \le 1$ & $-\frac{\pi}{2} \le \theta \le \frac{\pi}{2}$ \\
+$\arccos x$ & $-1 \le x \le 1$ & $0 \le \theta \le \pi$ \\
+$\arctan x$ & any real number & $-\frac{\pi}{2} < \theta < \frac{\pi}{2}$
 \end{tabular}
 \end{center}
 
+\textbf{Worked example.} Find $\arcsin\frac{1}{2}$, $\arccos\left(-\frac{1}{2}\right)$,
+and $\arctan(-1)$.
 
-\section{Practice}
-%derivatives have not been defined up to here
-\begin{Exercise}[label=invtrig1]
-Find the $f'$. Give your answer in a simplified form. 
+\textbf{Solution.}
+\begin{itemize}
+\item Which angle between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$ has sine
+      $\frac{1}{2}$? From the unit circle, $\frac{\pi}{6}$. So
+      $\arcsin\frac{1}{2} = \frac{\pi}{6}$.
+\item Which angle between $0$ and $\pi$ has cosine $-\frac{1}{2}$? It is
+      $\frac{2\pi}{3}$.
+\item Which angle between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$ has tangent
+      $-1$? It is $-\frac{\pi}{4}$.
+\end{itemize}
+
+Watch out for one trap. Since $\sin\frac{5\pi}{6} = \frac{1}{2}$, you might
+expect $\arcsin\left(\sin\frac{5\pi}{6}\right) = \frac{5\pi}{6}$. But
+arcsin only answers with angles between $-\frac{\pi}{2}$ and
+$\frac{\pi}{2}$, so the answer is $\frac{\pi}{6}$.
+
+\begin{Exercise}[title={Exact values}, label=itrig_exact]
+Find each value exactly, in radians.
 \begin{enumerate}
-\item $f(x) = \arctan{x}^2$
-\item $f(x) = x\text{arcsec }(x^3)$
-\item $f(x) = \arcsin{\frac{1}{x}}$
+\item $\arcsin\frac{\sqrt{2}}{2}$
+\item $\arccos 0$
+\item $\arctan\sqrt{3}$
+\item $\arcsin(-1)$
+\item $\arccos\left(\cos\left(-\frac{\pi}{3}\right)\right)$
 \end{enumerate}
 \end{Exercise}
-
-\begin{Answer}[ref=invtrig1]
+\begin{Answer}[ref=itrig_exact]
 \begin{enumerate}
-\item By the chain rule, $f'(x) = 2\arctan{x} \times \frac{d}{dx}\arctan{x} = 2\arctan{x}\frac{1}{1 + x^2}$
-\item By the Product rule, $f'(x) = x \frac{d}{dx}\text{arcsec }(x^3) + \text{arcsec }(x^3)$. Further, by the chain rule, $\frac{d}{dx}\text{arcsec }(x^3) = \frac{1}{(x^3)\sqrt{(x^3)^2-1}} \times \frac{d}{dx}(x^3) = \frac{3x^2}{x^3\sqrt{x^6-1}}$. Therefore, $f'(x) = \frac{3}{\sqrt{x^6-1}} + \text{arcsec }(x^3)$
-\item By the chain rule, $f'(x) = \frac{1/x}{\sqrt{1-(1/x)^2}} \times - \frac{1}{x^2} = - \frac{1}{x^3\sqrt{1-\frac{1}{x^2}}}$
+\item $\frac{\pi}{4}$
+\item $\frac{\pi}{2}$
+\item $\frac{\pi}{3}$
+\item $-\frac{\pi}{2}$
+\item $\cos\left(-\frac{\pi}{3}\right) = \frac{1}{2}$, and arccos answers
+      between $0$ and $\pi$, so the result is $\frac{\pi}{3}$, not
+      $-\frac{\pi}{3}$.
 \end{enumerate}
+\end{Answer}
+
+\section{Finding Angles}
+
+Inverse trig functions shine whenever you know two sides of a right
+triangle and want an angle.
+
+\textbf{Worked example.} Back to the ramp. It rises 1 m for every 12 m of
+run. What angle does it make with the ground?
+
+\textbf{Solution.} The rise is opposite the angle and the run is adjacent,
+so $\tan\theta = \frac{1}{12}$ and
+$$\theta = \arctan\frac{1}{12} \approx 0.0831 \text{ radians} \approx 4.76^\circ$$
+That is a gentle slope: less than 5 degrees.
+
+On a calculator, the inverse functions are usually above the trig keys,
+labeled $\sin^{-1}$, $\cos^{-1}$, and $\tan^{-1}$. Check whether you are in
+degrees or radians mode before you trust the answer.
+
+\subsection{Direction of a Vector}
+
+What direction does the vector $[-3, 4]$ point? You might try
+$\arctan\frac{4}{-3} \approx -53.1^\circ$. But that points down and to the
+right, and $[-3, 4]$ points up and to the left! Arctan only answers between
+$-90^\circ$ and $90^\circ$, so it cannot tell $[-3, 4]$ from $[3, -4]$:
+both have the same ratio.
+
+Programmers solve this with a two-argument version, \pyfunction{atan2},
+which looks at the signs of both components:
+\begin{minted}{python}
+import math
+
+print(math.degrees(math.atan(4 / -3)))   # -53.13...  (wrong quadrant)
+print(math.degrees(math.atan2(4, -3)))   # 126.869...  (correct)
+\end{minted}
+Notice that \pyfunction{atan2} takes $y$ first, then $x$. Use it whenever
+you need the direction of a vector.
+
+\begin{Exercise}[title={Ladder angle}, label=itrig_ladder]
+A 6 m ladder leans against a wall with its top 5.5 m above the ground. What
+angle does the ladder make with the ground? Safety guides recommend about
+$75^\circ$. Is this ladder too steep or too shallow?
+\end{Exercise}
+\begin{Answer}[ref=itrig_ladder]
+The height is opposite the angle and the ladder is the hypotenuse, so
+$\theta = \arcsin\frac{5.5}{6} \approx 66.4^\circ$. That is shallower than
+$75^\circ$, so the bottom of the ladder is too far from the wall and it
+could slide out.
+\end{Answer}
+
+\begin{Exercise}[title={A steep road}, label=itrig1]
+A road climbs 1.5 m over a horizontal distance of 40 m. What is its angle
+of incline, in degrees?
+\end{Exercise}
+\begin{Answer}[ref=itrig1]
+$\theta = \arctan\frac{1.5}{40} \approx 2.15^\circ$.
 \end{Answer}

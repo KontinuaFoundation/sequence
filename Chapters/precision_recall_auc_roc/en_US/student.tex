@@ -1,84 +1,59 @@
-\chapter{Evaluation Binary Classifiers}
+\chapter{Evaluating Binary Classifiers Beyond Accuracy}
 
-Accuracy, recall, precision, and the F1 score are widely used metrics
-to measure and compare the performance of binary classifiers. This
-chapter will delve into these evaluation measures, providing insights
-into their interpretation and practical applications.
+A weather app that says ``70\% chance of rain'' has not decided anything yet.
+You decide: maybe you bring an umbrella above 50\%, while your friend waits for
+80\%. Same forecast, different thresholds, different mistakes. This chapter
+measures how good the \emph{forecast} is, across every threshold anyone might pick.
 
-\subsection{Binary Classification}
+\section{Threshold-Based Measures}\index{precision}\index{recall}
+Many classifiers output a score, such as a probability, and predict the positive class when the score is above a
+threshold. Accuracy, precision, recall, and $F_1$ all depend on that threshold. The confusion matrix chapter defines
+them for a fixed threshold. This chapter covers measures that look across all thresholds.
 
-Before diving into the evaluation metrics, let's clarify the concept
-of binary classification. In binary classification, we aim to assign
-each instance in a dataset to one of two mutually exclusive
-classes. For example, classifying emails as spam or not spam,
-identifying whether a patient has a specific medical condition or not,
-or predicting whether a credit card transaction is fraudulent or
-legitimate are common binary classification tasks.
+\section{The Precision--Recall Tradeoff}\index{precision-recall curve}
+Lowering the threshold catches more true positives, so recall rises. It also flags more false positives, so precision
+usually falls. Raising the threshold does the opposite. A \newterm{precision--recall curve} plots precision against
+recall as the threshold changes. It is most informative when positives are rare, because accuracy then favors
+predicting negative.
 
-To evaluate the performance of a binary classifier, we need metrics
-that can provide insights into how well the classifier performs in
-distinguishing between the two classes.
+\section{The ROC Curve and AUC}\index{ROC curve}\index{AUC}
+The \newterm{receiver operating characteristic} (ROC) curve plots the true positive rate (recall) against the false
+positive rate $\frac{FP}{FP + TN}$ as the threshold changes. A perfect classifier passes through the top-left corner.
+A random guess lies on the diagonal. Think of a fire alarm. A low threshold rings at every candle, and a high threshold misses small fires.
+Each setting of the threshold gives one point on the ROC curve.
 
-\subsection{Accuracy}
+The \newterm{area under the ROC curve} (AUC) summarizes the curve in one number. There is an equivalent meaning:
+the AUC is the probability that a randomly chosen positive example gets a higher score than a randomly chosen
+negative example. Ties count as half.
 
-Accuracy is a widely used metric for evaluating binary classifiers. It
-measures the overall correctness of the classifier's predictions by
-calculating the ratio of correctly classified instances to the total
-number of instances in the dataset. Mathematically, accuracy can be
-expressed as:\index{accuracy}
+\subsection{A Worked Example}
+Two positive examples have scores $0.9$ and $0.6$. Three negative examples have scores $0.7$, $0.2$, and $0.1$.
+There are $2 \times 3 = 6$ pairs. The positive $0.9$ beats all three negatives, which is 3 pairs. The positive $0.6$
+beats $0.2$ and $0.1$, which is 2 pairs, and loses to $0.7$. So $5$ of the $6$ pairs are correctly ordered, and
+$$\text{AUC} = \frac{5}{6} \approx 0.833$$
+You can also see this as an area. Sweep the threshold down through the sorted
+scores $0.9$ (P), $0.7$ (N), $0.6$ (P), $0.2$ (N), $0.1$ (N). Each positive moves
+the curve up by $\frac{1}{2}$ and each negative moves it right by $\frac{1}{3}$:
+$$(0,0) \to (0, \tfrac{1}{2}) \to (\tfrac{1}{3}, \tfrac{1}{2}) \to (\tfrac{1}{3}, 1) \to (\tfrac{2}{3}, 1) \to (1, 1)$$
+The area under this staircase is $\frac{1}{3}\cdot\frac{1}{2} + \frac{2}{3}\cdot 1 = \frac{5}{6}$, the same answer.
 
-$$ \text{Accuracy} = \frac{\text{True Positives} + \text{True Negatives}} {
-\text{True Positives} + \text{True Negatives} + \text{False Positives}+ \text{False Negatives}} $$
- 
+\section{Which Measure to Use?}
+When classes are balanced, ROC and AUC are reasonable summaries. When positives are rare, the precision--recall
+curve is more informative, because the false positive rate stays small even when there are many false positives.
+Always report the threshold used for a final decision, since no single number describes every threshold.
 
-While accuracy provides a general overview of the classifier's
-performance, it may not be sufficient in certain scenarios. This is
-especially true when the dataset is imbalanced, meaning that one class
-significantly outweighs the other in terms of the number of instances.
+\begin{Exercise}[label=prc1, title=Compute the AUC]
+Positive scores are $0.8$, $0.4$. Negative scores are $0.5$, $0.3$. Find the AUC.
+\end{Exercise}
+\begin{Answer}[ref=prc1]
+There are 4 pairs. $0.8$ beats both negatives (2 pairs). $0.4$ beats $0.3$ but loses to $0.5$ (1 pair).
+So 3 of 4 pairs are correct, and the AUC is $\frac{3}{4} = 0.75$.
+\end{Answer}
 
-\subsection{Precision and Recall}
-
-Precision and recall are evaluation metrics that provide insights into
-the classifier's performance on specific classes, allowing us to
-identify potential trade-offs between false positives and false
-negatives.
-
-Precision measures the proportion of correctly predicted positive
-instances (true positives) out of all instances predicted as positive
-(true positives + false positives). It can be expressed
-as:\index{precision}
-
-$$\text{Precision} = \frac{ \text{True Positives }}
-{\text{True Positives} + \text{False Positives}}$$
-​	
-
-Recall, also known as sensitivity or true positive rate, measures the
-proportion of correctly predicted positive instances (true positives)
-out of all actual positive instances (true positives + false
-negatives). Mathematically, recall can be represented as:\index{recall}
-
-$$ \text{Recall} = \frac{\text{True Positives}} {\text{True Positives} + \text{False Negatives}}$$
-
-
-Precision and recall are complementary metrics. Precision focuses on
-the quality of positive predictions, while recall emphasizes the
-classifier's ability to identify positive instances. The choice
-between precision and recall depends on the specific requirements of
-the problem at hand.
-
-\subsection{F1 Score}
-
-The F1 score combines precision and recall into a single metric,
-providing a balanced evaluation measure that considers both false
-positives and false negatives. It is the harmonic mean of precision
-and recall, and it can be calculated as:\index{f1 score}
-
-$$\text{F1} = \frac{ 2 \times \text{Precision} \times \text{Recall}}
-{\text{Precision} + \text{Recall} }$$
-​	
- 
-The F1 score ranges between 0 and 1, where a value of 1 represents
-perfect precision and recall. It is particularly useful when we want
-to strike a balance between precision and recall, considering both the
-false positives and false negatives in the classifier's predictions.
-
+\begin{Exercise}[label=prc2, title=Rare positives]
+A fraud dataset has 1\% fraudulent transactions. A model that always predicts ``not fraud'' has what accuracy, and why is this misleading?
+\end{Exercise}
+\begin{Answer}[ref=prc2]
+Its accuracy is 99\%. It never finds a fraud, so its recall is 0. Accuracy looks high only because most cases are
+negative, which is why precision and recall are more informative for rare classes.
+\end{Answer}

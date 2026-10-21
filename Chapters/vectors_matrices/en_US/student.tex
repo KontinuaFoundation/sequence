@@ -1,16 +1,13 @@
 \chapter{Vectors and Matrices}
 
-The last chapter provided an overview of linear algebra, using several image
-examples. In this chapter, we will focus primarily on vector-matrix
-multiplications. First, we will show how matrices can be used to represent a
-set of linear equations. Then, we will provide you with a general definition
-of vector-matrix multiplication, followed by a few examples. You will have an
-opportunity to solve a problem manually, then by using Python. In this
-chapter, we will use two-dimensional matrices for simplicity, but a matrix can
-have any number of dimensions.
+A spreadsheet of your class's test scores, a photo on your phone, and the
+positions of every vertex in a video game character all have something in
+common: they are grids of numbers. Mathematicians call a grid of numbers a
+\newterm{matrix}. In this chapter, you will learn to add, multiply, and
+transpose matrices, by hand and with Python.
 \index{matrices}
 \section{Matrices}
-We've been looking at vectors. We've seen them in physics as a straight line comprised of $x$ and $y$ components, or represented as a column of
+We have been looking at vectors. We have seen them in physics as a straight line comprised of $x$ and $y$ components, or represented as a column of
 numbers. For example, while we may write $\mathbf{v} = \left[ 1, 2, 3 \right]$
 in line, the vector is really:
 $$\mathbf{v} = \begin{bmatrix}
@@ -29,11 +26,13 @@ $$\begin{bmatrix}
 We describe the size and shape of matrices by saying \textit{an }$m \times
 n$\textit{ matrix}, where $m$ is the number of \emph{rows} and $n$ is the number of
 \emph{columns}. A \newterm{vector} is simply a one-column matrix. For example, the vectors
-\textbf{v} above is of size$3 \times 1$. Matrices aren't restricted to 2 dimensions:
-a matrix can be 3, 4, or any number of dimensions. For example, a $3 \times 2
-\times 4$ matrix would be made of 4 stacked $3 \times 2$ matrices. Visually, however, that is hard to represent, and even worse to compute.
+\textbf{v} above is of size $3 \times 1$. Grids of numbers can also have
+more than two dimensions: a $3 \times 2 \times 4$ array is 4 stacked $3
+\times 2$ matrices. (A color image is $\text{height} \times \text{width}
+\times 3$.) In this book, ``matrix'' means two dimensions.
 
-A matrix is considered \emph{square} when it has the same number of rows and columns. Most matrix operations have the restriction that the matrix must be square in order to perform operations, such as determinant calculation, finding an inverse, or eigenvector/eigenvalues, all of which you will learn in future chapters.3
+A matrix is considered \emph{square} when it has the same number of rows and columns. Some important operations work only on square matrices: the determinant,
+the inverse, and eigenvalues, all of which you will learn in future chapters.
 
 \begin{Exercise}[title = {Matrix Dimensions 1}, label = mat_dim1]
 Write the dimensions of the following matrices:
@@ -102,7 +101,7 @@ subscript is the dimension of the matrix. The subscript can be expanded to
 denote any number of dimensions.
 
 \section{Operations of Matrices}
-\subsection{Adding and Subtracting Matrices}
+\subsection{Adding and Subtracting Matrices}\index{matrix addition}
 Matrices that are the same dimension can be added and subtracted. Just like
 vectors, to add matrices you add the elements in the same position:
 $$\begin{bmatrix}
@@ -234,14 +233,14 @@ Find \textbf{\textit{A}} + \textbf{\textit{B}}, \textbf{\textit{A}} -
 \end{enumerate}
 \end{Answer}
 
-\subsection{Multiplying Matrices}
+\subsection{Multiplying Matrices}\index{matrix multiplication}
 Matrix multiplication has dimensional limits.
 We cannot multiply any two matrices; the first matrix must have the same
-number of columns as the second has number of rows. Let's examine the origin
+number of columns as the second has number of rows. Let us examine the origin
 of the dimension limits on matrix multiplication. We begin with a review of
 the vector dot product.
 
-Recall that in order to find the dot product of two vectors, they must be the
+Recall that in order to find the \index{dot product}dot product of two vectors, they must be the
 same length (that is, the same number of dimensions). The result is always a
 scalar: one number. You can review finding the dot product of vectors and
 practice the dimension limits on the vector dot product in the next exercise.
@@ -295,7 +294,7 @@ It is possible to compute $\mathbf{a} \cdot \mathbf{d}$, $\mathbf{b} \cdot
 \end{Answer}
 
 To multiply two matrices, it is helpful to think of the rows of the first
-matrix and the columns of the second matrix as vectors. Let's see how this
+matrix and the columns of the second matrix as vectors. Let us see how this
 shakes out for two $2 \times 2$ matrices in Figure~\ref{fig:mat_mult}:
 
 
@@ -346,7 +345,7 @@ shakes out for two $2 \times 2$ matrices in Figure~\ref{fig:mat_mult}:
 
 
 
- Let's look at this more concretely. For two-dimensional matrices, it can be
+ Let us look at this more concretely. For two-dimensional matrices, it can be
  helpful to move your left index finger across the row and right index finger
  down the column, as shown in Figure~\ref{fig:fingers}.
 
@@ -491,7 +490,7 @@ Multiply the matrices.
 \begin{Answer}[ref = mult_mat1]
 \begin{enumerate}
     \item $\begin{bmatrix}
-        -2 & -1 & 5
+        16 & -1 & 13
     \end{bmatrix}$
     \item $\begin{bmatrix}
         0 & 5 & 1\\
@@ -501,10 +500,10 @@ Multiply the matrices.
         0 & 5 & 1
     \end{bmatrix}$
     \item $\begin{bmatrix}
-        -9 & -17 & 11\\
-        -6 & 40 & -4\\
-        15 & 7 & -13\\
-        9 & -8 & -1
+        -9 & -17 & -13\\
+        -6 & 40 & 14\\
+        15 & 7 & 11\\
+        9 & -8 & -7
     \end{bmatrix}$
 \end{enumerate}
 \end{Answer}
@@ -546,7 +545,7 @@ Find $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \
 8 & -6 & 10 & 4\\
 -8 & 6 & -10 & -4\\
 -4 & 3 & -5 & -2\\
-8 & -6 + 1- & 4
+8 & -6 & 10 & 4
 \end{bmatrix}$ and $\mathbf{\mathit{B}} \times \mathbf{\mathit{A}} =
 \begin{bmatrix}
 13
@@ -567,7 +566,7 @@ Find $\mathbf{\mathit{A}} \times \mathbf{\mathit{B}}$ and $\mathbf{\mathit{B}} \
 \begin{bmatrix}
 12 & 0 & 15 & 3\\
 -4 & 0 & 1 & -15\\
--16 & - & -17 & -11\\
+-16 & 0 & -17 & -11\\
 -14 & 0 & -10 & -21
 \end{bmatrix}$
 \end{enumerate}
@@ -577,7 +576,7 @@ What have you noticed about the results of $\mathbf{\mathit{A}} \times
 \mathbf{\mathit{B}}$ as compared to $\mathbf{\mathit{B}} \times \mathbf{
 \mathit{A}}$? You should have noticed that the product matrices are
 \textit{different dimensions}. This leads us to the next unusual property of
-matrix multiplication: it is \textit{non-commutative}. That is, the \textit{
+matrix multiplication: it is \index{non-commutative}\textit{non-commutative}. That is, the \textit{
 order} in which you multiply matrices affects the result. This is very
 different from scalar values!
 
@@ -635,10 +634,11 @@ As you can see, even if \textbf{\textit{A}} and \textbf{\textit{B}} are square,
 matrix multiplication is still not commutative.
 
 \begin{mdframed}[style = important, frametitle = {Non-Commutation of Matrix Multiplication}]
-For two matrices \textbf{\textit{A}} and \textbf{\textit{B}}, where neither is
-an identity matrix or a zero matrix:
+In general, for two matrices \textbf{\textit{A}} and \textbf{\textit{B}},
 $$\mathbf{\mathit{A}} \times \mathbf{\mathit{B}} \neq \mathbf{\mathit{B}}
 \times \mathbf{\mathit{A}}$$
+Some pairs do happen to commute (for example, any matrix and the identity
+matrix), but you can never assume it.
 \end{mdframed}
 
 \subsubsection{Properties of the Zero Matrix}
@@ -647,9 +647,9 @@ mathematical properties:
 \begin{mdframed}[style = important, frametitle = {Properties of the Zero Matrix}]
 For a matrix, \textbf{\textit{A}}, and a zero matrix, \textbf{\textit{0}}
 \begin{enumerate}
-\item $\mathbf{\mathit{A}} + \mathbf{\mathit{0e}} = \mathbf{\mathit{A}}$
-\item $\mathbf{\mathit{A}} + \mathbf{\mathit{-A}} = \mathbf{\mathit{0e}}$
-\item $0 \cdot \mathbf{\mathit{A}} = \mathbf{\mathit{0e}}$
+\item $\mathbf{\mathit{A}} + \mathbf{\mathit{0}} = \mathbf{\mathit{A}}$
+\item $\mathbf{\mathit{A}} + (-\mathbf{\mathit{A}}) = \mathbf{\mathit{0}}$
+\item $0 \cdot \mathbf{\mathit{A}} = \mathbf{\mathit{0}}$
 \end{enumerate}
 \end{mdframed}
 
@@ -667,8 +667,8 @@ $$\begin{bmatrix}
 
 All identity matrices are square (that is, they have the same number of rows
 as they do columns). The identity matrix has the special property that
-whenever a vector or matrix is multiplied by \textbf{\textit{I}}, it doesn't
-change. Let's look at some examples:
+whenever a vector or matrix is multiplied by \textbf{\textit{I}}, it does not
+change. Let us look at some examples:
 
 \textbf{Example}: If $\mathbf{x} = \begin{bmatrix}
 2\\
@@ -774,13 +774,18 @@ A^\top =
 Notice how the first \emph{row} of $A$ becomes the first \emph{column} of $A^\top$, and so on.
 
 \subsection{Row-Major Order, Column-Major Order, and Computer Memory}
-Note that the longer the diagonal of $m\times n$, the longer this computation could take, especially by hand! For very large matrices, we love using computers to do the heavy lifting. Just as matrices are large sets of numbers, computer memory is essentially a large matrix, just stored in a very long string of characters. 
 \index{row-major order}
 \index{column-major order}
-Remember how data is stored as a long, contiguous array? We can use this fact to simplify the expense of this operation. Instead of creating a whole new matrix, we can just swap the indices of the existing entries. This way, we don't have to move any data around in memory, just change how we access it. Many libraries and programming languages (Python, C++, Assembly, etc) default to \textbf{row-major order}, storing the matrix consecutively in rows in memory. Other languages (Fortran, MATLAB, R, etc) use \textbf{column-major order}, storing the matrix consecutively in columns in memory. When transposing a matrix stored in row-major order, we can just access the data as if it were stored in column-major order, and vice versa. This is as simple as swapping the bounds of the row/column operations. This trick saves us from having to move data around in memory, making the transpose operation much faster!
+For big matrices, we let computers do the work. Computer memory is one long
+row of numbered slots, so a matrix has to be laid out in a line. In
+\textbf{row-major order} (used by C, C++, and NumPy by default), the first
+row is stored, then the second row, and so on. In \textbf{column-major
+order} (used by Fortran, MATLAB, and R), the columns are stored one after
+another. Here is a neat trick: the transpose of a row-major matrix, read in
+column-major order, is the same list of numbers. So a library can
+``transpose'' a huge matrix without moving any data, just by changing how
+it reads it. NumPy's \pyfunction{.T} does exactly this.
 
-
-%Diagram Made in MATHCHA
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.45\textwidth}
@@ -849,14 +854,13 @@ Remember how data is stored as a long, contiguous array? We can use this fact to
 
 The transpose operation behaves nicely with matrix addition and multiplication:
 \begin{enumerate}[label=(\arabic*)]
-    \item 
     \item $(A^T)^T = A$
     \item \((A + B)^T = A^T + B^T\)
     \item \((cA)^T = cA^T\) for any scalar $c$
-    \item \((ABC)^T = C^T B^T A^T\) (order reverses)
+    \item \((AB)^T = B^T A^T\), and \((ABC)^T = C^T B^T A^T\) (order reverses)
     
 \end{enumerate}
-Property 4 is especially important and often surprises students—the transpose of a product reverses the order.
+Property 4 often surprises students: the transpose of a product reverses the order. (It has to, for the dimensions to work. If $A$ is $2 \times 3$ and $B$ is $3 \times 4$, then $A^T B^T$ would be $3 \times 2$ times $4 \times 3$, which is not even allowed.)
 
 Transposing a matrix is used throughout linear algebra, especially when:
 \begin{itemize}
@@ -865,22 +869,6 @@ Transposing a matrix is used throughout linear algebra, especially when:
     \item forming symmetric matrices \((A = A^T)\),
     \item working with orthogonal matrices \((Q^T Q = I)\),
 \end{itemize}
-
-$$\begin{bmatrix}
-1 & 2 & 3\\
-4 & 5 & 6 
-\end{bmatrix}
-$$
-
-More generally, a matrix with $m$ rows and $n$ columns is referred to as an $m \times n$ matrix, or simply an $m$-by-$n$ matrix; $m$ and $n$ are its dimensions.
-
-The general form of a $2 \times 3$ matrix $A$ is:
-$$
-A = \begin{bmatrix}
-a_{1,1} & a_{1,2} & a_{1,3} \\
-a_{2,1} & a_{2,2} & a_{2,3}
-\end{bmatrix}
-$$
 
 \section{Types of Matrices}
 \index{matrices!shapes of}
@@ -897,9 +885,9 @@ Matrices can be described by their shape:
 They can also be described by their unique numerical properties. Special matrices that come in handy for certain types of computations. These are a few of the most common special matrices:
 \begin{description}
 	\item[\textbf{Zero Matrix}] A matrix that only contains entries that are zero. $$\vecb{0 & 0 \\ 0 & 0}$$ The matrix above could also be $$0_{2\times 2}$$
-       \item[\textbf{Diagonal Matrix}] A square matrix with nonzero entries along the diagonal, and zeroes everywhere else. $$\vecb{2 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 6}$$
+       \item[\textbf{Diagonal Matrix}]\index{diagonal matrix} A square matrix whose entries off the main diagonal are all zero. $$\vecb{2 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 6}$$
 	\item[\textbf{Identity Matrix}] A diagonal matrix with entries of 1 along the diagonal. $$\vecb{1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1}$$
-	\item[\textbf{Symmetric Matrix}] A Symmetric matrix is a matrix, when transposed, becomes itself.
+	\item[\textbf{Symmetric Matrix}] A matrix that equals its own transpose.
 	$$
        A = \begin{bmatrix}
        20 & 40 & 60 \\
@@ -907,7 +895,7 @@ They can also be described by their unique numerical properties. Special matrice
        60 & 80 & 100
        \end{bmatrix}
        $$
-	\item[\textbf{Triangular Matrix}] This is a special square matrix that can be upper triangular or lower triangular. If upper, the main diagonal and all entries above it are nonzero while the lower entries are all zero. If lower, the main diagonal and all the entries below it are nonzero, while the upper entries are all zero. A matrix that is both upper and lower triangular becomes a diagonal matrix.
+	\item[\textbf{Triangular Matrix}]\index{triangular matrix} This is a special square matrix that can be upper triangular or lower triangular. In an upper triangular matrix, every entry below the main diagonal is zero. In a lower triangular matrix, every entry above the main diagonal is zero. A matrix that is both upper and lower triangular becomes a diagonal matrix.
 	
        Upper Triangular Matrix
        $$
@@ -949,7 +937,7 @@ a_{1,3} & a_{2,3} & a_{3,3}
 $$
 Note that $A^T$ means the transpose of A. 
 
-Let's see how this works for the following square matrix, A.
+Let us see how this works for the following square matrix, A.
 $$
 A = \begin{bmatrix}
 1 & 2 & 3 \\
@@ -977,14 +965,14 @@ B = \begin{bmatrix}
 $$
 Switch the rows and columns to get the transpose:
 $$
-B = \begin{bmatrix}
+B^T = \begin{bmatrix}
 1 & 2 & 7 \\
 2 & 4 & 8 \\
 3 & 5 & 9
 \end{bmatrix}
 $$
 
-Note that $B \neq B^T$, so B is not symmetrical.
+Note that $B \neq B^T$, so $B$ is not symmetric.
 
 \begin{Exercise}[title={Matrix Transposition}, label=matrix-transpose01]
 Find the transpose of this matrix. Is it symmetric? 
@@ -995,7 +983,8 @@ $$A = \begin{bmatrix}
 	  \end{bmatrix}$$
 \end{Exercise}
 \begin{Answer}[ref=matrix-transpose01]
-$$A =  A^t = 
+Yes, it is symmetric:
+$$A^T = 
 	  \begin{bmatrix}
  		3 & -2 & 4  \\
  		-2 & 6 & 2 \\
@@ -1003,7 +992,39 @@ $$A =  A^t =
 	\end{bmatrix}$$
 \end{Answer}
 
-\subsection{Can We Divide Matrices?}
+\subsection{Matrices in Python}\index{NumPy!matrices}
+
+NumPy does all of this for you. The \pyfunction{@} operator multiplies
+matrices; \pyfunction{+} and \pyfunction{-} work entry by entry; and
+\pyfunction{.T} transposes. Create \filename{vectors-matrices.py}:
+
+\begin{minted}{python}
+import numpy as np
+
+A = np.array([[5, 1, 3, -2],
+              [1, -1, 8, 4],
+              [6, 2, 1, 3]])
+b = np.array([1, 2, 3, -8])
+
+print(A.shape)   # (3, 4): 3 rows, 4 columns
+print(A @ b)     # [ 32  -9 -11]
+print(A.T)       # the 4 x 3 transpose
+\end{minted}
+
+Careful: \pyfunction{A * B} in NumPy multiplies entry by entry (like the
+column trick in the last chapter). It is \emph{not} matrix multiplication.
+
+\begin{Exercise}[title={Check Your Work}, label=vm_python]
+Use NumPy to check your answers to the Multiplying Matrices 2 exercise.
+Then compute $A \times b$ by hand for the $A$ and $b$ above and confirm that
+you get $[32, -9, -11]$.
+\end{Exercise}
+\begin{Answer}[ref=vm_python]
+Row 1: $5(1) + 1(2) + 3(3) + (-2)(-8) = 5 + 2 + 9 + 16 = 32$.
+Row 2: $1 - 2 + 24 - 32 = -9$. Row 3: $6 + 4 + 3 - 24 = -11$.
+\end{Answer}
+
+\subsection{Can We Divide Matrices?}\index{dividing matrices}
 Matrices cannot be divided. Suppose we have a matrix, \textbf{\textit{A}}, a vector \textbf{x}, and another vector \textbf{b} such that:
 
 $$\textbf{\textit{A}} \cdot \textbf{x} = \textbf{b}$$
@@ -1012,7 +1033,7 @@ Now, if we know \textbf{\textit{A}} and \textbf{x}, it is easy to find \textbf{b
 
 $$\textbf{x} = \frac{\textbf{b}}{\textbf{\textit{A}}}$$
 
-While this would be correct if \textbf{x}, \textbf{b}, and \textbf{\textit{A}} were scalars, but it is not for matrices. However, there is an analogy we can make. Instead of trying to divide by \textbf{\textit{A}}, we can multiply by its \textit{inverse}:
+That would work if \textbf{x}, \textbf{b}, and \textbf{\textit{A}} were numbers, but it means nothing for matrices. However, there is an analogy we can make. Instead of trying to divide by \textbf{\textit{A}}, we can multiply by its \textit{inverse}:
 
 \begin{mdframed}[style = important, frametitle = {Inverse Matrices}]
 Given a matrix \textbf{\textit{A}}, and vectors \textbf{b} and \textbf{x}, if

@@ -1,20 +1,24 @@
 \chapter{Vector-valued Functions}
 % the last chapter was loosely related to this but not really a vector-valued function
-In the last chapter, you calculated the flight of the shell.  For any
-time $t$, you could find a vector $[distance, height]$. This can be
-thought of as a function $f$ that takes a number and returns a
-2-dimensional vector.  We call this a \newterm{vector-valued} function
-from $\mathbb{R} \rightarrow \mathbb{R}^2 \rightarrow \mathbb{R}^3$\footnote{the $\mathbb{R}$ symbol represents the
+In the drag chapter, you simulated the flight of an artillery shell. For
+any time $t$, you could find a vector [distance, height]. And in the last
+chapter, a parametric curve gave a point $(x(t), y(t))$ for every $t$.
+Both are functions that take a number and return a vector. We call this a
+\index{vector-valued function}\newterm{vector-valued} function, from
+$\mathbb{R} \rightarrow \mathbb{R}^2$ (or $\mathbb{R} \rightarrow
+\mathbb{R}^3$ in three dimensions)\footnote{the $\mathbb{R}$ symbol represents the
 set of all real numbers; the $\mathbb{R}^2$ symbol represents the set of all 2-dimensional vectors, and $\mathbb{R}^3$ represents the set of all 3-dimensional vectors}.
-\section{Vector-valued functions: position}
+\section{Vector-valued functions: position}\index{position vector}
+
+
 We often make a vector-valued function by defining several real-valued
 functions. For example, if you threw a hammer with an initial upward
 speed of 12 m/s and a horizontal speed of 4 m/s along the $x$ axis from
-the point $(1, 6, 2)$, its position at time $t$ (during its flight) would be given by:
+the point $(1, 6, 2)$, \index{trajectory}its position at time $t$ (during its flight) would be given by:
 % Format 12/ m2
-$$f(t) = [4t + 1, \,\, 6, \,\, -4.8t^2 + 12t + 2]$$
+$$f(t) = [4t + 1, \,\, 6, \,\, -4.9t^2 + 12t + 2]$$
 
-In other words, $x$ is increasing with $t$, $y$ is constant, and $z$ is a parabola.
+\index{vector!components}In other words, $x$ is increasing with $t$, $y$ is constant, and $z$ is a parabola.
 \begin{figure}[H]
     \centering
 
@@ -51,11 +55,14 @@ In other words, $x$ is increasing with $t$, $y$ is constant, and $z$ is a parabo
     \caption{An example of a vector-valued function.}
     \label{fig:velfuncpos}
 \end{figure}
-\section{Finding the velocity vector}
+\section{Finding the velocity vector}\index{velocity vector}
 
 
-Now that we have its position vector, we can differentiate each
-component separately to get its velocity as a vector-valued function:
+Velocity is the rate of change of position, so each component of the
+velocity is the slope (the derivative) of the matching component of
+position. Using the slope rule for polynomials from the classes chapter
+(each $ct^n$ becomes $nct^{n-1}$), we \index{derivative!componentwise}differentiate each
+component separately:
 
 $$f'(t) = [4, 0, -9.8t + 12]$$
 
@@ -96,7 +103,7 @@ $y$-axis, and decreasing with time along the $z$ axis.
 \end{figure}
 
 
-\section{Finding the acceleration vector}
+\section{Finding the acceleration vector}\index{acceleration vector}
 
 
 Now that we have its velocity, we can get its acceleration as a vector-valued function:
@@ -137,3 +144,19 @@ down at a constant $9.8 m/s^2$.
 \end{figure}
       
       
+
+\textbf{Worked example.} A point moves along $\vec{r}(t) = \langle t,
+t^2 \rangle$. Find its velocity and acceleration.
+
+\textbf{Solution.} Differentiate each component: $\vec{v}(t) = \langle 1,
+2t \rangle$ and $\vec{a}(t) = \langle 0, 2 \rangle$. The point moves right
+at a steady speed while speeding up upward, tracing the parabola $y = x^2$.
+
+\begin{Exercise}[title={Circular Path}, label=vf1]
+(Recall from the trigonometric functions chapter that the slope of
+$\sin t$ is $\cos t$ and the slope of $\cos t$ is $-\sin t$.)
+Let $\vec{r}(t) = \langle \cos t, \sin t \rangle$. Find the speed $|\vec{v}(t)|$.
+\end{Exercise}
+\begin{Answer}[ref=vf1]
+$\vec{v}(t) = \langle -\sin t, \cos t \rangle$, so $|\vec{v}(t)| = \sqrt{\sin^2 t + \cos^2 t} = 1$.
+\end{Answer}

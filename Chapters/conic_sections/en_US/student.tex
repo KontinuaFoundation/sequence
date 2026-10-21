@@ -1,133 +1,236 @@
 \chapter{Conic Sections}
 
-In mathematics, conic sections (or simply conics) are curves obtained
-as the intersection of the surface of a cone with a plane. The three
-types of conic section are the hyperbola, the parabola, and the
-ellipse. The circle is a special case of the ellipse, though
-historically it was sometimes called a fourth type. All of the equations below can be graphed on programs like Desmos. \index{conic sections}
+Shine a flashlight straight at a wall, and the spot of light is a circle.
+Tilt the flashlight, and the circle stretches into an ellipse. Tilt it
+more, and the edge of the light opens up into a parabola and then a
+hyperbola. You are slicing a cone of light with the flat wall.
 
-\begin{center}
-    
-
-\end{center}
+Those four curves are the \index{conic sections}\newterm{conic sections}:
+the curves you get where a plane cuts through a cone. They show up
+everywhere. Planets move in ellipses, satellite dishes are parabolas, and
+the path of a comet that visits the sun once and never returns is a
+hyperbola.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=7cm]{Conic_Sections.png}
-  \caption{Visualization of conic sections.}
+  \caption{A plane slicing a cone. A level cut gives a circle; a tilted cut
+  gives an ellipse; a cut parallel to the side of the cone gives a parabola;
+  a steeper cut gives (one branch of) a hyperbola.}
   \caption*{\small Source: Wikimedia Commons, Public Domain: \url{https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Conic_Sections.svg/1920px-Conic_Sections.svg.png}}
 \end{figure}
 
-% the diagram on the thumbnail of this could be replicated:
-% https://youtu.be/PLrgwD9TleU?si=7I_kDFHFqqPIHtSo
+Every equation in this chapter is fun to type into Desmos. Change the
+numbers and watch the curve respond.
 
-\section{Definitions}
+\section{Circle}
 
-Each type of conic sections can be defined as follows:
-
-\subsection{Circle}
-
-A circle is the set of all points in a plane that are at a given
-distance (the radius) from a given point (the center). The standard
-equation for a circle with center $(h,k)$ and radius $r$ is:
+A \index{circle}circle is the set of all points in a plane at a fixed
+distance (the radius $r$) from a fixed point (the center $(h,k)$). The
+distance formula turns that sentence straight into an equation:
 
 \begin{equation}
 (x - h)^2 + (y - k)^2 = r^2
 \end{equation}
 
 \begin{center}
-  
 \begin{tikzpicture}
   \draw[thick] (0,0) circle (2cm);
-  
-  % \draw[dashed] (-4,0) -- (4,0) node[anchor=west] {Major Axis};
-  \draw[dashed] (0,0) -- (-2,0) node[above right] {Radius};
-
-  \filldraw[red] (0,0) circle (2pt) node[above right] {Center (h,k)};
-
-
+  \draw[dashed] (0,0) -- (-2,0) node[midway, above] {$r$};
+  \filldraw[red] (0,0) circle (2pt) node[above right] {Center $(h,k)$};
 \end{tikzpicture}
 \end{center}
 
+\textbf{Worked example.} Find the center and radius of the circle
+$x^2 - 6x + y^2 + 4y = 12$.
 
-\subsection{Ellipse}
+\textbf{Solution.} Complete the square in $x$ and in $y$. Add 9 and 4 to
+both sides:
+$$(x^2 - 6x + 9) + (y^2 + 4y + 4) = 12 + 9 + 4$$
+$$(x - 3)^2 + (y + 2)^2 = 25$$
+The center is $(3, -2)$ and the radius is 5.
 
-An ellipse is the set of all points such that the sum of the distances
-from two fixed points (the foci) is constant. The standard equation
-for an ellipse centered at the origin with semi-major axis $a$ and
-semi-minor axis $b$ is:
+\begin{Exercise}[title={Radius of a Circle}, label=conic1]
+What are the center and radius of each circle?
+\begin{enumerate}
+\item $x^2 + y^2 = 4$
+\item $(x + 1)^2 + (y - 5)^2 = 49$
+\item $x^2 + y^2 + 10y = 0$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=conic1]
+\begin{enumerate}
+\item Center $(0, 0)$; $r^2 = 4$, so $r = 2$.
+\item Center $(-1, 5)$, radius 7.
+\item Add 25 to both sides: $x^2 + (y + 5)^2 = 25$. Center $(0, -5)$,
+      radius 5.
+\end{enumerate}
+\end{Answer}
+
+\section{Ellipse}
+
+An \index{ellipse}ellipse is the set of all points whose distances to two
+fixed points, the \newterm{foci}\index{foci}, add up to the same total.
+You can draw one: push two thumbtacks into a board, drop a loop of string
+over them, pull the string tight with a pencil, and trace all the way
+around.
+
+For an ellipse centered at the origin with semi-major axis $a$ (half the
+long width) and semi-minor axis $b$ (half the short width), with $a > b$,
+the equation is
 
 \begin{equation}
 \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1
 \end{equation}
 
+The foci sit on the major axis, a distance $c$ from the center, where
+$$c^2 = a^2 - b^2$$
+When $a = b$, the foci merge at the center and the ellipse is a circle.
+
 \begin{center}
 \begin{tikzpicture}
   \draw[thick] (0,0) ellipse (4cm and 2cm);
-  
   \draw[dashed] (-4,0) -- (4,0) node[anchor=west] {Major Axis};
   \draw[dashed] (0,-2) -- (0,2) node[anchor=south] {Minor Axis};
-
-  \filldraw[black] (-3,0) circle (2pt) node[below] {$F_1$};
-  \filldraw[black] (3,0) circle (2pt) node[below] {$F_2$};
-
-  \filldraw[red] (0,0) circle (2pt) node[above right] {Center (h,k)};
-
-
+  \filldraw[black] (-3.464,0) circle (2pt) node[below] {$F_1$};
+  \filldraw[black] (3.464,0) circle (2pt) node[below] {$F_2$};
+  \filldraw[red] (0,0) circle (2pt) node[above right] {Center};
 \end{tikzpicture}
 \end{center}
-\subsection{Hyperbola}
 
-A hyperbola is the set of all points such that the absolute difference
-of the distances from two fixed points (the foci) is constant. A hyperbola is formed from slicing a \emph{double-cone} --- two cones placed tip-to-tip --- parallel to or angled off of the central axes.  The
-standard equation for a hyperbola centered at the origin is:
+\begin{Exercise}[title={Where are the thumbtacks?}, label=conic_ellipse]
+An ellipse has equation $\frac{x^2}{25} + \frac{y^2}{9} = 1$. How wide and
+how tall is it? Where are its foci? How long is the string loop you would
+need to draw it?
+\end{Exercise}
+\begin{Answer}[ref=conic_ellipse]
+$a = 5$ and $b = 3$, so it is 10 wide and 6 tall. $c^2 = 25 - 9 = 16$, so
+the foci are at $(\pm 4, 0)$.
+
+At the right end of the ellipse, $(5, 0)$, the distances to the foci are 1
+and 9, which add to 10. So the string from tack to pencil to tack is 10
+long. The loop also runs straight between the tacks, another 8, so the
+loop is 18 long.
+\end{Answer}
+
+\section{Hyperbola}
+
+A \index{hyperbola}hyperbola is the set of all points whose distances to
+two foci \emph{differ} by the same amount. It comes from slicing a
+\emph{double cone} (two cones tip to tip) with a plane steep enough to cut
+both cones, so a hyperbola has two separate branches.
+
+A hyperbola centered at the origin that opens left and right has the
+equation
 
 \begin{equation}
 \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1
 \end{equation}
 
-or
+Swap the roles of $x$ and $y$, and it opens up and down:
 
 \begin{equation}
-\frac{y^2}{b^2} - \frac{x^2}{a^2} = 1
+\frac{y^2}{a^2} - \frac{x^2}{b^2} = 1
 \end{equation}
 
-depending on the orientation of the hyperbola.
+Far from the center, the branches hug two straight lines called
+\index{asymptote}asymptotes. For the left-right hyperbola, they are
+$y = \pm \frac{b}{a}x$. The foci are a distance $c$ from the center, where
+$c^2 = a^2 + b^2$.
 
-%FIXME diagram
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \draw[->] (-5,0) -- (5,0) node[right] {$x$};
+  \draw[->] (0,-3.5) -- (0,3.5) node[above] {$y$};
+  \draw[dashed, gray] (-5,-3.75) -- (5,3.75);
+  \draw[dashed, gray] (-5,3.75) -- (5,-3.75);
+  \draw[thick, sdkblue, domain=-1.6:1.6, samples=60, variable=\t]
+    plot ({2*cosh(\t)}, {1.5*sinh(\t)});
+  \draw[thick, sdkblue, domain=-1.6:1.6, samples=60, variable=\t]
+    plot ({-2*cosh(\t)}, {1.5*sinh(\t)});
+  \filldraw[black] (2.5,0) circle (2pt) node[below] {$F_2$};
+  \filldraw[black] (-2.5,0) circle (2pt) node[below] {$F_1$};
+\end{tikzpicture}
 
+The hyperbola $\frac{x^2}{4} - \frac{y^2}{2.25} = 1$ with its asymptotes
+$y = \pm 0.75x$ (dashed) and foci $(\pm 2.5, 0)$.
+\end{center}
 
-\subsection{Parabola}
+\section{Parabola}
 
-A parabola is the set of all points that are equidistant from a fixed
-point (the focus) and a fixed line (the directrix). The standard
-equation for a parabola that opens upwards or downwards is:
+A \index{parabola}parabola is the set of all points that are the same
+distance from a fixed point (the \newterm{focus}) and a fixed line (the
+\index{directrix}\newterm{directrix}). A parabola that opens up or down
+has the equation
 
 \begin{equation}
 y = a(x - h)^2 + k
 \end{equation}
 
-and that opens leftwards or rightwards is:
+and one that opens left or right has the equation
 
 \begin{equation}
 x = a(y - k)^2 + h
 \end{equation}
 
+where $(h,k)$ is the \newterm{vertex}, the turning point. The focus is
+inside the curve, a distance $p = \frac{1}{4|a|}$ from the vertex, and the
+directrix is the same distance away on the other side.
+
 \begin{center}
-  
 \begin{tikzpicture}
   \draw[thick] (0,0) parabola (4,4);
   \draw[thick] (0,0) parabola (-4,4);
-  
-
-  \filldraw[red] (0,0) circle (2pt) node[below] {Center (h,k)};
-
-
+  \filldraw[red] (0,0) circle (2pt) node[below] {Vertex $(h,k)$};
+  \filldraw[black] (0,1) circle (2pt) node[right] {Focus};
+  \draw[dashed] (-4,-1) -- (4,-1) node[right] {Directrix};
 \end{tikzpicture}
 \end{center}
 
+Here is the parabola's superpower. Every ray of light that comes in
+parallel to the axis bounces off the curve straight to the focus. That is
+why a satellite dish is a parabola, with the receiver at the focus. Run it
+backward, and a bulb at the focus of a flashlight's mirror sends out a
+straight beam.
 
-where $(h,k)$ is the vertex of the parabola, and $a$ is a scalar.
+\textbf{Worked example.} Where is the focus of $y = x^2$?
 
-Note that only the parabola out of these four is a function, as it passes vertical line test. The other three cannot be expressed as functions, only equations.
-% talk about asymptotes in this chapter
+\textbf{Solution.} Here $a = 1$ and the vertex is $(0,0)$, so
+$p = \frac{1}{4}$. The focus is at $\left(0, \frac{1}{4}\right)$ and the
+directrix is $y = -\frac{1}{4}$. Check with the point $(1, 1)$: its
+distance to the directrix is $1 + \frac{1}{4} = \frac{5}{4}$, and its
+distance to the focus is $\sqrt{1^2 + \left(\frac{3}{4}\right)^2} =
+\sqrt{\frac{25}{16}} = \frac{5}{4}$. They match.
+
+\begin{Exercise}[title={Where does the receiver go?}, label=conic_dish]
+A satellite dish has a cross section shaped like $y = \frac{1}{8}x^2$,
+measured in decimeters. How far above the bottom of the dish should the
+receiver be mounted?
+\end{Exercise}
+\begin{Answer}[ref=conic_dish]
+$a = \frac{1}{8}$, so $p = \frac{1}{4 \cdot \frac{1}{8}} = 2$. Mount the
+receiver at the focus, 2 decimeters (20 cm) above the bottom of the dish.
+\end{Answer}
+
+Only the parabolas that open up or down are graphs of functions. Circles,
+ellipses, hyperbolas, and sideways parabolas all fail the
+\index{vertical line test}vertical line test, so we describe them with
+equations instead.
+
+\begin{Exercise}[title={Name that conic}, label=conic_name]
+Name the conic each equation describes:
+\begin{enumerate}
+\item $4x^2 + 4y^2 = 36$
+\item $4x^2 + 9y^2 = 36$
+\item $4x^2 - 9y^2 = 36$
+\item $y = 4x^2 - 9$
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=conic_name]
+\begin{enumerate}
+\item Circle: dividing by 4 gives $x^2 + y^2 = 9$, radius 3.
+\item Ellipse: dividing by 36 gives $\frac{x^2}{9} + \frac{y^2}{4} = 1$.
+\item Hyperbola: dividing by 36 gives $\frac{x^2}{9} - \frac{y^2}{4} = 1$.
+\item Parabola: only $x$ is squared.
+\end{enumerate}
+\end{Answer}

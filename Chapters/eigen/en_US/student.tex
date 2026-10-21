@@ -1,24 +1,31 @@
 \chapter{Eigenvectors and Eigenvalues}
 
-Like many specialized disciplines, Linear Algebra uses many unfamiliar terms whose origins you might wonder about. Eigenvectors and eigenvalues are two of them. If you know German, you will recognize that eigen means inherent or a characteristic attribute. Named by the German mathematician David Hilbert, an eigenvector mathematically describes a characteristic feature of an object that remains unchanged after transformation. You can think of an eigenvector as the direction that doesn not change direction. An eigenvector characterizes a linear transformation, whereas its eigenvalue tells how much the vector is scaled. Eigenvalues can be negative or positive. A negative value indicates the direction of the eigenvector is reversed.
+When a bridge sways in the wind, a guitar string vibrates, or Google ranks
+web pages, the math underneath is the same: eigenvectors. They are the
+directions a transformation leaves alone.
+
+\emph{Eigen} is German for ``own'' or ``characteristic.'' Named by the
+German mathematician David Hilbert, an eigenvector mathematically describes a characteristic feature of an object that remains unchanged after transformation. You can think of an eigenvector as a direction that does not change under a transformation. Each eigenvector has an eigenvalue, which tells how much the vector is scaled. Eigenvalues can be negative or positive. A negative value indicates the direction of the eigenvector is reversed.
 
 Eigenvalues and eigenvectors are a way to break down matrices, which can simplify many calculations and enable us to understand various properties of the matrix. They are widely used in physics and engineering for stability analysis, vibration analysis, and many other applications. \index{eigenvector} \index{eigenvalue}
 
-Let’s look at a visual example.
+Let us look at a visual example.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{eigensquirrel.png}
+    \includegraphics[width=0.8\textwidth]{EigenSquirrel.png}
     \caption{Standardized and skewed squirrel image.}
     \label{fig:eigensquirrel}
 \end{figure}
 
-You can see that the  image on the right is a skewed version of the image on the left. Look closely at the vectors and you will notice that one of the vectors is pointing in the same direction in both images, while the direction of the other two vectors has changed. The eigenvector is the one at the bottom that points to 0 degrees (which you can think of due east) in both images. So, the characteristic attribute of both images is their horizontal direction.
+You can see that the  image on the right is a skewed version of the image on the left. Look closely at the vectors and you will notice that one of the vectors is pointing in the same direction in both images, while the direction of the other two vectors has changed. The eigenvector is the one at the bottom that points to 0 degrees (which you can think of as due east) in both images. So, the characteristic attribute of both images is their horizontal direction.
+
+Think about a rubber sheet with a grid drawn on it. When you pull the sheet, most lines tilt. A line that you pull straight along stays on its own line, and only its length changes. That line is an eigenvector.
 
 When you overlay the vectors from one image over the other, you will notice that the horizontal vector, while the same direction in both images, is a bit longer in the skewed version. The scale of the stretch is described by an eigenvalue.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{overlaysquirrel.png}
+    \includegraphics[width=0.4\textwidth]{OverlaySquirrel.png}
     \caption{Standardized and skewed squirrel image overlaid on each other.}
     \label{fig:overlaysquirrel}
 \end{figure}
@@ -29,7 +36,7 @@ When you overlay the vectors from one image over the other, you will notice that
 \begin{mdframed}[frametitle = {Eigenvector and Eigen Equation}, style = important]
 
   Given a square matrix $A$, a non-zero vector $v$ is an eigenvector of
-  $A$ if multiplying $A$ by $v$ results in a scalar multiple of $v$. In other words, the \newterm{eigenequation} is:
+  $A$ if multiplying $A$ by $v$ results in a scalar multiple of $v$. In other words, the \index{eigenequation}\newterm{eigenequation} is:
   
   \begin{equation}
   Av = \lambda v
@@ -43,14 +50,14 @@ An eigenvector is a nonzero vector that does not change direction when a linear 
 It may stretch, shrink, or flip direction, but it \emph{stays on the same line}.
 \section{Finding Eigenvalues and Eigenvectors}
 \index{eigenvalue!calculating}
-You find the eigenvalues of a matrix $A$  by solving the characteristic equation:
+You find the eigenvalues of a matrix $A$  by solving the \index{characteristic equation}characteristic equation:
 
 \begin{equation}
 \text{det}(A - \lambda I) = 0
 \end{equation}
 
 where $\text{det}(.)$ denotes the determinant, $I$ is the \emph{identity
-matrix} of the same size as $A$, and $\lambda$ is a scalar. In other words, we add $\lambda$ along the diagonal of a, and solve for its determinant.
+matrix} of the same size as $A$, and $\lambda$ is a scalar. In other words, we subtract $\lambda$ from each diagonal entry of $A$, and solve for the determinant.
 
  $$\begin{array}{c} A - \lambda I =
 \begin{bmatrix}
@@ -60,17 +67,16 @@ a_{21} & a_{22} - \lambda & \cdots & a_{2n} \\
 a_{n1} & a_{n2} & \cdots & a_{nn} - \lambda
 \end{bmatrix} \end{array}$$
 
-Once your find the eigenvalues, you can find the corresponding eigenvectors by substituting each eigenvalue into the equation $Av = \lambda
+Once you find the eigenvalues, you can find the corresponding eigenvectors by substituting each eigenvalue into the equation $Av = \lambda
 v$, and solving for $v$. $v$ is a vector which only gets \emph{scaled}, with no change in direction. 
 
 For a non-zero $\mathbf v$ to satisfy this equation,
 \begin{itemize}
-  \item \item $\det(A - \lambda I) = 0$ must have a determinant of zero
+  \item $\det(A - \lambda I) = 0$ must hold
   \item $A-\lambda I$ cannot have an inverse
-  \item space is flattened on to a volume of $0$.
+  \item the transformation squashes space onto a set of zero volume.
 \end{itemize}
 
-FIXME visual representation graphically?
 \section{Example}
 
 For a $2 \times 2$ matrix $A = \begin{pmatrix} a & b \\ c &
@@ -92,19 +98,20 @@ $$\begin{bmatrix}
 
 The characteristic equation is: 
 $$|A - \lambda I| = 0$$ 
-$$\begin{bmatrix}
+$$\begin{vmatrix}
 5 - \lambda & 4\\
  1 & 2- \lambda
-\end{bmatrix} = 0$$
+\end{vmatrix} = 0$$
 $$(5 - \lambda) (2 - \lambda) - (4)(1) = 0$$
-$$10 - 5\lambda - 2\lambda + \lambda2 - 4 = 0$$
-$$\lambda2 - 7\lambda + 6 = 0$$
+$$10 - 5\lambda - 2\lambda + \lambda^2 - 4 = 0$$
+$$\lambda^2 - 7\lambda + 6 = 0$$
 $$(\lambda - 6)(\lambda - 1) = 0$$
 $$\lambda = 6, \lambda = 1$$
-Now that you have the eigen values you can substitute these values into the equation: 
-$$|A - \lambda I| = 0$$ 
-For $λ = 1$:
-$$(A - \lambda I) v = O$$
+Now that you have the eigenvalues, substitute each one into
+$(A - \lambda I)\vec{v} = \vec{0}$ and solve for $\vec{v}$.
+
+For $\lambda = 1$:
+$$(A - \lambda I) v = \vec{0}$$
 $$\begin{bmatrix}
 5-1 & 4 \\
 1 & 2-1 
@@ -220,7 +227,7 @@ Expand as an equation:
 
 $$-x + 4y = 0$$
 
-$$\text{Assume} y = w$$
+Let $y = w$:
 
 $$-x + 4w = 0$$
 
@@ -255,7 +262,7 @@ and \begin{bmatrix}
 \section{Eigenbasis and Eigenspace}
 Let $A$ be a square matrix and let $\lambda$ be an eigenvalue of $A$.
 
-\begin{mdframed}[frametitle = {Eigenspace}, style = important]
+\index{eigenspace}\begin{mdframed}[frametitle = {Eigenspace}, style = important]
 
 The \textbf{eigenspace} corresponding to \(\lambda\) is the set of all vectors \(v\) such that
 
@@ -371,25 +378,43 @@ x_1 \\ x_2
 \end{cases}$$
 This results in $x_{2}= -2x_{1}$, meaning $\mathbf e_{2}= \begin{bmatrix}1 \\ -2\end{bmatrix}$.
 \end{Answer}
-\section{Eigenvalues and Eigenvectors in Python}
-Create a file called \filename{vectors\_eigen.py} and enter this code:
+\section{Eigenvalues and Eigenvectors in Python}\index{numpy!eig}
+NumPy's \pyfunction{np.linalg.eig} finds eigenvalues and eigenvectors for
+you. Let us check the first example in this chapter. Create
+\filename{eigen.py}:
 
 \begin{minted}{python}
-# import numpy to perform operations on vector
 import numpy as np
-from numpy.linalg import eig
 
-a = np.array([[2, 2, 4], 
-              [1, 3, 5],
-              [2, 3, 4]])
-eigenvalue,eigenvector = eig(a) #return a tuple of eigenvalues [l1, l2,..., ln], eigenvectors [ [...], [...], ...]
+A = np.array([[5, 4],
+              [1, 2]])
+values, vectors = np.linalg.eig(A)
 
-# The values are not in any particular order
-print('Eigenvalues:', eigenvalue)
+print("Eigenvalues:", values)
+print("Eigenvectors (one per column):")
+print(vectors)
 
-# The eig function returns the normalize vectors
-print('Eigenvectors:', eigenvector)
+# Check the first pair: A v should equal lambda v
+v = vectors[:, 0]
+print(A @ v, values[0] * v)
 \end{minted}
+
+You should see:
+\begin{minted}{text}
+Eigenvalues: [6. 1.]
+Eigenvectors (one per column):
+[[ 0.9701425  -0.70710678]
+ [ 0.24253563  0.70710678]]
+[5.820855   1.45521375] [5.820855   1.45521375]
+\end{minted}
+(Some versions of NumPy print these as complex numbers, like \texttt{6.+0.j};
+the \texttt{+0.j} just means the imaginary part is zero.)
+
+NumPy scales each eigenvector to length 1. The first column,
+$[0.970, 0.243]$, is $\frac{1}{\sqrt{17}}[4, 1]$: the same direction as the
+eigenvector $[4, 1]$ we found by hand. The second is $\frac{1}{\sqrt{2}}[-1,
+1]$. Remember that any nonzero multiple of an eigenvector is also an
+eigenvector.
 
 \section{Connection to transformations}
 In the previous chapter, we studied matrix transformations such as scaling, reflection, shear, and rotation. Each of these transformations changes vectors in space by stretching, shrinking, flipping, or rotating them. Most vectors change both their length and/or their direction under such transformations.
@@ -397,26 +422,44 @@ In the previous chapter, we studied matrix transformations such as scaling, refl
 Eigenvectors arise naturally when a transformation leaves at least one direction unchanged. Different types of transformations exhibit different eigenvector behavior:
 
 \begin{itemize}
-\item \textbf{Scaling transformations} preserve all directions. Every nonzero vector is an eigenvector.
-\item \textbf{Reflections} preserve the direction of vectors along the axis of reflection and reverse vectors perpendicular to it. Vectors lying on the axis of reflection are unchanged by the transformation and therefore are eigenvectors with eigenvalue $1$. Vectors perpendicular to the axis of reflection are flipped to point in the opposite direction, making them eigenvectors with eigenvalue $-1$.
+\item \textbf{Uniform scaling} ($kI$) preserves all directions, so every nonzero vector is an eigenvector. A scaling that stretches only one axis keeps the two axis directions.
+\item \index{eigenvector!reflections}\textbf{Reflections} preserve the direction of vectors along the axis of reflection and reverse vectors perpendicular to it. Vectors lying on the axis of reflection are unchanged by the transformation and therefore are eigenvectors with eigenvalue $1$. Vectors perpendicular to the axis of reflection are flipped to point in the opposite direction, making them eigenvectors with eigenvalue $-1$.
 \item \textbf{Shear transformations} preserve exactly one direction, even though most vectors change direction.
-\item \textbf{Rotations in two dimensions} generally preserve no directions, and therefore have no real eigenvectors (except in the trivial cases of $\theta = \tfrac{\pi}{2} \textrm{ or } 0$).
+\item \index{eigenvector!rotations}\textbf{Rotations in two dimensions} generally preserve no directions, and therefore have no real eigenvectors. A $90^\circ$ rotation has none. The exceptions are $\theta = 0$, where every vector is an eigenvector with eigenvalue $1$, and $\theta = \pi$, where every vector has eigenvalue $-1$.
 \end{itemize}
 
 These observations explain why some matrices have many eigenvectors, some have only a few, and some have none at all. Eigenvectors exist precisely when a transformation has invariant directions.
 
 Understanding eigenvectors as preserved directions allows us to connect algebraic computations to geometric behavior. When a matrix has enough independent eigenvectors, it becomes possible to describe the transformation entirely in terms of simple scaling along these special directions.
 \section{Summary}
-In summary, lets take a \emph{transformation}:
+In summary, let us take a \emph{transformation}:
 
 Something that stretches, squishes, flips, or rotates space. This transformation could be represented by a matrix.
 
 Most vectors in space will get changed in both direction and length when you apply the transformation.
 
-But some special vectors don't change direction at all — they \emph{only} get stretched or shrunk (and maybe flipped).
+But some special vectors do not change direction at all — they \emph{only} get stretched or shrunk (and maybe flipped).
 
 These special “unchanging-direction” vectors are called eigenvectors.
 The amount they get stretched (or shrunk) is their eigenvalue.
+
+\begin{Exercise}[title={An upper triangular matrix}, label={ex:upper}]
+Find the eigenvalues and an eigenvector for each eigenvalue of
+$$A = \begin{bmatrix}
+4 & 1 \\
+0 & 2
+\end{bmatrix}$$
+Check one of your eigenvectors by computing $A$ times that vector.
+\end{Exercise}
+\begin{Answer}[ref={ex:upper}]
+For an upper triangular matrix, the eigenvalues are the diagonal entries, $\lambda = 4$ and $\lambda = 2$.
+
+For $\lambda = 4$: $A - 4I = \begin{bmatrix} 0 & 1 \\ 0 & -2 \end{bmatrix}$, so $x_2 = 0$ and $\vec{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$.
+
+For $\lambda = 2$: $A - 2I = \begin{bmatrix} 2 & 1 \\ 0 & 0 \end{bmatrix}$, so $2x_1 + x_2 = 0$ and $\vec{v}_2 = \begin{bmatrix} 1 \\ -2 \end{bmatrix}$.
+
+Check: $A\vec{v}_2 = \begin{bmatrix} 2 \\ -4 \end{bmatrix} = 2\vec{v}_2$.
+\end{Answer}
 
 \section{Where to Learn More}
 Watch this video from Khan Academy, \emph{Introduction to Eigenvectors}: \url{https://rb.gy/mse7i}

@@ -1,0 +1,104 @@
+\chapter{Lines and Planes in Three Dimensions}
+
+\section{Points and Vectors in Space}
+Points in three dimensions are written $(x, y, z)$. A vector in space has three
+components, $\vec{v} = \langle a, b, c\rangle$. A vector gives a direction
+and a distance, and it can move a point to a new point.
+
+Think about a classroom. A wall is a flat plane, and the line where two walls meet is a line in space. To describe a line or a plane with numbers, we need one point and a direction. The rest of this chapter shows how.
+
+\section{Lines in Space}\index{line!in space}
+A line in space is determined by one point $P_0 = (x_0, y_0, z_0)$ on it and a
+\newterm{direction vector} $\vec{d} = \langle a, b, c\rangle$ parallel to it.
+Every point on the line can be reached from $P_0$ by moving some multiple $t$ of
+$\vec{d}$. This gives the \index{vector equation!line}\newterm{vector equation}
+of the line:
+$$\vec{r}(t) = \langle x_0, y_0, z_0\rangle + t\langle a, b, c\rangle$$
+Writing the components separately gives the \newterm{parametric equations}:
+$$x = x_0 + at, \qquad y = y_0 + bt, \qquad z = z_0 + ct$$
+
+For example, the line through $(1, 2, 3)$ with direction $\langle 2, -1, 4\rangle$ is
+$x = 1 + 2t$, $y = 2 - t$, $z = 3 + 4t$. When $t = 1$, the point is $(3, 1, 7)$.
+
+\section{Planes}\index{plane!in space}
+A plane is determined by one point $P_0$ on it and a \newterm{normal vector}
+$\vec{n} = \langle a, b, c\rangle$, which is perpendicular to every direction in the
+plane. A point $P = (x, y, z)$ is on the plane exactly when the vector from
+$P_0$ to $P$ is perpendicular to $\vec{n}$:
+$$\vec{n} \cdot \langle x - x_0, y - y_0, z - z_0\rangle = 0$$
+Expanding this gives the linear equation
+$$ax + by + cz = d, \qquad \text{where } d = ax_0 + by_0 + cz_0$$
+
+For the plane through $(1, 1, 1)$ with normal $\langle 2, -1, 2\rangle$, we get
+$d = 2 - 1 + 2 = 3$, so the plane is $2x - y + 2z = 3$.
+
+This connects to the last chapter: a plane through the origin is the span
+of two independent vectors lying in it. If you know two such vectors
+$\vec{u}$ and $\vec{v}$ instead of a normal, the cross product $\vec{u}
+\times \vec{v}$ gives you a normal.
+
+\section{Distance from a Point to a Plane}\index{distance!point to plane}
+The distance from a point $P_0 = (x_0, y_0, z_0)$ to the plane $ax + by + cz = d$ is
+$$D = \frac{|ax_0 + by_0 + cz_0 - d|}{\sqrt{a^2 + b^2 + c^2}}$$
+The numerator measures how far $P_0$ is from satisfying the plane's equation,
+and the denominator scales that by the length of the normal vector.
+
+For the origin and the plane $2x - y + 2z = 3$: the numerator is $|0 - 3| = 3$, and
+the denominator is $\sqrt{4 + 1 + 4} = 3$. The distance is $1$.
+
+\section{Where Lines and Planes Meet}
+A line and a plane usually meet at one point. To find it, put the parametric
+equations of the line into the equation of the plane, and solve for $t$. Then
+substitute that $t$ back into the line.
+
+If the $t$'s cancel, the line is parallel to the plane. You end up with
+either a false statement like $1 = 5$ (the line never touches the plane)
+or a true one like $5 = 5$ (the line lies in the plane).
+
+\textbf{Worked example: Meeting point.} Find where the line $x = 1 + 2t$, $y = 2 - t$, $z = 3 + 4t$ meets the plane $x + y + z = 11$.
+
+\textbf{Solution:} Substitute the parametric equations into the plane:
+$$(1 + 2t) + (2 - t) + (3 + 4t) = 11$$
+This simplifies to $6 + 5t = 11$, so $t = 1$. Substituting $t = 1$ into the line gives the point $(3, 1, 7)$.
+
+\begin{Exercise}[label=lp1, title=A point on a line]
+Find the point on the line $x = 1 + 2t$, $y = 2 - t$, $z = 3 + 4t$ when $t = -1$.
+\end{Exercise}
+\begin{Answer}[ref=lp1]
+$(1 - 2, 2 + 1, 3 - 4) = (-1, 3, -1)$.
+\end{Answer}
+
+\begin{Exercise}[label=lp2, title=Equation of a plane]
+Find the equation of the plane through $(1, 0, 0)$, $(0, 1, 0)$, and $(0, 0, 1)$.
+\end{Exercise}
+\begin{Answer}[ref=lp2]
+The normal $\langle 1, 1, 1\rangle$ works, because it is perpendicular to both
+$\langle -1, 1, 0\rangle$ and $\langle -1, 0, 1\rangle$ (the vectors from $(1,0,0)$ to the other two points).
+Using the point $(1, 0, 0)$, $d = 1$, so the plane is $x + y + z = 1$.
+\end{Answer}
+
+\begin{Exercise}[label=lp3, title=Distance to a plane]
+Find the distance from the origin to the plane $x + y + z = 1$.
+\end{Exercise}
+\begin{Answer}[ref=lp3]
+$D = \frac{|0 - 1|}{\sqrt{3}} = \frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3} \approx 0.577$.
+\end{Answer}
+
+\begin{Exercise}[label=lp4, title=Line meets a plane]
+Find where the line $x = 2 + t$, $y = -1 + 3t$, $z = 4 - t$ meets the plane $x + y + z = 8$.
+\end{Exercise}
+\begin{Answer}[ref=lp4]
+Substituting gives $(2 + t) + (-1 + 3t) + (4 - t) = 8$, so $5 + 3t = 8$ and $t = 1$. The point is $(3, 2, 3)$.
+\end{Answer}
+
+\begin{Exercise}[label=lp5, title=A line that misses]
+Show that the line $x = t$, $y = 1 + t$, $z = -2t$ never meets the plane
+$x + y + z = 5$.
+\end{Exercise}
+\begin{Answer}[ref=lp5]
+Substituting gives $t + (1 + t) + (-2t) = 5$, which simplifies to $1 = 5$.
+That is never true, so there is no meeting point: the line is parallel to
+the plane. (Check: the direction $\langle 1, 1, -2\rangle$ dotted with the
+normal $\langle 1, 1, 1\rangle$ is $0$, so the line runs perpendicular to
+the normal, which means parallel to the plane.)
+\end{Answer}

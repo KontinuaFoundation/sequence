@@ -1,0 +1,110 @@
+\chapter{Numerical Root Finding}
+
+\section{Why Approximate a Root?}\index{root!numerical}
+Your calculator has a $\sqrt{\ }$ button, but nobody stored the answer
+for every number inside it. When you press it, the chip makes a guess, checks
+how wrong it is, and improves the guess, a few times, in a fraction of a
+millisecond. This chapter shows you two ways to do that.
+
+A \newterm{root} of a function $f$ is a value $x$ where $f(x) = 0$. For
+$f(x) = x^2 - 2$, the root is $\sqrt{2}$. Many equations have no formula for their
+roots, such as $\cos x = x$ or $e^x = 3x$. For those we use numerical methods:
+we start with a guess and improve it until it is accurate enough.
+
+\section{The Bisection Method}\index{bisection method}
+Bisection uses the Intermediate Value Theorem (see the limits chapter). If $f$ is
+continuous and $f(a)$ and $f(b)$ have opposite signs, then $f$ has a root between
+$a$ and $b$. Bisection checks the midpoint and keeps the half that still has a sign change.
+
+For $f(x) = x^2 - 2$ on $[1, 2]$, we have $f(1) = -1$ and $f(2) = 2$. The
+midpoint is $1.5$, and $f(1.5) = 0.25 > 0$. The sign changes between $1$ and
+$1.5$, so the new interval is $[1, 1.5]$. Each step halves the interval. To
+find $\sqrt{2}$ to within $10^{-6}$, bisection needs 19 steps.
+
+\section{Newton's Method}\index{Newton's method}
+Newton's method uses the tangent line. Start at $x_0$. The tangent line at
+$x_0$ crosses the $x$-axis at
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+For $f(x) = x^2 - 2$, this is $x_{n+1} = x_n - \frac{x_n^2 - 2}{2x_n}$. Starting
+at $x_0 = 1$:
+$$x_1 = 1.5, \qquad x_2 = 1.41\overline{6}, \qquad x_3 \approx 1.414216$$
+Starting from the same point, the iterates stop changing by less than $10^{-12}$
+after 6 steps. It works quickly when the starting guess is close, but it can fail if
+$f'(x_n)$ is zero or the guess is far from the root.
+
+\textbf{Example}: Solve $\cos x = x$.
+
+\textbf{Solution}: Rewrite it as $f(x) = \cos x - x = 0$, so
+$f'(x) = -\sin x - 1$. Starting at $x_0 = 1$:
+$$x_1 \approx 0.750364, \qquad x_2 \approx 0.739113, \qquad x_3 \approx 0.739085, \qquad x_4 \approx 0.739085$$
+Three steps give six correct decimal places. No algebra trick would have found
+this number.
+
+Newton's method can also get stuck. For $f(x) = x^3 - 2x + 2$ starting at
+$x_0 = 0$, you get $x_1 = 1$, then $x_2 = 0$, then $x_3 = 1$, forever. The
+tangent at each point aims straight at the other one. Always check that your
+iterates are actually settling down.
+
+\section{Code}\index{bisection method!code}
+\begin{minted}{python}
+def bisection(f, a, b, tol=1e-6):
+    if f(a) * f(b) > 0:
+        raise ValueError("f(a) and f(b) must have opposite signs")
+    while (b - a) / 2 > tol:
+        mid = (a + b) / 2
+        if f(a) * f(mid) <= 0:
+            b = mid
+        else:
+            a = mid
+    return (a + b) / 2
+
+def newton(f, df, x, tol=1e-10, max_steps=50):
+    for _ in range(max_steps):
+        x_next = x - f(x) / df(x)
+        if abs(x_next - x) < tol:
+            return x_next
+        x = x_next
+    raise RuntimeError("Newton's method did not converge")
+
+f = lambda x: x**2 - 2
+df = lambda x: 2 * x
+print(bisection(f, 1, 2))  # 1.4142141342163086
+print(newton(f, df, 1.0))  # 1.4142135623730951
+\end{minted}
+
+\section{Comparing the Methods}
+Bisection always converges when it starts with a sign change, but it is slow. It
+gains about one correct binary digit per step. Newton's method usually converges
+much faster, but it needs the derivative, and it may diverge from a poor starting point.
+
+\begin{Exercise}[label=rootfind1, title=One bisection step]
+For $f(x) = x^2 - 2$ on $[1, 2]$, find the new interval after one bisection step.
+\end{Exercise}
+\begin{Answer}[ref=rootfind1]
+The midpoint is $1.5$ and $f(1.5) = 0.25 > 0$, so the sign change is on $[1, 1.5]$.
+\end{Answer}
+
+\begin{Exercise}[label=rootfind2, title=One Newton step]
+Starting at $x_0 = 2$, find $x_1$ and $x_2$ for $f(x) = x^2 - 2$.
+\end{Exercise}
+\begin{Answer}[ref=rootfind2]
+$x_1 = 2 - \frac{2}{4} = 1.5$, and $x_2 = 1.5 - \frac{0.25}{3} \approx 1.4167$.
+\end{Answer}
+
+\begin{Exercise}[label=rootfind3, title=No sign change]
+Why does \pyfunction{bisection} raise an error for $f(x) = x^2 + 1$ on $[-1, 1]$?
+\end{Exercise}
+\begin{Answer}[ref=rootfind3]
+$f(-1) = 2$ and $f(1) = 2$ have the same sign, so the Intermediate Value Theorem
+does not guarantee a root in the interval. (The function has no real roots at all.)
+\end{Answer}
+
+\begin{Exercise}[label=rootfind4, title=How many halvings?]
+You run bisection on an interval of width 1. How many steps until the interval
+is narrower than $0.001$?
+\end{Exercise}
+\begin{Answer}[ref=rootfind4]
+After $n$ steps the width is $\frac{1}{2^n}$. Since $2^{10} = 1024 > 1000$, you
+need $10$ steps.
+\end{Answer}
+
