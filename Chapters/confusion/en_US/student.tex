@@ -2,7 +2,9 @@
 
 A model that predicts ``no one has the flu'' is right most days in July. That
 does not make it a good model. To judge a classifier, you need to count not just
-how often it is right, but \emph{how} it is wrong. This chapter shows you how.
+how often it is right, but \emph{how} it is wrong. This chapter shows you how,
+first for a single yes-or-no decision rule and then across every rule the
+classifier could use.
 
 \section{The Confusion Matrix}\index{confusion matrix}
 A \newterm{confusion matrix} compares a classifier's predictions with the true classes.
@@ -59,6 +61,52 @@ A false negative means a real fire goes unnoticed. The second error is far worse
 so smoke detectors are built for high recall, and we put up with the occasional
 toast alarm.
 
+\section{Beyond a Single Threshold}\index{threshold}
+A weather app that says ``70\% chance of rain'' has not decided anything yet.
+You decide: maybe you bring an umbrella above 50\%, while your friend waits for
+80\%. Same forecast, different thresholds, different mistakes.
+
+Many classifiers work the same way. They output a score, such as a
+probability, and predict the positive class when the score is above a
+threshold. Every number in the previous sections, from accuracy to $F_1$,
+comes from one confusion matrix, and that matrix depends on the threshold.
+Change the threshold and you get a new matrix. The measures below look across
+\emph{all} thresholds at once, so they grade the forecast itself.
+
+\subsection{The Precision--Recall Tradeoff}\index{precision-recall curve}
+Lowering the threshold catches more true positives, so recall rises. It also flags more false positives, so precision
+usually falls. Raising the threshold does the opposite. A \newterm{precision--recall curve} plots precision against
+recall as the threshold changes. It is most informative when positives are rare, because accuracy then favors
+predicting negative.
+
+\subsection{The ROC Curve and AUC}\index{ROC curve}\index{AUC}
+The \newterm{receiver operating characteristic} (ROC) curve plots the true positive rate (recall) against the false
+positive rate $\frac{FP}{FP + TN}$ as the threshold changes. A perfect classifier passes through the top-left corner.
+A random guess lies on the diagonal. Back to the smoke detector: a sensitive
+setting rings at every candle (high true positive rate, but also a high false
+positive rate), and a dull setting misses small fires. Each setting of the
+threshold gives one point on the ROC curve.
+
+The \newterm{area under the ROC curve} (AUC) summarizes the curve in one number. There is an equivalent meaning:
+the AUC is the probability that a randomly chosen positive example gets a higher score than a randomly chosen
+negative example. Ties count as half.
+
+\subsubsection{A Worked Example}
+Two positive examples have scores $0.9$ and $0.6$. Three negative examples have scores $0.7$, $0.2$, and $0.1$.
+There are $2 \times 3 = 6$ pairs. The positive $0.9$ beats all three negatives, which is 3 pairs. The positive $0.6$
+beats $0.2$ and $0.1$, which is 2 pairs, and loses to $0.7$. So $5$ of the $6$ pairs are correctly ordered, and
+$$\text{AUC} = \frac{5}{6} \approx 0.833$$
+You can also see this as an area. Sweep the threshold down through the sorted
+scores $0.9$ (P), $0.7$ (N), $0.6$ (P), $0.2$ (N), $0.1$ (N). Each positive moves
+the curve up by $\frac{1}{2}$ and each negative moves it right by $\frac{1}{3}$:
+$$(0,0) \to (0, \tfrac{1}{2}) \to (\tfrac{1}{3}, \tfrac{1}{2}) \to (\tfrac{1}{3}, 1) \to (\tfrac{2}{3}, 1) \to (1, 1)$$
+The area under this staircase is $\frac{1}{3}\cdot\frac{1}{2} + \frac{2}{3}\cdot 1 = \frac{5}{6}$, the same answer.
+
+\section{Which Measure to Use?}
+When classes are balanced, ROC and AUC are reasonable summaries. When positives are rare, the precision--recall
+curve is more informative, because the false positive rate stays small even when there are many false positives.
+Always report the threshold used for a final decision, since no single number describes every threshold.
+
 \begin{Exercise}[label=conf1, title=Compute the metrics]
 A classifier has $TP = 30$, $FP = 5$, $FN = 15$, and $TN = 50$. Compute the accuracy and the precision.
 \end{Exercise}
@@ -80,4 +128,31 @@ In a dataset where 95\% of cases are negative, a classifier always predicts nega
 \begin{Answer}[ref=conf3]
 Accuracy is 0.95, which sounds high. Recall is $\frac{0}{TP + FN} = 0$, because it
 finds none of the positive cases.
+\end{Answer}
+
+\begin{Exercise}[label=prc1, title=Compute the AUC]
+Positive scores are $0.8$, $0.4$. Negative scores are $0.5$, $0.3$. Find the AUC.
+\end{Exercise}
+\begin{Answer}[ref=prc1]
+There are 4 pairs. $0.8$ beats both negatives (2 pairs). $0.4$ beats $0.3$ but loses to $0.5$ (1 pair).
+So 3 of 4 pairs are correct, and the AUC is $\frac{3}{4} = 0.75$.
+\end{Answer}
+
+\begin{Exercise}[label=prc3, title=Moving the threshold]
+Use the scores from the ROC worked example: positives $0.9$ and $0.6$, negatives
+$0.7$, $0.2$, and $0.1$. Predict positive when the score is at least the threshold.
+For a threshold of $0.5$ and then $0.8$, find TP, FP, FN, and TN, along with the
+precision, the recall, and the false positive rate.
+\end{Exercise}
+\begin{Answer}[ref=prc3]
+Threshold $0.5$: the scores $0.9$, $0.7$, and $0.6$ are predicted positive, so
+$TP = 2$, $FP = 1$, $FN = 0$, $TN = 2$. Precision $= \frac{2}{3}$, recall $= 1$,
+and the false positive rate $= \frac{1}{3}$.
+
+Threshold $0.8$: only $0.9$ is predicted positive, so $TP = 1$, $FP = 0$, $FN = 1$,
+$TN = 3$. Precision $= 1$, recall $= \frac{1}{2}$, and the false positive rate $= 0$.
+
+Raising the threshold made the classifier more careful: precision went up and
+recall went down. The two thresholds give the ROC points $(\frac{1}{3}, 1)$ and
+$(0, \frac{1}{2})$, both on the staircase in the worked example.
 \end{Answer}

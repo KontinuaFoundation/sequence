@@ -420,6 +420,188 @@ take $\frac{a + b}{2}\vecb{1 \\ 1} + \frac{a - b}{2}\vecb{1 \\ -1}$.)
 \end{enumerate}
 \end{Answer}
 
+\section{Span in Three Dimensions}\index{span}
+Imagine flying a drone whose controller has one stick that moves it
+forward and back. You can reach any spot on one straight line, and nowhere
+else. Add a second stick for left and right, and you can reach any point
+at that altitude: a whole plane. Add a third for up and down, and the
+whole sky is yours. Each stick is a vector, and the places you can reach
+are their span.
+
+\index{span!definition}Here is the formal definition. If
+$S = \{\mathbf{v_1}, \mathbf{v_2}, \dots, \mathbf{v_n}\}$ is a set of vectors, then
+the span of $S$ is the set of all their linear combinations:
+\begin{equation}
+\text{Span}(S) = \{a_1 \mathbf{v_1} + a_2 \mathbf{v_2} + \dots + a_n
+\mathbf{v_n} : a_1, a_2, \dots, a_n \in \mathbb{R}\}
+\end{equation}
+A vector is in Span$(S)$ exactly when it can be written as a linear
+combination of the vectors in $S$.
+
+\subsection{A Line}\index{line!span of vectors}
+In two dimensions, two vectors that are multiples of each other span only a
+line. The same is true in three dimensions. Consider
+$\mathbf{u} = \left[ 2, 4, 3 \right]$ and $\mathbf{v} = \left[ 4, 8, 6 \right]$,
+shown in figure \ref{fig:3d_vectors-span}.
+
+\begin{figure}[H]
+\centering
+\tdplotsetmaincoords{80}{130} 
+\begin{tikzpicture} [scale=4, tdplot_main_coords, axis/.style={->,black}, 
+vector/.style={-stealth,blue,very thick}, 
+vector guide/.style={dashed,black}]
+
+%standard tikz coordinate definition using x, y, z coords
+\coordinate (O) at (0,0,0);
+
+%draw axes
+\draw[axis] (0,0,0) -- (1.5,0,0) node[anchor=north east]{$x$};
+\draw[axis] (0,0,0) -- (0,0.9,0) node[anchor=north west]{$y$};
+\draw[axis] (0,0,0) -- (0,0,0.9) node[anchor=south]{$z$};
+
+%draw a vector from O to P
+\draw[vector] (O) -- (0.2, 0.4, 0.3) node[above] {\textbf{u}};
+\draw[vector guide] (0.2,0,0) -- (0.2,0.4,0);
+\draw[vector guide] (0.0,0.4,0) -- (0.2,0.4,0);
+\draw[vector guide] (0.2,0.4,0) -- (0.2,0.4,0.3);
+
+\draw[vector] (O) -- (0.4, 0.8, 0.6) node[above] {\textbf{v}};
+\draw[vector guide] (0.4, 0, 0) -- (0.4, 0.8, 0);
+\draw[vector guide] (0, 0.8, 0) -- (0.4, 0.8, 0);
+\draw[vector guide] (0.4, 0.8, 0) -- (0.4, 0.8, 0.6);
+\end{tikzpicture}
+\caption{3-dimensional vectors, \textbf{u} and \textbf{v}}
+\label{fig:3d_vectors-span}
+\end{figure}
+
+Since $\mathbf{v} = 2\mathbf{u}$, the two vectors lie on the same line through
+the origin, and every combination $a_1\mathbf{u} + a_2\mathbf{v} = (a_1 + 2a_2)\mathbf{u}$
+lies on that line too. The span of \textbf{u} and \textbf{v} is a line. In fact,
+if every vector in a list lies on one line through the origin, the span of the
+list is that line, no matter how many vectors are in the list.
+
+\subsection{A Plane}\index{span!plane}\index{plane}
+Now take two 3-dimensional vectors that are \emph{not} multiples of each other:
+$\mathbf{u} = \left[2, 4, 3 \right]$ and $\mathbf{v} = \left[ 2, 1, 0 \right]$
+(figure \ref{fig:3d_ind}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture} 
+\begin{axis}[axis lines = center, x={(-0.3cm, -0.3cm)}, y={(.5cm, -0.1cm)}, 
+z = {(0cm, 0.5cm)}, xmin = 0, ymin = 0, zmin = 0, xmax = 5, ymax = 5, 
+zmax = 5, ticks=none, xlabel = {$x$}, ylabel = {$y$}, zlabel = {$z$}]
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 4, 3) node[above] {\textbf{u}};
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 1, 0) node[below] {\textbf{v}};
+    \draw[black, dashed] (2, 0, 0) -- (2, 4, 0);
+    \draw[black, dashed] (0, 4, 0) -- (2, 4, 0);
+    \draw[black, dashed] (2, 4, 0) -- (2, 4, 3);
+    \draw[black, dashed] (2, 0, 0) -- (2, 1, 0);
+    \draw[black, dashed] (0, 1, 0) -- (2, 1, 0);
+\end{axis}
+\end{tikzpicture}
+\caption{Two 3-dimensional vectors, \textbf{u} and \textbf{v}, that are not multiples of each other}
+\label{fig:3d_ind}
+\end{figure}
+
+In two dimensions, two such vectors spanned the whole plane $\mathbb{R}^2$. In
+three dimensions, they span a plane through the origin, a flat sheet that
+contains both vectors (figure \ref{fig:plane-span}). You can slide along the
+sheet in any direction, but you can never leave it.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture} 
+\begin{axis}[axis lines = center, x={(-0.3cm, -0.3cm)}, y={(.5cm, -0.1cm)}, 
+z = {(0cm, 0.5cm)}, xmin = 0, ymin = 0, zmin = 0, xmax = 5, ymax = 5, 
+zmax = 5, ticks=none, xlabel = {$x$}, ylabel = {$y$}, zlabel = {$z$}]
+    \draw[blue!30, fill = blue!30, opacity = 0.4] (0,0,0) -- (5, 0, -2.5) -- 
+    (5, 5, 2.5) -- (0, 5, 5) -- cycle;
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 4, 3) node[above] {\textbf{u}};
+    \draw[blue, thick, -latex] (0,0,0) -- (2, 1, 0) node[below] {\textbf{v}};
+    \draw[black, dashed] (2.5, 0, -1.25) -- (2.5, 5, 3.75);
+    \draw[black, dashed] (0, 2.5, 2.5) -- (5, 2.5, 0);
+\end{axis}
+\end{tikzpicture}
+\caption{The vectors \textbf{u} and \textbf{v} span a plane.}
+\label{fig:plane-span}
+\end{figure}
+
+\subsection{All of Space}
+To reach every point in $\mathbb{R}^3$, add a third vector that is \emph{not} on
+that plane. A vector is on the plane exactly when it is a linear combination of
+the first two. A third vector that is not a combination of the first two lets
+you move off the sheet, and together the three vectors span all of $\mathbb{R}^3$.
+
+Think of walking around a city. Moving forward and backward on one street covers a line. Adding a sideways direction covers a flat field, which is a plane. Adding a third direction that is not in that field lets you move up and down, so you cover all of $\mathbb{R}^3$.
+
+So, to describe the span of a list of vectors in $\mathbb{R}^3$:
+\begin{enumerate}
+\item If all the vectors are multiples of one nonzero vector, the span is a \textit{line}.
+\item Otherwise, pick two that are not multiples of each other; they span a plane.
+If every other vector in the list is a linear combination of those two, the span
+is that \textit{plane}.
+\item If some vector is not a linear combination of those two, the span is all of $\mathbb{R}^3$.
+\end{enumerate}
+Step 3 is the question this chapter started with: can a vector be written as a
+linear combination of others? You answer it by solving a system of equations.
+
+\index{span!example}\textbf{Example}: Do the vectors $\mathbf{r} = \left[ 5, 4, -6 \right]$,
+$\mathbf{s} = \left[ 0, -5, -10 \right]$, and $\mathbf{t} = \left[ 0, 2, 4 \right]$
+span a line, a plane, or $\mathbb{R}^3$?
+
+\textbf{Solution}: \textbf{r} and \textbf{s} are not multiples of each other
+(\textbf{s} has a 0 where \textbf{r} has a 5), so they span a plane. Is
+\textbf{t} on that plane? We look for $a_1$ and $a_2$ with
+$$a_1 \left[5, 4, -6 \right] + a_2 \left[ 0, -5, -10 \right] = \left[ 0, 2, 4 \right]$$
+which gives the system
+$$5a_1 = 0$$
+$$4a_1 - 5a_2 = 2$$
+$$-6a_1 - 10a_2 = 4$$
+The first equation gives $a_1 = 0$. The second then gives $-5a_2 = 2$, so
+$a_2 = -\frac{2}{5}$. Check the third: $-6(0) - 10\left(-\frac{2}{5}\right) = 4$. It
+works, so $\mathbf{t} = -\frac{2}{5}\mathbf{s}$ lies on the plane, and
+$\text{Span}(\mathbf{r}, \mathbf{s}, \mathbf{t})$ is a plane.
+
+Be careful: checking only that no two vectors are multiples of each other is
+\emph{not} enough. Three vectors can be pairwise non-multiples and still lie on
+one plane, such as $[1, 0, 0]$, $[0, 1, 0]$, and $[1, 1, 0]$.
+
+\begin{Exercise}[title = {Determining Span}, label = span1]
+Geometrically describe (line, plane, or $\mathbb{R}^3$) the span of the list
+of vectors.
+\begin{enumerate}
+\item $\left[ 1, 2, 4 \right]$ and $\left[-2, -4, -8 \right]$
+\item $\left[ 2, 0, 0 \right]$ and $\left[ 0, 1, 3 \right]$
+\item $\left[ 3, 0, 0 \right]$ and $\left[ 0, 3, 3 \right]$ and $\left[3, 3, 2 \right]$
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref = span1]
+\begin{enumerate}
+\item The second vector is $-2$ times the first, so the span is a \textit{line}.
+\item Neither vector is a multiple of the other, so the span is a \textit{plane}.
+\item The first two are not multiples of each other, so they span a plane. Is
+$[3, 3, 2]$ a linear combination of them? Solving
+$a_1[3, 0, 0] + a_2[0, 3, 3] = [3, 3, 2]$ gives $3a_1 = 3$, $3a_2 = 3$, and
+$3a_2 = 2$. The last two equations disagree, so there is no solution. The third
+vector is off the plane, and the span is $\mathbb{R}^3$.
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title = {Span of Three Vectors}, label = span2]
+Do the vectors $\left[ 1, 1, 0 \right]$, $\left[ 0, 1, 1 \right]$, and $\left[ 1, 0, 1 \right]$ span a line, a plane, or $\mathbb{R}^3$? Explain your answer.
+\end{Exercise}
+
+\begin{Answer}[ref = span2]
+The first two are not multiples of each other, so they span a plane. Solve
+$a_1[1, 1, 0] + a_2[0, 1, 1] = [1, 0, 1]$: the first entry gives $a_1 = 1$, the
+third gives $a_2 = 1$, and then the second entry would be $a_1 + a_2 = 2$, not $0$.
+There is no solution, so $[1, 0, 1]$ is off the plane, and the three vectors span
+$\mathbb{R}^3$. (In the next chapter, row reduction will give you a faster way to
+answer questions like this.)
+\end{Answer}
+
 \section{Summary}
 \begin{itemize}
 \item A linear combination is a sum of scalar multiples of vectors.
@@ -429,6 +611,13 @@ a solution.
 \item The span of a set of vectors is everything you can build from them.
 Two vectors in $\mathbb{R}^2$ that are not multiples of each other span
 the whole plane; two that are multiples span only a line.
+\item In $\mathbb{R}^3$, a span is a line, a plane, or all of space. A vector
+adds a new dimension to the span only if it is not a linear combination of the
+vectors already there.
 \end{itemize}
 
 In the next chapter, we will be looking more at linear combinations, span, and independence in the form of systems of equations. Future chapters will look even further at these concepts, linear dependence and independence, and their applications to various subspaces.
+
+\section{Where to Learn More}
+Watch this video on \emph{Linear Combinations and Vector Spans from Khan
+Academy}: \url{http://rb.gy/g1snk}

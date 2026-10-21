@@ -24,7 +24,7 @@ Each item below is a place where a chapter uses something the student has not se
 
 | Where | Problem | Suggested fix |
 |---|---|---|
-| `kinematics` (Vol 1) | 7 Python/matplotlib listings; Python is taught in `intro_python1` (Vol 3) | Mark the code "Come back after the Python chapter," or move the plotting examples into `python_libraries` |
+| `kinematics` (Vol 1) | 7 Python/matplotlib listings; Python is taught in `intro_python1` (Vol 3) | Mark the code "Come back after the Python chapter," or move the plotting examples into `matplotlib` (now in Vol 4) |
 | `forces_motion` (Vol 1) | Uses sin/cos 16 times (inclined planes); trig arrives in Vol 6 | Add a short **Right-Triangle Trigonometry** chapter (SOH-CAH-TOA) to Vol 1, or move the inclined-plane section to after Vol 6 |
 | `intro_dataviz` (Vol 3) | Uses Python before `intro_python1`, which is in the same volume | Put `intro_python1` first in Vol 3, or make the dataviz chapter spreadsheet-first |
 | `projectiles` (Vol 7) | Uses the quadratic formula; `solving_quadratics` is in Vol 9 | Move `solving_quadratics` to Vol 5 or 6, ahead of projectiles |
@@ -41,11 +41,11 @@ Each item below is a place where a chapter uses something the student has not se
 |---|---|---|
 | Vol 25 | 1 (`web_apis`) | A volume with one chapter, and it teaches HTTP APIs before HTML (Vol 26) |
 | Vol 26 | 2 | `html`, `data_representation` |
-| Vol 27 | 2 | `matplotlib`, `maps_location` |
+| Vol 27 | 1 | `maps_location` (`matplotlib` moved to Vol 4) |
 | Vol 36 | 27 | Larger than any three other volumes combined |
 
 **Suggestions**
-- Combine Volumes 25–27 into one "Data and the Web" volume, in this order: `data_representation`, `html`, a new CSS/JavaScript chapter, `web_apis`, `maps_location`. Move `matplotlib` much earlier (see Section 4).
+- Combine Volumes 25–27 into one "Data and the Web" volume, in this order: `data_representation`, `html`, a new CSS/JavaScript chapter, `web_apis`, `maps_location`.
 - Move `numerical_multi_int` and `triple_integrals` from Vol 36 into Vol 35, which finishes multivariable integration.
 - Split the rest of Vol 36 into two machine-learning volumes (Section 6).
 
@@ -95,17 +95,17 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 |---|---|---|
 | **Linear regression** | `num_methods_2` (Vol 11), `regression_slope_basics` (Vol 30), `least_squares` + `simple_linear` + `lin_reg_r2_anova` (Vol 36). The same five-point quiz example appears in three chapters. | Vol 11 handles description, Vol 30 inference, and Vol 36 the derivation (calculus and matrices). Merge `simple_linear` into `least_squares`. Move `lin_reg_r2_anova` to Vol 30 next to `inferences_slopes`, where AP students need it. |
 | **Mean, variance, standard deviation** | `data_tools` (Vol 3) and `num_methods` (Vol 11) | Teach the statistics once, in `num_methods`. Keep `data_tools` about spreadsheets, with a forward reference. |
-| **matplotlib** | `python_libraries` (Vol 4), `matplotlib` (Vol 27), plus ad hoc use in 10+ chapters | Merge them into one early plotting chapter in Vol 3 or 4. Later chapters already depend on it. |
+| **matplotlib** | `python_libraries` (Vol 4), `matplotlib` (Vol 27) | **Done:** merged into `matplotlib` in Vol 4. |
 | **Python classes** | `intro_python2` (Vol 4) and `classes` (Vol 16) | Keep the Polynomial class from `classes` as a section of `polynomials_1`. Drop the re-teaching. |
 | **Python lists** | `intro_python1` (Vol 3) and `pylists` (Vol 16) | Same treatment: keep the coefficient-list material inside `polynomials_1`. |
 | **Recursion** | `intro_python2`, `proofs` (induction), `sorting`, `recursion` (Vol 24) | Move `recursion` right after `intro_python2` and trim the recursion section in `intro_python2`, or cross-reference them. |
-| **Span** | `linear_combo` (Vol 21) and `span` (Vol 22) | Merge into one chapter. |
+| **Span** | `linear_combo` (Vol 21) and `span` (Vol 22) | **Done:** merged into `linear_combo`. |
 | **AC circuits** | `ac` (Vol 12) and the AC/impedance half of `pendulums` (Vol 17) | Move impedance into `ac`. Keep a short "springs and circuits obey the same equation" box in `pendulums`. |
 | **Sequences** | `sequences` (Vol 9) and the review opening of `seq_calc` (Vol 33) | Trim `seq_calc`'s re-introduction to a one-paragraph recap. |
-| **Simple machines** | `simple_machines` and `machines_work` (both Vol 2) | Merge into one chapter on simple machines and mechanical advantage. |
-| **Logistic regression** | `simple_logistic` + `multiv_logistic` (about 450 words each) | Merge. |
-| **GLMs** | `glm` + `link_functions` (about 450 words each, overlapping) | Merge. |
-| **Classifier evaluation** | `confusion` + `precision_recall_auc_roc` | Merge into "Evaluating Classifiers." |
+| **Simple machines** | `simple_machines` and `machines_work` (both Vol 2) | **Done:** merged into `simple_machines`. |
+| **Logistic regression** | `simple_logistic` + `multiv_logistic` | **Done:** merged into `logistic_regr`. |
+| **GLMs** | `glm` + `link_functions` | **Done:** merged into `glm`. |
+| **Classifier evaluation** | `confusion` + `precision_recall_auc_roc` | **Done:** merged into `confusion`. |
 | **Data preparation** | `standardization` (500 words) + `one-hot` (400) + orphan `log_transform` | Merge into "Preparing Data for Models." |
 | **Greek alphabet** | `greek` (Vol 1, a reference table) | Move it to an appendix volume along with `stat_tables`, the unit tables from `units_conversions`, and a formula sheet. |
 | **Experimental design** | `experiments` + `experimental_designs` (Vol 19, one section each) | Fine as two chapters, but give them sections and remove the vocabulary overlap. |
@@ -179,8 +179,8 @@ These are ranked by how much a curious high school student would care, and by ho
 3. Preparing data: `standardization` + `one-hot` + `log_transform`.
 4. `least_squares` (with `simple_linear` merged in).
 5. `lin_reg_gradient_descent`.
-6. Logistic regression (`simple_logistic` + `multiv_logistic`).
-7. Evaluating classifiers (`confusion` + `precision_recall_auc_roc`).
+6. `logistic_regr` (merged from `simple_logistic` and `multiv_logistic`).
+7. `confusion` (with `precision_recall_auc_roc` merged in).
 8. `knn_classifier`.
 9. `bayes_classifier`, with the stemming material from Vol 29 turned into a **spam filter** project.
 10. `bayesian_networks`.
@@ -189,7 +189,7 @@ These are ranked by how much a curious high school student would care, and by ho
 11. `decision_trees_classification`.
 12. `bagging_random_forest`.
 13. `boosting`.
-14. GLMs (`glm` + `link_functions`).
+14. `glm` (with `link_functions` merged in).
 15. `clustering_k-means`.
 16. `nn_regression`.
 17. `nn_classification`.
