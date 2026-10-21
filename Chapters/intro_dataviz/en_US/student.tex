@@ -1,8 +1,7 @@
 \chapter{Introduction to Data Visualization}
 % (or Graphical Methods for Describing Data)
 
-It is difficult for the human mind to look at a list of numbers and
-identify the patterns in them, so we often use these numbers to make a picture. These pictures are called \textit{graphs},
+Stare at a long list of numbers and your eyes glaze over. Turn the same numbers into a picture, and the pattern often jumps right out. These pictures are called \textit{graphs},
 \textit{charts}, or \textit{plots}. Often, the right picture can make
 the meaning in the data obvious. \textbf{Data visualization} is the process of making pictures from numbers.
 
@@ -24,7 +23,7 @@ such as the average height of students in a class (which can be 5.5 feet, 1.65 m
 Further, we can also classify data into univariate, bivariate, and multivariate data. Univariate data has only one variable,
 such as the number of boxes of cookies sold. Bivariate data has two variables, such as the average temperature and total sales
 for a lemonade stand. Multivariate data has more than two variables, such as the average temperature, total sales, and type of
-ookie sold. We will only look at univariate and bivariate data!
+cookie sold. We will only look at univariate and bivariate data!
 
 \section{How do we describe data?}
 
@@ -110,11 +109,9 @@ Sometimes we use colors to explain what contributed to the number.
 This tells us that Becky sold more boxes of chocolate chip cookies
 than boxes of oatmeal cookies.
 
-\textbf{Make Bar Graph} %Thinking about making a similar section for other graphs.
-% This could be embedded in the respective sections OR as another section addressing each type of graph.
+\textbf{Making a Bar Graph in a Spreadsheet}
 
-Go back to your compound interest spreadsheet and make a bar graph
-that shows both balances over time:
+Spreadsheets like Google Sheets and Excel make bar graphs in a few clicks: select your data and choose Insert, then Chart. Here is one comparing two savings accounts that start with the same balance but earn different interest rates:
 %FIXME this diagram is also hard to see
 \begin{figure}[H]
     \centering
@@ -123,12 +120,7 @@ that shows both balances over time:
     \label{fig:spreadsheetBar}
 \end{figure}
 
-The year column should be used as the x-axis. There are two series of
-data that come from C4:C16 and E4:E16.  Tidy up the titles and legend
-as much as you like.
-Looking at the graph, you can see the balances start the same, but
-balance of the account with the larger interest rate quickly pulls
-away from the account with the smaller interest rate.
+The years go on the $x$-axis, and each account gets its own color of bar. You can see at a glance that the balances start the same, but the account with the higher interest rate pulls further ahead every year. Try it yourself with the cookie data above.
 
 \subsection{Line Graph}
 
@@ -163,10 +155,12 @@ This is best for comparing percentages of a whole that sum to $100\%$. Here we c
     \label{fig:AirPie}
 \end{figure}
 
-\textbf{When to use a Pie Chart}
-
-%Add a section for when to use or when not to use a pie chart
-\textbf{Make a Pie Chart in Python}
+\textbf{When to Use a Pie Chart}
+\begin{itemize}
+    \item The parts add up to a meaningful whole, like 100\% of the air or 100\% of a budget.
+    \item There are only a few categories. With more than five or six slices, a pie chart becomes hard to read.
+    \item You care about each part's share of the whole, not exact comparisons. People are bad at comparing the sizes of slices, so if two slices are close, use a bar chart instead.
+\end{itemize}
 
 For \textit{quantitative}, univariate data, we often use dotplots and stemplots to visualize smaller sets of data; and
 histograms, cumulative frequency plots, and boxplots to visualize larger sets of data.
@@ -363,9 +357,6 @@ A stemplot gives you several kinds of information at once:
 Just like with dotplots, you can imagine the distribution as something that could ``balance'' on a finger:
 the place it would balance is a rough sense of the center.
 
-%Needs these sections
-\textbf{Make a Stem Plot in a Spreadsheet}
-\textbf{Make a Stem Plot in Python}
 
 \subsection{Histogram}
 
@@ -599,7 +590,42 @@ plt.show()
 If you change the \texttt{bin} width, the curve may look different, but it will always increase from left to right and end at $n$.
 
 
-\textbf{Boxplot} %A lot of AP stats students have trouble with boxplots, so we may want to spend more time on this one.
+\subsection{Boxplot}
+
+A \index{boxplot}\textit{boxplot} (or \textit{box-and-whisker plot}) squeezes a whole distribution into five numbers, called the \newterm{five-number summary}\index{five-number summary}:
+\begin{itemize}
+    \item the minimum (smallest value),
+    \item the first quartile, $Q_1$ (the median of the lower half of the data),
+    \item the median (the middle value),
+    \item the third quartile, $Q_3$ (the median of the upper half),
+    \item the maximum (largest value).
+\end{itemize}
+
+The box runs from $Q_1$ to $Q_3$ and holds the middle half of the data. A line inside the box marks the median. The ``whiskers'' stretch out to the smallest and largest values. The width of the box, $Q_3 - Q_1$, is called the \newterm{interquartile range}\index{interquartile range} (IQR). A common rule flags a value as an \index{outlier}outlier if it is more than $1.5 \times \text{IQR}$ below $Q_1$ or above $Q_3$; outliers are drawn as separate dots, and the whiskers stop at the most extreme values that are not outliers.
+
+\textbf{Example}: Make a boxplot of the 20 housing costs from the stemplot example.
+
+\textbf{Solution}: The data are already in order. With 20 values, the median is the average of the 10th and 11th values: $\frac{334 + 342}{2} = 338$. The lower half is the first 10 values, so $Q_1 = \frac{309 + 317}{2} = 313$. The upper half is the last 10 values, so $Q_3 = \frac{362 + 367}{2} = 364.5$. The five-number summary is
+$$255, \quad 313, \quad 338, \quad 364.5, \quad 403$$
+The IQR is $364.5 - 313 = 51.5$, and $1.5 \times 51.5 = 77.25$. Nothing is below $313 - 77.25 = 235.75$ or above $364.5 + 77.25 = 441.75$, so there are no outliers.
+
+\begin{center}
+\begin{tikzpicture}[xscale=0.06]
+    \draw[->] (0,0) -- (165,0);
+    \foreach \x/\lab in {0/250, 50/300, 100/350, 150/400} {
+        \draw (\x,0.1) -- (\x,-0.1) node[below] {\lab};
+    }
+    \draw[thick] (5,0.8) -- (63,0.8);
+    \draw[thick] (114.5,0.8) -- (153,0.8);
+    \draw[thick] (5,0.6) -- (5,1.0);
+    \draw[thick] (153,0.6) -- (153,1.0);
+    \draw[thick, fill=blue!15] (63,0.4) rectangle (114.5,1.2);
+    \draw[very thick] (88,0.4) -- (88,1.2);
+    \node[below] at (82,-0.6) {Housing cost (dollars per month)};
+\end{tikzpicture}
+\end{center}
+
+Boxplots shine when you compare groups. Put two boxplots on the same scale, and you can compare their centers, spreads, and outliers at a glance.
 
 \section{Bivariate Data}
 
@@ -679,4 +705,11 @@ In a stemplot with tens digits as stems, the row for stem 3 has leaves 0, 4, and
 \end{Exercise}
 \begin{Answer}[ref=dviz2]
 The values are 30, 34, and 36.
+\end{Answer}
+
+\begin{Exercise}[label=dviz3, title=Five-number summary]
+Find the five-number summary and the IQR of these quiz scores: 3, 7, 8, 12, 13, 14, 18, 21. Are any of them outliers?
+\end{Exercise}
+\begin{Answer}[ref=dviz3]
+Minimum 3, $Q_1 = \frac{7+8}{2} = 7.5$, median $= \frac{12+13}{2} = 12.5$, $Q_3 = \frac{14+18}{2} = 16$, maximum 21. The IQR is $16 - 7.5 = 8.5$, so the outlier fences are $7.5 - 12.75 = -5.25$ and $16 + 12.75 = 28.75$. No score is outside them, so there are no outliers.
 \end{Answer}

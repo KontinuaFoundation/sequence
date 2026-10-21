@@ -2,9 +2,7 @@
 \section{Introduction}
 
 
-Let us talk about \newterm{proofs}. In mathematics, a proof shows that a new statement aligns with all true statements which have come before it. A proof is a sequence of statements that starts with some assumptions and ends with a new, unproven conclusion. If the conclusion is true, then we say the proof is \newterm{valid}.\index{proofs}
-
-In mathematics, a proof shows that a new statement aligns with all true statements which have come before it.
+Scientists collect evidence; mathematicians want certainty. A \newterm{proof}\index{proofs} is a chain of statements in which each link follows by logic from the ones before it, starting from assumptions and ending at the claim you want. If every step is airtight, the proof is \newterm{valid}, and the claim is true forever. The Pythagorean theorem was proved over 2,000 years ago, and it has not needed an update since.
 
 The general structure will follow this pattern:
 We want to prove that $P \implies Q$ (this is said statement $P$ \textit{implies} statement $Q$).
@@ -17,15 +15,14 @@ Here are some definitions to get us started:
     \item A \newterm{theorem} is a proposition that has been proven to be true.\index{theorem}
     \item A \newterm{lemma} is a \textit{helper} proposition that is proven or known to be true and is used in the proof of a theorem.\index{lemma}
     \item A \newterm{corollary} is a proposition that follows directly from a theorem.\index{corollary}
-    \item An \newterm{implication} is a theorem that relies on one proposition being equivalent to another.
+    \item An \newterm{implication} is a statement of the form ``if $P$, then $Q$,'' written $P \implies Q$.
     \item $P$ is the \newterm{hypothesis} or \newterm{premise}.
     \item $Q$ is the \newterm{conclusion}.
-    \item The symbol $\forall$ represents the mathematical symbol for ``for all'', often used to iterate through all numbers of a subset.
-    \item The symbol $\exists$ represents the mathematical symbol ``there exists''.
-    \item
+    \item The symbol $\forall$ means ``for all.''
+    \item The symbol $\exists$ means ``there exists.''
 \end{itemize}
 \section{Trivial Proof}
-The easiest of proof is a \textbf{Trivial Proof}\index{trivial proof}.  If we know that $Q$ is true always, we trivially know that $P$ is true, and that $P$ implies $Q$. This is most common when $P$ and $Q$ are unrelated statements with no affect on each other.
+The easiest kind of proof is a \textbf{trivial proof}\index{trivial proof}. If $Q$ is always true, then ``$P \implies Q$'' is true no matter what $P$ says, because the conclusion never fails. This happens most often when $P$ and $Q$ have nothing to do with each other.
 
 \begin{theorem}
     If $Q$ is true, then $P \implies Q$ is true for any proposition $P$.
@@ -75,7 +72,7 @@ The structure is generally as follows:
 
 Let us prove the following statement using a proof by cases:
 \begin{theorem}
-    For any integer $n$, $n^2$ is even or odd.
+    For any integer $n$, if $n$ is even then $n^2$ is even, and if $n$ is odd then $n^2$ is odd.
 \end{theorem}
 
 \begin{proof}
@@ -98,24 +95,24 @@ Let us prove the following statement using a proof by cases:
 \end{proof}
 
 \begin{Exercise}[title={Absolute Value Proof}, label={ex:abs_val}]
-    Prove the following claim using a proof by cases:
-    \begin{theorem}
-        $$\begin{array}{c} |x| = \begin{cases} x & x \ge 0 \\ -x & x < 0 \end{cases} \end{array}$$
-    \end{theorem}
+    Recall that the absolute value of a real number is defined by
+    $$|x| = \begin{cases} x & x \ge 0 \\ -x & x < 0 \end{cases}$$
+    Use a proof by cases to prove that $|x| \ge 0$ for every real number $x$.
 \end{Exercise}
 \begin{Answer}[ref={ex:abs_val}]
     \begin{proof}
+        Every real number is either nonnegative or negative, so there are two cases.
         \begin{case}
-            Suppose $x\ge 0$. By the definition of absolute value, $|x|$ represents the distance of $x$ from $0$ on the real line. Since $x$ is nonnegative, this distance is simply $x$. Hence, $|x| = x$. $0$
+            Suppose $x\ge 0$. Then $|x| = x$, and $x \ge 0$, so $|x| \ge 0$.
         \end{case}
         \begin{case}
-            In this case, $x$ is negative, so its distance from $0$ is given by its additive inverse. Thus, $|x| = -x$.
+            Suppose $x < 0$. Then $|x| = -x$. Multiplying both sides of $x < 0$ by $-1$ flips the inequality, so $-x > 0$. Hence $|x| > 0$.
         \end{case}
+        The cases cover every real number, so $|x| \ge 0$ for all $x$.
     \end{proof}
-    Notice how explicit we are being with our proof, using words and mathematical syntax.
 \end{Answer}
 \section{Disproof By Counter-example}
-A proof by counterexample,more often called a \textbf{disproof by counterexample} is used to show a statement is false by finding one case or instance (a \newterm{counterexample}) where it fails.\index{counterexample}\index{disproof by counterexample}
+A proof by counterexample, more often called a \textbf{disproof by counterexample} is used to show a statement is false by finding one case or instance (a \newterm{counterexample}) where it fails.\index{counterexample}\index{disproof by counterexample}
 
 \begin{theorem}
     All even numbers are divisible by $4$.
@@ -140,7 +137,7 @@ Instead of proving this statement directly, we prove its \textbf{contrapositive}
 \[
     \neg Q \implies \neg P.
 \]
-The key idea is that an implication and its contrapositive are logically equivalent. We assume $Q$ is false ($\neg Q$ is true), and directly show that $P$ is false ($\neg P$ is true). If the negation of $Q$ is true and the negation of $P$ is true, it is equivalent to $P$ and $Q$ being valid:
+An implication and its contrapositive are logically equivalent, so proving one proves the other. We assume $Q$ is false and show that $P$ must then be false:
 $$\neg Q \implies \neg P \iff P \implies Q$$
 
 This may make more sense with an example:
@@ -148,8 +145,7 @@ This may make more sense with an example:
     Let $n$ be an integer. If $3n+2$ is even, then $n$ is even.
 \end{theorem}
 \begin{proof}
-    Using proof by contraposition, we will prove the above theorem. Assume $n$ is odd. Then, $\exists \, k \text{ s.t } n=2k+1$. Then, through mathematical operations,
-    Substitute into $3n+2$:
+    Using proof by contraposition, we will prove the above theorem. Assume $n$ is odd. Then $\exists \, k \text{ s.t } n=2k+1$. Substitute into $3n+2$:
     \begin{align*}
         3n + 2 & = 3(2k+1) + 2   \\
                & = 6k + 3 + 2    \\
@@ -161,9 +157,9 @@ This may make more sense with an example:
     Therefore, the contrapositive is true, and hence the original statement follows.
 \end{proof}
 \section{Proof By Contradiction}
-Rationality states that you cannot believe two ideas which oppose each other at the same time. This is called a \newterm{contradiction}. For example, the statement ``$P$ is true and $P$ is false'' is a contradiction.
+A statement and its opposite cannot both be true. Claiming both is a \newterm{contradiction}. For example, the statement ``$P$ is true and $P$ is false'' is a contradiction.
 
-\index{proof by contradiction}A proof by contradiction is a method of proving a statement by assuming the opposite of what you want to prove and then showing that this assumption leads to a contradiction or impossibility, represented by $\rightarrow \leftarrow$. This method is often used when direct proof is difficult or impossible. To prove the statement $P \implies Q$, we assume $P$ is true and $\neg Q$ is true. We then show this leads to a contradiction ($\rightarrow \leftarrow$), which proves that if $P$ is true, $Q$ must also be true. One of these contradictions looks like:
+\index{proof by contradiction}A proof by contradiction is a method of proving a statement by assuming the opposite of what you want to prove and then showing that this assumption leads to a contradiction or impossibility, represented by $\rightarrow \leftarrow$. This method is often used when direct proof is difficult or impossible. To prove $P \implies Q$, assume $P$ is true \emph{and} $Q$ is false. If that leads to a contradiction ($\rightarrow \leftarrow$), then $Q$ cannot be false, so $Q$ must be true. Typical contradictions look like:
 \begin{itemize}
     \item $1 = 0$ (or any similar false integer statement)
     \item $x \in A \wedge x \notin A$ (for set theory)
@@ -189,18 +185,18 @@ We will use a lot of contradictory statements and proofs when we talk about thou
 %ADD: add proof exercise
 
 \section{Proof By Induction}
-A \newterm{proof by induction}\index{proof by induction} is a methodology of proof that involves a (usually) proving a recursively defined statement. We use what is called the Principle of Mathematical Induction to assist with these proofs. We start with a simple case of the problem. Often, if we can prove the simplest case, we can prove all other cases by showing the each case depends on the previous one.
+Picture an endless line of dominoes. If you can show that (1) the first domino falls, and (2) any falling domino knocks over the next one, then every domino falls. That is a \newterm{proof by induction}\index{proof by induction}: prove a statement for the first case, then prove that whenever it holds for one case, it holds for the next.
 
-Recursion is useful in both mathematics and computer science because it provides a way to define a problem as correct by breaking it into smaller, similar subproblems. In mathematics, recursive definitions (such as sequences, factorials, or tree structures) are able to use proof techniques like induction, as their formulas rely on the previous term.
+Induction is a natural fit for anything defined step by step, like sequences and factorials, where each term is built from the one before it.
 
 In computer science, recursion simplifies the implementation of algorithms that operate on data that can be broken down into smaller versions of itself, such as trees (which can be broken into smaller trees), graphs (which can be broken into subgraphs), and divide-and-conquer algorithms. We are going to cover recursive algorithms in depth in the Advanced Python Chapter.\index{recursion}
 % proofs before recursion in intro python2
 In general, there are 5 steps to this proof structure:
 \begin{enumerate}
     \item Define a specific proposition in the form of \textit{$P(n)$ works correctly for all valid inputs of size $n$}. This is often given to you.
-    \item Define a \textit{base case}. Just as in recursive definitions, proofs by induction us a \index{base case}base case as an ``exit condition'', or a start point to build off of. The base case proves that the proposition works for the smallest input size, which is usually $n=0$ or $n=1$. We call this $P(0)$.
+    \item Define a \textit{base case}. Just as in recursive definitions, proofs by induction use a \index{base case}base case as an ``exit condition'', or a start point to build off of. The base case proves that the proposition works for the smallest input size, which is usually $n=0$ or $n=1$. We call this $P(0)$.
     \item Define an \newterm{inductive hypothesis}\index{inductive hypothesis}. Here, we assume the proposition remains correct for size $k$, some integer $k\ge 0$. We do not actually prove anything yet!
-    \item \newterm{Inductive Step}. Using the inductive hypothesis, prove $P(k+1)$, which states that proposition is correct for size $k+1$. Note here, that most times, the inductive step reduces the problem to a smaller, already proved case size. We say that proving $P(k+1)$ is recursively defined by $P(k)$.
+    \item \newterm{Inductive Step}. Using the inductive hypothesis, prove $P(k+1)$, which states that proposition is correct for size $k+1$. The trick is almost always to find the case $k$ hiding inside the case $k+1$.
     \item Conclude the proof by stating \textit{By the Principle of Mathematical Induction, the proposition holds for all $n \ge n_0$}, where $n_0$ is the base case size. This step is optional but good practice.
 \end{enumerate}
 
@@ -237,11 +233,11 @@ By the Principle of Mathematical Induction, the formula holds for all $n \ge 1$.
 
 \section{Summary}
 In this chapter we talked about mathematical proofs. A proof is a logical argument that starts at a proposition and leads to a conclusion $P\implies Q$.
-There are many proof methods, even some we did not talk about in this chapter, so make sure to watch addition videos for your own learning. The most important proofs techniques covered are:
+There are many proof methods, even some we did not talk about in this chapter, so keep exploring on your own. The most important proofs techniques covered are:
 \begin{itemize}
-    \item Direct Proofs, where we assume the starting statement $P$ is true, and use logical to derive to $Q$
+    \item Direct Proofs, where we assume the starting statement $P$ is true, and use logic to reach $Q$
     \item Contraposition, where we prove $\neg Q \implies \neg P$, which is equivalent to $P \implies Q$
     \item Contradiction, where we prove by deriving impossibility from an assumption that the proposition could be false. This will come back in our paradoxes chapter!
-    \item Induction, where a base case is used as a starting step to reach all other steps. These will also come back in my computer science chapters!
+    \item Induction, where a base case is used as a starting step to reach all other steps. These will also come back in the computer science chapters!
 \end{itemize}
 Overall, this chapter builds up many of the methodologies needed for proofs used to rigorously verify mathematical claims.

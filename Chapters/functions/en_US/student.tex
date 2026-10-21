@@ -1,31 +1,39 @@
 \chapter{Functions and Their Graphs}
 
-Functions are a major part of science, engineering, and math. You can think of a function as a machine: you put something into the\index{function}
-machine, it processes it, and out comes something else: a product. Just as we
-often use the variable $x$ to stand in for a number, we often use the
-variable $f$ to stand in for a function. $f(x)$ is said as ``f of x``. However, this could be any letter or word that takes an input $x$, maybe even $\mathrm{zebra}(x)$!
-% One of my teachers told me half of understanding math is understanding mathematicians are just lazy, maybe a good add in somewhere
+Think of a vending machine. You press B4, and out comes the same bag of
+chips every time. A \index{function}function works the same way: you put in
+a number, the function follows its rule, and out comes exactly one answer.
 
-For example, we might ask, ``Let the function $f$ be defined like this:
+Just as we use $x$ to stand for a number, we often use $f$ to stand for a
+function. We write $f(x)$ and say ``f of x.'' The name does not have to be
+$f$. Any letter or word will do, even $\mathrm{zebra}(x)$.
+
+For example, let the function $f$ be defined like this:
 
 \begin{equation*}
   f(x) = -5x^2 + 12x + 2
 \end{equation*}
 
-What is the value of $f(3)$, said as ``f of 3``?
+What is $f(3)$?
 
-You would run the number 3 through ``the machine'': $-5(3^2) + 12(3) + 2 = -7$. The answer would be ``$f(3)$ is $7$''.
+Run 3 through the machine: $-5(3^2) + 12(3) + 2 = -45 + 36 + 2 = -7$. So
+$f(3) = -7$.
 
-However, some functions are not defined for every possible input. For example:
+Some functions refuse certain inputs. For example:
 
 \begin{equation*}
   f(x) = \frac{1}{x}
 \end{equation*}
 
-This is defined for any $x$ except 0, because you cannot divide 1 by 0. The set of values that a function can process is called its \textit{domain}, and resulting output values are called the range.
-It is important to note that functions have only one \emph{output} for each \emph{input}. However, multiple inputs can have the same output.\index{domain}
-A relationship where one input can result in the more than one output is not a function, but a relation. This can be proven by the \hyperref[sec:vertical]{vertical line test}.
-% some good images could be found here: https://www.ck12.org/book/ck-12-algebra-i-honors/section/3.1/ 
+This works for any $x$ except 0, because you cannot divide by 0. The set of
+inputs a function accepts is its \newterm{domain}\index{domain}. The set of
+outputs it produces is its \newterm{range}\index{range}.
+
+A function gives exactly one output for each input. Two inputs may share an
+output (both $2$ and $-2$ square to $4$), but one input can never give two
+outputs. A rule that does give two outputs for some input is called a
+\newterm{relation}, not a function. The
+\hyperref[sec:vertical]{vertical line test} spots these.
 
 \begin{Exercise}[title={Domain of a function}, label=function_domain]
 
@@ -74,8 +82,8 @@ Here is the graph of the function $f(x) = -5x^2 + 12x + 2$:
 \end{figure}
 
 
-(Note that this is just part of the graph; it goes infinitely in both
-directions. Remember your vectors!)
+This is just part of the graph. The curve keeps going down forever on
+both sides; we only drew the interesting middle.
 
 Here is the graph of the function $f(x) = \frac{1}{x}$:
 
@@ -98,10 +106,15 @@ Here is the graph of the function $f(x) = \frac{1}{x}$:
   \caption{The function $f(x) = \frac{1}{x}$ graphed on a coordinate plane.}
   \label{fig:graphed2}
 \end{figure}
-Notice the \newterm{asymptotes} at $y=0$ and $x=0$. Here, the function is undefined at $x=0$ and $y=0$, but is continually approaching it. It never actually reaches these values though! $f(0)$ is not defined as you cannot divide by zero (recall division rules) and as $x$ is increasing, $f(x)$ gets infinitesimally small but never equal to zero.\index{asymptote} We will talk more about these in the rational functions chapter.
+Notice the \newterm{asymptotes}\index{asymptote}, the lines $x=0$ and
+$y=0$. The curve gets closer and closer to them but never touches. It cannot
+touch $x = 0$ because $f(0)$ is undefined. It cannot touch $y = 0$ because
+$\frac{1}{x}$ is never zero: as $x$ grows, $\frac{1}{x}$ shrinks toward 0
+without ever arriving. You will see much more of asymptotes in the rational
+functions chapter.
 
-To draw a graph, take each x value (usually in increments of 1) and determine its corresponding y value.
-Then, plot those points on a graph, using the origin as the starting point.
+To draw a graph by hand, pick several $x$ values, compute $f(x)$ for each,
+plot the points $(x, f(x))$, and connect them smoothly.
 \begin{Exercise}[title={Draw a graph}, label=draw_graph]
 
   \vspace{2cm}
@@ -133,7 +146,7 @@ Then, plot those points on a graph, using the origin as the starting point.
         \addplot[thick,no marks,sdkblue,<->] expression[domain=-0.75:2.74,samples=100]{-3 * x + 3};
       \end{axis}
     \end{tikzpicture}
-    \caption{The resulting graph of $f(x)-3x+3$.}
+    \caption{The graph of $f(x) = -3x+3$.}
     \label{fig:ex1ans}
   \end{figure}
 \end{Answer}
@@ -142,8 +155,8 @@ Then, plot those points on a graph, using the origin as the starting point.
 \section{Can this be expressed as a function?}
 \label{sec:vertical}
 
-Note that not all sets can be expressed as graphs of functions.  For
-example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
+Not every set of points is the graph of a function. Here is the set of
+points $(x,y)$ with $x^2 + y^2 = 9$:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -165,10 +178,9 @@ example, here is the set of points $(x,y)$ such that $x^2 + y^2 = 9$:
   \label{fig:not_a_func}
 \end{figure}
 
-This cannot be the graph of a function, because what would $f(0)$ be? 3
-or -3?  This set fails what we call ``the vertical line test'': If any
-vertical line contains more than one point from the set, it is not the graph
-of a function.  For example, the vertical line $x = 2$ would cross the graph twice:
+This circle cannot be the graph of a function. What would $f(0)$ be: 3 or
+$-3$? It fails the \newterm{vertical line test}: if any vertical line hits a
+set in more than one point, the set is not the graph of a function.  For example, the vertical line $x = 2$ would cross the graph twice:
 
 \begin{figure}[H]
   \centering
@@ -198,8 +210,8 @@ of a function.  For example, the vertical line $x = 2$ would cross the graph twi
 
 \section{Graphing Calculators}
 
-One really easy way to understand your function better is to use a graphing
-calculator. \index{Desmos}Desmos is a great, free online graphing calculator.
+The fastest way to see a function is a graphing calculator.
+\index{Desmos}Desmos is a free one that runs in your browser.
 
 In a web browser, go to Desmos: \url{https://www.desmos.com/calculator}
 
@@ -304,54 +316,6 @@ plt.show()
   \mintinline{python}{inf} for that entry.)
 \end{Answer}
 
-The inverse figure from earlier in this chapter takes three plot calls: the
-function, its inverse, and the line $y = x$ that reflects one onto the other.
-
-\begin{minted}{python}
-def g(x):
-    return x**3
-
-def g_inv(x):
-    return np.cbrt(x)
-
-x = np.linspace(-3, 3, 200)
-
-plt.plot(x, g(x), label="g(x) = x^3")
-plt.plot(x, g_inv(x), linestyle="--", label="inverse")
-plt.plot(x, x, color="gray", linewidth=0.8, label="y = x")
-plt.xlim(-3.5, 3.5)
-plt.ylim(-3.5, 3.5)
-plt.gca().set_aspect("equal")
-plt.grid(True)
-plt.legend()
-plt.show()
-\end{minted}
-
-The function \mintinline{python}{np.cbrt} returns the cube root of every
-entry in an array. Setting the aspect to \mintinline{python}{"equal"} gives
-one unit the same length on both axes. Without it, the window stretches one
-axis and the reflection across $y = x$ looks lopsided. The
-\mintinline{python}{label} strings feed \mintinline{python}{plt.legend()},
-which prints the key in the corner.
-
-\begin{Exercise}[title={The missing half}, label={ex:functions-python-3}]
-  Replace \mintinline{python}{np.cbrt(x)} with
-  \mintinline{python}{x**(1/3)} and run the code again. The dashed curve now
-  appears only to the right of the $y$-axis, and Python prints the warning
-  \mintinline{python}{invalid value encountered in power}. Explain what
-  happened.
-\end{Exercise}
-\begin{Answer}[ref={ex:functions-python-3}]
-  NumPy refuses to raise a negative decimal number to a fractional power, so
-  every negative entry of \mintinline{python}{x**(1/3)} becomes
-  \mintinline{python}{nan} (``not a number''). For example, it returns
-  \mintinline{python}{nan} for $(-8)^{1/3}$ even though the real cube root is
-  $-2$. Matplotlib skips \mintinline{python}{nan} points, which erases the
-  left half. The function \mintinline{python}{np.cbrt} accepts negative
-  inputs and returns $-2$ for $-8$. The TikZ version of
-  Figure~\ref{fig:inv1} solves the same problem by graphing the left half as
-  $-(-x)^{1/3}$.
-\end{Answer}
 
 % Generated without source material; values verified computationally
 
@@ -360,7 +324,9 @@ which prints the key in the corner.
 
 \subsection{Even Functions}
 
-An \index{even function}even function is symmetric about the y-axis. That means if you fold the graph along the y-axis, both sides will match perfectly. Note that the input value yields the same output regardless of whether the input value is positive or negative.
+An \index{even function}even function is symmetric about the $y$-axis:
+fold the graph along the $y$-axis, and the two sides match perfectly. In
+other words, $x$ and $-x$ always give the same output.
 
 
 \begin{mdframed}[style=important, frametitle={Even Functions}]
@@ -379,11 +345,12 @@ Examples:
   \item \( f(x) = |x| \)
 \end{itemize}
 
-On a graph, a function will be a mirror image across the y-axis.
-
 \subsection{Odd Functions}
 
-An \index{odd function}odd function is symmetric about the origin. That means if you rotate the graph $180^\circ$ about the origin, it lands on itself. Algebraically, when you input a value $k$, you get some output $n$; if you negate that input as $-k$, the output is also negated resulting in $-n$.
+An \index{odd function}odd function is symmetric about the origin: spin
+the graph $180^\circ$ around the origin, and it lands on itself. In other
+words, if $k$ goes in and $n$ comes out, then $-k$ goes in and $-n$ comes
+out.
 
 
 \begin{mdframed}[style=important, frametitle={Odd Functions}]
@@ -408,11 +375,13 @@ An \index{odd function}odd function is symmetric about the origin. That means if
   \item any \( f(x) = x^n \) where \( n \) is an odd number
 \end{itemize}
 
-On a graph, rotating the graph $180^\circ$ about the origin will yield the same graph.
 \subsection{Neither Even Nor Odd}
 Some functions are neither even nor odd.
 
-For example, \( f(x) = x^3 + 1 \) does not satisfy either condition.
+For example, \( f(x) = x^3 + 1 \) satisfies neither condition: $f(1) = 2$,
+but $f(-1) = 0$, which is neither $2$ nor $-2$.
+
+
 \textbf{Computing in Python}
 
 A plot can test for symmetry. Draw $h(x)$, $h(-x)$, and $-h(-x)$ on one set
@@ -487,7 +456,11 @@ print(h(1), h(-1), -h(-1))
 % Generated without source material; values verified computationally
 
 \section{Piecewise Functions}
-Another type of function that will be integral to your mathematics career are \newterm{piecewise functions}.\index{piecewise functions} A piecewise function is one defined by two different equations. You chose which function to evaluate dependent on the domain. Let us look at a simple example:
+Your phone plan might charge one rate for the first few gigabytes and
+another after that. Rules like this are \newterm{piecewise
+functions}\index{piecewise functions}: they use different formulas on
+different parts of the domain. You pick the formula based on where the input
+falls. Here is a simple example:
 \begin{equation*}
   f(x) = \begin{cases}
     \frac{1}{x} & x < 0   \\
@@ -495,7 +468,9 @@ Another type of function that will be integral to your mathematics career are \n
   \end{cases}
 \end{equation*}
 
-This piecewise function has two cases: when $x<0$, we use the equation $\frac{1}{x}$; when $x\ge0$, we use $x^2$. Notice that we do not consider $x=0$ for $\frac{1}{x}$ since it would be undefined, but it is defined under $x^2$. The domain of $f(x)$ is defined for all values of $x$! Let us make a table of values:
+When $x<0$, we use $\frac{1}{x}$; when $x\ge0$, we use $x^2$. The input
+$x=0$ would break $\frac{1}{x}$, but it falls in the $x^2$ case, so $f$ is
+defined for every real number. Here is a table of values:
 
 \begin{tabular}{|c|c|c|c|c|c|c|}\hline
   $x$    & $-2$            & $-1$ & $0$ & $0.1$  & $1$ & $2$ \\
@@ -504,7 +479,7 @@ This piecewise function has two cases: when $x<0$, we use the equation $\frac{1}
   \hline
 \end{tabular}
 
-We can graph this like the following
+And here is the graph:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -528,14 +503,17 @@ We can graph this like the following
   \caption{The piecewise function $f(x)$ graphed.}
   \label{fig:pw1}
 \end{figure}
-Notice the \emph{closed circle}. This indicates that the value at the is included at a disjunction. An \emph{open circle} would indicate that the value at that point is not included. Say we have the following function:
+Notice the \emph{closed circle} at $(0,0)$. A closed circle marks a point
+that is on the graph. An \emph{open circle} marks a point that is not. Here
+is a function that needs both:
 \begin{equation*}
   g(x) = \begin{cases}
     x^2 + 1 & x < 0   \\
     x^2     & x \ge 0
   \end{cases}
 \end{equation*}
-Graphing this, we obtain an open circle at $(0,1)$ and a closed circle at $(0,0)$.
+Its graph has an open circle at $(0,1)$, where the left piece stops just
+short, and a closed circle at $(0,0)$, where the right piece starts.
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -571,7 +549,8 @@ Graphing this, we obtain an open circle at $(0,1)$ and a closed circle at $(0,0)
   \end{center}
 \end{Exercise}
 \begin{Answer}[ref={ex:abs_val_pw}]
-  From $x \in [0, \infty)$, we say that $|x| = x$. For $x < 0$, we say $|x| = -x$, since we want to invert the magnitude. So,
+  For $x \ge 0$, $|x| = x$. For $x < 0$, $|x| = -x$, which flips the
+  negative number to a positive one. So,
   $$|x| =
     \begin{cases}
       x  & x \ge 0 \\
@@ -589,7 +568,8 @@ Graphing this, we obtain an open circle at $(0,1)$ and a closed circle at $(0,0)
       3 - x & \text{if } 2 < x \le 5
     \end{cases}
   \end{equation*}
-  For the equation above, create a table for every integer from -5 to 5 (inclusive), and graph.
+  Make a table of $f(x)$ for every integer from $-5$ to $5$, then graph
+  $f$.
 
   Here is a blank coordinate plane for plotting the piecewise function:
 
@@ -650,8 +630,9 @@ Graphing this, we obtain an open circle at $(0,1)$ and a closed circle at $(0,0)
 \end{Answer}
 
 \subsection{Floor and Ceiling Functions}
-Another common piecewise function you may see are the \newterm{floor function} and \newterm{ceiling function}.\index{floor function}\index{ceiling function}
-The floor function, which takes the any real number $x$, is defined as
+Two famous piecewise functions are the \newterm{floor
+function}\index{floor function} and the \newterm{ceiling
+function}\index{ceiling function}. The floor of any real number $x$ is
 \begin{equation*}
   \lfloor x \rfloor \text{ or } \mathrm{floor}(x)=
   \begin{cases}
@@ -660,8 +641,9 @@ The floor function, which takes the any real number $x$, is defined as
   \label{eq:floor}
 \end{equation*}
 
-This means that you take any number $x$ and find the closest integer less than or equal to it.
-For example, $\lfloor 0.7 \rfloor$ would be floored to $0$.
+In words: the floor is the greatest integer less than or equal to $x$. For
+example, $\lfloor 0.7 \rfloor = 0$. Your age works this way: if you are
+15.8 years old, you say you are 15.
 
 \begin{figure}[H]
   \centering
@@ -694,11 +676,11 @@ For example, $\lfloor 0.7 \rfloor$ would be floored to $0$.
       coordinates {(-2,-3) (-1,-2) (0,-1) (1,0) (2,1) (3,2)};
     \end{axis}
   \end{tikzpicture}
-  \caption{The flooring function, $f(x) = \lfloor x \rfloor$sdkblue,}
+  \caption{The floor function, $f(x) = \lfloor x \rfloor$.}
   \label{fig:floor_fig}
 \end{figure}
 
-Similarly, the ceiling function is defined as follows:
+The ceiling function rounds the other way:
 \begin{equation*}
   \lceil x \rceil \text{ or } \mathrm{ceil}(x)=
   \begin{cases}
@@ -706,8 +688,10 @@ Similarly, the ceiling function is defined as follows:
   \end{cases}
   \label{eq:ceil}
 \end{equation*}
-The ceiling function takes in any real numbers and returns the next greatest integer. For example, $\lceil 8.00001 \rceil$ returns $9$, the next greatest integer.
-For any valid integer like $x=7$, the $\lfloor 7 \rfloor$ and $\lceil 7 \rceil$ are both equal to $7$.
+The ceiling is the smallest integer greater than or equal to $x$. For
+example, $\lceil 8.00001 \rceil = 9$. Parking garages work this way: stay
+2 hours and 1 minute, and you pay for 3 hours. For an integer such as 7,
+$\lfloor 7 \rfloor$ and $\lceil 7 \rceil$ are both 7.
 \begin{figure}[H]
   \centering
 
@@ -746,7 +730,7 @@ For any valid integer like $x=7$, the $\lfloor 7 \rfloor$ and $\lceil 7 \rceil$ 
 
 A store sells televisions with pricing that depends on how many units a customer buys:
 \begin{itemize}
-  \item For the first 5 TVs, the cost per TV is $\mathdollar500$
+  \item For the first 5 TVs, the cost per TV is $\mathdollar400$
   \item For the next 10 TVs, the cost per TV is $\mathdollar350$
   \item Any additional TVs cost $\mathdollar 300$
 \end{itemize}
@@ -755,7 +739,8 @@ A hotel is buying TVs for each hotel room.
 \begin{enumerate}
   \item Construct a piecewise function $C(x)$ for the cost of TVs. Assume TVs must be a discrete integer (you cannot buy 8.5 TVs).
   \item Find the cost of 12 TVs using your function.
-  \item When is average cost < $\mathdollar360$?
+  \item How many TVs must the hotel buy for the average cost per TV to drop
+        below $\mathdollar360$?
 \end{enumerate}
 \end{Exercise}
 \begin{Answer}[ref={ex:tvs}]
@@ -768,7 +753,9 @@ A hotel is buying TVs for each hotel room.
 5500 + 300(x - 15) & x > 15
 \end{cases}$$
 \item $C(12) = 2000 + 350(12 - 5) = \mathdollar4450$
-\item The average cost is $\mathdollar360$ when $\frac{C(x)}{x} < 360$. This will only happen during the 3rd case, when $x\ge15$. 
+\item We need $\frac{C(x)}{x} < 360$. In the second case,
+$\frac{C(x)}{x} = 350 + \frac{250}{x}$, which stays above 360 for every
+$x \le 15$. So we need the third case:
 $$C(x) = 5500 + 300(x - 15) = 5500 + 300x - 4500 = 1000 + 300x$$ 
 Now, 
 $$\frac{1000 + 300x}{x} < 360$$
@@ -778,14 +765,15 @@ $$\frac{1000 + 300x}{x} < 360$$
   1000 &< 60x\\
   x &> \frac{1000}{60} \approx 16.67 \rightarrow 17
 \end{align*}
-There must be $17$ TVs sold for the average cost to fall to $\mathdollar360$
+The hotel must buy at least 17 TVs. Check: $C(17) = \mathdollar6100$, and
+$\frac{6100}{17} \approx \mathdollar358.82$.
 \end{enumerate}
 
 \end{Answer}
-% we do not talk about limits or continuity in this chapter, but may be good to revisit piecewise in limits
 
 \subsection{Invalid Piecewise Functions}
-One thing to note when creating piecewise functions is to make sure your cases do not contradict each other, or in other words, create cases that define two different possibilities for $x$ at a given value. For example,
+When you write a piecewise function, make sure the cases do not overlap
+with different answers. Here is a broken one:
 \begin{equation*}
   f(x) = \begin{cases}
     10.2 & x = 4   \\
@@ -793,7 +781,9 @@ One thing to note when creating piecewise functions is to make sure your cases d
   \end{cases}
 \end{equation*}
 
-This creates an impossible and thus invalid piecewise function, as at $x=4$, $f(x)$ is both defined as $10.2$ and $16$. This would be impossible ($\rightarrow \leftarrow$). In this case, either you define the value at $\textrm{DNE}$ or $\textrm{undefined}$, or revise the piecewise function at that point. Most often, it is done as follows:
+At $x=4$, the first case says $f(4) = 10.2$ and the second says
+$f(4) = 16$. One input, two outputs: not a function. The fix is to exclude
+4 from the second case:
 \begin{equation*}
   f(x) =
   \begin{cases}
@@ -801,7 +791,7 @@ This creates an impossible and thus invalid piecewise function, as at $x=4$, $f(
     x^2  & x \ge 0,\; x \ne 4
   \end{cases}
 \end{equation*}
-Then our value at $x=4$ is equal to $10.2$.
+Now $f(4) = 10.2$, with no argument.
 
 \textbf{Computing in Python}
 
@@ -919,13 +909,17 @@ print(math.floor(-2.5), math.ceil(-2.5), math.ceil(8.00001), math.floor(7))
 
 
 \section{Summary}
-This chapter talked about functions. Functions take in an input and spit out an output, like a magician putting a banana in a hat and releasing a white bunny. However, this is not magic, but math. Each input is given exactly one output. Not all functions have equations that are defined for all real numbers.
+A function is a machine that turns each input into exactly one output. Its
+domain is the set of inputs it accepts; its range is the set of outputs it
+produces.
 
-We can also graph functions according to their inputs (the $x$ values on the $x$-axis) and outputs (the returns of the function $f(x)$ plotted on the $y$ axis). 
+The graph of $f$ is the set of points $(x, f(x))$. A set of points is the
+graph of a function only if it passes the vertical line test.
 
-We established that relations must pass the vertical line test to be functions. Some functions have inverse functions, which reverse the action of the original function. A function has an inverse only if it is one-to-one, which can be checked with the horizontal line test. When a function and its inverse are graphed, they are reflections of each other across the line $y=x$ and the domain and range of a function switch roles in its inverse.
-
-Functions can also be classified by symmetry (even or odd). Piecewise functions are by different formulas on different parts of the domain. 
+Even functions are mirror images across the $y$-axis ($f(-x) = f(x)$). Odd
+functions survive a half turn about the origin ($f(-x) = -f(x)$). Piecewise
+functions use different formulas on different parts of the domain; floor
+and ceiling are two famous examples.
 
 \begin{Exercise}[title={Solve for x}, label=fn1]
 Let $g(x) = 2x + 5$. Find $g(-1)$, and find the value of $x$ for which $g(x) = 11$.

@@ -247,6 +247,60 @@ than or equal to -5 as input into the inverse function.
 \end{Answer}
 
 
+\textbf{Computing in Python}
+
+Figure~\ref{fig:inv1} takes three plot calls: the function, its inverse,
+and the line $y = x$ that reflects one onto the other.
+
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def g(x):
+    return x**3
+
+def g_inv(x):
+    return np.cbrt(x)
+
+x = np.linspace(-3, 3, 200)
+
+plt.plot(x, g(x), label="g(x) = x^3")
+plt.plot(x, g_inv(x), linestyle="--", label="inverse")
+plt.plot(x, x, color="gray", linewidth=0.8, label="y = x")
+plt.xlim(-3.5, 3.5)
+plt.ylim(-3.5, 3.5)
+plt.gca().set_aspect("equal")
+plt.grid(True)
+plt.legend()
+plt.show()
+\end{minted}
+
+The function \mintinline{python}{np.cbrt} returns the cube root of every
+entry in an array. Setting the aspect to \mintinline{python}{"equal"} gives
+one unit the same length on both axes. Without it, the window stretches one
+axis and the reflection across $y = x$ looks lopsided. The
+\mintinline{python}{label} strings feed \mintinline{python}{plt.legend()},
+which prints the key in the corner.
+
+\begin{Exercise}[title={The missing half}, label={ex:functions-python-3}]
+  Replace \mintinline{python}{np.cbrt(x)} with
+  \mintinline{python}{x**(1/3)} and run the code again. The dashed curve now
+  appears only to the right of the $y$-axis, and Python prints the warning
+  \mintinline{python}{invalid value encountered in power}. Explain what
+  happened.
+\end{Exercise}
+\begin{Answer}[ref={ex:functions-python-3}]
+  NumPy refuses to raise a negative decimal number to a fractional power, so
+  every negative entry of \mintinline{python}{x**(1/3)} becomes
+  \mintinline{python}{nan} (``not a number''). For example, it returns
+  \mintinline{python}{nan} for $(-8)^{1/3}$ even though the real cube root is
+  $-2$. Matplotlib skips \mintinline{python}{nan} points, which erases the
+  left half. The function \mintinline{python}{np.cbrt} accepts negative
+  inputs and returns $-2$ for $-8$. The TikZ version of
+  Figure~\ref{fig:inv1} solves the same problem by graphing the left half as
+  $-(-x)^{1/3}$.
+\end{Answer}
+
 \section{Transforming Functions}
 Recall how we could translate, mirror, or rotate shapes and they would still be congruent shapes? We can do the same with functions, but the functions are not always equal.
 Let us say we gave you the graph of a function $f$, like this:

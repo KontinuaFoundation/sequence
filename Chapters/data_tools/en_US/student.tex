@@ -32,7 +32,7 @@ We often talk about the \textit{average} of a set of samples, which is the
 same as the \textit{mean}. To get the mean, sum up the
 samples and divide that number by the number of samples.\index{mean}
 
-The numbers in that table sum to $388.599$.  If you divide that by 12,
+The numbers in that table sum to $386.599$.  If you divide that by 12,
 you find that the mean of those samples is 32.217 m/s.
 
 We typically use the greek letter $\mu$ (``mu'') to represent the mean.
@@ -77,7 +77,7 @@ $$v = \frac{1}{n}\sum_{i = 1}^{n} \left(x_i - \mu\right)^2$$
 % ADD: Maybe connect to Chi-squared test
 \end{mdframed}
 
-That is, you figure out how far each sample is from the median, you
+That is, you figure out how far each sample is from the mean, you
 square that, and then you take the mean of all those squared
 distances.
 
@@ -106,8 +106,7 @@ Thus, the variance of the 12 samples is 26.967. The bigger the variances,
 the farther the samples are spread apart; the smaller the variances, the closer
 samples are clustered around the mean.
 
-Notice that most of the data points deviate from the mu by 1 to 5
-m/s. Is not it odd that the variance is a big number like 26.967?
+Most of the speeds are only 1 to 5 m/s from the mean. So why is the variance a big number like 26.967?
 Remember that it represents the average of the squares. Sometimes, to
 get a better feel for how far the samples are from the mean, we use
 the square root of the variance, which is called \textit{the standard
@@ -140,9 +139,9 @@ the standard deviation. So $\sigma^2$ represents the variance.
 
   The variance, then, is
 
-  $$\sigma^2 = \frac{1}{6} \left((87 - 88)^2 + (91 - 88)^2 + (98 - 88)^2 + (61 - 88)^2 + (87 - 88)^2 + (100 - 88)^2 \right) = \frac{784}{6} = 65 \frac{1}{3}$$
+  $$\sigma^2 = \frac{1}{6} \left((87 - 88)^2 + (91 - 88)^2 + (98 - 88)^2 + (65 - 88)^2 + (87 - 88)^2 + (100 - 88)^2 \right) = \frac{784}{6} = 130 \frac{2}{3}$$
 
-  The standard deviation is the square root of that: $\sigma = 8.083$ points.
+  The standard deviation is the square root of that: $\sigma \approx 11.43$ points. That one 65 pulls the spread up a lot.
   
 \end{Answer}
 
@@ -176,11 +175,11 @@ In our example, you would sort your numbers and find the two in the middle:
 43.797\\
 \end{tabular}
 
-You take the mean of the two middle numbers: $(30.462 + 30.891)/2 =
-30.692$. The median speed would be 30.692 m/s.
+You take the mean of the two middle numbers: $(30.462 + 30.891)/2 \approx
+30.677$. The median speed is about 30.677 m/s.
 
-Medians are often used when a small number of outliers majorly skew the
-mean. For example, income statistics usually use the median income
+Medians are often used when a few outliers drag the
+mean around. For example, income statistics usually use the median income
 because a few hundred billionaires raise the mean a great deal.
 
 \begin{Exercise}[title={Median Grade}, label=grades_median]
@@ -266,15 +265,15 @@ The peak of the bell curve represents the \textbf{mean speed}, and the spread of
     \item 3 standard deviations: about 99.7\%.
 \end{itemize}
 
-This means that if we know the mean speed and the standard deviation, we can predict how many cars will be within certain speed ranges. If you have ever heard of \index{Six Sigma}Six Sigma methodology, that means data falls within six standard deviations of the mean, which is a very high level of quality control (3.4 defects per million measurements!).
+This means that if we know the mean speed and the standard deviation, we can predict how many cars will be within certain speed ranges. Factories push this idea hard. The \index{Six Sigma}Six Sigma method aims to make defects so rare that they show up only about 3.4 times per million parts.
 
-So when we say a dataset "looks like a bell curve," we mean that it has a predictable and symmetric structure, often meaning it is a reliable set of data with few outliers and consistent results.
+So when we say a dataset ``looks like a bell curve,'' we mean it is roughly symmetric, piled up near the mean, and thinning out in both directions.
 
 
 \subsection{Root-Mean-Squared}
 
-Scientists have a mean-like statistic that they love. It is named
-quadratic mean, but most just calls it Root-Mean-Squared, or
+Scientists love another kind of average. Its formal name is the
+quadratic mean, but almost everyone calls it the root-mean-square, or
 RMS.
 
 \begin{mdframed}[style=important, frametitle={Definition of RMS}]
@@ -337,9 +336,7 @@ Latin phrase that means ``which is what I was trying to
 demonstrate''. You will sometimes see ``QED'' at the end of a long
 mathematic proof.)
 
-Now you are ready for the punchline: Kinetic energy and heat are the
-same thing. Instead of cars, heat is the kinetic energy of molecules
-moving around. More on this soon.
+Now for the punchline: heat is kinetic energy too. Replace the cars with molecules zipping around, and the RMS speed of the molecules tells you how hot something is. More on this later.
 
 Video: Mean, Median, Mode: https://www.youtube.com/watch?v=5C9LBF3b65s
 
@@ -415,7 +412,7 @@ That is a perfect answer, and we did not need a spreadsheet at all. However:
   barrels? How much money will I make then?''
 \end{itemize}
 
-So, we use a spreadsheets to solve the problem numerically.
+So we use a spreadsheet to solve the problem numerically.
 
 
 \subsection{Your First Spreadsheet}
@@ -517,8 +514,7 @@ you press return, the cell will show the mean: 31.70441, if done correctly.
 
 \includegraphics[width=0.4\textwidth]{Spread_mean.png}
 
-Notice that by specifying that the function \pyfunction{AVERAGE} was to
-be performed on a range of cells: cells A2 through (``:'') A1001.
+The colon means ``through,'' so \pyfunction{AVERAGE}(A2:A1001) averages every cell from A2 through A1001.
 
 Do the calculations for variance, standard deviation, and median.
 
@@ -541,7 +537,7 @@ chart to a histogram (at the bottom under ``other''). This will get you a basic 
 
 \includegraphics[width=0.7\textwidth]{default_histogram.png}
 
-Play with the formatting to see how unique you can make data. Here is an example:
+Play with the formatting to make the chart your own. Here is an example:
 
 \includegraphics[width=0.8\textwidth]{final_histogram.png}
 
@@ -702,7 +698,7 @@ and labor.  It should also tell you what your bid should be.
 
 
 \section{Data Analysis with jamovi}
-A student club surveyed 100 classmates about sleep, screen time, breakfast, and a short quiz. The club wants to know what the answers show. This chapter introduces Jamovi, which is a free software that does the data analysis calculations for you.
+A student club surveyed 100 classmates about sleep, screen time, breakfast, and a short quiz. The club wants to know what the answers show. This section introduces jamovi, a free program that does the statistics for you.
 
 \subsection{Getting Started with jamovi}
 
