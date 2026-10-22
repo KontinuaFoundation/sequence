@@ -1,0 +1,370 @@
+\chapter{Dynamic Programming}\index{dynamic programming}
+
+Type ``libary'' into your phone, and it suggests ``library.'' Run \verb|git diff| after editing your
+essay, and Git shows exactly which lines you added and which you deleted. Biologists line up the DNA of
+a human and a chimpanzee to see which genes they share. All three are the same problem: comparing two
+sequences to find what they have in common.
+
+The obvious way to solve it, trying every possibility, would take longer than the age of the universe
+for an essay of any real length. The trick that makes it fast is called \newterm{dynamic programming}:
+break a problem into smaller pieces that overlap, solve each piece \emph{once}, and write the answers in
+a table so you never solve it again. In this chapter, you will use it to find the longest common
+subsequence of two strings, and then turn that into a working \verb|diff| tool.
+
+\section{Remember Fibonacci?}
+In the Recursion chapter, you saw that the obvious recursive Fibonacci function is painfully slow,
+because \pyfunction{fib(n - 1)} and \pyfunction{fib(n - 2)} recompute the same smaller values over and
+over. You fixed it with \newterm{memoization}: save each answer in a dictionary the first time you
+compute it, and look it up after that.
+
+There is a second way to get the same speedup. Instead of starting at the top and recursing down, start
+at the bottom and fill in a table, smallest values first:
+
+\begin{minted}{python}
+def fib(n):
+    table = [0, 1]
+    for k in range(2, n + 1):
+        table.append(table[k - 1] + table[k - 2])
+    return table[n]
+
+print(fib(80))   # 23416728348467685
+\end{minted}
+
+By the time the loop needs \verb|table[k - 1]| and \verb|table[k - 2]|, they are already filled in. No
+recursion, no repeated work: just 79 additions.
+
+These are the two styles of dynamic programming. Memoization is \newterm{top-down}: recurse as usual, but
+remember answers. Filling a table is \newterm{bottom-up}: solve the small problems first, in an order that
+guarantees each answer is ready when it is needed.
+
+Dynamic programming works whenever a problem has two features:
+\begin{itemize}
+\item \textbf{Optimal substructure}: the answer to the big problem can be built from answers to smaller
+versions of the same problem.
+\item \textbf{Overlapping subproblems}: the same smaller problems come up again and again. (If they did not
+overlap, plain recursion would already be fast.)
+\end{itemize}
+
+\section{Longest Common Subsequence}\index{longest common subsequence}
+A \newterm{subsequence} of a string is what is left after you cross out some of its letters, without
+changing the order of the ones that remain. Crossing out letters from STUDENT can give DENT, SUN, or
+STENT, but not NUTS, because that changes the order.
+
+A \newterm{common subsequence} of two strings is a subsequence of both. The \newterm{longest common
+subsequence} (LCS) is the longest one there is. For STUDENT and DENTIST, it is DENT:
+\begin{center}
+S T U \textbf{D E N T} \qquad\qquad \textbf{D E N T} I S T
+\end{center}
+
+How could you find it? You could list every subsequence of the first string and check whether each one is
+a subsequence of the second. But each letter is either kept or crossed out, so a string of $n$ letters has
+$2^n$ subsequences. For a 20-letter string, that is over a million. For a 1,000-line essay compared line by
+line, $2^{1000}$ is a number with 302 digits. Brute force is hopeless.
+
+\subsection{Thinking Recursively}
+Look at just the \emph{last} letters of the two strings. There are two cases.
+
+\textbf{The last letters match.} Then that letter can end the LCS. Chop it off both strings, find the LCS
+of what is left, and add 1. For example, the LCS of SHOE and HOSE is 1 more than the LCS of SHO and HOS,
+because both end in E.
+
+\textbf{The last letters do not match.} Then at least one of them is not in the LCS. We do not know which,
+so try both: drop the last letter of the first string, or drop the last letter of the second string, and
+keep whichever gives the longer answer.
+
+If either string is empty, the LCS has length 0. That is the base case. Here it is in Python, in a file
+called \filename{lcs\_recursive.py}:
+
+\begin{minted}{python}
+calls = 0
+
+def lcs_length(a, b):
+    global calls
+    calls += 1
+    if a == "" or b == "":
+        return 0
+    if a[-1] == b[-1]:
+        return lcs_length(a[:-1], b[:-1]) + 1
+    return max(lcs_length(a[:-1], b), lcs_length(a, b[:-1]))
+
+print(lcs_length("SHOE", "HOSE"), "after", calls, "calls")
+calls = 0
+print(lcs_length("DYNAMICPROG", "PROGRAMMING"), "after", calls, "calls")
+\end{minted}
+
+When you run it, you should see:
+\begin{verbatim}
+3 after 16 calls
+4 after 212591 calls
+\end{verbatim}
+
+The answers are right, but two 11-letter words took over 200,000 calls. When the last letters do not match,
+the function calls itself \emph{twice}, and those two calls ask many of the same smaller questions. Just
+like Fibonacci, the work grows exponentially. And just like Fibonacci, the fix is to stop recomputing.
+
+\subsection{Filling the Table}
+Every smaller question has the same form: what is the LCS of the first $i$ letters of $a$ and the first $j$
+letters of $b$? Call the answer $L[i][j]$. The recursive reasoning becomes a rule for filling a table:
+
+\begin{mdframed}[style = important, frametitle = {The LCS Recurrence}]
+$$L[i][j] = \begin{cases}
+0 & \text{if } i = 0 \text{ or } j = 0\\
+L[i-1][j-1] + 1 & \text{if the } i\text{th letter of } a \text{ matches the } j\text{th letter of } b\\
+\max\big(L[i-1][j],\ L[i][j-1]\big) & \text{otherwise}
+\end{cases}$$
+\end{mdframed}
+
+Each cell needs only the cell above it, the cell to its left, and the cell diagonally up and to the left. So
+if you fill the table row by row, left to right, every cell you need is already done.
+
+\textbf{Example}: Fill in the table for $a = $ SHOE (down the side) and $b = $ HOSE (across the top).
+
+\textbf{Solution}: The first row and column are all 0, because one of the strings is empty. Then fill in each
+row. In row S, the only match is with the S in HOSE, so that cell is $0 + 1 = 1$, and the 1 is carried to
+the right. In row H, the H matches the first column, giving 1. In row O, the O matches the second column:
+the diagonal cell is 1, so this cell is 2. In row E, the E matches the last column, and the diagonal cell is
+2, so the last cell is 3.
+
+\begin{center}
+\begin{tabular}{c|ccccc}
+ & & H & O & S & E \\
+\hline
+ & 0 & 0 & 0 & 0 & 0 \\
+S & 0 & 0 & 0 & 1 & 1 \\
+H & 0 & \textbf{1} & 1 & 1 & 1 \\
+O & 0 & 1 & \textbf{2} & 2 & 2 \\
+E & 0 & 1 & 2 & 2 & \textbf{3} \\
+\end{tabular}
+\end{center}
+
+The bottom-right cell says the LCS has length 3.
+
+To find the letters themselves, walk backward from the bottom-right corner. If the letters for this cell
+match, that letter is part of the LCS: record it and step diagonally. If not, step toward whichever neighbor
+(up or left) holds the larger number. The bold cells are where the walk finds matches: H, O, and E, so the
+LCS is HOE. This is the same idea as following the \verb|prev| links backward in Dijkstra's algorithm.
+
+\subsection{The Code}
+Create a file called \filename{lcs.py}:
+
+\begin{minted}{python}
+def lcs_table(a, b):
+    # table[i][j] = length of the LCS of a[:i] and b[:j]
+    table = [[0] * (len(b) + 1) for i in range(len(a) + 1)]
+    for i in range(1, len(a) + 1):
+        for j in range(1, len(b) + 1):
+            if a[i - 1] == b[j - 1]:
+                table[i][j] = table[i - 1][j - 1] + 1
+            else:
+                table[i][j] = max(table[i - 1][j], table[i][j - 1])
+    return table
+
+def lcs(a, b):
+    table = lcs_table(a, b)
+    # Walk back from the bottom-right corner to recover the letters
+    i, j = len(a), len(b)
+    letters = []
+    while i > 0 and j > 0:
+        if a[i - 1] == b[j - 1]:
+            letters.append(a[i - 1])
+            i -= 1
+            j -= 1
+        elif table[i - 1][j] >= table[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    letters.reverse()
+    return "".join(letters)
+
+if __name__ == "__main__":
+    print(lcs("SHOE", "HOSE"))
+    print(lcs("STUDENT", "DENTIST"))
+    print(lcs("DYNAMICPROG", "PROGRAMMING"))
+\end{minted}
+
+The $i$th letter of \verb|a| is \verb|a[i - 1]|, because Python counts from 0 while the table's row 0 stands
+for the empty string. The \verb|if __name__ == "__main__":| line, which you saw in the Testing and Debugging
+chapter, means ``run these lines only when this file is run directly.'' That lets another program import
+\pyfunction{lcs\_table} without printing anything.
+
+When you run it, you should see:
+\begin{verbatim}
+HOE
+DENT
+AMIG
+\end{verbatim}
+
+The pair that needed 212,591 recursive calls now takes a $12 \times 12$ table: 144 cells. (There can be more
+than one longest common subsequence; \verb|AMIG| is one of several of length 4.)
+
+How fast is it in general? The table has $(n + 1)(m + 1)$ cells, and each takes a few steps, so the time
+grows like $nm$. On a laptop, comparing two random DNA strands of 2,000 letters each (4 million cells) takes
+a fraction of a second. Exponential has become polynomial.
+
+\section{Building a Diff}\index{diff}
+In the Version Control with Git chapter, Git kept every version of your files. Run \verb|git diff| in any
+repository after editing a file, and Git shows what changed since your last commit. It does this by finding the longest common subsequence of the two versions, using whole \emph{lines} as the
+``letters.'' Lines in the LCS are unchanged. Lines that are only in the old version were deleted, and lines
+that are only in the new version were added.
+
+Since Python compares lists of lines with \verb|==| just as it compares letters, \pyfunction{lcs\_table}
+works on lists without any changes. Create \filename{diff.py} in the same folder:
+
+\begin{minted}{python}
+from lcs import lcs_table
+
+def diff(old, new):
+    table = lcs_table(old, new)
+    i, j = len(old), len(new)
+    lines = []
+    while i > 0 or j > 0:
+        if i > 0 and j > 0 and old[i - 1] == new[j - 1]:
+            lines.append("  " + old[i - 1])     # in both: unchanged
+            i -= 1
+            j -= 1
+        elif j > 0 and (i == 0 or table[i][j - 1] >= table[i - 1][j]):
+            lines.append("+ " + new[j - 1])     # only in new: added
+            j -= 1
+        else:
+            lines.append("- " + old[i - 1])     # only in old: deleted
+            i -= 1
+    lines.reverse()
+    return lines
+
+monday = ["Buy poster board", "Finish lab report", "Email Ms. Rivera",
+          "Practice trumpet", "Return library book"]
+tuesday = ["Buy poster board", "Finish lab report", "Practice trumpet",
+           "Study for chem quiz", "Return library book"]
+
+for line in diff(monday, tuesday):
+    print(line)
+\end{minted}
+
+The walk is the same as in \pyfunction{lcs}, except that it keeps going until \emph{both} lists are used up,
+and every step it takes becomes a line of output. When you run it, you should see:
+\begin{verbatim}
+  Buy poster board
+  Finish lab report
+- Email Ms. Rivera
+  Practice trumpet
++ Study for chem quiz
+  Return library book
+\end{verbatim}
+
+That is the same format Git uses. Real diff tools add a few refinements, but the heart of every one of them is
+this table.
+
+\section{The Dynamic Programming Recipe}
+Most dynamic programming solutions are built in the same five steps:
+\begin{enumerate}
+\item \textbf{Define the subproblem.} Say in words what one cell of the table means. (``$L[i][j]$ is the length
+of the LCS of the first $i$ letters of $a$ and the first $j$ letters of $b$.'')
+\item \textbf{Write the recurrence.} Express each cell in terms of smaller cells.
+\item \textbf{Set the base cases.} Fill in the cells that need no smaller ones, such as the empty strings.
+\item \textbf{Choose a filling order.} Make sure every cell's ingredients are ready before you need them.
+\item \textbf{Read off the answer,} and walk back through the table if you need more than a number.
+\end{enumerate}
+
+You have met dynamic programming before without its name. The Bellman-Ford algorithm in the Finding Shortest
+Paths chapter is dynamic programming: after round $k$, each distance is the shortest path using at most $k$
+edges, built from the round before. The Viterbi algorithm, mentioned in the Introduction to Markov Chains chapter, is
+dynamic programming too.
+
+The name, by the way, is not very descriptive. Richard Bellman (the same Bellman) chose it in the 1950s, when the
+government officials who funded his work distrusted mathematical research. He later wrote that he picked
+``dynamic'' partly because it sounded impressive and could not be used as an insult.
+``Programming'' meant planning, as in a TV program schedule, not writing code.
+
+\begin{Exercise}[title={By Hand}, label=dp_hand]
+Fill in the LCS table for CRATE (down the side) and TRACE (across the top). What is the length of the LCS?
+Walk back through your table to find one.
+\end{Exercise}
+\begin{Answer}[ref=dp_hand]
+\begin{tabular}{c|cccccc}
+ & & T & R & A & C & E \\
+\hline
+ & 0 & 0 & 0 & 0 & 0 & 0 \\
+C & 0 & 0 & 0 & 0 & 1 & 1 \\
+R & 0 & 0 & 1 & 1 & 1 & 1 \\
+A & 0 & 0 & 1 & 2 & 2 & 2 \\
+T & 0 & 1 & 1 & 2 & 2 & 2 \\
+E & 0 & 1 & 1 & 2 & 2 & 3 \\
+\end{tabular}
+
+The length is 3. Walking back with the rules from the chapter gives RAE, and in fact RAE is the only common
+subsequence of length 3. (RCE does not work, because C comes before R in CRATE.)
+\end{Answer}
+
+\begin{Exercise}[title={Climbing Stairs}, label=dp_stairs]
+You can climb a staircase 1 or 2 steps at a time. How many different ways are there to climb 10 steps? (Hint:
+your last move was either 1 step or 2 steps. Let $W[n]$ be the number of ways to climb $n$ steps.)
+\end{Exercise}
+\begin{Answer}[ref=dp_stairs]
+The last move came from step $n - 1$ or step $n - 2$, so $W[n] = W[n-1] + W[n-2]$, with $W[0] = 1$ (do nothing)
+and $W[1] = 1$. Filling the table: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89. There are 89 ways. These are the
+Fibonacci numbers again.
+\end{Answer}
+
+\begin{Exercise}[title={Making Change}, label=dp_coins]
+You need to make 30 cents using pennies (1), dimes (10), and quarters (25), with as few coins as possible.
+\begin{enumerate}
+\item The \emph{greedy} method always takes the biggest coin that fits. How many coins does it use?
+\item What is the true minimum?
+\item Write a function \pyfunction{fewest\_coins(amount, coins)} that uses a table \verb|best|, where
+\verb|best[t]| is the fewest coins that make \verb|t| cents.
+\end{enumerate}
+\end{Exercise}
+\begin{Answer}[ref=dp_coins]
+\begin{enumerate}
+\item Greedy takes a quarter, then 5 pennies: 6 coins.
+\item Three dimes: 3 coins. Taking the biggest coin first is not always best.
+\item For each total, try ending with each coin that fits, and keep the best:
+\begin{minted}{python}
+import math
+
+def fewest_coins(amount, coins):
+    best = [0] + [math.inf] * amount
+    for total in range(1, amount + 1):
+        for coin in coins:
+            if coin <= total and best[total - coin] + 1 < best[total]:
+                best[total] = best[total - coin] + 1
+    return best[amount]
+
+print(fewest_coins(30, [1, 10, 25]))   # 3
+\end{minted}
+\end{enumerate}
+\end{Answer}
+
+\begin{Exercise}[title={Spell Check}, label=dp_spell]
+Suppose the only way to fix a typo is to delete letters and insert letters. Explain why the fewest changes
+needed to turn word $a$ into word $b$ is $\text{len}(a) + \text{len}(b) - 2 \cdot \text{LCS}$. Use it to find
+the number of changes from ``libary'' to ``library'' and from ``recieve'' to ``receive.''
+\end{Exercise}
+\begin{Answer}[ref=dp_spell]
+Keep the letters of the LCS and change everything else: delete the $\text{len}(a) - \text{LCS}$ letters of $a$
+that are not in it, then insert the $\text{len}(b) - \text{LCS}$ letters of $b$ that are missing. That adds up
+to $\text{len}(a) + \text{len}(b) - 2 \cdot \text{LCS}$, and no plan can do better, because any letters you
+never touch form a common subsequence.
+
+``libary'' and ``library'' have an LCS of length 6, so the count is $6 + 7 - 12 = 1$: insert an r.
+``recieve'' and ``receive'' have an LCS of length 6, so the count is $7 + 7 - 12 = 2$: delete the i and insert
+it after the e. A spell checker can suggest the dictionary words with the smallest counts.
+\end{Answer}
+
+\begin{Exercise}[title={How Big Is the Table?}, label=dp_size]
+You compare two essays of 1,000 lines each, line by line. How many cells does the LCS table have? How many
+subsequences does brute force have to try?
+\end{Exercise}
+\begin{Answer}[ref=dp_size]
+The table has $1{,}001 \times 1{,}001 = 1{,}002{,}001$ cells, about a million, which a laptop fills in well under
+a second. Brute force would have to try $2^{1000}$ subsequences of one essay, a number with 302 digits.
+\end{Answer}
+
+\begin{Exercise}[title={Substring or Subsequence?}, label=dp_substring]
+A \emph{substring} must be made of letters that are next to each other, like DENT in STUDENT. What is the
+longest common substring of SNOWBOARD and SKATEBOARD? What is their longest common subsequence?
+\end{Exercise}
+\begin{Answer}[ref=dp_substring]
+The longest common substring is BOARD (5 letters, side by side in both). The longest common subsequence is
+SBOARD (6 letters): the S at the start of each word can join BOARD, because a subsequence may skip letters.
+\end{Answer}

@@ -36,7 +36,7 @@ Each item below is a place where a chapter uses something the student has not se
 
 ### Web volume order
 
-`web_apis` teaches HTTP APIs before `html` and `data_representation`, all in Vol 23. A better order inside the volume: `data_representation`, `html`, `web_apis`, `css_js` (which needs the Express server from `web_apis`).
+`web_apis` teaches HTTP APIs before `html` and `data_representation`, all in Vol 23. A better order inside the volume: `data_representation`, `internet`, `html`, `web_apis`, `css_js` (which needs the Express server from `web_apis`).
 
 ### Orphaned chapter
 
@@ -106,14 +106,12 @@ Mark these as optional rather than cutting them.
 These are ranked by how much a curious high school student would care, and by how well each topic reuses tools the series already teaches.
 
 ### Computer science
-1. **How the internet works.** Packets, IP addresses, routing as shortest paths (`shortest_path`), and DNS. A natural partner to `web_apis`.
-2. **Dynamic programming.** It is mentioned once, in `intro_markov`. Memoization is already in `recursion`, so a chapter on DP (making change, edit distance for spell-check) would be a small step.
-3. **Multi-table databases.** Already written as the orphan `sql_2`.
+1. **Multi-table databases.** Already written as the orphan `sql_2`.
 
 ### Thinking and society
-4. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
-5. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
-6. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
+2. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
+3. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
+4. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
 
 ---
 
