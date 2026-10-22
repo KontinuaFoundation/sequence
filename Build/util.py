@@ -51,6 +51,20 @@ def print_separator(success, width=60):
     print(f"{color}{'=' * width}{_RESET}")
 
 
+# Paper sizes allowed in user.cfg, and the ourbook.cls option for each
+PAPER_OPTIONS = {"Letter": "letterpaper", "A4": "a4paper"}
+
+
+def with_paper_size(header, config):
+    """Add the paper-size option from user.cfg to the \\documentclass line of a header."""
+    paper = config.get("Paper", "Letter")
+    if paper not in PAPER_OPTIONS:
+        raise SystemExit(f"Error: Paper in Build/user.cfg is {paper!r}; it must be one of "
+                         f"{', '.join(PAPER_OPTIONS)}. (Run python3 Build/check_setup.py --fix to choose.)")
+    return re.sub(r"\\documentclass\[([^\]]*)\]", lambda m: f"\\documentclass[{m.group(1)},{PAPER_OPTIONS[paper]}]",
+                  header, count=1)
+
+
 def _read(path):
     with open(path, "r") as f:
         return f.read()
@@ -195,7 +209,7 @@ def build_chapter(chapter_file, chap_dir, config, final_pdf_path, draft=True, da
         os.environ["PATH"] = str(texbin) + os.pathsep + os.environ.get("PATH", "")
 
     with output_tex_path.open("w") as out:
-        out.write(_read(support_dir / "minibookheader.tex"))
+        out.write(with_paper_size(_read(support_dir / "minibookheader.tex"), config))
         out.write(f"\\graphicspath{{{{{chap_dir.as_posix()}/}}}}\n")
         out.write(f"\\input{{{tex_path.as_posix()}}}\n")
         out.write(_read(support_dir / "draftmsg.tex"))

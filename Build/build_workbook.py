@@ -188,7 +188,7 @@ def main():
         config = json.load(f)
         
     # Cache header/footer once — same for every book.
-    header = (BUILD_DIR / "Support" / "bookheader.tex").read_text()
+    header = util.with_paper_size((BUILD_DIR / "Support" / "bookheader.tex").read_text(), config)
     footer = (BUILD_DIR / "Support" / "bookfooter.tex").read_text()
     
     if mode == Mode.NUMBERED:

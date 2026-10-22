@@ -8,6 +8,26 @@ in ``Workbooks-<language>-<paper>/`` (for example,
 ``Workbooks-en_US-Letter/workbook-05.pdf``), and LaTeX's working files go in
 ``Intermediate/``.
 
+Quick Start
+-----------
+
+1. Install the tools and fonts described in "Before You Build" below.
+2. Get a copy of the repository (only the latest version, which is much faster
+   than downloading its whole history)::
+
+     git clone --depth 1 https://github.com/KontinuaFoundation/sequence.git
+     cd sequence
+
+3. Check your setup, and let the checker fix what it can. It also asks whether
+   you print on Letter or A4 paper::
+
+     python3 Build/check_setup.py --fix
+
+4. Build a workbook::
+
+     cd Build
+     python3 build_workbook.py 1
+
 How the Books Are Organized
 ---------------------------
 
@@ -43,9 +63,13 @@ On a Mac, install Xcode from the App Store (it includes git) and
 
 Clone the GitHub repository::
 
-  git clone https://github.com/KontinuaFoundation/sequence.git
+  git clone --depth 1 https://github.com/KontinuaFoundation/sequence.git
 
-(If you plan to contribute, clone over SSH instead; see "Contributing" below.)
+``--depth 1`` downloads only the latest version of the files (about 230 MB)
+instead of the repository's entire history (about 1.5 GB). Everything builds the
+same way. If you ever need the history, for example to run ``git log`` on old
+commits, run ``git fetch --unshallow`` inside the repository. (If you plan to
+contribute, clone over SSH instead; see "Contributing" below.)
 
 Fonts
 -----
@@ -91,16 +115,49 @@ listing is printed without syntax highlighting, and each chapter's log shows
 ``Package minted Error: Cannot highlight code``.
 
 If your ``python3`` is 3.14 or newer, keep Python 3.13 installed (see the
-``brew`` command above) and make ``latexminted`` use it. One way is to put this
-small script, named ``latexminted``, in a folder that comes before Homebrew's
-in your ``PATH`` (such as ``~/bin``), and make it executable with
-``chmod +x``::
+``brew`` command above) and run ``python3 Build/check_setup.py --fix``. It
+installs a small script, ``~/bin/latexminted``, that runs ``latexminted`` with
+Python 3.13, and tells you if ``~/bin`` needs to be added to the front of your
+``PATH``. The script it installs is just::
 
   #!/bin/sh
   exec python3.13 /opt/homebrew/bin/latexminted "$@"
 
 Check it with ``latexminted --version``, which should print the version
 instead of an error.
+
+Checking Your Setup
+-------------------
+
+Once everything is installed, run the setup checker from the top of the
+repository::
+
+  python3 Build/check_setup.py
+
+It checks, and explains how to fix:
+
+* your Python version, and the Python libraries the web-resource scripts use;
+* your ``Build/user.cfg``;
+* LuaLaTeX, and every LaTeX package that ``Support/ourbook.cls`` loads (with
+  the ``tlmgr install`` command for anything missing);
+* every font the class uses;
+* minted's ``latexminted`` helper (the Python problem described above);
+* git and bun or npm, which you need only to contribute.
+
+Finally, it builds a small test document with the real class (fonts, math,
+highlighted code, TikZ, a box, and an exercise with its answer) to prove that
+everything works together. This takes about half a minute; ``--quick`` skips
+it.
+
+With ``--fix``, it also fixes what it can: it asks whether you print on Letter
+or A4 paper and saves your answer in ``user.cfg`` (creating the file if
+needed), downloads
+and installs any missing Google fonts for your user account (on macOS and
+Linux), and installs the ``latexminted`` script described above. It ends with
+"Ready to build" (exit status 0) or a count of the problems that remain (exit
+status 1).
+
+Run it again whenever a build fails in a way you do not understand.
 
 Windows
 -------
@@ -115,6 +172,8 @@ Python libraries above:
 * Clone the repository, as above.
 * If ``lualatex`` is not on your ``PATH``, put its full path in your
   ``user.cfg`` (see "Configuration").
+* Run ``python3 Build/check_setup.py``. On Windows, it reports missing fonts
+  but cannot install them for you: install them from Google Fonts by hand.
 
 
 Configuration
@@ -126,7 +185,10 @@ holds your preferences:
 
 * ``Languages``: the chapter locale folders to use, most preferred first
   (``en_US``).
-* ``Paper``: the paper size (``Letter``).
+* ``Paper``: the paper size, ``"Letter"`` or ``"A4"``. The build scripts pass it
+  to the class, so it sets the page size of every PDF, and it names the output
+  folder (``Workbooks-en_US-A4``). ``check_setup.py --fix`` asks which you
+  want.
 * ``LatexExecutable``: the LuaLaTeX command. Usually ``lualatex`` works; use a
   full path, such as ``/Library/TeX/texbin/lualatex``, if it is not on your
   ``PATH``.
@@ -287,9 +349,17 @@ If you plan to contribute, set up SSH access to GitHub (see
 `GitHub's guide <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_),
 then clone over SSH::
 
-  git clone git@github.com:KontinuaFoundation/sequence.git
+  git clone --depth 1 git@github.com:KontinuaFoundation/sequence.git
 
-If it asks whether to trust ``github.com``, say yes.
+If it asks whether to trust ``github.com``, say yes. A shallow clone like this
+can still create branches, commit, push, and open pull requests. It starts with
+only the main branch. To work on another branch that is already on GitHub::
+
+  git remote set-branches --add origin <branch>
+  git fetch --depth 1 origin <branch>
+  git switch <branch>
+
+Run ``git fetch --unshallow`` if you ever need the full history.
 
 Prettier is configured for consistent formatting. To format a ``.tex`` file::
 

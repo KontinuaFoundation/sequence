@@ -16,6 +16,10 @@ answers and the index), so a chapter file never contains `\documentclass`,
 loaded by the class. If you need a new package, add it to the class, not to the
 chapter.
 
+The page size is Letter unless the class gets the `a4paper` option. You do not
+set it in a chapter: the build scripts add `letterpaper` or `a4paper` to the
+`\documentclass` line, from the `Paper` setting in `Build/user.cfg`.
+
 The class must be compiled with **LuaLaTeX** and `--shell-escape` (the shell
 escape is for `minted`). Images and other files are looked up in the chapter's
 own `en_US` folder.
