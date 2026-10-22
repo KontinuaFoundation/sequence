@@ -206,8 +206,8 @@ Loaded and ready to use:
 * **Graph styles:** `kontinuaNode`, `kontinuaEdge`, and `directed` draw graph
   nodes and edges in the Kontinua style.
 
-Draw diagrams in TikZ rather than PSTricks (which was removed from the class) or
-Mermaid (which needs extra build tools). If a diagram needs computed coordinates,
+Draw every diagram in TikZ (or one of the TikZ-based packages above). The class
+does not load PSTricks or Mermaid, and the build has no tools for them. If a diagram needs computed coordinates,
 such as field lines, generate the TikZ code with a small script and keep the
 script in the chapter folder, as `charge/en_US/field_lines_tikz.py` does.
 

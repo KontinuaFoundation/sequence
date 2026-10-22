@@ -51,17 +51,8 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-science \
-            texlive-pstricks \
-            nodejs \
-            npm \
             fonts-open-sans \
             python3-pygments
-          sudo npm install -g @mermaid-js/mermaid-cli@10.6.1
-          # Use the runner's Chrome; sudo npm puts Puppeteer's download in root's cache
-          echo "PUPPETEER_EXECUTABLE_PATH=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
-          TEXMFHOME="$(kpsewhich -var-value TEXMFHOME)"
-          mkdir -p "$TEXMFHOME/tex/latex/mermaid"
-          cp Build/Support/mermaid.sty "$TEXMFHOME/tex/latex/mermaid/"
           # Fonts we may not redistribute in the repo: download them from Google Fonts
           sudo mkdir -p /usr/share/fonts/truetype/kontinua
           for f in marcellus/Marcellus-Regular.ttf marcellussc/MarcellusSC-Regular.ttf \
@@ -81,7 +72,6 @@ jobs:
           which kpsewhich
           kpsewhich minted.sty
           kpsewhich algpseudocode.sty
-          kpsewhich mermaid.sty
 
       - name: Prepare build config
         run: python3 Build/create_user_config.py
@@ -96,7 +86,7 @@ jobs:
       - name: Show chapter build logs on failure
         if: failure()
         run: |
-          for log in Build/Intermediate/*.log Build/Intermediate/mermaid/*.err; do
+          for log in Build/Intermediate/*.log; do
             [[ -f "$log" ]] || continue
             echo "::group::$log"
             cat "$log"
@@ -110,7 +100,6 @@ jobs:
           name: chapter-build-logs-${{ github.sha }}
           path: |
             Build/Intermediate/*.log
-            Build/Intermediate/mermaid/*.err
           if-no-files-found: ignore
 
       - name: Save caches
@@ -162,17 +151,8 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-science \
-            texlive-pstricks \
-            nodejs \
-            npm \
             fonts-open-sans \
             python3-pygments
-          sudo npm install -g @mermaid-js/mermaid-cli@10.6.1
-          # Use the runner's Chrome; sudo npm puts Puppeteer's download in root's cache
-          echo "PUPPETEER_EXECUTABLE_PATH=$(command -v google-chrome || command -v chromium)" >> "$GITHUB_ENV"
-          TEXMFHOME="$(kpsewhich -var-value TEXMFHOME)"
-          mkdir -p "$TEXMFHOME/tex/latex/mermaid"
-          cp Build/Support/mermaid.sty "$TEXMFHOME/tex/latex/mermaid/"
           # Fonts we may not redistribute in the repo: download them from Google Fonts
           sudo mkdir -p /usr/share/fonts/truetype/kontinua
           for f in marcellus/Marcellus-Regular.ttf marcellussc/MarcellusSC-Regular.ttf \
@@ -192,7 +172,6 @@ jobs:
           which kpsewhich
           kpsewhich minted.sty
           kpsewhich algpseudocode.sty
-          kpsewhich mermaid.sty
 
       - name: Prepare build config
         run: python3 Build/create_user_config.py
@@ -207,7 +186,7 @@ jobs:
       - name: Show workbook build logs on failure
         if: failure()
         run: |
-          for log in Build/Intermediate/*.log Build/Intermediate/mermaid/*.err; do
+          for log in Build/Intermediate/*.log; do
             [[ -f "$log" ]] || continue
             echo "::group::$log"
             cat "$log"
@@ -221,7 +200,6 @@ jobs:
           name: workbook-build-logs-${{ github.sha }}
           path: |
             Build/Intermediate/*.log
-            Build/Intermediate/mermaid/*.err
           if-no-files-found: ignore
 
       - name: Save pip cache

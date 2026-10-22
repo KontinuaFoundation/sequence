@@ -281,40 +281,36 @@ Lab C & Larry \\
 \section{Entity-Relationship Diagram}
 Now that we have normalized our tables, we can create an \newterm{entity-relationship diagram} to visually represent the relationships between the tables. Often, this process may even clear up further FDs or issues with the database design.\index{ER diagram|see{entity-relationship diagram}}
 
-ER diagrams can be drawn by hand, but you can also describe them in a short text language called \newterm{Mermaid}\index{Mermaid}. It is a text-based diagramming tool supported by GitHub, Obsidian, Notion, and many other programs, and a free website such as \url{https://mermaid.live} will draw your diagram as you type.
+In an ER diagram, each table is a box, and a line between two boxes is a relationship. The marks where a line meets a box tell you \emph{how many} rows of that table can be involved. This style of drawing is called \newterm{crow's-foot notation}, after the three-pronged mark for ``many'':
+
+\begin{center}
+\begin{tabular}{l l}
+\textbf{Mark at the end of the line} & \textbf{Meaning} \\
+\hline
+two bars & exactly one \\
+a circle and a bar & zero or one \\
+a bar and a crow's foot & one or many \\
+a circle and a crow's foot & zero or many \\
+\end{tabular}
+\end{center}
+
+The circle means ``zero is allowed,'' the bar means ``at least one,'' and the crow's foot means ``more than one is allowed.'' Read each end of the line separately: the mark next to a box says how many rows of \emph{that} box go with one row of the box at the other end.
 
 Using our normalized tables, we can create an ER diagram to visualize the relationships between them.
 
 We can say that our \underline{\texttt{EquipmentLocation}} requires having a \texttt{LocationManager}, and (for the sake of our database), each \texttt{LocationManager} is responsible for managing a unique location. Therefore, we can say that 
 \texttt{LocationManager} and \texttt{EquipmentLocation} have a \newterm{one-to-one relationship}.
 
-Figure~\ref{fig:one-to-one} shows this relationship as an ER diagram. Here is the Mermaid code for it:
-
-\begin{minted}{text}
-erDiagram
-    EQUIPMENT_LOCATION ||--|| LOCATION_MANAGER : "has (one to one)"
-\end{minted}
+Figure~\ref{fig:one-to-one} shows this relationship as an ER diagram. Both ends of the line have two bars: each location has exactly one manager, and each manager has exactly one location.
 
 
 How about when it comes to a Lab Location and Lab Equipment? Well, a Location that is recently built could have zero pieces of equipment associated with it, while an existing location might have one or more pieces of equipment. However, a given piece of equipment will always be associated with exactly one location, even if there are multiple of that piece of equipment in other locations (think: multiple 3D printers in different labs).
 
-This scenario represents a \newterm{zero-to-many relationship} between the \texttt{Location} and \texttt{Equipment} tables (see Figure~\ref{fig:zero-to-many}).
-
-
-\begin{minted}{text}
-erDiagram
-    Location ||--o{ Equipment : "has (zero to many)"
-\end{minted}    
+This scenario represents a \newterm{zero-to-many relationship} between the \texttt{Location} and \texttt{Equipment} tables (see Figure~\ref{fig:zero-to-many}). The end next to \texttt{Location} has two bars (each piece of equipment is in exactly one location), and the end next to \texttt{Equipment} has a circle and a crow's foot (a location has zero or many pieces of equipment).
 
 A student can check out many pieces of equipment, and a piece of equipment can be checked out by many students (see Figure~\ref{fig:many-to-many}). This is the relationship behind the whole Checkout table from the 2NF split. We did this so that we could accurately track which student has checked out which piece (or pieces of equipment).
 
-\begin{minted}{text}
-erDiagram
-    STUDENT }o--o{ EQUIPMENT : checks_out
-    STUDENT ||--o{ CHECKOUT : "checks_out (one to many)"
-    EQUIPMENT ||--o{ CHECKOUT : "checked_out_by (one to many)"
-    
-\end{minted}
+A relational database cannot store a many-to-many relationship directly, so we resolve it with a linking table. In the figure, the dashed line shows the many-to-many relationship between \texttt{Student} and \texttt{Equipment}, with a circle and a crow's foot at each end. Below it, the \texttt{Checkout} table turns it into two one-to-many relationships: each checkout belongs to exactly one student and exactly one piece of equipment, while a student, or a piece of equipment, can appear in zero or many checkouts.
 
 \begin{figure}[H]
 \centering
