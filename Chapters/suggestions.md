@@ -11,9 +11,9 @@ The series deliberately mixes physics, math, computer science, and statistics in
 If you only do a few things, do these, in this order:
 
 1. **Fix the prerequisite violations** (Section 2). A student who meets `sin θ` in Volume 1, or a derivative in Volume 17, decides the book is not for them. These are the cheapest high-value fixes.
-2. **Rebuild the machine-learning unit in Volume 36** (Section 6). It has 19 chapters averaging about 480 words each, with no code and no figures. For many students this is the reason they picked up the series, and right now it is the thinnest part of it.
+2. **Rebuild the machine-learning unit in Volume 36** (Section 6). Its chapters are short (most around 500 words) and have almost no code or figures. For many students this is the reason they picked up the series, and right now it is the thinnest part of it.
 3. **Add a short "Before you start" box and a "Key ideas" box to every chapter.** The `summary.md` files already contain the key ideas, and the prerequisites can come from a dependency file (Section 8).
-4. **Add the missing topics a curious teenager will ask about** (Section 5): cryptography, the trigonometry of non-right triangles, relativity, biology, digital logic, and AI ethics.
+4. **Add the missing topics a curious teenager will ask about** (Section 5): digital logic and AI ethics.
 5. **Split the giant single-section chapters, and merge the duplicated ones** (Sections 3 and 4).
 
 ---
@@ -25,7 +25,6 @@ Each item below is a place where a chapter uses something the student has not se
 | Where | Problem | Suggested fix |
 |---|---|---|
 | `kinematics` (Vol 1) | 7 Python/matplotlib listings; Python is taught in `intro_python1` (Vol 3) | Mark the code "Come back after the Python chapter," or move the plotting examples into `matplotlib` (now in Vol 4) |
-| `forces_motion` (Vol 1) | Uses sin/cos 16 times (inclined planes); trig arrives in Vol 6 | **Done:** `right_triangle_trig` now opens Vol 6, and the inclined-plane section moved to a new chapter, `inclined_planes`, at the start of Vol 7 |
 | `intro_dataviz` (Vol 3) | Uses Python before `intro_python1`, which is in the same volume | Put `intro_python1` first in Vol 3, or make the dataviz chapter spreadsheet-first |
 | `projectiles` (Vol 7) | Uses the quadratic formula; `solving_quadratics` is in Vol 9 | Move `solving_quadratics` to Vol 5 or 6, ahead of projectiles |
 | `paradoxes` (Vol 10) | Monty Hall, the birthday problem, and Simpson's paradox all come before probability (Vol 28) | Keep them as teasers, but add explicit "you will prove this in Volume 28/29" pointers. `bayes` should refer back to the Monty Hall teaser |
@@ -42,17 +41,16 @@ Each item below is a place where a chapter uses something the student has not se
 | Vol 25 | 1 (`web_apis`) | A volume with one chapter, and it teaches HTTP APIs before HTML (Vol 26) |
 | Vol 26 | 2 | `html`, `data_representation` |
 | Vol 27 | 1 | `maps_location` (`matplotlib` moved to Vol 4) |
-| Vol 36 | 27 | Larger than any three other volumes combined |
+| Vol 36 | 24 | Larger than any three other volumes combined |
 
 **Suggestions**
 - Combine Volumes 25–27 into one "Data and the Web" volume, in this order: `data_representation`, `html`, a new CSS/JavaScript chapter, `web_apis`, `maps_location`.
 - Move `numerical_multi_int` and `triple_integrals` from Vol 36 into Vol 35, which finishes multivariable integration.
 - Split the rest of Vol 36 into two machine-learning volumes (Section 6).
 
-### Orphaned chapters
+### Orphaned chapter
 
-Two complete chapters are not in any volume:
-- **`log_transform`** (2,093 words). **Done:** placed in Vol 11, right after `num_methods_2`.
+One complete chapter is not in any volume:
 - **`sql_2`** (3,231 words; commented out in `book_14.txt`). Uncomment it or place it right after `sql_1`; multi-table joins are what make databases interesting.
 
 ---
@@ -63,9 +61,9 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 
 | Chapter | Words | Sections | Proposed split |
 |---|---|---|---|
-| `forces_motion` (Vol 1) | 7,091 | 5 | **Newton's Laws** (the three laws, net force, normal force, free-body diagrams) / **Friction, Inclines, and Pulleys**. Move universal gravitation to `mass_weight_gravity` or `orbits`. |
+| `forces_motion` (Vol 1) | about 5,800 | 4 | **Newton's Laws** (the three laws, net force, normal force, free-body diagrams) / **Friction and Pulleys**. Move universal gravitation to `mass_weight_gravity` or `orbits`. |
 | `gases_heat` (Vol 31) | 6,456 | 4 | **Temperature and the Gas Laws** / **Heat, Work, and the Laws of Thermodynamics**. Add entropy and the second law, which are currently missing. |
-| `matter_energy` (Vol 2) | 6,330 | 2 | **Atoms and Chemical Bonds** / move the energy and E = mc² material into `energy_conservation` and a new nuclear-physics chapter. |
+| `matter_energy` (Vol 2) | 6,330 | 2 | **Atoms and Chemical Bonds** / move the energy material into `energy_conservation`, and point the E = mc² section ahead to `nuclear_physics` (Vol 13). |
 | `continuous_distributions` (Vol 30) | 5,633 | 6 | **CDFs, PDFs, and the Uniform Distribution** / **The Normal Distribution**. Move the multivariate normal next to `bayes_classifier` and `numerical_multi_int`, which reuse the snail data. |
 | `data_tools` (Vol 3) | 5,227 | 3 | Keep it as **Spreadsheets**. Its mean/variance/standard-deviation material duplicates `num_methods` (Section 4). |
 | `num_methods` (Vol 11) | 5,179 | 6 | **Center** / **Spread and Shape**. |
@@ -75,7 +73,7 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 | `economics` (Vol 10) | 4,770 | 15 | **Markets: Trade, Supply, and Demand** / **Money, Investment, and Government**. It has only 2 exercises in 4,770 words; supply-and-demand equilibrium is algebra, so add numeric problems. |
 | `data_representation` (Vol 26) | 4,740 | 5 | **Text and Integers** (ASCII/UTF-8, binary, hex, two's complement), which could move earlier as noted above / **Floating Point**. |
 | `flight` (Vol 8) | 4,721 | 3 | **Airplanes** / **Quadcopters and Rockets**. It has 71 images, some of them unused. |
-| `discrete_probability_counting` (Vol 28) | 4,463 | 3 | **Probability Rules** / **Counting**. Then merge the tiny `random_variables` (582 words) with the probability half and add the binomial and geometric distributions (Section 5). |
+| `discrete_probability_counting` (Vol 28) | 4,463 | 3 | **Probability Rules** / **Counting**. Then merge the tiny `random_variables` (582 words) with the probability half. |
 | `num_methods_2` (Vol 11) | 4,364 | 3 | **Scatter Plots and Correlation** / **The Regression Line**. |
 | `int_methods` (Vol 32) | 4,169 | 5 | **Partial Fractions** / **Trigonometric Integrals and Substitutions**. |
 | `polynomials_2` (Vol 16) | 4,150 | 3 | **Factoring** / **Rational Functions**. |
@@ -95,17 +93,11 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 |---|---|---|
 | **Linear regression** | `num_methods_2` (Vol 11), `regression_slope_basics` (Vol 30), `least_squares` + `simple_linear` + `lin_reg_r2_anova` (Vol 36). The same five-point quiz example appears in three chapters. | Vol 11 handles description, Vol 30 inference, and Vol 36 the derivation (calculus and matrices). Merge `simple_linear` into `least_squares`. Move `lin_reg_r2_anova` to Vol 30 next to `inferences_slopes`, where AP students need it. |
 | **Mean, variance, standard deviation** | `data_tools` (Vol 3) and `num_methods` (Vol 11) | Teach the statistics once, in `num_methods`. Keep `data_tools` about spreadsheets, with a forward reference. |
-| **matplotlib** | `python_libraries` (Vol 4), `matplotlib` (Vol 27) | **Done:** merged into `matplotlib` in Vol 4. |
 | **Python classes** | `intro_python2` (Vol 4) and `classes` (Vol 16) | Keep the Polynomial class from `classes` as a section of `polynomials_1`. Drop the re-teaching. |
 | **Python lists** | `intro_python1` (Vol 3) and `pylists` (Vol 16) | Same treatment: keep the coefficient-list material inside `polynomials_1`. |
 | **Recursion** | `intro_python2`, `proofs` (induction), `sorting`, `recursion` (Vol 24) | Move `recursion` right after `intro_python2` and trim the recursion section in `intro_python2`, or cross-reference them. |
-| **Span** | `linear_combo` (Vol 21) and `span` (Vol 22) | **Done:** merged into `linear_combo`. |
 | **AC circuits** | `ac` (Vol 12) and the AC/impedance half of `pendulums` (Vol 17) | Move impedance into `ac`. Keep a short "springs and circuits obey the same equation" box in `pendulums`. |
 | **Sequences** | `sequences` (Vol 9) and the review opening of `seq_calc` (Vol 33) | Trim `seq_calc`'s re-introduction to a one-paragraph recap. |
-| **Simple machines** | `simple_machines` and `machines_work` (both Vol 2) | **Done:** merged into `simple_machines`. |
-| **Logistic regression** | `simple_logistic` + `multiv_logistic` | **Done:** merged into `logistic_regr`. |
-| **GLMs** | `glm` + `link_functions` | **Done:** merged into `glm`. |
-| **Classifier evaluation** | `confusion` + `precision_recall_auc_roc` | **Done:** merged into `confusion`. |
 | **Data preparation** | `standardization` (500 words) + `one-hot` (400) | Merge into "Preparing Data for Models," with a pointer back to `log_transform` (Vol 11). |
 | **Greek alphabet** | `greek` (Vol 1, a reference table) | Move it to an appendix volume along with `stat_tables`, the unit tables from `units_conversions`, and a formula sheet. |
 | **Experimental design** | `experiments` + `experimental_designs` (Vol 19, one section each) | Fine as two chapters, but give them sections and remove the vocabulary overlap. |
@@ -123,53 +115,26 @@ Mark these as optional rather than cutting them.
 
 These are ranked by how much a curious high school student would care, and by how well each topic reuses tools the series already teaches.
 
-### Mathematics
-1. **Number theory and cryptography.** **Done:** new chapter `number_theory` at the end of Vol 5.
-2. **Right-triangle trigonometry, and the Law of Sines and Law of Cosines.** **Done:** new chapter `right_triangle_trig` at the start of Vol 6.
-3. **Euler's formula and the complex exponential.** **Done:** new chapter `euler_formula` in Vol 34, after `taylor_series`.
-4. **Fourier series and signals.** **Done:** new chapter `fourier_series` in Vol 34, after `euler_formula` (includes speaker crossovers).
-5. **Lagrange multipliers.** **Done:** new chapter `lagrange_multipliers` in Vol 20, after `gradients_optimization`.
-6. **Monte Carlo simulation**, as a chapter: estimating π, simulating Monty Hall and the birthday problem in Python. This would bridge `paradoxes` (Vol 10) and probability (Vol 28) without needing counting first.
-
-### Statistics and probability
-7. **Binomial and geometric distributions** as a proper chapter. The binomial appears only incidentally (in `pop_prop` and `glm`), and the geometric distribution does not appear at all. Both are on the AP Statistics exam.
-8. **The Central Limit Theorem and sampling distributions**, with a simulation. The CLT currently gets a mention in `continuous_distributions`.
-9. **Two-proportion inference.** Only means have two-sample procedures. AP Statistics requires both.
-10. **Simulation-based inference** (bootstrap and permutation tests). It builds intuition before formulas and fits the Python thread. The bootstrap currently appears only inside `bagging_random_forest`.
-
 ### Physics
-11. **Special relativity.** Time dilation needs only the Pythagorean theorem and algebra, and few topics excite curious students more.
-12. **Nuclear physics and radioactivity.** Half-life appears inside other chapters. A real chapter would cover decay, fission and fusion (E = mc² is already in `matter_energy`), and a link to `exponentials_logarithms`.
-13. **Waves, part two: the Doppler effect, interference, and diffraction** (including the double slit). Neither the Doppler effect nor wave interference has its own coverage; interference appears only in `paradoxes`.
-14. **Fluids: Bernoulli's principle.** `flight` explains lift without Bernoulli, and `buoyancy` stops at statics.
-15. **Entropy and the second law of thermodynamics.** No chapter states the second law, even though `engine` discusses efficiency. A Carnot efficiency section would complete the story.
-
-### Chemistry
-16. **Acids, bases, and pH.** pH is a perfect logarithm application, and the series has no chemistry beyond moles and bonding.
-17. **Reaction rates and equilibrium** (Le Chatelier's principle). This would reuse `diff_eqs` and exponentials.
-
-### Biology (currently almost absent)
-18. **Epidemics: the SIR model.** It uses `diff_eqs`, `euler_method`, and Python, and every student lived through COVID.
-19. **Genetics and probability.** Punnett squares, Hardy–Weinberg, and DNA as a 4-letter code (a link to `data_representation`).
-20. **Neurons as circuits.** This connects `dc1` and `charge` to `nn_regression`, where artificial neurons came from.
+1. **Entropy and the second law of thermodynamics.** No chapter states the second law, even though `engine` discusses efficiency. A Carnot efficiency section would complete the story.
 
 ### Computer science
-21. **Digital logic: from transistors to adders.** Logic gates appear nowhere, yet the pieces are all present: `sets` (logic tables), `diodes` (transistors are mentioned), and `data_representation` (binary). A chapter that builds an adder from NAND gates answers "how does a computer actually compute?"
-22. **CSS and JavaScript.** There is an `html` chapter and a Node server, but nothing to make a page look good or respond to clicks. Students want to build something they can show friends.
-23. **How the internet works.** Packets, IP addresses, routing as shortest paths (`shortest_path`), and DNS. A natural partner to `web_apis`.
-24. **Dynamic programming.** It is mentioned once, in `intro_markov`. Memoization is already in `recursion`, so a chapter on DP (making change, edit distance for spell-check) would be a small step.
-25. **Multi-table databases.** Already written as the orphan `sql_2`.
+2. **Digital logic: from transistors to adders.** Logic gates appear nowhere, yet the pieces are all present: `sets` (logic tables), `diodes` (transistors are mentioned), and `data_representation` (binary). A chapter that builds an adder from NAND gates answers "how does a computer actually compute?"
+3. **CSS and JavaScript.** There is an `html` chapter and a Node server, but nothing to make a page look good or respond to clicks. Students want to build something they can show friends.
+4. **How the internet works.** Packets, IP addresses, routing as shortest paths (`shortest_path`), and DNS. A natural partner to `web_apis`.
+5. **Dynamic programming.** It is mentioned once, in `intro_markov`. Memoization is already in `recursion`, so a chapter on DP (making change, edit distance for spell-check) would be a small step.
+6. **Multi-table databases.** Already written as the orphan `sql_2`.
 
 ### Thinking and society
-26. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
-27. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
-28. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
+7. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
+8. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
+9. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
 
 ---
 
 ## 6. The machine-learning unit (Volume 36)
 
-**Current state:** 19 ML chapters averaging about 480 words each, with 0 code listings and 0 figures. The framing chapter comes after the methods, three topics are each split across two tiny chapters, and the neural-network chapters originally came after deep learning (now fixed). The topics are right; the chapters read like glossary entries.
+**Current state:** about 20 ML chapters, most around 500 words, with almost no code and no figures. The framing chapter comes after the methods, and data preparation is split across two tiny chapters. The topics are right; the chapters read like glossary entries.
 
 ### Proposed structure
 
@@ -179,8 +144,8 @@ These are ranked by how much a curious high school student would care, and by ho
 3. Preparing data: `standardization` + `one-hot` (pointing back to `log_transform` in Vol 11).
 4. `least_squares` (with `simple_linear` merged in).
 5. `lin_reg_gradient_descent`.
-6. `logistic_regr` (merged from `simple_logistic` and `multiv_logistic`).
-7. `confusion` (with `precision_recall_auc_roc` merged in).
+6. `logistic_regr`.
+7. `confusion`.
 8. `knn_classifier`.
 9. `bayes_classifier`, with the stemming material from Vol 29 turned into a **spam filter** project.
 10. `bayesian_networks`.
@@ -189,7 +154,7 @@ These are ranked by how much a curious high school student would care, and by ho
 11. `decision_trees_classification`.
 12. `bagging_random_forest`.
 13. `boosting`.
-14. `glm` (with `link_functions` merged in).
+14. `glm`.
 15. `clustering_k-means`.
 16. `nn_regression`.
 17. `nn_classification`.
@@ -243,7 +208,7 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 
 ## 8. Cross-cutting improvements
 
-1. **A prerequisite map.** Create a machine-readable file listing each chapter's prerequisites, plus a script that checks it against the volume order. Every violation in Section 2 would have been caught automatically. The same file can generate the "Before you start" box.
+1. **A prerequisite checker.** Each chapter's `digital_resources.json` already lists its prerequisites under `requires` (as `covers` ids). Write a script that checks them against the volume order and flags any prerequisite taught later, or any id that nothing covers. Every violation in Section 2 would have been caught automatically. (One example it would flag: `vectors`, in Vol 6, requires `span`, which is taught in Vol 21.) The same data can generate the "Before you start" box.
 2. **"Before you start" and "Key ideas" boxes in every chapter**, generated from the prerequisite map and from `summary.md`.
 3. **Consistent notation across the statistics chapters.** For example, the proportion is `p` in some chapters and `r` in others. Add a notation table to the appendix.
 4. **An appendix volume**: statistical tables, Greek letters, units and prefixes, a formula sheet, a Python cheat sheet, and a glossary generated from the `\newterm` entries.
@@ -259,7 +224,7 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 - `bitmap` (Vol 23) uses hex, which is taught in Vol 26.
 - Images: drag's `artillery.png` needs regenerating; the water phase diagram needs redrawing; several images are unused; `tidesSolution.png` is no longer referenced.
 - Opinion statements flagged in `economics`, and data values to confirm.
-- The orphan chapter `sql_2` (`log_transform` is now in Vol 11).
+- The orphan chapter `sql_2`.
 - Content moved out of `random_variables` (now 582 words) to `int_methods` and `double_int_moments_average`; the move is logged in each chapter's summary. Merge the remainder as described in Section 3.
 
 ---
@@ -268,9 +233,9 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 
 | Phase | Work | Effort |
 |---|---|---|
-| 1 | Prerequisite map and checker script; fix the Section 2 ordering problems; place the orphan chapters | Small. Mostly edits to `book_NN.txt`, plus a few rewritten passages |
+| 1 | Prerequisite checker script; fix the Section 2 ordering problems; place the orphan chapter | Small. Mostly edits to `book_NN.txt`, plus a few rewritten passages |
 | 2 | Merges from Section 4; appendix volume | Small to medium |
 | 3 | Splits from Section 3; sections for single-section chapters | Medium |
 | 4 | Rebuild the ML unit with code, figures, and one shared dataset | Large, and the highest payoff |
-| 5 | New chapters, starting with cryptography, right-triangle trig and the laws of sines/cosines, digital logic, SIR epidemics, relativity, the binomial distribution and CLT, and AI ethics | Large; can be done one chapter at a time |
+| 5 | New chapters, starting with digital logic and AI ethics | Large; can be done one chapter at a time |
 | 6 | Capstone projects and challenge/explore problems | Ongoing |

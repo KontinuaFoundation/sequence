@@ -1,0 +1,231 @@
+\chapter{Inference for Two Proportions}\index{two-proportion inference}
+
+Does a text reminder make students more likely to return a permission slip? Do
+juniors get enough sleep more often than seniors? Does a new vaccine prevent
+infection better than a placebo? Each question compares two groups, and each answer
+is a proportion: a fraction of ``yes'' in one group against a fraction of ``yes'' in
+the other.
+
+The Statistical Inferences for Proportions chapter studied one proportion at a time,
+and the Statistical Inferences for Means chapter compared two means. This chapter puts
+the two ideas together: confidence intervals and significance tests for the
+\emph{difference} between two population proportions. The reasoning is the same as
+before. The only new piece is figuring out how much a difference varies from sample
+to sample.
+
+\section{The Difference Between Two Proportions}
+Suppose a school counselor wants to compare how many juniors and seniors get at least 8
+hours of sleep on school nights. Let $p_1$ be the true proportion of juniors and $p_2$ the
+true proportion of seniors. The parameter of interest is the difference
+$$p_1 - p_2$$
+The counselor surveys random samples: 84 of 240 juniors ($\hat{p}_1 = 0.35$) and 54 of 200
+seniors ($\hat{p}_2 = 0.27$) say they sleep 8 hours or more. The point estimate is
+$\hat{p}_1 - \hat{p}_2 = 0.08$: juniors are 8 percentage points more likely to get enough sleep
+\emph{in these samples}. Would another pair of samples show the same gap? To know how much
+to trust 0.08, we need the sampling distribution of $\hat{p}_1 - \hat{p}_2$.
+
+\subsection{Variances Add, Even When You Subtract}\index{variance!of a difference}
+From the Sampling Distributions and the Central Limit Theorem chapter, each sample
+proportion has mean $p$ and standard deviation $\sqrt{\frac{p(1-p)}{n}}$. The Random
+Variables chapter showed that for independent random variables, variances add. That is
+true for differences as well as sums: $\operatorname{Var}(X - Y) = \operatorname{Var}(X) + \operatorname{Var}(Y)$,
+because subtracting a random quantity adds just as much uncertainty as adding it. So:
+
+\begin{mdframed}[style = important, frametitle = {Sampling Distribution of $\hat{p}_1 - \hat{p}_2$}]
+For independent random samples,
+$$\mu_{\hat{p}_1 - \hat{p}_2} = p_1 - p_2, \qquad
+\sigma_{\hat{p}_1 - \hat{p}_2} = \sqrt{\frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2}}$$
+The distribution is approximately normal when the large-counts condition holds in both groups.
+\end{mdframed}
+
+It is tempting to subtract the two standard deviations instead. A simulation shows how
+wrong that would be. Here are 10,000 pairs of surveys with $p_1 = 0.35$ and $p_2 = 0.27$:
+\begin{minted}{python}
+import numpy as np
+
+rng = np.random.default_rng(3)
+p1, n1 = 0.35, 240        # juniors
+p2, n2 = 0.27, 200        # seniors
+
+# 10,000 pairs of surveys
+p_hat_1 = rng.binomial(n1, p1, size=10_000) / n1
+p_hat_2 = rng.binomial(n2, p2, size=10_000) / n2
+diff = p_hat_1 - p_hat_2
+
+theory = np.sqrt(p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2)
+print(f"mean of differences: {diff.mean():.4f}  (p1 - p2 = {p1 - p2:.2f})")
+print(f"sd of differences:   {diff.std():.4f}  (formula: {theory:.4f})")
+print(f"sd if you subtracted the sds: {abs(np.sqrt(p1*(1-p1)/n1) - np.sqrt(p2*(1-p2)/n2)):.4f}")
+\end{minted}
+\begin{verbatim}
+mean of differences: 0.0794  (p1 - p2 = 0.08)
+sd of differences:   0.0439  (formula: 0.0440)
+sd if you subtracted the sds: 0.0006
+\end{verbatim}
+The differences really do spread out by about 0.044, just as the formula says. Subtracting
+the standard deviations would claim the difference is almost perfectly predictable, which is
+nonsense: two uncertain numbers give a \emph{more} uncertain difference, not a less uncertain one.
+
+\section{Conditions}\index{conditions for inference!two proportions}
+Before any two-proportion interval or test, check:
+\begin{itemize}
+\item \textbf{Random:} the data come from two independent random samples, or from two groups
+in a randomized experiment.
+\item \textbf{10\%:} when sampling without replacement, each sample is no more than 10\% of its
+population. (This is not needed for a randomized experiment.)
+\item \textbf{Large counts:} for a confidence interval, the four counts $n_1\hat{p}_1$,
+$n_1(1-\hat{p}_1)$, $n_2\hat{p}_2$, and $n_2(1-\hat{p}_2)$ are all at least 10. In other words,
+each group has at least 10 ``yes'' answers and at least 10 ``no'' answers.
+\end{itemize}
+
+\section{A Confidence Interval for $p_1 - p_2$}\index{confidence interval!for a difference in proportions}
+We do not know $p_1$ and $p_2$, so we estimate the standard deviation with the sample
+proportions. The result is the \newterm{standard error} of the difference, and the interval
+has the familiar shape: estimate $\pm$ critical value $\times$ standard error.
+
+\begin{mdframed}[style = important, frametitle = {Two-Proportion $z$-Interval}]
+$$(\hat{p}_1 - \hat{p}_2) \pm z^*\sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2}}$$
+\end{mdframed}
+
+\begin{mdframed}[frametitle = {Example}, style = important]
+For the sleep survey, the counts are 84 and 156 for juniors and 54 and 146 for seniors, all
+at least 10, and the samples are random and less than 10\% of each class in a large district.
+The standard error is
+$$SE = \sqrt{\frac{0.35(0.65)}{240} + \frac{0.27(0.73)}{200}} \approx 0.0440$$
+For 95\% confidence, $z^* = 1.96$, so the margin of error is $1.96(0.0440) \approx 0.086$, and the
+interval is
+$$0.08 \pm 0.086, \quad\text{or}\quad (-0.006,\ 0.166)$$
+We are 95\% confident that the proportion of juniors who sleep at least 8 hours is between 0.6
+percentage points \emph{lower} and 16.6 points \emph{higher} than the proportion of seniors.
+\end{mdframed}
+
+Look at that interval closely. It contains 0. So although the samples showed an 8-point gap, the
+data are consistent with juniors and seniors sleeping equally well. An interval for a
+difference that contains 0 does not give convincing evidence of any difference at all; one
+that lies entirely above (or below) 0 does.
+
+\section{A Significance Test for $p_1 - p_2$}\index{significance test!two proportions}
+A school wants to know whether texting families a reminder raises the rate of returned
+permission slips. In a randomized experiment, 150 families get a reminder text and 150 do not.
+In the text group, 102 return the slip ($\hat{p}_1 = 0.68$); in the other group, 84 do
+($\hat{p}_2 = 0.56$). Is a 12-point gap convincing?
+
+The hypotheses are
+$$H_0: p_1 - p_2 = 0 \qquad H_a: p_1 - p_2 > 0$$
+where $p_1$ and $p_2$ are the true return rates with and without a reminder.
+
+\subsection{Pooling}\index{pooled proportion}
+A significance test always asks, ``How surprising is this result \emph{if $H_0$ is true}?'' If
+$H_0$ is true, the two groups share a single return rate. Our best estimate of that common rate
+combines both samples into one \newterm{pooled proportion}:
+$$\hat{p}_c = \frac{\text{total successes}}{\text{total sample size}} = \frac{102 + 84}{150 + 150} = \frac{186}{300} = 0.62$$
+In the test, we use $\hat{p}_c$ in place of both $\hat{p}_1$ and $\hat{p}_2$ in the standard error,
+and in the large-counts check: $150(0.62) = 93$ and $150(0.38) = 57$, both at least 10.
+
+\begin{mdframed}[style = important, frametitle = {Two-Proportion $z$-Test}]
+$$z = \frac{(\hat{p}_1 - \hat{p}_2) - 0}{\sqrt{\hat{p}_c(1-\hat{p}_c)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}$$
+\end{mdframed}
+
+Pool for a test (because $H_0$ says the proportions are equal), but not for an interval (because an
+interval makes no such assumption). This is the single most common mistake on two-proportion
+problems.
+
+\begin{mdframed}[frametitle = {Example}, style = important]
+$$SE = \sqrt{0.62(0.38)\left(\frac{1}{150} + \frac{1}{150}\right)} \approx 0.0560, \qquad
+z = \frac{0.68 - 0.56}{0.0560} \approx 2.14$$
+The p-value is $P(Z \geq 2.14) \approx 0.016$. Since $0.016 < 0.05$, we reject $H_0$. There is
+convincing evidence that reminder texts raise the return rate.
+\end{mdframed}
+
+Because families were \emph{randomly assigned} to get a text or not, the two groups differed only
+by chance and by the text itself. So we can conclude that the text \emph{caused} the higher return
+rate. In the sleep survey, which was an observational study, even a significant difference
+would not show that being a junior causes better sleep. (The Experimental Design chapter explains
+why random assignment makes this difference.)
+
+\section{Computing}
+\textbf{Excel.} With $\hat{p}_1$, $\hat{p}_2$, $n_1$, and $n_2$ in cells, the standard error and
+interval are ordinary formulas, and the p-value of a one-sided test is
+\texttt{=1-NORM.S.DIST(z, TRUE)}. For the test above, \texttt{=1-NORM.S.DIST(2.14, TRUE)} gives
+about 0.016.
+
+\textbf{Python.} The \texttt{statsmodels} library does both procedures from the counts:
+\begin{minted}{python}
+from statsmodels.stats.proportion import proportions_ztest, confint_proportions_2indep
+
+# Confidence interval: juniors vs. seniors who sleep 8+ hours
+low, high = confint_proportions_2indep(84, 240, 54, 200, method="wald")
+print(f"95% CI for p1 - p2: ({low:.3f}, {high:.3f})")
+
+# Significance test: text reminder vs. no reminder
+z, p_value = proportions_ztest([102, 84], [150, 150], alternative="larger")
+print(f"z = {z:.2f}, p-value = {p_value:.4f}")
+\end{minted}
+\begin{verbatim}
+95% CI for p1 - p2: (-0.006, 0.166)
+z = 2.14, p-value = 0.0161
+\end{verbatim}
+The option \mintinline{python}{method="wald"} gives the textbook interval from this chapter;
+\texttt{statsmodels} also offers more accurate variations.
+
+\begin{Exercise}[title={Biking to School}, label=tp_ci]
+At School A, a random sample shows that 45 of 150 students bike to school. At School B, 30 of 160
+do. Construct and interpret a 90\% confidence interval for the difference in the proportions of
+students who bike. Is there convincing evidence of a difference?
+\end{Exercise}
+\begin{Answer}[ref=tp_ci]
+$\hat{p}_1 = 0.30$ and $\hat{p}_2 = 0.1875$. The counts 45, 105, 30, and 130 are all at least 10.
+$$SE = \sqrt{\frac{0.30(0.70)}{150} + \frac{0.1875(0.8125)}{160}} \approx 0.0485$$
+With $z^* = 1.645$, the margin of error is about $0.080$, and the interval is
+$0.1125 \pm 0.080$, or about $(0.033, 0.192)$. We are 90\% confident that the proportion of
+students who bike is between 3.3 and 19.2 percentage points higher at School A. The entire
+interval is above 0, so there is convincing evidence of a difference.
+\end{Answer}
+
+\begin{Exercise}[title={A New Math App}, label=tp_test]
+In a randomized experiment, 200 students used a new math app and 200 used the old one. On the
+unit test, 132 of the new-app students passed and 110 of the old-app students passed. Test, at
+$\alpha = 0.05$, whether the pass rates differ (a two-sided test).
+\end{Exercise}
+\begin{Answer}[ref=tp_test]
+$H_0: p_1 - p_2 = 0$ and $H_a: p_1 - p_2 \neq 0$. The pooled proportion is
+$\hat{p}_c = \frac{242}{400} = 0.605$, and the pooled counts $200(0.605) = 121$ and $200(0.395) = 79$
+are at least 10.
+$$SE = \sqrt{0.605(0.395)\left(\frac{1}{200} + \frac{1}{200}\right)} \approx 0.0489, \qquad
+z = \frac{0.66 - 0.55}{0.0489} \approx 2.25$$
+The two-sided p-value is $2P(Z \geq 2.25) \approx 0.024$. Since $0.024 < 0.05$, reject $H_0$: there is
+convincing evidence that the pass rates differ, and because this was a randomized experiment,
+the new app caused the difference.
+\end{Answer}
+
+\begin{Exercise}[title={Reading an Interval}, label=tp_read]
+A 95\% confidence interval for $p_1 - p_2$, the difference in the proportions of adults and teens
+who prefer a new soda, is $(-0.02, 0.10)$. A news site reports, ``Adults prefer the new soda more
+than teens do.'' Is that justified?
+\end{Exercise}
+\begin{Answer}[ref=tp_read]
+No. The interval includes 0, and even some negative values, so it is plausible that the two
+proportions are equal, or that teens prefer it slightly more. The data do not give convincing
+evidence of a difference.
+\end{Answer}
+
+\begin{Exercise}[title={To Pool or Not to Pool?}, label=tp_pool]
+Explain why a two-proportion significance test of $H_0: p_1 = p_2$ uses the pooled proportion
+$\hat{p}_c$, but a confidence interval for $p_1 - p_2$ does not.
+\end{Exercise}
+\begin{Answer}[ref=tp_pool]
+A test computes how surprising the data would be \emph{if $H_0$ were true}, and $H_0$ says the two
+proportions are the same, so the best estimate of that common value combines both samples. A
+confidence interval makes no assumption that the proportions are equal (in fact, it is estimating
+how different they are), so it uses each sample's own proportion.
+\end{Answer}
+
+\begin{Exercise}[title={What Could Go Wrong?}, label=tp_errors]
+In the reminder-text experiment, the school rejected $H_0$. Describe a Type I error and a Type II
+error in this context. Which one could the school have made?
+\end{Exercise}
+\begin{Answer}[ref=tp_errors]
+A Type I error would be concluding that reminder texts raise the return rate when they actually
+make no difference. A Type II error would be failing to find that the texts help when they really
+do. Since the school rejected $H_0$, the only error it could have made is a Type I error.
+\end{Answer}
