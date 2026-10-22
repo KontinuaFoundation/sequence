@@ -39,20 +39,18 @@ The \index{centripetal force}\newterm{centripetal force}, usually labelled diffe
 $$F = m r \omega^2 = \frac{m v^2}{r}$$
 
 
-The \newterm{angular velocity,} $\omega$, measures how fast the angle changes. It is measured in radians per second. It can be defined in the following ways:
+The \newterm{angular velocity,} $\omega$, measures how fast the angle changes. It is measured in radians per second. Over a time interval $\Delta t$, the average angular velocity is
 \[
-  {\omega_{\text{inst}} = \frac{d\theta}{dt}},
-  \qquad
-  {\omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}}
+  \omega_{\text{avg}} = \frac{\Delta\theta}{\Delta t}
 \]
+and the angular velocity at one instant is this ratio for a very short time interval.
 
 \[
   \omega = 2\pi f = \frac{2\pi}{T}
 \]
 
-\index{angular acceleration}Angular acceleration:
+\index{angular acceleration}Angular acceleration measures how fast the angular velocity changes:
 \[
-  \alpha = \frac{d\omega}{dt}, \qquad
   \alpha_{\text{avg}} = \frac{\Delta\omega}{\Delta t}
 \]
 
@@ -123,19 +121,17 @@ It is very important to distinguish between angular velocity and linear velocity
 
 \subsection{Velocity}
 \index{circular motion!velocity}
-The velocity of the ball is a vector, and we can find that vector by
-differentiating each component of the position vector.
+The velocity of the ball is a vector, and we can find it with two facts about circles.
 
-For any constants $a$ and $b$:
+\textbf{Its size.} The ball travels the circumference $2\pi r$ every period $T$, so its speed is
+$\frac{2\pi r}{T} = r\omega$. In our example, that is $3 \cdot \frac{\pi}{2} \approx 4.71$ m/s.
 
-\begin{tabular}{c | c }
-  Expression $f(x)$ & Derivative $f'(x)$ \\
-  \hline
-  $a \sin{b t}$     & $ab \cos{b t}$     \\
-  $a \cos{b t}$     & $-ab \sin{b t}$    \\
-\end{tabular}
+\textbf{Its direction.} At every instant, the ball is moving along the circle, so its velocity is tangent to the
+circle. A tangent to a circle is perpendicular to the radius. The radius points in the direction
+$[\cos \omega t, \sin \omega t]$. Turning a vector $[a, b]$ by $90^\circ$ counterclockwise gives $[-b, a]$, so
+the velocity points in the direction $[-\sin \omega t, \cos \omega t]$.
 
-Thus, in our example, the velocity of the ball at any time $t$ is given by:
+Putting the size and the direction together, in our example, the velocity of the ball at any time $t$ is given by:
 
 $$v(t) = \left[ -\frac{3 (2\pi)}{4} \sin{\frac{2\pi t}{4}}, \frac{3(2\pi)}{4} \cos{\frac{2\pi t}{4}}, 0 \right]$$
 
@@ -147,9 +143,10 @@ $$v(t) = \left[ -r\omega \sin{\omega t}, r\omega \cos{\omega t}\right]$$
 
 where $t = 0$ is the time that it crosses the $x$ axis. If $\omega$ is
 negative, that means the motion would be clockwise when viewed from
-above.
+above. (When you learn derivatives, you will be able to get this same velocity in one line, by
+differentiating each component of the position.)
 
-The magnitude of the velocity vector is $r\omega$. See Figure \ref{fig:billardBallVelocity} for a visual of the velocity vector. Note that the $z$-coordinate is constant, so its derivative is zero, and it is eliminated from our vector for simplification.
+The magnitude of the velocity vector is $r\omega$. See Figure \ref{fig:billardBallVelocity} for a visual of the velocity vector. Note that the $z$-coordinate is constant, so it does not change at all, and it is eliminated from our vector for simplification.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}[declare function={angle=25;},bullet/.style={inner
@@ -180,9 +177,9 @@ The magnitude of the velocity vector is $r\omega$. See Figure \ref{fig:billardBa
 \begin{Answer}[ref = particle]
   The radius is 5 m, because the coefficients of both the $x$ and $y$ functions is 5.
 
-  Recall that the velocity in each direction is given by the derivative of the position functions:
-  $$v_x(t) = \frac{d}{dt} \left[ 5 \cos{ \left( 3t \right)} \right] = -15 \sin{ \left( 3t \right)}$$
-  $$v_y(t) = \frac{d}{dt} \left[ 5 \sin{ \left( 3t \right)} \right] = 15 \cos{ \left( 3t \right)}$$
+  The angle is $3t$, so the angular velocity is $\omega = 3$ radians per second. Using the velocity formula
+  from this section, with $r = 5$ and $\omega = 3$:
+  $$v_x(t) = -15 \sin{ \left( 3t \right)}, \qquad v_y(t) = 15 \cos{ \left( 3t \right)}$$
 
   The overall \textit{speed} can be found from the $x$ and $y$ components of the velocity:
   \begin{align*}
@@ -198,7 +195,13 @@ The magnitude of the velocity vector is $r\omega$. See Figure \ref{fig:billardBa
 
 \subsection{Acceleration}
 
-We can get the (linear) acceleration by differentiating the components of the velocity vector.
+Acceleration is to velocity what velocity is to position: it is the rate at which the velocity vector
+changes. Here is a neat trick for finding it. Draw every velocity vector starting from the same point. The
+velocity has the constant size $r\omega$ and turns at the same rate $\omega$ as the ball, so its tip moves
+around a circle of radius $r\omega$. That is circular motion again! So we can reuse what we just learned: the
+rate of change of a vector that moves in a circle of radius $R$ has size $R\omega$ and points $90^\circ$ ahead
+of it. Here $R = r\omega$, so the acceleration has size $r\omega^2$, and turning the velocity direction
+$[-\sin \omega t, \cos \omega t]$ by another $90^\circ$ gives $[-\cos \omega t, -\sin \omega t]$:
 
 $$a(t) = \left[-r \omega^2 \cos{\omega t}, -r \omega^2 \sin{\omega t} \right] = -r\omega^2 \left[\cos{\omega t}, \sin{\omega t}\right]$$
 

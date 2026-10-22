@@ -1,4 +1,3 @@
-
 # Acceleration on earth
 acceleration = -9.8 # m/s/s
 
@@ -13,7 +12,7 @@ current_time = 0.0  # seconds after release
 # Is the hammer still aloft?
 while height > 0.0:
 
-    # Show the new values
+    # Show the values
     print(f"{current_time:.2f} s:")
     print(f"\tacceleration: {acceleration:.2f} m/s/s")
     print(f"\tspeed: {speed:.2f} m/s")

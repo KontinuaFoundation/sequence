@@ -14,3 +14,4 @@ Starts from the puzzle of Maxwell's speed of light and Einstein's two postulates
 - New chapter, placed at the end of volume 13 after photons. It builds on emwaves (c = 1/√(μ₀ε₀) and cosmic rays), the Pythagorean theorem (volume 4), exponentials (volume 10) for muon decay, and E = mc² from matter_energy.
 - Includes a two-panel TikZ light-clock figure (at rest and moving, with the right triangle labeled), a Python listing (relativity.py) with real output, and 6 exercises with answers (γ for 0.6c and 0.8c, a movie in space, a shrinking spaceship, a trip to a star 10 light-years away, who sees whose clock slow, and highway relativity: about 6 million years to lose 1 second).
 - All values computed in Python, including the GPS corrections (+45.7 μs/day general relativity, −7.2 μs/day special relativity).
+- The E = mc² back-reference now names the Work and Energy chapter, where that section moved.

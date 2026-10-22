@@ -25,3 +25,4 @@ Explains how a message finds one computer among billions:
 - Added pointers in web_apis (opening paragraph) and shortest_path (Bellman-Ford section).
 - packets.py and routing.py were run, and their outputs are pasted in. Router D's table in the exercise was checked by running the code. All arithmetic (packet counts, 2^32, 2^128 per person, /16 and /8 sizes, NY–London and Denver–Tokyo distances by the haversine formula, light-speed round trips) was verified in Python.
 - 8 exercises with answers (packet count, UDP for calls, prefix sizes, IPv6 per person, router D's table, Denver–Tokyo latency, the DNS TTL trade-off, and running traceroute).
+- The pointer to Web APIs no longer says "the next chapter", since html now comes between them.

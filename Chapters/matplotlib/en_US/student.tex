@@ -371,6 +371,184 @@ plt.show()
     \label{fig:lineOOP}
 \end{figure}
 
+\section{Simulating a Falling Hammer}\index{simulation!falling body}
+
+In the Kinematics chapter, you tossed a hammer straight up, at 12 m/s from 2 meters above the ground, and used
+formulas to find its height and speed. A computer can get the same answers a different way: by
+\emph{simulating} the motion in tiny steps. Every hundredth of a second, change the height by the speed times
+the time step, and change the speed by the acceleration times the time step.
+
+First, we are just going to print out the position, speed, and acceleration of 
+the hammer for every 1/100th of a second after it leaves your hand. (Later, we 
+will make a graph.)
+
+Create a file called \filename{falling.py} and type this into it:
+
+\begin{minted}{python}
+# Acceleration on earth
+acceleration = -9.8 # m/s/s
+
+# Size of time step
+time_step = 0.01 # seconds
+
+# Initial values
+speed = 12  # m/s upward
+height = 2  # m above the ground
+current_time = 0.0  # seconds after release
+
+# Is the hammer still aloft?
+while height > 0.0:
+
+    # Show the values
+    print(f"{current_time:.2f} s:")
+    print(f"\tacceleration: {acceleration:.2f} m/s/s")
+    print(f"\tspeed: {speed:.2f} m/s")
+    print(f"\theight: {height:.2f} m")
+
+    # Update height
+    height = height + time_step * speed
+
+    # Update speed
+    speed = speed + time_step * acceleration
+
+    # Update time
+    current_time = current_time + time_step
+
+
+print(f"Hit the ground: Complete")
+\end{minted}
+
+When you run it, you will see something like this:
+\begin{minted}{text}
+0.00 s:
+	acceleration: -9.80 m/s/s
+	speed: 12.00 m/s
+	height: 2.00 m
+0.01 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.90 m/s
+	height: 2.12 m
+0.02 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.80 m/s
+	height: 2.24 m
+0.03 s:
+	acceleration: -9.80 m/s/s
+	speed: 11.71 m/s
+	height: 2.36 m
+...
+2.60 s:
+	acceleration: -9.80 m/s/s
+	speed: -13.48 m/s
+	height: 0.20 m
+2.61 s:
+	acceleration: -9.80 m/s/s
+	speed: -13.58 m/s
+	height: 0.07 m
+Hit the ground: Complete
+\end{minted}
+
+Note that the acceleration is not changing at all, but it is changing
+the speed, and the speed is changing the height.
+
+We can see that the hammer in our simulation hits the ground just
+after 2.61 seconds.
+
+\subsection{Graphing the Simulation}
+
+To graph the acceleration, speed, and height, the program needs to save every value in a list as it goes.
+Duplicate the file \filename{falling.py} and name the new copy 
+\filename{falling\_graph.py}
+
+We are going to make a plot of the height over time. At the start of the 
+program, you will import the matplotlib library.  At the end of the program, 
+you will create a plot and show it to the user.
+
+Change \filename{falling\_graph.py} to this:
+
+\begin{minted}{python}
+import matplotlib.pyplot as plt
+
+# Acceleration on earth
+acceleration = -9.8 # m/s/s
+
+# Size of time step
+time_step = 0.01 # seconds
+
+# Initial values
+speed = 12  # m/s upward
+height = 2  # m above the ground
+current_time = 0.0  # seconds after release
+
+# Create empty lists
+accelerations = []
+speeds = []
+heights = []
+times = []
+
+# Is the hammer still aloft?
+while height > 0.0:
+
+    # Add the data to the lists
+    times.append(current_time)
+    accelerations.append(acceleration)
+    speeds.append(speed)
+    heights.append(height)
+    
+    # Update height
+    height = height + time_step * speed
+
+    # Update speed
+    speed = speed + time_step * acceleration
+
+    # Update time
+    current_time = current_time + time_step
+
+# Make a plot
+fig, ax = plt.subplots()
+fig.suptitle("Falling Hammer")
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Height (m)")
+ax.plot(times, heights)
+plt.show()
+\end{minted}
+
+When you run the program, you should see a graph of the height over time.
+
+\includegraphics[width=0.7\linewidth]{heightplot.png}
+
+It is more interesting if we can see all three: acceleration, speed, and height. 
+So, let us make three stacked plots. Change the plotting code in 
+\filename{falling\_graph.py} to:\index{matplotlib!subplots}
+
+\begin{minted}{python}
+# Make a plot with three subplots
+fig, ax = plt.subplots(3,1)
+fig.suptitle("Falling Hammer")
+
+# The first subplot is acceleration
+ax[0].set_ylabel("Acceleration (m/s/s)")
+ax[0].plot(times, accelerations)
+
+# Second subplot is speed
+ax[1].set_ylabel("Speed (m/s)")
+ax[1].plot(times, speeds)
+
+# Third subplot is height
+ax[2].set_xlabel("Time (s)")
+ax[2].set_ylabel("Height (m)")
+ax[2].plot(times, heights)
+plt.show()
+\end{minted}
+
+You will now get plots of all three variables:
+
+\includegraphics[width=0.8\linewidth]{stackedplot.png}
+
+This is what we expected, right? The acceleration is a constant negative 
+number. The speed is a straight line with a negative slope. The height is a 
+parabola. \textbf{The slope of the height graph is the speed, and the slope of the speed graph is acceleration.}
+
 Matplotlib can do much more: pie charts, box plots, 3D surfaces, animations,
 and endless customization of colors and styles. The official documentation at
 \url{https://matplotlib.org} has a gallery of examples, each with its code.

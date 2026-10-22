@@ -281,14 +281,14 @@ Lab C & Larry \\
 \section{Entity-Relationship Diagram}
 Now that we have normalized our tables, we can create an \newterm{entity-relationship diagram} to visually represent the relationships between the tables. Often, this process may even clear up further FDs or issues with the database design.\index{ER diagram|see{entity-relationship diagram}}
 
-To do this, we will introduce a new programming language called \newterm{Mermaid}\index{Mermaid}, which allows us to create diagrams directly within \LaTeX documents. It is a text-based diagramming tool that is universally used in other software that supports Mermaid syntax, such as GitHub, Obsidian, and Notion.
+ER diagrams can be drawn by hand, but you can also describe them in a short text language called \newterm{Mermaid}\index{Mermaid}. It is a text-based diagramming tool supported by GitHub, Obsidian, Notion, and many other programs, and a free website such as \url{https://mermaid.live} will draw your diagram as you type.
 
 Using our normalized tables, we can create an ER diagram to visualize the relationships between them.
 
 We can say that our \underline{\texttt{EquipmentLocation}} requires having a \texttt{LocationManager}, and (for the sake of our database), each \texttt{LocationManager} is responsible for managing a unique location. Therefore, we can say that 
 \texttt{LocationManager} and \texttt{EquipmentLocation} have a \newterm{one-to-one relationship}.
 
-We have added the mermaid diagram in Figure~\ref{fig:one-to-one}, but here is the mermaid syntax for it:
+Figure~\ref{fig:one-to-one} shows this relationship as an ER diagram. Here is the Mermaid code for it:
 
 \begin{minted}{text}
 erDiagram
@@ -316,44 +316,67 @@ erDiagram
     
 \end{minted}
 
-% ER Diagrams with mermaid
 \begin{figure}[H]
-    \centering
-    \MermaidAdjustBoxOpts{max width=\linewidth,center}
-    \captionsetup[subfigure]{font=footnotesize}
-    \begin{subfigure}[b]{0.286\textwidth}
-        \centering
-        \begin{mermaid}
-erDiagram
-    EQUIPMENT_LOCATION ||--|| LOCATION_MANAGER : "has (one to one)"
-\end{mermaid}
-        \caption{One-to-one}
-        \label{fig:one-to-one}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.196\textwidth}
-        \centering
-        \begin{mermaid}
-erDiagram
-    Location ||--o{ Equipment : "has (zero to many)"
-\end{mermaid}
-        \caption{Zero-to-many}
-        \label{fig:zero-to-many}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.478\textwidth}
-        \centering
-        \begin{mermaid}
-erDiagram
-    STUDENT }o--o{ EQUIPMENT : "checks_out (zero or many to zero or many)"
-    STUDENT ||--o{ CHECKOUT : "checks_out (one to many)"
-    EQUIPMENT ||--o{ CHECKOUT : "checked_out_by (one to many)"
-\end{mermaid}
-        \caption{Many-to-many, resolved through \texttt{Checkout}}
-        \label{fig:many-to-many}
-    \end{subfigure}
-    \caption{ER diagrams for the three relationship types in the lab equipment database.}
-    \label{fig:relationship-types}
+\centering
+\tikzset{
+  ent/.style={draw, thick, fill=blue!8, minimum height=0.8cm, inner xsep=6pt, font=\small\ttfamily},
+  rel/.style={thick},
+  % markers drawn at the end of a horizontal line; #1 = +1 if the entity is to the right, -1 if to the left
+  one/.pic={\draw[thick] (-0.18,-0.15) -- (-0.18,0.15) (-0.30,-0.15) -- (-0.30,0.15);},
+  many/.pic={\draw[thick] (0,0.17) -- (-0.30,0) -- (0,-0.17) (0,0) -- (-0.30,0); \draw[thick, fill=white] (-0.45,0) circle (0.09);},
+}
+\begin{subfigure}{\textwidth}
+\centering
+\begin{tikzpicture}
+  \node[ent] (a) at (0,0) {EQUIPMENT\_LOCATION};
+  \node[ent] (b) at (7,0) {LOCATION\_MANAGER};
+  \draw[rel] (a) -- node[above, font=\small] {has} (b);
+  \pic[rotate=180] at (a.east) {one};
+  \pic at (b.west) {one};
+\end{tikzpicture}
+\caption{One-to-one}
+\label{fig:one-to-one}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}{\textwidth}
+\centering
+\begin{tikzpicture}
+  \node[ent] (a) at (0,0) {Location};
+  \node[ent] (b) at (5,0) {Equipment};
+  \draw[rel] (a) -- node[above, font=\small] {has} (b);
+  \pic[rotate=180] at (a.east) {one};
+  \pic at (b.west) {many};
+\end{tikzpicture}
+\caption{Zero-to-many}
+\label{fig:zero-to-many}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}{\textwidth}
+\centering
+\begin{tikzpicture}
+  \node[ent] (s) at (0,1.6) {STUDENT};
+  \node[ent] (e) at (10,1.6) {EQUIPMENT};
+  \draw[rel, dashed] (s) -- node[above, font=\small] {checks out (many to many)} (e);
+  \pic[rotate=180] at (s.east) {many};
+  \pic at (e.west) {many};
+  \node[ent] (s2) at (0,0) {STUDENT};
+  \node[ent] (c) at (5,0) {CHECKOUT};
+  \node[ent] (e2) at (10,0) {EQUIPMENT};
+  \draw[rel] (s2) -- node[above, font=\small] {checks out} (c);
+  \draw[rel] (c) -- node[above, font=\small] {checked out by} (e2);
+  \pic[rotate=180] at (s2.east) {one};
+  \pic at (c.west) {many};
+  \pic[rotate=180] at (c.east) {many};
+  \pic at (e2.west) {one};
+\end{tikzpicture}
+\caption{Many-to-many (top), resolved through \texttt{CHECKOUT} (bottom)}
+\label{fig:many-to-many}
+\end{subfigure}
+\caption{ER diagrams for the three relationship types in the lab equipment database. Two bars mean
+``exactly one''; a circle with a crow's foot means ``zero or many.''}
+\label{fig:relationship-types}
 \end{figure}
 
 \section{Relational Algebra Basics}

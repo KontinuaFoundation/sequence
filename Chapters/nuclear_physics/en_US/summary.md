@@ -21,3 +21,4 @@ Covers the nucleus and nuclear energy:
 - Added a pointer from atomic_mass_reactions' half-life definition to this chapter.
 - Includes a seeded decay simulation (decay_simulation.py) with real output, two figures (decay.png and binding_energy.png, the latter with arrows showing that fission and fusion both move toward iron), and 6 exercises with answers.
 - Every energy was computed from standard atomic masses (He-4 7.07 MeV/nucleon, D 2.22 MeV, fission 173 MeV, D–T 17.6 MeV, about 3 million times coal per kg).
+- The E = mc² back-reference now names the Work and Energy chapter, where that section moved.
