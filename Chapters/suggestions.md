@@ -13,7 +13,7 @@ If you only do a few things, do these, in this order:
 1. **Fix the prerequisite violations** (Section 2). A student who meets `sin θ` in Volume 1, or a derivative in Volume 17, decides the book is not for them. These are the cheapest high-value fixes.
 2. **Rebuild the machine-learning unit in Volume 36** (Section 6). Its chapters are short (most around 500 words) and have almost no code or figures. For many students this is the reason they picked up the series, and right now it is the thinnest part of it.
 3. **Add a short "Before you start" box and a "Key ideas" box to every chapter.** The `summary.md` files already contain the key ideas, and the prerequisites can come from a dependency file (Section 8).
-4. **Add the missing topics a curious teenager will ask about** (Section 5): digital logic and AI ethics.
+4. **Add the missing topics a curious teenager will ask about** (Section 5): AI ethics.
 5. **Split the giant single-section chapters, and merge the duplicated ones** (Sections 3 and 4).
 
 ---
@@ -44,7 +44,7 @@ Each item below is a place where a chapter uses something the student has not se
 | Vol 36 | 24 | Larger than any three other volumes combined |
 
 **Suggestions**
-- Combine Volumes 25–27 into one "Data and the Web" volume, in this order: `data_representation`, `html`, a new CSS/JavaScript chapter, `web_apis`, `maps_location`.
+- Combine Volumes 25–27 into one "Data and the Web" volume, in this order: `data_representation`, `html`, `web_apis`, `css_js` (which needs the Express server from `web_apis`), `maps_location`.
 - Move `numerical_multi_int` and `triple_integrals` from Vol 36 into Vol 35, which finishes multivariable integration.
 - Split the rest of Vol 36 into two machine-learning volumes (Section 6).
 
@@ -115,20 +115,15 @@ Mark these as optional rather than cutting them.
 
 These are ranked by how much a curious high school student would care, and by how well each topic reuses tools the series already teaches.
 
-### Physics
-1. **Entropy and the second law of thermodynamics.** No chapter states the second law, even though `engine` discusses efficiency. A Carnot efficiency section would complete the story.
-
 ### Computer science
-2. **Digital logic: from transistors to adders.** Logic gates appear nowhere, yet the pieces are all present: `sets` (logic tables), `diodes` (transistors are mentioned), and `data_representation` (binary). A chapter that builds an adder from NAND gates answers "how does a computer actually compute?"
-3. **CSS and JavaScript.** There is an `html` chapter and a Node server, but nothing to make a page look good or respond to clicks. Students want to build something they can show friends.
-4. **How the internet works.** Packets, IP addresses, routing as shortest paths (`shortest_path`), and DNS. A natural partner to `web_apis`.
-5. **Dynamic programming.** It is mentioned once, in `intro_markov`. Memoization is already in `recursion`, so a chapter on DP (making change, edit distance for spell-check) would be a small step.
-6. **Multi-table databases.** Already written as the orphan `sql_2`.
+1. **How the internet works.** Packets, IP addresses, routing as shortest paths (`shortest_path`), and DNS. A natural partner to `web_apis`.
+2. **Dynamic programming.** It is mentioned once, in `intro_markov`. Memoization is already in `recursion`, so a chapter on DP (making change, edit distance for spell-check) would be a small step.
+3. **Multi-table databases.** Already written as the orphan `sql_2`.
 
 ### Thinking and society
-7. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
-8. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
-9. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
+4. **AI ethics and algorithmic bias.** The ML unit never discusses fairness, privacy, or what happens when a model is wrong about a person. `biases1` covers human cognitive bias; a companion chapter on machine bias belongs at the end of the ML unit.
+5. **Personal finance.** Loans, credit-card interest, and saving. It reuses `exponentials_logarithms` and `seq_calc` (the savings recursion is already there), and every teenager will need it.
+6. **Energy and climate.** The greenhouse effect mentions in `emwaves` and `gases_heat` could become a full chapter on where energy comes from, tying in photons, heat, engines, and economics.
 
 ---
 
