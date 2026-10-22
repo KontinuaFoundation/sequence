@@ -13,38 +13,7 @@ If you only do a few things, do these, in this order:
 1. **Rebuild the machine-learning unit in Volumes 33–36** (Section 6). Its chapters are short (most around 500 words) and have almost no code or figures. For many students this is the reason they picked up the series, and right now it is the thinnest part of it.
 2. **Add a short "Before you start" box and a "Key ideas" box to every chapter.** The `summary.md` files already contain the key ideas, and the prerequisites can come from a dependency file (Section 8).
 3. **Add the missing topics a curious teenager will ask about** (Section 5): AI ethics.
-4. **Split the giant single-section chapters, and merge the duplicated ones** (Sections 3 and 4).
-
----
-
-## 3. Chapters that are too long and should be split
-
-The book's chapters typically run 1,000–3,000 words. These chapters are well beyond that, often with only one `\section`, so a student has no natural stopping place.
-
-| Chapter | Words | Sections | Proposed split |
-|---|---|---|---|
-| `forces_motion` (Vol 1) | about 5,800 | 4 | **Newton's Laws** (the three laws, net force, normal force, free-body diagrams) / **Friction and Pulleys**. Move universal gravitation to `mass_weight_gravity` or `orbits`. |
-| `gases_heat` (Vol 28) | 6,456 | 4 | **Temperature and the Gas Laws** / **Heat, Work, and the Laws of Thermodynamics**. Add entropy and the second law, which are currently missing. |
-| `continuous_distributions` (Vol 26) | 5,633 | 6 | **CDFs, PDFs, and the Uniform Distribution** / **The Normal Distribution**. Move the multivariate normal next to `bayes_classifier` and `numerical_multi_int`, which reuse the snail data. |
-| `data_tools` (Vol 3) | 5,227 | 3 | Keep it as **Spreadsheets**. Its mean/variance/standard-deviation material duplicates `num_methods` (Section 4). |
-| `num_methods` (Vol 9) | 5,179 | 6 | **Center** / **Spread and Shape**. |
-| `charge` (Vol 11) | 5,108 | 7 | **Electric Charge and Coulomb's Law** / **Electric Fields and Gauss's Law**. |
-| `rotational_motion` (Vol 15) | 4,961 | **1** | **Torque and Equilibrium** / **Moment of Inertia and Angular Momentum**. It currently opens by reviewing rotational kinematics from `circular_motion`. |
-| `circular_motion` (Vol 15) | 4,834 | **1** | **Uniform Circular Motion and Centripetal Force** / **Rotational Kinematics**. At minimum, add section headings. |
-| `economics` (Vol 9) | 4,770 | 15 | **Markets: Trade, Supply, and Demand** / **Money, Investment, and Government**. It has only 2 exercises in 4,770 words; supply-and-demand equilibrium is algebra, so add numeric problems. |
-| `data_representation` (Vol 21) | 4,740 | 5 | **Text and Integers** (ASCII/UTF-8, binary, hex, two's complement) / **Floating Point**. |
-| `flight` (Vol 7) | 4,721 | 3 | **Airplanes** / **Quadcopters and Rockets**. It has 71 images, some of them unused. |
-| `discrete_probability_counting` (Vol 24) | 4,463 | 3 | **Probability Rules** / **Counting**. Then merge the tiny `random_variables` (582 words) with the probability half. |
-| `num_methods_2` (Vol 10) | 4,364 | 3 | **Scatter Plots and Correlation** / **The Regression Line**. |
-| `int_methods` (Vol 28) | 4,169 | 5 | **Partial Fractions** / **Trigonometric Integrals and Substitutions**. |
-| `polynomials_2` (Vol 14) | 4,150 | 3 | **Factoring** / **Rational Functions**. |
-| `inferences_means` (Vol 27) | 4,126 | 5 | **One-Sample and Paired t** / **Two-Sample t**. |
-| `web_apis` (Vol 23) | 4,047 | 2 | **Using APIs** (HTTP, JSON, calling a real API from Python, which is the fun part) / **Building an API in Node**. It has only **1 exercise**. |
-| `derivative_rules` (Vol 17) | 4,004 | 10 | **Product, Quotient, and Chain Rules** / **Derivatives of Trig, Exponential, and Log Functions**. |
-| `energy_conservation` (Vol 2) | 4,000 | **1** | Add sections. Optionally split into **Work and Energy** / **Power and Efficiency**. |
-| `gradients_optimization`, `partial_derivatives` (Vol 18) | about 4,500 each | 2–3 | Add more section breaks. In `gradients_optimization`, split off the optimization and gradient-descent half; it is the natural bridge to the ML unit. |
-
-**Other chapters with no or one `\section` that need headings:** `experiments`, `experimental_designs`, `regression_slope_basics`, `double_int_regions`, `double_int_polar`, `euler_method` (0), `stemming_lemmatization` (0).
+4. **Merge the duplicated material** (Section 4).
 
 ---
 
@@ -52,8 +21,8 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 
 | Topic | Taught in | Suggestion |
 |---|---|---|
-| **Linear regression** | `num_methods_2` (Vol 10), `regression_slope_basics` (Vol 27), `least_squares` + `simple_linear` + `lin_reg_r2_anova` (Vols 33–34). The same five-point quiz example appears in three chapters. | Vol 10 handles description, Vol 27 inference, and Vol 33 the derivation (calculus and matrices). Merge `simple_linear` into `least_squares`. Move `lin_reg_r2_anova` to Vol 27 next to `inferences_slopes`, where AP students need it. |
-| **Mean, variance, standard deviation** | `data_tools` (Vol 3) and `num_methods` (Vol 9) | Teach the statistics once, in `num_methods`. Keep `data_tools` about spreadsheets, with a forward reference. |
+| **Linear regression** | `regression_line` (Vol 10), `regression_slope_basics` (Vol 27), `least_squares` + `simple_linear` + `lin_reg_r2_anova` (Vols 33–34). The same five-point quiz example appears in three chapters. | Vol 10 handles description, Vol 27 inference, and Vol 33 the derivation (calculus and matrices). Merge `simple_linear` into `least_squares`. Move `lin_reg_r2_anova` to Vol 27 next to `inferences_slopes`, where AP students need it. |
+| **Mean, variance, standard deviation** | `data_tools` (Vol 3) and `num_methods` (Vol 9) | `data_tools` now points ahead to `num_methods`. Removing its statistics section was considered and not done: the spreadsheet work and the bell-curve 68–95% rule depend on it, and `num_methods` comes six volumes later. Decide whether this early introduction should stay. |
 | **Python classes** | `intro_python2` (Vol 4) and `classes` (Vol 14) | Keep the Polynomial class from `classes` as a section of `polynomials_1`. Drop the re-teaching. |
 | **Python lists** | `intro_python1` (Vol 3) and `pylists` (Vol 14) | Same treatment: keep the coefficient-list material inside `polynomials_1`. |
 | **Recursion** | `intro_python2`, `proofs` (induction), `sorting`, `recursion` (Vol 22) | Move `recursion` right after `intro_python2` and trim the recursion section in `intro_python2`, or cross-reference them. |
@@ -61,7 +30,7 @@ The book's chapters typically run 1,000–3,000 words. These chapters are well b
 | **Sequences** | `sequences` (Vol 8) and the review opening of `seq_calc` (Vol 29) | Trim `seq_calc`'s re-introduction to a one-paragraph recap. |
 | **Data preparation** | `standardization` (500 words) + `one-hot` (400) | Merge into "Preparing Data for Models," with a pointer back to `log_transform` (Vol 10). |
 | **Greek alphabet** | `greek` (Vol 1, a reference table) | Move it to an appendix volume along with `stat_tables`, the unit tables from `units_conversions`, and a formula sheet. |
-| **Experimental design** | `experiments` + `experimental_designs` (Vol 17, one section each) | Fine as two chapters, but give them sections and remove the vocabulary overlap. |
+| **Experimental design** | `experiments` + `experimental_designs` (Vol 17) | Fine as two chapters, and both now have sections. Remove the vocabulary overlap. |
 
 **Possibly superfluous for the target reader:**
 - `positive-semidefinite` (Vol 21): Goemans–Williamson Max Cut with cvxpy is graduate-level. It is a fun "here be dragons" chapter. Keep it only if it is clearly labeled as optional enrichment.
@@ -130,9 +99,7 @@ The volumes now follow this order. What remains is the merges (`simple_linear` i
 ### Too few exercises for their length
 | Chapter | Exercises | Words |
 |---|---|---|
-| `web_apis` | 1 | 4,047 |
 | `kinematics` | 2 | 3,665 |
-| `economics` | 2 | 4,770 |
 | `boats_sailing` | 3 | 3,370 |
 | `subspaces` | 2 | 3,071 |
 | `linear_algebra_intro` | 2 | 2,461 |
@@ -173,8 +140,6 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 ## 9. Open items left from the editing pass
 
 - Images: drag's `artillery.png` needs regenerating; the water phase diagram needs redrawing; several images are unused; `tidesSolution.png` is no longer referenced.
-- Opinion statements flagged in `economics`, and data values to confirm.
-- Content moved out of `random_variables` (now 582 words) to `int_methods` and `double_int_moments_average`; the move is logged in each chapter's summary. Merge the remainder as described in Section 3.
 
 ---
 
@@ -184,7 +149,6 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 |---|---|---|
 | 1 | Prerequisite checker script, and a pass over the mismatches it finds | Small. Mostly edits to `digital_resources.json` |
 | 2 | Merges from Section 4; appendix volume | Small to medium |
-| 3 | Splits from Section 3; sections for single-section chapters | Medium |
 | 4 | Rebuild the ML unit with code, figures, and one shared dataset | Large, and the highest payoff |
 | 5 | New chapters, starting with AI ethics | Large; can be done one chapter at a time |
 | 6 | Capstone projects and challenge/explore problems | Ongoing |

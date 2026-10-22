@@ -1,0 +1,163 @@
+\chapter{Inference for Two Means}
+
+Do students who listen to music while studying score differently from those who study in silence? Do paid
+subscribers watch longer than free users? Most interesting questions in statistics are comparisons. In the
+Statistical Inferences for Means chapter, you built confidence intervals and tests for a single mean, and for
+paired data. This chapter compares the means of two independent groups.
+
+\section{Confidence Intervals for a Difference in Two Means}
+
+In the Statistical Inferences for Means chapter, every example looked at one population at a time. Just as often, the real question is a comparison: not "what is the mean watch time," but "is the mean watch time different between two groups."
+
+\subsection{Two Independent Samples}\index{two-sample t-interval}
+
+Comparing average watch time between free-tier and paid-tier subscribers, two disjoint groups, means the samples are independent. Let $\mu_1, \mu_2$ be the true means. The parameter of interest is $\mu_1 - \mu_2$, point estimate $\bar{x}_1 - \bar{x}_2$.
+
+\[
+SE = \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
+\]
+\[
+(\bar{x}_1 - \bar{x}_2) \pm t^* \sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}
+\]
+
+Degrees of freedom come from the \index{Welch-Satterthwaite approximation}Welch-Satterthwaite approximation: between $\min(n_1-1, n_2-1)$ and $n_1+n_2-2$.
+
+Conditions: both samples independently and randomly selected, each $n \leq 10\%$ of its population if sampling without replacement, and each sample free of strong skew/outliers or $n \geq 30$.
+
+Sample: free-tier $n_1 = 20$, $\bar{x}_1 = 35.2$, $s_1 = 8.4$; paid-tier $n_2 = 18$, $\bar{x}_2 = 44.6$, $s_2 = 10.1$. Conditions satisfied. For a 95 percent CI,
+\[
+SE = \sqrt{\dfrac{8.4^2}{20} + \dfrac{10.1^2}{18}} \approx 3.032, \quad df \approx 33, \quad t^* \approx 2.035
+\]
+Margin of error $\approx 6.17$ minutes, point estimate $= -9.4$ minutes:
+\[
+-9.4 \pm 6.17 \Rightarrow (-15.57,\ -3.23)
+\]
+95 percent confident the true difference (free-tier minus paid-tier) is between $-15.57$ and $-3.23$ minutes. Since the entire interval is negative, paid-tier subscribers watch more per session on average.
+
+\begin{Exercise}[title={Building a Two-Sample Interval}, label={ex:means-build}]
+A tech reviewer compares battery life between two phone models. Model A: $n_1 = 15$, $\bar{x}_1 = 11.2$ hours, $s_1 = 1.8$ hours. Model B: $n_2 = 17$, $\bar{x}_2 = 9.8$ hours, $s_2 = 2.1$ hours. The two samples are independent, and conditions for inference are satisfied. Construct a 90 percent confidence interval for the true difference in mean battery life, Model A minus Model B. Technology gives $df \approx 29$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-build}]
+$SE = \sqrt{\dfrac{1.8^2}{15} + \dfrac{2.1^2}{17}} \approx 0.690$. With $df = 29$, $t^* \approx 1.699$, so the margin of error is $1.699 \times 0.690 \approx 1.17$ hours. The point estimate is $11.2 - 9.8 = 1.4$ hours, giving $1.4 \pm 1.17 \Rightarrow (0.23,\ 2.57)$ hours.
+\end{Answer}
+
+\begin{Exercise}[title={Justifying a Claim}, label={ex:means-justify}]
+Using the battery-life interval from the previous exercise, does the data provide convincing evidence that Model A's true mean battery life exceeds Model B's by more than one hour? Explain using the interval.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-justify}]
+No. The interval $(0.23, 2.57)$ does contain values above 1, but it also contains values below 1, so it does not provide convincing evidence that the difference exceeds one full hour specifically. The interval does support the weaker claim that Model A's mean battery life is greater than Model B's, since the entire interval is positive, just not the stronger one-hour claim.
+\end{Answer}
+
+\begin{Exercise}[title={Spot the Error}, label={ex:pooling-error}]
+A student compares two independent samples with visibly different spreads, one sample's dotplot is tightly clustered, the other is spread out much wider, and writes, "Since both populations are approximately normal, I will pool the two sample standard deviations into one estimate of $\sigma$ and use that in my confidence interval." Explain what is wrong with this reasoning for an AP Statistics response.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:pooling-error}]
+Pooling assumes the two population standard deviations are equal, $\sigma_1 = \sigma_2$. Here, the two samples show clearly different spreads, which is evidence against that assumption, not for it. Even when the spreads look similar, the unpooled two-sample $t$-interval using $\sqrt{s_1^2/n_1 + s_2^2/n_2}$, with technology-computed degrees of freedom, is the safe default, because it does not require equal spreads.
+\end{Answer}
+
+\section{Significance Tests for a Difference in Two Means, and Selecting the Right Procedure}
+
+\subsection{Setting Up and Carrying Out the Test}\index{hypothesis test!two-sample}
+
+Testing a claim about $\mu_1 - \mu_2$ follows the same four-step process, usually $H_0: \mu_1 - \mu_2 = 0$, with $H_a: \mu_1 - \mu_2 < 0$, $> 0$, or $\neq 0$.
+
+\[
+t = \dfrac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}
+\]
+using the same Welch-approximated $df$ and conditions as the two-sample interval.
+
+Free-tier versus paid-tier, same samples as before: $n_1 = 20$, $\bar{x}_1 = 35.2$, $s_1 = 8.4$; $n_2 = 18$, $\bar{x}_2 = 44.6$, $s_2 = 10.1$. Testing whether paid-tier watches more on average:
+\[
+H_0: \mu_1 - \mu_2 = 0 \qquad H_a: \mu_1 - \mu_2 < 0
+\]
+$SE = 3.032$ (as before), so
+\[
+t = \dfrac{35.2 - 44.6}{3.032} \approx -3.100
+\]
+$df \approx 33$, one-sided p-value $\approx 0.00196$. Reject $H_0$: convincing evidence paid-tier subscribers watch more per session on average. For the matching two-sided test, the test and the interval always agree.
+
+\begin{Exercise}[title={Running a Two-Sample Test}, label={ex:means-test2-run}]
+Two store locations track customer wait times. Store 1: $n_1 = 22$, $\bar{x}_1 = 8.3$ minutes, $s_1 = 2.1$ minutes. Store 2: $n_2 = 25$, $\bar{x}_2 = 9.6$ minutes, $s_2 = 2.8$ minutes. The samples are independent, and conditions for inference are satisfied. Test, at $\alpha = 0.05$, whether Store 1's mean wait time is shorter. Technology gives $df \approx 44$.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-run}]
+$H_0: \mu_1 - \mu_2 = 0$, $H_a: \mu_1 - \mu_2 < 0$. The standard error is $\sqrt{\dfrac{2.1^2}{22} + \dfrac{2.8^2}{25}} \approx 0.717$, so $t = \dfrac{8.3-9.6}{0.717} \approx -1.813$, with $df \approx 44$. The one-sided $p$-value is about $0.0383$. Since $0.0383 < 0.05$, reject $H_0$. There is convincing evidence that Store 1's mean wait time is shorter than Store 2's.
+\end{Answer}
+
+\subsection{Selecting the Right Procedure}
+
+By this point you have several inference procedures for means and, from the last chapter, inference for a proportion. The hardest part of a real problem is often not the arithmetic; it is recognizing which procedure actually fits. Figure~\ref{fig:procedure_flow} lays out the same three questions, in order, that will get you there every time.
+
+% [Verify cfigure environment and TikZ diagram]
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    every node/.style={font=\small, align=center},
+    question/.style={rectangle, rounded corners, draw=black!70, very thick, fill=white, text width=4.6cm, minimum height=1.1cm, inner sep=6pt},
+    outcome/.style={rectangle, rounded corners, draw=black!50, fill=gray!12, text width=4.6cm, minimum height=1.1cm, inner sep=6pt},
+    >=Stealth, ->, thick
+]
+
+\node[question] (q1) {Is the variable categorical or quantitative?};
+
+\node[outcome, below=1.3cm of q1, xshift=-3.6cm] (a1) {Categorical: use the tools from \emph{Inference for Proportions} or \emph{Inference for Chi-Square}};
+\node[question, below=1.3cm of q1, xshift=3.6cm] (q2) {Quantitative: one sample, or two?};
+
+\node[outcome, below=1.3cm of q2, xshift=-3.6cm] (a2) {One sample: the one-sample $t$-interval or $t$-test for a mean (this chapter, Sections 2--3)};
+\node[question, below=1.3cm of q2, xshift=3.6cm] (q3) {Two samples: paired, or independent?};
+
+\node[outcome, below=1.3cm of q3, xshift=-3.6cm] (a3) {Paired: subtract to get one sample of differences, then use the one-sample $t$-procedures on $d$};
+\node[outcome, below=1.3cm of q3, xshift=3.6cm] (a4) {Independent: the two-sample $t$-interval or $t$-test (this chapter, Sections 4--5)};
+
+\draw (q1) -- (a1);
+\draw (q1) -- (q2);
+\draw (q2) -- (a2);
+\draw (q2) -- (q3);
+\draw (q3) -- (a3);
+\draw (q3) -- (a4);
+
+\end{tikzpicture}
+\caption{Selecting an inference procedure for a single quantitative or categorical variable}
+\label{fig:procedure_flow}
+\end{figure}
+
+Categorical or quantitative is usually obvious from the variable itself. Paired or independent is worth slowing down for: does each measurement in one group have a natural partner in the other, or could the two groups' labels be shuffled without anything becoming meaningless? Same subscriber measured twice: shuffling is meaningless, so paired. Two disjoint groups: shuffling changes nothing, so independent.
+
+\subsection{Common Errors}
+
+\index{Type I error}Type I error, \index{Type II error}Type II error, and \index{power}power all carry over from the last chapter without any changes to their definitions, just a change in what the parameter is. A Type I error here means rejecting $H_0: \mu_1 = \mu_2$ when the two population means really are equal, concluding the streaming service's paid tier watches more when it actually does not. A Type II error means failing to reject $H_0$ when there really is a difference, missing a real effect. Power is still the probability of correctly detecting a real difference when one exists, and it still increases with a larger sample size, a larger true difference, or a higher significance level, exactly as it did for proportions.
+
+\begin{Exercise}[title={Naming the Error}, label={ex:means-test2-error}]
+In the store wait-time test from the previous exercise, the data led to rejecting $H_0$ in favor of Store 1 having a shorter mean wait time. Suppose, unknown to the researcher, the two stores' true mean wait times are actually equal. What type of error, if any, occurred? Explain.
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-error}]
+This would be a Type I error. The researcher rejected $H_0$ (concluding Store 1's mean wait time is shorter), but if the true means are actually equal, $H_0$ was in fact true, so rejecting it was a mistake. Because the test used $\alpha = 0.05$, this kind of error would occur no more than about 5 percent of the time across many repeated studies like this one.
+\end{Answer}
+
+\begin{Exercise}[title={Choosing the Procedure}, label={ex:means-test2-select}]
+For each scenario, state which of the four procedures from Figure~\ref{fig:procedure_flow} applies: quantitative one-sample, quantitative paired, quantitative independent-samples, or categorical.
+\begin{enumerate}
+    \item[(a)] A gym wants to know whether the average weight lifted by 30 randomly selected members changed after switching to a new equipment brand, measuring the same members' max lift before and after the switch.
+    \item[(b)] A researcher wants to compare the proportion of two different email subject lines that get opened.
+    \item[(c)] A nutritionist samples 40 adults at random and wants to estimate the true mean daily sugar intake in the population.
+\end{enumerate}
+\end{Exercise}
+
+\begin{Answer}[ref={ex:means-test2-select}]
+(a) Quantitative, paired. The same 30 members are measured twice, before and after, so the natural approach is to subtract and work with the sample of differences.
+
+(b) Categorical. Proportions of an email being opened or not are categorical counts, not measurements, so this belongs to the tools from \emph{Inference for Proportions}.
+
+(c) Quantitative, one sample. A single random sample is used to estimate one population mean, with no comparison to a second group or a second measurement per subject.
+\end{Answer}
+
+That decision flowchart will keep earning its keep. Later chapters add inference for regression slopes and chi-square tests for categorical variables with more than two outcomes, and the first question will always be the same: which procedure fits the shape of the data in front of you?
+
+
+ 

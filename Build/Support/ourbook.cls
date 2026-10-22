@@ -806,14 +806,11 @@
 \usepackage{tikz-3dplot}
 \usepackage{cancel}
 \usepackage{wrapfig}
-\usepackage{listings}
 \usepackage{colortbl}
-\usepackage{wrapfig}
 \usepgfplotslibrary{polar}
 \usepackage{enumitem}
 \usepgfplotslibrary{fillbetween}
 \usepackage{subcaption}
-\usepackage{enumitem}
 % Do not indent lists: put the labels flush with the left edge of the
 % surrounding text. (This matters most in exercises, whose column is narrow.)
 \setlist[enumerate]{leftmargin=*}
@@ -824,21 +821,6 @@
 % - Arjan Ellingson
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-
-% for charge chapter diagrams 16Mar2026
-\usepackage{pstricks}
-\usepackage{pst-electricfield}
-
-% Package mermaid for SQL_2 (ER Diagrams, standard)
-% mermaid loads adjustbox/trimclip, which \newcommand's \clipbox. PSTricks < 3.21
-% (TeX Live 2023 in CI) also defines \clipbox; newer PSTricks renamed it to
-% \psclipbox. Drop the old PSTricks name so adjustbox's \clipbox wins.
-\let\clipbox\relax
-% \usepackage{mermaid}
-% Builds run from Build/Intermediate; --no-sandbox lets headless Chrome start on CI runners.
-% -c applies the Kontinua look (palette, font, ER layout) to every diagram;
-% the style itself lives in Build/Support/mermaid-config.json.
-% \MermaidRendererOptions{-p ../Support/puppeteer-config.json -c ../Support/mermaid-config.json}
 
 % Minted package for syntax highlighting of code blocks
 \usepackage[cache=true,cachedir=minted-cache]{minted}
@@ -1231,6 +1213,12 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% for exercises with working space for students:
 \newdimen\ExtraWorkingSpace
+% Optional key to make the working space taller:
+%   \begin{Exercise}[title={...}, label=..., space=4cm]
+% adds 4cm of blank room below the exercise text, so the working space
+% (and the "Answer on Page" bracket) extends further down the page.
+% Any TeX length works (3cm, 1.5in, 120pt, 0.25\textheight).
+\define@key{PPExercise}{space}{\global\ExtraWorkingSpace=#1\relax}
 
 % The exercise text is set as ordinary paragraphs in the left 45% of the
 % page (outdented 36pt into the margin), and the right half is left blank
@@ -1318,7 +1306,7 @@ width 0pt
 \AnswerName\ %
 \ExerciseHeaderNB\ \itshape(on page
 \pageref{\ExerciseLabel})%% Good!!
-}\hfill}%\hypertarget{x\ExerciseLabel}{}%
+\hypertarget{x\ExerciseLabel}{}}\hfill}% target of the exercise's "Answer on Page" link
 \let\@auxout=\@mainaux
 \expandafter\label{y\ExerciseLabel}\nobreak}
 
@@ -1343,8 +1331,7 @@ width 0pt
 \tikzstyle{thick C}=[C,thick,color=Ccol,Ccol,l=$C$]
 \tikzstyle{mybattery}=[battery1,l=$\Delta V$,invert]
 
-\usepackage{amsfonts}
-\usepackage{amssymb} % extra symbols such as \nmid
+\usepackage{amssymb} % extra symbols such as \nmid (also loads amsfonts)
 \usepackage{fancyvrb}
 \usepgflibrary{shapes}
 %\usepackage{bera}
@@ -1352,10 +1339,25 @@ width 0pt
 \long\def\boxed#1{{\fboxsep=6pt\fbox {\m@th $\displaystyle #1$}}}
 
 
-\newcommand{\pyfunction}[1] {{\tt #1}}
-\newcommand{\pyvar}[1] {{\tt #1}}
-\newcommand{\pytype}[1] {{\tt #1}}
-\newcommand{\filename}[1] {{\tt #1}}
+% Code names in running text, set in the monospaced font. They may break
+% across lines after an underscore, a period, or a slash (with no hyphen),
+% which keeps long names like \filename{two\_rooms.py} from overflowing
+% the narrow exercise column. Write underscores as \_ as usual.
+\ExplSyntaxOn
+\tl_new:N \l__ourbook_code_tl
+\cs_new_protected:Npn \__ourbook_breakable_code:n #1
+  {
+    \tl_set:Nn \l__ourbook_code_tl { #1 }
+    \tl_replace_all:Nnn \l__ourbook_code_tl { \_ } { \_ \allowbreak }
+    \tl_replace_all:Nnn \l__ourbook_code_tl { . } { . \allowbreak }
+    \tl_replace_all:Nnn \l__ourbook_code_tl { / } { / \allowbreak }
+    \texttt { \tl_use:N \l__ourbook_code_tl }
+  }
+\NewDocumentCommand \pyfunction { m } { \__ourbook_breakable_code:n { #1 } }
+\NewDocumentCommand \pyvar { m } { \__ourbook_breakable_code:n { #1 } }
+\NewDocumentCommand \pytype { m } { \__ourbook_breakable_code:n { #1 } }
+\NewDocumentCommand \filename { m } { \__ourbook_breakable_code:n { #1 } }
+\ExplSyntaxOff
 % \newcommand{\newterm}[1] {{\it #1}} 
 \newcommand{\newterm}[1]{\textit{#1}\index{#1}}
 
@@ -1386,6 +1388,9 @@ width 0pt
     urlcolor=sdkblue,    % color of external links
 final=true]
 {hyperref}
+% In PDF bookmarks, show code names as plain text
+\pdfstringdefDisableCommands{%
+  \def\filename#1{#1}\def\pyfunction#1{#1}\def\pyvar#1{#1}\def\pytype#1{#1}}
 
 %% To make less, and non-stretching, space around itemize
 
@@ -1428,27 +1433,6 @@ final=true]
 \let\@listI\@listi
 \@listi
 
-%% ADDED NEW PYCODE LOOK 
-%% all verbatim environments should be incrementally changed to this if possible (as done in questionbank)
-% \lstdefinestyle{pycode}{
-%   language=Python,
-%   basicstyle=\ttfamily\small,
-%   columns=fixed,
-%   keepspaces=true,              
-%   showstringspaces=false,
-%   tabsize=4,                    
-%   breaklines=true, breakatwhitespace=true,
-%   upquote=true,                 
-%   % cosmetics
-%   frame=single, rulesepcolor=\color{black},
-%   numbers=left, numbersep=8pt,
-%   xleftmargin=2em, framexleftmargin=1.5em,
-%   keywordstyle=\bfseries,
-%   commentstyle=\itshape\color{gray!70},
-%   stringstyle=\itshape,
-%   literate={"}{{\texttt{"}}}1
-% }
-% Update as of 12/23/25 - replacing this with minted environments
 
 \newcommand{\vecb}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 

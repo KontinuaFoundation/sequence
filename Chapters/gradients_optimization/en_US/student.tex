@@ -1,6 +1,5 @@
-\chapter{Gradients and Their Applications}
+\chapter{Gradients}
 
-\section{Gradient Vectors}
 \index{directional derivative}
 You are halfway up a mountain in thick fog and want to reach the top as fast
 as possible. Which way should you walk? The \newterm{gradient} answers
@@ -33,7 +32,7 @@ other than the $x$- and $y$-directions.
     \label{fig:plane}
 \end{figure}
 
-\subsection{Directional Derivatives}
+\section{Directional Derivatives}
 The contour map in figure \ref{fig:mountain} shows the elevation, $f(x, y)$ 
 for a mountain. You already know that you can use the partial derivatives, 
 $f_x$ and $f_y$ to find the rate of change in elevation going east-west or 
@@ -466,7 +465,7 @@ $$= \frac{3\sqrt{3}}{2} \left( 2 \right)^2 + \frac{8 - 3\sqrt{3}}{2} \left( 1
 3$$
 $$= 1 + \frac{9\sqrt{3}}{2}$$
 
-\subsection{Unit Vectors in Two Dimensions}\index{unit vector}
+\section{Unit Vectors in Two Dimensions}\index{unit vector}
 
 What if the given vector is not a unit vector? We can scale the given vector 
 to find a unit vector in the same direction:
@@ -543,7 +542,7 @@ substitute for $x$ and $y$:
 $$D_{\textbf{u}}(1, 4) = \frac{12(4) + 3(1)}{2\sqrt{5(4)}} = \frac{51}{4\sqrt{5}} 
 \approx 5.702$$
 
-\subsection{Unit Vectors in Higher Dimensions}
+\section{Unit Vectors in Higher Dimensions}
 The trigonometric explanation for finding unit vectors is more difficult to 
 visualize in higher dimensions. However, there is another method that works 
 well in 2, 3, and higher dimensions. Recall that the magnitude of a vector, 
@@ -689,7 +688,7 @@ direction of the given vector.
 \end{enumerate}
 \end{Answer}
 
-\subsection{The Direction of Steepest Ascent}\index{maximum rate of change}
+\section{The Direction of Steepest Ascent}\index{maximum rate of change}
 The directional derivative can be written as the dot product of two vectors:
 $$D_u f(x, y) = af_x(x, y) + bf_y(x, y) = \left[ f_x(x, y), f_y(x, y) \right] 
 \cdot \textbf{u}$$
@@ -804,7 +803,7 @@ positive $y$-direction to be north.
 \end{enumerate}
 \end{Answer}
 
-\subsection{Conclusion}
+\section{Conclusion}
 In summary, the gradient of a multivariable function points in the direction of steepest increase:
 $$\nabla f = \left[ \frac{\partial f}{\partial x}, \frac{\partial f}{
 \partial y} \right] = \langle{ \frac{\partial f}{\partial x}, \frac{\partial f}{
@@ -815,406 +814,7 @@ $$
 D_{\mathbf{u}} f(\mathbf{a}) = \nabla f(\mathbf{a}) \cdot \mathbf{u}
 $$
 
-It is best to think of the gradient as an arrow pointing in the steepest uphill direction (vector), and the directional derivative as the slope of any specific uphill direction (scalar). 
+It is best to think of the gradient as an arrow pointing in the steepest uphill direction (vector), and the directional derivative as the slope of any specific uphill direction (scalar).
 
-
-\section{Optimization with Gradients}\index{optimization!multivariable}
-
-At the top of a hill, there is no uphill direction. The gradient is the
-zero vector. The same is true at the bottom of a valley. So to find the
-highest and lowest points of $f(x, y)$, we look for \newterm{critical
-points}\index{critical point!multivariable}, where
-$$\nabla f = [0, 0], \quad\text{that is,}\quad f_x = 0 \text{ and } f_y = 0$$
-
-In one variable, a critical point could be a max, a min, or neither. In two
-variables there is a new possibility: a \newterm{saddle
-point}\index{saddle point}. The surface $f(x, y) = x^2 - y^2$ at the origin
-is shaped like a horse's saddle (or a Pringles chip): walking east-west, the
-origin is a low point; walking north-south, it is a high point. Its gradient
-is zero, but it is neither a max nor a min.
-
-\begin{mdframed}[style = important, frametitle = {The Second Derivative Test for Two Variables}]
-Suppose $\nabla f(a, b) = [0, 0]$. Let
-$$D = f_{xx}(a, b)\, f_{yy}(a, b) - \left[f_{xy}(a, b)\right]^2$$
-\begin{itemize}
-\item If $D > 0$ and $f_{xx}(a, b) > 0$, then $f(a, b)$ is a local minimum.
-\item If $D > 0$ and $f_{xx}(a, b) < 0$, then $f(a, b)$ is a local maximum.
-\item If $D < 0$, then $(a, b)$ is a saddle point.
-\item If $D = 0$, the test tells you nothing.
-\end{itemize}
-\end{mdframed}
-
-For $x^2 - y^2$: $f_{xx} = 2$, $f_{yy} = -2$, $f_{xy} = 0$, so $D = -4 < 0$:
-a saddle, as promised.
-
-\textbf{Example}: Find and classify the critical points of $f(x, y) = x^2 + xy +
-y^2 - 3x$.
-
-\textbf{Solution}: Set both partial derivatives to zero:
-$$f_x = 2x + y - 3 = 0 \qquad f_y = x + 2y = 0$$
-From the second equation, $x = -2y$. Substituting into the first, $-4y + y
-- 3 = 0$, so $y = -1$ and $x = 2$. The second partials are $f_{xx} = 2$,
-$f_{yy} = 2$, and $f_{xy} = 1$, so $D = (2)(2) - 1^2 = 3 > 0$. Since
-$f_{xx} > 0$, the point $(2, -1)$ is a local minimum, with $f(2, -1) =
--3$.
-
-\subsection{Gradient Descent}\index{gradient descent}
-
-Solving $\nabla f = [0, 0]$ by algebra only works for simple functions. A
-computer can instead do what a lost hiker in the fog would do: feel which
-way is downhill and take a small step that way. Over and over. Because
-$\nabla f$ points uphill, each step goes in the direction of $-\nabla f$:
-$$[x, y] \leftarrow [x, y] - r \nabla f(x, y)$$
-where $r$ is a small step size. This algorithm, \newterm{gradient
-descent}, is how most machine learning models are trained: the
-``function'' is the model's error, with millions of variables.
-
-\begin{minted}{python}
-x, y = 0.0, 0.0     # starting guess
-r = 0.1             # step size
-
-for step in range(100):
-    fx = 2*x + y - 3    # partial derivatives of x^2 + xy + y^2 - 3x
-    fy = x + 2*y
-    x = x - r * fx
-    y = y - r * fy
-
-print(x, y)
-\end{minted}
-
-After 100 steps, this prints values within 0.0001 of $(2, -1)$, the
-minimum we found by hand.
-
-\begin{Exercise}[title = {Finding a Maximum}, label = grad_max]
-A company sells two products. If it charges $x$ dollars more than a base
-price for the first and $y$ dollars more for the second, its profit (in
-thousands of dollars) is
-$$P(x, y) = 6x + 4y - x^2 - y^2 - xy$$
-Find the critical point, show that it is a maximum, and find the maximum
-profit.
-\end{Exercise}
-\begin{Answer}[ref = grad_max]
-$P_x = 6 - 2x - y = 0$ and $P_y = 4 - 2y - x = 0$. From the second, $x = 4
-- 2y$; substituting, $6 - 8 + 4y - y = 0$, so $y = \frac{2}{3}$ and $x =
-\frac{8}{3}$. $P_{xx} = -2$, $P_{yy} = -2$, $P_{xy} = -1$, so $D = 4 - 1 =
-3 > 0$ with $P_{xx} < 0$: a maximum. $P\left(\frac{8}{3},
-\frac{2}{3}\right) = \frac{28}{3} \approx 9.33$, or about \$9,330.
-\end{Answer}
-
-\begin{Exercise}[title = {Saddle or Not?}, label = grad_saddle]
-Find and classify the critical point of $f(x, y) = xy$.
-\end{Exercise}
-\begin{Answer}[ref = grad_saddle]
-$f_x = y$ and $f_y = x$, so the only critical point is $(0, 0)$. $f_{xx} =
-0$, $f_{yy} = 0$, $f_{xy} = 1$, so $D = 0 - 1 = -1 < 0$: a saddle point.
-(Along $y = x$, $f = x^2$ rises; along $y = -x$, $f = -x^2$ falls.)
-\end{Answer}
-
-\section{Applications of Partial Derivatives and Gradients}
-
-\subsection{Laplace's Equation}
-A partial differential equation that has applications in fluid dynamics and 
-electronics is Laplace's Equation\index{Laplace's equation}. Solutions to 
-Laplace's Equation are called \index{harmonic function}\textit{harmonic functions}. 
-
-\begin{mdframed}[style = important, frametitle = {Laplace's Equation}]
-Consider a twice-differentiable function, $f$. In two dimensions, Laplace's 
-Equation is given by:
-$$ \frac{\partial ^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 0$$
-And in three dimensions, 
-$$\frac{\partial ^2 f}{\partial x^2} + \frac{\partial ^2 f}{\partial y^2} + 
-\frac{\partial ^2 f}{\partial z^2} = 0$$
-\end{mdframed}
-
-Another way to represent Laplace's Equation is:
-$$\Delta f = \nabla^2 f = \nabla \cdot \nabla f = 0$$
-
-Where $\nabla ^2 = \Delta$ is called the \textit{Laplace operator}. 
-
-\textbf{Example}: Determine whether or not $f = x^2 + y^2$ is a solution to 
-Laplace's Equation. 
-
-\textbf{Solution}: We are checking to see if $\frac{\partial^2 f}{\partial 
-x^2} + \frac{\partial^2 f}{\partial y^2} = 0$ for $f(x, y) = x^2 + y^2$. 
-Finding $\partial^2 f / \partial x^2$:
-$$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ \frac{
-\partial}{\partial x} \left( x^2 + y^2 \right) \right]$$
-$$= \frac{\partial}{\partial x} \left( 2x \right) = 2$$
-
-And finding $\partial^2 f / \partial y^2$:
-$$\frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y} \left[ \frac{
-\partial}{\partial y} \left( x^2 + y^2 \right) \right]$$
-$$= \frac{\partial}{\partial y} \left( 2y \right) = 2$$
-
-Then $\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} = 
-2 + 2 = 4 \neq 0$. Therefore, $f(x, y) = x^2 + y^2$ is not a solution to 
-Laplace's Equation. 
-
-\begin{Exercise}[title = {Solutions to Laplace's Equation}, label = laplace]
-Determine whether the function is a solution to Laplace's Equation. 
-\begin{enumerate}
-    \item $f(x, y) = x^2 - y^2$
-    \item $f(x, y) = \sin{x} \cosh{y} + \cos{x} \sinh{y}$
-    \item $f(x, y) = e^{-x} \cos{y} - e^{-y} \cos{x}$
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref = laplace]
-\begin{enumerate}
-    \item $$\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial 
-    y^2} = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} 
-    \left( x^2 - y^2 \right) \right] + \frac{\partial}{\partial y} \left[ 
-    \frac{\partial}{\partial y} \left( x^2 - y^2 \right) \right]$$
-    $$= \frac{\partial}{\partial x} \left[ 2x \right] + \frac{\partial}{
-    \partial y} \left[ -2y \right] = 2 - 2 = 0$$
-
-    Therefore, $f(x, y) = x^2 - y^2$ is a solution to Laplace's Equation. 
-
-    \item $$\frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} 
-    = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} \left( 
-    \sin{x} \cosh{y} + \cos{x} \sinh{y} \right) \right] + \frac{\partial}{
-    \partial y} \left[ \frac{\partial}{\partial y} \left( \sin{x} \cosh{y} + 
-    \cos{x} \sinh{y} \right) \right]$$
-    $$= \frac{\partial}{\partial x} \left[ \cos{x} \cosh{y} - \sin{x} \sinh{y} 
-    \right] + \frac{\partial}{\partial y} \left[ \sin{x} \sinh{y} + \cos{x} 
-    \cosh{y} \right]$$
-    $$= -\sin{x}\cosh{y} - \cos{x}\sinh{y} + \sin{x}\cosh{y} + \cos{x} \sinh{
-    y} = 0$$
-
-    Therefore, $f(x, y) = \sin{x}\cosh{y} + \cos{x}\sinh{y}$ is a solution to 
-    Laplace's Equation.
-
-    \item $$\frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial 
-    y^2} = \frac{\partial}{\partial x} \left[ \frac{\partial}{\partial x} 
-    \left( e^{-x}\cos{y} - e^{-y}\cos{x} \right) \right] + \frac{\partial}{
-    \partial y} \left[ \frac{\partial}{\partial y} \left( e^{-x} \cos{y} - 
-    e^{-y} \cos{x} \right) \right]$$
-    $$= \frac{\partial}{\partial x} \left[ -e^{-x}\cos{y} + e^{-y}\sin{x} 
-    \right] + \frac{\partial}{\partial y} \left[ -e^{-x}\sin{y} + e^{-y} 
-    \cos{x} \right]$$
-    $$= e^{-x} \cos{y} + e^{-y} \cos{x} - e^{-x} \cos{y} - e^{-y} \cos{x} = 0$$
-
-    Therefore, $f(x, y) = e^{-x}\cos{y} - e^{-y}\cos{x}$ is a solution to Laplace's Equation.
-\end{enumerate}
-\end{Answer}
-
-\subsection{The Wave Equation}\index{wave equation}
-Another useful equation with partial derivatives is the Wave Equation:
-$$\frac{\partial^2 f}{\partial t^2} = a^2 \frac{\partial^2 f}{\partial x^2}$$
-
-Where $f$ is a function of $x$ and $t$ and $a$ is a constant. This equation 
-describes waves, such as a vibrating string, light waves, or sound waves. 
-
-\textbf{Example}: Show that $f(x, t) = \sin{ \left( x - at \right)}$ satisfies 
-the Wave Equation. 
-
-\textbf{Solution}: First, we find the second partial derivatives:
-$$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ \frac{
-\partial}{\partial t} \left( \sin{ \left( x - at \right)} \right) \right] = 
-\frac{\partial}{\partial t} \left[ -a\cos{\left(x - at \right)} \right] = -a^2
-\sin{\left(x - at \right)}$$
-
-$$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ \frac{
-\partial}{\partial x} \left( \sin{ \left( x - at \right)} \right) \right] = 
-\frac{\partial}{\partial x} \left[ \cos{\left( x - at \right)}\right] = -\sin{
-\left( x - at \right)}$$
-
-And we see that:
-$$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 \sin{\left(x - at \right)} = 
-\frac{\partial^2 f}{\partial t^2}$$
-
-Therefore, this function satisfies the Wave Equation. 
-
-\begin{Exercise}[title = {The Wave Equation}, label = wave]
-Show that the following functions satisfy the Wave Equation:
-\begin{enumerate}
-    \item $f(x, t) = \cos{\left(kx \right)}\cos{\left(akt \right)}$
-    \item $f(x, t) = \sin{\left( x - at \right)} + \ln{ \left( x + at 
-    \right)}$
-    \item $f(x, t) = \frac{t}{a^2t^2 - x^2}$
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref = wave]
-\begin{enumerate}
-    \item Finding the partial derivatives:
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
-    \frac{\partial}{\partial t} \left( \cos{ \left( k x \right)} \cos{ \left( 
-    a k t \right)} \right) \right] = \frac{\partial}{\partial t} \left[ -a k 
-    \cos{ \left( k x \right)} \sin{ \left( a k t \right)} \right]$$
-    $$\frac{\partial^2 f}{\partial t^2} = -a^2 k^2 \cos{ \left( k x \right)} 
-    \cos{ \left( a k t \right)}$$
-
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
-    \frac{\partial}{\partial x} \left( \cos{\left( k x \right)}\cos{\left( a k 
-    t \right)} \right) \right] = \frac{\partial}{\partial x} \left[ -k \sin{ 
-    \left( k x \right)} \cos{ \left( a k t \right)} \right]$$
-    $$\frac{\partial^2 f}{\partial x^2} = -k^2 \cos{ \left( k x \right)} \cos{ 
-    \left( a k t \right)}$$
-
-    And we see that:
-    $$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 k^2 \cos{ \left( k x 
-    \right)} \cos{ \left( a k t \right)} = \frac{\partial^2 f}{\partial t^2}$$
-
-    Therefore, $f(x, t) = \cos{\left( k x \right)}\cos{\left( a k t \right)}$ 
-    satisfies the Wave Equation. 
-
-    \item Finding the partial derivatives:
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
-    \frac{\partial}{\partial t} \left( \sin{\left( x - a t \right)} + \ln{ 
-    \left( x + a t \right)} \right) \right]$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
-    -a \cos{ \left( x - a t \right)} + \frac{a}{x + a t} \right] = -a^2 \sin{ 
-    \left( x - a t \right)} + \frac{-a^2}{\left( x + a t \right)^2}$$
-
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
-    \frac{\partial}{\partial x} \left( \sin{ \left( x - a t \right)} + \ln{ 
-    \left( x + a t \right)} \right) \right]$$
-
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
-    \cos{ \left( x - a t \right)} + \frac{1}{x + a t} \right] = -\sin{ \left( 
-    x - a t \right)} + \frac{-1}{\left( x + a t \right)^2}$$
-
-    And we see that:
-    $$a^2 \frac{\partial^2 f}{\partial x^2} = -a^2 \sin{ \left( x - a t 
-    \right)} + \frac{-a^2}{\left( x + a t \right)^2} = \frac{\partial^2 f}{
-    \partial t^2}$$
-
-    Therefore, $f(x, t) = \sin{ \left( x - a t \right)} + \ln{ \left( x + a t 
-    \right)}$ satisfies the Wave Equation. 
-
-    \item Finding the partial derivatives:
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
-    \frac{\partial}{\partial t} \left( \frac{t}{a^2 t^2 - x^2} \right) \right] 
-    = \frac{\partial}{\partial t} \left[ \frac{\left(a^2 t^2 - x^2 \right) - t 
-    \left(2 a^2 t \right)}{\left( a^2 t^2 - x^2 \right)^2} \right]$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\partial}{\partial t} \left[ 
-    \frac{a^2 t^2 - x^2 - 2 a^2 t^2}{\left( a^2 t^2 - x^2 \right)^2} \right] = 
-    \frac{\partial}{\partial t} \left[ \frac{-a^2 t^2 - x^2}{\left( a^2 t^2 - 
-    x^2 \right)^2} \right]$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\left( a^2 t^2 - x^2 \right)^2 
-    \left(-2 a^2t \right) - \left( -a^2 t^2 - x^2 \right) \left( 2 \left( a^2 
-    t^2 - x^2 \right) \left( 2 a^2 t \right) \right)}{\left( a^2 t^2 - x^2 
-    \right)^4}$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{\left( a^2 t^2 - x^2 \right) 
-    \left( -2 a^2 t \right) - \left( -a^2 t^2 - x^2 \right) \left( 4 a^2 t 
-    \right)}{\left( a^2 t^2 - x^2 \right)^3}$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{ -2 a^4 t^3 + 2 a^2 t x^2 + 4 
-    a^4 t^3 + 4 a^2  t x^2}{\left( a^2 t^2 - x^2 \right)^3}$$
-    $$\frac{\partial^2 f}{\partial t^2} = \frac{ 2 a^4 t^3 + 6 a^2 t x^2}{
-    \left( a^2 t^2 - x^2 \right)^3} = 2 a^2 t \left( \frac{a^2 t^2 + 3 x^2}{
-    \left( a^2 t^2 - x^2 \right)^3} \right)$$
-
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
-    \frac{\partial}{\partial x} \left( \frac{t}{a^2 t^2 - x^2} \right) \right] 
-    = \frac{\partial}{\partial x} \left[ \frac{\left( a^2 t^2 - x^2 \right) 
-    \left( 0 \right) - t \left( -2 x \right)}{\left( a^2  t^2 - x^2 \right)^2} 
-    \right]$$
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left[ 
-    \frac{2 t x}{\left( a^2 t^2 - x^2 \right)^2} \right] = \frac{\left( a^2 
-    t^2 - x^2 \right)^2 \left( 2 t \right) - \left( 2 t x \right) \left( 2 
-    \left( a^2 t^2 - x^2 \right) \left( -2 x \right) \right)}{\left( a^2 t^2 - 
-    x^2 \right)^4}$$
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{\left( a^2 t^2 - x^2 \right) 
-    \left( 2 t \right) - \left( 2 t x \right) \left( 2 \right) \left( -2 x 
-    \right)}{\left( a^2 t^2 - x^2 \right)^3}$$
-    $$\frac{\partial^2 f}{\partial x^2} = \frac{2 a^2 t^3 - 2 t x^2 + 8 t x^2}{
-    \left( a^2 t^2 - x^2 \right)^3} = \frac{2 a^2 t^3 + 6 t x^2}{\left( a^2 
-    t^2 - x^2 \right)^3} = 2 t \left( \frac{a^2 t^2 + 3 x^2}{\left( a^2 t^2 - 
-    x^2 \right)^3} \right)$$
-
-    And we see that:
-    $$a^2 \frac{\partial^2 f}{\partial x^2} = 2 a^2 t \left( \frac{a^2 t^2 + 3 
-    x^2}{\left( a^2 t^2 - x^2 \right)^3} \right) = \frac{\partial^2 f}{
-    \partial t^2}$$
-
-    Therefore, $f(x, t) = \frac{t}{a^2t^2 - x^2}$ satisfies the Wave Equation. 
-\end{enumerate}
-\end{Answer}
-
-\subsection{Cobb-Douglas Production Function}\index{Cobb-Douglas production function}
-The Cobb-Douglas function describes how production depends on capital and labor, 
-as theorized by the economists Charles Cobb and Paul Douglas. Capital 
-investments are things like new machinery, expanded factories, or raw 
-materials. Labor investments involve hiring more workers or improving 
-working conditions to improve work rates. We can describe total production, 
-$P$, as a function of labor, $L$, and capital, $K$. Cobb and Douglas posit 
-three conditions:
-\begin{enumerate}
-\item Without either labor or capital, production will cease.
-\item The marginal productivity of labor is proportional to the amount of production 
-per unit of labor.
-\item The marginal productivity of capital is proportional to the amount of 
-production per unit of capital.
-\end{enumerate}
-
-The marginal productivity of labor is given by the partial derivative, $\partial P 
-/ \partial L$ and the production per unit of labor is given by $P / L$. 
-Therefore, statement 2 says that:
-$$\frac{\partial P}{\partial L} = \alpha \frac{P}{L}$$
-
-where $\alpha$ is some constant. Keeping $K$ constant at $K = K_0$, we have 
-the differential equation:
-$$ \frac{d P}{d L} = \alpha \frac{P}{L}$$
-
-Solving, we find that:
-$$P(L, K_0) = C_1 \left( K_0 \right) L^{\alpha}$$
-
-We make $C_1$ a function of $K_0$ because it could depend on $K_0$. In a 
-similar manner to above, we can write statement 3 as a mathematical statement:
-$$\frac{\partial P}{\partial K} = \beta \frac{P}{K}$$
-
-where $\beta$ is also a constant. Keeping $L = L_0$ and solving, we see that:
-$$P(L_0, K) = C_2(L_0)K^{\beta}$$
-
-again, we assume $C_2$ is a function of the fixed labor, $L_0$. Combining 
-these equations, we get:
-$$P(L, K) = bL^{\alpha} K^{\beta}$$
-
-where $b$ is a constant independent of capital and labor. Additionally, from 
-statement 1, we know that $\alpha > 0$ and $\beta > 0$. What happens if both 
-labor and capital are increased by a factor of $n$? Let us examine the effect 
-on $P$:
-$$P(nL, nK) = b \left( nL \right)^{\alpha} \left( nK \right)^{\beta}$$
-$$P(nL, nK) = n^{\alpha + \beta} b L^{\alpha} K^{\beta} = n^{\alpha + \beta} 
-P(L, K)$$
-
-Cobb and Douglas noted that if $\alpha + \beta = 1$, then $P(nL, nK) = nP(L, 
-K)$, and therefore increasing labor and capital by a factor of $n$ increases 
-production by a factor of $n$ as well. Therefore, the Cobb-Douglas equation 
-assumes $\alpha + \beta = 1$ and can be written as:
-$$P(L, K) = bL^{\alpha}K^{1 - \alpha}$$
-
-\begin{Exercise}[title = {Cobb-Douglas Production Model}, label = cobb]
-Cobb and Douglas modeled production in the US from 1900 to 1922 with the 
-equation $P(L, K) = 1.01L^{0.75} K^{0.25}$. 
-\begin{enumerate}
-\item Express the marginal productivity of labor as a function of $L$ and $K$.
-\item Express the marginal productivity of capital as a function of $L$ and $K$.
-\item In 1916, $L = 382$ and $K = 126$ (compared to initial values of $100$ in 
-1900). What is the marginal productivity of labor in 1916? Of capital?
-\item Based on your answer to the previous question, would you invest in 
-capital or labor if you owned a factory in 1916? Why?
-\end{enumerate}
-\end{Exercise}
-
-\begin{Answer}[ref = cobb]
-\begin{enumerate}
-    \item The marginal productivity of labor is given by $\partial P / \partial L$:
-    $$\frac{\partial P}{\partial L} = \frac{\partial}{\partial L} \left[ 1.01 
-    L^{0.75} K^{0.25} \right] = 0.7575 L^{-0.25} K^{0.25}$$
-    \item The marginal productivity of capital is given by $\partial P / \partial 
-    K$:
-    $$\frac{\partial P}{\partial K} = \frac{\partial}{\partial K} \left[ 1.01 
-    L^{0.75} K^{0.25} \right] = 0.2525 L^{0.75} K^{-0.75}$$
-    \item Finding the marginal productivity of labor in 1916:
-    $$\frac{\partial P}{\partial L} = 0.7575 \left( 382 \right)^{-.25} \left( 
-    126 \right)^{0.25} \approx 0.574$$
-    And finding the marginal productivity of capital in 1916:
-    $$\frac{\partial P}{\partial K} = 0.2525 \left( 382 \right)^{0.75} \left( 
-    126 \right)^{-0.75} \approx 0.580$$
-    \item Since the marginal productivity of capital is greater, I would invest in 
-    capital. This would yield a greater increase in production than the same 
-    investment in labor. 
-\end{enumerate}
-\end{Answer}
+The gradient points uphill, so it is the natural tool for finding the highest and lowest points of a
+function. That is the subject of the next chapter, Optimization with Gradients.

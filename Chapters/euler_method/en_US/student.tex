@@ -5,6 +5,7 @@ seconds. Between readings, you assume your speed stays the same and estimate
 how far you have gone. Euler's method approximates a differential equation the
 same way: read the slope, take a step, read the slope again.
 
+\section{Following the Slope}
 Let us consider the differential equation 
 $\frac{dy}{dx} = x + y$ with initial condition $y(0) = 1$.
 
@@ -81,6 +82,7 @@ the approximation gets closer and closer to the true solution.
 \label{fig:euler3}
 \end{figure}
 
+\section{The Algorithm}
 In general, Euler's method is a numerical process similar to sketching a 
 solution on a \index{slope field}slope field. You begin at the initial value and take a short step in the direction the
 slope field points. At the end of each step, you read the slope again and
@@ -149,6 +151,7 @@ n & $x_n$ & $y_n$ & $F(x_n, y_n)$ \\\hline
 
 Therefore, $y(1) \approx 3.465$. The exact solution is $y = 3e^x - 2x - 2$, which gives $y(1) \approx 4.155$. Euler's method is low here because the solution curves upward, and a straight-line step falls below a curve that bends up.
 
+\section{Letting a Computer Take the Steps}
 A computer does not mind taking thousands of tiny steps:
 \begin{minted}{python}
 def euler(F, x0, y0, h, steps):
@@ -170,6 +173,7 @@ for steps in [5, 50, 500]:
 Each tenfold cut in the step size shrinks the error (compared with
 $4.1548$) by about a factor of ten.
 
+\section{An AP-Style Example}
 \textbf{Example}: This problem was originally presented as a no-calculator, 
 multiple-choice question on the 2012 AP Calculus BC exam. Let $y = f(x)$ be 
 the solution to $\frac{dy}{dx} = x - y$ with initial condition $f(1) = 3$. 

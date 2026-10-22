@@ -8,7 +8,7 @@ In this chapter, you will turn that page into something you would be proud to sh
 \newterm{CSS} to give it colors, fonts, rounded buttons, and a layout that works on both a laptop and a
 phone. Then you will use \newterm{JavaScript} to make it respond to clicks: a dark mode button, steps
 you can cross off as you bake, and a box that doubles or triples the recipe. Finally, you will serve the
-page from your own Express server, like the one you built in the Web APIs chapter, and add a like
+page from your own Express server, like the one you built in the Building a Web API chapter, and add a like
 button that counts likes from everyone who visits.
 
 \begin{figure}[htbp]
@@ -237,7 +237,7 @@ the screen it is on is called \newterm{responsive}.\index{responsive design} (It
 
 \section{JavaScript for Python Programmers}
 CSS controls how the page looks. To make it \emph{do} things, you need a programming language that runs
-inside the browser, and there is only one: JavaScript. You have already seen some in the Web APIs
+inside the browser, and there is only one: JavaScript. You have already seen some in the Building a Web API
 chapter, where your Express server was written in it. Since you know Python (and some C), most of
 JavaScript will look familiar:
 
@@ -477,7 +477,7 @@ does not change. To share something between visitors, such as a count of likes, 
 server.
 
 \subsection{Serving the Page with Express}
-In the Web APIs chapter, you built an Express server that answered requests with JSON. The same server can
+In the Building a Web API chapter, you built an Express server that answered requests with JSON. The same server can
 also send your HTML, CSS, JavaScript, and images. Create \filename{server.js} in the \filename{recipe}
 folder (\emph{not} inside \filename{public}):
 
@@ -510,7 +510,7 @@ app.listen(PORT, () => {
 that file, and to send \filename{index.html} when someone asks for the site itself. The two other routes
 are an API with a single number in it: \verb|GET| reads the likes, and \verb|POST| adds one.
 
-Start it from the \filename{recipe} folder, as you did in the Web APIs chapter:
+Start it from the \filename{recipe} folder, as you did in the Building a Web API chapter:
 
 \begin{minted}{shell}
 npm init -y
@@ -547,7 +547,7 @@ likeButton.addEventListener("click", () => {
 });
 \end{minted}
 
-\verb|fetch| sends an HTTP request, just as \verb|curl| did in the Web APIs chapter. The network is slow
+\verb|fetch| sends an HTTP request, just as \verb|curl| did in the Building a Web API chapter. The network is slow
 compared to the computer, so \verb|fetch| does not make the page freeze while it waits. Instead, it
 returns a \newterm{promise}: an object that will hold the response once it arrives. Inside a function
 marked \verb|async|, the word \verb|await| pauses that function (and only that function) until the promise
@@ -573,7 +573,7 @@ at all, and free static hosts such as GitHub Pages will serve it.
 
 One warning: everything in \filename{index.html}, \filename{style.css}, and \filename{script.js} is sent to
 every visitor, who can read it with ``View Page Source.'' Never put a password or an API key, like the ones
-in the Web APIs chapter, in your front-end code. Secrets belong on the server.
+in the Building a Web API chapter, in your front-end code. Secrets belong on the server.
 
 \begin{Exercise}[title={Which Color Wins?}, label=cj_cascade]
 A stylesheet has these three rules:

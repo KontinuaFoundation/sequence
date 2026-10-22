@@ -1,0 +1,588 @@
+\chapter{Drones, Helicopters, and Rockets}
+
+A drone the size of your hand can hover perfectly still, then dart sideways without tilting its nose. A
+helicopter can land on a hospital roof. A rocket climbs where there is no air at all to push against. In the
+Airplanes chapter, you saw how wings make lift by turning air downward. Rotorcraft use the same idea with
+spinning wings, and rockets throw their own mass backward instead of pushing on air.
+
+\section{Rotorcraft}
+
+\subsection{Quadcopters}
+Let us start with \index{quadcopter}\newterm{quadcopters}, the
+four-rotor aircraft most people call drones. (You may also hear rotorcraft,
+or UAVs, for unmanned aerial vehicles.)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{quad.png}
+    \caption{A quadcopter: four rotors on a central body, with one end
+    chosen as the front.}
+    \label{fig:quad}
+\end{figure}
+A few terms will come up again and again:
+\begin{description}
+    \item[Rotor] The \index{rotor}rotor is the spinning part that makes
+    lift. It has a central \emph{hub} with two or more \newterm{blades}
+    attached. People often say propeller, but rotor is the better word for
+    a part that lifts the aircraft.
+    \item[UAS / UAV] Unmanned Aircraft System or Unmanned Aerial Vehicle:
+    a drone, plus the software and controllers that fly it.
+    \item[Fuselage] The main body, or frame.
+    \item[Torque] A twisting force. Push on a door near its hinges and it
+    barely moves; push near the handle and it swings easily. The second
+    push has more torque. You will study torque in detail later. For now,
+    know that every spinning rotor twists the drone the opposite way, and
+    those twists must be balanced.
+\end{description}
+
+\subsection{VTOL}
+An airplane needs a runway to build up enough speed for its wings to lift
+it. A quadcopter's rotors make lift while the drone sits still. Each rotor
+throws air downward, and by Newton's third law the air pushes the rotor
+up. So a quadcopter can take off and land straight up and down: this is
+called \newterm{Vertical Take-Off and Landing}, or VTOL\index{VTOL}.
+
+Two forces act vertically: the total thrust of the rotors, upward, and the
+weight $mg$, downward. Newton's second law says
+$$F_{\text{rotors}} - mg = ma$$
+To climb, the rotors push harder than the weight. To hover, they push
+exactly as hard as the weight:
+\begin{equation}
+    F_{\text{rotors}} = mg
+\end{equation}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{verticalIso.png}
+    \caption{A quadcopter climbing straight up. All four rotors push
+    equally (red arrows).}
+    \label{fig:quadcopterVtol}
+\end{figure}
+
+\begin{Exercise}[title={Hover and climb}, label=fl_hover]
+A 1.2 kg drone hovers. How much total thrust do its rotors make? How much
+thrust does each rotor make? How much total thrust would it need to
+accelerate upward at 2 m/s$^2$?
+\end{Exercise}
+\begin{Answer}[ref=fl_hover]
+Hovering: $F = mg = (1.2)(9.8) \approx 11.8$ N in total, or about 2.9 N per
+rotor. Climbing: $F = mg + ma = 1.2(9.8 + 2) \approx 14.2$ N.
+\end{Answer}
+
+\subsection{Rotor Structure}
+How does a rotor make lift? Each blade is a small wing. As it spins, it
+meets the air at an angle of attack and pushes the air down.
+
+Each blade has a \newterm{root}, which connects to the hub, and a
+\newterm{tip} at its outer end. Most blades are \newterm{twisted}: steeply
+angled near the root and flatter near the tip, like the thread of a screw.
+Why? The tip travels around a much bigger circle than the root, so it moves
+much faster through the air. A flatter angle at the tip keeps every part of
+the blade pushing about equally.
+
+Spin a rotor backward, and it pushes air the other way.
+
+Rotors are described\index{quadcopter!propellers!numbers} by their
+\newterm{diameter}, their \newterm{pitch}, and their \newterm{number of
+blades}. A ``10x5'' rotor has a 10 inch diameter and a 5 inch pitch.
+
+The \textbf{diameter} is the width of the circle the tips sweep. A bigger
+rotor pushes a bigger column of air more slowly. For the same thrust, that
+takes less power. This is why a helicopter uses one huge, slow rotor, while
+a small drone, which must stay compact, uses several small, fast ones.
+
+The \textbf{pitch} is how far the rotor would screw itself forward in one
+full turn, if the air were solid like wood. A higher pitch takes a bigger
+bite of air with each turn: more thrust per turn, but the motor must work
+harder, so it cannot spin as fast. A lower pitch spins faster but moves
+less air per turn.
+
+Most rotors have \textbf{two blades}. They balance easily and are cheap to
+make. More blades give more thrust at the same size and speed, but each
+blade partly flies through the churned-up air left by the blade ahead of
+it, so each extra blade adds less than the one before.
+
+\subsection{Movement, Spin Direction, and Torque}
+Two rotors spin clockwise (CW) and two spin counterclockwise (CCW). Rotors
+diagonally across from each other spin the same way; neighbors spin
+opposite ways. Each spinning rotor twists the body the other way. If all
+four spun the same direction, the drone would whirl around like a top.
+With two of each, the twists cancel, and the drone can hover perfectly
+still.
+
+Many drones offer \newterm{headless mode}\index{headless flight}, where
+``forward'' always means ``away from the pilot,'' no matter which way the
+drone faces. It is easier for beginners. Normally, though, one end of the
+drone is its front, or head, and forward means the direction the head
+points. In the rest of this section, we ignore drag and assume the center
+of mass is in the middle of the body.
+
+To fly forward, the drone \newterm{pitches} its nose down. The two back
+rotors spin faster than the two front rotors, so the back rises. Now the
+rotors' thrust tilts forward. Part of it still holds the drone up, and part
+of it pushes the drone forward. To fly backward, the front rotors spin
+faster instead.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{forwardTop.png}
+        \caption{The back rotors (3 and 4) spin faster.}
+        \label{fig:forwardTop}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \reflectbox{\includegraphics[width=\textwidth]{forwardSide.png}}
+        \caption{The drone tips forward, and its thrust tilts forward too.}
+        \label{fig:forwardSide}
+    \end{subfigure}
+    \caption{Flying forward.}
+\end{figure}
+
+To move sideways, the drone \newterm{rolls}. To go left, the rotors on the
+right spin faster. The right side rises, the drone tips left, and the
+tilted thrust carries it left.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{lateralTop.png}
+        \caption{The right rotors (2 and 3) spin faster.}
+        \label{fig:lateralTop}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{lateralSide.png}
+        \caption{The drone tips left and slides left.}
+        \label{fig:lateralSide}
+    \end{subfigure}
+    \caption{Flying sideways.}
+\end{figure}
+
+Turning in place is \newterm{yaw}. Here the drone uses the twisting
+effect on purpose. Speed up the two clockwise rotors and slow down the two
+counterclockwise ones, keeping the total thrust the same. The clockwise
+rotors now twist the body harder, so the body turns counterclockwise (to
+the left). Speed up the counterclockwise pair, and it turns to the right.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rotationIso.png}
+        \caption{The drone turning in place.}
+        \label{fig:rotationIso}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rotationTop.png}
+        \caption{One diagonal pair speeds up; the other slows down.}
+        \label{fig:rotationTop}
+    \end{subfigure}
+    \caption{Yaw.}
+\end{figure}
+
+Your digital resources include a guide to choosing rotors for different
+kinds of drones.
+
+\subsection{Helicopters}
+
+A \newterm{helicopter}\index{helicopter} lifts itself with one big
+\newterm{main rotor}. The physics is the same as a quadcopter's: the blades
+throw air down, and the air pushes the helicopter up. But one big rotor
+creates two new problems.
+
+First, the main rotor's twist has nothing to cancel it. Second, a
+helicopter cannot steer by speeding up some rotors and slowing others,
+because it has only one. Let us take these one at a time.
+
+\subsubsection{Tail Rotor}
+
+On most American helicopters, the main rotor turns counterclockwise when
+seen from above. By Newton's third law, the rotor twists the body the other
+way, clockwise. With nothing to stop it, the body would spin faster and
+faster until the helicopter crashed.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tailless1.png}
+        \caption{Seen from above: the rotor turns one way (red), the body
+        the other (blue).}
+        \label{fig:tailless1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{tailless2.png}
+        \caption{The body keeps spinning faster unless something stops it.}
+        \label{fig:tailless2}
+    \end{subfigure}
+    \caption{A helicopter with no tail rotor.}
+\end{figure}
+
+The fix is a small \newterm{tail rotor}\index{tail rotor} at the end of a
+long tail. It spins in a vertical plane and pushes air sideways. Because it
+is so far from the main rotor, even a small push makes a big counter-twist
+(just as a door is easy to push far from its hinges).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{torque.png}
+    \caption{The tail rotor's push (tail torque) balances the twist from
+    the main rotor (rotor torque).}
+    \label{fig:torqueOnHeli}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{tailRotorNeed.png}
+    \caption{With a tail rotor, the twists balance and the body holds still.}
+    \label{fig:tailRotorNeed}
+\end{figure}
+
+The tail rotor also steers. The pilot's foot pedals change the pitch of the
+tail rotor blades. To turn left, the pilot increases the pitch. The tail
+rotor pushes harder, overpowering the main rotor's twist, and the nose
+swings left. To turn right, the pilot decreases the pitch, and the main
+rotor's twist swings the nose right (see figure \ref{fig:trailRotor}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{trailRotor.png}
+    \caption{Seen from behind: changing the tail rotor's pitch changes how
+    hard it pushes, which controls yaw.}
+    \label{fig:trailRotor}
+\end{figure}
+
+\subsubsection{Collective and Cyclic}
+
+The main rotor spins at a nearly constant speed. To control it, the pilot
+changes the pitch (angle of attack) of the blades as they spin. The clever
+device that does this is the \newterm{swash plate}\index{swash plate}: a
+pair of plates around the rotor shaft. The bottom plate does not spin. The
+top plate spins with the rotor, and links connect it to each blade. Push the
+plates up or tilt them, and you change the blades' pitch.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{mechanicalControl.png}
+    \caption{The swash plate. Actuators move the non-rotating plate; the
+    rotating plate above it passes the motion to the blades through the
+    pitch change links.}
+    \label{fig:mechanicalControl}
+\end{figure}
+
+The \newterm{collective}\index{collective pitch} raises or lowers the whole
+swash plate. That changes the pitch of all the blades together, so the
+whole rotor makes more lift or less. Raise the collective, and the
+helicopter climbs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{collective.png}
+    \caption{Collective: the swash plate moves straight up or down,
+    changing every blade's pitch by the same amount.}
+    \label{fig:collective}
+\end{figure}
+
+The \newterm{cyclic}\index{cyclic pitch} tilts the swash plate. Now each
+blade's pitch changes as it goes around: steep on one side of the circle,
+flat on the other. One side of the rotor makes more lift than the other,
+so the spinning disk tips, and its thrust tilts, just like a quadcopter
+tipping forward. Push the cyclic forward, and the helicopter flies forward.
+(One surprise: a spinning rotor acts like a gyroscope, so it tips about a
+quarter turn after the point where the extra lift is added. The linkage is
+built to account for that.)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{mechanicalControlMovement.png}
+    \caption{Cyclic: the swash plate tilts, so each blade's pitch rises and
+    falls once per turn.}
+    \label{fig:mechanicalControlMovement}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{iso-48 2.png}
+    \caption{With cyclic applied, one blade meets the air at a steep angle
+    (more lift) while the opposite blade meets it at a shallow angle (less
+    lift).}
+    \label{fig:iso-48_2}
+\end{figure}
+
+Putting it all together:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{helicopterMovement-10.png}
+        \caption{Forward and back: cyclic.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{helicopterMovement-11.png}
+        \caption{Side to side: cyclic.}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{helicopterMovement-12.png}
+        \caption{Up and down: collective.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{helicopterMovement-13.png}
+        \caption{Turning: tail rotor pedals.}
+    \end{subfigure}
+    \caption{The helicopter's controls.}
+    \label{fig:helicopterMovement}
+\end{figure}
+
+\section{Rocketry}
+\index{rockets}
+
+Out in space, there is no air to push against. So how does a rocket move?
+
+Imagine floating in space holding a bowling ball. Throw the ball away from
+you, and you drift the other way. That is Newton's third law, and momentum
+conservation: the ball's momentum one way equals your momentum the other
+way.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{thirdLaw.png}
+    \caption{Throwing mass backward pushes the spacecraft forward.}
+    \label{fig:example_2-flight}
+\end{figure}
+
+A rocket does the same thing, but instead of bowling balls, it throws
+enormous numbers of hot gas molecules out the back at very high speed.
+There is no air in space to supply oxygen for burning, so rockets carry
+their own \newterm{oxidizer} along with their fuel.
+
+\subsection{Types of Rocket Fuels}
+
+There are two main kinds of chemical rockets.
+
+A \index{solid fuel rocket}\newterm{solid fuel rocket} burns a solid mix of
+fuel and oxidizer, like a giant firework. Once lit, it cannot be turned off
+until the fuel is gone.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{solid.png}
+    \caption{A solid fuel rocket.}
+    \label{fig:solidfuel}
+\end{figure}
+
+A \index{liquid fuel rocket}\newterm{liquid fuel rocket} keeps liquid fuel
+and liquid oxidizer in separate tanks. Pumps feed them into a combustion
+chamber, where they burn and blast out the nozzle. Most liquid fuel
+engines can be throttled up and down, and some can be shut off and
+restarted.
+\index{rockets ! liquid fuel based}
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{liquid.png}
+    \caption{A liquid fuel rocket: separate tanks of oxidizer and fuel
+    feed the combustion chamber.}
+    \label{fig:liquidfuel}
+\end{figure}
+
+\subsection{The Tyranny of the Rocket Equation}
+A rocket must carry all its fuel. But fuel is heavy, so the rocket needs
+more fuel to lift that fuel, which is heavy, so it needs more fuel\ldots
+
+The \newterm{rocket equation}\index{rocket equation} tells you how bad this
+gets:
+$$\Delta v = v_e \ln\left(\frac{m_0}{m_f}\right)$$
+Here $\Delta v$ is the change in the rocket's speed, $v_e$ is the speed of
+the exhaust, $m_0$ is the starting mass (with fuel), and $m_f$ is the final
+mass (fuel used up). The $\ln$ is the natural logarithm. You will study it
+in a later volume; for now, use the $\ln$ button on your calculator, or
+undo it with $e^x$.
+
+\textbf{Worked example.} Reaching low Earth orbit takes a $\Delta v$ of
+about 9.4 km/s. A good kerosene engine has $v_e \approx 3$ km/s. What
+fraction of the rocket must be fuel?
+
+\textbf{Solution.} $\frac{m_0}{m_f} = e^{9.4/3} \approx 23$. The rocket
+must start 23 times heavier than it ends. So about 96\% of the rocket at
+launch is fuel and oxidizer, and only 4\% is everything else: tanks,
+engines, and the satellite. That is the tyranny.
+
+One way to fight back is \newterm{staging}\index{rockets ! staging}. A
+staged rocket is several rockets stacked together. When the bottom stage
+runs out of fuel, it drops away, and the rocket no longer has to haul its
+empty tanks and heavy engines.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{stagingDual.png}
+    \caption{A two-stage rocket drops its first stage once that stage's
+    fuel is used up.}
+    \label{fig:dualStaged}
+\end{figure}
+
+\subsection{Control in the Atmosphere}
+\index{rockets ! in atmosphere}
+Sensors on board track which way the rocket points, and a computer adjusts
+the controls many times a second to keep it on course. There are three
+common controls.
+
+\newterm{Movable fins} work like an airplane's control surfaces.
+
+A \newterm{gimbaled engine} can pivot. Swinging the nozzle changes the
+direction of the thrust, which steers the rocket. This is called
+\index{thrust vectoring}\newterm{thrust vectoring}. Most modern rockets
+steer this way.
+
+\newterm{Vernier engines} are small extra engines that fine-tune the
+direction. They add weight, so they are rarely used today.
+
+\begin{itemize}
+    \item \textbf{Movable fins}
+    \begin{itemize}
+        \item \textbf{Pros:} Simple, reliable, light, and effective at
+        high speed in the atmosphere.
+        \item \textbf{Cons:} Useless in a vacuum; weak at low speed or in
+        thin air.
+    \end{itemize}
+    \item \textbf{Gimbaled engine (thrust vectoring)}
+    \begin{itemize}
+        \item \textbf{Pros:} Precise; works in air and in vacuum; responds
+        quickly.
+        \item \textbf{Cons:} Mechanically complex, heavier, more expensive,
+        more things that can fail.
+    \end{itemize}
+    \item \textbf{Vernier engines}
+    \begin{itemize}
+        \item \textbf{Pros:} Fine control; a backup if something fails.
+        \item \textbf{Cons:} Heavy and less efficient.
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{control.png}
+    \caption{Three ways to steer a rocket in the atmosphere.}
+    \label{fig:atmoscontrol}
+\end{figure}
+
+\subsection{Control in Space}
+\index{rockets ! in space}
+Once in space, a spacecraft still needs to turn and adjust its position.
+
+A \newterm{reaction control system} (RCS) is a set of small thrusters, often
+mounted in clusters of 3 or 4, that can nudge the spacecraft in any
+direction. RCS thrusters are used for docking, turning, and small orbit
+changes.
+
+\index{reaction wheels}\newterm{Reaction wheels} are heavy wheels inside the
+spacecraft. Spin a wheel one way, and the spacecraft turns the other way.
+(Try it on a spinning office chair: hold a bicycle wheel and spin it, and
+the chair turns the other way.) With three wheels on three axes, the
+spacecraft can point anywhere without using any fuel.
+
+A \index{magnetorquer}\newterm{magnetorquer} is an electromagnet that
+pushes against Earth's magnetic field, the way a compass needle turns to
+line up with it. Magnetorquers are popular on small satellites in low
+orbit. For large spacecraft or deep space, Earth's magnetic field is too
+weak to help.
+
+\begin{itemize}
+    \item \textbf{RCS thrusters}
+    \begin{itemize}
+        \item \textbf{Pros:} Precise; can both move and turn the
+        spacecraft; reliable.
+        \item \textbf{Cons:} Use up propellant; add weight and complexity.
+    \end{itemize}
+    \item \textbf{Reaction wheels}
+    \begin{itemize}
+        \item \textbf{Pros:} No propellant; precise; long-lasting; quiet.
+        \item \textbf{Cons:} Limited turning force. A wheel can only spin
+        so fast; once it maxes out, thrusters must unload it.
+    \end{itemize}
+    \item \textbf{Magnetorquers}
+    \begin{itemize}
+        \item \textbf{Pros:} No propellant; light; simple.
+        \item \textbf{Cons:} Only work near a planet with a magnetic field;
+        weak.
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{controlSpace.png}
+    \caption{Three ways to steer a spacecraft in space.}
+    \label{fig:atmosspace}
+\end{figure}
+
+\subsection{Alternative Propulsion}
+\index{rockets ! alternate propulsion methods of}
+
+A \index{solar sail}\newterm{solar sail} is a huge, thin, shiny sheet.
+Light carries momentum, so each photon that bounces off the sail gives it
+a tiny push. The push is feeble, but it never stops, and the spacecraft
+needs no fuel.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{solarSail.png}
+    \caption{A spacecraft with a solar sail.}
+    \label{fig:solarSail}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{solarSailDiagram.png}
+    \caption{Sunlight reflecting off a tilted sail pushes it at a right
+    angle to its surface.}
+    \label{fig:solarSail_2}
+\end{figure}
+
+A perfectly reflective sail would be pushed straight out from its surface,
+at a right angle to the sail. Real sails absorb a little of the light, and
+absorbed photons push along the direction the light was traveling. So the
+real thrust is tilted slightly away from the right angle, toward the
+direction of the sunlight.
+
+\index{ion propulsion}\newterm{Ion propulsion} uses electricity instead of
+burning. An ion thruster strips electrons from atoms of a gas (usually
+xenon) and uses electric fields, or electric and magnetic fields together,
+to fling the charged atoms out the back at tens of kilometers per second.
+That exhaust is ten times faster than a chemical rocket's, so an ion
+thruster gets far more push out of each kilogram of propellant. The catch:
+the thrust is tiny, about the weight of a sheet of paper. Ion thrusters
+must run for months, which is fine for a probe on a long trip through the
+solar system.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.75\textwidth]{ionThruster.png}
+    \caption{An ion thruster.}
+    \label{fig:ionThruster}
+\end{figure}
+
+\begin{Exercise}[title={Faster exhaust}, label=fl_ion]
+An ion thruster has an exhaust speed of 30 km/s. Using the rocket equation,
+what fraction of a spacecraft's starting mass must be propellant to gain
+9.4 km/s? Compare with the chemical rocket in the worked example.
+\end{Exercise}
+\begin{Answer}[ref=fl_ion]
+$\frac{m_0}{m_f} = e^{9.4/30} \approx 1.37$, so the final mass is
+$\frac{1}{1.37} \approx 73\%$ of the starting mass. Only about 27\% of the
+spacecraft needs to be propellant, compared with 96\% for the chemical
+rocket. (An ion thruster could never lift off from Earth, though; its
+thrust is far too weak.)
+\end{Answer}
