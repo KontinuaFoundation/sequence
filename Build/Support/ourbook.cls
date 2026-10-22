@@ -912,8 +912,8 @@
 %%% Set Main Text Font
 \setmainfont{TeX Gyre Pagella}[Ligatures=TeX, WordSpace=1.2]
 
-%%% Set Code Font: Inconsolata (the zi4 version in TeX Live has straight quotes and a slashed zero)
-\setmonofont{Inconsolatazi4}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-Bold, Scale=MatchLowercase]
+%%% Set Code Font: Inconsolata (install it from Google Fonts; it has straight quotes and a slashed zero)
+\setmonofont{Inconsolata}[Scale=MatchLowercase]
 %\setmainfont{TimesNewRomanMTStd}[Ligatures=TeX, WordSpace=1.2]
 
 %% Special Use Fonts

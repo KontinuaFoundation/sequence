@@ -62,8 +62,13 @@ jobs:
           TEXMFHOME="$(kpsewhich -var-value TEXMFHOME)"
           mkdir -p "$TEXMFHOME/tex/latex/mermaid"
           cp Build/Support/mermaid.sty "$TEXMFHOME/tex/latex/mermaid/"
+          # Fonts we may not redistribute in the repo: download them from Google Fonts
           sudo mkdir -p /usr/share/fonts/truetype/kontinua
-          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+          for f in marcellus/Marcellus-Regular.ttf marcellussc/MarcellusSC-Regular.ttf \
+                   inconsolata/static/Inconsolata-Regular.ttf inconsolata/static/Inconsolata-Bold.ttf; do
+            sudo curl -fsSL -o "/usr/share/fonts/truetype/kontinua/$(basename "$f")" \
+              "https://github.com/google/fonts/raw/main/ofl/$f"
+          done
           sudo fc-cache -fv
           luaotfload-tool --update
           python3 -m pip install --upgrade pip
@@ -168,8 +173,13 @@ jobs:
           TEXMFHOME="$(kpsewhich -var-value TEXMFHOME)"
           mkdir -p "$TEXMFHOME/tex/latex/mermaid"
           cp Build/Support/mermaid.sty "$TEXMFHOME/tex/latex/mermaid/"
+          # Fonts we may not redistribute in the repo: download them from Google Fonts
           sudo mkdir -p /usr/share/fonts/truetype/kontinua
-          sudo cp Build/Support/fonts/*.ttf /usr/share/fonts/truetype/kontinua/
+          for f in marcellus/Marcellus-Regular.ttf marcellussc/MarcellusSC-Regular.ttf \
+                   inconsolata/static/Inconsolata-Regular.ttf inconsolata/static/Inconsolata-Bold.ttf; do
+            sudo curl -fsSL -o "/usr/share/fonts/truetype/kontinua/$(basename "$f")" \
+              "https://github.com/google/fonts/raw/main/ofl/$f"
+          done
           sudo fc-cache -fv
           luaotfload-tool --update
           python3 -m pip install --upgrade pip

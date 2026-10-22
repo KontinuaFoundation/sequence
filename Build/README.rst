@@ -1,169 +1,344 @@
 The Build Directory
 ===================
 
-This folder contains the scripts and supporting resources for those scripts. After you run the scripts, the products will appear in this directory as well.
+This folder contains the scripts that turn the chapters in ``Chapters/`` into
+workbook PDFs and web resources, plus the files those scripts need
+(``Support/``). The scripts put their products here too: finished workbooks go
+in ``Workbooks-<language>-<paper>/`` (for example,
+``Workbooks-en_US-Letter/workbook-05.pdf``), and LaTeX's working files go in
+``Intermediate/``.
+
+How the Books Are Organized
+---------------------------
+
+* Each chapter is a folder in ``Chapters/``, such as ``Chapters/fluid_flow/``.
+  Inside, the ``en_US`` folder holds the chapter text (``student.tex``), its
+  images and code files, a ``summary.md``, and ``digital_resources.json``,
+  which lists the chapter's downloadable files, the topics it covers
+  (``covers``), and the topics it needs first (``requires``).
+* ``Chapters/book_01.txt`` through ``book_36.txt`` list the chapters in each
+  volume, in order, one chapter folder name per line.
+* ``Chapters/book_00.txt`` lists every chapter in the whole series, in reading
+  order. It must match the volumes read one after another.
+* In any of these lists, a line that starts with ``#`` is ignored. Use that to
+  take a chapter out of the books without deleting it (for example,
+  ``# economics``).
+* The document class that sets the books' design, ``Support/ourbook.cls``, is
+  documented in ``Support/README.md``: exercises and answers, boxes, code,
+  figures, the index, and more. Read it before writing a chapter.
 
 
 Before You Build
 ================
 
-You will need to have installed git, Python 3, and LaTeX.
+You will need git, Python 3, a full TeX Live installation (which includes
+LuaLaTeX), and Node.js.
 
-NOTE: We use a package called `minted <https://ctan.org/pkg/minted>`_ for syntax highlighting of code samples. As of 12/28, this package is currently incompatible with Python 3.14. If you are using Python 3.14, you will need to downgrade to Python 3.13 or earlier to build the workbooks.
+On a Mac, install Xcode from the App Store (it includes git) and
+`Homebrew <https://brew.sh>`_. Then::
 
-(On a Mac, you should install Xcode (from the app store, which should include Git) and `brew <https://brew.sh>`_. Next::
-
-  brew install python
+  brew install python@3.13
   brew install mactex-no-gui
   brew install node
 
-Clone the github repository::
+Clone the GitHub repository::
 
-  git clone https://github.com/TheKontinua/sequence.git
+  git clone https://github.com/KontinuaFoundation/sequence.git
 
-You will also need some fonts from the `Google Font Collection <https://fonts.google.com/>`_ :
+(If you plan to contribute, clone over SSH instead; see "Contributing" below.)
 
-* Marcellus Regular
-* Marcellus SC Regular
-* OpenSans Bold
-* OpenSans Bold Italic
-* OpenSans Semi Bold
+Fonts
+-----
 
-To build the web resources, you will need some Python libraries::
+The body text and math fonts (TeX Gyre Pagella and Euler) come with TeX Live.
+The other fonts are not ours to redistribute, so they are not in this
+repository. Download these from the
+`Google Font Collection <https://fonts.google.com/>`_ and install them on your
+computer:
 
-  pip3 install jinja2
-  pip3 install bs4 (or beautifulsoup4)
-  pip3 install Pygments
-  pip3 install soupsieve
-  pip3 install typing_extensions
+* `Marcellus <https://fonts.google.com/specimen/Marcellus>`_ (Regular)
+* `Marcellus SC <https://fonts.google.com/specimen/Marcellus+SC>`_ (Regular)
+* `Open Sans <https://fonts.google.com/specimen/Open+Sans>`_ (Regular, Semi Bold,
+  Bold, and Bold Italic)
+* `Inconsolata <https://fonts.google.com/specimen/Inconsolata>`_ (Regular and
+  Bold), used for code
 
-or, alternatively, you can install all the dependencies with::
+On a Mac, double-click each downloaded ``.ttf`` file and click "Install Font".
+On Windows, right-click each file and choose "Install for all users". If a
+build cannot find a font, LuaLaTeX stops with a "font not found" error; install
+the missing font and run ``luaotfload-tool --update`` so LuaLaTeX notices it.
+
+(The CI workflows download Marcellus and Inconsolata from Google's font
+repository each time they run, and install Open Sans from Ubuntu's
+``fonts-open-sans`` package.)
+
+Python Libraries
+----------------
+
+To build the web resources, you will need some Python libraries. Install them
+all with::
 
   pip3 install -r Build/requirements.txt
 
+Python Version and Code Highlighting
+------------------------------------
+
+The books use the `minted <https://ctan.org/pkg/minted>`_ package to highlight
+code. Minted runs a helper program, ``latexminted``, that comes with TeX Live.
+**That helper does not work with Python 3.14 or later** (as of TeX Live 2026,
+``latexminted`` 0.6.0). When it fails, the books still build, but every code
+listing is printed without syntax highlighting, and each chapter's log shows
+``Package minted Error: Cannot highlight code``.
+
+If your ``python3`` is 3.14 or newer, keep Python 3.13 installed (see the
+``brew`` command above) and make ``latexminted`` use it. One way is to put this
+small script, named ``latexminted``, in a folder that comes before Homebrew's
+in your ``PATH`` (such as ``~/bin``), and make it executable with
+``chmod +x``::
+
+  #!/bin/sh
+  exec python3.13 /opt/homebrew/bin/latexminted "$@"
+
+Check it with ``latexminted --version``, which should print the version
+instead of an error.
+
 Windows
--------------
+-------
 
-Mac is preferred, but if you only have access to a Windows device, the following steps must be taken in addition to downloading fonts and libraries:
+A Mac is preferred, but you can build on Windows. In addition to the fonts and
+Python libraries above:
 
-* Download and install `MiKTex <https://miktex.org/download>`_.
+* Download and install `MiKTeX <https://miktex.org/download>`_.
 * Download and install `Git Bash <https://git-scm.com/downloads>`_.
-* Download and install `Python <https://www.python.org/downloads/>`_.
+* Download and install `Python 3.13 <https://www.python.org/downloads/>`_.
 * Download and install `Node.js <https://nodejs.org/en>`_.
-* Clone the github repository::
+* Clone the repository, as above.
+* If ``lualatex`` is not on your ``PATH``, put its full path in your
+  ``user.cfg`` (see "Configuration").
 
-  git clone https://github.com/TheKontinua/sequence.git
 
-* Go to your clone location and open ``sequence\Build\Support\default.cfg``. Replace ``/Library/TeX/texbin/lualatex`` with ``lualatex``.
+Configuration
+=============
 
-.. important::
+The first time you run a build script, it creates ``Build/user.cfg`` by
+copying ``Support/default.cfg``. (``create_user_config.py`` also makes one.) It
+holds your preferences:
 
-   To build with the `minted` library, you will need a version of Python 3.8-3.13. Python 3.14 is known to have issues with the `minted` library.
+* ``Languages``: the chapter locale folders to use, most preferred first
+  (``en_US``).
+* ``Paper``: the paper size (``Letter``).
+* ``LatexExecutable``: the LuaLaTeX command. Usually ``lualatex`` works; use a
+  full path, such as ``/Library/TeX/texbin/lualatex``, if it is not on your
+  ``PATH``.
+
+Please do not commit your ``user.cfg``.
+
+
+Building
+========
+
+All the build scripts run from the ``Build`` directory, except
+``build_chapter.py``, which runs from a chapter's folder.
+
+``build_chapter.py``
+  Builds just the chapter you are working on, with its answers. Run it from
+  the chapter's ``en_US`` folder. The result is ``student.pdf`` in that folder::
+
+    cd Chapters/fluid_flow/en_US
+    python3 ../../../Build/build_chapter.py
+
+``build_workbook.py``
+  Builds workbook PDFs. Give it a volume number, ``all``, or a custom list of
+  chapters::
+
+    python3 build_workbook.py 5
+    python3 build_workbook.py all
+    python3 build_workbook.py --chapters circular_motion,circular_motion_2,oscillations
+
+``make_chapter_pdfs.py``
+  Builds a separate PDF for every chapter. This takes a while::
+
+    python3 make_chapter_pdfs.py en_US
+
+``clean.py``
+  Deletes intermediate files and every PDF and HTML file the other scripts
+  generate, including the ``student.pdf`` files in chapter folders::
+
+    python3 clean.py
+
+
+Checking Your Work
+==================
+
+``check_ordering.py``
+  Checks that every chapter's prerequisites come before it. It reads
+  ``Chapters/book_00.txt``, then reads each chapter's
+  ``digital_resources.json`` from the first chapter to the last, and reports:
+
+  * chapters with no ``digital_resources.json``,
+  * chapters whose ``digital_resources.json`` is not valid JSON,
+  * requirements that no chapter covers (when the requirement is the name of
+    a chapter rather than a topic id, the report says so), and
+  * requirements that are first covered by a *later* chapter, naming that
+    chapter.
+
+  A chapter that requires a topic it covers itself is not reported. Each
+  chapter is shown with its volume number. Run it from anywhere::
+
+    python3 Build/check_ordering.py
+
+  It prints ``0 problem(s) found.`` and exits with status 0 when everything is
+  in order, and exits with status 1 otherwise, so it can also run in CI. Run it
+  whenever you add a chapter, move chapters between volumes, or edit a
+  ``requires`` or ``covers`` list. Use ``--locale`` to check a locale other
+  than ``en_US``.
+
+  When it reports a problem, look at the chapter's text before changing
+  anything. Often the metadata is stale and the fix is to edit the ``requires``
+  list. Sometimes the chapter really does use something taught later, and the
+  fix is to move the chapter, move the material, or explain it where it is
+  used.
+
+  Example output::
+
+    Requirements that are first covered by a later chapter: 1
+    ---------------------------------------------------------
+      projectiles (Vol 7) requires 'quadratic_formula', first covered by solving_quadratics (Vol 8)
+
+    1 problem(s) found.
+
+``make_topic_index.py``
+  Writes ``topic_index.json`` to ``Resources-en_US`` (used by the
+  KontinuaResourceEditor to connect prerequisite topics to chapters) and
+  prints a report of missing topics, out-of-order topics, and topics that more
+  than one chapter claims to cover::
+
+    python3 make_topic_index.py
+
+``check_images.py``
+  Lists the PNG files in each chapter folder that no ``.tex`` file uses.
+  ``check_images_csv.py`` writes the same information for every chapter in
+  ``book_00.txt`` to ``png_usage_status.csv``.
+
+Spell checking
+  Your changes are spell-checked automatically before each commit; see
+  "Contributing" and "CI" below.
+
+
+Writing Chapters
+================
+
+``init_chapter.py``
+  Creates a new chapter folder with an empty ``student.tex`` and
+  ``digital_resources.json``::
+
+    python3 init_chapter.py hash_tables
+
+  Then add the chapter to the right ``book_NN.txt`` and to ``book_00.txt``,
+  and run ``check_ordering.py``.
+
+``resource_wizard.py``
+  Asks questions and fills in a chapter's ``digital_resources.json``. Run it
+  from the chapter's ``en_US`` folder::
+
+    python3 ../../../Build/resource_wizard.py
+
+
+Other Scripts
+=============
+
+``gather_resources.py``
+  Checks the URLs in every ``digital_resources.json`` (optionally only for one
+  volume) and writes ``Resources-en_US/Links.json``::
+
+    python3 gather_resources.py 1
+
+``build_workbooks_index.py``
+  Builds ``workbooks.json`` in ``Resources-en_US`` from ``Links.json``. Run
+  ``gather_resources.py`` first, since it provides the link titles.
+
+``build_chapter_list.py``
+  Writes ``Resources/chaplist.txt``, the title of every chapter in every book.
+
+``generate_chapter_graph.py``
+  Writes ``graph.json``, the chapter dependency graph, to
+  ``Workbooks-en_US-Letter``. ``--image`` also draws it as ``graph.png``, and
+  ``--recommended`` writes ``Chapters/recommended_book_00.txt``, an order that
+  satisfies every prerequisite.
+
+``collect_images.py`` and ``latex_file_proofing.py``
+  Copy every image used in the books into ``Collected_PNGs`` and write a LaTeX
+  file that shows them all, for proofreading figures in one place.
+
+``structure_sql.py``
+  Writes ``sql.txt``, SQL statements that load the volume and chapter
+  structure into the website's database.
+
+``upload_collection.py``
+  Uploads a finished collection to the readers site
+  (``readers.kontinua.org``). It asks for a username, locale, and version
+  number.
+
 
 Contributing
-------------
+============
 
-If you are planning on contributing, you will need to setup SSH keys and access for Github. You can find info `here <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_.
-
-Once SSH access is configured, you need to clone from the SSH repo::
+If you plan to contribute, set up SSH access to GitHub (see
+`GitHub's guide <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_),
+then clone over SSH::
 
   git clone git@github.com:KontinuaFoundation/sequence.git
 
-It may ask to trust ``github.com``, say yes.
+If it asks whether to trust ``github.com``, say yes.
 
-Prettier has been configured for consistency in formatting. You can align a `.tex` file with prettier settings by running `npx prettier path/to/file.tex --write
+Prettier is configured for consistent formatting. To format a ``.tex`` file::
 
-This repository also spell-checks your work automatically before every commit. For that to work, run this once after cloning (and again any time ``package.json`` changes)::
+  npx prettier path/to/file.tex --write
+
+This repository also spell-checks your work automatically before every commit.
+For that to work, run this once after cloning (and again any time
+``package.json`` changes)::
 
   bun install
 
-(Don't have ``bun``? Install it from `bun.sh <https://bun.sh>`_, or use ``npm install`` instead -- either works.) This sets up a git hook that runs `cspell <https://cspell.org>`_ on your changes right before each commit. See the "CI" section below for what to do if it flags something.
+(If you do not have ``bun``, install it from `bun.sh <https://bun.sh>`_, or use
+``npm install`` instead; either works.) This sets up a git hook that runs
+`cspell <https://cspell.org>`_ on your changes right before each commit. See
+"CI" below for what to do if it flags something.
 
-Configuration
--------------
+Most authors should not commit anything in the ``Build`` directory; they should
+work in the ``Chapters`` directory.
 
-The first time you run any of these scripts, a ``user.cfg`` will be
-created. It contains the user’s preferences, mainly paper size and
-language preferences.
-
-If you are committing changes, please don’t commit your ``user.cfg``
-file to the repository.
-
-Scripts
--------
-
--  | ``build_workbook.py``: Builds PDFs of the workbooks. It takes one
-     argument: A book number (like 5) or ``all``. The books will appear
-     in the ``Workbooks`` directory.
-   | Example: ``python3 build_workbook.py 5``
-
--  | ``build_chapter.py``: Used by authors to build just the chapter
-     they are working on. Invoked from a directory with a
-     ``student.tex`` file. Results in a ``draft.pdf`` file.
-   | Example: ``python3 ../../../Build/build_chapter.py``
-
--  | ``gather_resources.py``: Checks URLs in ``digital_resources.json``
-       (optionally incrementally) and writes ``Resources-en_US/Links.json``.
-    | Example: ``python3 gather_resources.py 1``
-
--  | ``make_chapter_pdfs.py``: Used to build pdfs of each chapter.
-    This takes a while to run.
-    | Example: ``python3 make_chapter_pdfs.py en_US``
-
--  | ``build_workbooks_index.py``: Builds ``workbooks.json`` in
-      ``Resources-en_US`` using ``Links.json``.
-     Run ``gather_resources.py`` first -- it provides link titles.
-    | Example: ``python3 build_workbooks_index.py``
-
--  | ``clean.py``: Deletes intermediate files and all PDF/HTML files
-     that are generated by the other scripts, including ``draft.pdf``
-     files in the chapter directories.
-   | Example: ``python3 clean.py``
-
--  | ``build_chapter_list.py``: creates ``Resources/chaplist.txt`` which
-     contains the titles of every chapter for every book.
-   | Example: ``python3 build_chapter_list.py``
-
-- | ``make_topic_index.py``: Outputs ``topic_index.json`` in ``Resources-en_US``.
-    This is a dependency mapping used for the KontinuaResourceEditor to be able
-    to connect prerequisite topics to a chapter. Also prints a report of missing
-    topics, misaligned dependencies, and duplicate topics.
-  | Example: ``python3 make_topic_index.py``
-
-  Output::
-
-      --------------
-      🛑 Book 10 | Introduction to Graphs                   | requires dataviz              | found later: Book 11 | Introduction to Data Visualization
-      🛑 Book 12 | Parametric Functions                     | requires derivatives          | found later: Book 17 | Differentiating Polynomials
-      🛑 Book 12 | Vector-valued Functions                  | requires derivatives          | found later: Book 17 | Differentiating Polynomials
-      🛑 Book 13 | Oscillations                             | requires derivatives          | found later: Book 17 | Differentiating Polynomials
-      🛑 Book 14 | Circular Motion, continued               | requires cross                | found later: Book 22 | Cross Product
-      --------------
-      ⚠️  DUPLICATE TOPIC drag: origin: airplanes → duplicated in: drag
-      --------------
-Status
-------
-
-All these scripts work, but the support for localization is incomplete.
-Once we start localizing the materials, we will correct this
-situation.
 
 CI
----------
-These scripts have all been compiled into CI/CD workflows that automatically run upon a commit. Any changes will rebuild a localized version of a chapter and its corresponding resources, and send it over to `the live repo <https://kontinuafoundation.github.io/>`_. 
+==
 
-A note about spell checking: this project uses `cspell <https://cspell.org>`_ to catch typos before they reach the live site. It runs in two places: automatically on your machine right before each commit (via a `husky <https://typicode.github.io/husky/>`_ git hook), and again in CI on every push/PR as a backstop. If either one flags something, the commit (or CI run) is stopped and the offending word(s), file(s), and line number(s) are printed so you know exactly what to fix.
+These scripts run in CI/CD workflows on every commit. A change rebuilds the
+affected chapter and its resources and publishes them to
+`the live site <https://kontinuafoundation.github.io/>`_.
 
-Spell checking will sometimes flag things that are actually correct: code variables, TikZ diagram internals, people's names, abbreviations, or British/American spelling differences. This is expected, not a bug. You are able to store these flags via the following steps.
+Spell checking uses `cspell <https://cspell.org>`_ to catch typos before they
+reach the live site. It runs in two places: on your machine right before each
+commit (through a `husky <https://typicode.github.io/husky/>`_ git hook), and
+again in CI on every push and pull request. If either one flags something, the
+commit (or CI run) stops and prints the word, file, and line number, so you
+know exactly what to fix.
 
-1. Open the root ``project-words.txt`` file (plain text, one word per line).
+Spell checking sometimes flags words that are correct: code variables, TikZ
+internals, people's names, abbreviations, or British spellings. To accept a
+word:
+
+1. Open ``project-words.txt`` at the root of the repository (plain text, one
+   word per line).
 2. Add the word on its own line, roughly alphabetically.
-3. Save the file and commit/push again.
+3. Save the file and commit again.
 
-(This replaces the old ``.aspell.en.pws``/``codespell`` setup as if 19 July 2026)
+(This replaced the old ``.aspell.en.pws`` and ``codespell`` setup as of July 19,
+2026.)
 
-Committing
-----------
 
-Overall, most authors shouldn’t be committing anything in the ``Build``
-directory; they should work under the ``Chapters`` directory.
+Status
+======
+
+All these scripts work, but support for localization is incomplete. When we
+start localizing the materials, we will fix that.

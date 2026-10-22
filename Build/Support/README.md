@@ -225,8 +225,12 @@ or mix (`red!60!black`) also works.
 |---|---|
 | Body text | TeX Gyre Pagella |
 | Math | Euler |
-| Code | Inconsolata (the `zi4` version in TeX Live: straight quotes, slashed zero) |
-| Headings and titles | Open Sans and Marcellus (see `Build/README.rst` for installing them) |
+| Code | Inconsolata (straight quotes, slashed zero) |
+| Headings and titles | Open Sans and Marcellus |
+
+Pagella and Euler come with TeX Live. Inconsolata, Open Sans, and Marcellus are
+Google fonts that each author installs; they are not in the repository. See
+"Fonts" in `Build/README.rst`.
 
 ## Links
 
