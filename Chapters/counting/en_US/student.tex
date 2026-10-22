@@ -131,75 +131,13 @@ We briefly saw this in the common polynomial products chapter. The \index{binomi
 \begin{equation*}
 (a + b)^4 = 1a^4 + 4a^3b + 6a^2 b^2 + 4 a b^3 + 1 b^4 =\binom{4}{0}a^4 + \binom{4}{1}a^3b + \binom{4}{2}a^2b^2 + \binom{4}{3}ab^3 + \binom{4}{4}b^4
 \end{equation*}
-\subsection{Fractional Binomial Theorem}
-An issue arises when we have fractional exponents for this theorem. For example, what is $\sqrt{1+5x}=(1 + 5x)^{1/2}$? We can use the binomial theorem to expand this as follows:
-\begin{equation*}
-(1 + 5x)^{1/2} = \binom{1/2}{0}1 + \binom{1/2}{1}5x + \binom{ 
-1/2}{2}(5x)^2 + \binom{1/2}{3}(5x)^3 + \ldots
-\end{equation*}
-\index{Pascal's triangle}Pascal's triangle only works when the exponent $n$ is a non-negative integer. Here, the exponent is $\frac{1}{2}$, not a whole number. There is no "row $\frac{1}{2}$" of Pascal's triangle, so we need to extend the pattern.
+\subsection{What About Fractional Exponents?}
+What is $\sqrt{1+5x} = (1 + 5x)^{1/2}$? Pascal's triangle only works when the exponent is a non-negative
+integer. The formula $\binom{n}{k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}$ only multiplies and divides, so it
+makes sense even when $n$ is $\frac{1}{2}$ or $-1$. But then none of the factors $n, n-1, n-2, \ldots$ is ever
+zero, so the expansion never stops: it becomes an infinite sum, called the \index{binomial series}binomial
+series. Infinite sums need some care, and the Taylor Series chapter shows how to use this one safely.
 
-This extension is called the \textbf{\newterm{general binomial theorem}}. To make sense of $\binom{1/2}{k}$, we need a definition of the binomial coefficient that does not rely on factorials, since $(1/2)!$ does not make sense. Recall that
-\begin{equation*}
-\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}
-\end{equation*}
-Notice that the right-hand side only ever multiplies and divides — it never actually requires $n$ to be a whole number! This gives us a definition that works for \emph{any} real number $n$, including fractions and negative numbers:
-\index{binomial coefficient!generalized}
-\begin{mdframed}[frametitle = {Generalized Binomial Coefficient}, style = important]
-For any real number $n$ and non-negative integer $k$,
-\begin{equation*}
-\binom{n}{k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}
-\end{equation*}
-\end{mdframed}
-
-When $n$ is \emph{not} a non-negative integer, like $n = \frac{1}{2}$, none of the factors $n, n-1, n-2, \ldots$ is ever zero, so the expansion never terminates. Instead of a finite row of Pascal's triangle, we get an infinite series.
-
-\begin{mdframed}[frametitle = {General Binomial Theorem}, style = important]
-Recall that for $|x| < 1$, the \index{geometric series}geometric series gives
-\begin{equation*}
-    \frac{1}{1-x} = 1 + x + x^2 + x^3 + \cdots
-\end{equation*}
-Since $\frac{1}{1-x} = (1-x)^{-1}$, this looks like a binomial expansion where the exponent $-1$ is not a positive integer. Using the generalized binomial coefficient,
-\begin{equation*}
-    \binom{n}{k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!}
-\end{equation*}
-For any real number $n$ and $|x| < 1$,
-\begin{equation*}
-(1+x)^n = \sum_{k=0}^{\infty} \binom{n}{k}x^k = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \cdots
-\end{equation*}
-this is called the \index{binomial series}\newterm{binomial series}, and it generalizes the binomial theorem to arbitrary real exponents. Setting $n = -1$ recovers the geometric series above.
-\end{mdframed}
-
-The condition $|x| < 1$ matters here for convergence. When $n$ was a positive integer, the expansion was just a polynomial, and polynomials are perfectly well-behaved for every value of $x$. But now that we have an infinite series, we need the terms to actually get smaller and smaller so the sum settles down to a finite value. If $|x| \geq 1$, the terms do not shrink, and the series does not converge to anything useful.
-
-Let us compute the coefficients for $\binom{1/2}{k}$
-\begin{align*}
-\binom{1/2}{0} &= 1 \\
-\binom{1/2}{1} &= \frac{1}{2} \\
-\binom{1/2}{2} &= \frac{\frac{1}{2}\left(\frac{1}{2}-1\right)}{2!} = \frac{\frac{1}{2}\cdot\left(-\frac{1}{2}\right)}{2} = -\frac{1}{8} \\
-\binom{1/2}{3} &= \frac{\frac{1}{2}\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)}{3!} = \frac{3/8}{6} = \frac{1}{16}
-\end{align*}
-So,
-\begin{equation*}
-(1+x)^{1/2} = 1 + \frac{1}{2}x - \frac{1}{8}x^2 + \frac{1}{16}x^3 - \cdots
-\end{equation*}
-
-Now we can go back to our original problem, $\sqrt{1+5x} = (1+5x)^{1/2}$. This is just $(1+x)^{1/2}$ with $x$ replaced by $5x$, so we substitute $5x$ everywhere:
-\begin{align*}
-\sqrt{1+5x} &= 1 + \frac{1}{2}(5x) - \frac{1}{8}(5x)^2 + \frac{1}{16}(5x)^3 - \cdots \\
-&= 1 + \frac{5}{2}x - \frac{25}{8}x^2 + \frac{125}{16}x^3 - \cdots
-\end{align*}
-This expansion is only valid for $|5x| < 1$, i.e. $|x| < \frac{1}{5}$.
-
-\begin{Exercise}[title={Fractional Binomial Expansion}, label=fracbinom]
-  \Question{Find the first four terms in the expansion of $(1+x)^{-1}$, in ascending powers of $x$. For what values of $x$ is this expansion valid?}
-  \Question{Find the first three terms in the expansion of $\sqrt{1-2x}$, in ascending powers of $x$.}
-\end{Exercise}
-\begin{Answer}[ref=fracbinom]
-  1. $(1+x)^{-1} = 1 - x + x^2 - x^3 + \cdots$, valid for $|x| < 1$
-
-  2. $\sqrt{1-2x} = 1 - x - \frac{1}{2}x^2 - \cdots$
-\end{Answer}
 \subsection{Applications in Probability}
 
 Suppose you flip a fair coin 5 times. What is the probability that you get exactly 3 heads? 

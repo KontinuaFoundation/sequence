@@ -128,12 +128,11 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 
 ## 8. Cross-cutting improvements
 
-1. **A prerequisite checker.** Each chapter's `digital_resources.json` already lists its prerequisites under `requires` (as `covers` ids). Write a script that checks them against the volume order and flags any prerequisite taught later, or any id that nothing covers. A quick version of this check, run while fixing the reordering problems, still finds 29 prerequisites listed after the chapter that needs them. Most are metadata errors rather than real gaps (for example, `vectors`, in Vol 6, lists `span`, which is taught in Vol 19), so each one needs a look at the text before anything moves. The same data can generate the "Before you start" box.
-2. **"Before you start" and "Key ideas" boxes in every chapter**, generated from the prerequisite map and from `summary.md`.
-3. **Consistent notation across the statistics chapters.** For example, the proportion is `p` in some chapters and `r` in others. Add a notation table to the appendix.
-4. **An appendix volume**: statistical tables, Greek letters, units and prefixes, a formula sheet, a Python cheat sheet, and a glossary generated from the `\newterm` entries.
-5. **Running code in one place.** Collect every `minted` listing into runnable files under `digital_resources`, with tests. During this pass I re-ran listings by hand to check their printed output. A test suite would catch drift automatically.
-6. **Figure audit.** Some images are unused (the flight images, and `adityaOrbit.png`, `gimbalEngine.png`, and the `.ai` file in `vectors_matrices`). Some need regenerating (`artillery.png` in `drag`) or redrawing (the water phase diagram). Captions should be checked against the images.
+1. **"Before you start" and "Key ideas" boxes in every chapter**, generated from the prerequisite map and from `summary.md`.
+2. **Consistent notation across the statistics chapters.** For example, the proportion is `p` in some chapters and `r` in others. Add a notation table to the appendix.
+3. **An appendix volume**: statistical tables, Greek letters, units and prefixes, a formula sheet, a Python cheat sheet, and a glossary generated from the `\newterm` entries.
+4. **Running code in one place.** Collect every `minted` listing into runnable files under `digital_resources`, with tests. During this pass I re-ran listings by hand to check their printed output. A test suite would catch drift automatically.
+5. **Figure audit.** Some images are unused (the flight images, and `adityaOrbit.png`, `gimbalEngine.png`, and the `.ai` file in `vectors_matrices`). Some need regenerating (`artillery.png` in `drag`) or redrawing (the water phase diagram). Captions should be checked against the images.
 
 ---
 
@@ -147,8 +146,7 @@ Because each volume mixes subjects, a project can tie them together. Examples:
 
 | Phase | Work | Effort |
 |---|---|---|
-| 1 | Prerequisite checker script, and a pass over the mismatches it finds | Small. Mostly edits to `digital_resources.json` |
-| 2 | Merges from Section 4; appendix volume | Small to medium |
-| 4 | Rebuild the ML unit with code, figures, and one shared dataset | Large, and the highest payoff |
-| 5 | New chapters, starting with AI ethics | Large; can be done one chapter at a time |
-| 6 | Capstone projects and challenge/explore problems | Ongoing |
+| 1 | Merges from Section 4; appendix volume | Small to medium |
+| 2 | Rebuild the ML unit with code, figures, and one shared dataset | Large, and the highest payoff |
+| 3 | New chapters, starting with AI ethics | Large; can be done one chapter at a time |
+| 4 | Capstone projects and challenge/explore problems | Ongoing |
