@@ -1,27 +1,32 @@
 \chapter{Bayesian Networks}
 
-You wake up and the lawn is wet. Did it rain, or did the sprinkler run? Your
-brain weighs the possibilities without effort. A Bayesian network does the
-same reasoning on paper, and it scales to problems with hundreds of variables,
-from medical diagnosis to spam filters.
+You wake up and the lawn is wet. Did it rain, or did the sprinkler run? Your brain weighs the possibilities
+without effort. A Bayesian network does the same reasoning on paper, and it scales to problems with hundreds of
+variables, from medical diagnosis to deciding whether there is school today.
 
 \section{Variables and Dependencies}\index{Bayesian network}
 A \newterm{Bayesian network} is a probability model for several variables and the dependencies among them. Its
-structure is a \newterm{directed acyclic graph} (DAG): each node is a variable, and an arrow from $A$ to $B$ means $A$
-directly influences $B$. Each node has a \newterm{conditional probability table} (CPT) giving its probabilities for
-each combination of its parents' values.
+structure is a \newterm{directed acyclic graph}\index{directed acyclic graph} (DAG): each node is a variable, and
+an arrow from $A$ to $B$ means $A$ directly influences $B$. ``Acyclic'' means you can never follow the arrows in a
+loop back to where you started. Each node has a \newterm{conditional probability table}\index{conditional
+probability table} (CPT) giving its probabilities for each combination of its parents' values.
+
+The naive Bayes classifier from the last chapter is a small Bayesian network: one arrow from the class to each
+feature.
 
 \section{A Small Network}
 Let $R$ be ``it rained'' and $W$ be ``the grass is wet,'' with the arrow $R \to W$. The network needs one number
-for $R$ (since $P(\neg R) = 0.8$) and two conditional probabilities for $W$:
+for $R$ (since $P(\neg R) = 1 - P(R)$) and two conditional probabilities for $W$:
 $$P(R) = 0.2, \qquad P(W \mid R) = 0.9, \qquad P(W \mid \neg R) = 0.1$$
 
 \section{Inference}\index{Bayesian network!inference}
-A Bayesian network answers questions about unknown variables given observed ones. Three kinds of reasoning are common.
+A Bayesian network answers questions about unknown variables given observed ones. Three kinds of reasoning are
+common.
 \begin{itemize}
 \item \textbf{Prediction} (causal): given a cause, how likely is the effect? Here, $P(W \mid R) = 0.9$.
 \item \textbf{Diagnosis} (evidential): given an effect, how likely is the cause? This needs Bayes' rule.
-\item \textbf{Explaining away}: if two causes can produce the same effect, observing one cause lowers the probability of the other. For example, a wet lawn could come from rain or from a sprinkler. If you learn that the sprinkler was on, rain becomes less likely.
+\item \textbf{Explaining away}: if two causes can produce the same effect, observing one cause lowers the
+probability of the other.
 \end{itemize}
 
 For the diagnosis question, first find the total probability of wet grass:
@@ -31,9 +36,10 @@ $$P(R \mid W) = \frac{P(W \mid R) P(R)}{P(W)} = \frac{0.18}{0.26} \approx 0.692$
 Seeing wet grass raises the probability of rain from 0.2 to about 0.69.
 
 \subsection{Explaining Away, with Numbers}\index{explaining away}
-Now add a sprinkler $S$, so the network is $R \to W \leftarrow S$. Let
-$P(R) = 0.2$ and $P(S) = 0.3$, independently, and
-$$P(W \mid R, S) = 0.99, \quad P(W \mid R, \neg S) = 0.9, \quad P(W \mid \neg R, S) = 0.8, \quad P(W \mid \neg R, \neg S) = 0.05$$
+Now add a sprinkler $S$, so the network is $R \to W \leftarrow S$. Let $P(R) = 0.2$ and $P(S) = 0.3$,
+independently, and
+$$P(W \mid R, S) = 0.99, \quad P(W \mid R, \neg S) = 0.9, \quad P(W \mid \neg R, S) = 0.8, \quad
+P(W \mid \neg R, \neg S) = 0.05$$
 Multiplying out the four cases where the grass is wet:
 \begin{center}
 \begin{tabular}{c|c|c}
@@ -49,16 +55,204 @@ The total is $P(W) = 0.4054$. Knowing only that the grass is wet,
 $$P(R \mid W) = \frac{0.0594 + 0.126}{0.4054} \approx 0.457$$
 Now you also learn that the sprinkler was on. Keep only the rows where $S$ is yes:
 $$P(R \mid W, S) = \frac{0.0594}{0.0594 + 0.192} \approx 0.236$$
-The sprinkler already explains the wet grass, so the probability of rain drops
-from 0.457 to 0.236, close to its starting value of 0.2.
+The sprinkler already explains the wet grass, so the probability of rain drops from 0.457 to 0.236, close to its
+starting value of 0.2.
+
+\section{Is There School Today?}
+It is 6 a.m. in January. Here is a network for the question every student cares about:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node/.style={draw, rounded corners, align=center, font=\small, minimum width=2.6cm, minimum height=0.9cm},
+  >=stealth]
+\node[node] (S) at (0,0) {Heavy snow\\$S$};
+\node[node] (I) at (5,0) {Ice storm\\$I$};
+\node[node] (D) at (2.5,-1.8) {School closed\\$D$};
+\node[node] (C) at (0,-3.6) {6 a.m. robocall\\$C$};
+\node[node] (B) at (5,-3.6) {Brother says\\``no school''\\$B$};
+\draw[->, thick] (S) -- (D);
+\draw[->, thick] (I) -- (D);
+\draw[->, thick] (D) -- (C);
+\draw[->, thick] (D) -- (B);
+\end{tikzpicture}
+\caption{A Bayesian network for snow days.}
+\label{fig:snow-dag}
+\end{figure}
+
+Snow and ice can each close school. Whether school is closed affects whether the district's robocall comes,
+and whether your little brother announces that there is no school (which he does fairly often anyway, hoping
+to make it true). The tables:
+
+\begin{center}
+\begin{tabular}{c c}
+\begin{tabular}{l c}
+\textbf{Variable} & \textbf{$P(\text{true})$} \\
+\hline
+$S$ & 0.10 \\
+$I$ & 0.08 \\
+\end{tabular}
+&
+\begin{tabular}{c c c}
+$S$ & $I$ & $P(D \mid S, I)$ \\
+\hline
+yes & yes & 0.95 \\
+yes & no & 0.70 \\
+no & yes & 0.50 \\
+no & no & 0.01 \\
+\end{tabular}
+\\[0.6cm]
+\begin{tabular}{c c}
+$D$ & $P(C \mid D)$ \\
+\hline
+yes & 0.98 \\
+no & 0.02 \\
+\end{tabular}
+&
+\begin{tabular}{c c}
+$D$ & $P(B \mid D)$ \\
+\hline
+yes & 0.90 \\
+no & 0.30 \\
+\end{tabular}
+\end{tabular}
+\end{center}
+
+\textbf{The joint distribution.} The arrows say exactly how to build the probability of any complete
+combination of values: multiply each variable's probability given its parents.
+$$P(s, i, d, c, b) = P(s)\,P(i)\,P(d \mid s, i)\,P(c \mid d)\,P(b \mid d)$$
+Five yes-or-no variables have $2^5 = 32$ combinations. Writing out all 32 probabilities would take 31 numbers
+(the last is 1 minus the rest), but the network needs only 10, the entries in the tables above. With hundreds of
+variables, that saving is the difference between impossible and easy.
+
+\textbf{Example}: Before you hear anything, what is the probability that school is closed?
+
+\textbf{Solution}: Add up over the four combinations of the parents:
+
+\begin{center}
+\begin{tabular}{c c l}
+$S$ & $I$ & $P(S)\,P(I)\,P(D \mid S, I)$ \\
+\hline
+yes & yes & $0.1 \cdot 0.08 \cdot 0.95 = 0.0076$ \\
+yes & no & $0.1 \cdot 0.92 \cdot 0.70 = 0.0644$ \\
+no & yes & $0.9 \cdot 0.08 \cdot 0.50 = 0.0360$ \\
+no & no & $0.9 \cdot 0.92 \cdot 0.01 = 0.00828$ \\
+\hline
+ & & $P(D) = 0.11628$ \\
+\end{tabular}
+\end{center}
+
+About a 12\% chance. Now your brother bursts in: ``No school!'' Bayes' rule, as in the rain example:
+$$P(D \mid B) = \frac{0.9 \times 0.11628}{0.9 \times 0.11628 + 0.3 \times 0.88372} = \frac{0.1047}{0.3698} \approx 0.283$$
+His word raises the chance from 12\% to 28\%, which is not enough to go back to bed. The robocall, which almost
+never comes on a school day, is far more convincing:
+$$P(D \mid C) = \frac{0.98 \times 0.11628}{0.98 \times 0.11628 + 0.02 \times 0.88372} \approx 0.866$$
+
+\textbf{Explaining away again.} Suppose school is closed. Was there heavy snow? Use the table above: the rows
+where $S$ is yes account for $0.0076 + 0.0644 = 0.072$ of the $0.11628$, so
+$$P(S \mid D) = \frac{0.072}{0.11628} \approx 0.619$$
+Now you look outside and see that everything is coated in ice. Keep only the rows where $I$ is yes:
+$$P(S \mid D, I) = \frac{0.0076}{0.0076 + 0.0360} \approx 0.174$$
+The ice storm explains the closing, so snow drops from 62\% to 17\%, which is not much above its starting value
+of 10\%. Snow and ice are independent, but once you know school is closed, learning about one changes what you
+believe about the other.
+
+\section{Inference in NumPy}
+For a network this small, the simplest method is the one we used by hand, called \newterm{inference by
+enumeration}\index{inference by enumeration}: build the whole joint table, keep the rows that match the
+evidence, and add. Here is \filename{snow\_day.py}:
+
+\begin{minted}{python}
+import numpy as np
+
+# Each table gives P(variable = True) for every combination of its parents.
+# Axis order everywhere: S (snow), I (ice), D (school closed), C (robocall), B (brother)
+p_snow = 0.1
+p_ice = 0.08
+p_closed = np.array([[0.01, 0.5],                # index: S, I
+                     [0.7, 0.95]])
+p_call = np.array([0.02, 0.98])                  # index: D
+p_brother = np.array([0.3, 0.9])                 # index: D
+
+def table(p_true):
+    """Stack P(False) and P(True) along a new last axis."""
+    return np.stack([1 - p_true, p_true], axis=-1)
+
+S = table(np.array(p_snow))         # shape (2,)
+I = table(np.array(p_ice))          # shape (2,)
+D = table(p_closed)                 # shape (2, 2, 2):    S, I, D
+C = table(p_call)                   # shape (2, 2):       D, C
+B = table(p_brother)                # shape (2, 2):       D, B
+
+# The joint distribution: P(s, i, d, c, b) = P(s) P(i) P(d|s,i) P(c|d) P(b|d)
+joint = np.einsum("s,i,sid,dc,db->sidcb", S, I, D, C, B)
+print("Joint table shape:", joint.shape, " total:", round(joint.sum(), 10))
+
+AXES = "SIDCB"
+
+def probability(query, given={}):
+    """P(query variable is True | given), by adding up rows of the joint table."""
+    keep = joint.copy()
+    for name, value in given.items():
+        index = [slice(None)] * 5
+        index[AXES.index(name)] = 1 - int(value)    # zero out rows that disagree
+        keep[tuple(index)] = 0
+    other = tuple(k for k in range(5) if k != AXES.index(query))
+    marginal = keep.sum(axis=other)
+    return marginal[1] / marginal.sum()
+
+print(f"P(closed)                     = {probability('D'):.3f}")
+print(f"P(closed | brother says so)   = {probability('D', {'B': True}):.3f}")
+print(f"P(closed | robocall)          = {probability('D', {'C': True}):.3f}")
+print(f"P(snow | closed)              = {probability('S', {'D': True}):.3f}")
+print(f"P(snow | closed, icy)         = {probability('S', {'D': True, 'I': True}):.3f}")
+print(f"P(snow | closed, not icy)     = {probability('S', {'D': True, 'I': False}):.3f}")
+\end{minted}
+
+\begin{verbatim}
+Joint table shape: (2, 2, 2, 2, 2)  total: 1.0
+P(closed)                     = 0.116
+P(closed | brother says so)   = 0.283
+P(closed | robocall)          = 0.866
+P(snow | closed)              = 0.619
+P(snow | closed, icy)         = 0.174
+P(snow | closed, not icy)     = 0.886
+\end{verbatim}
+
+Each variable gets its own axis, with index 0 for false and 1 for true. For example,
+\verb|joint[1, 0, 1, 1, 0]| is $P(S, \neg I, D, C, \neg B)$. The star of the program is \verb|np.einsum|\index{einsum}, short for ``Einstein
+summation.'' Its first argument names the axes of each input and of the output:
+\verb|"s,i,sid,dc,db->sidcb"| says ``for every combination of the five variables, multiply \verb|S[s]|,
+\verb|I[i]|, \verb|D[s,i,d]|, \verb|C[d,c]|, and \verb|B[d,b]|.'' That is the factorization formula, typed almost
+directly. The total is 1, as a probability distribution's must be.
+
+To condition on evidence, \verb|probability| zeros out every entry that disagrees with it, adds over all the
+other variables, and divides by the total that remains: exactly the ``keep the matching rows'' step from the
+hand calculations.
+
+\begin{center}
+\begin{tabular}{l c}
+\textbf{What you know} & \textbf{$P(\text{heavy snow})$} \\
+\hline
+nothing & 0.100 \\
+school is closed & 0.619 \\
+school is closed, and there is no ice & 0.886 \\
+school is closed, and it is icy & 0.174 \\
+\end{tabular}
+\end{center}
+
+Enumeration doubles in cost with every variable you add: 50 yes-or-no variables would need a table with
+$2^{50} \approx 10^{15}$ entries. Real systems use smarter exact methods, which add up one variable at a time, or
+approximate methods based on random sampling.
 
 \section{Learning a Network}
-Learning has two parts. \newterm{Parameter learning} estimates the CPT entries from data, often by counting how often each
-combination appears. \newterm{Structure learning} chooses the arrows, and it is harder because many structures
-fit the same data. Expert knowledge is often used to choose the structure.
+Learning has two parts. \newterm{Parameter learning} estimates the CPT entries from data, often by counting:
+if school was closed on 14 of the 20 heavy-snow, no-ice days in the district's records, estimate
+$P(D \mid S, \neg I) = 0.7$. \newterm{Structure learning} chooses the arrows, and it is harder, because many
+structures fit the same data. Expert knowledge is often used to choose the structure.
 
 \begin{Exercise}[label=bn1, title=Compute a total probability]
-Using the network above, find $P(W)$ if $P(R)$ is changed to $0.5$, with the same conditional probabilities.
+In the rain network, find $P(W)$ if $P(R)$ is changed to $0.5$, with the same conditional probabilities.
 \end{Exercise}
 \begin{Answer}[ref=bn1]
 $P(W) = 0.9(0.5) + 0.1(0.5) = 0.5$.
@@ -69,4 +263,56 @@ A node $C$ has two parents, $A$ and $B$, each either true or false. How many row
 \end{Exercise}
 \begin{Answer}[ref=bn2]
 There are $2 \times 2 = 4$ parent combinations, so the CPT has 4 rows, each giving $P(C \mid A, B)$.
+\end{Answer}
+
+\begin{Exercise}[label=bn3, title={Both messages}, space=3cm]
+In the snow-day network, the robocall comes \emph{and} your brother says there is no school. Find
+$P(D \mid C, B)$ by hand. (Given $D$, the call and your brother are independent.)
+\end{Exercise}
+\begin{Answer}[ref=bn3]
+$$P(D \mid C, B) = \frac{0.98 \times 0.9 \times 0.11628}{0.98 \times 0.9 \times 0.11628 + 0.02 \times 0.3 \times
+0.88372} = \frac{0.10256}{0.10256 + 0.00530} \approx 0.951$$
+Two pieces of evidence together are stronger than either alone.
+\end{Answer}
+
+\begin{Exercise}[label=bn4, title={Count the numbers}]
+A network has 6 yes-or-no variables. One has no parents, two have one parent each, and three have two parents
+each. How many numbers do its tables need? How many would the full joint table need?
+\end{Exercise}
+\begin{Answer}[ref=bn4]
+A node needs one number for each combination of its parents' values: $1 + 2(2) + 3(4) = 17$. The full joint
+table has $2^6 = 64$ entries, so it needs 63 numbers (the last one is 1 minus the others).
+\end{Answer}
+
+\begin{Exercise}[label=bn5, title={Check the code}]
+Use \verb|probability| in \filename{snow\_day.py} to check your answer to the ``Both messages'' exercise. Then
+find $P(\text{ice} \mid \text{robocall})$ and $P(\text{ice} \mid \text{robocall}, \text{no heavy snow})$.
+Explain the difference.
+\end{Exercise}
+\begin{Answer}[ref=bn5]
+\begin{minted}{python}
+print(probability('D', {'C': True, 'B': True}))   # 0.951
+print(probability('I', {'C': True}))              # 0.330
+print(probability('I', {'C': True, 'S': False}))  # 0.595
+\end{minted}
+Without snow, something else has
+to explain the call, and the most likely explanation is ice: explaining away in reverse.
+\end{Answer}
+
+\begin{Exercise}[label=bn6, title={Learn by simulating}]
+Generate 10,000 random mornings from the network. Draw snow and ice by comparing random numbers with their
+probabilities, then draw school closings using the probabilities in \verb|p_closed|. Estimate $P(S \mid D)$ by counting. How close is it to 0.619?
+\end{Exercise}
+\begin{Answer}[ref=bn6]
+\begin{minted}{python}
+rng = np.random.default_rng(0)
+n = 10_000
+s = rng.random(n) < p_snow
+i = rng.random(n) < p_ice
+d = rng.random(n) < p_closed[s.astype(int), i.astype(int)]
+print(np.mean(s[d]))
+\end{minted}
+With this seed, 1,173 of the mornings are closings, and the fraction of them with snow is 0.618. (Different
+seeds give answers that typically differ from 0.619 by about 0.014.) This is the idea behind
+approximate inference by sampling.
 \end{Answer}

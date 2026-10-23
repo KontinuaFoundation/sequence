@@ -1,54 +1,122 @@
 \chapter{Evaluating the Fit of a Linear Regression Model}
 
-Any two columns of numbers can be fed to a regression, and you will always get
-a line. The real question is whether the line is any good. This chapter gives
-you the tools to grade a fit: residual plots, $R^2$, RMSE, and the ANOVA table.
+Give a regression any two columns of numbers, say shoe size and math grade, and it will hand you back a line.
+It never refuses. So the real question is not ``What is the line?'' but ``Is the line any good?'' The last
+chapter answered one version of that question with a $t$-test for the slope. This chapter adds the other tools
+statisticians use to grade a fit: residual plots, $R^2$, RMSE, and the ANOVA table with its $F$-test.
 
-\section{Residuals}\index{residual!plot}
-The residual for observation $i$ is $e_i = y_i - \hat{y}_i$, the observed value
-minus the predicted value. A \newterm{residual plot} graphs $e_i$ against $\hat{y}_i$
-or against $x_i$. If the line fits well, the residuals scatter randomly around
-zero with no clear pattern. A curve in the residual plot means a straight line is the wrong model.
+\section{Look at the Residuals First}\index{residual!plot}
+The residual for observation $i$ is $e_i = y_i - \hat{y}_i$. A \newterm{residual plot} graphs $e_i$
+against $x_i$ (or against $\hat{y}_i$). If the line is the right shape, the residuals scatter randomly
+around zero. If they form a pattern, the model has missed something.
 
-\section{Sums of Squares}
-Three sums of squares measure the variation in $y$:
-$$SS_{tot} = \sum (y_i - \bar{y})^2, \qquad SS_{res} = \sum (y_i - \hat{y}_i)^2, \qquad
-SS_{reg} = \sum (\hat{y}_i - \bar{y})^2$$
-Here $SS_{tot}$ is the total variation, $SS_{res}$ is the variation the line does not
-explain, and $SS_{reg}$ is the variation the line explains. For a least squares line
-with an intercept, they add up:
+Here is a driver's-education example. Figure~\ref{fig:stopping} shows the stopping distance of a car at
+different speeds. (The data is simulated from the physics of braking, plus some noise.) The line looks
+fine, and as you will see, it explains 97\% of the variation. But the residuals make a clear U: the line
+overestimates in the middle and underestimates at both ends. Braking distance grows with the
+\emph{square} of the speed, so a straight line is the wrong model, however good its score.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{stopping.png}
+\caption{Left: stopping distance against speed, with the least squares line. Right: the residuals form
+a U, so the relationship is curved.}
+\label{fig:stopping}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l >{\raggedright\arraybackslash}p{7cm}}
+\textbf{Residual pattern} & \textbf{What it suggests} \\
+\hline
+random scatter around 0 & the line is a reasonable model \\
+a curve (U or upside-down U) & the relationship is not linear; try $x^2$ or a transformation \\
+a fan (spread grows with $x$) & errors are bigger for big $x$; predictions there are less precise \\
+groups above and below 0 & a missing category, such as grade level for students or species for animals \\
+one point far from the rest & an outlier that may be pulling the line \\
+\end{tabular}
+\end{center}
+
+\section{Splitting Up the Variation}
+Why does a $y$ value differ from the average $\bar{y}$? Part of the reason is that its $x$ differs from
+average, which the line accounts for. The rest is the residual. For each point,
+$$\underbrace{y_i - \bar{y}}_{\text{total}} = \underbrace{\hat{y}_i - \bar{y}}_{\text{explained}} +
+\underbrace{y_i - \hat{y}_i}_{\text{residual}}$$
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{ss_split.png}
+\caption{For the point $(3, 8)$, the distance above the mean ($4$) splits into the part the line explains
+($3.3$) and the residual ($0.7$).}
+\label{fig:ss-split}
+\end{figure}
+
+Square these pieces and add them over all the points to get three \newterm{sums of squares}:
+$$SS_{tot} = \sum (y_i - \bar{y})^2, \qquad SS_{reg} = \sum (\hat{y}_i - \bar{y})^2, \qquad
+SS_{res} = \sum (y_i - \hat{y}_i)^2$$
+For a least squares fit with an intercept, they add up just like the pieces do:
 $$SS_{tot} = SS_{reg} + SS_{res}$$
+(It is not obvious that the squares should add up, too. It works because the least squares residuals
+are uncorrelated with the predictions: in the language of vectors, the residual vector is perpendicular to the
+vector of predictions, and this is the Pythagorean theorem in $n$ dimensions.)
 
-\section{Coefficient of Determination}\index{R-squared}
-The coefficient of determination is
-$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}}$$
-It is the proportion of the variation in $y$ that the line explains. If the
-line fits perfectly, $SS_{res} = 0$ and $R^2 = 1$. If the line does no better than
-predicting $\bar{y}$ for every point, $SS_{res} = SS_{tot}$ and $R^2 = 0$. Think of guessing a friend's quiz score by always saying the class average. You explain nothing, so $R^2 = 0$.
+\textbf{Example}: For the points $(0,1), (1,3), (2,4), (3,8)$ with line $\hat{y} = 0.7 + 2.2x$, find the three
+sums of squares.
 
-For a simple linear regression, $R^2$ is the square of the correlation $r$ between
-$x$ and $y$.
+\textbf{Solution}: $\bar{y} = 4$. Work row by row:
 
-\subsection{Example}
-For the quiz data in the simple linear regression chapter, $SS_{res} = 0.107$ and
-$SS_{tot} = 39.708$. So
+\begin{center}
+\begin{tabular}{c c c | c c c}
+$x$ & $y$ & $\hat{y}$ & $(y - \bar{y})^2$ & $(\hat{y} - \bar{y})^2$ & $(y - \hat{y})^2$ \\
+\hline
+0 & 1 & 0.7 & 9 & 10.89 & 0.09 \\
+1 & 3 & 2.9 & 1 & 1.21 & 0.01 \\
+2 & 4 & 5.1 & 0 & 1.21 & 1.21 \\
+3 & 8 & 7.3 & 16 & 10.89 & 0.49 \\
+\hline
+ & & \textbf{Sum} & $SS_{tot} = 26$ & $SS_{reg} = 24.2$ & $SS_{res} = 1.8$ \\
+\end{tabular}
+\end{center}
+
+And indeed $24.2 + 1.8 = 26$.
+
+\section{The Coefficient of Determination}\index{R-squared}\index{coefficient of determination}
+The fraction of the total variation that the line explains is the \newterm{coefficient of determination}:
+$$R^2 = \frac{SS_{reg}}{SS_{tot}} = 1 - \frac{SS_{res}}{SS_{tot}}$$
+
+\begin{itemize}
+\item A perfect fit has $SS_{res} = 0$, so $R^2 = 1$.
+\item The laziest possible model ignores $x$ and always predicts $\bar{y}$. It has $SS_{res} = SS_{tot}$, so
+$R^2 = 0$. You can read $R^2$ as ``how much better than always guessing the average, on a scale from 0 to 1.''
+\item For simple linear regression, $R^2 = r^2$, the square of the correlation between $x$ and $y$, as in the
+Regression Line chapter.
+\end{itemize}
+
+In the example above, $R^2 = 24.2 / 26 \approx 0.931$. Here is a second example. Five students studied for
+$x = 1, 2, 3, 4, 5$ hours and scored $y = 2.1, 3.9, 6.2, 7.8, 10.1$ on a 10-point quiz. The least squares line is
+$\hat{y} = 0.05 + 1.99x$, with $SS_{res} = 0.107$ and $SS_{tot} = 39.708$, so
 $$R^2 = 1 - \frac{0.107}{39.708} \approx 0.997$$
-About 99.7\% of the variation in quiz scores is explained by hours of study.
-This is a very high value. In real data, $R^2$ is often much lower.
+Hours of study explain 99.7\% of the variation in those five scores. Real data is rarely that tidy.
 
-\section{Root Mean Squared Error}\index{RMSE}\index{root mean squared error}
-The root mean squared error (RMSE) measures the typical size of a prediction error,
-in the units of $y$:
-$$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2} = \sqrt{\frac{SS_{res}}{n}}$$
-For the quiz data, $RMSE = \sqrt{0.107/5} \approx 0.146$ points. Some textbooks divide by
-$n - 2$ instead of $n$ when estimating error variance in regression. This chapter
-uses $n$ so that RMSE is the root of the average squared error.
+\section{Root Mean Squared Error}\index{root mean squared error}
+$R^2$ has no units, which makes it easy to compare across problems but hard to feel. The \newterm{root mean
+squared error} (RMSE) is in the units of $y$:
+$$\text{RMSE} = \sqrt{\frac{SS_{res}}{n}}$$
+For the quiz data, $\text{RMSE} = \sqrt{0.107/5} \approx 0.146$ points: a typical prediction is off by about
+a seventh of a point. (The regression output in the last two chapters reports a close cousin,
+$s = \sqrt{SS_{res}/(n - 2)}$, which divides by the degrees of freedom to estimate the spread of the errors in
+the population. RMSE divides by $n$, so it is exactly the root of the average squared error. For large $n$, the
+two are nearly equal.)
 
-\section{The ANOVA Table}\index{ANOVA!regression}
-Statistical software summarizes the sums of squares in an \newterm{analysis of
-variance} (ANOVA) table. Each sum of squares is divided by its degrees of
-freedom to get a mean square, and the ratio of the two mean squares is the
-$F$ statistic:
+The two measures answer different questions. $R^2$ asks, ``What fraction of the variation did we explain?''
+RMSE asks, ``How far off is a typical prediction?'' Report both.
+
+\section{The ANOVA Table and the \texorpdfstring{$F$}{F}-Test}\index{ANOVA!regression}\index{F-test}
+Could the pattern be a fluke? Even if $y$ had nothing to do with $x$, random noise would give the line a
+slope that is not exactly zero and an $R^2$ that is not exactly zero. The \newterm{analysis of variance}
+(ANOVA) table tests whether the line explains more than noise would.
+
+Each sum of squares is divided by its \newterm{degrees of freedom} to get a \newterm{mean square}, and the
+ratio of the two mean squares is the $F$ statistic:
 
 \begin{center}
 \begin{tabular}{l|c|c|c|c}
@@ -60,19 +128,161 @@ Total & $SS_{tot}$ & $n - 1$ & & \\
 \end{tabular}
 \end{center}
 
-A large $F$ means the line explains much more variation than the leftover
-noise does. For the quiz data, $SS_{reg} = 39.601$, $SS_{res} = 0.107$, and
-$n - 2 = 3$, so
-$$F = \frac{39.601/1}{0.107/3} \approx 1110$$
-The $p$-value for this $F$ (with 1 and 3 degrees of freedom) is about $0.00006$,
-strong evidence that the slope is not zero. In simple linear regression, this
-$F$-test gives the same $p$-value as the $t$-test for the slope.
+The residual degrees of freedom are $n - 2$ because the line used up two numbers, $b_0$ and $b_1$. With
+$p$ features, the regression row gets $p$ degrees of freedom and the residual row gets $n - p - 1$.
+
+If $x$ is useless, $F$ tends to be around 1. If the line explains a lot, $F$ is large. How large is large
+enough? If $x$ really were useless, $F$ would follow an \newterm{$F$ distribution} with 1 and $n - 2$ degrees
+of freedom. The $p$-value is the chance that such a distribution produces a value at least as big as ours.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{f_dist.png}
+\caption{The $F$ distribution with 1 and 3 degrees of freedom. If $x$ were useless, $F$ would land above
+10.13 only 5\% of the time.}
+\label{fig:f-dist}
+\end{figure}
+
+\textbf{Example}: For the quiz data, $SS_{reg} = 39.601$, $SS_{res} = 0.107$, and $n = 5$. Find $F$.
+
+\textbf{Solution}: $$F = \frac{39.601/1}{0.107/3} \approx 1110$$
+That is far beyond 10.13, off the right edge of Figure~\ref{fig:f-dist}. The $p$-value is about
+$0.00006$: strong evidence that the slope is not zero.
+
+\textbf{The $F$-test and the $t$-test.} You already have a test for ``is the slope zero?'': the $t$-test from the
+last chapter. With one predictor, the two tests always agree, because $F = t^2$ exactly. Take the sleep study,
+where 8 teenagers' screen time and sleep gave $t = -4.01$ with a two-sided $p$-value of 0.007. Its sums of squares
+are $SS_{tot} = 1.567$, $SS_{reg} = 1.142$, and $SS_{res} = 0.425$, so
+$$R^2 = \frac{1.142}{1.567} \approx 0.729, \qquad F = \frac{1.142/1}{0.425/6} \approx 16.1 \approx (-4.01)^2$$
+and the $F$-test's $p$-value is 0.007, the same as the two-sided $t$-test. Why have both? The $t$-test can be
+one-sided and gives a confidence interval for the slope. The $F$-test extends to models with several
+predictors, where it asks whether \emph{any} of them helps.
+
+\section{Grading a Line for Penguins}\index{Palmer penguins}
+Now a bigger data set. From 2007 to 2009, researchers at Palmer Station, Antarctica, measured 344 penguins of three
+species; 333 have every measurement recorded. The data is free for anyone to use. Put \filename{penguins.csv} and
+\filename{penguins.py} in a folder; the function \verb|load_penguins()| in \filename{penguins.py} returns a
+dictionary of NumPy arrays, one per column, so \verb|data["body_mass_g"]| is an array of 333 masses. (The
+machine-learning chapters later in the series use this data set throughout.)
+
+Can a penguin's flipper length predict its body mass? SciPy knows the $F$ distribution:
+\verb|stats.f.sf(F, df1, df2)| gives the area to the right of \verb|F| (``sf'' stands for \emph{survival
+function}). Here is \filename{fit\_quality.py}, which fits the line with \verb|stats.linregress|, as in the last
+chapter, and grades it:
+
+\begin{minted}{python}
+import numpy as np
+from scipy import stats
+from penguins import load_penguins
+
+data = load_penguins()
+x = data["flipper_length_mm"]
+y = data["body_mass_g"]
+n = len(y)
+
+fit = stats.linregress(x, y)
+y_hat = fit.intercept + fit.slope * x
+
+ss_tot = np.sum((y - np.mean(y))**2)
+ss_reg = np.sum((y_hat - np.mean(y))**2)
+ss_res = np.sum((y - y_hat)**2)
+print(f"SS_tot = {ss_tot:.4g}, SS_reg + SS_res = {ss_reg + ss_res:.4g}")
+
+r_squared = 1 - ss_res / ss_tot
+print(f"R^2 = {r_squared:.3f}, r^2 = {fit.rvalue**2:.3f}")
+print(f"RMSE = {np.sqrt(ss_res / n):.0f} g")
+
+# ANOVA: one predictor, n - 2 residual degrees of freedom
+F = (ss_reg / 1) / (ss_res / (n - 2))
+p_value = stats.f.sf(F, 1, n - 2)
+print(f"F = {F:.0f}, p-value = {p_value:.1e}")
+
+# The t statistic for the slope, from the previous chapter
+t = fit.slope / fit.stderr
+print(f"t = {t:.2f}, t^2 = {t**2:.0f}")
+\end{minted}
+
+\begin{verbatim}
+SS_tot = 2.153e+08, SS_reg + SS_res = 2.153e+08
+R^2 = 0.762, r^2 = 0.762
+RMSE = 392 g
+F = 1060, p-value = 3.1e-105
+t = 32.56, t^2 = 1060
+\end{verbatim}
+
+The line is $\widehat{\text{mass}} = -5872 + 50.15 \times \text{flipper}$. Flipper length explains 76\% of the
+variation in body mass, a typical prediction is off by 392 g, and $t^2 = F$ again. The
+$p$-value has 104 zeros after the decimal point; with 333 penguins, there is no doubt that the relationship
+is real. Notice that ``real'' is not the same as ``strong'': with enough data, even a weak relationship gets a
+tiny $p$-value. $R^2$ and RMSE tell you how useful the line is.
+
+\section{More Features, Higher \texorpdfstring{$R^2$}{R-squared}, Worse Predictions}\index{adjusted R-squared}
+\index{multiple regression}
+A line uses one predictor. \newterm{Multiple regression} uses several:
+$\hat{y} = b_0 + b_1 x_1 + b_2 x_2 + \cdots + b_p x_p$, still choosing the $b$'s to make $SS_{res}$ as small as
+possible. In NumPy, you stack the predictors as columns of a matrix $X$, with a first column of ones for $b_0$,
+and \verb|np.linalg.lstsq(X, y)| finds the least squares coefficients. (The Least Squares chapter in the
+machine-learning unit shows how.) The ANOVA table and $R^2$ work the same way, with $p$ and $n - p - 1$ degrees of
+freedom.
+
+There is a catch. Adding a predictor can never make $SS_{res}$ go up on the data used to fit the model: least
+squares could always set the new coefficient to zero and do exactly as well as before. So $R^2$ never decreases
+as you add predictors, even useless ones.
+
+The \newterm{adjusted $R^2$} charges a fee for each of the $p$ features:
+$$R^2_{adj} = 1 - (1 - R^2)\,\frac{n - 1}{n - p - 1}$$
+Let us test both. The program \filename{noise.py} predicts mass from flipper length plus $k$ columns of
+pure random numbers, which carry no information about penguins at all. It fits each model to 250 randomly chosen
+penguins, the \emph{training} penguins, and then measures its RMSE on the other 83, which it never saw:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+y = data["body_mass_g"]
+n = len(y)
+order = np.random.default_rng(1).permutation(n)
+train, test = order[:250], order[250:]
+
+# 40 columns of pure random numbers: no information about penguins
+junk = np.random.default_rng(0).normal(size=(n, 40))
+
+print("junk   R^2   adj R^2   test RMSE")
+for k in [0, 5, 10, 20, 40]:
+    X = np.column_stack([np.ones(n), data["flipper_length_mm"], junk[:, :k]])
+    b, *_ = np.linalg.lstsq(X[train], y[train])
+    res = y[train] - X[train] @ b
+    r2 = 1 - np.sum(res**2) / np.sum((y[train] - np.mean(y[train]))**2)
+    p = k + 1                              # number of features
+    adj = 1 - (1 - r2) * (250 - 1) / (250 - p - 1)
+    rmse = np.sqrt(np.mean((y[test] - X[test] @ b)**2))
+    print(f"{k:4d}  {r2:.3f}   {adj:.3f}    {rmse:.0f}")
+\end{minted}
+
+\begin{verbatim}
+junk   R^2   adj R^2   test RMSE
+   0  0.747   0.746    343
+   5  0.750   0.743    344
+  10  0.764   0.753    354
+  20  0.783   0.763    378
+  40  0.807   0.768    414
+\end{verbatim}
+
+$R^2$ climbs from 0.747 to 0.807 as we add garbage, while the RMSE on the unseen penguins gets worse by 71 g. The
+model is memorizing the random quirks of the training penguins, which is called \newterm{overfitting}.
+Adjusted $R^2$ grows more slowly, but even it is fooled here. The safest way to compare models is to measure them
+on data they did not see.
 
 \section{Limits of These Measures}
-A high $R^2$ does not mean the model is correct. It can be high for a curved pattern
-fit with a line, or when a single extreme point drives the fit. Always look at the
-residual plot too. Also, $R^2$ never decreases when you add more predictors, so
-it cannot be used alone to compare models with different numbers of predictors.
+\begin{itemize}
+\item A high $R^2$ does not mean the model is the right shape; the stopping-distance line has
+$R^2 = 0.97$. Look at the residual plot.
+\item A low $p$-value means the relationship is probably not a fluke. It does not mean the relationship is
+strong, or causal.
+\item $R^2$ on the data used for fitting always rewards more predictors, so compare models on data they did
+not see.
+\end{itemize}
 
 \begin{Exercise}[label=lr2_1, title=Compute R-squared]
 A regression has $SS_{res} = 25$ and $SS_{tot} = 100$. What is $R^2$, and what does it mean?
@@ -90,22 +300,56 @@ Then $R^2 = 1 - \frac{SS_{tot}}{SS_{tot}} = 0$.
 \end{Answer}
 
 \begin{Exercise}[label=lr2_3, title=Read a residual plot]
-A residual plot shows residuals that are large and positive for small $\hat{y}$,
-negative in the middle, and large and positive again for large $\hat{y}$. What does
-this suggest about the model?
+In a residual plot, the residuals are positive for small $\hat{y}$, negative in the middle, and positive again
+for large $\hat{y}$. What does this suggest about the model?
 \end{Exercise}
 \begin{Answer}[ref=lr2_3]
-The pattern is curved, not random. A straight line does not describe the
-relationship, and a model with a curved term, or a transformation of the
-variables, would be a better choice.
+The pattern is curved, not random, like the stopping-distance example. A straight line does not describe the
+relationship, and a model with a curved term, or a transformation of the variables, would be a better choice.
 \end{Answer}
 
-\begin{Exercise}[label=lr2_4, title=Fill in an ANOVA table]
-A regression on $n = 12$ points has $SS_{tot} = 80$ and $SS_{res} = 20$. Find
-$SS_{reg}$, $R^2$, and $F$.
+\begin{Exercise}[label=lr2_4, title=Fill in an ANOVA table, space=3cm]
+A line is fit to 12 points. If $SS_{tot} = 80$ and $SS_{res} = 20$, find $SS_{reg}$, $R^2$, and $F$.
 \end{Exercise}
 \begin{Answer}[ref=lr2_4]
-$SS_{reg} = 80 - 20 = 60$ and $R^2 = 60/80 = 0.75$. The residual degrees of
-freedom are $12 - 2 = 10$, so $F = \frac{60/1}{20/10} = 30$.
+$SS_{reg} = 80 - 20 = 60$ and $R^2 = 60/80 = 0.75$. The residual degrees of freedom are $12 - 2 = 10$, so
+$F = \frac{60/1}{20/10} = 30$.
 \end{Answer}
 
+\begin{Exercise}[label=lr2_5, title={Correlation from R-squared}]
+A line of mass against flipper length has $R^2 = 0.762$. What is the correlation $r$? How do you know its
+sign?
+\end{Exercise}
+\begin{Answer}[ref=lr2_5]
+$r = \pm\sqrt{0.762} \approx \pm 0.873$. The slope is positive (50 g per mm), and $r$ always has the same sign
+as the slope, so $r \approx 0.873$.
+\end{Answer}
+
+\begin{Exercise}[label=lr2_6, title={Fix the stopping distance}]
+For the stopping distances, the line has $R^2 = 0.973$. Adding a column of squared speeds, so that
+$\hat{d} = b_0 + b_1 v + b_2 v^2$, raises $R^2$ to $0.987$. Since $R^2$ always rises when you add a column,
+why should you believe this gain, but not the gains from the junk columns?
+\end{Exercise}
+\begin{Answer}[ref=lr2_6]
+The $v^2$ column comes from physics (braking distance grows with the square of speed), and it removes the U
+pattern from the residual plot. The junk columns had no reason to help and made the RMSE on unseen penguins worse. A
+column is believable when it fixes a visible pattern and improves performance on data the model did not
+see.
+\end{Answer}
+
+\begin{Exercise}[label=lr2_7, title={The sleep study in code}]
+Change \filename{fit\_quality.py} to use the sleep-study data from the last chapter (it is in the
+\verb|linregress| example there). Confirm that
+$R^2 \approx 0.729$, $F \approx 16.1$, and $F = t^2$.
+\end{Exercise}
+\begin{Answer}[ref=lr2_7]
+Replace the three lines that load the data with
+\begin{minted}{python}
+x = np.arange(2, 10)
+y = np.array([7.85, 8.05, 7.40, 7.55, 6.90, 7.35, 6.70, 6.95])
+n = len(y)
+\end{minted}
+and print the RMSE in hours with two decimal places (it is 0.23 hours). The program prints $SS_{tot} = 1.567$,
+$R^2 = 0.729$, $F = 16$ with $p \approx 7.0 \times 10^{-3}$, and $t = -4.01$ with $t^2 = 16$. (Use \verb|:.2f|
+in the $F$ line to see 16.10.)
+\end{Answer}

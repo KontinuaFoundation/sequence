@@ -1,32 +1,58 @@
 \chapter{Linear Regression and Gradient Descent}
 
-\section{Why Iterate?}\index{gradient descent}
-The least squares solution is a formula, $\mathbf{b} = (X^TX)^{-1}X^T\mathbf{y}$. For many features, forming and solving
-$X^TX$ is expensive. \newterm{Gradient descent} reaches nearly the same answer by repeated small steps, which can scale to
-very large problems. Think of walking down a hill in fog. You feel the slope under your feet and take a small step downhill, then repeat.
+You are hiking down a mountain when the fog rolls in. You cannot see the parking lot, or even the trail. But
+you can feel which way the ground slopes under your feet, so you take a step downhill. Then another. As long as
+the mountain has one lowest point, you will eventually get there.
 
-\section{The Cost Function}
-The cost for linear regression is the mean squared error:
-$$J(\boldsymbol{\theta}) = \frac{1}{n}\sum_{i=1}^n (\mathbf{x}_i^T\boldsymbol{\theta} - y_i)^2$$
-In matrix form, its gradient is
+That is \newterm{gradient descent}\index{gradient descent}, and it is how nearly every model after this chapter
+is trained, including the neural networks at the end of the unit. Here we use it on a problem we have already
+solved, linear regression, so you can check every answer against the least squares formula.
+
+\section{Why Not Just Use the Formula?}
+The Least Squares chapter gave an exact answer: solve $X^T X \mathbf{b} = X^T \mathbf{y}$. So why walk
+downhill in the fog when you have a map?
+\begin{itemize}
+\item \textbf{Most models have no formula.} Logistic regression, in the next chapter, and neural networks have
+no equation you can solve for the best parameters. You can only search for them.
+\item \textbf{Big problems.} With a million features, $X^T X$ has a trillion entries. Gradient descent
+never forms it.
+\item \textbf{Big data.} Gradient descent can learn from a small batch of examples at a time, so the data does
+not have to fit in memory at once.
+\end{itemize}
+
+\section{The Cost Function and Its Gradient}
+We call the parameters $\boldsymbol{\theta}$ (theta), which is the usual name in machine learning; for a line,
+$\boldsymbol{\theta} = (\theta_0, \theta_1)$ is the intercept and the slope. The ``height of the mountain'' is the
+\newterm{cost function}\index{cost function}, here the mean squared error:
+$$J(\boldsymbol{\theta}) = \frac{1}{n}\sum_{i=1}^n (\mathbf{x}_i^T\boldsymbol{\theta} - y_i)^2
+= \frac{1}{n}\|X\boldsymbol{\theta} - \mathbf{y}\|^2$$
+where $\mathbf{x}_i$ is row $i$ of the design matrix (a 1 followed by the features). The gradient, the
+direction of steepest uphill, is
 $$\nabla J(\boldsymbol{\theta}) = \frac{2}{n} X^T(X\boldsymbol{\theta} - \mathbf{y})$$
+Read it from the inside out: $X\boldsymbol{\theta} - \mathbf{y}$ is the vector of prediction errors, and
+multiplying by $X^T$ asks, for each parameter, ``if I nudged this one, how would the errors change?''
 
-\section{The Update Rule}
-Start with a guess $\boldsymbol{\theta}_0$, usually zero. At each step, move against the gradient, scaled by the \newterm{learning rate} $\alpha$:
-$$\boldsymbol{\theta} := \boldsymbol{\theta} - \alpha \nabla J(\boldsymbol{\theta})$$
-If $\alpha$ is too large, the steps overshoot and the cost can grow. If $\alpha$ is too small, progress is slow.
+\section{The Update Rule}\index{learning rate}
+Start with a guess $\boldsymbol{\theta}_0$, usually all zeros. Then repeat:
+\begin{mdframed}[style=important]
+$$\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \alpha \nabla J(\boldsymbol{\theta})$$
+\end{mdframed}
+The minus sign means ``go downhill.'' The \newterm{learning rate} $\alpha$ sets the step size. Too small and
+you creep; too large and you overshoot the bottom of the valley and land higher up the other side.
 
-\section{A Worked Step}
-Use the quiz data from the Simple Linear Regression chapter: $x = 1, \ldots, 5$ and $y = 2.1, 3.9, 6.2, 7.8, 10.1$.
-With $X$ having a column of ones and the $x$ values, and $\boldsymbol{\theta}_0 = (0, 0)$, we have
-$X\boldsymbol{\theta}_0 - \mathbf{y} = -\mathbf{y}$. Then $X^T(-\mathbf{y}) = (-30.1, -110.2)$, so with $n = 5$,
+\textbf{Example}: Take one step on the quiz data from the Least Squares chapter, $x = 1, \ldots, 5$ and
+$y = 2.1, 3.9, 6.2, 7.8, 10.1$, starting at $\boldsymbol{\theta}_0 = (0, 0)$ with $\alpha = 0.01$.
+
+\textbf{Solution}: With $\boldsymbol{\theta}_0 = \mathbf{0}$, every prediction is 0, so
+$X\boldsymbol{\theta}_0 - \mathbf{y} = -\mathbf{y}$. The first entry of $X^T(-\mathbf{y})$ is $-\sum y_i = -30.1$,
+and the second is $-\sum x_i y_i = -110.2$. With $n = 5$,
 $$\nabla J(\boldsymbol{\theta}_0) = \frac{2}{5}(-30.1, -110.2) = (-12.04, -44.08)$$
-With $\alpha = 0.01$,
 $$\boldsymbol{\theta}_1 = (0, 0) - 0.01(-12.04, -44.08) = (0.1204, 0.4408)$$
-The true solution is $(0.05, 1.99)$, so the steps move toward it.
+The cost drops from $J(\boldsymbol{\theta}_0) = 44.18$ to $J(\boldsymbol{\theta}_1) = 25.77$. The answer
+is $(0.05, 1.99)$, so we are heading the right way, with a long way to go.
 
 \section{Letting the Computer Walk}
-By hand, two steps is plenty. A computer can take thousands:
+By hand, two steps is plenty. A computer can take thousands. Here is \filename{quiz\_descent.py}:
 \begin{minted}{python}
 import numpy as np
 
@@ -50,30 +76,250 @@ print(descend(0.1, 50))
 [0.05 1.99]
 [ -3074524.42217419 -11100007.21998943]
 \end{verbatim}
-With $\alpha = 0.05$, 50 steps get close and 5000 steps land on the least squares
-answer. Doubling the learning rate to $0.1$ makes every step overshoot by more than
-the last, and after 50 steps the parameters are in the millions. That is the
-``too large'' failure from the update rule, live.
+With $\alpha = 0.05$, 50 steps get close and 5000 steps land on the least squares answer. Doubling the learning
+rate to $0.1$ makes every step overshoot by more than the last, and after 50 steps the parameters are in the
+millions.
 
-\section{Standardizing First}
-The gradient descent convergence depends on the scale of the features. If one feature is in thousands and another is in fractions,
-the cost surface is stretched into a narrow valley, and steps along the valley are very slow. Standardize the features first, so
-the cost surface is more round and gradient descent converges faster. The chapter on standardization gives the formula.
+\section{Valleys and Learning Rates}
+Figure~\ref{fig:contour-paths} draws the cost as a contour map, like a hiking map, with the minimum marked
+by a star. The contours are long, thin ovals: the cost changes quickly if you change the slope $\theta_1$, but
+slowly if you change the intercept $\theta_0$. That shape causes most of the trouble with gradient descent.
 
-\begin{Exercise}[label=gd1, title=One more step]
-Starting from $\boldsymbol{\theta}_1 = (0.1204, 0.4408)$, take one gradient step with $\alpha = 0.01$ on the quiz data.
-Find $\boldsymbol{\theta}_2$, rounding to four decimal places.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{contour_paths.png}
+\caption{Contours of the cost for the quiz data, and two gradient descent paths from $(0,0)$.}
+\label{fig:contour-paths}
+\end{figure}
+
+With $\alpha = 0.01$ (blue), the path heads quickly down to the floor of the valley, then crawls along it. With
+$\alpha = 0.08$ (red), each step is so big that it crosses the valley, and the path zigzags from wall to wall
+while slowly working its way toward the star. A little bigger and the zigzags grow instead of shrinking.
+Figure~\ref{fig:learning-rates} shows the cost after each step for four learning rates.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{learning_rates.png}
+\caption{Cost against step on the quiz data. The vertical axis is logarithmic.}
+\label{fig:learning-rates}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l >{\raggedright\arraybackslash}p{8cm}}
+\textbf{Learning rate} & \textbf{What happens on the quiz data} \\
+\hline
+$0.001$ & steady but slow; still far from the bottom after 100 steps \\
+$0.01$ & drops fast, then crawls along the valley floor \\
+$0.08$ & zigzags, but ends lowest after 100 steps \\
+$0.09$ & each zigzag is bigger than the last: the cost explodes \\
+\end{tabular}
+\end{center}
+
+The cutoff between 0.08 and 0.09 is not luck. For a squared-error cost, gradient descent converges exactly
+when $\alpha$ is less than 2 divided by the largest eigenvalue of the matrix $\frac{2}{n}X^TX$. For the quiz
+data, that is about $0.0845$. In practice, people just try a few values, as in the table, and keep the one
+whose cost goes down fastest without blowing up.
+
+\section{Standardize First}\index{standardization!gradient descent}
+Now the penguins. In the Preparing Data for Models chapter, standardizing features mattered because of
+distances. For gradient descent, it matters even more.
+
+With raw flipper lengths around 200 mm, the cost valley is stretched more than 8 million times longer in one
+direction than the other. The largest learning rate that does not blow up is about $0.0000246$, so steps along
+the valley are microscopic. Standardize the flipper lengths and the valley becomes a perfectly round bowl.
+Here is \filename{penguin\_descent.py}:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+flipper = data["flipper_length_mm"]
+y = data["body_mass_g"]
+n = len(y)
+
+def descend(X, alpha, steps):
+    theta = np.zeros(X.shape[1])
+    for _ in range(steps):
+        gradient = 2 / n * X.T @ (X @ theta - y)
+        theta = theta - alpha * gradient
+    rmse = np.sqrt(np.mean((X @ theta - y)**2))
+    return theta, rmse
+
+# Raw flipper lengths: anything much above 2e-5 blows up
+X_raw = np.column_stack([np.ones(n), flipper])
+for steps in [100, 10_000, 1_000_000]:
+    theta, rmse = descend(X_raw, 2e-5, steps)
+    print(f"raw, {steps:>9,} steps:", np.round(theta, 1) + 0.0, f"RMSE {rmse:.0f}")
+
+# Standardized flipper lengths
+mean, sd = np.mean(flipper), np.std(flipper)
+X_std = np.column_stack([np.ones(n), (flipper - mean) / sd])
+for steps in [10, 30, 100]:
+    theta, rmse = descend(X_std, 0.1, steps)
+    print(f"standardized, {steps:>3} steps:", np.round(theta, 1),
+          f"RMSE {rmse:.0f}")
+
+# Convert back to grams per millimeter
+b1 = theta[1] / sd
+b0 = theta[0] - b1 * mean
+print(f"mass = {b0:.1f} + {b1:.2f} * flipper")
+\end{minted}
+
+\begin{verbatim}
+raw,       100 steps: [ 0.  21.1] RMSE 566
+raw,    10,000 steps: [-11.2  21.1] RMSE 565
+raw, 1,000,000 steps: [-1030.7    26.2] RMSE 517
+standardized,  10 steps: [3755.3  626.5] RMSE 603
+standardized,  30 steps: [4201.8  701. ] RMSE 392
+standardized, 100 steps: [4207.1  701.9] RMSE 392
+mass = -5872.1 + 50.15 * flipper
+\end{verbatim}
+
+\begin{center}
+\begin{tabular}{l r r}
+\textbf{Flipper length} & \textbf{Steps} & \textbf{RMSE (g)} \\
+\hline
+raw & 1,000,000 & 517 \\
+standardized & 30 & 392 \\
+least squares formula & --- & 392 \\
+\end{tabular}
+\end{center}
+
+A million steps on raw data still have not found the line, because the intercept needs to reach $-5872$ and
+it is moving a few thousandths of a gram per step. Thirty steps on standardized data match the formula.
+Converting back gives the same line as the Least Squares chapter. On the standardized scale, the
+coefficients are easy to read, too: $\theta_0 = 4207$ g is the average mass, and $\theta_1 = 702$ g is the
+change in mass for a flipper one standard deviation (14 mm) longer.
+
+\section{Mini-Batches}\index{stochastic gradient descent}\index{mini-batch}
+Each step above used all 333 penguins to compute the gradient. With a billion examples, one step would take a
+very long time. \newterm{Mini-batch gradient descent} estimates the gradient from a small random batch,
+say 32 examples, and steps right away. The estimate is noisy, but you get many more steps for the same
+amount of work. (With a batch of a single example, the method is called \newterm{stochastic gradient descent},
+or SGD; people often use that name for mini-batches, too.)
+
+One full pass through the data is called an \newterm{epoch}\index{epoch}. Here is \filename{minibatch.py}:
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+flipper = data["flipper_length_mm"]
+y = data["body_mass_g"]
+n = len(y)
+X = np.column_stack([np.ones(n), (flipper - np.mean(flipper)) / np.std(flipper)])
+
+rng = np.random.default_rng(0)
+theta = np.zeros(2)
+alpha, batch_size = 0.1, 32
+for epoch in range(1, 6):
+    order = rng.permutation(n)                  # shuffle once per epoch
+    for start in range(0, n, batch_size):
+        rows = order[start:start + batch_size]
+        Xb, yb = X[rows], y[rows]
+        gradient = 2 / len(rows) * Xb.T @ (Xb @ theta - yb)
+        theta = theta - alpha * gradient
+    rmse = np.sqrt(np.mean((X @ theta - y)**2))
+    print(f"epoch {epoch}: theta = {np.round(theta, 1)}, RMSE = {rmse:.1f}")
+\end{minted}
+
+\begin{verbatim}
+epoch 1: theta = [3822.4  648.1], RMSE = 551.9
+epoch 2: theta = [4179.6  685.6], RMSE = 393.5
+epoch 3: theta = [4219.4  685.9], RMSE = 392.7
+epoch 4: theta = [4181.5  712. ], RMSE = 393.1
+epoch 5: theta = [4207.4  692.1], RMSE = 392.3
+\end{verbatim}
+
+After two epochs, the mini-batch version is within 2 g of the best possible RMSE. The full-batch version, with
+one step per epoch, would still be above 2700 g (Figure~\ref{fig:minibatch}). Notice that the mini-batch
+$\boldsymbol{\theta}$ never settles down exactly; it jitters around the answer, because each batch pulls in a
+slightly different direction. In practice, people often shrink $\alpha$ over time to calm the jitter.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{minibatch.png}
+\caption{RMSE on the penguins against the number of passes through the data. The vertical axis is
+logarithmic.}
+\label{fig:minibatch}
+\end{figure}
+
+You will see this exact loop (shuffle, slice a batch, compute the gradient, step) again when you train neural
+networks with PyTorch.
+
+\begin{Exercise}[label=gd1, title=One more step, space=4cm]
+Starting from $\boldsymbol{\theta}_1 = (0.1204, 0.4408)$, take one gradient step with $\alpha = 0.01$ on the quiz
+data. Find $\boldsymbol{\theta}_2$, rounding to four decimal places.
 \end{Exercise}
 \begin{Answer}[ref=gd1]
-The predictions are $X\boldsymbol{\theta}_1 = (0.5612, 1.0020, 1.4428, 1.8836, 2.3244)$. The residuals
+The predictions are $X\boldsymbol{\theta}_1 = (0.5612, 1.0020, 1.4428, 1.8836, 2.3244)$. The errors are
 $X\boldsymbol{\theta}_1 - \mathbf{y} = (-1.5388, -2.8980, -4.7572, -5.9164, -7.7756)$. Then
-$X^T(X\boldsymbol{\theta}_1 - \mathbf{y}) = (-22.886, -84.150)$, so $\nabla J = \frac{2}{5}(-22.886, -84.150) = (-9.1544, -33.660)$ and
-$\boldsymbol{\theta}_2 = (0.1204, 0.4408) - 0.01(-9.1544, -33.660) = (0.2119, 0.7774)$.
+$X^T(X\boldsymbol{\theta}_1 - \mathbf{y}) = (-22.886, -84.150)$, so
+$$\nabla J = \tfrac{2}{5}(-22.886, -84.150) = (-9.1544, -33.660)$$
+$$\boldsymbol{\theta}_2 = (0.1204, 0.4408) - 0.01(-9.1544, -33.660) = (0.2119, 0.7774)$$
 \end{Answer}
 
 \begin{Exercise}[label=gd2, title=Learning rate]
-What happens to gradient descent if $\alpha$ is made very large?
+What happens to gradient descent if $\alpha$ is made very large? What if it is made very small?
 \end{Exercise}
 \begin{Answer}[ref=gd2]
-The steps overshoot the minimum. The parameters can oscillate or diverge, and the cost can increase instead of decrease.
+Very large: the steps overshoot the minimum. The parameters oscillate or diverge, and the cost can increase
+instead of decrease. Very small: the cost goes down every step, but so slowly that you may run out of patience
+(or computer time) long before reaching the minimum.
+\end{Answer}
+
+\begin{Exercise}[label=gd3, title={A one-parameter mountain}, space=4cm]
+Fit a line through the origin, $\hat{y} = \theta x$, to the points $(1, 2)$ and $(2, 3)$, so
+$$J(\theta) = \tfrac{1}{2}\left[(\theta - 2)^2 + (2\theta - 3)^2\right]$$
+Find $J'(\theta)$. Then, starting at $\theta = 0$ with $\alpha = 0.2$, take two steps. What value is gradient descent heading for?
+\end{Exercise}
+\begin{Answer}[ref=gd3]
+$J'(\theta) = (\theta - 2) + 2(2\theta - 3) = 5\theta - 8$. Step 1: $\theta = 0 - 0.2(-8) = 1.6$. Step 2:
+$J'(1.6) = 0$, so $\theta$ stays at $1.6$. The minimum is where $5\theta - 8 = 0$, at $\theta = 1.6$. (This
+learning rate happens to land on it in one step.)
+\end{Answer}
+
+\begin{Exercise}[label=gd4, title={Find the cliff}]
+On the quiz data, try learning rates from 0.080 to 0.090 in steps of 0.002, with 2000 steps each. Which
+ones find the answer? Where is the cutoff?
+\end{Exercise}
+\begin{Answer}[ref=gd4]
+\begin{minted}{python}
+for alpha in np.arange(0.080, 0.0901, 0.002):
+    print(f"{alpha:.3f}", np.round(descend(alpha, 2000), 3))
+\end{minted}
+0.080, 0.082, and 0.084 converge; 0.086, 0.088, and 0.090 blow up. The cutoff is about 0.0845, matching the
+eigenvalue rule in the chapter.
+\end{Answer}
+
+\begin{Exercise}[label=gd5, title={Two features}]
+Extend \filename{penguin\_descent.py} to predict mass from standardized flipper length \emph{and} standardized
+bill depth (three parameters). Run 200 steps with $\alpha = 0.1$, and compare your answer with the
+one from \verb|lstsq|.
+\end{Exercise}
+\begin{Answer}[ref=gd5]
+\begin{minted}{python}
+depth = data["bill_depth_mm"]
+Z = np.column_stack([np.ones(n), (flipper - mean) / sd,
+                     (depth - np.mean(depth)) / np.std(depth)])
+theta, rmse = descend(Z, 0.1, 200)
+print(np.round(theta, 1), round(rmse, 1))
+print(np.round(np.linalg.lstsq(Z, y)[0], 1))
+\end{minted}
+Both give about $(4207.1, 724.5, 39.1)$, and the RMSE is 391 g. With two standardized features that are
+correlated, the bowl is no longer perfectly round, but it is round enough that 200 steps are plenty.
+\end{Answer}
+
+\begin{Exercise}[label=gd6, title={Batch size}]
+In \filename{minibatch.py}, try batch sizes of 1, 8, 32, and 333 for five epochs each. Which gets close
+in the fewest epochs? Which ends with the steadiest $\boldsymbol{\theta}$? Explain the trade-off.
+\end{Exercise}
+\begin{Answer}[ref=gd6]
+A batch size of 8 is close after one epoch (RMSE about 402 g), because it takes 42 steps per epoch. A batch
+size of 1 takes the most steps, but each one follows a single penguin, so $\boldsymbol{\theta}$ jumps by
+more than 100 g at a time, and the RMSE after five epochs (about 450 g) is worse than after four. A batch of 333
+is ordinary gradient descent: perfectly smooth, but only five steps in five epochs, so the RMSE is still about
+1450 g. Small batches buy speed with noise; batches of a few dozen get most of the speed with little noise,
+which is why they are the usual choice.
 \end{Answer}

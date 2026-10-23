@@ -242,7 +242,12 @@ Checking Your Work
   * requirements that no chapter covers (when the requirement is the name of
     a chapter rather than a topic id, the report says so), and
   * requirements that are first covered by a *later* chapter, naming that
-    chapter.
+    chapter, and
+  * topic ids that are covered more than once, whether by two chapters or
+    twice in the same chapter. Every topic id must be unique; when you find a
+    duplicate, keep the id in the chapter that introduces the topic first and
+    rename the later one (and update any ``requires`` lists that meant the
+    later one).
 
   A chapter that requires a topic it covers itself is not reported. Each
   chapter is shown with its volume number. Run it from anywhere::
@@ -270,10 +275,10 @@ Checking Your Work
     1 problem(s) found.
 
 ``make_topic_index.py``
-  Writes ``topic_index.json`` to ``Resources-en_US`` (used by the
-  KontinuaResourceEditor to connect prerequisite topics to chapters) and
-  prints a report of missing topics, out-of-order topics, and topics that more
-  than one chapter claims to cover::
+  Writes ``Chapters/topic_index.json`` (used by the KontinuaResourceEditor to
+  connect prerequisite topics to chapters) and prints a report of missing
+  topics, out-of-order topics, and topics that more than one chapter claims to
+  cover. Run it from the ``Build`` folder::
 
     python3 make_topic_index.py
 
@@ -310,14 +315,39 @@ Other Scripts
 =============
 
 ``gather_resources.py``
-  Checks the URLs in every ``digital_resources.json`` (optionally only for one
-  volume) and writes ``Resources-en_US/Links.json``::
+  Checks the video and reference URLs in every ``digital_resources.json``,
+  looks up each page's title, and writes ``Resources-en_US/Links.json``. It
+  skips URLs it confirmed in the last 90 days; give a different number of days
+  as an argument, or 0 to recheck everything::
 
-    python3 gather_resources.py 1
+    python3 gather_resources.py
+    python3 gather_resources.py 0
 
 ``build_workbooks_index.py``
   Builds ``workbooks.json`` in ``Resources-en_US`` from ``Links.json``. Run
   ``gather_resources.py`` first, since it provides the link titles.
+
+``gather_ebook_resources.py``
+  Writes ``Resources-en_US/workbook-01.json`` through ``workbook-36.json``, the
+  chapter information that ``upload_collection.py`` sends along with each
+  volume's PDF. Each file lists the volume's chapters with their ids, titles,
+  prerequisites, the page each chapter starts on, and the topics they cover,
+  with every video and reference link paired with its title. The list ends with
+  two short entries, for the answers and the index, so the ebook reader can put
+  them in its table of contents; each has only an id (``answers-04`` and
+  ``index-04`` for Volume 4), a title, a chapter number, a starting page, and
+  an empty ``covers`` list (the upload server and the reader apps require that
+  key). A link with no
+  title in ``Links.json`` (usually because the page could not be reached) is
+  left out, and the script prints it so you can fix or remove it in the
+  chapter's ``digital_resources.json``. Before running it,
+  build all 36 volumes (the starting pages come from each volume's ``.toc``
+  file in ``Intermediate``) and run ``gather_resources.py`` (the link titles
+  come from ``Links.json``)::
+
+    python3 build_workbook.py all
+    python3 gather_resources.py
+    python3 gather_ebook_resources.py
 
 ``build_chapter_list.py``
   Writes ``Resources/chaplist.txt``, the title of every chapter in every book.
@@ -339,7 +369,9 @@ Other Scripts
 ``upload_collection.py``
   Uploads a finished collection to the readers site
   (``readers.kontinua.org``). It asks for a username, locale, and version
-  number.
+  number. For each volume, it uploads ``Workbooks-en_US-Letter/workbook-NN.pdf``
+  and ``Resources-en_US/workbook-NN.json``, so build the Letter PDFs and run
+  ``gather_ebook_resources.py`` first.
 
 
 Contributing

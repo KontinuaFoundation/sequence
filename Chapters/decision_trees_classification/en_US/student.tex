@@ -1,31 +1,226 @@
 \chapter{Decision Trees for Classification}
 
-\section{The Idea}\index{decision tree}
-A \newterm{decision tree} predicts a class by asking a series of questions about the features. Each internal node tests one
-feature against a threshold. Each leaf gives a predicted class. A good tree puts the points in each leaf into one class, or as
-close to that as possible. Think of the game twenty questions. Each question splits the possible answers, and a good question splits them evenly.
+Remember the game Twenty Questions? ``Is it alive?'' ``Is it bigger than a breadbox?'' Good players ask questions
+that split the possibilities roughly in half, and they adapt each question to the answers so far. A
+\newterm{decision tree}\index{decision tree} classifies the same way: it asks a series of yes-or-no questions
+about the features, and each answer leads to the next question or to a final answer.
 
-\section{Gini Impurity}\index{Gini impurity}
-The \newterm{Gini impurity} of a node measures how mixed its classes are. If $p_i$ is the fraction of points in the node that belong
-to class $i$, then
+Decision trees are popular because people can read them. A doctor can follow a tree of symptoms; a bank can
+explain why a loan was refused. Here is the tree that our program will learn for penguin species:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  q/.style={draw, rounded corners, fill=gray!10, font=\small, align=center},
+  leaf/.style={draw, font=\small, align=center, minimum width=2.4cm},
+  level 1/.style={sibling distance=6.4cm},
+  level 2/.style={sibling distance=3.2cm},
+  level distance=1.7cm, >=stealth,
+  edge from parent/.style={draw, ->}]
+\node[q] {flipper length $\le$ 206.5 mm?}
+  child { node[q] {bill length $\le$ 43.35 mm?}
+    child { node[leaf, fill=orange!25] {Adelie\\{\footnotesize 112, 2, 0}} edge from parent node[left, font=\footnotesize] {yes} }
+    child { node[leaf, fill=violet!20] {Chinstrap\\{\footnotesize 4, 42, 1}} edge from parent node[right, font=\footnotesize] {no} }
+    edge from parent node[left, font=\footnotesize] {yes} }
+  child { node[q] {bill depth $\le$ 17.65 mm?}
+    child { node[leaf, fill=teal!25] {Gentoo\\{\footnotesize 0, 0, 99}} edge from parent node[left, font=\footnotesize] {yes} }
+    child { node[leaf, fill=violet!20] {Chinstrap\\{\footnotesize 2, 4, 0}} edge from parent node[right, font=\footnotesize] {no} }
+    edge from parent node[right, font=\footnotesize] {no} };
+\end{tikzpicture}
+\caption{A depth-2 decision tree for penguin species, learned from 266 penguins. Each leaf shows how many
+Adelie, Chinstrap, and Gentoo training penguins ended up there.}
+\label{fig:penguin-tree}
+\end{figure}
+
+To classify a penguin, start at the top and follow the answers. A penguin with 215 mm flippers and a 15 mm deep
+bill goes right, then left: Gentoo. The \newterm{internal nodes} ask questions, and the \newterm{leaves} give
+answers; each leaf predicts the most common class among the training penguins that landed there.
+
+\section{Measuring Impurity}\index{Gini impurity}
+How does the computer choose a question? A good question produces groups that are each mostly one class, or
+\emph{pure}. We need a number for how mixed a group is.
+
+The \newterm{Gini impurity} of a node is
 $$G = 1 - \sum_{i} p_i^2$$
-A pure node has $G = 0$. A node with two equally common classes has $G = 0.5$.
+where $p_i$ is the fraction of the node's points in class $i$. A pure node has $G = 0$. A node split evenly
+between two classes has $G = 1 - (0.5^2 + 0.5^2) = 0.5$. One way to read it: $G$ is the chance that two points
+drawn at random from the node (with replacement) belong to different classes.
+
+A popular alternative is the \newterm{entropy}\index{entropy}, measured in bits:
+$$H = -\sum_{i} p_i \log_2 p_i$$
+The decrease in entropy from a split is called the \newterm{information gain}\index{information gain}. Both
+measures are 0 for a pure node and largest for an even mix, and in practice they almost always pick the same
+splits.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\textwidth]{impurity.png}
+\caption{Gini impurity and entropy for a node with two classes.}
+\label{fig:impurity}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{c c c}
+\textbf{Fraction in class A} & \textbf{Gini} & \textbf{Entropy (bits)} \\
+\hline
+0.5 & 0.50 & 1.00 \\
+0.6 & 0.48 & 0.97 \\
+0.8 & 0.32 & 0.72 \\
+0.9 & 0.18 & 0.47 \\
+1.0 & 0 & 0 \\
+\end{tabular}
+\end{center}
 
 \section{Choosing a Split}\index{decision tree!splitting}
-At each node, the tree tries each feature and each threshold, and keeps the split with the lowest weighted impurity of the two
-children. The weight of each child is its share of the points.
+At each node, the tree tries every feature and every threshold and keeps the split with the lowest
+\emph{weighted} impurity of the two children, where each child is weighted by its share of the points.
 
-\subsection{A Worked Example}
-A node holds 6 points of class A and 4 points of class B. Its impurity is
-$$G = 1 - (0.6^2 + 0.4^2) = 1 - 0.52 = 0.48$$
-Suppose a split sends 4 A and 1 B to the left child, and 2 A and 3 B to the right child. Each child has 5 points.
-The left impurity is $1 - (0.8^2 + 0.2^2) = 0.32$, and the right is $1 - (0.4^2 + 0.6^2) = 0.48$. The weighted impurity is
+\textbf{Example}: A node holds 6 points of class A and 4 of class B. A split sends 4 A and 1 B to the left and
+2 A and 3 B to the right. Does it help?
+
+\textbf{Solution}: Before the split, $G = 1 - (0.6^2 + 0.4^2) = 0.48$. The left child has
+$G = 1 - (0.8^2 + 0.2^2) = 0.32$, and the right has $G = 1 - (0.4^2 + 0.6^2) = 0.48$. Each child has 5 of the 10
+points, so the weighted impurity is
 $$\frac{5}{10}(0.32) + \frac{5}{10}(0.48) = 0.40$$
 The split lowers the impurity from 0.48 to 0.40.
 
+For the penguins, the 266 training penguins (118 Adelie, 48 Chinstrap, 100 Gentoo) have
+$G = 1 - \left[(118/266)^2 + (48/266)^2 + (100/266)^2\right] \approx 0.629$. The best first question,
+``flipper length $\le$ 206.5 mm?'', sends 161 penguins (116, 44, 1) left, with $G \approx 0.406$, and 105 (2, 4, 99)
+right, with $G \approx 0.109$. The weighted impurity is
+$$\frac{161}{266}(0.406) + \frac{105}{266}(0.109) \approx 0.289$$
+No other feature and threshold does better. The left group still mixes Adelies and Chinstraps, so the tree asks
+a second question there, and so on.
+
+Which thresholds are worth trying? Only the midpoints between consecutive values in the data: any threshold
+between 206 and 207 splits the penguins the same way, so 206.5 stands for all of them. This whole procedure, always
+taking the best split right now without looking ahead, is called a \newterm{greedy} algorithm.
+
+\section{A Tree in Python}
+Here is \filename{tree.py}. A tree is stored as nested dictionaries: an internal node holds a feature, a
+threshold, and two subtrees; a leaf holds a class. The function \verb|grow| calls itself to build each subtree,
+which is called \newterm{recursion}.
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+names, y = np.unique(data["species"], return_inverse=True)
+features = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]
+X = np.column_stack([data[f] for f in features])
+order = np.random.default_rng(1).permutation(len(y))
+dev, test = order[:266], order[266:]
+
+def gini(labels):
+    p = np.bincount(labels, minlength=3) / len(labels)
+    return 1 - np.sum(p**2)
+
+def best_split(X, y):
+    """Try every feature and every threshold; return the lowest weighted Gini."""
+    best = (gini(y), None, None)                # (impurity, feature, threshold)
+    for j in range(X.shape[1]):
+        values = np.unique(X[:, j])
+        for t in (values[:-1] + values[1:]) / 2:  # midpoints between values
+            left = X[:, j] <= t
+            g = (left.sum() * gini(y[left]) + (~left).sum() * gini(y[~left])) / len(y)
+            if g < best[0]:
+                best = (g, j, t)
+    return best
+
+def grow(X, y, depth, max_depth):
+    majority = np.bincount(y, minlength=3).argmax()
+    if depth == max_depth or gini(y) == 0:
+        return {"leaf": majority, "counts": np.bincount(y, minlength=3)}
+    g, j, t = best_split(X, y)
+    if j is None:                               # no split helps
+        return {"leaf": majority, "counts": np.bincount(y, minlength=3)}
+    left = X[:, j] <= t
+    return {"feature": j, "threshold": t,
+            "left": grow(X[left], y[left], depth + 1, max_depth),
+            "right": grow(X[~left], y[~left], depth + 1, max_depth)}
+
+def predict_one(node, x):
+    while "leaf" not in node:
+        node = node["left"] if x[node["feature"]] <= node["threshold"] else node["right"]
+    return node["leaf"]
+
+def predict(tree, X):
+    return np.array([predict_one(tree, x) for x in X])
+
+def show(node, indent="", label=""):
+    if "leaf" in node:
+        print(f"{indent}{label}{names[node['leaf']]} {node['counts']}")
+    else:
+        print(f"{indent}{label}{features[node['feature']]} <= {node['threshold']:.2f}?")
+        show(node["left"], indent + "    ", "yes: ")
+        show(node["right"], indent + "    ", "no:  ")
+
+tree = grow(X[dev], y[dev], 0, max_depth=2)
+show(tree)
+for depth in [1, 2, 3, 4, 6, 10]:
+    tree = grow(X[dev], y[dev], 0, depth)
+    train_acc = np.mean(predict(tree, X[dev]) == y[dev])
+    test_acc = np.mean(predict(tree, X[test]) == y[test])
+    print(f"max depth {depth:2d}: training {train_acc:.3f}, test {test_acc:.3f}")
+\end{minted}
+
+\begin{verbatim}
+flipper_length_mm <= 206.50?
+    yes: bill_length_mm <= 43.35?
+        yes: Adelie [112   2   0]
+        no:  Chinstrap [ 4 42  1]
+    no:  bill_depth_mm <= 17.65?
+        yes: Gentoo [ 0  0 99]
+        no:  Chinstrap [2 4 0]
+max depth  1: training 0.808, test 0.701
+max depth  2: training 0.966, test 0.955
+max depth  3: training 0.974, test 0.955
+max depth  4: training 0.992, test 0.955
+max depth  6: training 0.996, test 0.955
+max depth 10: training 1.000, test 0.955
+\end{verbatim}
+
+Notice that we did not standardize anything. A tree only ever asks whether one feature is above or below a
+threshold, so the units do not matter. That is a real advantage over $k$-nearest neighbors.
+
 \section{Stopping and Overfitting}
-Growing the tree until every leaf is pure can memorize the training data. Limit the depth of the tree, or require a minimum
-number of points in each leaf, to keep it general. The validation set is used to choose these limits.
+Keep splitting and the tree will eventually put every training penguin in a leaf of its own class: training
+accuracy reaches 100\% at depth 10. But look at Figure~\ref{fig:tree-regions}. The deep tree carves out thin
+slivers to capture individual penguins, which is memorization, not learning.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{tree_regions.png}
+\caption{Trees grown on flipper length and bill length only. Every boundary is horizontal or vertical, because
+each question tests one feature.}
+\label{fig:tree-regions}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{depth.png}
+\caption{Training and 5-fold cross-validation accuracy for trees of different depths, using all four features.}
+\label{fig:depth}
+\end{figure}
+
+On the 67 test penguins, every depth from 2 to 10 scores the same, 95.5\%; cross-validation peaks at depth 4 or 5
+and drifts down a little after that. The extra depth buys almost nothing, and a depth-2 tree you can draw on an
+index card is just as good. To control overfitting, limit the depth, require a minimum number of points in each
+leaf, or grow a big tree and then \newterm{prune} the branches that do not help on validation data. As always,
+choose these limits by validation, not by training accuracy.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}p{7.6cm}}
+\textbf{Strength} & \textbf{Weakness} \\
+\hline
+easy to read and explain & a small change in the data can produce a very different tree \\
+no scaling needed & boundaries are always parallel to the axes \\
+handles numbers and categories & a single tree is rarely the most accurate model \\
+\end{tabular}
+\end{center}
+
+The last two weaknesses have a famous fix: grow many trees and let them vote. That is the next chapter.
 
 \begin{Exercise}[label=dt1, title=Compute impurity]
 A node holds 3 points of class A and 1 point of class B. What is its Gini impurity?
@@ -35,20 +230,52 @@ $G = 1 - (0.75^2 + 0.25^2) = 1 - 0.625 = 0.375$.
 \end{Answer}
 
 \begin{Exercise}[label=dt2, title=Is the split better?]
-A node with $G = 0.48$ is split into two children of equal size with $G = 0.2$ and $G = 0.3$. Is the split an improvement?
+A node with $G = 0.48$ is split into two children of equal size with $G = 0.2$ and $G = 0.3$. Is the split an
+improvement?
 \end{Exercise}
 \begin{Answer}[ref=dt2]
 The weighted impurity is $0.5(0.2) + 0.5(0.3) = 0.25$, which is lower than 0.48. The split is an improvement.
 \end{Answer}
 
-\begin{Exercise}[label=dt3, title=Pick the better split]
-Using the node from the worked example (6 A and 4 B), a second candidate split
-sends 5 A and 0 B to the left and 1 A and 4 B to the right. Which split should the
-tree choose: this one or the one in the worked example?
+\begin{Exercise}[label=dt3, title=Pick the better split, space=3cm]
+Using the node from the worked example (6 A and 4 B), a second candidate split sends 5 A and 0 B to the left and
+1 A and 4 B to the right. Which split should the tree choose: this one or the one in the worked example?
 \end{Exercise}
 \begin{Answer}[ref=dt3]
-The left child is pure, so its impurity is 0. The right child has
-$1 - (0.2^2 + 0.8^2) = 0.32$. The weighted impurity is
-$\frac{5}{10}(0) + \frac{5}{10}(0.32) = 0.16$, much lower than the 0.40 from the
-worked example. The tree chooses this new split.
+The left child is pure, so its impurity is 0. The right child has $1 - (0.2^2 + 0.8^2) = 0.32$. The weighted
+impurity is $\frac{5}{10}(0) + \frac{5}{10}(0.32) = 0.16$, much lower than the 0.40 from the worked example. The
+tree chooses this new split.
+\end{Answer}
+
+\begin{Exercise}[label=dt4, title={Information gain}, space=3cm]
+Find the entropy of the node with 6 A and 4 B, and the information gain of the split in the worked example (4 A
+and 1 B left, 2 A and 3 B right).
+\end{Exercise}
+\begin{Answer}[ref=dt4]
+$H = -(0.6\log_2 0.6 + 0.4\log_2 0.4) \approx 0.971$ bits. The left child has
+$H = -(0.8\log_2 0.8 + 0.2\log_2 0.2) \approx 0.722$, and the right child has $H \approx 0.971$ (it is the same mix,
+reversed). The weighted entropy is $0.5(0.722) + 0.5(0.971) \approx 0.846$, so the information gain is
+$0.971 - 0.846 \approx 0.125$ bits.
+\end{Answer}
+
+\begin{Exercise}[label=dt5, title={Follow the tree}]
+Use the tree in Figure~\ref{fig:penguin-tree} to classify three penguins: (a) flipper 190 mm, bill length 48 mm,
+bill depth 18 mm; (b) flipper 220 mm, bill length 47 mm, bill depth 14.5 mm; (c) flipper 210 mm, bill length
+50 mm, bill depth 19 mm.
+\end{Exercise}
+\begin{Answer}[ref=dt5]
+(a) $190 \le 206.5$, then $48 > 43.35$: Chinstrap. (b) $220 > 206.5$, then $14.5 \le 17.65$: Gentoo.
+(c) $210 > 206.5$, then $19 > 17.65$: Chinstrap. That last leaf is small (2 Adelies and 4 Chinstraps), so the tree
+is not very sure about it.
+\end{Answer}
+
+\begin{Exercise}[label=dt6, title={No flippers}]
+Remove \verb|"flipper_length_mm"| from the list of features in \filename{tree.py}. What question does the tree ask
+first now? How do the test accuracies compare?
+\end{Exercise}
+\begin{Answer}[ref=dt6]
+The first question becomes ``bill depth $\le$ 16.45 mm?'', which separates the shallow-billed Gentoos, and the
+second level splits on bill length. The depth-2 tree scores 92.5\% on the test penguins, and depths 4 and above
+score 94.0\%, a little below the 95.5\% with flipper length. The tree finds another route to nearly the same
+answer.
 \end{Answer}

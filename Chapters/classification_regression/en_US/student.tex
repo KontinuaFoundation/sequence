@@ -5,50 +5,185 @@ similar, but they are different kinds of questions. The first wants a number;
 the second wants a category. Knowing which kind you are asking decides which
 tools you use and how you grade them.
 
-\section{Supervised Learning}\index{supervised learning}
-In \newterm{supervised learning}, we are given labeled examples: inputs $\mathbf{x}$ paired with the correct
-output $y$. The goal is a function $f$ that predicts $y$ for a new input. Everything in this unit is
-supervised learning.
+This chapter opens a unit on \newterm{machine learning}\index{machine learning}: writing programs that
+learn how to make predictions from examples instead of following rules that a person typed in. Every
+chapter in the unit uses the same data, so you can compare the methods side by side.
 
-\section{Classification}\index{classification}
-In \newterm{classification}, the output $y$ is a category. If there are two categories, the problem is
-\newterm{binary}. An email filter that labels each message ``spam'' or ``not spam'' is a binary classifier.
-If there are more than two categories, the problem is \newterm{multi-class}. Identifying one of three
-iris species from petal and sepal measurements is multi-class.
-
-\section{Regression}\index{regression!supervised}
-In \newterm{regression}, the output $y$ is a number. Predicting the price of a house from its size
-and number of rooms is regression. Predicting whether a student will pass the final exam is classification, even if the same features are used. The same features could support either task, depending on what is
-being predicted.
-
-\section{Choosing Tools}
-Several methods appear in this unit. Linear regression predicts a number, and logistic regression predicts a
-probability for a binary category. Neural networks and decision trees can do either task. The table
-below summarizes the output type and a typical error measure.
+\section{Meet the Penguins}\index{Palmer penguins}
+From 2007 to 2009, Dr.\ Kristen Gorman and the Palmer Station Long Term Ecological Research program
+measured penguins on three islands near the Antarctic Peninsula. The data, released for anyone to use
+as the Palmer Penguins dataset, describes 344 penguins of three species: Adelie, Chinstrap, and Gentoo.
+Eleven are missing a measurement, so we will use the other 333.
 
 \begin{center}
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{l l l}
+\textbf{Column} & \textbf{Kind} & \textbf{Example} \\
 \hline
-Task & Output & Typical error measure \\
-\hline
-Regression & a number & mean squared error \\
-\hline
-Binary classification & a probability, then a class & cross-entropy, accuracy, F1 \\
-\hline
-Multi-class classification & a class among several & accuracy, cross-entropy \\
-\hline
+\texttt{species} & category & Adelie, Chinstrap, or Gentoo \\
+\texttt{island} & category & Biscoe, Dream, or Torgersen \\
+\texttt{bill\_length\_mm} & number & 39.1 \\
+\texttt{bill\_depth\_mm} & number & 18.7 \\
+\texttt{flipper\_length\_mm} & number & 181 \\
+\texttt{body\_mass\_g} & number & 3750 \\
+\texttt{sex} & category & male or female \\
+\texttt{year} & number & 2007 \\
 \end{tabular}
 \end{center}
 
-\section{Measuring Performance}
-Regression is judged by how far predictions are from the true values, usually with mean squared error or
-mean absolute error. Classification is judged by how often the predicted class is right, and by which kinds of mistakes it makes;
-the Evaluating Classification Systems chapter covers these measures in detail. A model should always be judged on
-data it was not trained on, as the next chapter explains.
+Each row is one penguin. The data comes in two files that you will use in every chapter of this unit:
+\filename{penguins.csv}, the data itself, and \filename{penguins.py}, which contains one function,
+\pyfunction{load\_penguins}. It reads the file, skips the penguins with a missing measurement, and returns a
+dictionary of NumPy arrays, one per column. So \verb|data["body_mass_g"]| is an array of 333 masses.
+
+\section{Supervised Learning}\index{supervised learning}
+In \newterm{supervised learning}, you are given labeled examples: for each one, some inputs, called
+\newterm{features}\index{feature}, and the correct answer, called the \newterm{label}\index{label}. The goal
+is a \newterm{model}\index{model}, a function that takes the features of a new example and predicts its
+label.
+
+We usually stack the features into a matrix $X$, with one row per example and one column per feature, and
+the labels into a vector $\mathbf{y}$:
+$$X = \begin{bmatrix} 181 & 39.1 \\ 186 & 39.5 \\ 195 & 40.3 \\ \vdots & \vdots \end{bmatrix}
+\qquad
+\mathbf{y} = \begin{bmatrix} 3750 \\ 3800 \\ 3250 \\ \vdots \end{bmatrix}$$
+Here the features are flipper length and bill length, and the label is body mass. With $n$ examples and $p$
+features, $X$ is $n \times p$ and $\mathbf{y}$ has $n$ entries.
+
+Everything in this unit is supervised learning except clustering, near the end, where there are no labels
+at all and the computer has to find the groups on its own. That is called
+\newterm{unsupervised learning}\index{unsupervised learning}.
+
+\section{Regression}\index{regression!supervised}
+In \newterm{regression}, the label is a number. Can you predict a penguin's body mass from the length of
+its flippers? Figure~\ref{fig:penguin-regression} suggests you can, roughly: longer flippers go with
+heavier penguins.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{penguin_regression.png}
+\caption{Body mass against flipper length for 333 penguins. A regression model predicts the mass (a number)
+from the flipper length.}
+\label{fig:penguin-regression}
+\end{figure}
+
+Other regression problems: predicting the price of a used car from its age and mileage, tomorrow's high
+temperature from today's weather, or how many minutes a student will spend on homework from the number of
+assignments.
+
+\section{Classification}\index{classification}
+In \newterm{classification}, the label is a category. Can you tell a penguin's species from its bill?
+Figure~\ref{fig:penguin-species} shows that the three species form three fairly separate clouds, so a
+model has a good chance.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{penguin_species.png}
+\caption{Bill depth against bill length, colored by species. A classification model predicts the species
+(a category) from the two measurements.}
+\label{fig:penguin-species}
+\end{figure}
+
+With two categories, the problem is \newterm{binary}\index{binary classification}: spam or not spam, pass or
+fail, male or female penguin. With more than two, it is \newterm{multi-class}\index{multi-class
+classification}: one of three penguin species, or which of 26 letters a handwritten mark is.
+
+The same features can support either kind of problem. With each student's hours of study, ``What score will
+this student get?'' is regression, and ``Will this student pass?'' is classification. What decides it is the
+kind of label you predict.
+
+\section{Measuring Errors}
+To compare models, we need to grade them.
+
+\textbf{For regression}, look at the \newterm{errors}, also called \newterm{residuals}\index{residual}: the
+true value minus the prediction, $y_i - \hat{y}_i$. (The hat means ``predicted.'') Two common summaries:
+\begin{align*}
+\text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2} & \text{(root mean squared error)}\\
+\text{MAE} &= \frac{1}{n}\sum_{i=1}^{n} \left|y_i - \hat{y}_i\right| & \text{(mean absolute error)}
+\end{align*}
+Both are in the same units as the label. RMSE punishes big misses more, because it squares them first.
+\index{root mean squared error}\index{mean absolute error}
+
+\textbf{Example}: A model predicts masses of 3550, 3900, and 3650 g for three penguins that actually weigh
+3750, 3800, and 3250 g. Find the RMSE and MAE.
+
+\textbf{Solution}: The errors are $3750 - 3550 = 200$, $3800 - 3900 = -100$, and $3250 - 3650 = -400$.
+$$\text{RMSE} = \sqrt{\frac{200^2 + 100^2 + 400^2}{3}} = \sqrt{70{,}000} \approx 265 \text{ g}
+\qquad
+\text{MAE} = \frac{200 + 100 + 400}{3} \approx 233 \text{ g}$$
+The 400 g miss pulls RMSE above MAE.
+
+\textbf{For classification}, the simplest grade is \newterm{accuracy}\index{accuracy}, the fraction of
+predictions that are correct. Accuracy hides a lot, though. A medical test that always says ``healthy'' is
+99\% accurate if 99\% of people are healthy, and completely useless. The Evaluating Classification Systems
+chapter gives better measures.
+
+\section{Baselines: The Dumbest Models}\index{baseline model}
+Before building a clever model, always ask: what would a model with no brains at all score? For regression,
+the dumbest sensible model ignores the features and always predicts the average label. For classification, it
+always predicts the most common class. These are called \newterm{baselines}. A model that cannot beat its
+baseline has learned nothing.
+
+Put \filename{penguins.csv} and \filename{penguins.py} in a folder, and create \filename{baselines.py} next to
+them:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+mass = data["body_mass_g"]
+species = data["species"]
+print("Penguins:", len(mass))
+
+# Regression baseline: always predict the average mass
+guess = np.mean(mass)
+errors = mass - guess
+rmse = np.sqrt(np.mean(errors**2))
+print(f"Always guess {guess:.0f} g: RMSE = {rmse:.0f} g")
+
+# Classification baseline: always predict the most common species
+names, counts = np.unique(species, return_counts=True)
+most_common = names[np.argmax(counts)]
+accuracy = np.mean(species == most_common)
+print(f"Always guess {most_common}: accuracy = {accuracy:.1%}")
+\end{minted}
+
+\begin{verbatim}
+Penguins: 333
+Always guess 4207 g: RMSE = 804 g
+Always guess Adelie: accuracy = 43.8%
+\end{verbatim}
+
+\verb|np.unique| with \verb|return_counts=True| returns each distinct value and how often it appears, and
+\verb|species == most_common| makes an array of \verb|True| and \verb|False|, whose mean is the fraction that
+are \verb|True|.
+
+So any mass model needs an RMSE well under 804 g, and any species model needs to beat 43.8\%. (Spoiler: a
+straight line through Figure~\ref{fig:penguin-regression} gets the RMSE down to about 392 g, and several
+methods in this unit identify the species correctly more than 95\% of the time.)
+
+\section{A Map of the Unit}
+\begin{center}
+\begin{tabular}{l l >{\raggedright\arraybackslash}p{4.2cm}}
+\textbf{Method} & \textbf{Task} & \textbf{Penguin question} \\
+\hline
+Least squares (linear regression) & regression & mass from flipper length, and more \\
+Gradient descent & both & the same line, found a new way \\
+Logistic regression & binary classification & male or female \\
+$k$-nearest neighbors & classification & species \\
+Naive Bayes & classification & species, and spam filtering \\
+Decision trees and random forests & both & species \\
+Boosting & both & sex, and mass \\
+Generalized linear models & counts and more & counts \\
+$k$-means clustering & unsupervised & groups with no labels \\
+Neural networks & both & mass and species \\
+\end{tabular}
+\end{center}
 
 \begin{Exercise}[label=cr1, title=Name the task]
 For each task, say whether it is classification or regression, and whether it is binary or multi-class:
-(a) predicting tomorrow's temperature; (b) sorting a photo into cat, dog, or bird; (c) deciding whether a loan will default.
+(a) predicting tomorrow's temperature; (b) sorting a photo into cat, dog, or bird; (c) deciding whether a
+loan will default.
 \end{Exercise}
 \begin{Answer}[ref=cr1]
 (a) Regression, since temperature is a number. (b) Classification, multi-class, with three categories.
@@ -59,18 +194,51 @@ For each task, say whether it is classification or regression, and whether it is
 A model predicts house prices. Which error measure is appropriate, and why is accuracy not?
 \end{Exercise}
 \begin{Answer}[ref=cr2]
-Mean squared error (or mean absolute error). Accuracy requires an exact match, and a predicted price
-is almost never exactly equal to the true price, so accuracy is not meaningful for a number.
+RMSE or MAE. Accuracy requires an exact match, and a predicted price is almost never exactly equal to the
+true price, so accuracy is not meaningful for a number.
 \end{Answer}
 
 \begin{Exercise}[label=cr3, title={Same data, two questions}]
-A school has each student's hours of study and final exam score. Describe one
-regression question and one classification question you could ask with this
-data.
+A school has each student's hours of study and final exam score. Describe one regression question and one
+classification question you could ask with this data.
 \end{Exercise}
 \begin{Answer}[ref=cr3]
-Regression: predict a student's exam score (a number) from hours of study.
-Classification: predict whether a student passes (yes or no) from hours of study.
-The inputs are the same; only the kind of output changes.
+Regression: predict a student's exam score (a number) from hours of study. Classification: predict whether
+a student passes (yes or no) from hours of study. The inputs are the same; only the kind of label changes.
 \end{Answer}
 
+\begin{Exercise}[label=cr4, title={RMSE by hand}, space=3cm]
+A model predicts 10, 12, and 20 for three examples whose true labels are 11, 12, and 17. Find the RMSE and the
+MAE.
+\end{Exercise}
+\begin{Answer}[ref=cr4]
+The errors are $1$, $0$, and $-3$. $\text{RMSE} = \sqrt{(1 + 0 + 9)/3} = \sqrt{10/3} \approx 1.83$ and
+$\text{MAE} = (1 + 0 + 3)/3 \approx 1.33$.
+\end{Answer}
+
+\begin{Exercise}[label=cr5, title={A smarter baseline}]
+Instead of predicting the overall average mass for every penguin, predict the average mass of its own
+species. Add this to \filename{baselines.py}. What is the RMSE now? Why is this not a fair comparison with
+the first baseline?
+\end{Exercise}
+\begin{Answer}[ref=cr5]
+\begin{minted}{python}
+prediction = np.zeros(len(mass))
+for name in names:
+    same = species == name
+    prediction[same] = np.mean(mass[same])
+rmse = np.sqrt(np.mean((mass - prediction)**2))
+print(f"Species average: RMSE = {rmse:.0f} g")
+\end{minted}
+The RMSE drops to about 459 g. It is not a fair baseline, because it uses a feature (the species); it is
+really a simple model. It shows how much the species alone tells you about mass.
+\end{Answer}
+
+\begin{Exercise}[label=cr6, title={Baseline for sex}]
+What accuracy does the majority-class baseline get for predicting a penguin's sex? What does that tell you
+about any sex classifier that scores 52\%?
+\end{Exercise}
+\begin{Answer}[ref=cr6]
+The data has 168 males and 165 females, so always guessing ``male'' is right $168/333 \approx 50.5\%$ of the
+time. A classifier that scores 52\% is barely better than not looking at the penguin at all.
+\end{Answer}

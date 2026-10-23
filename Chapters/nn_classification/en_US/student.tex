@@ -1,32 +1,173 @@
 \chapter{Neural Networks for Classification}
 
+When your phone unlocks for your face but not your sibling's, or a photo app sorts pictures into ``beach,''
+``food,'' and ``pets,'' a neural network is classifying. The network looks just like the regression networks of the
+last chapter. Only two things change: the output layer, which now produces probabilities, and the loss, which now
+grades probabilities.
+
 \section{The Output Layer}\index{neural network!classification}
-Classification uses the same network as regression, but the output layer and the loss change. The output is a probability, not a number.
-For two classes, a single output neuron uses the sigmoid activation, $\sigma(z) = \frac{1}{1 + e^{-z}}$, which lies between 0 and 1.
-For more than two classes, the output layer has one neuron per class, and the \newterm{softmax} activation turns the outputs into probabilities
-that sum to 1.
+For two classes, a single output neuron uses the sigmoid activation, $\sigma(z) = \frac{1}{1 + e^{-z}}$, which lies
+between 0 and 1. That is logistic regression, with hidden layers in front of it computing better features.
+
+For $K$ classes, the output layer has one neuron per class. Their raw outputs $z_1, \ldots, z_K$, called
+\newterm{logits}\index{logit}, can be any real numbers. The \newterm{softmax}\index{softmax} function turns them into
+probabilities that are positive and sum to 1:
+$$p_k = \frac{e^{z_k}}{e^{z_1} + e^{z_2} + \cdots + e^{z_K}}$$
+Exponentiating makes everything positive, and dividing by the total makes the probabilities add up to 1. The
+biggest logit always gets the biggest probability.
+
+\textbf{Example}: A network that sorts photos into cat, dog, or bird produces logits $\mathbf{z} = (2, 1, 0)$.
+Find the probabilities.
+
+\textbf{Solution}: Exponentiate each score and divide by the total:
+$$e^2 \approx 7.389, \quad e^1 \approx 2.718, \quad e^0 = 1, \qquad \text{total} \approx 11.107$$
+$$P(\text{cat}) \approx \frac{7.389}{11.107} \approx 0.665, \quad P(\text{dog}) \approx 0.245, \quad
+P(\text{bird}) \approx 0.090$$
+
+Adding the same number to every logit does not change the probabilities (it multiplies the top and bottom by the
+same factor), so only the differences between logits matter. With two classes, softmax reduces to the sigmoid of
+the difference $z_1 - z_2$.
 
 \section{Cross-Entropy Loss}\index{cross-entropy}
-The usual loss for classification is cross-entropy. For a binary label $y \in \{0, 1\}$ and predicted probability $p$,
-$$L = -\left[y \ln p + (1 - y)\ln(1 - p)\right]$$
-If the true label is 1, the loss is $-\ln p$. It is small when the network assigns high probability to the correct class, and large when $p$ is small. Think of a weather forecast that gives a 10 percent chance of rain on a day that turns out rainy. The forecast was confidently wrong, and cross-entropy punishes it heavily.
+The loss is the same log loss you met in the Logistic Regression chapter, extended to $K$ classes: the negative log
+of the probability the network gave to the \emph{correct} class.
+$$L = -\ln p_{\text{true class}}$$
+For a binary label $y \in \{0, 1\}$ and predicted probability $p$, this is the familiar
+$$L = -\left[y \ln p + (1 - y)\ln(1 - p)\right]$$ If the photo in the example really is a cat, the loss is
+$-\ln 0.665 \approx 0.408$. If it is a bird, the loss is $-\ln 0.090 \approx 2.41$: confidently wrong costs a lot.
 
-\section{A Worked Example}
-A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Then $z = 1$, and the predicted probability is
+\begin{center}
+\begin{tabular}{c c}
+\textbf{Probability given to the correct class} & \textbf{Cross-entropy loss} \\
+\hline
+0.99 & 0.010 \\
+0.9 & 0.105 \\
+0.5 & 0.693 \\
+0.1 & 2.303 \\
+0.01 & 4.605 \\
+\end{tabular}
+\end{center}
+
+\textbf{Example}: A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Find the
+predicted probability of class 1 and the loss if the true label is 1.
+
+\textbf{Solution}: $z = 1$, and
 $$p = \sigma(1) = \frac{1}{1 + e^{-1}} \approx 0.731$$
-If the true label is $y = 1$, the cross-entropy loss is $-\ln(0.731) \approx 0.313$.
+The cross-entropy loss is $-\ln(0.731) \approx 0.313$.
 
-\subsection{Softmax with Three Classes}
-A network that sorts photos into cat, dog, or bird produces three raw scores, say
-$z = (2, 1, 0)$. Softmax exponentiates each score and divides by the total:
-$$e^2 \approx 7.389, \quad e^1 \approx 2.718, \quad e^0 = 1, \qquad \text{total} \approx 11.107$$
-$$P(\text{cat}) \approx \frac{7.389}{11.107} \approx 0.665, \quad P(\text{dog}) \approx 0.245, \quad P(\text{bird}) \approx 0.090$$
-The probabilities sum to 1, and the largest score gets the largest probability. If
-the photo really is a cat, the cross-entropy loss is $-\ln(0.665) \approx 0.408$.
+\section{Classifying Penguins with PyTorch}
+Here is \filename{species\_net.py}, which predicts species from the four measurements. It uses one hidden layer of 16
+ReLUs and three outputs, and trains with mini-batches of 32 penguins, as in the Linear Regression and Gradient Descent chapter:
 
-\section{Training and Prediction}
-Training repeats the same steps as in regression: feedforward, loss, backpropagation, and a weight update. Once trained, a new instance is classified by
-computing $p$ and predicting the class with the larger probability. A threshold of 0.5 is common for binary outputs.
+\begin{minted}{python}
+import numpy as np
+import torch
+from torch import nn
+from penguins import load_penguins
+
+data = load_penguins()
+names, labels = np.unique(data["species"], return_inverse=True)
+X = np.column_stack([data["bill_length_mm"], data["bill_depth_mm"],
+                     data["flipper_length_mm"], data["body_mass_g"]])
+order = np.random.default_rng(1).permutation(len(labels))
+train, test = order[:233], order[233:]
+
+mean, sd = X[train].mean(axis=0), X[train].std(axis=0)
+x_tr = torch.tensor((X[train] - mean) / sd, dtype=torch.float32)
+x_te = torch.tensor((X[test] - mean) / sd, dtype=torch.float32)
+y_tr = torch.tensor(labels[train])        # class numbers 0, 1, 2 (integers)
+y_te = torch.tensor(labels[test])
+
+torch.manual_seed(0)
+model = nn.Sequential(nn.Linear(4, 16), nn.ReLU(), nn.Linear(16, 3))   # 3 scores out
+loss_fn = nn.CrossEntropyLoss()             # applies softmax, then -ln p(true class)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+
+for epoch in range(1, 31):
+    perm = torch.randperm(len(y_tr))        # shuffle, then mini-batches of 32
+    for start in range(0, len(y_tr), 32):
+        batch = perm[start:start + 32]
+        optimizer.zero_grad()
+        loss = loss_fn(model(x_tr[batch]), y_tr[batch])
+        loss.backward()
+        optimizer.step()
+    if epoch in (1, 5, 30):
+        with torch.no_grad():
+            acc = (model(x_te).argmax(dim=1) == y_te).float().mean().item()
+            print(f"epoch {epoch:2d}: training loss {loss_fn(model(x_tr), y_tr).item():.3f},"
+                  f" test accuracy {acc:.3f}")
+
+with torch.no_grad():
+    probs = torch.softmax(model(x_te), dim=1)
+predicted = probs.argmax(dim=1)
+matrix = np.zeros((3, 3), dtype=int)
+for p, a in zip(predicted, y_te):
+    matrix[p, a] += 1
+print("Rows: predicted, columns: actual", names)
+print(matrix)
+print("Least confident test penguin:")
+i = probs.max(dim=1).values.argmin()
+print(" probabilities", np.round(probs[i].numpy(), 3), " actually", names[y_te[i]])
+\end{minted}
+
+\begin{verbatim}
+epoch  1: training loss 0.757, test accuracy 0.800
+epoch  5: training loss 0.119, test accuracy 0.970
+epoch 30: training loss 0.015, test accuracy 0.990
+Rows: predicted, columns: actual ['Adelie' 'Chinstrap' 'Gentoo']
+[[42  1  0]
+ [ 0 25  0]
+ [ 0  0 32]]
+Least confident test penguin:
+ probabilities [0.325 0.675 0.001]  actually Chinstrap
+\end{verbatim}
+
+A few details:
+\begin{itemize}
+\item The network's last layer has no activation. \verb|nn.CrossEntropyLoss| takes the raw logits and applies the
+softmax itself, which is more accurate numerically than taking the log of a softmax you computed separately. When
+you want the probabilities, call \verb|torch.softmax| yourself.
+\item The labels are integer class numbers, not one-hot vectors; the loss function picks out the probability of the
+correct class.
+\item \verb|argmax(dim=1)| finds the largest logit in each row, which is the predicted class.
+\item \verb|torch.randperm| shuffles the training penguins each epoch, so the mini-batches are different every time.
+\end{itemize}
+
+The network gets 99 of the 100 test penguins right after 30 epochs. Its least confident prediction is a Chinstrap
+that it called Chinstrap with only 67.5\% confidence, giving the rest to Adelie. The probabilities are useful in
+their own right: a researcher could double-check any penguin the network is unsure about.
+
+\begin{center}
+\begin{tabular}{l c}
+\textbf{Method (from this unit)} & \textbf{Test accuracy, species} \\
+\hline
+$k$-nearest neighbors (2 features, 67 test penguins) & 92.5\% \\
+decision tree (4 features, 67 test penguins) & 95.5\% \\
+random forest (4 features, 67 test penguins) & 97.0\% \\
+neural network (4 features, 100 test penguins) & 99.0\% \\
+\end{tabular}
+\end{center}
+
+The test sets are different sizes and the features differ, so the table is a rough comparison, not a contest. On
+this data, every reasonable method does well.
+
+\section{Bending the Boundary}
+Without a hidden layer, a softmax network is \newterm{softmax regression}\index{softmax regression}, the multi-class
+version of logistic regression, and its boundaries between classes are straight lines. Hidden layers let the
+boundaries bend. Figure~\ref{fig:nn-regions} shows both, trained on bill length and depth for all 333 penguins.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{nn_regions.png}
+\caption{Predicted species across the plane. Left: no hidden layer. Right: two hidden layers of 32 ReLU neurons,
+trained for 1500 full-batch steps.}
+\label{fig:nn-regions}
+\end{figure}
+
+Straight boundaries already get 96.1\% of the penguins right. The bigger network gets every training penguin right,
+but look at how: it grows small bays and islands to capture individual penguins in the overlap between Adelies,
+Chinstraps, and Gentoos. That is overfitting, the same thing a deep decision tree or 1-nearest neighbor did. The cures
+are the ones from the last chapter: a validation set with early stopping, or a smaller network.
 
 \begin{Exercise}[label=nnc1, title=Compute a probability]
 A neuron has $z = 0$. What is the predicted probability of class 1?
@@ -40,4 +181,34 @@ A network predicts $p = 0.1$ for an example whose true label is 1. What is the c
 \end{Exercise}
 \begin{Answer}[ref=nnc2]
 $-\ln(0.1) \approx 2.303$. The loss is large because the network gave the correct class a low probability.
+\end{Answer}
+
+\begin{Exercise}[label=nnc3, title={Softmax by hand}, space=3cm]
+Find the softmax probabilities for the logits $(1, 1, 3)$. What is the loss if the correct class is the first one?
+\end{Exercise}
+\begin{Answer}[ref=nnc3]
+$e^1 \approx 2.718$ (twice) and $e^3 \approx 20.086$, for a total of $25.522$. The probabilities are about
+$0.107$, $0.107$, and $0.787$. If the first class is correct, the loss is $-\ln 0.107 \approx 2.24$.
+\end{Answer}
+
+\begin{Exercise}[label=nnc4, title={Shift the logits}]
+Show that softmax gives the same probabilities for the logits $(2, 1, 0)$ as for $(12, 11, 10)$. Why do programs subtract the
+largest logit before exponentiating?
+\end{Exercise}
+\begin{Answer}[ref=nnc4]
+Adding 10 to every logit multiplies every $e^{z_k}$, and so the total, by $e^{10}$, which cancels in each fraction.
+Subtracting the largest logit therefore changes nothing mathematically, but it makes the largest exponent $e^0 = 1$, so
+huge logits like 1000 do not overflow to infinity. (We did the same trick for log probabilities in the Bayesian
+Classifiers chapter.)
+\end{Answer}
+
+\begin{Exercise}[label=nnc5, title={Two features only}]
+Change \filename{species\_net.py} to use only bill length and bill depth. How does the test accuracy after 30 epochs
+compare with $k$-nearest neighbors on the same two features?
+\end{Exercise}
+\begin{Answer}[ref=nnc5]
+Change the \verb|np.column_stack| to the two bill columns and the first layer to \verb|nn.Linear(2, 16)|. The test
+accuracy comes out at about 94\% (exact numbers depend on the PyTorch version), similar to the 92.5\% that
+$k$-nearest neighbors got on a different test split. With only two features, the overlap between Adelies and
+Chinstraps limits every method.
 \end{Answer}

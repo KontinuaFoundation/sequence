@@ -1,246 +1,371 @@
 \chapter{Bayesian Classifiers}\index{Bayesian classifier}
-  
-Your phone can tell a cat photo from a dog photo, and your email can tell a
-real message from spam. Both are \textit{classifiers}: they look at measurements
-and guess a category. This chapter builds one of the oldest and simplest, using
-nothing but Bayes' rule and the normal distribution.
 
-You drop a net in several places in a lake.   You measure, weigh, and identify every fish to be one of the following: \texttt{trout}, \texttt{bass}, or \texttt{catfish}.  Here is a scatter plot of what you find:
+A text arrives: ``Congratulations! You won a \$1000 gift card. Claim your reward before it expires tonight.''
+You know it is spam before you finish reading. How? Certain words, like ``won,'' ``claim,'' and ``gift card,''
+are far more common in spam than in texts from your friends. Each one nudges your belief a little further
+toward ``spam.''
 
-\includegraphics[width=0.7\textwidth]{1_scatter.png}
+That nudging has a precise mathematical form: Bayes' rule. This chapter builds two classifiers on it. The first
+is a spam filter for the messages from the last chapter. The second identifies penguin species from
+measurements, and it shows what to do when the features are numbers instead of words.
 
-(Data: \texttt{make\_data.py}, Graph: \texttt{1\_scatter\_fish.py})
+\section{Bayes' Rule for Classification}\index{Bayes' rule}
+We want the probability of each class $C$ given the features $\mathbf{x}$ we observed. Bayes' rule says
+$$P(C \mid \mathbf{x}) = \frac{P(\mathbf{x} \mid C)\,P(C)}{P(\mathbf{x})}$$
+Each piece has a name:
 
-The vertical and horizontal lines represent the mean length and weight (respectively) of each type of fish.
-
-You are writing a system that someone on the lake could use to identify their fish.
-
-\section{The Prior}\index{prior probability}
-
-Even before the person measures and weighs the fish,  they can make a decent guess at what any randomly selected fish is:
-
-\begin{tabular}{c | c | c}
-Fish & Count & Percent \\
+\begin{center}
+\begin{tabular}{l l >{\raggedright\arraybackslash}p{6cm}}
+\textbf{Term} & \textbf{Name} & \textbf{Meaning for spam} \\
 \hline
-trout & 121/300 & 40.3\% \\
-bass & 154/300 & 51.3\% \\
-catfish & 25/300 & 8.3\%
+$P(C)$ & prior\index{prior probability} & how common spam is before reading the message \\
+$P(\mathbf{x} \mid C)$ & likelihood & how likely these words are in a spam message \\
+$P(C \mid \mathbf{x})$ & posterior & how likely this message is spam, after reading it \\
+$P(\mathbf{x})$ & evidence & the same for every class; it just makes the posteriors add to 1 \\
 \end{tabular}
+\end{center}
 
-If you know nothing about the fish,  there is a 51.3\% chance it is a bass.   The probability without any observations is known as the \textit{prior}:
+Since $P(\mathbf{x})$ is the same for every class, a classifier can compute $P(\mathbf{x} \mid C)\,P(C)$ for each
+class, pick the biggest, and divide by the total only if it wants actual probabilities.
 
-$$P(\text{fish = trout}) = .403$$
-$$P(\text{fish = bass}) = .513$$
-$$P(\text{fish = catfish}) = .083$$
+\section{The Naive Assumption}\index{naive Bayes}\index{conditional independence}
+The hard part is the likelihood. A message is a list of words $w_1, w_2, \ldots, w_m$, and there are far too
+many possible messages to estimate $P(w_1, \ldots, w_m \mid \text{spam})$ directly. So we make a bold
+simplification: assume that, once you know the class, the words are independent of each other. Then the
+likelihood is a product of one-word probabilities:
+$$P(w_1, \ldots, w_m \mid C) = P(w_1 \mid C)\,P(w_2 \mid C) \cdots P(w_m \mid C)$$
+This is the \newterm{naive Bayes} assumption. It is ``naive'' because it is false: in real spam, ``gift'' and
+``card'' tend to appear together. But the classifier only needs to rank the classes correctly, not to get the
+probabilities exactly right, and naive Bayes is famous for working well anyway.
 
-However, now the user makes an observation: The fish is 16 inches long and weighs 2.1 kg.  Can we update our beliefs based on this? Sounds like a job for conditional probability.
+\section{Estimating the Word Probabilities}
+From the training messages, $P(\text{spam})$ is just the fraction of messages that are spam: $22/60$ in our
+data. For the word probabilities, count. Pour all the spam messages into one big bag of words; then
+$P(\text{free} \mid \text{spam})$ is the fraction of the words in that bag that are ``free.''
 
-By the definition of conditional probability:
+After stemming and dropping stop words, the 22 spam messages contain 215 words, and the word ``free'' is 15 of
+them. The 38 ham messages contain 255 words, and none is ``free.''
 
-$$P(\text{fish = trout} | \text{length = 16}, \text{weight = 2.1}) = \frac{p(\text{fish = trout} , \text{length = 16}, \text{weight = 2.1}) }{p( \text{length = 16}, \text{weight = 2.1}) }$$
+That zero is a problem. It would make $P(\text{free} \mid \text{ham}) = 0$, so any message containing ``free''
+would have zero chance of being ham, no matter what else it said. One word would veto everything. The fix is
+\newterm{Laplace smoothing}\index{Laplace smoothing}: pretend you saw every word in the vocabulary one extra time
+in each class. With a vocabulary of $V = 271$ stems,
+$$P(w \mid C) = \frac{\text{count of } w \text{ in class } C + 1}{\text{total words in class } C + V}$$
+So $P(\text{free} \mid \text{spam}) = \frac{16}{486}$ and $P(\text{free} \mid \text{ham}) = \frac{1}{526}$:
+small, but not zero.
 
-At this rate, we are going to run out of space,  so we will use $F$ to represent fish, $L$ to represent length, and $W$ to represent weight.
+\section{A Worked Example}
+The student council texts everyone: ``Free pizza at the game tonight.'' Is it spam?
 
-We can calculate the denominator by summing up all the possibilities. Now, the right-hand side is:
+After preparing the text, the stems are free, pizza, game, and tonight. ``Pizza'' never appears in the
+training messages, so the model knows nothing about it, and we skip it. The counts for the others:
 
-$$\frac{p(\text{F=trout} , \text{L=16}, \text{W=2.1}) }{p(\text{F=trout} , \text{L=16}, \text{W=2.1})  + p(\text{F=bass} , \text{L=16}, \text{W=2.1})  + p(\text{F=catfish} , \text{L=16}, \text{W=2.1})  }$$
-
-We can calculate the probability of all three possibilities (which will add up to 1.0).
-
-\section{Naive Bayes}\index{naive Bayes}
-
-The assumption in naive Bayes is that the probability distributions of length and weight are \index{conditional independence}conditionally independent given the species of the fish.   That is:
-
-$$p(\text{F=trout} , \text{L=16}, \text{W=2.1}) = p( \text{L=16} | \text{F=trout})  p( \text{W=2.1} | \text{F=trout})P(\text{F=trout})$$
-
-Within a particular species, things like length and weight, which represent the sum of a lot of genetic and environmental factors,  are often normally distributed.
-
-What if we assume that length has a normal distribution for each kind of fish?  \index{maximum likelihood estimator}What is the maximum likelihood estimator for the mean of each trait?  
-
-$$\mu = \frac{1}{n} \sum_{i=1}^{n} x_i$$
-
-And variance?
-
-$$\sigma^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \mu)^2$$
-
-We can compute those pretty easily:
-
-\begin{tabular}{c | c | c | c}
-Fish & Trait & $\mu$ & $\sigma^2$ \\
+\begin{center}
+\begin{tabular}{l c c c c}
+\textbf{Stem} & \textbf{In spam} & \textbf{In ham} & $P(w \mid \text{spam})$ & $P(w \mid \text{ham})$ \\
 \hline
-Trout & Length & 12.91522571 & 3.49054363 \\
- & Weight &1.85290281 & 0.20387574\\
- \hline
-Bass & Length & 17.62628327& 4.23881747 \\
- & Weight & 1.92960088&0.45092986 \\
+free & 15 & 0 & $16/486$ & $1/526$ \\
+game & 1 & 3 & $2/486$ & $4/526$ \\
+tonight & 1 & 2 & $2/486$ & $3/526$ \\
+\end{tabular}
+\end{center}
+
+Multiply the prior by the likelihoods:
+$$\text{spam: } \frac{22}{60} \cdot \frac{16}{486} \cdot \frac{2}{486} \cdot \frac{2}{486} \approx 2.04 \times 10^{-7}
+\qquad
+\text{ham: } \frac{38}{60} \cdot \frac{1}{526} \cdot \frac{4}{526} \cdot \frac{3}{526} \approx 5.22 \times 10^{-8}$$
+Dividing by the total,
+$$P(\text{spam} \mid \text{message}) = \frac{2.04 \times 10^{-7}}{2.04 \times 10^{-7} + 5.22 \times 10^{-8}} \approx 0.797$$
+The filter calls it spam, almost entirely because of the word ``free'': $P(\text{free} \mid \text{spam})$ is about 17 times
+$P(\text{free} \mid \text{ham})$, while ``game'' and ``tonight'' each lean toward ham by less than 2 to 1. A real filter would learn
+from more data, including legitimate messages about free pizza, and the same rule could balance that out.
+
+\section{Working in Logarithms}
+Multiplying many small probabilities quickly produces numbers too small for a computer to store. Each word
+probability here is around $\frac{1}{500}$, so a message of a few hundred words gives a product below
+$10^{-308}$, the smallest number ordinary floating-point arithmetic can hold, and the computer rounds it to
+zero. The cure is to add logarithms
+instead of multiplying probabilities:
+$$\ln\big[P(C)\,P(w_1 \mid C) \cdots P(w_m \mid C)\big] = \ln P(C) + \sum_{j=1}^{m} \ln P(w_j \mid C)$$
+The class with the biggest log score is the class with the biggest product. To recover probabilities at the
+end, subtract the biggest log score from each score before calling \verb|np.exp|, so the largest becomes
+$e^0 = 1$ and nothing underflows.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{spam_words.png}
+\caption{The eight stems that push hardest toward spam (red) and toward ham (blue). Each bar is how much one
+appearance of the word adds to the log score for spam, compared with ham.}
+\label{fig:spam-words}
+\end{figure}
+
+\section{A Spam Filter in Python}
+Put \filename{messages.csv} and \filename{text.py} from the last chapter next to \filename{spam\_filter.py}:
+
+\begin{minted}{python}
+import csv
+import numpy as np
+from collections import Counter
+from text import prepare
+
+with open("messages.csv", newline="") as f:
+    rows = list(csv.DictReader(f))
+texts = [row["text"] for row in rows]
+labels = [row["label"] for row in rows]
+
+def train(texts, labels):
+    counts = {"spam": Counter(), "ham": Counter()}
+    for text, label in zip(texts, labels):
+        counts[label].update(prepare(text))
+    vocab = set(counts["spam"]) | set(counts["ham"])
+    model = {}
+    for label in ("spam", "ham"):
+        total = sum(counts[label].values())
+        log_prior = np.log(labels.count(label) / len(labels))
+        # Laplace smoothing: add 1 to every count
+        log_like = {w: np.log((counts[label][w] + 1) / (total + len(vocab)))
+                    for w in vocab}
+        model[label] = (log_prior, log_like)
+    return model
+
+def spam_probability(model, text):
+    scores = {}
+    for label, (log_prior, log_like) in model.items():
+        # Words the model has never seen are skipped
+        words = [w for w in prepare(text) if w in log_like]
+        scores[label] = log_prior + sum(log_like[w] for w in words)
+    # Turn the two log scores back into probabilities that add to 1
+    biggest = max(scores.values())
+    spam = np.exp(scores["spam"] - biggest)
+    ham = np.exp(scores["ham"] - biggest)
+    return spam / (spam + ham)
+
+# Leave-one-out: train on 59 messages, test on the one left out, 60 times
+correct = 0
+for i in range(len(texts)):
+    model = train(texts[:i] + texts[i + 1:], labels[:i] + labels[i + 1:])
+    guess = "spam" if spam_probability(model, texts[i]) >= 0.5 else "ham"
+    correct += guess == labels[i]
+    if guess != labels[i]:
+        print("Missed:", labels[i], "|", texts[i])
+print(f"Leave-one-out accuracy: {correct}/{len(texts)}")
+
+model = train(texts, labels)
+for text in ["Free pizza at the game tonight",
+             "Click here to claim your prize",
+             "Can you send me the notes from history class?"]:
+    print(f"{spam_probability(model, text):.3f}  {text}")
+\end{minted}
+
+\begin{verbatim}
+Missed: ham | Is the essay supposed to be double spaced?
+Missed: ham | My phone is about to die. Call me at home later
+Leave-one-out accuracy: 58/60
+0.797  Free pizza at the game tonight
+0.999  Click here to claim your prize
+0.010  Can you send me the notes from history class?
+\end{verbatim}
+
+\verb|Counter| is a dictionary that counts things; \verb|update| adds one for each word in a list, and a missing
+word counts as 0. With only 60 messages, we cannot afford to hold out a big test set, so we use
+\newterm{leave-one-out} cross-validation\index{leave-one-out cross-validation}: 60 rounds, each training on 59
+messages and testing on the last one. (That is $k$-fold cross-validation with $k$ equal to the number of
+examples.) The filter gets 58 of 60 right. Both misses are short messages made of words the training data barely
+contains, so the prior and a few weak clues decide. ``Free pizza'' gets 0.797, as we computed by hand.
+
+\section{Numbers Instead of Words}\index{Gaussian naive Bayes}
+Bayes' rule works for any features, as long as you can estimate $P(\mathbf{x} \mid C)$. For a number, like a
+penguin's bill length, the standard choice is a normal distribution. For each species, estimate the mean
+$\mu$ and standard deviation $\sigma$ of each feature from the training penguins, and use the normal density
+$$p(x \mid C) = \frac{1}{\sqrt{2\pi\sigma^2}}\, e^{-(x - \mu)^2 / (2\sigma^2)}$$
+as the likelihood. With the naive assumption, multiply the densities of the features. This is \newterm{Gaussian
+naive Bayes}.
+
+From the same 266 development penguins as in the $k$-Nearest Neighbor chapter:
+
+\begin{center}
+\begin{tabular}{l c c c c c}
+ & & \multicolumn{2}{c}{\textbf{Bill length (mm)}} & \multicolumn{2}{c}{\textbf{Bill depth (mm)}} \\
+\textbf{Species} & \textbf{Prior} & $\mu$ & $\sigma$ & $\mu$ & $\sigma$ \\
 \hline
-Catfish & Length &16.92187387 & 1.32301935 \\
- & Weight & 3.42423185 & 0.07244546\\
+Adelie & 0.444 & 39.05 & 2.68 & 18.43 & 1.18 \\
+Chinstrap & 0.180 & 49.13 & 3.19 & 18.48 & 1.15 \\
+Gentoo & 0.376 & 47.65 & 3.21 & 15.01 & 1.00 \\
 \end{tabular}
+\end{center}
 
-If we plot those probability distributions out:
+\textbf{Example}: A penguin has a 45 mm bill that is 17 mm deep. Which species is it?
 
-\includegraphics[width=0.7\textwidth]{2_unip.png}
+\textbf{Solution}: Evaluate the normal densities (a calculator or \verb|scipy.stats.norm.pdf| helps), multiply by
+the prior, and normalize:
 
-(Source:\texttt{2\_univariates.py})
-
-Note that the area under each one of those curves is exactly 1.0.  They are probability distributions.
-
-Now we can use the formula for the normal distribution:
-
-$$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}$$
-
-Thus,
-
-\begin{tabular}{c | c | c }
-Given & $p(L=16 | F)$ & $p(W=2.1 | F)$ \\
+\begin{center}
+\begin{tabular}{l c c c c}
+\textbf{Species} & $p(45 \mid C)$ & $p(17 \mid C)$ & \textbf{Prior $\times$ product} & \textbf{Posterior} \\
 \hline
-$F$=Trout & .0546  & .7607 \\
-$F$=Bass &  .1418 &.5753 \\
-$F$=Catfish  & .2516 & $8.2 \times 10^{-6}$ \\
-\end{tabular}
-
-Using the naive assumption, we can now compute the joint probability for any type of fish: 
-
-$$p(F=?, L=16 , W=2.1) = p(W=2.1 | F=?) p(L=16 | F=?)p(F=?)$$
-
-\begin{tabular}{c | c }
-For & $p(L=16, W=2.1, F=?)$ \\
+Adelie & 0.0126 & 0.1617 & 0.000902 & 0.213 \\
+Chinstrap & 0.0541 & 0.1520 & 0.001482 & 0.350 \\
+Gentoo & 0.0884 & 0.0557 & 0.001851 & 0.437 \\
 \hline
-$F$=Trout & .016763\\
-$F$=Bass &  .041886  \\
-$F$=Catfish  &  $\approx 0$\\
+ & & & sum 0.004235 & \\
 \end{tabular}
+\end{center}
 
-The sum of these is $p(L=16, W=2.1)$: $.0586$.
+Gentoo wins, but not by much. The 45 mm bill is long for an Adelie (2.2 standard deviations above average),
+and the 17 mm depth is deep for a Gentoo. This penguin is hard to call.
 
-By the definition of conditional probability:
+\section{When Features Move Together}\index{multivariate Gaussian distribution}\index{covariance matrix}
+The naive assumption says that, within a species, bill length tells you nothing about bill depth. That is not
+true: within Chinstraps, the correlation between the two is 0.78. A Chinstrap with a short bill usually has a
+shallow one, too.
 
-$$p(F=? | L=16, W=2.1) = \frac{p(F=?, L=16, W=2.1) }{p(L=16, W=2.1)}$$
+The \newterm{multivariate normal distribution} handles this. Instead of a separate $\mu$ and $\sigma$ for each
+feature, it has a mean vector $\boldsymbol{\mu}$ and a \newterm{covariance matrix} $\boldsymbol{\Sigma}$, whose
+diagonal holds the variances and whose off-diagonal entries hold the covariances. Its density for a vector
+$\mathbf{x}$ with $d$ features is
+$$p(\mathbf{x}) = (2\pi)^{-d/2}\det(\boldsymbol{\Sigma})^{-1/2} \exp\left(-\tfrac{1}{2}(\mathbf{x} -
+\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})\right)$$
+For the Chinstraps, for example,
+$$\boldsymbol{\mu} = \begin{bmatrix} 49.13 \\ 18.48 \end{bmatrix}, \qquad
+\boldsymbol{\Sigma} = \begin{bmatrix} 10.16 & 2.87 \\ 2.87 & 1.32 \end{bmatrix}$$
+Naive Bayes is the special case where all the off-diagonal entries are zero.
 
-So,
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{gaussians.png}
+\caption{Contours of the estimated densities for each species. Left: naive Bayes, whose ovals can only point
+along the axes. Right: full covariance, whose ovals tilt with the data. The star is the mystery penguin.}
+\label{fig:gaussians}
+\end{figure}
 
-\begin{tabular}{c | c }
-For & $p(F=? | L=16, W=2.1)$ \\
+In Figure~\ref{fig:gaussians}, the tilted Chinstrap oval reaches down toward the mystery penguin. The program
+\filename{gaussian\_bayes.py} fits both versions and compares them with 5-fold cross-validation:
+
+\begin{minted}{python}
+import numpy as np
+from scipy import stats
+from penguins import load_penguins
+
+data = load_penguins()
+names, y = np.unique(data["species"], return_inverse=True)
+features = np.column_stack([data["bill_length_mm"], data["bill_depth_mm"]])
+order = np.random.default_rng(1).permutation(len(y))
+dev, test = order[:266], order[266:]
+
+def fit(rows):
+    """For each species: prior, mean vector, and covariance matrix."""
+    model = []
+    for c in range(3):
+        group = features[rows][y[rows] == c]
+        model.append((len(group) / len(rows), group.mean(axis=0),
+                      np.cov(group.T, bias=True)))
+    return model
+
+def log_posteriors(model, X, naive):
+    scores = []
+    for prior, mean, cov in model:
+        if naive:   # independent normal distributions, one per feature
+            sd = np.sqrt(np.diag(cov))
+            log_like = stats.norm.logpdf(X, mean, sd).sum(axis=1)
+        else:       # one multivariate normal, with covariance
+            log_like = stats.multivariate_normal.logpdf(X, mean, cov)
+        scores.append(np.log(prior) + log_like)
+    return np.column_stack(scores)
+
+def probabilities(scores):
+    p = np.exp(scores - scores.max(axis=1, keepdims=True))
+    return p / p.sum(axis=1, keepdims=True)
+
+folds = np.array_split(dev, 5)
+model = fit(dev)
+mystery = np.array([[45.0, 17.0]])        # bill length 45 mm, depth 17 mm
+for naive in (True, False):
+    accuracy = []
+    for i in range(5):
+        rest = np.concatenate([folds[j] for j in range(5) if j != i])
+        scores = log_posteriors(fit(rest), features[folds[i]], naive)
+        accuracy.append(np.mean(scores.argmax(axis=1) == y[folds[i]]))
+    guess = log_posteriors(model, features[test], naive).argmax(axis=1)
+    test_acc = np.mean(guess == y[test])
+    p = probabilities(log_posteriors(model, mystery, naive))
+    print("naive" if naive else "full ", f"CV {np.mean(accuracy):.3f}",
+          f"test {test_acc:.3f}  mystery:", np.round(p, 3))
+\end{minted}
+
+\begin{verbatim}
+naive CV 0.936 test 0.925  mystery: [[0.213 0.35  0.437]]
+full  CV 0.977 test 0.925  mystery: [[0.033 0.954 0.013]]
+\end{verbatim}
+
+\verb|np.cov| expects one variable per row, hence the transpose; \verb|bias=True| divides by $n$, matching the
+maximum likelihood estimate (NumPy's default divides by $n - 1$). The naive version uses only the diagonal of the
+covariance matrix.
+
+The naive model reproduces our hand calculation. The full model is much more confident, and it changes its
+mind: Chinstrap, at 95\%. Because Chinstrap bill length and depth rise and fall together, a Chinstrap with a
+shorter-than-average bill is expected to have a shallower bill, which is just what this penguin has. Taking the
+covariance into account raises the cross-validation accuracy from 93.6\% to 97.7\%. (On the 67 test penguins,
+the two happen to tie.)
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{4.2cm}}
+ & \textbf{Naive Bayes} & \textbf{Full covariance} \\
 \hline
-$F$=Trout & .286\\
-$F$=Bass &  .714  \\
-$F$=Catfish  &  $\approx 0$\\
+Numbers to estimate per class & 2 per feature & grows with the square of the number of features \\
+Needs much data? & no & yes, with many features \\
+Handles correlated features? & no & yes \\
+Typical use & text, with thousands of word features & a few numeric features \\
 \end{tabular}
+\end{center}
 
-If you pull a random fish out of the lake and its length is 16 and its weight is 2.1, there is a 71.4\% chance that it is bass.  There is a 28.6\% chance it is a trout.
+With 271 word features, a full covariance matrix would have $271^2 = 73{,}441$ entries, far more than 60
+messages could estimate. That is why spam filters stay naive.
 
-\section{Using the multivariate Gaussian distribution}\index{multivariate Gaussian distribution}
-
-Given the kind of fish, length and weight are independent!?  That makes no sense.  Longer fish tend to be heavier, right?
-
-The multivariate Gaussian distribution is a generalization of the normal distribution:
-\begin{itemize}
-\item It deals with data of any dimension $d$.
-\item It can include the idea of covariance. For example, length and weight are not independent.
-\end{itemize}
-
-If we use naive Bayes, we get two-dimensional density plots that would look like this:
-
-\includegraphics[width=0.55\textwidth]{4_indep_density.png}
-
-With independence, there are ovals that are circles,  ovals that go up, or ovals that go sideways.  If we use the multivariate Gaussian distribution, we get:
-
-\includegraphics[width=0.55\textwidth]{5_full.png}
-
-When there is covariance,  the ovals can slant in any direction.
-
-If we discard the naive assumption,  we should get slightly more accurate results.
-
-The multivariate Gaussian distribution uses vectors and matrices.  The mean $\vec{\mu}$ is a vector of dimension $d$. The variance of each variable and its covariance with the other variables is captured in a $d \times d$ matrix called \index{covariance matrix}\textit{the covariance matrix}, usually written $\boldsymbol\Sigma$.  (Yes, this is also the symbol for summation.  This creates some confusion at times, but you can usually figure out which is intended by the context.)
-
-When you know $\vec{\mu}$ and $\boldsymbol\Sigma$,  the probability density for any vector $\vec{x}$ is:
-
-$$p(\vec{x}) = (2\pi)^{-d/2}\det (\boldsymbol\Sigma)^{-1/2} \, \exp \left( -\frac{1}{2} (\vec{x} - \vec\mu)^\mathrm{T} \boldsymbol\Sigma^{-1}(\vec{x} - \vec\mu) \right)$$
-
-If you have several data points $\vec{x_1}, ..., \vec{x_n}$, how do you  compute the values of $\vec{\mu}$ and $\boldsymbol\Sigma$ for which the observations $\vec{x_1}, ..., \vec{x_n}$ would be most likely?
-
-$$\vec{\mu} = \frac{1}{n} \sum_{i = 1}^{n} \vec{x_i}$$
-
-And the covariance matrix?  (Here, we think of each $\vec{x_i}$  and $\vec{\mu}$ as  column vectors.)
-
-$$\boldsymbol\Sigma = \frac{1}{n-1}\sum_{i=1}^n (\vec{x}_i-\vec{\mu})(\vec{x}_i-\vec{\mu})^\mathrm{T}$$
-
-Notice that the diagonal entries of the matrix are the variance of each variable.  Notice also that this is a symmetric matrix. Many libraries, including numpy's default, divide by $n - 1$ instead of $n$ in this formula. That is why the variances in this matrix are slightly larger than the $\sigma^2$ values in the univariate table.
-
-Applying this to our data we get:
-
-
-\begin{tabular}{c | c | c}
-Fish & $\vec{\mu}$  &$\boldsymbol\Sigma$ \\
-\hline   & &\\
-Trout & $\begin{bmatrix}
- 12.91522571\\1.85290281
- \end{bmatrix}$ & 
-$\begin{bmatrix}
-3.51963149 & 0.09975744 \\
- 0.09975744 & 0.20557471
- \end{bmatrix}$ \\ & & \\
-Bass  & $\begin{bmatrix}
-  17.62628327 \\ 1.92960088
- \end{bmatrix}$ & 
-$\begin{bmatrix}
-4.26652216 & 0.39553268 \\
-0.39553268 & 0.45387711
- \end{bmatrix}$\\ & & \\
- 
- Catfish  & $\begin{bmatrix}16.92187387 \\ 3.42423185
- \end{bmatrix}$ & 
-$\begin{bmatrix}
-1.37814515 &0.07281453 \\
-0.07281453 & 0.07546403
- \end{bmatrix}$\\
-\end{tabular}
-
-We can use these to compute the likelihood of seeing a fish with length = 16 and weight = 2.1 for each type of fish:
-
-\begin{tabular}{c | c }
-Given & $p(L=16, W=2.1 | F=?)$ \\
-\hline
-$F$=Trout & .04578 \\
-$F$=Bass &  .07732 \\
-$F$=Catfish  & .000004 
-\end{tabular}
-
-Multiplied by the prior to get the joint probability:
-
-\begin{tabular}{c | c }
-Given & $p(L=16, W=2.1, F=?)$ \\
-\hline
-$F$=Trout & .01847 \\
-$F$=Bass &  .03969 \\
-$F$=Catfish  &  $\approx 0$
-\end{tabular}
-
-We sum those to get $p(L=16, W=2.1) = .0582$.
-
-\begin{tabular}{c | c }
-Given & $p(F=? | L=16, W=2.1)$ \\
-\hline
-$F$=Trout & .318 \\
-$F$=Bass &  .682 \\
-$F$=Catfish  &  $\approx 0$
-\end{tabular}
-
-Given a randomly selected fish that is 16 inches long and 2.1 kg in weight,  you would guess that it is a bass with a confidence of 68.2\%.
-
-\begin{Exercise}[label=bayes_classifier1]
-Using the multivariate Gaussian results above, suppose a fish is 13 inches long and weighs 1.9 kg. Which type of fish is most likely? Use the prior probabilities from the first table.
+\begin{Exercise}[label=bayes_classifier1, title={Posterior by hand}, space=3cm]
+A class $A$ has prior 0.3 and class $B$ has prior 0.7. For an observation $\mathbf{x}$,
+$P(\mathbf{x} \mid A) = 0.08$ and $P(\mathbf{x} \mid B) = 0.02$. Find $P(A \mid \mathbf{x})$.
 \end{Exercise}
-
 \begin{Answer}[ref=bayes_classifier1]
-Compute the joint probability for each type of fish with the multivariate densities, multiply by the prior, and divide by the sum. The trout has probability about 0.948, the bass about 0.052, and the catfish is essentially 0. A trout is the most likely fish.
+$0.3 \times 0.08 = 0.024$ and $0.7 \times 0.02 = 0.014$. So $P(A \mid \mathbf{x}) = \frac{0.024}{0.024 + 0.014}
+\approx 0.632$. The evidence favors $A$ by 4 to 1, enough to overcome the prior that favors $B$.
 \end{Answer}
 
-\begin{Exercise}[label=bayes_classifier2]
-In the naive Bayes calculation above, the catfish has a prior of 8.3\%, but its posterior probability for a 16-inch, 2.1 kg fish is almost 0. Explain why.
+\begin{Exercise}[label=bayes_classifier2, title={Without smoothing}]
+If the filter did not use Laplace smoothing, what would it say about ``Free pizza at the game tonight''? Why is
+that a bad idea?
 \end{Exercise}
-
 \begin{Answer}[ref=bayes_classifier2]
-The likelihood of a weight of 2.1 kg for a catfish is tiny. The catfish mean weight is 3.42 kg, and its standard deviation is about 0.27 kg, so 2.1 kg is about 4.9 standard deviations away. The prior is 8.3\%, but the likelihood is about $8.2 \times 10^{-6}$, so the product is nearly 0. Bayes' rule weighs the prior by the evidence, and this evidence rules out the catfish.
+``Free'' never appears in the ham messages, so $P(\text{free} \mid \text{ham}) = 0$, the ham product is 0, and the
+message is spam with probability 1. A single word would overrule everything else in the message, and the model
+could never change its mind about a message containing ``free,'' however many friendly words it had.
+\end{Answer}
+
+\begin{Exercise}[label=bayes_classifier3, title={Call me tonight}, space=3cm]
+Use the counts in this chapter to find the spam probability of ``Call me tonight.'' (``Me'' is a stop word.
+``Call'' appears once in spam and once in ham.)
+\end{Exercise}
+\begin{Answer}[ref=bayes_classifier3]
+Spam: $\frac{22}{60} \cdot \frac{2}{486} \cdot \frac{2}{486} \approx 6.21 \times 10^{-6}$. Ham:
+$\frac{38}{60} \cdot \frac{2}{526} \cdot \frac{3}{526} \approx 1.37 \times 10^{-5}$. So
+$P(\text{spam}) \approx \frac{6.21}{6.21 + 13.7} \approx 0.31$. The filter calls it ham.
+\end{Answer}
+
+\begin{Exercise}[label=bayes_classifier4, title={How much smoothing?}]
+Change the 1 in the Laplace smoothing to a variable \verb|alpha| (it must be added to every count, so the
+denominator becomes \verb|total + alpha * len(vocab)|). Find the leave-one-out accuracy for alpha = 0.1, 0.5, 1,
+2, and 5.
+\end{Exercise}
+\begin{Answer}[ref=bayes_classifier4]
+The accuracies are 57, 57, 58, 58, and 58 out of 60. Some smoothing is essential, but the exact amount barely
+matters on this data. Like $k$ in $k$-nearest neighbors, alpha is a setting you could choose by cross-validation.
+\end{Answer}
+
+\begin{Exercise}[label=bayes_classifier5, title={A third feature}]
+Add flipper length as a third feature in \filename{gaussian\_bayes.py} (the mystery penguin's flipper is 195 mm).
+What happens to the accuracies and to the mystery penguin?
+\end{Exercise}
+\begin{Answer}[ref=bayes_classifier5]
+Naive Bayes improves to 97.0\% (cross-validation) and 94.0\% (test); the full model to 98.5\% and 95.5\%. Both
+now say the mystery penguin is most likely a Chinstrap: 67\% for naive Bayes and 96\% for the full model. The
+flipper length rules out Gentoo, whose flippers are much longer.
 \end{Answer}

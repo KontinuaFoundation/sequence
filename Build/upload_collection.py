@@ -159,7 +159,7 @@ def main():
 
     print("Using address: ", API_URL)
 
-    localization = input("Localization (i.e. en-US): ")
+    localization = input("Localization (i.e. en_US): ")
 
     collection = retrieve_latest_collection(localization, token)
 

@@ -1,36 +1,75 @@
 \chapter{Neural Networks for Regression}
 
-Plot the temperature over a day: it climbs in the morning, peaks in the
-afternoon, and falls at night. No straight line fits that. Neural networks
-build curves out of many simple pieces, and they can learn the pieces from data.
+Plot the temperature over a day: it bottoms out before dawn, climbs through the morning, peaks in the afternoon,
+and falls at night. No straight line fits that. You could guess a formula, maybe a cosine, but what if you have
+no idea what shape to expect? Neural networks build curves out of many simple pieces, and they learn the pieces
+from data.
+
+Neural networks are behind image recognition, speech recognition, and chatbots. Underneath, they use ideas you
+already know from this unit: a linear model, a loss function, and gradient descent. This chapter puts those
+pieces together and trains networks with \newterm{PyTorch}\index{PyTorch}, the library many researchers use.
 
 \section{From Linear Models to Networks}\index{neural network!regression}
-A linear regression predicts $\hat{y} = \mathbf{w}^T\mathbf{x} + b$. A neural network stacks such predictions, with a nonlinear activation between the
-layers, so it can fit curved relationships. Think of a curve on a graph. A single straight line cannot follow it, but several bent pieces can. Each \newterm{neuron} computes a weighted sum of its inputs plus a bias, then applies an activation function.
+A \newterm{neuron}\index{neuron} computes a weighted sum of its inputs plus a bias, then applies an
+\newterm{activation function}\index{activation function} $\sigma$:
+$$a = \sigma(w_1 x_1 + w_2 x_2 + \cdots + w_p x_p + b)$$
+With the identity activation, a single neuron is just linear regression. With the sigmoid, it is logistic
+regression. The new idea is to \emph{stack} neurons in layers, so the outputs of one layer are the inputs to the
+next.
 
-\section{Layers and Activations}\index{activation function}
-The input layer holds the features. Hidden layers transform them, and the output layer produces the prediction. Common activations include the
-ReLU, $\max(0, z)$, the sigmoid, and the hyperbolic tangent. For regression, the output layer usually uses the identity activation, because the
-prediction can be any real number.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  neuron/.style={circle, draw, minimum size=0.8cm, font=\small},
+  >=stealth, x=2.6cm, y=1.1cm]
+\foreach \i/\t in {1/$x_1$, 2/$x_2$, 3/$x_3$} \node[neuron, fill=gray!15] (I\i) at (0, -\i - 0.5) {\t};
+\foreach \j in {1,...,5} \node[neuron, fill=teal!15] (H\j) at (1, -\j) {$h_\j$};
+\node[neuron, fill=orange!25] (O) at (2, -3) {$\hat{y}$};
+\foreach \i in {1,2,3} \foreach \j in {1,...,5} \draw[->, gray] (I\i) -- (H\j);
+\foreach \j in {1,...,5} \draw[->, gray] (H\j) -- (O);
+\node[font=\small, align=center] at (0, -5.9) {input layer\\(features)};
+\node[font=\small, align=center] at (1, -5.9) {hidden layer\\(ReLU)};
+\node[font=\small, align=center] at (2, -5.9) {output layer\\(identity)};
+\end{tikzpicture}
+\caption{A network with 3 inputs, one hidden layer of 5 neurons, and 1 output. Each arrow carries a weight.}
+\label{fig:network}
+\end{figure}
 
-\section{Training}
-Training a regression network follows the same steps as any gradient-based model.
 \begin{itemize}
-\item \textbf{Feedforward}: compute the prediction from the inputs.
-\item \textbf{Loss}: compare the prediction with the target, usually with mean squared error.
-\item \textbf{Backpropagation}: compute the gradient of the loss with respect to each weight. (The Deep Learning chapter shows how the chain rule makes this efficient.)
-\item \textbf{Update}: move each weight against its gradient, as in gradient descent.
+\item The \textbf{input layer} holds the features. It does no computing.
+\item Each \textbf{hidden layer} computes new features from the previous layer. In matrix form, a layer is
+$\mathbf{h} = \sigma(W\mathbf{x} + \mathbf{b})$, with one row of $W$ for each neuron.
+\item The \textbf{output layer} produces the prediction. For regression, it uses the identity activation, because
+the prediction can be any real number.
 \end{itemize}
 
-\section{A Worked Example}
-Use a single neuron with the identity activation, $\hat{y} = 2x + 1$, on three points $(1, 3)$, $(2, 5)$, and $(3, 8)$. The predictions are
-$3, 5, 7$. The errors are $0, 0, 1$, so the mean squared error is
-$$\text{MSE} = \frac{0^2 + 0^2 + 1^2}{3} = \frac{1}{3}$$
-A neuron with an identity activation is just a linear regression. The power of the network comes from hidden layers with nonlinear activations.
+The network in Figure~\ref{fig:network} has $3 \times 5 + 5 = 20$ parameters in the hidden layer (weights plus biases)
+and $5 + 1 = 6$ in the output layer: 26 numbers to learn.
 
-\subsection{A Hidden Layer at Work}
-Here is a tiny network with one input $x$, two hidden ReLU neurons, and one output:
+\section{Activations}
+Without a nonlinear activation, stacking layers gains nothing: a linear function of a linear function is still
+linear, so the whole network would collapse into one linear regression. The activation is what lets a network
+bend.
+
+\begin{center}
+\begin{tabular}{l l l}
+\textbf{Name} & \textbf{Formula} & \textbf{Range} \\
+\hline
+ReLU (rectified linear unit) & $\max(0, z)$ & $[0, \infty)$ \\
+sigmoid & $1/(1 + e^{-z})$ & $(0, 1)$ \\
+hyperbolic tangent & $\tanh z$ & $(-1, 1)$ \\
+identity (output, for regression) & $z$ & all real numbers \\
+\end{tabular}
+\end{center}
+
+The ReLU\index{ReLU} is the most common choice for hidden layers today. It is cheap to compute, and its slope is
+exactly 1 for positive inputs, which keeps gradients from shrinking as they pass back through many layers.
+
+\textbf{Example}: Here is a tiny network with one input $x$, two hidden ReLU neurons, and one output:
 $$h_1 = \max(0,\ x - 1), \qquad h_2 = \max(0,\ 1 - x), \qquad \hat{y} = h_1 + h_2$$
+What function does it compute?
+
+\textbf{Solution}: Make a table.
 \begin{center}
 \begin{tabular}{c|c|c|c}
 $x$ & $h_1$ & $h_2$ & $\hat{y}$ \\
@@ -42,10 +81,229 @@ $2$ & 1 & 0 & 1 \\
 $3$ & 2 & 0 & 2 \\
 \end{tabular}
 \end{center}
-The output is $\hat{y} = |x - 1|$, a V shape. Each hidden neuron contributes one
-straight piece, and the ReLU switches it on only on its side of $x = 1$. No single
-line can make a V, but two neurons can. With more neurons, a network can bend in
-more places and follow almost any curve.
+The output is $\hat{y} = |x - 1|$, a V shape. Each hidden neuron contributes one straight piece, and the ReLU
+switches it on only on its side of $x = 1$. No single line can make a V, but two neurons can. With more neurons, a
+network of ReLUs can bend in more places, and it can approximate almost any continuous curve as closely as you
+like.
+
+\section{Training}
+Training a network follows the same steps as any gradient-based model:
+\begin{enumerate}
+\item \textbf{Feedforward}: compute the predictions from the inputs, layer by layer.
+\item \textbf{Loss}: compare predictions with targets, usually with mean squared error for regression.
+\item \textbf{Backpropagation}: compute the gradient of the loss with respect to every weight. (The Deep Learning
+chapter shows how the chain rule makes this efficient.)
+\item \textbf{Update}: move each weight a small step against its gradient.
+\end{enumerate}
+Unlike least squares, the loss is no longer a simple bowl; it can have many valleys. So the result depends on the
+random starting weights, and there is no formula for the answer. Gradient descent is the only way down.
+
+\section{PyTorch: Tensors and Automatic Gradients}
+Computing gradients by hand for thousands of weights would be miserable. PyTorch does it for you. Its basic object
+is the \newterm{tensor}\index{tensor}, an array very much like a NumPy array. If you create a tensor with
+\verb|requires_grad=True|, PyTorch records every calculation done with it, and \verb|backward()| works out the
+derivatives. This is called \newterm{automatic differentiation}\index{automatic differentiation}. Here is
+\filename{autograd\_demo.py}:
+
+\begin{minted}{python}
+import torch
+
+x = torch.tensor(3.0, requires_grad=True)
+y = x**2 + 2 * x            # PyTorch records how y was computed
+y.backward()                # ...so it can work out dy/dx
+print(y.item(), x.grad.item())
+\end{minted}
+\begin{verbatim}
+15.0 8.0
+\end{verbatim}
+At $x = 3$, $y = 9 + 6 = 15$ and $\frac{dy}{dx} = 2x + 2 = 8$. PyTorch got the derivative without being told the
+formula. (Install PyTorch with \texttt{pip install torch}.)
+
+\section{Learning a Day of Temperatures}
+The file \filename{temperature.py} fits a network with 16 hidden neurons to a day of temperature readings, one
+every 15 minutes. (The data is simulated: a cosine curve plus random noise with a standard deviation of
+0.8 \textdegree C.) The network is never told about cosines.
+
+\begin{minted}{python}
+import numpy as np
+import torch
+from torch import nn
+
+# Simulated data: temperature (degrees C) every 15 minutes for one day, with noise
+rng = np.random.default_rng(0)
+hours = np.arange(0, 24, 0.25)
+temps = 12 - 6 * np.cos(2 * np.pi * (hours - 3) / 24) + rng.normal(0, 0.8, len(hours))
+
+# Scale the input to -1..1 and standardize the target
+mean, sd = temps.mean(), temps.std()
+x = torch.tensor((hours - 12) / 12, dtype=torch.float32).unsqueeze(1)   # shape (96, 1)
+y = torch.tensor((temps - mean) / sd, dtype=torch.float32).unsqueeze(1)
+
+torch.manual_seed(0)
+model = nn.Sequential(
+    nn.Linear(1, 16),       # 1 input  -> 16 hidden neurons
+    nn.ReLU(),
+    nn.Linear(16, 1),       # 16 hidden neurons -> 1 output
+)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+loss_fn = nn.MSELoss()
+
+for epoch in range(1, 2001):
+    optimizer.zero_grad()           # clear old gradients
+    loss = loss_fn(model(x), y)     # feedforward and loss
+    loss.backward()                 # backpropagation
+    optimizer.step()                # update the weights
+    if epoch in (1, 10, 100, 2000):
+        print(f"epoch {epoch:4d}: RMSE {loss.item() ** 0.5 * sd:.2f} degrees")
+
+with torch.no_grad():
+    for h in [3, 15]:
+        guess = model(torch.tensor([[(h - 12) / 12]])).item() * sd + mean
+        print(f"{h:2d}:00  predicted {guess:.1f} degrees")
+\end{minted}
+
+\begin{verbatim}
+epoch    1: RMSE 4.16 degrees
+epoch   10: RMSE 3.60 degrees
+epoch  100: RMSE 1.79 degrees
+epoch 2000: RMSE 0.75 degrees
+ 3:00  predicted 5.4 degrees
+15:00  predicted 17.8 degrees
+\end{verbatim}
+
+(PyTorch's random numbers can differ between versions and computers, so your numbers may differ a little.)
+
+The pieces:
+\begin{itemize}
+\item A linear layer computes $W\mathbf{x} + \mathbf{b}$; \verb|nn.Linear(1, 16)| has a $16 \times 1$ weight
+matrix. \verb|nn.Sequential| chains layers into a network. \verb|model(x)| runs the feedforward step on all 96 readings
+at once.
+\item \verb|unsqueeze(1)| turns a list of 96 numbers into a $96 \times 1$ column, because PyTorch expects one row per
+example and one column per feature.
+\item \verb|Adam| is an improved version of gradient descent that adapts the step size for each weight. It is the
+usual default.
+\item The four lines in the loop are the four training steps. \verb|zero_grad| is needed because PyTorch
+\emph{adds} new gradients to old ones unless you clear them.
+\item \verb|torch.no_grad()| tells PyTorch not to record calculations when we only want predictions.
+\end{itemize}
+
+The final RMSE, 0.75 \textdegree C, is about the size of the noise we added, so the network has found the
+underlying curve. The true temperatures at 3:00 and 15:00 are 6 and 18 degrees.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{temperature_fits.png}
+\caption{Networks with 2, 4, and 16 hidden ReLU neurons fit to the simulated temperatures. Each is the best of
+five random starts.}
+\label{fig:temperature-fits}
+\end{figure}
+
+Figure~\ref{fig:temperature-fits} shows how the width matters. Every network of ReLUs draws a broken line. Two
+neurons can make only a couple of bends; sixteen can follow the dip before dawn. Why ``best of five starts''? With
+some starting weights, a ReLU neuron's input is negative for every data point, so its output and its gradient are
+always zero, and it never learns anything: a \newterm{dead neuron}. Trying several starts, or using more neurons
+than you strictly need, protects against that.
+
+Notice the scaling: the input is squeezed into $-1$ to 1, and the target is standardized. As in the Gradient
+Descent chapter, gradient-based training is much happier when the numbers are near 1 in size. Forget to scale the
+target, and this network gets stuck near an RMSE of 3.6 degrees.
+
+\section{Predicting Penguin Mass}
+Now a network for penguin body mass, using the same six features as the multiple regression and boosting
+examples: flipper length, bill length, bill depth, sex, and two species columns. Networks with many weights overfit
+easily, so we hold out a validation set and use \newterm{early stopping}\index{early stopping}: train for a long
+time, but keep the weights from the epoch with the best validation error. Here is \filename{penguin\_net.py}:
+
+\begin{minted}{python}
+import copy
+import numpy as np
+import torch
+from torch import nn
+from penguins import load_penguins
+
+data = load_penguins()
+columns = [data["flipper_length_mm"], data["bill_length_mm"], data["bill_depth_mm"],
+           data["sex"] == "male", data["species"] == "Gentoo", data["species"] == "Chinstrap"]
+X = np.column_stack(columns).astype(float)
+y = data["body_mass_g"]
+order = np.random.default_rng(1).permutation(len(y))
+train, val, test = order[:183], order[183:233], order[233:]
+
+# Standardize with training statistics only
+x_mean, x_sd = X[train].mean(axis=0), X[train].std(axis=0)
+y_mean, y_sd = y[train].mean(), y[train].std()
+def tensors(rows):
+    xs = torch.tensor((X[rows] - x_mean) / x_sd, dtype=torch.float32)
+    ys = torch.tensor((y[rows] - y_mean) / y_sd, dtype=torch.float32).unsqueeze(1)
+    return xs, ys
+(x_tr, y_tr), (x_va, y_va), (x_te, y_te) = tensors(train), tensors(val), tensors(test)
+
+torch.manual_seed(0)
+model = nn.Sequential(nn.Linear(6, 32), nn.ReLU(), nn.Linear(32, 32), nn.ReLU(),
+                      nn.Linear(32, 1))
+optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
+loss_fn = nn.MSELoss()
+
+def rmse_grams(x, y):
+    with torch.no_grad():
+        return loss_fn(model(x), y).item() ** 0.5 * y_sd
+
+best_val, best_state, best_epoch = np.inf, None, 0
+for epoch in range(1, 1001):
+    optimizer.zero_grad()
+    loss = loss_fn(model(x_tr), y_tr)
+    loss.backward()
+    optimizer.step()
+    val_rmse = rmse_grams(x_va, y_va)
+    if val_rmse < best_val:                   # remember the best weights so far
+        best_val, best_epoch = val_rmse, epoch
+        best_state = copy.deepcopy(model.state_dict())
+    if epoch in (10, 100, 300, 1000):
+        print(f"epoch {epoch:4d}: training {rmse_grams(x_tr, y_tr):4.0f} g,"
+              f" validation {val_rmse:4.0f} g")
+
+model.load_state_dict(best_state)             # early stopping
+print(f"best validation RMSE {best_val:.0f} g at epoch {best_epoch}")
+print(f"test RMSE {rmse_grams(x_te, y_te):.0f} g")
+print("parameters:", sum(p.numel() for p in model.parameters()))
+\end{minted}
+
+\begin{verbatim}
+epoch   10: training  599 g, validation  579 g
+epoch  100: training  262 g, validation  309 g
+epoch  300: training  237 g, validation  327 g
+epoch 1000: training  140 g, validation  454 g
+best validation RMSE 307 g at epoch 56
+test RMSE 262 g
+parameters: 1313
+\end{verbatim}
+
+This network has two hidden layers of 32 neurons and 1313 parameters, trained on just 183 penguins. Left alone, it
+overfits badly: by epoch 1000, it is off by only 140 g on the training penguins but 454 g on the validation
+penguins. A \verb|state_dict| holds all of a model's weights, so saving a copy whenever validation improves, and
+loading the best one at the end, gives us the model from epoch 56.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{penguin_curves.png}
+\caption{Training and validation RMSE for the penguin network.}
+\label{fig:penguin-curves}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l c}
+\textbf{Model (trained on the same 183 penguins)} & \textbf{Test RMSE (g)} \\
+\hline
+always guess the average & about 800 \\
+least squares, same six features & 282 \\
+neural network, early stopping & 262 \\
+\end{tabular}
+\end{center}
+
+The network edges out least squares, by picking up some curvature and interactions the straight-line model
+cannot. But the gain is small, and the network took more care: scaling, a validation set, early stopping, and a
+random seed. With a few hundred rows of tabular data, a neural network is rarely the clear winner. Networks shine
+when there is a lot of data with complicated structure, like images, sound, and text.
 
 \begin{Exercise}[label=nnr1, title=Compute the error]
 A neuron predicts $\hat{y} = 2x + 1$. For the point $(2, 4)$, what is the squared error?
@@ -58,16 +316,45 @@ $\hat{y} = 5$, so the squared error is $(5 - 4)^2 = 1$.
 Why is the identity activation used in the output layer for regression, but not the sigmoid?
 \end{Exercise}
 \begin{Answer}[ref=nnr2]
-The sigmoid output lies between 0 and 1, which would prevent the network from predicting values outside that range. Regression targets can be any real number, so the identity activation is used.
+The sigmoid output lies between 0 and 1, which would prevent the network from predicting values outside that
+range. Regression targets can be any real number, so the identity activation is used.
 \end{Answer}
 
-\begin{Exercise}[label=nnr3, title=Build a tent]
-Using two ReLU neurons, $h_1 = \max(0, x)$ and $h_2 = \max(0, x - 2)$, and the output
-$\hat{y} = h_1 - 2h_2$, compute $\hat{y}$ at $x = 0, 1, 2, 3, 4$. Describe the shape.
+\begin{Exercise}[label=nnr3, title=Build a tent, space=3cm]
+A network has two ReLU neurons, $h_1 = \max(0, x)$ and $h_2 = \max(0, x - 2)$, and the output
+$\hat{y} = h_1 - 2h_2$. Compute $\hat{y}$ at $x = 0, 1, 2, 3, 4$. Describe the shape.
 \end{Exercise}
 \begin{Answer}[ref=nnr3]
-At $x = 0, 1, 2, 3, 4$: $h_1 = 0, 1, 2, 3, 4$ and $h_2 = 0, 0, 0, 1, 2$, so
-$\hat{y} = 0, 1, 2, 1, 0$. The output rises with slope 1 up to $x = 2$ and then falls with
-slope $-1$: a tent (or upside-down V) peaking at $x = 2$. (For $x < 0$, the output is 0.)
+At $x = 0, 1, 2, 3, 4$: $h_1 = 0, 1, 2, 3, 4$ and $h_2 = 0, 0, 0, 1, 2$, so $\hat{y} = 0, 1, 2, 1, 0$. The output rises
+with slope 1 up to $x = 2$ and then falls with slope $-1$: a tent (or upside-down V) peaking at $x = 2$. (For
+$x < 0$, the output is 0.)
 \end{Answer}
 
+\begin{Exercise}[label=nnr4, title={Count the parameters}]
+A network has 6 inputs, a hidden layer of 32 neurons, a second hidden layer of 32 neurons, and 1 output. How many
+weights and biases does it have? Check your answer against the output of \filename{penguin\_net.py}.
+\end{Exercise}
+\begin{Answer}[ref=nnr4]
+First layer: $6 \times 32 + 32 = 224$. Second: $32 \times 32 + 32 = 1056$. Output: $32 + 1 = 33$. Total:
+$224 + 1056 + 33 = 1313$, as the program prints.
+\end{Answer}
+
+\begin{Exercise}[label=nnr5, title={Collapse}]
+Show that two layers with no activation, $\mathbf{h} = W_1\mathbf{x} + \mathbf{b}_1$ and
+$\hat{y} = W_2\mathbf{h} + \mathbf{b}_2$, are equivalent to a single linear layer.
+\end{Exercise}
+\begin{Answer}[ref=nnr5]
+Substitute: $\hat{y} = W_2(W_1\mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2 = (W_2W_1)\mathbf{x} + (W_2\mathbf{b}_1 + \mathbf{b}_2)$.
+That is one linear layer with weight matrix $W_2W_1$ and bias $W_2\mathbf{b}_1 + \mathbf{b}_2$. Without nonlinear
+activations, extra layers add parameters but no flexibility.
+\end{Answer}
+
+\begin{Exercise}[label=nnr6, title={Try other starts}]
+In \filename{temperature.py}, change the random seed from 0 to each of 1 through 5. Do all of them reach an RMSE
+near 0.75 degrees? For any that do not, what might have happened?
+\end{Exercise}
+\begin{Answer}[ref=nnr6]
+Most seeds end between about 0.68 and 0.96 degrees, but seed 2 gets stuck near 1.40 degrees. With that start, some
+hidden neurons are dead (their inputs are negative for every reading, so they never receive a gradient) and the
+rest cannot form enough bends. Exact numbers vary with the PyTorch version.
+\end{Answer}

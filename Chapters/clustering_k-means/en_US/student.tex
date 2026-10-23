@@ -1,45 +1,221 @@
 \chapter{Clustering with k-Means}
 
-\section{Unsupervised Learning}\index{k-means clustering}
-In \newterm{unsupervised learning}, there are no labels. We look for structure in the inputs alone. \newterm{Clustering} groups
-the points so that points in the same group are close to each other. The \newterm{$k$-means} algorithm does this for a chosen number of groups $k$. Think of splitting a class into project groups by interest, when you already know how many groups you want.
+Imagine that a field team measured 333 penguins but forgot to write down the species. All they have are bill
+lengths and bill depths. Could a computer discover, on its own, that there are three kinds of penguin, and
+sort them? Streaming services face the same problem with listeners: nobody labels you ``indie-folk fan,'' but
+your listening history puts you near other people with similar taste.
+
+\section{Unsupervised Learning}\index{unsupervised learning}\index{k-means clustering}
+Every method so far in this unit was \emph{supervised}: we had labels and learned to predict them. In
+\newterm{unsupervised learning}, there are no labels. We look for structure in the features alone.
+\newterm{Clustering}\index{clustering} groups the points so that points in the same group are close to each other
+and far from the other groups. The \newterm{$k$-means} algorithm does this for a chosen number of groups $k$.
 
 \section{The Algorithm}
-Given points $x_1, \ldots, x_N$ and a number $k$, k-means seeks centroids $c_1, \ldots, c_k$ that minimize the total squared distance from
-each point to its nearest centroid. It alternates two steps.
+Given points $\mathbf{x}_1, \ldots, \mathbf{x}_N$ and a number $k$, $k$-means looks for \newterm{centroids}
+$\mathbf{c}_1, \ldots, \mathbf{c}_k$ that make the total squared distance from each point to its nearest centroid
+as small as possible. It alternates two steps:
 \begin{enumerate}
 \item \textbf{Assign}: each point joins the cluster of its nearest centroid.
 \item \textbf{Update}: each centroid moves to the mean of the points assigned to it.
 \end{enumerate}
-Repeat until the assignments stop changing. The result depends on the starting centroids, so the algorithm is often run several times.
+Repeat until the assignments stop changing. Each step can only lower the total squared distance (the assign step
+picks the closest centroid for each point, and the mean is the point that minimizes the squared distance to a
+group), so the algorithm always stops.
 
-\section{A Worked Example}
-Four points on a line are $1, 2, 6, 8$, and $k = 2$. Start with centroids $c_1 = 1$ and $c_2 = 6$.
+\textbf{Example}: Four points on a line are $1, 2, 6, 8$, and $k = 2$. Start with centroids $c_1 = 1$ and $c_2 = 6$.
+
+\textbf{Solution}:
 \begin{itemize}
 \item Assign: the points $1$ and $2$ are nearer $c_1$, and the points $6$ and $8$ are nearer $c_2$.
 \item Update: $c_1 = \frac{1 + 2}{2} = 1.5$ and $c_2 = \frac{6 + 8}{2} = 7$.
 \end{itemize}
-The next assignment is the same, so the algorithm stops with clusters $\{1, 2\}$ and $\{6, 8\}$.
-The total squared distance is $0.5^2 + 0.5^2 + 1^2 + 1^2 = 2.5$.
+The next assignment is the same, so the algorithm stops with clusters $\{1, 2\}$ and $\{6, 8\}$. The total squared
+distance is $0.5^2 + 0.5^2 + 1^2 + 1^2 = 2.5$.
 
-\section{Choosing k}
-The number $k$ is not learned by the algorithm. The \newterm{elbow method} plots the total squared distance against $k$. The total always falls as $k$ grows,
-and the point where the decrease levels off is a common choice. Other methods, such as silhouette scores, compare how well separated the clusters are.
+Figure~\ref{fig:steps} shows the same two steps on the penguins, starting from a deliberately bad choice: three
+Adelies, all in the same corner. Within a few steps, the centroids spread out to the three groups.
 
-\begin{Exercise}[label=km1, title=One iteration]
-Using the four points $1, 2, 6, 8$, start with the poorly placed centroids $c_1 = 1$ and $c_2 = 2$. Run k-means until it stops.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{steps.png}
+\caption{$k$-means on standardized bill measurements, $k = 3$. Each panel shows the centroids (crosses) and the
+assignment they produce; the next panel's centroids are the means of those groups.}
+\label{fig:steps}
+\end{figure}
+
+\section{Starting Well}\index{k-means++}
+The result depends on the starting centroids. A bad start can leave the algorithm stuck in a poor local minimum,
+for example with two centroids sharing one real group while a third covers two. Two standard defenses:
+\begin{itemize}
+\item \textbf{Run it several times} from different random starts and keep the run with the smallest total
+squared distance.
+\item \textbf{$k$-means++}: choose the first centroid at random, then choose each next one at random with
+probability proportional to its squared distance from the nearest centroid already chosen. Far-away points are
+likely picks, so the starting centroids spread out.
+\end{itemize}
+
+\section{Clustering Penguins}
+Here is \filename{kmeans.py}. It standardizes the two bill measurements (distances again, so units matter), then
+runs $k$-means++ ten times for each $k$ and keeps the best run:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+X = np.column_stack([data["bill_length_mm"], data["bill_depth_mm"]])
+Z = (X - X.mean(axis=0)) / X.std(axis=0)            # standardize first
+
+def kmeans_plus_plus(Z, k, rng):
+    """Spread out the starting centroids: each new one is chosen with
+    probability proportional to its squared distance from the nearest so far."""
+    centers = [Z[rng.integers(len(Z))]]
+    for _ in range(k - 1):
+        d2 = np.min([np.sum((Z - c)**2, axis=1) for c in centers], axis=0)
+        centers.append(Z[rng.choice(len(Z), p=d2 / d2.sum())])
+    return np.array(centers)
+
+def kmeans(Z, k, seed=0, max_steps=100):
+    rng = np.random.default_rng(seed)
+    centers = kmeans_plus_plus(Z, k, rng)
+    for step in range(max_steps):
+        # Assign: squared distance from every point to every center
+        d2 = np.sum((Z[:, None, :] - centers[None, :, :])**2, axis=2)
+        labels = d2.argmin(axis=1)
+        # Update: move each center to the mean of its points
+        new = np.array([Z[labels == j].mean(axis=0) for j in range(k)])
+        if np.allclose(new, centers):
+            break
+        centers = new
+    inertia = np.sum((Z - centers[labels])**2)        # total squared distance
+    return labels, centers, inertia, step + 1
+
+for k in range(1, 7):
+    best = min((kmeans(Z, k, seed) for seed in range(10)), key=lambda r: r[2])
+    print(f"k = {k}: total squared distance {best[2]:6.1f}")
+
+labels, centers, inertia, steps = min((kmeans(Z, 3, seed) for seed in range(10)),
+                                      key=lambda r: r[2])
+print(f"k = 3 converged in {steps} steps")
+print("Centers in mm:")
+print(np.round(centers * X.std(axis=0) + X.mean(axis=0), 1))
+
+species = data["species"]
+print("cluster  Adelie  Chinstrap  Gentoo")
+for j in range(3):
+    counts = [np.sum((labels == j) & (species == s)) for s in ("Adelie", "Chinstrap", "Gentoo")]
+    print(f"{j:7d} {counts[0]:7d} {counts[1]:10d} {counts[2]:7d}")
+\end{minted}
+
+\begin{verbatim}
+k = 1: total squared distance  666.0
+k = 2: total squared distance  334.0
+k = 3: total squared distance  183.1
+k = 4: total squared distance  145.4
+k = 5: total squared distance  112.1
+k = 6: total squared distance   92.7
+k = 3 converged in 5 steps
+Centers in mm:
+[[47.2 15. ]
+ [49.9 18.7]
+ [38.8 18.3]]
+cluster  Adelie  Chinstrap  Gentoo
+      0       0          9     112
+      1       4         54       6
+      2     142          5       1
+\end{verbatim}
+
+The assign step uses the same broadcasting trick as $k$-nearest neighbors. The total squared distance is often
+called the \newterm{inertia}\index{inertia}. (With $k = 1$, it is $666 = 2 \times 333$, because each standardized
+feature has variance 1.) The \verb|key=lambda r: r[2]| tells \verb|min| to compare runs by their inertia.
+
+\section{Did It Find the Species?}
+We hid the species from the algorithm, but we still have them, so we can check. The table of counts at the end of
+the output is called a \newterm{contingency table}:
+
+\begin{center}
+\begin{tabular}{l c c c}
+ & \textbf{Adelie} & \textbf{Chinstrap} & \textbf{Gentoo} \\
+\hline
+cluster 0 & 0 & 9 & \textbf{112} \\
+cluster 1 & 4 & \textbf{54} & 6 \\
+cluster 2 & \textbf{142} & 5 & 1 \\
+\end{tabular}
+\end{center}
+
+Each cluster is mostly one species, and $112 + 54 + 142 = 308$ of the 333 penguins, 92.5\%, are in the cluster that
+matches their species. The algorithm was never told there were species at all. Notice that the cluster
+\emph{numbers} mean nothing: cluster 2 is ``the Adelie cluster'' only because we looked. In a real unsupervised
+problem, deciding what each cluster means is the human's job.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{clusters.png}
+\caption{Left: the three clusters and their centroids. Right: the true species, for comparison.}
+\label{fig:clusters}
+\end{figure}
+
+The mistakes are where the species overlap, mainly Chinstraps with short or shallow bills. $k$-means also assumes
+clusters are round blobs of similar size, since it uses plain distance to the nearest centroid. The Gentoo and
+Chinstrap clouds are tilted ovals, so some of their points end up closer to the wrong centroid.
+
+\section{Choosing \texorpdfstring{$k$}{k}}\index{elbow method}
+The number $k$ is not learned by the algorithm. Inertia always falls as $k$ grows (with $k = N$, every point is its
+own cluster and the inertia is 0), so you cannot just pick the $k$ with the smallest inertia. The \newterm{elbow
+method} plots inertia against $k$ and looks for the point where the decrease levels off.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\textwidth]{elbow.png}
+\caption{Inertia against $k$ for the penguins.}
+\label{fig:elbow}
+\end{figure}
+
+Going from 2 to 3 clusters removes 151 units of inertia; going from 3 to 4 removes only 38. The elbow is at
+$k = 3$, matching the three species. Real data is rarely this cooperative. Other tools, such as
+\emph{silhouette scores}, measure how much closer each point is to its own cluster than to the next nearest one.
+Often the best guide is whether the clusters are useful for whatever you plan to do with them.
+
+\begin{Exercise}[label=km1, title=One iteration, space=3cm]
+Using the four points $1, 2, 6, 8$, start with the poorly placed centroids $c_1 = 1$ and $c_2 = 2$. Run $k$-means
+until it stops.
 \end{Exercise}
 \begin{Answer}[ref=km1]
 Iteration 1: point $1$ joins $c_1$, and points $2$, $6$, and $8$ join $c_2$. The centroids become $c_1 = 1$ and
-$c_2 = \frac{2 + 6 + 8}{3} \approx 5.33$.
-Iteration 2: point $2$ is now nearer $c_1$ (distance 1 versus 3.33), so the clusters are $\{1, 2\}$ and $\{6, 8\}$, and the
-centroids become $1.5$ and $7$. Iteration 3 changes nothing, so the algorithm stops. Even from a bad start,
-it found the natural clusters here, though that does not always happen.
+$c_2 = \frac{2 + 6 + 8}{3} \approx 5.33$. Iteration 2: point $2$ is now nearer $c_1$ (distance 1 versus 3.33), so the
+clusters are $\{1, 2\}$ and $\{6, 8\}$, and the centroids become $1.5$ and $7$. Iteration 3 changes nothing, so the
+algorithm stops. Even from a bad start, it found the natural clusters here, though that does not always happen.
 \end{Answer}
 
 \begin{Exercise}[label=km2, title=Why run it again?]
-Why is k-means usually run several times with different starting centroids?
+Why is $k$-means usually run several times with different starting centroids?
 \end{Exercise}
 \begin{Answer}[ref=km2]
-The algorithm converges to a local minimum of the total squared distance, and different starting centroids can lead to different final clusters.
+The algorithm converges to a local minimum of the total squared distance, and different starting centroids can
+lead to different final clusters. Keeping the run with the smallest total squared distance protects against an
+unlucky start.
+\end{Answer}
+
+\begin{Exercise}[label=km3, title={Two-dimensional step}, space=3cm]
+Points $(0,0)$, $(0,2)$, $(4,0)$, and $(4,2)$ are clustered with $k = 2$, starting from centroids $(0,1)$ and
+$(1,1)$. Do one assign step and one update step. Where do the centroids end up?
+\end{Exercise}
+\begin{Answer}[ref=km3]
+$(0,0)$ and $(0,2)$ are at distance 1 from $(0,1)$ and $\sqrt{2}$ from $(1,1)$, so they join the first centroid.
+$(4,0)$ and $(4,2)$ are closer to $(1,1)$. The update moves the centroids to $(0,1)$ and $(4,1)$, and the next
+assignment does not change, so the algorithm stops.
+\end{Answer}
+
+\begin{Exercise}[label=km4, title={Does scaling matter?}]
+Run \filename{kmeans.py} with $k = 3$ on all four measurements (bill length, bill depth, flipper length, and body
+mass), first standardized and then in raw units. Make the contingency table for each. What happens without
+standardizing, and why?
+\end{Exercise}
+\begin{Answer}[ref=km4]
+Standardized, the clusters are $(0, 0, 119)$, $(124, 5, 0)$, and $(22, 63, 0)$ (Adelie, Chinstrap, Gentoo): the
+Gentoos are perfectly separated, and the main confusion is between Adelies and Chinstraps. In raw units, the
+clusters are $(0, 0, 70)$, $(108, 52, 1)$, and $(38, 16, 48)$, much worse. Body mass, in thousands of grams, swamps
+the other features, so the algorithm effectively clusters by weight alone, and weight does not separate the
+species well.
 \end{Answer}

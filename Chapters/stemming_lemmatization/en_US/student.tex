@@ -1,68 +1,284 @@
 \chapter{Stemming and Lemmatization}
-% June 2026 - moved to book 29 as to introduce after markov chains and transition matrices
 \index{stemming}
 \index{lemmatization}
 
-Stemming and lemmatization are two fundamental techniques in \index{natural language processing}natural language processing that are used to prepare text data. They help in reducing \index{inflectional forms}inflectional forms of a word to a common base form. Think about searching your phone for a song. If you type "running," you probably want songs that say "run" too. These techniques make that kind of search work.
+Search your phone for ``running'' and you probably want the songs that say ``run'' and ``runs'' too. Your phone
+does not understand English, so how does it know those words go together? Before a program can do anything
+with text, whether searching it, sorting it, or deciding that a message is spam, it has to turn the text into
+something it can count. This chapter shows how, and it ends with every message in a small data set turned into
+a row of numbers, ready for the spam filter in the next chapter.
 
+\section{From Text to Words}
+Every text-processing program starts with a few cleanup steps. Here is what happens to one message:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, align=left, font=\footnotesize, text width=9.2cm, inner sep=4pt},
+  lab/.style={font=\footnotesize\bfseries, align=right, text width=2.6cm},
+  node distance=0.35cm]
+\node[box] (a) {WINNER!! You have been selected for a FREE iPhone. Claim \$500 now};
+\node[box, below=of a] (b) {winner, you, have, been, selected, for, a, free, iphone, claim, \$500, now};
+\node[box, below=of b] (c) {winner, been, selected, free, iphone, claim, \$500, now};
+\node[box, below=of c] (d) {winner, been, select, free, iphone, claim, \$500, now};
+\node[lab, left=0.3cm of a] {raw text};
+\node[lab, left=0.3cm of b] {tokenize, lowercase};
+\node[lab, left=0.3cm of c] {drop stop words};
+\node[lab, left=0.3cm of d] {stem};
+\draw[->] (a) -- (b);
+\draw[->] (b) -- (c);
+\draw[->] (c) -- (d);
+\end{tikzpicture}
+\caption{Preparing a message for a computer.}
+\label{fig:text-pipeline}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Tokenizing}\index{tokenizing} splits text into words, called \newterm{tokens}. We also lowercase
+everything, so ``FREE'' and ``free'' count as the same word, and drop punctuation.
+\item \textbf{Stop words}\index{stop words} like ``the,'' ``a,'' and ``you'' appear in almost every message,
+so they tell you little about any particular one. Many programs remove them.
+\item \textbf{Stemming or lemmatization} merges different forms of the same word, which is the subject of the
+rest of the chapter.
+\end{itemize}
+These steps are called \newterm{text normalization}\index{text normalization}.
 
 \section{Stemming}
+\newterm{Stemming} reduces a word to its \index{stem}\newterm{stem} by chopping off endings. A stemmer would
+reduce ``jumping,'' ``jumped,'' and ``jumps'' all to ``jump.''
 
-Stemming is the process of reducing a word to its \index{stem}word stem (its basic form). For example, a stemming algorithm would reduce the words "jumping", "jumped", and "jumps" to the stem "jump".
-
-It is important to note that stemming may not always lead to actual words. For example, a common stemmer turns "studies" and "studying" into "studi", which is not a word. The stem only needs to group related words together.
-
-Stemming is generally simpler and faster than lemmatization, but it is also less precise.
+The stem does not have to be a real word. The most famous stemmer, written by Martin Porter in 1980, turns
+both ``studies'' and ``studying'' into ``studi.'' That is fine: the point of a stem is to group related words,
+not to be pretty. Stemmers are fast and simple, because they follow spelling rules and never look anything
+up.
 
 \section{Lemmatization}
+\newterm{Lemmatization} reduces a word to its \index{lemma}\newterm{lemma}, the form you would look up in a
+dictionary: ``running'' and ``ran'' both become ``run,'' and ``better'' becomes ``good.'' A lemmatizer needs
+a large dictionary of word forms, and often needs to know how the word is used in the sentence. (Is ``saw'' the
+past tense of ``see,'' or a tool?) That makes it slower and more complicated, but more accurate.
 
-Lemmatization, on the other hand, reduces words to their base or root form, which is linguistically correct. For example, "running" and "runs" are both changed to "run".
+\begin{center}
+\begin{tabular}{l l l}
+\textbf{Word} & \textbf{Typical stem} & \textbf{Lemma} \\
+\hline
+jumping & jump & jump \\
+studies & studi & study \\
+running & run & run \\
+ran & ran & run \\
+better & better & good \\
+mice & mice & mouse \\
+\end{tabular}
+\end{center}
 
-Lemmatization uses a more complex approach to achieve this. It considers the \index{morphological analysis}morphological analysis of the words and requires detailed dictionaries, which the algorithm can look through to link the form back to its lemma.
+\textbf{Example}: Would a stemmer or a lemmatizer group ``ran'' with ``running''?
 
-\textbf{Worked example.} Take the word "studies." A stemmer might return "studi". A lemmatizer that knows "studies" is a form of the verb "study" returns "study". The lemmatizer gives a real word, and the stemmer gives a stem that is easier to compute.
+\textbf{Solution}: Only the lemmatizer. ``Ran'' has no ending to chop, so a stemmer leaves it alone, and ``ran''
+and ``run'' are spelled too differently for any spelling rule to connect them. A lemmatizer has ``ran'' in its
+dictionary as a form of ``run.''
 
-\begin{Exercise}[label=stem1, title=Stem or lemma?]
-For each pair of words, say whether a stemmer would likely give them the same stem, and whether a lemmatizer would give them the same lemma: (a) "happy" and "happiness"; (b) "better" and "good".
-\end{Exercise}
-\begin{Answer}[ref=stem1]
-(a) A stemmer such as Porter's often maps both to "happi", so they match. A lemmatizer keeps "happiness" as its own noun and "happy" as an adjective, so they do not match. (b) A stemmer does not link "better" to "good", because the spelling is too different. A lemmatizer that knows irregular forms can map "better" to "good".
-\end{Answer}
-
-\section{Stemming in Python}
-\index{NLTK}
-The Natural Language Toolkit (\pyfunction{nltk}, installed with
-\texttt{pip install nltk}) includes the classic Porter stemmer:
+\section{A Stemmer in Python}\index{stemming!in Python}
+Real stemmers have dozens of rules. Ours has six, but it shows the idea. Here is \filename{text.py}, which you
+will use again in the next chapter:
 
 \begin{minted}{python}
-from nltk.stem import PorterStemmer
+"""Tools for turning text into lists of word stems."""
+import re
 
-stemmer = PorterStemmer()
-words = ["jumping", "jumped", "jumps", "studies", "running", "ran"]
-print([stemmer.stem(w) for w in words])
+STOP_WORDS = {"a", "an", "and", "are", "at", "be", "by", "can", "do", "for",
+              "from", "have", "i", "in", "is", "it", "me", "my", "of", "on",
+              "or", "so", "the", "this", "to", "we", "you", "your"}
+
+SUFFIXES = [("sses", "ss"), ("ies", "i"), ("ing", ""), ("ed", ""),
+            ("ly", ""), ("s", "")]
+
+def tokenize(text):
+    """Split text into lowercase words, dropping punctuation."""
+    return re.findall(r"[a-z0-9$]+", text.lower())
+
+def stem(word):
+    """Chop one common suffix off a word, as long as 3 letters remain."""
+    for suffix, replacement in SUFFIXES:
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
+            word = word[:len(word) - len(suffix)] + replacement
+            # running -> runn -> run
+            if suffix in ("ing", "ed") and word[-1] == word[-2] and word[-1] not in "lsz":
+                word = word[:-1]
+            return word
+    return word
+
+def prepare(text):
+    """Tokenize, drop stop words, and stem."""
+    return [stem(w) for w in tokenize(text) if w not in STOP_WORDS]
 \end{minted}
 
-This prints \texttt{['jump', 'jump', 'jump', 'studi', 'run', 'ran']}.
-Notice that the stemmer just chops endings: it cannot know that
-``ran'' is a form of ``run.'' A lemmatizer, which looks words up in a
-dictionary, can. (NLTK's \pyfunction{WordNetLemmatizer} does this, after a
-one-time download of its dictionary.)
+\verb|re.findall| uses a \newterm{regular expression}\index{regular expression}, a tiny pattern language for
+text. The pattern \verb|[a-z0-9$]+| means ``one or more letters, digits, or dollar signs in a row,'' so
+everything else, including spaces and punctuation, acts as a separator. (We keep \verb|$| because it turns out to
+be a useful clue for spotting spam.)
 
-\begin{Exercise}[label=stem2, title=Search Results]
-A search engine stems every word in its documents and every word you
-type. You search for ``connected.'' Which of these documents will match:
-one containing ``connection,'' one containing ``connecting,'' and one
-containing ``linked''?
+The order of the suffix list matters: the stemmer uses the first rule that fits, so ``classes'' becomes
+``class'' (by the ``sses'' rule) instead of ``classe'' (by the ``s'' rule). The ``at least 3 letters'' check keeps
+it from turning ``is'' into ``i'' or ``sing'' into ``s.'' Try it:
+
+\begin{minted}{python}
+from text import stem
+words = ["jumping", "jumped", "jumps", "studies", "running", "ran",
+         "classes", "happily", "connected", "connection"]
+print([stem(w) for w in words])
+\end{minted}
+\begin{verbatim}
+['jump', 'jump', 'jump', 'studi', 'run', 'ran', 'class', 'happi', 'connect',
+'connection']
+\end{verbatim}
+Just like Porter's stemmer, ours turns ``studies'' into ``studi'' and cannot connect ``ran'' with ``run.''
+It also misses ``connection,'' because it has no rule for ``-ion.''
+
+\section{Bag of Words}\index{bag of words}
+Now we can turn a whole collection of messages into numbers. The file \filename{messages.csv} contains 60 short
+text messages of the kind a high school student might get, each labeled \verb|spam| (22 messages) or \verb|ham|
+(38 messages; ``ham'' is the traditional name for messages that are not spam).
+
+The simplest numerical description of a message is a \newterm{bag of words}: count how many times each stem
+appears, and forget the order. ``Dog bites man'' and ``man bites dog'' have the same bag. That sounds like a big
+loss, but for many tasks, including spam filtering, which words appear matters much more than their order.
+
+Here is \filename{bag\_of\_words.py}:
+
+\begin{minted}{python}
+import csv
+import numpy as np
+from text import tokenize, stem, prepare, STOP_WORDS
+
+with open("messages.csv", newline="") as f:
+    rows = list(csv.DictReader(f))
+texts = [row["text"] for row in rows]
+print("Messages:", len(texts))
+
+# How big is the vocabulary after each step?
+raw = {w for t in texts for w in t.split()}
+lower = {w for t in texts for w in tokenize(t)}
+no_stop = {w for w in lower if w not in STOP_WORDS}
+stems = {stem(w) for w in no_stop}
+for name, words in [("split on spaces", raw), ("lowercase, no punctuation", lower),
+                    ("without stop words", no_stop), ("stemmed", stems)]:
+    print(f"{name:26s} {len(words):4d} distinct words")
+
+# Bag of words: one row per message, one column per stem
+vocab = sorted(stems)
+column = {word: j for j, word in enumerate(vocab)}
+counts = np.zeros((len(texts), len(vocab)), dtype=int)
+for i, t in enumerate(texts):
+    for word in prepare(t):
+        counts[i, column[word]] += 1
+print("Count matrix:", counts.shape)
+
+# The first message as counts
+print({vocab[j]: int(counts[0, j]) for j in np.nonzero(counts[0])[0]})
+
+# The most common stems overall
+totals = counts.sum(axis=0)
+top = np.argsort(-totals)[:8]
+print("Most common:", [(vocab[j], int(totals[j])) for j in top])
+\end{minted}
+
+\begin{verbatim}
+Messages: 60
+split on spaces             368 distinct words
+lowercase, no punctuation   311 distinct words
+without stop words          285 distinct words
+stemmed                     271 distinct words
+Count matrix: (60, 271)
+{'been': 1, 'claim': 1, 'click': 1, 'free': 1, 'iphone': 1, 'link': 1,
+'now': 1, 'prize': 1, 'select': 1, 'winner': 1}
+Most common: [('free', 15), ('now', 11), ('claim', 9), ('click', 8), ('today', 6),
+('earn', 5), ('cash', 5), ('before', 4)]
+\end{verbatim}
+
+(Two long output lines are wrapped here to fit the page.)
+
+\begin{center}
+\begin{tabular}{l r}
+\textbf{Step} & \textbf{Distinct words} \\
+\hline
+split on spaces & 368 \\
+lowercase, no punctuation & 311 \\
+without stop words & 285 \\
+stemmed & 271 \\
+\end{tabular}
+\end{center}
+
+The first message, ``WINNER!! You have been selected for a FREE iPhone. Click the link to claim your prize
+now,'' has become ten counts of 1, one for each stem it contains. Each step shrinks the vocabulary by merging things that should be the same. ``FREE,'' ``free,'' and ``free!!''
+are one word now. The result is a $60 \times 271$ matrix of counts, with one row per message. Most entries
+are zero, since each message uses only a handful of the 271 stems; a matrix like that is called
+\newterm{sparse}\index{sparse matrix}.
+
+Look at the most common stems: free, now, claim, click, cash. Every one of them smells like spam. That is
+exactly the pattern the naive Bayes classifier in the next chapter will learn.
+
+\section{Where These Ideas Are Used}
+\index{stemming!applications of}\index{lemmatization!applications of}
+Search engines stem both your query and their documents, so ``connected'' finds ``connecting.'' Spam filters
+and other text classifiers use bags of words as features. Modern language models, like the ones behind chatbots,
+skip stemming and split text into pieces of words called subword tokens, but the first step is the same:
+turn text into numbers a program can work with.
+
+\begin{Exercise}[label=stem1, title=Stem or lemma?]
+For each pair of words, say whether a stemmer would likely give them the same stem, and whether a lemmatizer
+would give them the same lemma: (a) ``happy'' and ``happiness''; (b) ``better'' and ``good''.
 \end{Exercise}
-\begin{Answer}[ref=stem2]
-The Porter stemmer reduces ``connected,'' ``connection,'' and
-``connecting'' all to ``connect,'' so the first two documents match.
-``Linked'' means the same thing but shares no letters, so stemming cannot
-find it. Matching synonyms takes a different technique, such as a
-thesaurus or word embeddings.
+\begin{Answer}[ref=stem1]
+(a) A stemmer such as Porter's often maps both to ``happi,'' so they match. A lemmatizer keeps ``happiness'' as
+its own noun and ``happy'' as an adjective, so they do not match. (b) A stemmer does not link ``better'' to
+``good,'' because the spelling is too different. A lemmatizer that knows irregular forms can map ``better'' to
+``good.''
 \end{Answer}
 
-\section{Applications}
-\index{stemming!applications of}
-\index{lemmatization!applications of}
-To summarize, both stemming and lemmatization help in \index{text normalization}text normalization and preprocessing, but while stemming can be faster and simpler, lemmatization is more accurate, as it uses more informed analysis to create groups of words with similar meanings based on the context. These are both used to improve natural language processing (NLP) in software such as search engines, machine learning models, algorithmic searches, and even baseline programs for autofill and text prediction. 
+\begin{Exercise}[label=stem2, title=Search Results]
+A search engine stems every word in its documents and every word you type, using Porter's stemmer. You search
+for ``connected.'' Which of these documents will match: one containing ``connection,'' one containing
+``connecting,'' and one containing ``linked''?
+\end{Exercise}
+\begin{Answer}[ref=stem2]
+The Porter stemmer reduces ``connected,'' ``connection,'' and ``connecting'' all to ``connect,'' so the first two
+documents match. ``Linked'' means the same thing but shares no letters, so stemming cannot find it. Matching
+synonyms takes a different technique, such as a thesaurus or word embeddings.
+\end{Answer}
+
+\begin{Exercise}[label=stem3, title={Run the stemmer by hand}]
+Use the stemming rules from this chapter on these words: dresses, hopping, filled, sing, quickly.
+\end{Exercise}
+\begin{Answer}[ref=stem3]
+``dresses'' $\to$ ``dress'' (the ``sses'' rule). ``hopping'' $\to$ ``hopp'' $\to$ ``hop'' (the ``ing'' rule, then
+the doubled letter is dropped). ``filled'' $\to$ ``fill'' (the ``ed'' rule; the doubled ``l'' is kept, because
+``l'' is on the list of letters not to undouble). ``sing'' stays ``sing'': removing ``ing'' would leave only one
+letter. ``quickly'' $\to$ ``quick'' (the ``ly'' rule).
+\end{Answer}
+
+\begin{Exercise}[label=stem4, title={A rule for -ion}]
+Add a rule to \verb|SUFFIXES| so that ``connection'' and ``selection'' stem to ``connect'' and ``select.'' Where
+in the list does it need to go, and does it break any word in the example list?
+\end{Exercise}
+\begin{Answer}[ref=stem4]
+Add \verb|("ion", "")|. It can go anywhere before \verb|("s", "")|, since no word ends in both; putting it first is
+simplest. ``connection'' becomes ``connect'' and ``selection'' becomes ``select.'' None of the other example words
+end in ``ion,'' so their stems do not change. (It does hurt some other words: ``champion'' becomes ``champ'' and ``million''
+becomes ``mill.'' The 3-letter check saves ``lion'' and ``onion.'' Every simple rule has exceptions.)
+\end{Answer}
+
+\begin{Exercise}[label=stem5, title={A tiny lemmatizer}]
+Write a function \verb|lemmatize(word)| that looks the word up in a small dictionary of irregular forms
+(ran, better, mice, was) and returns the word unchanged if it is not there. Why would a real lemmatizer need a dictionary with hundreds of thousands of entries?
+\end{Exercise}
+\begin{Answer}[ref=stem5]
+\begin{minted}{python}
+LEMMAS = {"ran": "run", "better": "good", "mice": "mouse", "was": "be"}
+
+def lemmatize(word):
+    return LEMMAS.get(word, word)
+\end{minted}
+\verb|dict.get| returns the second argument when the key is missing. A real lemmatizer needs an entry for every
+form of every word in the language (plus rules for using context to tell ``saw'' the verb from ``saw'' the
+tool), and English has hundreds of thousands of words.
+\end{Answer}

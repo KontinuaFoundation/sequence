@@ -1,71 +1,188 @@
 \chapter{Generalized Linear Models}
 
-How many goals will a team score? Will a customer click ``buy''? How long
-until a light bulb burns out? Linear regression could make a prediction for
-each, but it might predict $-0.4$ goals or a 130\% chance of clicking. This
-chapter shows how to keep the simplicity of a linear model while respecting
-what the answer is allowed to be. The trick is a \emph{link function}: a
-leash that keeps a linear predictor, which can wander anywhere from $-\infty$
-to $\infty$, inside the range the answer is allowed to take.
+How many customers will walk into the smoothie shop next to school this afternoon? How many goals will your
+team score? Linear regression could make a prediction for each, but it might predict $-0.3$ customers on a cold
+day, and it assumes the scatter around the line is the same size everywhere, which is not how counts behave.
+
+This chapter shows how to keep the simplicity of a linear model while respecting what the answer is allowed to
+be. The trick is a \emph{link function}: a leash that keeps a linear predictor, which can wander anywhere from
+$-\infty$ to $\infty$, inside the range the answer is allowed to take. You have already met one: logistic
+regression is a generalized linear model.
 
 \section{Beyond the Normal Distribution}\index{generalized linear model}
-Ordinary linear regression assumes the response is normal, with a mean that is a linear function of the predictors.
-Many responses are not normal: counts, binary outcomes, and positive amounts all violate that assumption. A
-\newterm{generalized linear model} (GLM) keeps the linear predictor but allows other distributions for the response.
+Ordinary linear regression assumes the response is normal, with a mean that is a linear function of the
+predictors. Many responses are not normal: counts, yes-or-no outcomes, and positive amounts all break that
+assumption. A \newterm{generalized linear model} (GLM) keeps the linear predictor but allows other distributions
+for the response.
 
 \section{Three Components}
 A GLM has three parts.
 \begin{enumerate}
 \item \textbf{Random component}: the distribution of the response, such as normal, binomial, or Poisson.
-\item \textbf{Systematic component}: the linear predictor $\eta = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p = X\boldsymbol{\beta}$.
+\item \textbf{Systematic component}: the linear predictor
+$\eta = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p = X\boldsymbol{\beta}$.
 \item \textbf{Link function} $g$: a function that connects the mean of the response to the linear predictor,
 $$g(E[Y]) = \eta$$
 \end{enumerate}
 
-\section{Link Functions}\index{link function}
-Write $\mu = E[Y]$ for the mean of the response, so the link says $g(\mu) = \eta$.
-The link must map the allowed values of $\mu$ onto all real numbers, because $\eta$ can be any real number. The
-inverse link $\mu = g^{-1}(\eta)$ turns a prediction on the linear scale back into the scale of the response.
+\begin{center}
+\begin{tabular}{l l l l}
+\textbf{Model} & \textbf{Response} & \textbf{Distribution} & \textbf{Link} \\
+\hline
+linear regression & any real number & normal & identity, $\mu$ \\
+logistic regression & yes or no & binomial & logit, $\ln\frac{\mu}{1 - \mu}$ \\
+Poisson regression & a count & Poisson & log, $\ln \mu$ \\
+\end{tabular}
+\end{center}
 
-\subsection{Common Links}
+\section{Link Functions}\index{link function}
+Write $\mu = E[Y]$ for the mean of the response, so the link says $g(\mu) = \eta$. The link must map the allowed
+values of $\mu$ onto all real numbers, because $\eta$ can be any real number. The inverse link
+$\mu = g^{-1}(\eta)$ turns a prediction on the linear scale back into the scale of the response.
+
 \begin{itemize}
-\item \textbf{Identity}: $g(\mu) = \mu$. The response is normal, and the mean can be any real number. This is ordinary linear regression.
+\item \textbf{Identity}: $g(\mu) = \mu$. The mean can be any real number. This is ordinary linear regression.
 \item \textbf{Log}: $g(\mu) = \ln \mu$. The mean must be positive, as for counts. The inverse is $\mu = e^{\eta}$.
-\item \textbf{Logit}: $g(\mu) = \ln\frac{\mu}{1 - \mu}$. The mean is a probability between 0 and 1, as for binary outcomes. The inverse is the logistic function.
-\item \textbf{Probit}: $g(\mu) = \Phi^{-1}(\mu)$, where $\Phi$ is the standard normal distribution function. It is another link for binary outcomes.
+\item \textbf{Logit}: $g(\mu) = \ln\frac{\mu}{1 - \mu}$. The mean is a probability between 0 and 1. The inverse is the
+sigmoid from the Logistic Regression chapter.
+\item \textbf{Probit}: $g(\mu) = \Phi^{-1}(\mu)$, where $\Phi$ is the standard normal cumulative distribution function.
+It is another link for probabilities.
 \end{itemize}
 
-\subsection{Working Through the Links}
-For a mean of $\mu = 0.8$, the logit is $\ln\frac{0.8}{0.2} = \ln 4 \approx 1.386$. The inverse logit of 1.386
+For a mean of $\mu = 0.8$, the logit is $\ln\frac{0.8}{0.2} = \ln 4 \approx 1.386$, and the inverse logit of 1.386
 returns $\frac{e^{1.386}}{1 + e^{1.386}} = 0.8$. For a mean of $\mu = 10$, the log link is $\ln 10 \approx 2.303$, and
 the inverse gives $e^{2.303} = 10$.
 
-\section{Choosing a Model}
-The distribution is chosen by the type of response. Counts often use a Poisson distribution, and yes-or-no
-outcomes use a binomial distribution. The link is then chosen so the mean stays in the allowed range. The
-\newterm{canonical} link for each distribution is a natural default: identity for the normal, log for the
-Poisson, and logit for the binomial.
+Each distribution has a \newterm{canonical} link that is the natural default: identity for the normal, logit for
+the binomial, and log for the Poisson. The choice changes how coefficients are read. Under the identity link, a
+coefficient \emph{adds} to the mean; under the log link, $e^{\beta}$ \emph{multiplies} the mean; under the logit
+link, $e^{\beta}$ multiplies the odds.
 
-Think of the change in your height over a year, which can be positive or negative, and a chance of passing a test, which must stay between 0 and 1. Use the identity link for real-valued responses, the log link for
-positive or count responses, and the logit or probit link for probabilities. The choice affects how coefficients are
-interpreted. Under the log link, a coefficient multiplies the mean; under the logit link, it multiplies the odds.
+\section{Counts and the Poisson Distribution}\index{Poisson distribution}
+The \newterm{Poisson distribution} describes counts of events that happen independently at some average rate:
+customers per hour, typos per page, goals per game. If the mean is $\mu$,
+$$P(Y = k) = \frac{\mu^k e^{-\mu}}{k!}, \qquad k = 0, 1, 2, \ldots$$
+Its variance equals its mean. So when the expected count is small, the counts are bunched near zero, and when it
+is large, they spread out:
 
-\section{A Worked Example}
-A Poisson model for the number of customers $Y$ per hour at a smoothie shop uses the log link. Suppose $\beta_0 = 0.5$ and $\beta_1 = 0.2$,
-where $x$ is the number of social media posts the shop made that day. With $x = 3$,
-$$\eta = 0.5 + 0.2(3) = 1.1$$
-The log link gives $\ln(E[Y]) = 1.1$, so the expected number of customers is $E[Y] = e^{1.1} \approx 3.004$.
-The log link keeps the mean positive, which is required for counts. It also
-makes the coefficients multiplicative: each extra post multiplies the expected
-number of customers by $e^{0.2} \approx 1.22$, a 22\% increase.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{poisson.png}
+\caption{Poisson distributions with means 2, 6, and 15. The spread grows with the mean.}
+\label{fig:poisson}
+\end{figure}
 
-\section{Fitting a GLM}
-Parameters are estimated by maximum likelihood, not least squares. Software iterates until the likelihood stops increasing.
-Logistic regression is the GLM with a binomial response and logit link, and ordinary linear regression is the GLM with a
-normal response and identity link.
+\newterm{Poisson regression}\index{Poisson regression} uses the log link: $\ln \mu = \beta_0 + \beta_1 x_1 + \cdots$, so
+$\mu = e^{\beta_0 + \beta_1 x_1 + \cdots}$, which is always positive.
+
+\textbf{Example}: A Poisson model for the number of customers $Y$ per hour at a smoothie shop has
+$\beta_0 = 0.5$ and $\beta_1 = 0.2$, where $x$ is the number of social media posts the shop made that day. Find the
+expected number of customers when $x = 3$.
+
+\textbf{Solution}: $\eta = 0.5 + 0.2(3) = 1.1$, so $E[Y] = e^{1.1} \approx 3.004$. Each extra post multiplies the
+expected number of customers by $e^{0.2} \approx 1.22$, a 22\% increase.
+
+\section{Fitting a GLM}\index{maximum likelihood}
+Like logistic regression, a GLM is fit by maximum likelihood. For Poisson regression, with $\mu_i = e^{\eta_i}$ and
+$\eta_i = \mathbf{x}_i^T\boldsymbol{\beta}$, the log of the likelihood is
+$$\ell(\boldsymbol{\beta}) = \sum_{i=1}^n \left[y_i \eta_i - e^{\eta_i} - \ln(y_i!)\right]$$
+Its gradient has a familiar shape:
+$$\nabla \ell = X^T(\mathbf{y} - \boldsymbol{\mu})$$
+Predicted minus actual (or here, actual minus predicted), multiplied by $X^T$, exactly as for linear and logistic
+regression. That is no coincidence: it is true for every GLM with its canonical link.
+
+You could climb this hill with gradient ascent. But GLMs are usually fit with \newterm{Newton's method}, which
+also uses the second derivatives. The matrix of second derivatives (the \newterm{Hessian}) is
+$-X^T W X$, where $W$ is a diagonal matrix with the $\mu_i$ on its diagonal, and each Newton step is
+$$\boldsymbol{\beta} \leftarrow \boldsymbol{\beta} + (X^T W X)^{-1} X^T(\mathbf{y} - \boldsymbol{\mu})$$
+Each step solves a weighted least squares problem, with weights that change as $\boldsymbol{\mu}$ changes, so the
+method is called \newterm{iteratively reweighted least squares}\index{iteratively reweighted least squares}
+(IRLS). It usually converges in a handful of steps, far fewer than gradient descent.
+
+\section{Poisson Regression in Python}
+The smoothie shop has kept a tally of its customers between 3 and 4 p.m. for 120 days. (The data is
+simulated, from a Poisson model with known coefficients, so we can check our answer.) Does the crowd depend on
+the temperature and on whether it is a weekend? Here is \filename{smoothies.py}:
+
+\begin{minted}{python}
+import numpy as np
+
+# Simulated data: customers at a smoothie shop between 3 and 4 p.m. on 120 days
+rng = np.random.default_rng(7)
+n = 120
+temp = rng.uniform(0, 32, n)                       # afternoon temperature, degrees C
+weekend = (rng.random(n) < 2 / 7).astype(float)
+true_beta = np.array([0.3, 0.07, 0.5])             # intercept, temperature, weekend
+X = np.column_stack([np.ones(n), temp, weekend])
+customers = rng.poisson(np.exp(X @ true_beta))
+
+# Poisson regression by iteratively reweighted least squares (Newton's method)
+beta = np.array([np.log(customers.mean()), 0, 0])   # start: every day average
+for step in range(1, 7):
+    mu = np.exp(X @ beta)                          # current predicted means
+    gradient = X.T @ (customers - mu)
+    hessian = X.T @ (mu[:, None] * X)              # X^T W X with W = diag(mu)
+    beta = beta + np.linalg.solve(hessian, gradient)
+    print(f"step {step}: beta = {np.round(beta, 4)}")
+
+print("multipliers e^beta:", np.round(np.exp(beta), 3))
+
+# Compare with an ordinary least squares line
+b_ls, *_ = np.linalg.lstsq(X, customers)
+cold_weekday = np.array([1, 0, 0])
+hot_weekend = np.array([1, 32, 1])
+for name, x in [("0 C weekday", cold_weekday), ("32 C weekend", hot_weekend)]:
+    print(f"{name}: Poisson {np.exp(x @ beta):5.1f}, least squares {x @ b_ls:5.1f}")
+\end{minted}
+
+\begin{verbatim}
+step 1: beta = [0.7303 0.0582 0.4481]
+step 2: beta = [0.5383 0.061  0.4238]
+step 3: beta = [0.5179 0.0615 0.4197]
+step 4: beta = [0.5177 0.0616 0.4196]
+step 5: beta = [0.5177 0.0616 0.4196]
+step 6: beta = [0.5177 0.0616 0.4196]
+multipliers e^beta: [1.678 1.063 1.521]
+0 C weekday: Poisson   1.7, least squares  -0.3
+32 C weekend: Poisson  18.3, least squares  13.4
+\end{verbatim}
+
+\verb|rng.poisson| draws random counts with the given means. \verb|mu[:, None] * X| multiplies row $i$ of $X$ by
+$\mu_i$, which is the same as $WX$ without building the $120 \times 120$ diagonal matrix.
+
+Newton's method settles in four steps. (Starting from all zeros, it overshoots wildly; starting from ``every day
+is average,'' $\beta_0 = \ln \bar{y}$, is the standard trick.) The estimates, $0.52$, $0.062$, and $0.42$, are close to
+the true $0.3$, $0.07$, and $0.5$ but not equal, because 120 days of random counts carry only so much
+information. Reading the multipliers:
+
+\begin{center}
+\begin{tabular}{l c l}
+\textbf{Term} & $e^{\beta}$ & \textbf{Meaning} \\
+\hline
+intercept & 1.678 & about 1.7 customers expected on a 0 \textdegree C weekday \\
+temperature & 1.063 & each degree warmer: 6.3\% more customers \\
+weekend & 1.521 & weekends: 52\% more customers, at any temperature \\
+\end{tabular}
+\end{center}
+
+Over a 30-degree range, 6.3\% per degree compounds: $1.063^{30} \approx 6.3$ times as many customers on a hot day.
+That is the curve in Figure~\ref{fig:smoothie-fit}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{smoothie_fit.png}
+\caption{The simulated smoothie data. Solid curves: the Poisson regression. Dashed lines: least squares on the
+same features.}
+\label{fig:smoothie-fit}
+\end{figure}
+
+The least squares lines miss in both directions. They predict a negative number of customers on a freezing
+weekday, and they cannot bend upward, so they underestimate the hot weekends. They also treat a miss of 5
+customers as equally surprising on a slow day and a busy one, when the Poisson distribution says busy days
+naturally vary more.
 
 \begin{Exercise}[label=glm1, title=Compute the mean]
-In the Poisson model above, what is the expected count when $x = 5$?
+In the social-media example, what is the expected count when $x = 5$?
 \end{Exercise}
 \begin{Answer}[ref=glm1]
 $\eta = 0.5 + 0.2(5) = 1.5$, so $E[Y] = e^{1.5} \approx 4.48$.
@@ -86,20 +203,66 @@ $\ln\frac{0.25}{0.75} = \ln\frac{1}{3} \approx -1.099$.
 \end{Answer}
 
 \begin{Exercise}[label=lf2, title=Interpret the log link]
-Under the log link, $\ln\mu = \beta_0 + \beta_1 x$. If $\beta_1 = -0.1$, by what factor does the mean change when $x$ increases by 1?
+Under the log link, $\ln\mu = \beta_0 + \beta_1 x$. If $\beta_1 = -0.1$, by what factor does the mean change when $x$
+increases by 1?
 \end{Exercise}
 \begin{Answer}[ref=lf2]
-The mean is multiplied by $e^{-0.1} \approx 0.905$, a decrease of about 9.5\%. A
-negative coefficient under the log link shrinks the mean, but never makes it negative.
+The mean is multiplied by $e^{-0.1} \approx 0.905$, a decrease of about 9.5\%. A negative coefficient under the log
+link shrinks the mean, but never makes it negative.
 \end{Answer}
 
 \begin{Exercise}[label=lf3, title=Logit versus probit]
-For $\mu = 0.8$, the logit is $1.386$. The probit is $\Phi^{-1}(0.8)$. Use a
-$z$-table (or \texttt{scipy.stats.norm.ppf}) to find it, and compare.
+For $\mu = 0.8$, the logit is $1.386$. The probit is $\Phi^{-1}(0.8)$. Use a $z$-table (or
+\texttt{scipy.stats.norm.ppf}) to find it, and compare.
 \end{Exercise}
 \begin{Answer}[ref=lf3]
-$\Phi^{-1}(0.8) \approx 0.842$. The probit value is smaller because the normal
-curve has thinner tails than the logistic curve. The two links usually give
-similar fitted probabilities, but their coefficients are on different scales
-(logit coefficients are roughly 1.6 to 1.8 times probit coefficients).
+$\Phi^{-1}(0.8) \approx 0.842$. The probit value is smaller because the normal curve has thinner tails than the
+logistic curve. The two links usually give similar fitted probabilities, but their coefficients are on different
+scales (logit coefficients are roughly 1.6 to 1.8 times probit coefficients).
+\end{Answer}
+
+\begin{Exercise}[label=glm3, title={Poisson probabilities}, space=3cm]
+On a 20 \textdegree C weekday, the fitted model expects $e^{0.5177 + 0.0616(20)} \approx 5.8$ customers. Using the
+Poisson distribution, what is the probability of exactly 5 customers? Of none?
+\end{Exercise}
+\begin{Answer}[ref=glm3]
+$P(Y = 5) = \frac{5.8^5 e^{-5.8}}{5!} \approx \frac{6563.6 \times 0.003028}{120} \approx 0.166$, and
+$P(Y = 0) = e^{-5.8} \approx 0.0030$. An empty hour on a warm afternoon would be very unusual.
+\end{Answer}
+
+\begin{Exercise}[label=glm4, title={Check with SciPy}]
+Write a function that returns the negative Poisson log-likelihood $-\ell(\boldsymbol{\beta})$ for the smoothie
+data, minimize it with SciPy starting from zeros, and compare with the IRLS answer. (SciPy's \verb|gammaln|
+function computes $\ln(y!)$ as $\ln \Gamma(y + 1)$.)
+\end{Exercise}
+\begin{Answer}[ref=glm4]
+\begin{minted}{python}
+from scipy.optimize import minimize
+from scipy.special import gammaln
+
+def neg_log_like(b):
+    eta = X @ b
+    return -np.sum(customers * eta - np.exp(eta) - gammaln(customers + 1))
+
+result = minimize(neg_log_like, np.zeros(3))
+print(np.round(result.x, 4))
+\end{minted}
+It returns about $(0.5177, 0.0616, 0.4196)$, the same as IRLS. The general-purpose minimizer needs more steps (10
+here, against 4), because it has to estimate the derivatives that Newton's method gets from formulas.
+\end{Answer}
+
+\begin{Exercise}[label=glm5, title={How sure are we?}]
+For maximum likelihood estimates, the standard errors are the square roots of the diagonal of the inverse of
+$X^T W X$ at the solution. Compute them for the smoothie model. Is the true weekend coefficient, 0.5, within two
+standard errors of the estimate?
+\end{Exercise}
+\begin{Answer}[ref=glm5]
+\begin{minted}{python}
+mu = np.exp(X @ beta)
+cov = np.linalg.inv(X.T @ (mu[:, None] * X))
+print(np.round(np.sqrt(np.diag(cov)), 4))
+\end{minted}
+The standard errors are about 0.105 for the intercept, 0.0044 for temperature, and 0.079 for weekend. The weekend
+estimate, 0.42, is about 1.0 standard error from 0.5, so yes. The intercept and temperature estimates are each about
+two standard errors from their true values (0.3 and 0.07): a reminder that estimates from random data wander.
 \end{Answer}

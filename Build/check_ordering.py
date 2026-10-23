@@ -10,6 +10,8 @@ At the end, the script reports:
   2. Chapters whose digital_resources.json file does not parse.
   3. Chapters that require an id that no chapter in book_00.txt covers.
   4. Chapters that require an id that is first covered by a later chapter.
+  5. Topic ids that are covered more than once, by different chapters or twice
+     in the same chapter. Every id must be unique.
 
 A requirement that the chapter covers itself is not reported.
 
@@ -76,6 +78,7 @@ def main():
     requires = {}          # chapter -> list of required ids
     first_covered = {}     # id -> (position in book_00.txt, chapter) of the first chapter that covers it
     covers = {}            # chapter -> set of ids it covers
+    coverers = {}          # id -> every chapter that covers it, in reading order (with repeats)
 
     # Pass 1: read every file in reading order, recording where each id is first covered.
     for position, chapter in enumerate(order):
@@ -94,6 +97,7 @@ def main():
                     raise ValueError(f"a 'covers' entry has no id: {entry!r}")
                 chapter_covers.add(topic)
                 first_covered.setdefault(topic, (position, chapter))
+                coverers.setdefault(topic, []).append(chapter)
             covers[chapter] = chapter_covers
             requires[chapter] = [r for r in as_list(data.get("requires")) if isinstance(r, str)]
         except (json.JSONDecodeError, ValueError, AttributeError, UnicodeDecodeError) as error:
@@ -112,6 +116,9 @@ def main():
                 covered_at, covered_by = first_covered[topic]
                 if covered_at > position:
                     out_of_order.append((chapter, topic, covered_by))
+
+    # Ids that more than one entry covers
+    duplicates = [(topic, chapters) for topic, chapters in coverers.items() if len(chapters) > 1]
 
     # Report
     def heading(title, count):
@@ -140,7 +147,14 @@ def main():
     for chapter, topic, covered_by in out_of_order:
         print(f"  {where(chapter)} requires '{topic}', first covered by {where(covered_by)}")
 
-    problems = len(missing_file) + len(unparsable) + len(nonexistent) + len(out_of_order)
+    heading("Topic ids covered more than once", len(duplicates))
+    for topic, chapters in duplicates:
+        first, *others = chapters
+        print(f"  '{topic}' is covered by {where(first)} and again by "
+              + ", ".join(where(c) for c in others))
+
+    problems = (len(missing_file) + len(unparsable) + len(nonexistent) + len(out_of_order)
+                + len(duplicates))
     print(f"\n{problems} problem(s) found.")
     return 1 if problems else 0
 

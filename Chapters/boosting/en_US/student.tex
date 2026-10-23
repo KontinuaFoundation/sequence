@@ -1,43 +1,255 @@
 \chapter{Boosting}
 
-\section{Learning from Mistakes}\index{boosting}
-\newterm{Boosting} combines many weak learners into one strong learner. A weak learner is only a little better than guessing.
-Each new learner is trained to focus on the examples the earlier learners got wrong. Think of studying for a test. After each practice test, you spend more time on the problems you missed. Boosting mainly reduces bias.
+After a practice test, a good student does not reread the whole textbook. They look at the problems they
+missed and study those. Then they take another practice test, look at what they missed \emph{this} time, and
+repeat.
+
+\newterm{Boosting}\index{boosting} trains a sequence of models the same way. Each new model concentrates on the
+examples the models before it got wrong, and the final prediction combines them all. Random forests build many
+trees independently and let them vote; boosting builds them one after another, each correcting the last.
+
+\section{Weak Learners}\index{weak learner}
+Boosting works with \newterm{weak learners}: models that are only a little better than guessing. The usual choice
+is a \newterm{decision stump}\index{decision stump}, a decision tree with a single question, like ``body mass
+$> 3712.5$ g?'' A stump alone is a poor classifier. The surprise, proved in the 1990s, is that a weighted vote of
+many weak learners can be as strong as you like.
+
+\begin{center}
+\begin{tabular}{l >{\raggedright\arraybackslash}p{4.5cm} >{\raggedright\arraybackslash}p{4.5cm}}
+ & \textbf{Random forest} & \textbf{Boosting} \\
+\hline
+Trees built & independently & one after another \\
+Each tree & deep, overfits on its own & small, underfits on its own \\
+Main effect & averages away variance & chips away at bias \\
+Too many trees & harmless & can overfit \\
+\end{tabular}
+\end{center}
 
 \section{AdaBoost}\index{AdaBoost}
-\newterm{AdaBoost} (adaptive boosting) works with labels $y_i \in \{-1, +1\}$. It keeps a weight $w_i$ for each training point.
+\newterm{AdaBoost} (adaptive boosting), invented by Yoav Freund and Robert Schapire in 1995, works with labels
+$y_i \in \{-1, +1\}$. It keeps a weight $w_i$ for each training point.
 \begin{enumerate}
 \item Start with equal weights, $w_i = \frac{1}{n}$.
 \item For $t = 1, \ldots, T$: train a weak learner $h_t$ on the weighted data, compute its weighted error
-$\varepsilon_t = \sum_{i:\, h_t(x_i) \ne y_i} w_i$, and set
+$\varepsilon_t = \sum_{i:\, h_t(x_i) \ne y_i} w_i$, and give it a vote of strength
 $$\alpha_t = \frac{1}{2}\ln\frac{1 - \varepsilon_t}{\varepsilon_t}$$
-\item Increase the weights of the misclassified points and decrease the others:
-$w_i \leftarrow w_i e^{-\alpha_t y_i h_t(x_i)}$, then normalize so the weights sum to 1.
+\item Increase the weights of the misclassified points and decrease the others,
+$$w_i \leftarrow w_i e^{-\alpha_t y_i h_t(x_i)}$$
+then divide by the total so the weights sum to 1.
 \end{enumerate}
 The final classifier is the sign of the weighted vote, $H(x) = \operatorname{sign}\left(\sum_t \alpha_t h_t(x)\right)$.
 
-\subsection{A Worked Round}
-Four points have weights $\frac{1}{4}$ each. A weak learner misclassifies only the fourth point, so $\varepsilon_1 = \frac{1}{4}$ and
+The exponent does the bookkeeping. When $h_t$ is right, $y_i h_t(x_i) = +1$ and the weight shrinks by the factor
+$e^{-\alpha_t}$; when it is wrong, $y_i h_t(x_i) = -1$ and the weight grows by $e^{\alpha_t}$. A learner with a small
+error gets a large $\alpha_t$, a strong vote.
+
+\textbf{Example}: Four points have weights $\frac{1}{4}$ each. A weak learner misclassifies only the fourth point.
+Find $\alpha_1$ and the new weights.
+
+\textbf{Solution}: $\varepsilon_1 = \frac{1}{4}$, so
 $$\alpha_1 = \frac{1}{2}\ln\frac{3/4}{1/4} = \frac{1}{2}\ln 3 \approx 0.549$$
-The three correct points have weight $\frac{1}{4} e^{-0.549} \approx 0.144$ before normalizing, and the misclassified point has weight
-$\frac{1}{4} e^{0.549} \approx 0.433$. Normalizing (the total is $0.144 \cdot 3 + 0.433 = 0.866$), the misclassified point now has weight
-$0.5$, and each correct point has weight $\frac{1}{6} \approx 0.167$. The next learner is forced to focus on the point that was missed.
+The three correct points get weight $\frac{1}{4} e^{-0.549} \approx 0.144$ before normalizing, and the misclassified
+point gets $\frac{1}{4} e^{0.549} \approx 0.433$. The total is $3(0.144) + 0.433 = 0.866$, so after normalizing, the
+misclassified point has weight $0.5$ and each correct point has weight $\frac{1}{6} \approx 0.167$. Half of the
+next learner's attention goes to the one point that was missed.
+
+\section{AdaBoost on Penguins}
+Male and female penguins are hard to tell apart, especially across three species of different sizes. Here is
+\filename{adaboost.py}, which boosts stumps to predict a penguin's sex from its four measurements, training on
+233 penguins and testing on 100:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+y = np.where(data["sex"] == "male", 1, -1)             # labels are +1 and -1
+features = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]
+X = np.column_stack([data[f] for f in features])
+order = np.random.default_rng(1).permutation(len(y))
+train, test = order[:233], order[233:]
+
+def best_stump(X, y, w):
+    """The one-question rule with the smallest weighted error."""
+    best = (np.inf, None, None, None)                 # (error, feature, threshold, sign)
+    for j in range(X.shape[1]):
+        values = np.unique(X[:, j])
+        for t in (values[:-1] + values[1:]) / 2:
+            guess = np.where(X[:, j] > t, 1, -1)
+            for sign in (1, -1):                      # "big means male" or the reverse
+                error = np.sum(w[sign * guess != y])
+                if error < best[0]:
+                    best = (error, j, t, sign)
+    return best
+
+def stump_predict(stump, X):
+    _, j, t, sign = stump
+    return sign * np.where(X[:, j] > t, 1, -1)
+
+w = np.full(len(train), 1 / len(train))
+score_train, score_test = np.zeros(len(train)), np.zeros(len(test))
+for t in range(1, 201):
+    stump = best_stump(X[train], y[train], w)
+    error = stump[0]
+    alpha = 0.5 * np.log((1 - error) / error)
+    h = stump_predict(stump, X[train])
+    w = w * np.exp(-alpha * y[train] * h)
+    w = w / w.sum()
+    score_train += alpha * h
+    score_test += alpha * stump_predict(stump, X[test])
+    if t <= 3:
+        print(f"round {t}: {features[stump[1]]} > {stump[2]:.2f} means "
+              f"{'male' if stump[3] == 1 else 'female'}; error {error:.3f}, alpha {alpha:.3f}")
+    if t in (1, 10, 50, 200):
+        acc_train = np.mean(np.sign(score_train) == y[train])
+        acc_test = np.mean(np.sign(score_test) == y[test])
+        print(f"{t:3d} stumps: training {acc_train:.3f}, test {acc_test:.3f}")
+\end{minted}
+
+\begin{verbatim}
+round 1: body_mass_g > 3712.50 means male; error 0.270, alpha 0.496
+  1 stumps: training 0.730, test 0.710
+round 2: bill_depth_mm > 17.95 means male; error 0.236, alpha 0.588
+round 3: body_mass_g > 5025.00 means male; error 0.258, alpha 0.529
+ 10 stumps: training 0.936, test 0.880
+ 50 stumps: training 0.970, test 0.890
+200 stumps: training 1.000, test 0.860
+\end{verbatim}
+
+The first stump, ``heavier than 3712.5 g means male,'' is right 73\% of the time; its mistakes are mostly
+heavy Gentoo females and light Adelie males. The weights shift toward those penguins, and the second stump, on
+bill depth, is chosen because it handles them better. The third stump asks about mass again, but with a much
+higher threshold, aimed at the Gentoos. The running totals \verb|score_train| and \verb|score_test| hold
+$\sum_t \alpha_t h_t(x)$ for every penguin, so checking accuracy after any round is just a matter of taking signs.
+
+Ten stumps already get 88\% of the test penguins right. But look at the end: with 200 stumps, the training
+accuracy is a perfect 100\%, and the test accuracy has slipped to 86\%. Boosting kept focusing harder and harder
+on the few training penguins it could not get right, and eventually it memorized them.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\textwidth]{adaboost_curve.png}
+\caption{AdaBoost accuracy as stumps are added.}
+\label{fig:adaboost-curve}
+\end{figure}
+
+The test curve in Figure~\ref{fig:adaboost-curve} peaks early and then sags. You might be tempted to pick the
+number of stumps at its peak, but that would be choosing a setting by looking at the test set, which turns the
+test set into a validation set and its score into an overestimate. Choose the number of rounds with a separate
+validation set or cross-validation.
 
 \section{Gradient Boosting}\index{gradient boosted trees}
-\newterm{Gradient boosting} generalizes this idea to any differentiable loss. Each new tree is fit to the negative gradient of the loss at the
-current predictions. For squared-error loss, this gradient is just the residual, so each tree is fit to the errors of the ensemble so far.
+AdaBoost reweights the points. \newterm{Gradient boosting} takes a different route that works for regression,
+too: each new tree is trained to predict the \emph{errors} of the ensemble so far, and its predictions are added
+on, scaled down by a \newterm{learning rate}.
 
-\textbf{Example}: Three houses sell for 3, 5, and 10 (in hundreds of thousands of dollars).
-Start by predicting the mean, 6, for every house. The residuals are $-3$, $-1$, and $4$.
-Suppose the first tree learns these residuals exactly. With a learning rate of $0.5$, each
-prediction moves halfway toward its target: $6 + 0.5(-3) = 4.5$, $6 + 0.5(-1) = 5.5$, and
-$6 + 0.5(4) = 8$. The new residuals are $-1.5$, $-0.5$, and $2$, half as big. The next tree
+\textbf{Example}: Three houses sell for 3, 5, and 10 (in hundreds of thousands of dollars). Start by predicting
+the mean, 6, for every house. The residuals are $-3$, $-1$, and $4$. Suppose the first tree learns these residuals
+exactly. With a learning rate of $0.5$, each prediction moves halfway toward its target: $6 + 0.5(-3) = 4.5$,
+$6 + 0.5(-1) = 5.5$, and $6 + 0.5(4) = 8$. The new residuals are $-1.5$, $-0.5$, and $2$, half as big. The next tree
 fits these, and so on.
 
+Why ``gradient''? For squared error, $L = \frac{1}{2}(y - \hat{y})^2$, the negative gradient with respect to the
+prediction, $-\partial L / \partial \hat{y} = y - \hat{y}$, is exactly the residual. So fitting each tree to the
+residuals is gradient descent, as in the Linear Regression and Gradient Descent chapter, except that each step
+adds a whole tree instead of nudging a few parameters. Other losses (such as log loss, for classification) give
+other ``residuals,'' and the same machinery works.
+
+Figure~\ref{fig:boost-steps} shows gradient boosting with stumps on a single feature, flipper length. Each
+stump adds one small step, and the steps pile up into a staircase that follows the data.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{boost_steps.png}
+\caption{Gradient boosting with a learning rate of 0.1, predicting body mass from flipper length.}
+\label{fig:boost-steps}
+\end{figure}
+
+Here is \filename{gradient\_boost.py}, which predicts body mass from all the features we used for multiple
+regression:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+y = data["body_mass_g"]
+data["male"] = (data["sex"] == "male").astype(float)
+data["gentoo"] = (data["species"] == "Gentoo").astype(float)
+data["chinstrap"] = (data["species"] == "Chinstrap").astype(float)
+features = ["flipper_length_mm", "bill_length_mm", "bill_depth_mm",
+            "male", "gentoo", "chinstrap"]
+X = np.column_stack([data[f] for f in features])
+order = np.random.default_rng(1).permutation(len(y))
+train, test = order[:233], order[233:]
+
+def fit_stump(X, r):
+    """The one-question rule that best predicts the residuals r (least squares)."""
+    best = (np.inf, None, None, None, None)
+    for j in range(X.shape[1]):
+        values = np.unique(X[:, j])
+        for t in (values[:-1] + values[1:]) / 2:
+            left = X[:, j] <= t
+            mean_left, mean_right = r[left].mean(), r[~left].mean()
+            sse = np.sum((r[left] - mean_left)**2) + np.sum((r[~left] - mean_right)**2)
+            if sse < best[0]:
+                best = (sse, j, t, mean_left, mean_right)
+    return best
+
+def stump_predict(stump, X):
+    _, j, t, mean_left, mean_right = stump
+    return np.where(X[:, j] <= t, mean_left, mean_right)
+
+def rmse(pred, rows):
+    return np.sqrt(np.mean((y[rows] - pred)**2))
+
+rate = 0.1
+pred_train = np.full(len(train), y[train].mean())    # start with the average
+pred_test = np.full(len(test), y[train].mean())
+for t in range(1, 501):
+    residuals = y[train] - pred_train
+    stump = fit_stump(X[train], residuals)
+    pred_train += rate * stump_predict(stump, X[train])
+    pred_test += rate * stump_predict(stump, X[test])
+    if t in (1, 10, 50, 100, 200, 500):
+        print(f"{t:3d} stumps: training RMSE {rmse(pred_train, train):.0f}, "
+              f"test RMSE {rmse(pred_test, test):.0f}")
+\end{minted}
+
+\begin{verbatim}
+  1 stumps: training RMSE 762, test RMSE 727
+ 10 stumps: training RMSE 494, test RMSE 482
+ 50 stumps: training RMSE 294, test RMSE 294
+100 stumps: training RMSE 278, test RMSE 289
+200 stumps: training RMSE 265, test RMSE 290
+500 stumps: training RMSE 249, test RMSE 303
+\end{verbatim}
+
+A regression stump predicts the average residual on each side of its threshold, and it chooses the threshold
+that makes the squared error smallest, just as a classification stump minimizes impurity.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\textwidth]{gb_curve.png}
+\caption{Gradient boosting RMSE as stumps are added. The dashed line is least squares on the same six
+features.}
+\label{fig:gb-curve}
+\end{figure}
+
+The pattern is the same as for AdaBoost: the training error keeps falling, while the test error bottoms out
+around 100 stumps and then creeps back up. At its best, gradient boosting gets a test RMSE of 289 g. That is
+honest but humbling: least squares on the same six features gets 278 g. Penguin mass is close to a linear
+function of these features, and a linear model is hard to beat at being linear. Boosting earns its reputation
+on problems with curved relationships and interactions between features, where a straight line cannot follow
+the data. Boosted trees win a large share of machine-learning competitions on tables of data.
+
 \section{Cautions}
-Boosting can overfit if the number of rounds is too large. The validation set is used to choose the number of rounds, and the
-learning rate (the fraction of each tree's correction that is actually applied) is usually made
-small to slow the fit.
+\begin{itemize}
+\item Boosting can overfit if the number of rounds is too large. Choose it with validation data.
+\item A small learning rate slows the fit and usually generalizes better, but needs more rounds.
+\item Because each model chases the hardest examples, mislabeled data (a male recorded as female) can pull boosting
+off course.
+\end{itemize}
 
 \begin{Exercise}[label=bst1, title=Compute alpha]
 A weak learner has weighted error $\varepsilon = 0.1$. What is $\alpha$?
@@ -50,14 +262,48 @@ $\alpha = \frac{1}{2}\ln\frac{0.9}{0.1} = \frac{1}{2}\ln 9 \approx 1.099$.
 After a round of AdaBoost, which points have their weights increased?
 \end{Exercise}
 \begin{Answer}[ref=bst2]
-The points that were misclassified by $h_t$. Since $y_i h_t(x_i) = -1$ for those points, $e^{-\alpha_t y_i h_t(x_i)} = e^{\alpha_t} > 1$.
+The points that $h_t$ misclassified. For those points, $y_i h_t(x_i) = -1$, so
+$e^{-\alpha_t y_i h_t(x_i)} = e^{\alpha_t} > 1$.
 \end{Answer}
 
 \begin{Exercise}[label=bst3, title=A coin-flip learner]
 A weak learner has weighted error $\varepsilon = 0.5$. What is $\alpha$, and what does that mean?
 \end{Exercise}
 \begin{Answer}[ref=bst3]
-$\alpha = \frac{1}{2}\ln\frac{0.5}{0.5} = \frac{1}{2}\ln 1 = 0$. A learner that does no better than
-flipping a coin gets no vote in the final classifier.
+$\alpha = \frac{1}{2}\ln\frac{0.5}{0.5} = \frac{1}{2}\ln 1 = 0$. A learner that does no better than flipping a coin
+gets no vote in the final classifier.
 \end{Answer}
 
+\begin{Exercise}[label=bst4, title={Half the weight}, space=3cm]
+Show that after any AdaBoost round, the points the learner got wrong carry exactly half of the total weight.
+(Hint: before normalizing, the wrong points have total weight $\varepsilon e^{\alpha}$ and the right ones have
+$(1 - \varepsilon)e^{-\alpha}$.)
+\end{Exercise}
+\begin{Answer}[ref=bst4]
+With $\alpha = \frac{1}{2}\ln\frac{1 - \varepsilon}{\varepsilon}$, we have $e^{\alpha} =
+\sqrt{\frac{1 - \varepsilon}{\varepsilon}}$. So the wrong points have $\varepsilon e^{\alpha} =
+\sqrt{\varepsilon(1 - \varepsilon)}$, and the right points have $(1 - \varepsilon)e^{-\alpha} =
+\sqrt{\varepsilon(1 - \varepsilon)}$, the same amount. After normalizing, each group has weight $\frac{1}{2}$. That is
+why the worked example ended with the missed point at exactly 0.5: the last learner now looks no better than a
+coin flip on the new weights, so the next learner must find something new.
+\end{Answer}
+
+\begin{Exercise}[label=bst5, title={A second round}, space=3cm]
+Continue the house example for one more round: the second tree learns the residuals $-1.5$, $-0.5$, and $2$
+exactly, and the learning rate is still 0.5. What are the new predictions and residuals?
+\end{Exercise}
+\begin{Answer}[ref=bst5]
+The predictions become $4.5 - 0.75 = 3.75$, $5.5 - 0.25 = 5.25$, and $8 + 1 = 9$. The residuals are $-0.75$, $-0.25$,
+and $1$, half as big again. Each round halves the error, so the predictions approach the true prices.
+\end{Answer}
+
+\begin{Exercise}[label=bst6, title={Learning rate}]
+In \filename{gradient\_boost.py}, change the learning rate to 1.0 and then to 0.01, keeping 500 rounds. What happens
+to the training and test RMSE?
+\end{Exercise}
+\begin{Answer}[ref=bst6]
+With a rate of 1.0, the training RMSE drops very fast (to 180 g after 500 stumps), but the test RMSE is best,
+about 298 g, around 20 stumps, and then climbs to 355 g as the model overfits. With 0.01, progress is slow: after
+500 stumps, both RMSEs are still falling (296 g training, 295 g test), and the model has not finished learning. A smaller rate needs more rounds, but it gives a gentler
+curve that is easier to stop at the right place.
+\end{Answer}

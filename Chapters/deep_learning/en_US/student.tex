@@ -1,41 +1,258 @@
 \chapter{Deep Learning}
 
-The networks in the last two chapters had one or two hidden layers. The systems
-that recognize your voice, translate languages, and generate images have dozens
-or hundreds. This chapter explains what all those layers buy you, and the one
-idea from calculus, the chain rule, that makes it possible to train them.
+The networks in the last two chapters had one or two hidden layers. The systems that recognize your voice,
+translate languages, and generate images have dozens or hundreds. This chapter explains what all those layers buy
+you, the one idea from calculus that makes it possible to train them, and the special kinds of layers that let
+networks see and read.
 
 \section{Many Layers}\index{deep learning}
-A \newterm{deep} neural network has many hidden layers. Each layer applies a weighted sum followed by a nonlinear
-activation function, and each layer builds features from the layer before it. Early layers may detect simple
-patterns, and later layers combine them into more abstract ones. Think of recognizing a face. First you notice edges, then eyes and noses, and then the whole face.
+A \newterm{deep} neural network has many hidden layers. Each layer builds features from the layer before it, so
+the features get more abstract as you go up. In a network that recognizes faces, the first layers respond to edges,
+middle layers combine edges into eyes and noses, and late layers combine those into whole faces. Nobody programs
+these features; the network learns them, because they help reduce the loss.
+
+Two things had to happen before deep networks worked well: enough data and computing power to train them, and
+answers to the question of how to get a useful gradient to a weight that is fifty layers away from the loss. The
+second is the subject of the next three sections.
 
 \section{The Chain Rule}\index{chain rule}
-Training a network requires derivatives of a loss through many nested functions. The \newterm{chain rule} gives the derivative of a
-composition: if $y = f(g(x))$, then
+Training a network requires derivatives of a loss through many nested functions. The \newterm{chain rule} gives the
+derivative of a composition: if $y = f(g(x))$, then
 $$\frac{dy}{dx} = f'(g(x)) \cdot g'(x)$$
 For example, let $y = \sin(x^2 + 1)$. Here $f(u) = \sin u$ and $g(x) = x^2 + 1$, so
 $$\frac{dy}{dx} = \cos(x^2 + 1) \cdot 2x$$
-At $x = 1.3$, this is $2(1.3)\cos(2.69) \approx -2.339$.
+At $x = 1.3$, this is $2(1.3)\cos(2.69) \approx -2.339$. With more layers, the chain just gets longer:
+for $y = f(g(h(x)))$, the derivative is $f'(g(h(x))) \cdot g'(h(x)) \cdot h'(x)$.
 
 \section{Backpropagation}\index{backpropagation}
-\newterm{Backpropagation} applies the chain rule to every weight in the network. A forward pass computes the output and the loss. A
-backward pass then starts at the loss and moves toward the input, multiplying local derivatives and reusing the values computed in
-the forward pass. Each weight's gradient is the product of the derivatives along its path to the loss.
+\newterm{Backpropagation} applies the chain rule to every weight in the network. A forward pass computes the output
+and the loss, remembering every intermediate value. A backward pass then starts at the loss and moves toward the
+input, multiplying local derivatives and reusing the values computed in the forward pass.
 
-Consider a single weight $w$ with prediction $\hat{y} = wx$ and loss $L = (\hat{y} - t)^2$. The chain rule gives
-$$\frac{\partial L}{\partial w} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial w} = 2(\hat{y} - t) \cdot x$$
-The update rule from the Linear Regression and Gradient Descent chapter then moves $w$ against this gradient.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  v/.style={draw, rounded corners, font=\small, minimum height=0.8cm, align=center},
+  >=stealth, node distance=0.75cm]
+\node[v] (x) {$x = 2$};
+\node[v, right=of x] (z) {$z = w_1x + b_1$\\$= 1.5$};
+\node[v, right=of z] (h) {$h = \mathrm{ReLU}(z)$\\$= 1.5$};
+\node[v, right=of h] (y) {$\hat{y} = w_2h + b_2$\\$= -2$};
+\node[v, right=of y] (L) {$L = (\hat{y} - t)^2$\\$= 9$};
+\draw[->, thick] (x) -- (z);
+\draw[->, thick] (z) -- (h);
+\draw[->, thick] (h) -- (y);
+\draw[->, thick] (y) -- (L);
+\node[font=\footnotesize, red!70!black, below=0.25cm of y] {$\frac{\partial L}{\partial \hat{y}} = -6$};
+\node[font=\footnotesize, red!70!black, below=0.25cm of h] {$\frac{\partial L}{\partial h} = 9$};
+\node[font=\footnotesize, red!70!black, below=0.25cm of z, align=center] {$\frac{\partial L}{\partial z} = 9$\\[2pt]$\frac{\partial L}{\partial w_1} = 18$};
+\draw[->, red!70!black] ([yshift=-1.3cm]L.south west) -- node[below, font=\footnotesize] {backward pass}
+  ([yshift=-1.3cm]z.south east);
+\end{tikzpicture}
+\caption{A forward pass (black) and a backward pass (red) through a tiny network with $w_1 = 0.5$, $b_1 = 0.5$,
+$w_2 = -1.5$, $b_2 = 0.25$, input $x = 2$, and target $t = 1$.}
+\label{fig:backprop}
+\end{figure}
 
-In a deep network, the path from a weight to the loss passes through many
-layers, so its gradient is a long product of local derivatives. Backpropagation
-computes all of these products in one backward sweep, sharing the work, instead
-of starting over for every weight.
+\textbf{Example}: For the network in Figure~\ref{fig:backprop}, find the gradient of the loss with respect to every
+parameter.
 
-\section{Practical Points}
-Deep networks are trained with minibatches of examples, using stochastic gradient descent or a variant of it. Very deep networks can
-suffer from vanishing or exploding gradients, because products of many derivatives can shrink or grow rapidly. Modern activation functions
-and careful initialization reduce this problem.
+\textbf{Solution}: The forward pass gives $z = 0.5(2) + 0.5 = 1.5$, $h = 1.5$, $\hat{y} = -1.5(1.5) + 0.25 = -2$, and
+$L = (-2 - 1)^2 = 9$. Now go backward, one link at a time:
+\begin{align*}
+\frac{\partial L}{\partial \hat{y}} &= 2(\hat{y} - t) = -6 \\
+\frac{\partial L}{\partial w_2} &= \frac{\partial L}{\partial \hat{y}} \cdot h = -9, \qquad
+\frac{\partial L}{\partial b_2} = \frac{\partial L}{\partial \hat{y}} \cdot 1 = -6 \\
+\frac{\partial L}{\partial h} &= \frac{\partial L}{\partial \hat{y}} \cdot w_2 = 9 \\
+\frac{\partial L}{\partial z} &= \frac{\partial L}{\partial h} \cdot \mathrm{ReLU}'(z) = 9 \cdot 1 = 9
+\qquad \text{(since } z > 0\text{)} \\
+\frac{\partial L}{\partial w_1} &= \frac{\partial L}{\partial z} \cdot x = 18, \qquad
+\frac{\partial L}{\partial b_1} = \frac{\partial L}{\partial z} \cdot 1 = 9
+\end{align*}
+Notice how each line reuses the one above it. In a real network, $\frac{\partial L}{\partial h}$ is computed once
+and shared by every weight below $h$. That sharing is what makes backpropagation fast: one backward sweep costs
+about as much as one forward pass, no matter how many weights there are.
+
+The program \filename{backprop.py} does the calculation by hand and then lets PyTorch do it:
+
+\begin{minted}{python}
+import torch
+
+# A tiny network: h = relu(w1*x + b1), y_hat = w2*h + b2, loss = (y_hat - t)^2
+x, t = 2.0, 1.0
+w1, b1, w2, b2 = 0.5, 0.5, -1.5, 0.25
+
+# Forward pass by hand
+z = w1 * x + b1             # 1.5
+h = max(0.0, z)             # 1.5
+y_hat = w2 * h + b2         # -2.0
+loss = (y_hat - t)**2       # 9.0
+
+# Backward pass by hand: the chain rule, from the loss back toward the input
+dL_dyhat = 2 * (y_hat - t)              # -6
+dL_dw2 = dL_dyhat * h                   # -9
+dL_db2 = dL_dyhat * 1                   # -6
+dL_dh = dL_dyhat * w2                   # 9
+dL_dz = dL_dh * (1.0 if z > 0 else 0.0) # ReLU passes the gradient only if z > 0
+dL_dw1 = dL_dz * x                      # 18
+dL_db1 = dL_dz * 1                      # 9
+print("by hand:  ", loss, [dL_dw1, dL_db1, dL_dw2, dL_db2])
+
+# The same thing with PyTorch's automatic differentiation
+params = [torch.tensor(v, requires_grad=True) for v in (w1, b1, w2, b2)]
+W1, B1, W2, B2 = params
+loss_t = (W2 * torch.relu(W1 * x + B1) + B2 - t)**2
+loss_t.backward()
+print("autograd: ", loss_t.item(), [p.grad.item() for p in params])
+\end{minted}
+
+\begin{verbatim}
+by hand:   9.0 [18.0, 9.0, -9.0, -6.0]
+autograd:  9.0 [18.0, 9.0, -9.0, -6.0]
+\end{verbatim}
+
+They agree. When you call \verb|loss.backward()| in PyTorch, this is exactly what happens, for every weight.
+
+\section{Vanishing Gradients}\index{vanishing gradient}
+The gradient for a weight deep inside a network is a long product of local derivatives, one or more per layer. If
+those factors are usually less than 1, the product shrinks exponentially; if they are usually more than 1, it
+explodes. The sigmoid's derivative is never more than $\frac{1}{4}$, so a gradient passing back through many sigmoid
+layers fades away, and the early layers stop learning.
+
+The program \filename{vanishing.py} builds networks of different depths, each layer with 64 neurons, and measures
+the average size of the gradient that reaches the first layer:
+
+\begin{minted}{python}
+import torch
+from torch import nn
+
+def first_layer_gradient(activation, depth, seed=0):
+    """Average size of the gradient reaching the first layer of a deep network."""
+    torch.manual_seed(seed)
+    layers = []
+    for _ in range(depth):
+        linear = nn.Linear(64, 64)
+        if activation is nn.ReLU:      # "He" initialization, designed for ReLU
+            nn.init.kaiming_normal_(linear.weight, nonlinearity="relu")
+        else:                          # "Xavier" initialization, designed for sigmoid-like units
+            nn.init.xavier_normal_(linear.weight)
+        nn.init.zeros_(linear.bias)
+        layers += [linear, activation()]
+    model = nn.Sequential(*layers, nn.Linear(64, 1))
+    x = torch.randn(256, 64)
+    loss = model(x).pow(2).mean()
+    loss.backward()
+    return model[0].weight.grad.abs().mean().item()
+
+print("depth   sigmoid      ReLU")
+for depth in [2, 5, 10, 20, 40]:
+    s = first_layer_gradient(nn.Sigmoid, depth)
+    r = first_layer_gradient(nn.ReLU, depth)
+    print(f"{depth:5d}  {s:9.2e}  {r:9.2e}")
+\end{minted}
+
+\begin{verbatim}
+depth   sigmoid      ReLU
+    2   4.11e-05   2.97e-03
+    5   1.11e-06   7.26e-03
+   10   7.34e-10   1.17e-03
+   20   6.90e-16   6.92e-04
+   40   4.56e-29   1.58e-04
+\end{verbatim}
+
+With sigmoids, the gradient at the first layer of a 40-layer network is around $10^{-29}$: those weights will never
+move. With ReLUs, whose slope is exactly 1 wherever they are active, and with starting weights scaled carefully
+for them (the ``He'' initialization), the gradient stays within a factor of about 50 at every depth. Better
+activations and careful initialization, along with tricks such as \newterm{residual connections}, which let the
+signal skip around layers, are what made networks with hundreds of layers trainable.
+
+\section{Convolutions: Networks That See}\index{convolutional neural network}
+A $256 \times 256$ color photo has $256 \times 256 \times 3 = 196{,}608$ numbers. A dense layer of 1000 neurons
+connected to all of them would need about 197 million weights, for one layer, and it would have to learn separately
+that an eye in the top left corner looks like an eye in the bottom right.
+
+A \newterm{convolutional layer} instead slides a small \newterm{filter}\index{filter (convolution)}, often
+$3 \times 3$, across the image. At each position, it multiplies the filter by the patch of pixels under it and adds
+up the products. The same nine weights are used everywhere in the image, so the layer finds the same pattern
+wherever it appears.
+
+\textbf{Example}: Apply the filter
+$$\begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix}
+\quad\text{to the patch}\quad
+\begin{bmatrix} 0 & 0 & 9 \\ 0 & 0 & 9 \\ 0 & 0 & 9 \end{bmatrix}$$
+
+\textbf{Solution}: Multiply matching entries and add: the left column contributes $-(0 + 0 + 0) = 0$, the middle
+column contributes 0, and the right column contributes $9 + 9 + 9 = 27$. The output is 27. On a patch that is all
+the same brightness, the left and right columns cancel, and the output is 0. So this filter lights up where the
+image gets brighter from left to right: it detects vertical edges.
+
+\filename{convolution.py} slides the filter across a small image with SciPy:
+
+\begin{minted}{python}
+import numpy as np
+from scipy.signal import correlate2d
+
+# A 5 x 6 grayscale "image": dark on the left, bright on the right
+image = np.array([[0, 0, 0, 9, 9, 9],
+                  [0, 0, 0, 9, 9, 9],
+                  [0, 0, 0, 9, 9, 9],
+                  [0, 0, 0, 9, 9, 9],
+                  [0, 0, 0, 9, 9, 9]])
+
+# A 3 x 3 filter that responds to a change from left to right
+vertical_edge = np.array([[-1, 0, 1],
+                          [-1, 0, 1],
+                          [-1, 0, 1]])
+
+# Slide the filter over every 3 x 3 patch; each output is a sum of products
+print(correlate2d(image, vertical_edge, mode="valid"))
+
+horizontal_edge = vertical_edge.T
+print(correlate2d(image, horizontal_edge, mode="valid"))
+\end{minted}
+
+\begin{verbatim}
+[[ 0 27 27  0]
+ [ 0 27 27  0]
+ [ 0 27 27  0]]
+[[0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+\end{verbatim}
+
+A $3 \times 3$ filter fits in $3 \times 4$ positions on a $5 \times 6$ image, so the output is $3 \times 4$. The vertical-edge
+filter finds the boundary in the middle columns; the horizontal-edge filter (its transpose) finds nothing, because
+nothing changes from top to bottom. (The function is called \verb|correlate2d| because, strictly speaking, a
+mathematician's convolution flips the filter first. Deep learning libraries do not flip, but they still call it
+convolution.)
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{edges.png}
+\caption{The two edge filters applied to a $64 \times 64$ drawing. Red is a positive response, blue a negative one.}
+\label{fig:edges}
+\end{figure}
+
+In a \newterm{convolutional neural network} (CNN), nobody chooses the filters. Each layer has dozens of them, their
+nine weights are learned by backpropagation like any other weights, and the first layers usually end up looking a lot
+like these edge detectors. Later layers apply filters to the outputs of earlier ones, finding corners, textures,
+and eventually whole objects.
+
+\section{A Field Guide to Architectures}
+\begin{center}
+\begin{tabular}{l >{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}p{4.4cm}}
+\textbf{Architecture} & \textbf{Key idea} & \textbf{Typical uses} \\
+\hline
+dense (fully connected) & every neuron sees every input & tables of numbers, like the penguins \\
+convolutional (CNN) & small filters shared across the image & photos, medical scans \\
+recurrent (RNN) & reads a sequence one step at a time, with memory & older speech and text systems \\
+transformer & \emph{attention}: each word looks at every other word to decide what matters & chatbots, translation \\
+\end{tabular}
+\end{center}
+
+The large language models behind chatbots are transformers with billions of weights, trained by the same loop you
+wrote for the penguins: feedforward, cross-entropy loss on the next word, backpropagation, and a gradient step,
+repeated across a vast amount of text.
 
 \begin{Exercise}[label=dl1, title=Apply the chain rule]
 Find $\frac{d}{dx}(3x - 1)^4$.
@@ -45,20 +262,50 @@ $4(3x-1)^3 \cdot 3 = 12(3x-1)^3$.
 \end{Answer}
 
 \begin{Exercise}[label=dl2, title=One gradient]
-A single weight has $\hat{y} = wx$ and $L = (\hat{y} - t)^2$. Find $\frac{\partial L}{\partial w}$ when $w = 2$, $x = 3$, and $t = 5$.
+A single weight has $\hat{y} = wx$ and $L = (\hat{y} - t)^2$. Find $\frac{\partial L}{\partial w}$ when $w = 2$,
+$x = 3$, and $t = 5$.
 \end{Exercise}
 \begin{Answer}[ref=dl2]
 $\hat{y} = 6$, so $\frac{\partial L}{\partial w} = 2(6 - 5)(3) = 6$.
 \end{Answer}
 
 \begin{Exercise}[label=dl3, title=Vanishing gradients]
-The sigmoid activation has a derivative of at most $0.25$. A gradient passes back
-through 10 sigmoid layers, picking up a factor of at most $0.25$ at each layer.
-What is the largest the resulting factor can be?
+The sigmoid activation has a derivative of at most $0.25$. A gradient passes back through 10 sigmoid layers, picking
+up a factor of at most $0.25$ at each layer. What is the largest the resulting factor can be?
 \end{Exercise}
 \begin{Answer}[ref=dl3]
-$0.25^{10} \approx 9.5 \times 10^{-7}$. The gradient reaching the early layers is
-less than a millionth of its original size, so those layers barely learn. This is
-the vanishing gradient problem, and it is one reason modern networks use the ReLU,
-whose derivative is 1 for positive inputs.
+$0.25^{10} \approx 9.5 \times 10^{-7}$. The gradient reaching the early layers is less than a millionth of its
+original size, so those layers barely learn. This is the vanishing gradient problem, and it is one reason modern
+networks use the ReLU, whose derivative is 1 for positive inputs.
+\end{Answer}
+
+\begin{Exercise}[label=dl4, title={A dead ReLU}, space=3cm]
+In the network of Figure~\ref{fig:backprop}, change $b_1$ to $-1.5$, so $z = -0.5$. Redo the backward pass. Which
+gradients become zero, and why?
+\end{Exercise}
+\begin{Answer}[ref=dl4]
+Now $h = \mathrm{ReLU}(-0.5) = 0$ and $\hat{y} = 0.25$, so $L = (0.25 - 1)^2 = 0.5625$ and
+$\frac{\partial L}{\partial \hat{y}} = -1.5$. Then $\frac{\partial L}{\partial w_2} = -1.5 \times 0 = 0$,
+$\frac{\partial L}{\partial b_2} = -1.5$, and since $\mathrm{ReLU}'(z) = 0$ for $z < 0$,
+$\frac{\partial L}{\partial z} = 0$, so $\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial b_1} = 0$. Only
+$b_2$ can learn. If $z$ is negative for every training example, the hidden neuron never changes: it is dead.
+\end{Answer}
+
+\begin{Exercise}[label=dl5, title={Filter by hand}, space=3cm]
+Apply the horizontal-edge filter (the transpose of the vertical-edge filter) to the patch
+$\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 5 & 5 & 5 \end{bmatrix}$.
+\end{Exercise}
+\begin{Answer}[ref=dl5]
+The horizontal-edge filter has rows $(-1, -1, -1)$, $(0, 0, 0)$, and $(1, 1, 1)$. The output is
+$-(1 + 1 + 1) + 0 + (5 + 5 + 5) = 12$: the patch gets brighter from top to bottom, so the filter responds.
+\end{Answer}
+
+\begin{Exercise}[label=dl6, title={Count the weights}]
+A convolutional layer applies 32 different $3 \times 3$ filters to a grayscale image, each with one bias. How many
+parameters does it have? How many would a dense layer of 32 neurons connected to every pixel of a $256 \times 256$
+grayscale image have?
+\end{Exercise}
+\begin{Answer}[ref=dl6]
+Convolutional: $32 \times (9 + 1) = 320$, regardless of the image size. Dense: $32 \times (256 \times 256 + 1) =
+2{,}097{,}184$. Sharing the filter's weights across the image saves a factor of more than 6000.
 \end{Answer}

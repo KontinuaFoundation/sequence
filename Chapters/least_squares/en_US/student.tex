@@ -1,58 +1,347 @@
 \chapter{Least Squares}
 
-\section{The Problem}\index{least squares}
-Many data sets show a roughly straight-line pattern, but no line passes through every
-point. We want a line that comes as close as possible to all the points at once. For example, suppose you record the hours you study for each test and the score you earn. The points will not fall exactly on a line, but you can still find the line that comes closest. The usual
-measure of closeness is the \newterm{sum of squared errors}. For a line $\hat{y} = b_0 + b_1 x$
-and data points $(x_i, y_i)$,
-$$S(b_0, b_1) = \sum_{i=1}^{n} (y_i - b_0 - b_1 x_i)^2$$
-The \newterm{least squares} line is the one that makes $S$ as small as possible.
+Weighing a penguin is a wrestling match: you have to catch it, bag it, and hold the scale steady on the ice
+while it complains. Measuring its flipper is easier, and you can even do it from a photo. If flipper length
+predicted body mass well, researchers could skip a lot of wrestling.
 
-Squaring keeps positive and negative errors from cancelling and gives extra weight to large
-errors. It also makes the problem solvable with calculus.
+The tool for that prediction is a straight line, chosen by a rule called \newterm{least squares}. It is
+the oldest method in this unit and still one of the most used. Almost every method that comes after it is
+built on the same idea: choose the model that makes the errors as small as possible.
+
+\section{Predictor and Response}\index{simple linear regression}\index{regression!simple linear}
+\newterm{Simple linear regression} describes the relationship between two quantitative variables with a
+line. The \index{predictor variable}\newterm{predictor} $x$ (also called the explanatory or independent
+variable) is used to predict the \index{response variable}\newterm{response} $y$ (also called the outcome or
+dependent variable). In the language of the last two chapters, $x$ is a feature and $y$ is the label. It is
+\emph{simple} because there is only one predictor; later in this chapter we use several.
+
+The fitted line is
+$$\hat{y} = b_0 + b_1 x$$
+where $b_0$ is the \newterm{intercept} and $b_1$ is the \newterm{slope}, the predicted change in $y$ when $x$
+goes up by one. Statisticians often write the model for the whole population with an error term:
+$$y = \beta_0 + \beta_1 x + \epsilon$$
+The error $\epsilon$ is everything about $y$ that the line does not capture. Our $b_0$ and $b_1$ are
+estimates of $\beta_0$ and $\beta_1$, computed from a sample.
+
+\section{The Best Line}\index{least squares}
+Five students record how many hours they studied for a quiz and the score they earned (out of 10):
+
+\begin{center}
+\begin{tabular}{l c c c c c}
+Hours studied, $x$ & 1 & 2 & 3 & 4 & 5 \\
+\hline
+Quiz score, $y$ & 2.1 & 3.9 & 6.2 & 7.8 & 10.1 \\
+\end{tabular}
+\end{center}
+
+No line passes through all five points, so which line is best? For any line, each point has a
+\index{residual}\newterm{residual}, $e_i = y_i - \hat{y}_i$: how far the point sits above (positive) or below
+(negative) the line. We want the residuals small, all at once. The usual way to say that is to minimize the
+\newterm{sum of squared errors}:
+$$S(b_0, b_1) = \sum_{i=1}^{n} (y_i - b_0 - b_1 x_i)^2$$
+The \newterm{least squares line} is the one that makes $S$ as small as possible.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{quiz_residuals.png}
+\caption{The least squares line for the quiz data. The residuals (red) are the vertical distances from the
+points to the line.}
+\label{fig:quiz-residuals}
+\end{figure}
+
+Why square? Squaring keeps positive and negative errors from cancelling. It punishes one big miss more than
+several small ones. And it makes the problem easy to solve with calculus.
 
 \section{Solving with Calculus}\index{normal equations}
-A minimum of $S$ occurs where both partial derivatives are zero. Taking the partial derivative with
-respect to $b_0$ and setting it to zero gives
+At the minimum of $S$, both partial derivatives are zero. Setting $\partial S / \partial b_0 = 0$ gives
 $$\sum (y_i - b_0 - b_1 x_i) = 0 \quad\Longrightarrow\quad b_0 = \bar{y} - b_1 \bar{x}$$
-Taking the partial derivative with respect to $b_1$ and setting it to zero gives
+So the best line always passes through the point of averages, $(\bar{x}, \bar{y})$. Setting
+$\partial S / \partial b_1 = 0$ gives
 $$\sum x_i (y_i - b_0 - b_1 x_i) = 0$$
-Substituting $b_0$ into the second equation and simplifying gives
+Substituting for $b_0$ and simplifying:
 $$b_1 = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = \frac{S_{xy}}{S_{xx}}$$
-You will use these formulas throughout the next chapter, Simple Linear Regression.
 
-\section{A Worked Example}
-Here are five points (hours studied and quiz scores) that the next chapter will use again:
-$x = 1, 2, 3, 4, 5$ and $y = 2.1, 3.9, 6.2, 7.8, 10.1$. The sums needed are
+\begin{mdframed}[style=important]
+The least squares line $\hat{y} = b_0 + b_1 x$ has
+$$b_1 = \frac{S_{xy}}{S_{xx}}, \qquad b_0 = \bar{y} - b_1 \bar{x}$$
+where $S_{xx} = \sum (x_i - \bar{x})^2$ and $S_{xy} = \sum (x_i - \bar{x})(y_i - \bar{y})$.
+\end{mdframed}
+
+\textbf{Example}: Find the least squares line for the quiz data.
+
+\textbf{Solution}: The sums are
 $$\sum x_i = 15, \qquad \sum y_i = 30.1, \qquad \sum x_i^2 = 55, \qquad \sum x_i y_i = 110.2$$
-so $\bar{x} = 3$, $\bar{y} = 6.02$, $S_{xx} = 55 - 5(3)^2 = 10$, and $S_{xy} = 110.2 - 5(3)(6.02) = 19.9$.
-Therefore
+so $\bar{x} = 3$ and $\bar{y} = 6.02$. A shortcut avoids subtracting the mean from every point:
+$S_{xx} = \sum x_i^2 - n\bar{x}^2 = 55 - 5(3)^2 = 10$ and
+$S_{xy} = \sum x_i y_i - n\bar{x}\bar{y} = 110.2 - 5(3)(6.02) = 19.9$. Therefore
 $$b_1 = \frac{19.9}{10} = 1.99, \qquad b_0 = 6.02 - 1.99(3) = 0.05$$
-The least squares line is $\hat{y} = 0.05 + 1.99x$.
+The line is $\hat{y} = 0.05 + 1.99x$. The residuals are $0.06, -0.13, 0.18, -0.21, 0.10$, and the smallest
+possible sum of squared errors is
+$$SS_{res} = 0.06^2 + 0.13^2 + 0.18^2 + 0.21^2 + 0.10^2 = 0.107$$
+The residuals sum to zero. That is always true for a least squares line with an intercept; it is exactly
+what the equation $\partial S / \partial b_0 = 0$ says.
+
+\section{Reading the Line}
+\textbf{The slope.} $b_1 = 1.99$ means each extra hour of study is \emph{associated} with about 2 more points.
+The word ``associated'' matters. A regression line describes a pattern in data. It does not show that
+studying \emph{causes} higher scores, unless the data came from a well-designed experiment. Maybe students
+who study longer also sleep more, or already liked the subject.
+
+\textbf{The intercept.} $b_0 = 0.05$ is the predicted score after zero hours of study. Nobody in the data
+studied zero hours, so this number is a guess about a situation the line never saw.
+
+\textbf{Extrapolation.}\index{extrapolation} For 6 hours, the line predicts $0.05 + 1.99(6) = 11.99$ points
+on a 10-point quiz. The line was fit to $x$ between 1 and 5, and nothing guarantees the pattern continues
+outside that range. Predicting outside the range of the data is called \newterm{extrapolation}, and it is
+risky.
+
+\section{Fitting Penguins with NumPy}
+Now the penguins. Put \filename{penguins.csv} and \filename{penguins.py} in a folder and create
+\filename{line.py}, which applies the formulas above to all 333 penguins:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+x = data["flipper_length_mm"]
+y = data["body_mass_g"]
+
+# The formulas from this chapter
+x_bar, y_bar = np.mean(x), np.mean(y)
+b1 = np.sum((x - x_bar) * (y - y_bar)) / np.sum((x - x_bar)**2)
+b0 = y_bar - b1 * x_bar
+print(f"mass = {b0:.1f} + {b1:.2f} * flipper")
+
+# How good is it?
+residuals = y - (b0 + b1 * x)
+rmse = np.sqrt(np.mean(residuals**2))
+print(f"RMSE = {rmse:.0f} g")
+print(f"Sum of residuals = {round(np.sum(residuals), 6) + 0.0}")
+
+# A 200 mm flipper
+print(f"Prediction for 200 mm: {b0 + b1 * 200:.0f} g")
+\end{minted}
+
+\begin{verbatim}
+mass = -5872.1 + 50.15 * flipper
+RMSE = 392 g
+Sum of residuals = 0.0
+Prediction for 200 mm: 4159 g
+\end{verbatim}
+
+Each extra millimeter of flipper goes with about 50 more grams of penguin. The RMSE of 392 g is less than half
+the 804 g of the always-guess-the-average baseline from the Classification and Regression chapter. (The
+\verb|round(...) + 0.0| turns a sum like $-0.0000000004$, which is zero up to rounding error, into a plain
+\verb|0.0|.)
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{penguin_line.png}
+\caption{The least squares line for body mass against flipper length.}
+\label{fig:penguin-line}
+\end{figure}
+
+The intercept, $-5872$ g, is a penguin with no flippers weighing less than nothing. Like the quiz intercept,
+it is an extrapolation far outside the data (flippers here run from 172 to 231 mm), and you should not try
+to interpret it.
 
 \section{The Matrix Form}\index{normal equations!matrix form}
-Write the model as a matrix equation. Let $X$ be the matrix whose first column is all ones and
-whose second column is the $x$ values, and let $\mathbf{b} = (b_0, b_1)$. Then
-$\hat{\mathbf{y}} = X\mathbf{b}$. Minimizing $\|\mathbf{y} - X\mathbf{b}\|^2$ gives the \newterm{normal equations}
-$$X^T X \mathbf{b} = X^T \mathbf{y}$$
-For the example above,
-$$X^T X = \begin{pmatrix} 5 & 15 \\ 15 & 55 \end{pmatrix}, \qquad
-X^T \mathbf{y} = \begin{pmatrix} 30.1 \\ 110.2 \end{pmatrix}$$
-Solving this $2 \times 2$ system gives $\mathbf{b} = (0.05, 1.99)$, the same answer.
-The matrix form extends directly to several predictors, which is how multiple regression is computed.
+Formulas for $b_0$ and $b_1$ are fine for one feature, but we will want many. Linear algebra handles any
+number at once.
 
-\section{Residuals and Fit}
-At the least squares solution, the residuals $e_i = y_i - \hat{y}_i$ are perpendicular to the columns
-of $X$. In particular, they sum to zero, because the first column of $X$ is all ones. The minimum value
-of the sum of squared errors is
-$$SS_{res} = \sum e_i^2 = 0.107 \text{ for the example above}$$
+Make a \newterm{design matrix} $X$ whose first column is all ones and whose second column holds the $x$
+values, and let $\mathbf{b} = (b_0, b_1)$. Then the predictions are $\hat{\mathbf{y}} = X\mathbf{b}$, and we
+want to minimize $\|\mathbf{y} - X\mathbf{b}\|^2$. Setting the gradient to zero gives the
+\newterm{normal equations}:
+$$X^T X \mathbf{b} = X^T \mathbf{y}$$
+
+For the quiz data,
+$$X = \begin{pmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \\ 1 & 4 \\ 1 & 5 \end{pmatrix}, \qquad
+X^T X = \begin{pmatrix} 5 & 15 \\ 15 & 55 \end{pmatrix}, \qquad
+X^T \mathbf{y} = \begin{pmatrix} 30.1 \\ 110.2 \end{pmatrix}$$
+Notice the entries: $n$, $\sum x_i$, $\sum x_i^2$, $\sum y_i$, and $\sum x_i y_i$, the same sums we used by
+hand. Solving this $2 \times 2$ system gives $\mathbf{b} = (0.05, 1.99)$ again.
+
+The normal equations also have a picture. They say $X^T(\mathbf{y} - X\mathbf{b}) = \mathbf{0}$: the residual
+vector is perpendicular to every column of $X$. Least squares drops a perpendicular from $\mathbf{y}$ onto the
+space of all possible predictions, exactly like finding the closest point on a plane.
+
+In \filename{normal.py}, NumPy solves the normal equations, and then solves the whole problem with
+\verb|np.linalg.lstsq|, which is what you should use in practice (it is more accurate when the columns of $X$
+are nearly dependent):
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+x = data["flipper_length_mm"]
+y = data["body_mass_g"]
+
+# Design matrix: a column of ones, then the flipper lengths
+X = np.column_stack([np.ones(len(x)), x])
+print("X has shape", X.shape)
+
+# Solve the normal equations
+b = np.linalg.solve(X.T @ X, X.T @ y)
+print("Normal equations:", np.round(b, 2))
+
+# Let NumPy do the whole least squares problem
+b, *_ = np.linalg.lstsq(X, y)
+print("lstsq:           ", np.round(b, 2))
+
+# Residuals are perpendicular to every column of X
+residuals = y - X @ b
+print("X^T e =", np.round(X.T @ residuals, 6) + 0.0)
+\end{minted}
+
+\begin{verbatim}
+X has shape (333, 2)
+Normal equations: [-5872.09    50.15]
+lstsq:            [-5872.09    50.15]
+X^T e = [0. 0.]
+\end{verbatim}
+
+\verb|lstsq| returns four things (the solution, the residual sum of squares, the rank of $X$, and its singular
+values); \verb|b, *_ =| keeps the first and throws the rest away.
+
+\section{Multiple Regression}\index{multiple regression}\index{regression!multiple}
+Nothing in $X^T X \mathbf{b} = X^T \mathbf{y}$ cares how many columns $X$ has. Add a column for each feature,
+and least squares finds the best \newterm{multiple regression}
+$$\hat{y} = b_0 + b_1 x_1 + b_2 x_2 + \cdots + b_p x_p$$
+
+Category features go in as one-hot columns, as in the Preparing Data for Models chapter, dropping one
+category so the columns are not dependent. Here \filename{multiple.py} predicts mass from flipper length,
+then adds sex, then adds species. It trains on 250 penguins and tests on the other 83, using the same split
+as the Preparing Data for Models chapter:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+y = data["body_mass_g"]
+n = len(y)
+
+columns = {
+    "intercept": np.ones(n),
+    "flipper": data["flipper_length_mm"],
+    "male": (data["sex"] == "male").astype(float),
+    "Chinstrap": (data["species"] == "Chinstrap").astype(float),
+    "Gentoo": (data["species"] == "Gentoo").astype(float),
+}
+
+# The same split as the Preparing Data chapter
+order = np.random.default_rng(1).permutation(n)
+train, test = order[:250], order[250:]
+
+def rmse(X, b, rows):
+    return np.sqrt(np.mean((y[rows] - X[rows] @ b)**2))
+
+models = [["intercept", "flipper"],
+          ["intercept", "flipper", "male"],
+          ["intercept", "flipper", "male", "Chinstrap", "Gentoo"]]
+for names in models:
+    X = np.column_stack([columns[c] for c in names])
+    b, *_ = np.linalg.lstsq(X[train], y[train])
+    print(f"{len(names) - 1} features: train RMSE {rmse(X, b, train):.0f}, "
+          f"test RMSE {rmse(X, b, test):.0f}")
+
+for name, coef in zip(names, b):
+    print(f"  {name:10s} {coef:8.1f}")
+\end{minted}
+
+\begin{verbatim}
+1 features: train RMSE 408, test RMSE 343
+2 features: train RMSE 365, test RMSE 324
+4 features: train RMSE 298, test RMSE 283
+  intercept    -220.6
+  flipper        19.1
+  male          568.4
+  Chinstrap     -92.0
+  Gentoo        887.6
+\end{verbatim}
+
+\begin{center}
+\begin{tabular}{l c c}
+\textbf{Features} & \textbf{Training RMSE (g)} & \textbf{Test RMSE (g)} \\
+\hline
+none (always guess the average) & 804 & --- \\
+flipper & 408 & 343 \\
+flipper, sex & 365 & 324 \\
+flipper, sex, species & 298 & 283 \\
+\end{tabular}
+\end{center}
+
+Each feature helps, on the test set as well as the training set. (The test RMSE is lower than the training
+RMSE only because these 83 penguins happen to be a little easier to predict; with a different split, it could
+go the other way.)
+
+Read the last model's coefficients carefully. Each one is the change in predicted mass when that feature goes
+up by one \emph{and the others stay the same}:
+\begin{itemize}
+\item A male weighs about 568 g more than a female of the same species and flipper length.
+\item A Gentoo weighs about 888 g more than an Adelie (the dropped category) of the same sex and flipper
+length.
+\item The flipper slope fell from 50 to 19 g per mm. Much of what looked like a flipper effect was really a
+species effect: Gentoos have long flippers \emph{and} heavy bodies.
+\end{itemize}
+
+\section{Look at the Residuals}\index{residual plot}
+An RMSE is one number. A \newterm{residual plot} shows where the misses are. If the model has captured the
+pattern, the residuals should look like random noise around zero.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{residuals_species.png}
+\caption{Residuals of the flipper-only line, colored by species.}
+\label{fig:residuals-species}
+\end{figure}
+
+In Figure~\ref{fig:residuals-species}, the Chinstrap residuals are mostly below zero; on average, the
+flipper-only line overestimates a Chinstrap by 216 g. That is a pattern the model missed, and the species
+columns in the multiple regression fix it. Whenever residuals sort themselves by some variable, that variable
+belongs in the model.
+
+\section{A Line That Points the Wrong Way}\index{Simpson's paradox}
+Fit body mass against bill depth for all 333 penguins and you get a slope of $-193$ g per mm: deeper bills,
+lighter penguins. Fit it within each species, and the slope is positive every time.
+
+\begin{center}
+\begin{tabular}{l r}
+\textbf{Penguins} & \textbf{Slope (g per mm of bill depth)} \\
+\hline
+all 333 & $-193$ \\
+Adelie & $+218$ \\
+Chinstrap & $+205$ \\
+Gentoo & $+368$ \\
+\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{simpson.png}
+\caption{Within each species, deeper bills go with heavier penguins. Across all penguins, the line slopes
+the other way, because Gentoos have shallow bills and heavy bodies.}
+\label{fig:simpson}
+\end{figure}
+
+A trend that reverses when you split the data into groups is called \newterm{Simpson's paradox}. The
+species is a \index{lurking variable}\newterm{lurking variable}: it affects both bill depth and mass. A line
+fit to the whole group tells you how the variables move together in this collection of penguins, not what
+would happen to one penguin if its bill got deeper. Putting species in the model, as multiple regression
+does, is one way to protect yourself.
 
 \section{When Least Squares Is Not Enough}
-Least squares assumes the errors are roughly the same size everywhere, and that the relationship
-is linear in the parameters. Outliers can pull the line strongly, because squaring gives large errors
-more weight. Robust methods use other measures of error when this is a concern.
+Least squares works best when the relationship is close to linear and the errors are about the same size
+everywhere. Because it squares errors, a single wild point can drag the line toward it; check for outliers
+before you trust a fit, and consider \emph{robust} methods, which use other measures of error, when outliers
+are real. For relationships that curve, you can still use least squares by adding columns like $x^2$, as the
+Training, Validation, and Testing chapter did. Too many such columns, though, and you are back to
+overfitting.
 
-\begin{Exercise}[label=ls1, title=Solve by hand]
+\begin{Exercise}[label=ls1, title=Solve by hand, space=3cm]
 Find the least squares line for the points $(0,1), (1,3), (2,4), (3,8)$.
 \end{Exercise}
 \begin{Answer}[ref=ls1]
@@ -60,7 +349,7 @@ $\bar{x} = 1.5$, $\bar{y} = 4$, $S_{xx} = 5$, and $S_{xy} = 11$. So $b_1 = \frac
 $b_0 = 4 - 2.2(1.5) = 0.7$. The line is $\hat{y} = 0.7 + 2.2x$.
 \end{Answer}
 
-\begin{Exercise}[label=ls2, title=Predict and check]
+\begin{Exercise}[label=ls2, title=Predict and check, space=3cm]
 Using the line from the previous exercise, predict $y$ at $x = 4$, and find $SS_{res}$.
 \end{Exercise}
 \begin{Answer}[ref=ls2]
@@ -68,11 +357,72 @@ $\hat{y} = 0.7 + 2.2(4) = 9.5$. For the four points, the predictions are $0.7$, 
 The residuals are $0.3$, $0.1$, $-1.1$, and $0.7$, so $SS_{res} = 0.09 + 0.01 + 1.21 + 0.49 = 1.80$.
 \end{Answer}
 
+\begin{Exercise}[label=slr1, title=Predict a value]
+Using the quiz line $\hat{y} = 0.05 + 1.99x$, predict the score for a student who studies 4 hours. What is the
+residual for the student who actually studied 4 hours?
+\end{Exercise}
+\begin{Answer}[ref=slr1]
+$\hat{y} = 0.05 + 1.99(4) = 8.01$. That student scored 7.8, so the residual is $7.8 - 8.01 = -0.21$.
+\end{Answer}
+
 \begin{Exercise}[label=ls3, title=Why square?]
-Give one reason to minimize the sum of squared errors instead of the sum of absolute errors.
+Give one reason to minimize the sum of squared errors instead of the sum of absolute errors, and one reason
+not to.
 \end{Exercise}
 \begin{Answer}[ref=ls3]
-Squared errors are differentiable everywhere, so calculus gives a closed-form solution. (Another
-valid answer: squared errors punish one big miss more than several small ones, so the line avoids
-being badly wrong anywhere. The flip side is that a single outlier can pull the line.)
+For: squared errors are differentiable everywhere, so calculus gives a formula for the answer. (Also
+acceptable: squaring punishes one big miss more than several small ones, so the line avoids being badly wrong
+anywhere.) Against: a single outlier can pull the line strongly, because its huge error gets squared.
+\end{Answer}
+
+\begin{Exercise}[label=slr4, title=Spot the problem]
+A study of 200 cities finds that cities with more ice cream sales have more drownings, with a positive
+regression slope. A news site says, ``Ice cream causes drowning.'' What is wrong with this conclusion?
+\end{Exercise}
+\begin{Answer}[ref=slr4]
+The data are observational, so the slope shows only an association. A lurking variable, hot weather, drives
+both: people buy more ice cream and swim more on hot days, and more swimming leads to more drownings.
+\end{Answer}
+
+\begin{Exercise}[label=slr3, title=Read the coefficients]
+What does the coefficient of $-92.0$ in the last model mean? Why is there no coefficient for Adelie
+penguins?
+\end{Exercise}
+\begin{Answer}[ref=slr3]
+A Chinstrap is predicted to weigh about 92 g less than an Adelie of the same sex and flipper length. Adelie is
+the dropped category: it is the baseline the other species are compared to. Including all three species
+columns would make them add up to the intercept column, and $X^T X$ would not be invertible.
+\end{Answer}
+
+\begin{Exercise}[label=ls4, title={Your own Simpson's paradox}]
+Modify \filename{line.py} to reproduce the table of bill-depth slopes: one line for all penguins and one for
+each species. Then fit mass from flipper length within each species. Does the flipper slope change sign?
+\end{Exercise}
+\begin{Answer}[ref=ls4]
+\begin{minted}{python}
+def fit_line(x, y):
+    b1 = np.sum((x - x.mean()) * (y - y.mean())) / np.sum((x - x.mean())**2)
+    return y.mean() - b1 * x.mean(), b1
+
+depth = data["bill_depth_mm"]
+species = data["species"]
+print("all", fit_line(depth, y)[1])
+for name in ["Adelie", "Chinstrap", "Gentoo"]:
+    k = species == name
+    print(name, fit_line(depth[k], y[k])[1], fit_line(x[k], y[k])[1])
+\end{minted}
+The flipper slopes are about 33 (Adelie), 35 (Chinstrap), and 54 (Gentoo) g per mm. All are positive, like the
+overall slope of 50, so flipper length shows no paradox. The within-species slopes are smaller than 50 for
+Adelies and Chinstraps, though, because part of the overall slope comes from species differences.
+\end{Answer}
+
+\begin{Exercise}[label=ls5, title={Everything in}]
+Add bill length and bill depth to the last model in \filename{multiple.py}. What happens to the training and
+test RMSE? Is this a big improvement?
+\end{Exercise}
+\begin{Answer}[ref=ls5]
+Add \verb|"bill_length": data["bill_length_mm"]| and \verb|"bill_depth": data["bill_depth_mm"]| to
+\verb|columns| and a fourth model with all six features. The training RMSE falls from 298 to 288 g, and the
+test RMSE from 283 to 276 g. It helps a little, but most of what can be learned from these measurements is
+already in flipper length, sex, and species.
 \end{Answer}

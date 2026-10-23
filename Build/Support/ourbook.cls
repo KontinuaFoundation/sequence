@@ -1238,6 +1238,8 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 \@totalleftmargin=\ExeBaseLeftskip
 \everydisplay\expandafter{\the\everydisplay\advance\displayindent\ExeBaseLeftskip}%
 \parskip=12pt
+% The column is narrow, so allow extra stretch rather than overfull lines.
+\emergencystretch=1.5em
 \noindent\rlap{\hskip.5\textwidth\hskip16pt\vtop{\vskip-30pt
 \leftskip=0pt \rightskip=0pt \parskip=\ExeSavedParskip
 \hsize=.5\textwidth

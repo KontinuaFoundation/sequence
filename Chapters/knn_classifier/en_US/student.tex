@@ -1,9 +1,12 @@
 \chapter{The k-Nearest Neighbor Classifier}
 
-\section{The Idea}\index{k-nearest neighbor}
-The \newterm{k-nearest neighbor} (k-NN) classifier predicts the class of a new point
-from the points closest to it. It needs no model to be fit. Think of asking the three friends who sit closest to you what movie to watch: you go with what most of them say. It stores the training data,
-and does all its work when a prediction is requested. This is called \emph{instance-based} learning.
+New to a school and not sure which lunch table to sit at? You might look at who you resemble: same classes,
+same sports, same music. That is the whole idea of the \newterm{k-nearest neighbor}\index{k-nearest neighbor}
+(k-NN) classifier. To label something new, find the $k$ labeled examples most like it and go with the majority.
+
+It is the simplest classifier in this unit. There are no coefficients and no gradient descent. Training
+consists of storing the data, and all the work happens when you ask for a prediction. This is called
+\newterm{instance-based} learning.
 
 \section{The Algorithm}
 To classify a new point $\mathbf{x}$:
@@ -12,38 +15,187 @@ To classify a new point $\mathbf{x}$:
 \item Find the $k$ training points with the smallest distances.
 \item Predict the most common class among those $k$ points.
 \end{enumerate}
-For regression, step 3 is replaced by the average of the $k$ values.
+For regression, step 3 becomes ``predict the average label of those $k$ points.''
 
-\section{Distance}\index{Euclidean distance}
-The usual distance is the Euclidean distance. For two points with $n$ features,
-$$d(\mathbf{x}, \mathbf{y}) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}$$
+The usual distance is the Euclidean distance\index{Euclidean distance}. For two points with $p$ features,
+$$d(\mathbf{x}, \mathbf{z}) = \sqrt{\sum_{j=1}^{p}(x_j - z_j)^2}$$
 
 \section{A Worked Example}
 Six labeled points are given in the plane:
 $$A: (1,1), \quad A: (2,1), \quad A: (4,1), \quad B: (2,3), \quad B: (5,4), \quad B: (6,5)$$
-Classify the new point $\mathbf{x} = (1, 2.5)$. The distances to the nearest points are:
+Classify the new point $\mathbf{x} = (1, 2.5)$.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.9]
+\draw[->] (0,0) -- (7,0) node[right] {$x_1$};
+\draw[->] (0,0) -- (0,6) node[above] {$x_2$};
+\foreach \x in {1,...,6} \draw (\x,0.08) -- (\x,-0.08) node[below] {\footnotesize\x};
+\foreach \y in {1,...,5} \draw (0.08,\y) -- (-0.08,\y) node[left] {\footnotesize\y};
+\draw[dashed, gray] (1,2.5) circle (1.118);
+\draw[dashed, gray] (1,2.5) circle (1.803);
+\foreach \p in {(1,1),(2,1),(4,1)} \fill[orange] \p circle (3pt);
+\foreach \p in {(2,3),(5,4),(6,5)} \fill[blue!70!black] \p +(-3pt,-3pt) rectangle +(3pt,3pt);
+\draw[thick] (1,2.5) node {$\times$} node[below right] {$\mathbf{x}$};
+\node[gray, fill=white, inner sep=1pt] at (1,4.3) {\footnotesize $k = 3$};
+\node[gray, fill=white, inner sep=1pt] at (1,3.62) {\footnotesize $k = 1$};
+\node[right] at (4.3,1) {\footnotesize A};
+\node[right] at (6.2,5) {\footnotesize B};
+\end{tikzpicture}
+\caption{The new point $\mathbf{x}$ (cross), class A (circles), and class B (squares). The inner circle reaches
+the single nearest neighbor; the outer one reaches the three nearest.}
+\label{fig:knn-worked}
+\end{figure}
+
+The three nearest points are:
+
+\begin{center}
+\begin{tabular}{c c l}
+\textbf{Point} & \textbf{Class} & \textbf{Distance from $(1, 2.5)$} \\
+\hline
+$(2,3)$ & B & $\sqrt{1^2 + 0.5^2} \approx 1.118$ \\
+$(1,1)$ & A & $\sqrt{0^2 + 1.5^2} = 1.5$ \\
+$(2,1)$ & A & $\sqrt{1^2 + 1.5^2} \approx 1.803$ \\
+\end{tabular}
+\end{center}
+
+With $k = 1$, the nearest point is labeled B, so the prediction is B. With $k = 3$, the vote is B, A, A, so the
+prediction is A. The choice of $k$ changed the answer.
+
+\section{Penguins, Neighbor by Neighbor}
+Back to the penguins, and to the question from the Classification and Regression chapter: which species is
+this, judging by its bill? We use two features, bill length and bill depth, so we can draw the results.
+
+Two lessons from earlier chapters apply directly. First, k-NN is all about distance, so we
+\textbf{standardize}, as in the Preparing Data for Models chapter, using the training penguins' means and
+standard deviations. Second, $k$ is a choice we make, not something the algorithm learns, so we pick it by
+\textbf{cross-validation}, as in the Training, Validation, and Testing chapter, and save a test set for the
+very end. Here is \filename{knn.py}:
+
+\begin{minted}{python}
+import numpy as np
+from penguins import load_penguins
+
+data = load_penguins()
+names, y = np.unique(data["species"], return_inverse=True)   # y is 0, 1, or 2
+features = np.column_stack([data["bill_length_mm"], data["bill_depth_mm"]])
+n = len(y)
+
+order = np.random.default_rng(1).permutation(n)
+dev, test = order[:266], order[266:]       # 266 to develop with, 67 to test
+
+def knn_predict(X_train, y_train, X_query, k):
+    # Standardize using the training points only
+    mean, sd = X_train.mean(axis=0), X_train.std(axis=0)
+    A = (X_train - mean) / sd
+    Q = (X_query - mean) / sd
+    # Squared distance from every query point to every training point
+    dist = np.sum((Q[:, None, :] - A[None, :, :])**2, axis=2)
+    nearest = np.argsort(dist, axis=1)[:, :k]          # indices of the k closest
+    votes = y_train[nearest]                            # their labels
+    return np.array([np.bincount(row, minlength=3).argmax() for row in votes])
+
+# 5-fold cross-validation on the development penguins
+folds = np.array_split(dev, 5)
+for k in [1, 3, 5, 15, 51, 101]:
+    scores = []
+    for i in range(5):
+        val = folds[i]
+        fit = np.concatenate([folds[j] for j in range(5) if j != i])
+        predicted = knn_predict(features[fit], y[fit], features[val], k)
+        scores.append(np.mean(predicted == y[val]))
+    print(f"k = {k:3d}: cross-validation accuracy {np.mean(scores):.3f}")
+
+# Final check with the chosen k
+predicted = knn_predict(features[dev], y[dev], features[test], 3)
+print(f"Test accuracy with k = 3: {np.mean(predicted == y[test]):.3f}")
+
+matrix = np.zeros((3, 3), dtype=int)
+for p, a in zip(predicted, y[test]):
+    matrix[p, a] += 1
+print("Rows: predicted, columns: actual", names)
+print(matrix)
+\end{minted}
+
+\begin{verbatim}
+k =   1: cross-validation accuracy 0.959
+k =   3: cross-validation accuracy 0.981
+k =   5: cross-validation accuracy 0.977
+k =  15: cross-validation accuracy 0.974
+k =  51: cross-validation accuracy 0.944
+k = 101: cross-validation accuracy 0.857
+Test accuracy with k = 3: 0.925
+Rows: predicted, columns: actual ['Adelie' 'Chinstrap' 'Gentoo']
+[[28  3  0]
+ [ 0 15  0]
+ [ 0  2 19]]
+\end{verbatim}
+
+A few NumPy details are worth slowing down for:
 \begin{itemize}
-\item $(2,3)$, labeled B: $\sqrt{1^2 + 0.5^2} \approx 1.118$
-\item $(1,1)$, labeled A: $\sqrt{0^2 + 1.5^2} = 1.5$
-\item $(2,1)$, labeled A: $\sqrt{1^2 + 1.5^2} \approx 1.803$
+\item \verb|np.unique(..., return_inverse=True)| turns the species names into the numbers 0, 1, and 2.
+\item \verb|Q[:, None, :] - A[None, :, :]| uses broadcasting to subtract every training point from every query
+point at once. The result has shape (queries, training points, features), so summing over the last axis gives a
+whole table of squared distances. (We skip the square root, since it does not change which points are
+nearest.)
+\item \verb|np.argsort| along each row lists the training points from nearest to farthest; we keep the first
+$k$.
+\item \verb|np.bincount| counts the votes for each class, and \verb|argmax| picks the winner. (Ties go to the
+lower class number. Odd values of $k$ avoid ties between two classes, but with three classes, ties can still
+happen.)
 \end{itemize}
-With $k = 1$, the nearest point is labeled B, so the prediction is B. With $k = 3$, the three
-nearest points are B, A, and A, so the prediction is A. The choice of $k$ changed the answer.
 
-\section{Choosing $k$}
-A small $k$, such as 1, follows the training data closely. It can capture noise and overfit.
-A large $k$ averages over many points and can blur the boundary between classes, which is
-underfitting. The value of $k$ is chosen on a validation set, as described in the chapter on
-training, validation, and testing. An odd $k$ avoids ties in two-class problems.
+Cross-validation picks $k = 3$, and on the 67 test penguins it is right 92.5\% of the time, a bit lower than
+the cross-validation estimate. With only 67 test penguins, each mistake costs 1.5 percentage points, so 5
+mistakes instead of 1 or 2 is within the range of luck. The confusion matrix shows where the mistakes are:
+all five are Chinstraps, called Adelie or Gentoo.
 
-\section{Feature Scaling}\index{standardization!k-NN}
-Distance depends on the units of each feature. A feature measured in thousands dominates a
-feature measured in fractions. Standardize the features first, so that each has mean 0 and
-standard deviation 1, and compute the standardization from the training set alone.
+\section{Choosing \texorpdfstring{$k$}{k}}
+Figure~\ref{fig:regions} colors every point in the plane by the species k-NN would predict there.
 
-\section{Cost}
-k-NN is simple to understand, but prediction is slow for large data sets. Every prediction
-computes the distance to every training point.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{regions.png}
+\caption{Predicted species across the plane for three values of $k$, with the 266 development penguins.}
+\label{fig:regions}
+\end{figure}
+
+With $k = 1$, the boundary twists around individual penguins; one odd Gentoo carves out its own island. That is
+overfitting: on the training data itself, $k = 1$ is always 100\% accurate, because each penguin is its own
+nearest neighbor. With $k = 101$, the boundaries are smooth, but the Chinstrap region has shrunk. Chinstraps are
+only about a fifth of the penguins, so in a vote of 101 neighbors, the more common species win even near the
+Chinstrap cluster. That is underfitting. In between, $k = 15$ looks about right.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{accuracy_k.png}
+\caption{Training and cross-validation accuracy for different values of $k$.}
+\label{fig:accuracy-k}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{4.3cm}}
+ & \textbf{Small $k$} & \textbf{Large $k$} \\
+\hline
+Boundary & jagged, follows single points & smooth \\
+Training accuracy & very high (100\% at $k = 1$) & lower \\
+Risk & overfitting: noise counts & underfitting: rare classes get outvoted \\
+\end{tabular}
+\end{center}
+
+\section{Strengths and Weaknesses}
+\begin{itemize}
+\item \textbf{Simple and flexible.} k-NN can draw boundaries of any shape, which logistic regression, with its
+straight line, cannot.
+\item \textbf{Slow to predict.} Each prediction measures the distance to every training point. The test above
+computed $67 \times 266 = 17{,}822$ distances; with a million training points, every single prediction needs a
+million. Clever data structures help, but this is the main cost.
+\item \textbf{Needs scaling.} Distances mean nothing if one feature is measured in grams and another in
+millimeters.
+\item \textbf{Struggles with many features.} In high dimensions, every point is far from every other point, and
+``nearest'' stops meaning much. This is called the \newterm{curse of dimensionality}\index{curse of
+dimensionality}.
+\end{itemize}
 
 \begin{Exercise}[label=knn1, title=One neighbor]
 Using the six points in the worked example, classify $\mathbf{x} = (3, 1.5)$ with $k = 1$.
@@ -62,10 +214,35 @@ $\sqrt{1^2 + 1.5^2} \approx 1.803$. The vote is A, A, B, so the prediction is A.
 \end{Answer}
 
 \begin{Exercise}[label=knn3, title=Why scale?]
-A data set has height in centimeters and income in dollars. Explain why the distances are dominated by income.
+A data set has height in centimeters and income in dollars. Explain why the distances are dominated by
+income.
 \end{Exercise}
 \begin{Answer}[ref=knn3]
-Income values are in the tens of thousands, while heights are around 170. Differences in
-income are far larger in size, so they control the distance. Standardizing both features gives
-each the same influence.
+Income values are in the tens of thousands, while heights are around 170. Differences in income are far larger,
+so they control the distance. Standardizing both features gives each the same influence.
+\end{Answer}
+
+\begin{Exercise}[label=knn4, title={Six neighbors}]
+In the worked example, what does $k = 6$ predict for any new point? What does that say about very large $k$?
+\end{Exercise}
+\begin{Answer}[ref=knn4]
+With $k = 6$, every point votes, and the vote is always 3 to 3, a tie, no matter where the new point is. With
+$k$ equal to the size of the training set, k-NN ignores the features entirely and predicts the most common
+class (or has to break a tie), which is the baseline from the Classification and Regression chapter.
+\end{Answer}
+
+\begin{Exercise}[label=knn5, title={Nearest-neighbor regression}]
+Write a version of \verb|knn_predict| that returns the \emph{average} body mass of the $k$ nearest neighbors
+instead of a vote. Using flipper length, bill length, and bill depth, train on the 266 development penguins and
+find the test RMSE for $k = 1, 5, 20, 50$. How does it compare with a least squares fit on the same three
+features, which has a test RMSE of 359 g?
+\end{Exercise}
+\begin{Answer}[ref=knn5]
+Replace the voting line with
+\begin{minted}{python}
+    return y_train[nearest].mean(axis=1)
+\end{minted}
+and use \verb|y = data["body_mass_g"]| as the label. The test RMSEs are about 420 g ($k = 1$), 330 g ($k = 5$), 321 g ($k = 20$),
+and 340 g ($k = 50$). With $k$ between 5 and 20, k-NN beats the straight-line model, because it can follow
+patterns that are not linear, such as the different species.
 \end{Answer}

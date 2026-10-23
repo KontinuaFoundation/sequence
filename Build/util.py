@@ -160,6 +160,11 @@ def gather_data(mod_dir, book_str, config):
                 cd["chap_title"] = title
                 cd["chap_num"] = i + 1
                 cd["chap_id"] = ids[i]
+                if cd["id"] in topics:
+                    # A dictionary would silently keep only the second one
+                    print(f"⚠️  DUPLICATE TOPIC {cd['id']}: origin: {topics[cd['id']]['chap_id']} "
+                          f"→ duplicated in: {ids[i]}")
+                    continue
                 topics[cd["id"]] = cd
 
     return (metadatas, topics)
