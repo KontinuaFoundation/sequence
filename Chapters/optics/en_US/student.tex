@@ -27,7 +27,25 @@ cannot see your face in it.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.72\textwidth]{refl_specular_diffuse.png}
+    % \includegraphics[width=0.72\textwidth]{refl_specular_diffuse.png}
+\begin{tikzpicture}[font=\small]
+\fill[shadecolor] (0,-0.35) rectangle (4,0); \draw[thick] (0,0) -- (4,0);
+\draw[syelloworange!80!black, thick, ->] (0.127,1.273) -- (1.400,0);
+\draw[syelloworange!80!black, thick, ->] (1.400,0) -- (2.531,1.131);
+\draw[syelloworange!80!black, thick, ->] (0.827,1.273) -- (2.100,0);
+\draw[syelloworange!80!black, thick, ->] (2.100,0) -- (3.231,1.131);
+\draw[syelloworange!80!black, thick, ->] (1.527,1.273) -- (2.800,0);
+\draw[syelloworange!80!black, thick, ->] (2.800,0) -- (3.931,1.131);
+\node[anchor=north, align=center] at (2,-0.45) {Smooth surface\\(specular reflection)};
+\fill[shadecolor] (5.60,0.00) -- (6.54,0.12) -- (6.84,-0.05) -- (7.22,0.27) -- (7.52,-0.05) -- (8.17,0.22) -- (8.47,0.00) -- (8.96,0.09) -- (9.60,0.00) -- (9.6,-0.35) -- (5.6,-0.35) -- cycle; \draw[thick] (5.60,0.00) -- (6.54,0.12) -- (6.84,-0.05) -- (7.22,0.27) -- (7.52,-0.05) -- (8.17,0.22) -- (8.47,0.00) -- (8.96,0.09) -- (9.60,0.00);
+\draw[syelloworange!80!black, thick, ->] (4.845,1.341) -- (6.118,0.068);
+\draw[syelloworange!80!black, thick, ->] (6.118,0.068) -- (6.918,1.454);
+\draw[syelloworange!80!black, thick, ->] (5.780,1.400) -- (7.053,0.127);
+\draw[syelloworange!80!black, thick, ->] (7.053,0.127) -- (6.135,1.437);
+\draw[syelloworange!80!black, thick, ->] (6.608,1.370) -- (7.881,0.097);
+\draw[syelloworange!80!black, thick, ->] (7.881,0.097) -- (7.881,1.697);
+\node[anchor=north, align=center] at (7.6,-0.45) {Rough surface\\(diffuse reflection)};
+\end{tikzpicture}
     \caption{Parallel rays leave a smooth surface in one direction (specular reflection) and leave a rough surface in many directions (diffuse reflection).}
     \label{fig:refl-specular-diffuse}
 \end{figure}
@@ -426,7 +444,32 @@ The standard ellipsoids are centered at the origin and aligned with the three ax
   Note that $(a,0,0), (0, b,0), (0,0,c)$ are all part of the
   set. The complete set looks like this:
   \begin{center}
-    \includegraphics[width=0.5\linewidth]{refl_ellipsoid.png}
+    % \includegraphics[width=0.5\linewidth]{refl_ellipsoid.png}
+  \begin{tikzpicture}[scale=2.0]
+    \begin{axis}[
+        view={35}{15},
+        unit vector ratio=1 1 1,
+        ticks = none,
+        axis lines=middle,
+        ymin=-4.0,
+        ymax=4.0,
+        xmin=-3.5,
+        xmax=3.5,
+        zmin=-1.5,
+        zmax=1.5,
+        x axis line style=<->,
+        y axis line style=<->,
+        z axis line style=<->,
+        clip=false
+      ]
+      \addplot3[samples y=0,domain=0:360,smooth,dashed,sdkblue]({3*cos(x)}, {2*sin(x)},0);
+      \addplot3[surf,shader=interp,domain=0:360,y domain=0:180, opacity=0.5,
+        colormap={blackwhite}{color=(black) color=(black!30)}] ({3 * sin(y) * cos(x)},
+      {2*sin(y)* sin(x)},{1*cos(y)});
+      \addplot3[samples y=0,domain=0:360,smooth,sdkblue](0, {2*sin(x)},{1*cos(x)});
+      \addplot3[samples y=0,domain=0:180,smooth]({3* cos(x)}, 0,{1*sin(x)});
+    \end{axis}
+  \end{tikzpicture}
   \end{center}
 
   The volume bounded by this ellipsoid is
@@ -506,16 +549,22 @@ $$y = a x^2 + b x + c$$
 If $a$ is not zero, the graph of a quadratic is a curved line called a
 \newterm{parabola}\index{parabola}. The first parabola that most mathematicians think of is the graph of $y = x^2$:
 
-\begin{tikzpicture}
-  \draw[sdkblue,<->] (-2.0, 0) -- (2.0, 0) node[right] {$x$};
-  \draw[sdkblue,<->] (0, -1) -- (0, 5) node[above] {$y$};
-  \draw[domain=-1.9:1.9,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
-  \draw (1.1, 1) node [anchor=west] {$y = x^2$};
-\end{tikzpicture}
+% \begin{tikzpicture}
+%   \draw[sdkblue,<->] (-2.0, 0) -- (2.0, 0) node[right] {$x$};
+%   \draw[sdkblue,<->] (0, -1) -- (0, 5) node[above] {$y$};
+%   \draw[domain=-1.9:1.9,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
+%   \draw (1.1, 1) node [anchor=west] {$y = x^2$};
+% \end{tikzpicture}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.36\textwidth]{refl_parabola_basic.png}
+    % \includegraphics[width=0.36\textwidth]{refl_parabola_basic.png}
+\begin{tikzpicture}[font=\small]
+\draw[->, gray75!80!black] (-2.4,0) -- (2.6,0) node[right, black] {$x$};\draw[->, gray75!80!black] (0,-0.4) -- (0,4.5) node[above, black] {$y$};
+\draw[sdkblue, thick] plot[domain=-2:2, samples=80] (\x, {1*(\x)^2});
+\node[sdkblue, anchor=west] at (1.6,2.9) {$y = x^2$};
+\fill (0,0) circle (1.5pt) node[below right] {vertex};
+\end{tikzpicture}
     \caption{The graph of $y = x^2$ is a parabola with its vertex at the origin.}
     \label{fig:refl-parabola-basic}
 \end{figure}
@@ -528,8 +577,23 @@ For the graph of $y = x^2$, the focus is the point $(0, \frac{1}{4})$. The direc
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.58\textwidth]{refl_focus_directrix.png}
-    \caption{Every point $P$ on $y = x^2$ is the same distance $d$ from the focus $\left(0, \frac{1}{4}\right)$ and from the directrix $y = -\frac{1}{4}$.}
+    % \includegraphics[width=0.58\textwidth]{refl_focus_directrix.png}
+\begin{tikzpicture}
+  \coordinate (f) at (0, 1/4);
+  \coordinate (p) at (1.25,1.5625);
+  \coordinate (pd) at (1.25,-1/4);
+  \draw[sdkblue,<->] (-2.5, 0) -- (2.5, 0) node[right] {$x$};
+  \draw[sdkblue,<->] (0, -1) -- (0, 5) node[above] {$y$};
+  \draw[domain=-2.2:2.2,samples=300,variable=\x,<->]  plot (\x,{\x*\x});
+  \draw (2, 4) node [anchor=west] {$y = x^2$};
+  \filldraw (f) circle (2pt);
+  \filldraw  (p) circle (1pt);
+  \filldraw  (pd) circle (1pt);
+  \draw [dashed, thin] (f) -- (p) -- (pd);
+  \draw [dashed, <->, thick] (-2.5, -1/4) -- (2.5, -1/4);
+  \draw (1.25, -0.05) -- (1.45,-0.05) -- (1.45, -1/4);
+\end{tikzpicture}
+    \caption{Every point on $y = x^2$ is the same distance from the focus $\left(0, \frac{1}{4}\right)$ and from the directrix $y = -\frac{1}{4}$.}
     \label{fig:refl-focus-directrix}
 \end{figure}
 
@@ -555,7 +619,14 @@ where $a > 0$. If $a$ is small, the parabola opens wider.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.57\textwidth]{refl_parabola_widths.png}
+    % \includegraphics[width=0.57\textwidth]{refl_parabola_widths.png}
+\begin{tikzpicture}[font=\small]
+\draw[->, gray75!80!black] (-3.3,0) -- (3.5,0) node[right, black] {$x$};\draw[->, gray75!80!black] (0,-0.4) -- (0,3.0) node[above, black] {$y$};
+\draw[sdkblue, thick] plot[domain=-1.6:1.6, samples=80] (\x, {1*(\x)^2});
+\draw[sgreen, thick] plot[domain=-3.1:3.1, samples=80] (\x, {0.125*(\x)^2});
+\node[sdkblue, anchor=west] at (1.6,2.56) {$a = 4$: $y = x^2$};
+\node[sgreen!80!black, anchor=west] at (3.1,1.3) {$a = 0.5$: $y = \tfrac{1}{8}x^2$};
+\end{tikzpicture}
     \caption{A smaller value of $a$ gives a wider parabola.}
     \label{fig:refl-parabola-widths}
 \end{figure}
@@ -564,7 +635,20 @@ The focus is at $(0, \frac{1}{a})$ and the directrix is the line $y = -\frac{1}{
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.49\textwidth]{refl_two_foci.png}
+    % \includegraphics[width=0.49\textwidth]{refl_two_foci.png}
+\begin{tikzpicture}[font=\small]
+\draw[->, gray75!80!black] (-3.3,0) -- (3.5,0) node[right, black] {$x$};\draw[->, gray75!80!black] (0,-2.5) -- (0,3.0) node[above, black] {$y$};
+\draw[sdkblue, thick] plot[domain=-1.6:1.6, samples=80] (\x, {1*(\x)^2});
+\draw[sgreen, thick] plot[domain=-3.1:3.1, samples=80] (\x, {0.125*(\x)^2});
+\draw[sdkblue, dashed] (-3.1,-0.25) -- (3.1,-0.25) node[right] {$y = -\tfrac{1}{4}$};
+\draw[sgreen!80!black, dashed] (-3.1,-2) -- (3.1,-2) node[right] {$y = -2$};
+\fill[sdkblue] (0,0.25) circle (1.6pt); \node[sdkblue, anchor=east, font=\footnotesize] (fb) at (-0.7,-1.0) {$\left(0,\tfrac{1}{4}\right)$}; \draw[sdkblue, dashed, thin] (fb.east) -- (-0.05,0.22);
+\fill[sgreen!80!black] (0,2) circle (1.6pt); \node[sgreen!80!black, anchor=west, font=\footnotesize] at (0.1,2.05) {$(0, 2)$};
+\draw[sdkblue, thin] (0,0.25) -- (1,1) -- (1,-0.25); \fill[sdkblue] (1,1) circle (1.2pt);
+\draw[sgreen!80!black, thin] (0,2) -- (-2,0.5) -- (-2,-2); \fill[sgreen!80!black] (-2,0.5) circle (1.2pt);
+\node[sdkblue, anchor=west] at (1.6,2.56) {$a = 4$};
+\node[sgreen!80!black, anchor=west] at (3.1,1.3) {$a = 0.5$};
+\end{tikzpicture}
     \caption{Each parabola has its own focus and directrix: $\left(0, \frac{1}{4}\right)$ and $y = -\frac{1}{4}$ for $a = 4$, and $(0, 2)$ and $y = -2$ for $a = 0.5$.}
     \label{fig:refl-two-foci}
 \end{figure}
@@ -576,7 +660,25 @@ the focus will bounce off the mirror in the direction of the axis of
 symmetry:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.58\textwidth]{refl_parabolic_mirror.png}
+    % \includegraphics[width=0.58\textwidth]{refl_parabolic_mirror.png}
+\begin{tikzpicture}[font=\small]
+\fill[shadecolor] plot[domain=-3:3, samples=60] (\x, {0.125*(\x)^2}) -- plot[domain=3:-3, samples=60] (\x, {0.125*(\x)^2-0.18}) -- cycle;
+\draw[thick] plot[domain=-3:3, samples=80] (\x, {0.125*(\x)^2});
+\draw[gray75!80!black, dashed] (0,-0.3) -- (0,3.6) node[above, black, font=\footnotesize] {axis of symmetry};
+\draw[syelloworange!80!black, thick, ->] (0,2) -- (-2.6,0.8450);
+\draw[syelloworange!80!black, thick, ->] (-2.6,0.8450) -- (-2.6,3.4);
+\draw[syelloworange!80!black, thick, ->] (0,2) -- (-1.3,0.2113);
+\draw[syelloworange!80!black, thick, ->] (-1.3,0.2113) -- (-1.3,3.4);
+\draw[syelloworange!80!black, thick, ->] (0,2) -- (1.3,0.2113);
+\draw[syelloworange!80!black, thick, ->] (1.3,0.2113) -- (1.3,3.4);
+\draw[syelloworange!80!black, thick, ->] (0,2) -- (2.6,0.8450);
+\draw[syelloworange!80!black, thick, ->] (2.6,0.8450) -- (2.6,3.4);
+\fill[sred] (0,2) circle (2pt);
+\node[sred, anchor=west] at (3.2,2) (fl) {focus (light source)};
+\draw[sred, dashed] (fl.west) -- (0.12,2);
+\node[anchor=west] at (3.2,0.6) (ml) {parabolic mirror};
+\draw[dashed] (ml.west) -- (2.8,0.98);
+\end{tikzpicture}
     \caption{Light leaving the focus of a parabolic mirror reflects parallel to the axis of symmetry.}
     \label{fig:refl-parabolic-mirror}
 \end{figure}

@@ -110,7 +110,15 @@ This gives an intercept of $-54.91$, a slope of $48.83$, and $R^2 \approx 0.750$
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.52\textwidth]{logt_resid_raw.png}
+    % \includegraphics[width=0.52\textwidth]{logt_resid_raw.png}
+\begin{tikzpicture}
+\begin{axis}[width=8.5cm, height=5.5cm, xmin=-70, xmax=270, ymin=-80, ymax=120,
+  xlabel={Fitted views (thousands)}, ylabel={Residual (thousands)}, ylabel style={align=center},
+  tick label style={font=\footnotesize, /pgf/number format/fixed}, scaled y ticks=false, label style={font=\small}]
+\addplot[gray75!80!black, dashed, domain=-70:270, samples=2] {0};
+\addplot[only marks, mark size=2.2pt, sdkblue] coordinates {(-54.9107,59.1107) (-6.0786,14.3786) (42.7536,-25.3536) (91.5857,-57.4857) (140.4179,-62.6179) (189.2500,-27.4500) (238.0821,99.4179)};
+\end{axis}
+\end{tikzpicture}
     \caption{Residuals against fitted values for the raw linear model. The residuals form a U-shaped bow, so a line does not fit the data.}
     \label{fig:logt-resid-raw}
 \end{figure}
@@ -131,7 +139,15 @@ Now the intercept is near $1.393$, the slope near $0.7356$, and $R^2 \approx 0.9
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.54\textwidth]{logt_resid_log.png}
+    % \includegraphics[width=0.54\textwidth]{logt_resid_log.png}
+\begin{tikzpicture}
+\begin{axis}[width=8.5cm, height=5.5cm, xmin=1.2, xmax=6.0, ymin=-0.1, ymax=0.1,
+  xlabel={Fitted $\ln(\text{views})$}, ylabel={Residual}, ylabel style={align=center},
+  tick label style={font=\footnotesize, /pgf/number format/fixed}, scaled y ticks=false, label style={font=\small}]
+\addplot[gray75!80!black, dashed, domain=1.2:6.0, samples=2] {0};
+\addplot[only marks, mark size=2.2pt, sdkblue] coordinates {(1.3930,0.0421) (2.1286,-0.0124) (2.8643,-0.0078) (3.5999,-0.0706) (4.3355,0.0186) (5.0711,0.0152) (5.8067,0.0148)};
+\end{axis}
+\end{tikzpicture}
     \caption{Residuals against fitted values after the log transformation. The residuals are small and show no curved pattern.}
     \label{fig:logt-resid-log}
 \end{figure}
