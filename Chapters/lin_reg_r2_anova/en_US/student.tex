@@ -151,10 +151,10 @@ $0.00006$: strong evidence that the slope is not zero.
 
 \textbf{The $F$-test and the $t$-test.} You already have a test for ``is the slope zero?'': the $t$-test from the
 last chapter. With one predictor, the two tests always agree, because $F = t^2$ exactly. Take the sleep study,
-where 8 teenagers' screen time and sleep gave $t = -4.01$ with a two-sided $p$-value of 0.007. Its sums of squares
-are $SS_{tot} = 1.567$, $SS_{reg} = 1.142$, and $SS_{res} = 0.425$, so
-$$R^2 = \frac{1.142}{1.567} \approx 0.729, \qquad F = \frac{1.142/1}{0.425/6} \approx 16.1 \approx (-4.01)^2$$
-and the $F$-test's $p$-value is 0.007, the same as the two-sided $t$-test. Why have both? The $t$-test can be
+where 30 teenagers' screen time and sleep gave $t = -6.00$ with a two-sided $p$-value less than 0.001. Its sums of squares
+are $SS_{tot} = 28.875$, $SS_{reg} = 16.250$, and $SS_{res} = 12.625$, so
+$$R^2 = \frac{16.250}{28.875} \approx 0.563, \qquad F = \frac{16.250/1}{12.625/28} \approx 36.0 \approx (-6.00)^2$$
+and the $F$-test's $p$-value is also less than 0.001, the same as the two-sided $t$-test. Why have both? The $t$-test can be
 one-sided and gives a confidence interval for the slope. The $F$-test extends to models with several
 predictors, where it asks whether \emph{any} of them helps.
 
@@ -340,16 +340,19 @@ see.
 \begin{Exercise}[label=lr2_7, title={The sleep study in code}]
 Change \filename{fit\_quality.py} to use the sleep-study data from the last chapter (it is in the
 \verb|linregress| example there). Confirm that
-$R^2 \approx 0.729$, $F \approx 16.1$, and $F = t^2$.
+$R^2 \approx 0.563$, $F \approx 36.0$, and $F = t^2$.
 \end{Exercise}
 \begin{Answer}[ref=lr2_7]
 Replace the three lines that load the data with
 \begin{minted}{python}
-x = np.arange(2, 10)
-y = np.array([7.85, 8.05, 7.40, 7.55, 6.90, 7.35, 6.70, 6.95])
+x = np.array([1, 5, 6.5, 5, 3, 2, 3, 3.5, 4.5, 1.5, 5, 2.5, 3.5, 3, 4.5,
+              3, 4.5, 2.5, 5, 4.5, 5, 4.5, 2, 6, 7, 5.5, 4.5, 2.5, 5.5, 4.5])
+y = np.array([9.00, 5.50, 5.25, 7.25, 7.25, 9.00, 8.00, 8.00, 6.75, 8.00,
+              6.75, 8.25, 7.50, 6.25, 6.25, 7.50, 6.75, 7.50, 7.75, 7.00,
+              6.25, 5.75, 7.00, 5.25, 5.75, 7.25, 7.50, 7.25, 6.25, 6.25])
 n = len(y)
 \end{minted}
-and print the RMSE in hours with two decimal places (it is 0.23 hours). The program prints $SS_{tot} = 1.567$,
-$R^2 = 0.729$, $F = 16$ with $p \approx 7.0 \times 10^{-3}$, and $t = -4.01$ with $t^2 = 16$. (Use \verb|:.2f|
-in the $F$ line to see 16.10.)
+and print the RMSE in hours with two decimal places (it is 0.65 hours). The program prints $SS_{tot} = 28.88$,
+$R^2 = 0.563$, $F = 36$ with $p \approx 1.8 \times 10^{-6}$, and $t = -6.00$ with $t^2 = 36$. (Use \verb|:.2f|
+in the $F$ line to see 36.04.)
 \end{Answer}

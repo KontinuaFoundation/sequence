@@ -1,7 +1,7 @@
 \chapter{Regression Basics for the Slope}
 
 \index{regression slope!inference}
-A sleep researcher pulls data from a sample of $8$ teenagers: daily screen time, in hours, and how many hours they slept that night. The researcher plots the points, fits a line, and finds a slope of $b_1 = -0.16$: for every extra hour of screen time, sleep drops by about ten minutes. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this by chance?
+A sleep researcher pulls data from a sample of $30$ teenagers: their average daily screen time over one week, in hours, and their average sleep per night over the same week. The researcher plots the points, fits a line, and finds a slope of $b_1 = -0.50$: for every extra hour of screen time, sleep drops by about half an hour. Does this mean the effect is real across all teenagers, or could a sample this size show a slope like this by chance?
 
 Recall from The Regression Line chapter that the \index{least-squares line}least-squares line $\hat{y} = b_0 + b_1x$ describes your sample: descriptive statistics, not inference.
 
@@ -28,23 +28,52 @@ Both formulas give the same $b_1$. You can use whichever matches the summary sta
 
 The \index{residual}residual for any data point is still $e = y - \hat{y}$, where $\hat{y} = b_0 + b_1x$ is the value your line predicts. The standard deviation of all the residuals in your sample, $s_e$, tells you the typical size of a prediction miss. You will use $s_e$ heavily, because it is the key in measuring how much $b_1$ itself might vary from sample to sample.
 
-For the study, the researcher samples $8$ teenagers at random and records their daily screen time ($X$, in hours) and their sleep duration that night ($Y$, in hours):
+For the study, the researcher samples $30$ teenagers at random and records each teenager's average daily screen time ($X$, in hours) and average nightly sleep ($Y$, in hours) over one week:
 
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|}
 \hline
-Screen time (hr) & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+Screen time (hr) & Sleep duration (hr) \\
 \hline
-Sleep duration (hr) & 7.85 & 8.05 & 7.40 & 7.55 & 6.90 & 7.35 & 6.70 & 6.95 \\
+1 & 9.00 \\
+5 & 5.50 \\
+6.5 & 5.25 \\
+5 & 7.25 \\
+3 & 7.25 \\
+2 & 9.00 \\
+3 & 8.00 \\
+3.5 & 8.00 \\
+4.5 & 6.75 \\
+1.5 & 8.00 \\
+5 & 6.75 \\
+2.5 & 8.25 \\
+3.5 & 7.50 \\
+3 & 6.25 \\
+4.5 & 6.25 \\
+3 & 7.50 \\
+4.5 & 6.75 \\
+2.5 & 7.50 \\
+5 & 7.75 \\
+4.5 & 7.00 \\
+5 & 6.25 \\
+4.5 & 5.75 \\
+2 & 7.00 \\
+6 & 5.25 \\
+7 & 5.75 \\
+5.5 & 7.25 \\
+4.5 & 7.50 \\
+2.5 & 7.25 \\
+5.5 & 6.25 \\
+4.5 & 6.25 \\
 \hline
 \end{tabular}
 \end{center}
 
-For this sample, $\bar{x} = 5.5$, $\bar{y} = 7.34$, $s_x = 2.45$, $s_y = 0.473$, and $r = -0.854$. That gives
+For this sample, $\bar{x} = 4.00$, $\bar{y} = 7.00$, $s_x = 1.50$, $s_y = 1.00$, and $r = -0.75$. That gives
 \[
-b_1 = (-0.854)\frac{0.473}{2.45} = -0.165 \qquad b_0 = 7.34 - (-0.165)(5.5) = 8.25
+b_1 = (-0.75)\frac{1.00}{1.50} = -0.50 \qquad b_0 = 7.00 - (-0.50)(4.00) = 9.00
 \]
-so $\hat{y} = 8.25 - 0.165x$. The negative slope matches what the researcher suspected: more screen time is associated with less sleep, at least in this sample. The question this chapter answers is whether that association is strong enough and consistent enough, to conclude something about $\beta_1$ for teenagers in general, or whether a slope this far from zero is a believable result of sampling variation alone.
+so $\hat{y} = 9.00 - 0.50x$. The negative slope matches what the researcher suspected: more screen time is associated with less sleep, at least in this sample. The question this chapter answers is whether that association is strong enough and consistent enough, to conclude something about $\beta_1$ for teenagers in general, or whether a slope this far from zero is a believable result of sampling variation alone.
 
 \begin{itemize}
     \item $Y = \beta_0 + \beta_1 X + \varepsilon$ is the population regression model; $\beta_0$ and $\beta_1$ are unknown parameters, and $\varepsilon$ is random error.
@@ -73,11 +102,11 @@ A horticulturist records the amount of fertilizer applied (in grams per plant) a
 \end{Answer}
 
 \begin{Exercise}[title={Spot the Error}, label={ex:slope-model-2}]
-A student in the sleep study writes: "I calculated $\beta_1 = -0.165$ from my sample of 8 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.165$ hours of sleep for every teenager." Identify two separate errors in this statement.
+A student in the sleep study writes: "I calculated $\beta_1 = -0.50$ from my sample of 30 teenagers, so I can conclude that increasing screen time by one hour causes a decrease of $0.50$ hours of sleep for every teenager." Identify two separate errors in this statement.
 \end{Exercise}
 
 \begin{Answer}[ref={ex:slope-model-2}]
-First, the value $-0.165$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
+First, the value $-0.50$ was calculated from the sample, so it should be labeled $b_1$, not $\beta_1$. $\beta_1$ refers to the unknown population slope; $b_1$ is the sample statistic used to estimate it. Second, the statement claims causation from an observational study. Unless screen time was randomly assigned to teenagers in an experiment, a relationship in the data does not establish that screen time causes reduced sleep. Other variables, such as stress or extracurricular schedules, could be influencing both screen time and sleep.
 \end{Answer}
 
 \begin{Exercise}[title={Computing the Line}, label={ex:slope-model-3}]
@@ -99,13 +128,13 @@ An engineer records the operating temperature (in degrees Celsius) and the batte
 
 \section{Computing in Excel}
 
-Enter the sleep study data from earlier in this chapter into two columns: screen time in cells A2 through A9, and sleep duration in cells B2 through B9, with headers in row 1.
+Enter the sleep study data from earlier in this chapter into two columns: screen time in cells A2 through A31, and sleep duration in cells B2 through B31, with headers in row 1.
 
 \begin{enumerate}
-    \item In an empty cell, enter \texttt{=SLOPE(B2:B9,A2:A9)}. Excel returns $-0.1649$, matching $b_1 = -0.165$ from the hand calculation (Excel simply keeps more decimal places).
-    \item In another cell, enter \texttt{=INTERCEPT(B2:B9,A2:A9)}. Excel returns $8.2506$, matching $b_0 = 8.25$.
-    \item To check the correlation behind the calculation, enter \texttt{=CORREL(A2:A9,B2:B9)}. Excel returns $-0.8536$, matching $r = -0.854$.
-    \item To find $s_x$ and $s_y$ directly instead of computing them by hand, use \texttt{=STDEV.S(A2:A9)} and \texttt{=STDEV.S(B2:B9)}. These return $2.4495$ and $0.4732$.
+    \item In an empty cell, enter \texttt{=SLOPE(B2:B31,A2:A31)}. Excel returns $-0.5000$, matching $b_1 = -0.50$ from the hand calculation.
+    \item In another cell, enter \texttt{=INTERCEPT(B2:B31,A2:A31)}. Excel returns $9.0000$, matching $b_0 = 9.00$.
+    \item To check the correlation behind the calculation, enter \texttt{=CORREL(A2:A31,B2:B31)}. Excel returns $-0.7502$, matching $r = -0.75$.
+    \item To find $s_x$ and $s_y$ directly instead of computing them by hand, use \texttt{=STDEV.S(A2:A31)} and \texttt{=STDEV.S(B2:B31)}. These return $1.4971$ and $0.9978$.
 \end{enumerate}
 
 Watch the argument order: for both \texttt{SLOPE} and \texttt{INTERCEPT}, the known $y$-values are listed first, then the known $x$-values. Reversing the two ranges is a common mistake, and it may hand you the wrong sign or a wrong intercept.
@@ -114,7 +143,7 @@ Watch the argument order: for both \texttt{SLOPE} and \texttt{INTERCEPT}, the kn
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.84\textwidth]{slope_sheet_coef.png}
+    \includegraphics[width=0.94\textwidth]{slope_sheet_coef.png}
     \caption{Spreadsheet layout for the sleep study: data in columns A and B, with each formula beside the result it returns in column D.}
     \label{fig:slope-sheet-coef}
 \end{figure}
