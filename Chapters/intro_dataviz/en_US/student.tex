@@ -678,6 +678,31 @@ lemonade as the temperature goes up.
 %FIXME diagram showing line of best fit
 A \newterm{best-fit} line shows the overall trend in a scatter plot. The \index{correlation coefficient}\newterm{correlation coefficient}, $r$, is a number from $-1$ to $1$ that is calculated from the data. A positive $r$ means the two variables tend to increase together. A negative $r$ means that one tends to increase while the other decreases. The value of $r$ tells you how closely the points follow a straight line. It does not tell you how steep the line is, and correlation does not prove that one variable causes the other.
 
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.63\textwidth]{dataviz_bestfit.png}
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.62\textwidth, height=0.42\textwidth,
+    xmin=-10, xmax=45, ymin=165, ymax=230,
+    xtick={-10,0,10,20,30,40}, ytick={170,180,190,200,210,220,230},
+    xlabel={Average temperature ($^\circ$C)},
+    ylabel={Total sales (\$)},
+    grid=major, grid style={shadecolor},
+    axis lines=left, tick label style={font=\small}, label style={font=\small},
+    clip=false]
+\addplot[only marks, mark=*, mark size=2pt, sdkblue] coordinates {
+    (2.6,183.85) (-4.2,173.56) (13.3,195.22) (26.2,207.61) (27.5,210.88) (31.3,214.18)
+    (33.5,215.23) (41.7,224.07) (20.7,198.94) (17.2,196.10) (1.7,185.10) (0.2,188.70)};
+\addplot[sred, thick, domain=-8:44] {181.93 + 0.993*x};
+\node[sred, anchor=north west, font=\small, align=left] at (axis cs:-8,228)
+    {$\hat{y} = 181.93 + 0.993x$\\ $r = 0.982$};
+\end{axis}
+\end{tikzpicture}
+    \caption{The lemonade data with its best-fit line. The points lie close to the line, so $r = 0.982$ is close to 1.}
+    \label{fig:bestfit}
+\end{figure}
+
 \textbf{Making a Scatter Plot in Python}
 
 \begin{minted}{python}
