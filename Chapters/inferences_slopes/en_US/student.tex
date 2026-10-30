@@ -454,3 +454,15 @@ print(f"one-sided p-value = {p_one_sided:.2e}")
 \end{minted}
 
 This prints \mintinline{python}{b1 = -0.5000, SE(b1) = 0.0833}, \mintinline{python}{t = -6.0033, df = 28}, and \mintinline{python}{one-sided p-value = 9.07e-07}, matching the by-hand and Excel results exactly. Python writes $9.07 \times 10^{-7}$ as \mintinline{python}{9.07e-07}. \mintinline{python}{stats.t.cdf(t_stat, df)} gives the lower-tail probability directly, which is the correct one-sided $p$-value whenever $H_a$ is "less than" and $t$ is negative; for a "greater than" alternative, use \mintinline{python}{1 - stats.t.cdf(t_stat, df)} instead.
+
+\begin{mdframed}[style=important, frametitle={Key Ideas}]
+\begin{itemize}
+\item The slope $b_1$ varies from sample to sample, and $t = \frac{b_1 - \beta_1}{s_{b_1}}$ follows a $t$-distribution with $df = n - 2$.
+\item Read the standard error $s_{b_1}$ from regression output, in a column labeled StDev or SE Coef.
+\item The confidence interval for the slope is $b_1 \pm t^* s_{b_1}$.
+\item Check the LINER conditions: Linearity, Independence, Normality, Equal variance, and Random. Use a residual plot for linearity and equal variance, and a dotplot of the residuals for normality.
+\item To test $H_0: \beta_1 = 0$, use $t = \frac{b_1}{s_{b_1}}$. Output reports a two-sided p-value. Halve it for a one-sided test only when the sign of $t$ matches $H_a$.
+\item In the sleep study, the 90\% interval is $(-0.642, -0.358)$ and $t = -6.00$, with $p < 0.001$: convincing evidence of a negative association between screen time and sleep.
+\item Excel's \texttt{LINEST}, \texttt{T.INV.2T}, and \texttt{T.DIST}, and SciPy's \texttt{linregress}, carry out these calculations.
+\end{itemize}
+\end{mdframed}
