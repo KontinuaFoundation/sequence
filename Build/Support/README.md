@@ -55,10 +55,21 @@ $W = \vec{F} \cdot \vec{d} = 36$ J.
   as above. (Without braces, the comma ends the option.)
 * **`label`** names the exercise, and **`ref`** in the `Answer` must match it
   exactly. Every exercise needs a unique label within its volume.
-* The exercise text is set in the left part of the page. The right part is a
-  bracketed **Working Space** for the student, closed by an **Answer on Page N**
-  bracket. That page number is a link to the answer, and the answer's heading
-  (Answer to Exercise N, on page M) links back.
+* The exercise text is set in a narrow column (45% of the text width) that
+  starts 36 pt into the left margin, so exercises are easy to spot. The rest of
+  the width is **Working Space** for the student, opened by a "Working Space"
+  line level with the first line of the question and closed by an **Answer on
+  Page N** line. Each line has a short vertical stroke at its left end only.
+  That page number is a link to the answer, and the answer's heading (Answer to
+  Exercise N, on page M) links back.
+* On odd (right-hand) pages, the working space also reaches up to 36 pt into the
+  right margin, always leaving at least half an inch to the edge of the paper.
+  The "Answer on Page" line checks its own page, so an exercise that starts on
+  an even page and ends on an odd one still widens at the bottom. (The page is
+  read from the previous LaTeX pass, so a fresh build needs two passes.)
+* The question always starts level with the "Working Space" line, even if the
+  exercise begins with a blank line, a list or a code block. Lists inside an
+  exercise get no extra space above them.
 * An exercise may break across pages if it is long.
 
 ### Making the working space taller
@@ -88,6 +99,34 @@ Find each limit, or explain why it does not exist.
 ```
 
 An ordinary `enumerate` also works and is used more often.
+
+## Worked problems
+
+A worked problem shows a problem and its full solution together, in a thin blue
+box that is numbered within the chapter ("Worked Problem 3"). Unlike an
+exercise's answer, the solution is printed right there.
+
+```latex
+\begin{Worked}[A gear train]
+\begin{Problem}
+Gear $A$ has 20 teeth and turns with torque 10 N$\cdot$m. It drives gear $L$,
+which has 60 teeth. What is the torque on gear $L$?
+\end{Problem}
+\begin{Solution}
+$$T_L = \frac{60}{20}(10 \text{ N}\cdot\text{m}) = 30 \text{ N}\cdot\text{m}$$
+\end{Solution}
+\end{Worked}
+```
+
+* The optional title prints after the number: "Worked Problem 3: A gear train".
+  Leave it out for just "Worked Problem 3".
+* Every `Worked` holds a `Problem` followed by a `Solution`. A blue line divides
+  them.
+* The box is a breakable `tcolorbox`, so it can run across a page break.
+  Displayed math, lists, figures, `minted` code and `\verb` all work inside it.
+* The box reaches 16 pt into both margins, so the text inside lines up with the
+  text around it, and `minted` line numbers fit inside the frame.
+* Do not put a `Worked` inside an `Exercise` or an `Answer`.
 
 ## Boxes for important ideas
 
@@ -246,7 +285,7 @@ links are colored `sdkblue`.
 
 ## Proposed features
 
-These three features are not in the class yet. Each section describes the
+These two features are not in the class yet. Each section describes the
 problem, a proposed design, and how the chapters could move to it.
 
 ### Index entries that do not depend on capitalization
@@ -276,40 +315,6 @@ A possible implementation:
 **Migration.** Every existing use keeps working. A short script can list the
 capitalized `\newterm`s, and a person can decide for each whether it needs
 `[lowercase]`. Proper nouns and acronyms stay as they are.
-
-### Worked examples
-
-**Problem.** Worked examples are written by hand in two styles:
-`\textbf{Example}:` … `\textbf{Solution}:` (202 times in 74 chapters) and
-`\textbf{Worked example.}` (89 times). They look slightly different from chapter
-to chapter, an example can be separated from its solution by a page break, and
-there is no way to refer to "Example 3.2".
-
-**Design.** Add `example` and `solution` environments:
-
-```latex
-\begin{example}[A garden hose]\label{ex:hose}
-A garden hose 2.0 cm across carries water at 1.5 m/s. ...
-\begin{solution}
-The cross-sectional area is ...
-\end{solution}
-\end{example}
-```
-
-* Examples are numbered within the chapter (Example 3.2), so the text can say
-  "as in Example~\ref{ex:hose}".
-* The heading is set in the section font and color, so examples are easy to spot
-  when a student flips back through the chapter.
-* The problem statement is kept on the same page as the start of its solution
-  (for example, with `\needspace` or a breakable box), but a long solution may
-  still break across pages.
-* Examples could also be collected in a list of examples, the way the `exercise`
-  package already records a list of exercises.
-
-**Migration.** The two current patterns are regular enough for a script to
-convert most of them, followed by a check of each converted chapter's PDF. The
-environments can be added to the class first, with chapters converted one at a
-time.
 
 ### "Before you start" and "Key ideas" boxes
 

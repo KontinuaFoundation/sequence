@@ -147,8 +147,11 @@ is curious and willing to struggle a little to satisfy that curiosity.
 More
 ----
 
-Want to know more about what will be in the books? `Outline <ProjectDocs/outline.rst>`_.
+Want to know more about what will be in the books? `Outline <ProjectDocs/outline.md>`_.
 
 Want to know how to build the books? `Build <Build/README.rst>`_.
 
-Want to help? `To-Do <ProjectDocs/todo.rst>`_.
+Want to help? `To-Do <ProjectDocs/todo.md>`_.
+
+Want to write or edit a chapter? `How to Write and Edit the Workbooks <ProjectDocs/writer.md>`_
+and `The Style Guide <ProjectDocs/style.md>`_.

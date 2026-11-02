@@ -304,12 +304,6 @@ Writing Chapters
   Then add the chapter to the right ``book_NN.txt`` and to ``book_00.txt``,
   and run ``check_ordering.py``.
 
-``resource_wizard.py``
-  Asks questions and fills in a chapter's ``digital_resources.json``. Run it
-  from the chapter's ``en_US`` folder::
-
-    python3 ../../../Build/resource_wizard.py
-
 
 Other Scripts
 =============
@@ -351,6 +345,14 @@ Other Scripts
 
 ``build_chapter_list.py``
   Writes ``Resources/chaplist.txt``, the title of every chapter in every book.
+
+``make_outline.py``
+  Writes ``ProjectDocs/outline.md``, every workbook's chapters with their
+  sections, from the ``book_NN.txt`` files and each chapter's ``\chapter`` and
+  ``\section`` titles. Run it after adding, removing, renaming or moving a
+  chapter::
+
+    python3 make_outline.py
 
 ``generate_chapter_graph.py``
   Writes ``graph.json``, the chapter dependency graph, to
