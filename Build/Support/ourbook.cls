@@ -816,6 +816,32 @@
 \setlist[enumerate]{leftmargin=*}
 \setlist[itemize]{leftmargin=*}
 \usepackage{mdframed}
+% Worked problems: a problem and its solution printed together in a thin
+% blue box, numbered within the chapter. Verbatim (\verb, minted) works
+% inside both parts, and the box can break across pages. Usage:
+%   \begin{Worked}            or  \begin{Worked}[A gear train]
+%   \begin{Problem} ... \end{Problem}
+%   \begin{Solution} ... \end{Solution}
+%   \end{Worked}
+% The optional title prints as "Worked Problem 3: A gear train".
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\newcounter{Worked}[chapter]
+\newtcolorbox{Worked}[1][]{enhanced, breakable,
+    code={\refstepcounter{Worked}},
+    colback=white, colframe=sdkblue, boxrule=0.5pt, arc=0pt,
+    grow to left by=16pt, grow to right by=16pt,
+    left=24pt, right=24pt, top=10pt, bottom=6pt,
+    before skip=12pt, after skip=12pt,
+    segmentation style={sdkblue, line width=0.5pt, solid},
+    title={\exercisenamefont Worked Problem \theWorked%
+        \if\relax\detokenize{#1}\relax\else: #1\fi},
+    coltitle=sdkblue,
+    attach boxed title to top left={xshift=12pt, yshift*=-\tcboxedtitleheight/2},
+    boxed title style={colback=white, colframe=white, boxrule=0pt,
+        left=4pt, right=4pt, top=0pt, bottom=0pt}}
+\newenvironment{Problem}{}{\par}
+\newenvironment{Solution}{\par\tcbline\nobreak}{\par}
 % algorithm and algpseudocode added for future use for pseudocode sections - 1/19/26
 % will be useful for sections such as Linked List, Queue, Stack, etc chapters
 % - Arjan Ellingson
@@ -1221,10 +1247,22 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 \define@key{PPExercise}{space}{\global\ExtraWorkingSpace=#1\relax}
 
 % The exercise text is set as ordinary paragraphs in the left 45% of the
-% page (outdented 36pt into the margin), and the right half is left blank
+% page (outdented 36pt into the left margin), and the right half is left blank
 % as working space. The "Working Space" bracket is drawn beside the first
 % line, and the "Answer on Page" bracket after the last line. Because the
 % body is not wrapped in a box, a long exercise can break across pages.
+% On odd (right-hand) pages the working space also extends into the right
+% margin by \ExeRightGrow: up to 36pt, but always leaving at least .5in to
+% the edge of the paper. It is set when each exercise starts, from the page
+% it starts on (\checkoddpage needs a second LaTeX pass).
+\usepackage{ifoddpage}
+\newdimen\ExeRightGrow \ExeRightGrow=0pt
+\def\setExeRightGrow{\checkoddpage
+  \ifoddpage
+    \ExeRightGrow=\dimexpr\paperwidth-1in-\hoffset-\oddsidemargin-\textwidth-.5in\relax
+    \ifdim\ExeRightGrow>36pt \ExeRightGrow=36pt\fi
+    \ifdim\ExeRightGrow<0pt \ExeRightGrow=0pt\fi
+  \else \ExeRightGrow=0pt\fi}
 \newdimen\ExeBaseLeftskip \ExeBaseLeftskip=0pt
 \newskip\ExeSavedParskip
 
@@ -1244,6 +1282,7 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 \leftskip=0pt \rightskip=0pt \parskip=\ExeSavedParskip
 \hsize=.5\textwidth
 \advance\hsize by 18pt
+\advance\hsize by \ExeRightGrow
 \hrulefill\ \ \ \color{sdkblue}\bfseries\itshape\lower 3pt\hbox{Working
 Space}\ \ \ \hrulefill
 \vskip-27pt
@@ -1258,8 +1297,11 @@ Space}\ \ \ \hrulefill
 \nobreak\vskip\ExtraWorkingSpace
 \global\ExtraWorkingSpace=0pt
 \nobreak\vskip24pt\nobreak
+% the exercise may have run onto the next page, so check again which page
+% the "Answer on Page" bracket is on
+\setExeRightGrow\nobreak
 \moveleft36pt\rlap{\hbox
-to\textwidth{\hskip.5\textwidth\hskip16pt\vrule height 18pt depth0pt
+to\dimexpr\textwidth+\ExeRightGrow\relax{\hskip.5\textwidth\hskip16pt\vrule height 18pt depth0pt
 \color{sdkblue}\footnotesize\bfseries\itshape
 \hrulefill\ \ \
 Answer on
@@ -1275,6 +1317,7 @@ Answer on
 }}}
 \renewcommand{\@@@ExeEnv}{%
     \pagebreak[1]\vskip\ExerciseSkipBefore
+    \setExeRightGrow
     \@QuestionLevel1
     \refstepExecounter
     \begingroup\@getExerciseInfo\ExerciseHeader

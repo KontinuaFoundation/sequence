@@ -31,11 +31,16 @@ A packet is like a postcard. Its \newterm{header} is the address side: where it 
 going, and a sequence number saying which piece of the message it is. Its \newterm{payload} is the
 message side.
 
-\textbf{Example}: You send a 3 MB photo (3,000,000 bytes). If each packet carries 1,460 bytes of
+\begin{Worked}
+\begin{Problem}
+You send a 3 MB photo (3,000,000 bytes). If each packet carries 1,460 bytes of
 payload, how many packets is that?
-
-\textbf{Solution}: $3{,}000{,}000 / 1{,}460 \approx 2{,}054.8$, so it takes 2,055 packets. (The last one is
+\end{Problem}
+\begin{Solution}
+$3{,}000{,}000 / 1{,}460 \approx 2{,}054.8$, so it takes 2,055 packets. (The last one is
 not full.)
+\end{Solution}
+\end{Worked}
 
 Sharing is what makes the internet efficient, but it has a cost. Packets from the same message can take
 different routes, arrive out of order, or get lost when a busy router runs out of room and drops them.
@@ -185,11 +190,16 @@ the packet to: the \newterm{next hop}. The list of next hops is the router's \ne
 table}.\index{forwarding table} To build it, the router runs Dijkstra's algorithm from itself, then follows
 the \verb|prev| links back from each destination until it reaches the first step.
 
-\textbf{Example}: Find router A's next hop to F.
-
-\textbf{Solution}: Running Dijkstra from A gives these costs: B 5, C 7, E 11 (through C), D 17 (through C
+\begin{Worked}
+\begin{Problem}
+Find router A's next hop to F.
+\end{Problem}
+\begin{Solution}
+Running Dijkstra from A gives these costs: B 5, C 7, E 11 (through C), D 17 (through C
 and E), and F 19 (through D). The best path is A $\to$ C $\to$ E $\to$ D $\to$ F. Router A only needs the
 first step: send to C. Router C will make its own decision when the packet arrives.
+\end{Solution}
+\end{Worked}
 
 Here is the same computation in Python. Create \filename{routing.py}:
 
@@ -293,12 +303,17 @@ agreements as well as speed. The shortest path is not always the one taken.
 Light in an optical fiber travels at about 200,000 kilometers per second, two-thirds of its speed in a
 vacuum. That sets a hard limit on how fast any message can go.
 
-\textbf{Example}: New York and London are about 5,570 km apart. What is the shortest possible time for a
+\begin{Worked}
+\begin{Problem}
+New York and London are about 5,570 km apart. What is the shortest possible time for a
 packet to go there and back?
-
-\textbf{Solution}: One way takes $5{,}570 / 200{,}000 = 0.0279$ seconds, about 28 ms. A round trip takes at
+\end{Problem}
+\begin{Solution}
+One way takes $5{,}570 / 200{,}000 = 0.0279$ seconds, about 28 ms. A round trip takes at
 least 56 ms. Real cables do not run in perfectly straight lines and routers add delays, so the real time is
 more like 70 ms. No amount of engineering can beat 56 ms: that is physics.
+\end{Solution}
+\end{Worked}
 
 This is why online games put servers in many cities, and why video sites keep copies of popular videos close
 to you.

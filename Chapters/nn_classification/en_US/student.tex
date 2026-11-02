@@ -16,13 +16,18 @@ $$p_k = \frac{e^{z_k}}{e^{z_1} + e^{z_2} + \cdots + e^{z_K}}$$
 Exponentiating makes everything positive, and dividing by the total makes the probabilities add up to 1. The
 biggest logit always gets the biggest probability.
 
-\textbf{Example}: A network that sorts photos into cat, dog, or bird produces logits $\mathbf{z} = (2, 1, 0)$.
+\begin{Worked}
+\begin{Problem}
+A network that sorts photos into cat, dog, or bird produces logits $\mathbf{z} = (2, 1, 0)$.
 Find the probabilities.
-
-\textbf{Solution}: Exponentiate each score and divide by the total:
+\end{Problem}
+\begin{Solution}
+Exponentiate each score and divide by the total:
 $$e^2 \approx 7.389, \quad e^1 \approx 2.718, \quad e^0 = 1, \qquad \text{total} \approx 11.107$$
 $$P(\text{cat}) \approx \frac{7.389}{11.107} \approx 0.665, \quad P(\text{dog}) \approx 0.245, \quad
 P(\text{bird}) \approx 0.090$$
+\end{Solution}
+\end{Worked}
 
 Adding the same number to every logit does not change the probabilities (it multiplies the top and bottom by the
 same factor), so only the differences between logits matter. With two classes, softmax reduces to the sigmoid of
@@ -48,12 +53,17 @@ $-\ln 0.665 \approx 0.408$. If it is a bird, the loss is $-\ln 0.090 \approx 2.4
 \end{tabular}
 \end{center}
 
-\textbf{Example}: A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Find the
+\begin{Worked}
+\begin{Problem}
+A single neuron computes $z = wx + b$ with $w = 2$, $b = -1$, and input $x = 1$. Find the
 predicted probability of class 1 and the loss if the true label is 1.
-
-\textbf{Solution}: $z = 1$, and
+\end{Problem}
+\begin{Solution}
+$z = 1$, and
 $$p = \sigma(1) = \frac{1}{1 + e^{-1}} \approx 0.731$$
 The cross-entropy loss is $-\ln(0.731) \approx 0.313$.
+\end{Solution}
+\end{Worked}
 
 \section{Classifying Penguins with PyTorch}
 Here is \filename{species\_net.py}, which predicts species from the four measurements. It uses one hidden layer of 16

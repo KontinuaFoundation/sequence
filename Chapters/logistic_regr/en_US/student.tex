@@ -77,15 +77,20 @@ In matrix form, with a design matrix $X$ and parameters $\boldsymbol{\theta}$ as
 predicted probabilities are $\mathbf{p} = \sigma(X\boldsymbol{\theta})$, applying $\sigma$ to each entry. Each
 coefficient describes one feature with the others held constant.
 
-\textbf{Example}: A student's chance of passing an exam is modeled with hours studied $x_1$ and whether they
+\begin{Worked}
+\begin{Problem}
+A student's chance of passing an exam is modeled with hours studied $x_1$ and whether they
 completed the prior course $x_2$ (1 if yes, 0 if no), with $\beta_0 = -3$, $\beta_1 = 0.5$, and $\beta_2 = 1$.
 Find the probability of passing for a student who studies 4 hours and completed the prior course, and for one
 who studies 2 hours and did not.
-
-\textbf{Solution}: For the first student, the log odds are $-3 + 0.5(4) + 1 = 0$, so
+\end{Problem}
+\begin{Solution}
+For the first student, the log odds are $-3 + 0.5(4) + 1 = 0$, so
 $P(\text{pass}) = \sigma(0) = 0.5$. For the second, the log odds are $-3 + 0.5(2) + 0 = -2$, so
 $P(\text{pass}) = \frac{1}{1 + e^{2}} \approx 0.119$. Each extra hour multiplies the odds of passing by
 $e^{0.5} \approx 1.65$.
+\end{Solution}
+\end{Worked}
 
 \section{Fitting: Maximum Likelihood and Log Loss}\index{maximum likelihood}\index{log loss}
 Linear regression chose its parameters by least squares. For probabilities, there is a better measure of
@@ -105,7 +110,9 @@ $$\text{loss} = \begin{cases} -\ln p & \text{if } y = 1 \\ -\ln(1 - p) & \text{i
 \label{fig:log-loss}
 \end{figure}
 
-\textbf{Example}: A model gives four penguins these probabilities of being male. Find the average log loss.
+\begin{Worked}
+\begin{Problem}
+A model gives four penguins these probabilities of being male. Find the average log loss.
 
 \begin{center}
 \begin{tabular}{c c c c l}
@@ -117,9 +124,12 @@ C & female & 0 & 0.3 & $-\ln 0.7 = 0.357$ \\
 D & female & 0 & 0.8 & $-\ln 0.2 = 1.609$ \\
 \end{tabular}
 \end{center}
-
-\textbf{Solution}: The average is $(0.105 + 0.511 + 0.357 + 1.609)/4 \approx 0.646$. Penguin D, a female the
+\end{Problem}
+\begin{Solution}
+The average is $(0.105 + 0.511 + 0.357 + 1.609)/4 \approx 0.646$. Penguin D, a female the
 model was 80\% sure was male, contributes more than the other three together.
+\end{Solution}
+\end{Worked}
 
 Minimizing the average log loss is the same as choosing the parameters that make the observed labels most
 probable, which statisticians call \newterm{maximum likelihood}. Unlike least squares, there is no formula for

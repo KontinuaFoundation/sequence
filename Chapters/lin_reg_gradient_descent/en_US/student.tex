@@ -40,16 +40,21 @@ $$\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \alpha \nabla J(\boldsymb
 The minus sign means ``go downhill.'' The \newterm{learning rate} $\alpha$ sets the step size. Too small and
 you creep; too large and you overshoot the bottom of the valley and land higher up the other side.
 
-\textbf{Example}: Take one step on the quiz data from the Least Squares chapter, $x = 1, \ldots, 5$ and
+\begin{Worked}
+\begin{Problem}
+Take one step on the quiz data from the Least Squares chapter, $x = 1, \ldots, 5$ and
 $y = 2.1, 3.9, 6.2, 7.8, 10.1$, starting at $\boldsymbol{\theta}_0 = (0, 0)$ with $\alpha = 0.01$.
-
-\textbf{Solution}: With $\boldsymbol{\theta}_0 = \mathbf{0}$, every prediction is 0, so
+\end{Problem}
+\begin{Solution}
+With $\boldsymbol{\theta}_0 = \mathbf{0}$, every prediction is 0, so
 $X\boldsymbol{\theta}_0 - \mathbf{y} = -\mathbf{y}$. The first entry of $X^T(-\mathbf{y})$ is $-\sum y_i = -30.1$,
 and the second is $-\sum x_i y_i = -110.2$. With $n = 5$,
 $$\nabla J(\boldsymbol{\theta}_0) = \frac{2}{5}(-30.1, -110.2) = (-12.04, -44.08)$$
 $$\boldsymbol{\theta}_1 = (0, 0) - 0.01(-12.04, -44.08) = (0.1204, 0.4408)$$
 The cost drops from $J(\boldsymbol{\theta}_0) = 44.18$ to $J(\boldsymbol{\theta}_1) = 25.77$. The answer
 is $(0.05, 1.99)$, so we are heading the right way, with a long way to go.
+\end{Solution}
+\end{Worked}
 
 \section{Letting the Computer Walk}
 By hand, two steps is plenty. A computer can take thousands. Here is \filename{quiz\_descent.py}:

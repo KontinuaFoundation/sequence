@@ -54,10 +54,13 @@ $w_2 = -1.5$, $b_2 = 0.25$, input $x = 2$, and target $t = 1$.}
 \label{fig:backprop}
 \end{figure}
 
-\textbf{Example}: For the network in Figure~\ref{fig:backprop}, find the gradient of the loss with respect to every
+\begin{Worked}
+\begin{Problem}
+For the network in Figure~\ref{fig:backprop}, find the gradient of the loss with respect to every
 parameter.
-
-\textbf{Solution}: The forward pass gives $z = 0.5(2) + 0.5 = 1.5$, $h = 1.5$, $\hat{y} = -1.5(1.5) + 0.25 = -2$, and
+\end{Problem}
+\begin{Solution}
+The forward pass gives $z = 0.5(2) + 0.5 = 1.5$, $h = 1.5$, $\hat{y} = -1.5(1.5) + 0.25 = -2$, and
 $L = (-2 - 1)^2 = 9$. Now go backward, one link at a time:
 \begin{align*}
 \frac{\partial L}{\partial \hat{y}} &= 2(\hat{y} - t) = -6 \\
@@ -72,6 +75,8 @@ $L = (-2 - 1)^2 = 9$. Now go backward, one link at a time:
 Notice how each line reuses the one above it. In a real network, $\frac{\partial L}{\partial h}$ is computed once
 and shared by every weight below $h$. That sharing is what makes backpropagation fast: one backward sweep costs
 about as much as one forward pass, no matter how many weights there are.
+\end{Solution}
+\end{Worked}
 
 The program \filename{backprop.py} does the calculation by hand and then lets PyTorch do it:
 
@@ -176,15 +181,20 @@ $3 \times 3$, across the image. At each position, it multiplies the filter by th
 up the products. The same nine weights are used everywhere in the image, so the layer finds the same pattern
 wherever it appears.
 
-\textbf{Example}: Apply the filter
+\begin{Worked}
+\begin{Problem}
+Apply the filter
 $$\begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix}
 \quad\text{to the patch}\quad
 \begin{bmatrix} 0 & 0 & 9 \\ 0 & 0 & 9 \\ 0 & 0 & 9 \end{bmatrix}$$
-
-\textbf{Solution}: Multiply matching entries and add: the left column contributes $-(0 + 0 + 0) = 0$, the middle
+\end{Problem}
+\begin{Solution}
+Multiply matching entries and add: the left column contributes $-(0 + 0 + 0) = 0$, the middle
 column contributes 0, and the right column contributes $9 + 9 + 9 = 27$. The output is 27. On a patch that is all
 the same brightness, the left and right columns cancel, and the output is 0. So this filter lights up where the
 image gets brighter from left to right: it detects vertical edges.
+\end{Solution}
+\end{Worked}
 
 \filename{convolution.py} slides the filter across a small image with SciPy:
 
