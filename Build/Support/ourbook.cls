@@ -1264,6 +1264,8 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
     \ifdim\ExeRightGrow<0pt \ExeRightGrow=0pt\fi
   \else \ExeRightGrow=0pt\fi}
 \newdimen\ExeBaseLeftskip \ExeBaseLeftskip=0pt
+% Horizontal gap between the question column and the working space.
+\def\ExeGap{\dimexpr(.05\textwidth+16pt)/3\relax}
 \newskip\ExeSavedParskip
 
 \long\def\addworkingspace{\par\nobreak
@@ -1278,17 +1280,24 @@ to\@pnumwidth{\hss\bfseries\itshape #2}\par
 \parskip=12pt
 % The column is narrow, so allow extra stretch rather than overfull lines.
 \emergencystretch=1.5em
-\noindent\rlap{\hskip.5\textwidth\hskip16pt\vtop{\vskip-30pt
+% No extra space above lists, so an exercise that opens with a list starts
+% level with the "Working Space" line, like one that opens with text.
+\topsep=0pt \partopsep=0pt
+% The "Working Space" line is a zero-height box in the vertical list, drawn
+% where the baseline of the first line of the question will fall (\parskip
+% plus \baselineskip below the header). It does not belong to the first
+% paragraph, so a blank line, list, display or code block at the start of the
+% exercise cannot push the question below it.
+\nointerlineskip
+\vbox to\z@{\vskip\dimexpr\parskip+\baselineskip\relax
+\moveleft36pt\hbox{\hskip\dimexpr.45\textwidth+\ExeGap\relax\vtop{\vskip-30pt
 \leftskip=0pt \rightskip=0pt \parskip=\ExeSavedParskip
-\hsize=.5\textwidth
-\advance\hsize by 18pt
-\advance\hsize by \ExeRightGrow
+\hsize=\dimexpr.55\textwidth+34pt-\ExeGap+\ExeRightGrow\relax
 \hrulefill\ \ \ \color{sdkblue}\bfseries\itshape\lower 3pt\hbox{Working
 Space}\ \ \ \hrulefill
 \vskip-27pt
-\vrule depth 18pt height0pt\hfill
 \vrule depth 18pt height0pt\vskip1sp
-}}\ignorespaces}
+}}\vss}\prevdepth=\z@\nobreak\ignorespaces}
 
 \def\endworkingspace{\par
 % drop the space and penalty a closing list leaves behind, so the
@@ -1301,13 +1310,12 @@ Space}\ \ \ \hrulefill
 % the "Answer on Page" bracket is on
 \setExeRightGrow\nobreak
 \moveleft36pt\rlap{\hbox
-to\dimexpr\textwidth+\ExeRightGrow\relax{\hskip.5\textwidth\hskip16pt\vrule height 18pt depth0pt
+to\dimexpr\textwidth+\ExeRightGrow\relax{\hskip\dimexpr.45\textwidth+\ExeGap\relax\vrule height 18pt depth0pt
 \color{sdkblue}\footnotesize\bfseries\itshape
 \hrulefill\ \ \
 Answer on
 \hyperlink{x\ExerciseLabel}{Page \expandafter\pageref{y\ExerciseLabel}}
-\ \ \ \hrulefill\hbox to -34pt{}}
-\hskip30pt\vrule height 18pt depth 0pt
+\ \ \ \hrulefill\hbox to -34pt{}}%
 }\vskip18pt}
 
 \newcount\questionnumber
