@@ -297,8 +297,8 @@ def wavelength(f):
 ```
 
 The languages we use most are `python`, `text` (for program output), `html`,
-`c`, `cpp`, `javascript`, `sql`, `shell` and `css`. Code blocks get line numbers
-and a frame automatically. Python code should be formatted as the `black` code
+`c`, `cpp`, `javascript`, `sql`, `shell` and `css`. Code blocks automatically get line
+numbers and a vertical line along their left side. Python code should be formatted as the `black` code
 formatter would format it.
 
 For a little code in the middle of a sentence, use `\mintinline`:

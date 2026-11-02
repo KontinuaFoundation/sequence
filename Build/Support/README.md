@@ -184,8 +184,9 @@ appears in lowercase.
 
 ### Code blocks
 
-Use `minted` for code. Blocks get line numbers, a frame, a small Inconsolata
-font, and automatic line wrapping:
+Use `minted` for code. Blocks get line numbers, a vertical line along their
+left side (`frame=leftline`), a small Inconsolata font, and automatic line
+wrapping:
 
 ```latex
 \begin{minted}{python}

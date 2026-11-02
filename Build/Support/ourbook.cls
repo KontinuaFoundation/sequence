@@ -854,7 +854,8 @@
     linenos,
   fontsize=\small,
   breaklines,
-  frame=single
+  % a single vertical line to the left of the code, not a full box
+  frame=leftline
 }
 \mdfsetup{skipabove=\topskip,skipbelow=\topskip}
 \global\mdfdefinestyle{important}{%
