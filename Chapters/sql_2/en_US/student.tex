@@ -409,6 +409,7 @@ E74 & CNC Machine & Lab C \\
             $\bowtie_{\theta}$ & \mintinline{sql}{INNER JOIN <table> ON <condition>} \\ \hline
             $\sigma$ & \mintinline{sql}{WHERE} \\ \hline
             $\tau$ & \mintinline{sql}{ORDER BY} \\ \hline
+            $\gamma$ & \mintinline{sql}{GROUP BY} with aggregates such as \mintinline{sql}{COUNT} \\ \hline
             $\cup$ & \mintinline{sql}{UNION} \\ \hline
             $-$ & \mintinline{sql}{EXCEPT} \\ \hline
             $\cap$ & \mintinline{sql}{INTERSECT} \\ \hline
@@ -499,6 +500,140 @@ SELECT EquipmentLocation FROM Equipment;
 \end{minted}
 \end{translation}
 
+\subsection{Summarizing Rows with GROUP BY}
+\index{GROUP BY}
+Every query so far has returned individual rows. Often we want a \emph{summary} instead: how many pieces of equipment does each lab have? An \newterm{aggregate function}\index{aggregate function} takes many rows and reduces them to a single value. The common ones are \mintinline{sql}{COUNT}, \mintinline{sql}{SUM}, \mintinline{sql}{AVG}, \mintinline{sql}{MIN}, and \mintinline{sql}{MAX}.
+
+To see them at work, we add a few more rows to the \texttt{Equipment} table (Table~\ref{tab:equipment_group}). Lab C still has no equipment, which will matter in a moment.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+{\underline{EquipmentID}} & {EquipmentName} & {EquipmentLocation} \\
+\hline
+E42 & 3D Printer & Lab B \\
+\hline
+E55 & Oscilloscope & Lab A \\
+\hline
+E58 & Oscilloscope & Lab A \\
+\hline
+E61 & 3D Printer & Lab A \\
+\hline
+E63 & Laser Cutter & Lab B \\
+\hline
+\end{tabular}
+\caption{Equipment Table with more rows}
+\label{tab:equipment_group}
+\end{table}
+
+An aggregate on its own treats the whole table as one big group and returns a single row:
+
+\begin{translation}
+  \request{How many pieces of equipment are there in total?}
+  \algebra{\gamma_{\text{COUNT}(*) \to \text{Total}}(\text{Equipment})}
+  \sqlrow
+\begin{minted}{sql}
+SELECT COUNT(*) AS Total FROM Equipment;
+\end{minted}
+\end{translation}
+
+This returns \texttt{5}. The \mintinline{sql}{*} means ``count rows,'' whatever they contain.
+
+\mintinline{sql}{GROUP BY} lets us summarize each lab separately. It splits the rows into \newterm{groups} that share the same value in the listed column, applies the aggregate to each group, and returns one row per group.
+
+\begin{translation}
+  \request{How many pieces of equipment are in each lab?}
+  \algebra{\gamma_{\text{EquipmentLocation},\ \text{COUNT}(*) \to \text{NumItems}}(\text{Equipment})}
+  \sqlrow
+\begin{minted}{sql}
+SELECT EquipmentLocation, COUNT(*) AS NumItems
+FROM Equipment
+GROUP BY EquipmentLocation;
+\end{minted}
+\end{translation}
+
+The subscript of $\gamma$ lists the grouping column first, then each aggregate, with $\to$ naming the output column. Table~\ref{tab:group_split} shows the two steps: the rows are split into one group per lab, and then each group collapses into a single row.
+
+\begin{table}[H]
+\centering
+\begin{minipage}[t]{0.58\textwidth}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|c|c|c|}
+\hline
+{EquipmentID} & {EquipmentName} & {EquipmentLocation} \\
+\hline
+E55 & Oscilloscope & Lab A \\
+E58 & Oscilloscope & Lab A \\
+E61 & 3D Printer & Lab A \\
+\hline
+E42 & 3D Printer & Lab B \\
+E63 & Laser Cutter & Lab B \\
+\hline
+\end{tabular}
+\caption{Step 1: rows split into groups}
+\label{tab:group_split}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.38\textwidth}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|c|c|}
+\hline
+{EquipmentLocation} & {NumItems} \\
+\hline
+Lab A & 3 \\
+\hline
+Lab B & 2 \\
+\hline
+\end{tabular}
+\caption{Step 2: one row per group}
+\label{tab:group_count}
+\end{minipage}
+\end{table}
+
+Notice that Lab C does not appear. A group can only be formed from rows that exist, and Lab C has no rows in \texttt{Equipment}. This is why we needed \mintinline{sql}{EXCEPT} to find empty labs.
+
+Once rows are grouped, each group holds several rows, so a column in the \mintinline{sql}{SELECT} list needs a single value to show. This gives one rule: \textbf{every column in \mintinline{sql}{SELECT} must either appear in \mintinline{sql}{GROUP BY} or be inside an aggregate.} Selecting \texttt{EquipmentName} alongside \mintinline{sql}{GROUP BY EquipmentLocation} breaks it, because Lab A holds both an oscilloscope and a 3D printer and there is no one name to show. Standard SQL rejects this query. SQLite runs it anyway and silently picks the value from one of the rows, so do not rely on it.
+
+\subsubsection{Filtering Groups with HAVING}
+\index{HAVING}
+Suppose we only want labs with more than two pieces of equipment. We cannot use \mintinline{sql}{WHERE}, because it filters individual rows before any groups exist, and an aggregate like \mintinline{sql}{COUNT(*)} has no value yet. The clause for filtering groups is \mintinline{sql}{HAVING}, which runs after the grouping. In relational algebra, that is a $\sigma$ applied to the result of $\gamma$.
+
+\begin{translation}
+  \request{Which labs have more than two pieces of equipment?}
+  \algebra{\sigma_{\text{NumItems} > 2}\left(\gamma_{\text{EquipmentLocation},\ \text{COUNT}(*) \to \text{NumItems}}(\text{Equipment})\right)}
+  \sqlrow
+\begin{minted}{sql}
+SELECT EquipmentLocation, COUNT(*) AS NumItems
+FROM Equipment
+GROUP BY EquipmentLocation
+HAVING COUNT(*) > 2;
+\end{minted}
+\end{translation}
+
+The result is the single row \texttt{Lab A | 3}. In standard SQL, \mintinline{sql}{HAVING} repeats \mintinline{sql}{COUNT(*)} instead of using \texttt{NumItems}, because the alias is only created later, in \mintinline{sql}{SELECT}.
+
+The two filters work together. To count only the 3D printers in each lab, filter the rows first with \mintinline{sql}{WHERE}, then group what is left:
+\begin{minted}{sql}
+SELECT EquipmentLocation, COUNT(*) AS NumPrinters
+FROM Equipment
+WHERE EquipmentName = '3D Printer'
+GROUP BY EquipmentLocation;
+\end{minted}
+This returns one printer for Lab A and one for Lab B. SQL evaluates a query in this order, which explains where each clause can use an aggregate:
+\begin{enumerate}
+    \item \mintinline{sql}{FROM}: pick the table
+    \item \mintinline{sql}{WHERE}: keep only matching rows
+    \item \mintinline{sql}{GROUP BY}: split the remaining rows into groups
+    \item \mintinline{sql}{HAVING}: keep only matching groups
+    \item \mintinline{sql}{SELECT}: compute the output columns
+    \item \mintinline{sql}{ORDER BY}: sort the result
+\end{enumerate}
+
 \section{Exercises}
 \begin{Exercise}[title={Normalize to 3NF}, label=sql2_3nf]
 A table \texttt{Orders(OrderID, CustomerID, CustomerCity)} has the functional dependencies $\text{OrderID} \to \text{CustomerID}$ and $\text{CustomerID} \to \text{CustomerCity}$. Decompose it into tables that are in 3NF.
@@ -508,7 +643,7 @@ The city depends on the customer, not on the order, so it is a transitive depend
 \end{Answer}
 
 \begin{Exercise}[title={Translate to SQL}, label=sql2_translate]
-Using the \texttt{Equipment} table above, write an SQL query that returns the names of the equipment in Lab A.
+Using the \texttt{Equipment} table in Table~\ref{tab:equipment_fk}, write an SQL query that returns the names of the equipment in Lab A.
 \end{Exercise}
 \begin{Answer}[ref=sql2_translate]
 \begin{minted}{sql}
