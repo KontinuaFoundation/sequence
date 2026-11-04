@@ -209,6 +209,17 @@ All the build scripts run from the ``Build`` directory, except
     cd Chapters/fluid_flow/en_US
     python3 ../../../Build/build_chapter.py
 
+  Since you will run this command often, you may want a shortcut. Add this line
+  to your shell startup file (``~/.zshrc`` if you use zsh, the Mac default;
+  ``~/.bashrc`` if you use bash), then open a new terminal::
+
+    alias bc="python3 ../../../Build/build_chapter.py"
+
+  Now typing ``bc`` in a chapter's ``en_US`` folder builds that chapter. The path
+  in the alias is relative, so it works only from ``Chapters/<chapter>/en_US``.
+  It also hides the system's ``bc`` calculator; type ``command bc`` if you ever
+  need that.
+
 ``build_workbook.py``
   Builds workbook PDFs. Give it a volume number, ``all``, or a custom list of
   chapters::

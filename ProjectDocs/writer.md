@@ -79,8 +79,17 @@ To see what your chapter looks like, build just that chapter. From the chapter's
 python3 ../../../Build/build_chapter.py
 ```
 
-This makes `student.pdf` in the same directory. Building whole workbooks is
-described in [`Build/README.rst`](../Build/README.rst).
+This makes `student.pdf` in the same directory. If you build often, you can
+shorten the command to `bc` by adding this line to your `~/.zshrc` (or
+`~/.bashrc`):
+
+```sh
+alias bc="python3 ../../../Build/build_chapter.py"
+```
+
+It works only from a chapter's `en_US` directory; see the notes under
+`build_chapter.py` in [`Build/README.rst`](../Build/README.rst). Building whole
+workbooks is described there too.
 
 ## New chapters
 
