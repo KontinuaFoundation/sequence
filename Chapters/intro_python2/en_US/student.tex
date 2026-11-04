@@ -605,3 +605,55 @@ def factorial(n):
     return n * factorial(n - 1)
 \end{minted}
 \end{Answer}
+
+\section{Mutation}
+
+A topic that comes up when creating variables and functions, as well as when programmers are considering how to design new programming languages is the idea of \newterm{mutation}. Mutation is when a variable's value is changed after it has been created. 
+After a variable is created, often times, it is expected that the variable's value (such as $5$ in \mintinline{python}|x=5|) will not change. This is called \newterm{immutability}. However, in Python, variables can be mutated, or changed, after they are created (most of the time).
+
+Let's look at an example:
+\begin{listing}[H]
+\begin{minted}{python}
+x = 2
+def f():
+    print(x)
+    x = 3
+f()
+print(x)
+\end{minted}
+\caption{Assigning to a variable inside a function after reading it}
+\label{lst:unbound-local}
+\end{listing}
+
+
+This will return quite a hefty error:
+\begin{minted}{python}
+Traceback (most recent call last):
+  File "<python-input-3>", line 4, in <module>
+    f()
+    ~^^
+  File "<python-input-3>", line 2, in f
+    print(x)
+UnboundLocalError: cannot access local variable 'x' where it is not associated with a value
+\end{minted}
+But wait\dots, this should work, right? We define x at the top of the program, then print it in the function, then change it to 3. Why is this an error? 
+
+Python does mutation a lot differently than other programming languages. For example, in Java, if you create a variable \newterm{binding}, it may look something like:
+\begin{minted}{java}
+    int x = 5; // this is a BINDING
+    x = 6; // this is a MUTATION
+\end{minted}
+
+we can identify the binding because of the prefixed \texttt{int} type declaration (this is not necessary to know Python but it gives you an idea of how other programming languages work). In Python, we can create a variable binding like this:
+
+\begin{minted}{python}
+    x = 5 # this is a BINDING
+\end{minted}
+
+But also, Python is tricky. The variable mutation could look exactly the same:
+
+\begin{minted}{python}
+    x = 6 # this is a MUTATION
+\end{minted}
+
+So in our example above of Codeblock~\ref{lst:unbound-local}, Python sees that we are trying to assign a new value to \mintinline{python}{x} inside the function \mintinline{python}{f()}. This means that \mintinline{python}{x} is now considered a local variable within the scope of the function. However, when we try to print \mintinline{python}{x} before it has been assigned a value, Python raises an \mintinline{python}{UnboundLocalError} because it cannot access the local variable \mintinline{python}{x} where it is not associated with a value. Python does not look outside the function to find the global variable \mintinline{python}{x} because it has already determined that \mintinline{python}{x} is a local variable due to the assignment later in the function.
