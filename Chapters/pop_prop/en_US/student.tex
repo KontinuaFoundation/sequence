@@ -11,18 +11,18 @@ entire population, what sort of results should we expect in a random sample of j
 For example, let us say that 62\% of the entire population plans to vote for your candidate. You ask 12 people, ``Will you vote for my candidate?'' How many will say ``Yes''? You do not know --- it depends
 on the sample. For example, there is some chance that you will just happen to choose all 12 from the 38\% of the population that does not plan to vote for your candidate.
 
-We can compute the probability of each outcome using the \index{binomial distribution}binomial distribution. Let $r$ be the probability that a random person will say, ``I plan to vote for your candidate.'' Let $n$ be the number of people 
+We can compute the probability of each outcome using the \index{binomial distribution}binomial distribution. Let $p$ be the probability that a random person will say, ``I plan to vote for your candidate.'' Let $n$ be the number of people 
 you ask. The probability that exactly $k$ people will say, ``I plan to vote for your candidate'' is given by:
 
-$$p(k) = \binom{n}{k}r^k(1-r)^{n-k}$$
+$$P(k) = \binom{n}{k}p^k(1-p)^{n-k}$$
 
 Note that even though most people support your candidate, there is some chance that no one you ask will say that they will vote for your candidate. 
 
-Using $r=0.62$, we can compute the probability of each outcome:
+Using $p=0.62$, we can compute the probability of each outcome:
 
 
 \begin{tabular}{r | r}
-$k$ & $p(k)$ \\
+$k$ & $P(k)$ \\
 \hline
 0 & 0.000009 \\
 1 & 0.000177 \\
@@ -48,8 +48,8 @@ Here is a bar chart of the data:
   \label{fig:binomial_dist}
 \end{figure}
 
-In this section, we knew the proportion of the population ($r$) and used it to find the probability of each possible number of positives in a random sample ($k$). 
-Now we go the other way: you know $k$, and you want to know which values of $r$ are plausible.
+In this section, we knew the proportion of the population ($p$) and used it to find the probability of each possible number of positives in a random sample ($k$). 
+Now we go the other way: you know $k$, and you want to know which values of $p$ are plausible.
 
 
 \section{Population Proportion from Sample}
@@ -58,15 +58,15 @@ You ask 12 people if they will vote for your candidate. 9 say ``Yes.''
 
 Next, you do a thought experiment: ``If only 10\% of the population were going to vote for my candidate, what is the probability that I would see this outcome?''
 
-$p(9) = \binom{n}{k}r^k(1-r)^{n-k} = \binom{12}{9}(0.1)^9 (0.9)^{12-9} = 0.00000016$
+$P(9) = \binom{n}{k}p^k(1-p)^{n-k} = \binom{12}{9}(0.1)^9 (0.9)^{12-9} = 0.00000016$
 
 This outcome would be quite unusual. What if 70\% of the population were going to vote for your candidate? What is the probability that you would see this outcome?
 
-$p(9) = \binom{n}{k}r^k(1-r)^{n-k} = \binom{12}{9}(0.7)^9 (0.3)^{12-9} \approx 0.2397$
+$P(9) = \binom{n}{k}p^k(1-p)^{n-k} = \binom{12}{9}(0.7)^9 (0.3)^{12-9} \approx 0.2397$
 
 In this case, the observed outcome would be a lot less unusual.
 
-So, you decide to plot out the likelihood of this outcome for every possible value of $r$:
+So, you decide to plot out the likelihood of this outcome for every possible value of $p$:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{likelihood.png}
@@ -76,19 +76,19 @@ So, you decide to plot out the likelihood of this outcome for every possible val
 
 This looks very similar to a probability distribution, but \emph{it is not}. The area under the curve is about 0.077 (exactly 1/13), not 1.0. This is called a \index{likelihood}\newterm{likelihood}.
 
-It still tells us something. The value of $r$ that makes the observed data most likely, called the \index{maximum likelihood estimator}maximum likelihood estimator, is $9/12 = 0.75$.
+It still tells us something. The value of $p$ that makes the observed data most likely, called the \index{maximum likelihood estimator}maximum likelihood estimator, is $9/12 = 0.75$.
 
 \section{From Likelihood to Probability Density Function}
 
 How can we make this likelihood into a probability density function? We use \index{Bayes' theorem!continuous}Bayes' Law for continuous probability:
 
-$$p(r|k) = \frac{p(k | r) p(r)}{\int_{r = 0}^{1} p(k | r) p(r) dr}$$
+$$P(p|k) = \frac{P(k | p) P(p)}{\int_{p = 0}^{1} P(k | p) P(p) dp}$$
 
-In other words, given that we had $k$ positive responses, what is the probability that the proportion of the population that will vote for your candidate is $r$?  The numerator of the fraction is the likelihood scaled up or down by our prior belief about the value of $r$.  What is the denominator of the fraction? For this to be a probability distribution, we need it to integrate to 1. This is taken care of by the denominator.
+In other words, given that we had $k$ positive responses, what is the probability that the proportion of the population that will vote for your candidate is $p$?  The numerator of the fraction is the likelihood scaled up or down by our prior belief about the value of $p$.  What is the denominator of the fraction? For this to be a probability distribution, we need it to integrate to 1. This is taken care of by the denominator.
 
-Let us say we have no prior belief about the value of $r$.  That is, $p(r)$ is the continuous uniform distribution between 0 and 1; thus, $p(r) = 1$ for all possible values of $r$. Our formula becomes:
+Let us say we have no prior belief about the value of $p$.  That is, $P(p)$ is the continuous uniform distribution between 0 and 1; thus, $P(p) = 1$ for all possible values of $p$. Our formula becomes:
 
-$$p(r|k) = \frac{p(k | r)}{\int_{r = 0}^{1} p(k | r) dr}$$
+$$P(p|k) = \frac{P(k | p)}{\int_{p = 0}^{1} P(k | p) dp}$$
 
 That is the likelihood scaled up so that it integrates to 1. If we plot this, we get:
 \begin{figure}[H]
@@ -134,10 +134,10 @@ from scipy.stats import beta
 K = 9
 N = 12
 
-# What is the probability r <=0.5?
+# What is the probability p <=0.5?
 p_less = beta.cdf(0.5, K +1, N - K +1)
 
-# What is the probability r > 0.5?
+# What is the probability p > 0.5?
 p_more = 1.0 - p_less
 print(f"I am {p_more * 100.0:.2f}% sure you have majority support.")
 \end{minted}
@@ -152,7 +152,7 @@ Your candidate's team asks 20 voters, and 15 say they will vote for the candidat
 \end{Exercise}
 
 \begin{Answer}[ref = popprop1]
-With $k = 15$ and $n = 20$, the posterior is a beta distribution with $a = k + 1 = 16$ and $b = n - k + 1 = 6$. Change $K = 15$ and $N = 20$ in the Python code above. The probability that $r > 0.5$ is about $0.9867$, so the answer is about 98.67\%.
+With $k = 15$ and $n = 20$, the posterior is a beta distribution with $a = k + 1 = 16$ and $b = n - k + 1 = 6$. Change $K = 15$ and $N = 20$ in the Python code above. The probability that $p > 0.5$ is about $0.9867$, so the answer is about 98.67\%.
 \end{Answer}
 
 
