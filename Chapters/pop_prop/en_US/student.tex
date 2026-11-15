@@ -155,8 +155,14 @@ Your candidate's team asks 20 voters, and 15 say they will vote for the candidat
 With $k = 15$ and $n = 20$, the posterior is a beta distribution with $a = k + 1 = 16$ and $b = n - k + 1 = 6$. Change $K = 15$ and $N = 20$ in the Python code above. The probability that $p > 0.5$ is about $0.9867$, so the answer is about 98.67\%.
 \end{Answer}
 
-
-
-
-
-
+\begin{mdframed}[style=important, frametitle={Key Ideas}]
+\begin{itemize}
+\item The binomial distribution answers the forward question. If the population proportion $p$ is known, the probability of exactly $k$ ``yes'' answers in a sample of $n$ is $P(k) = \binom{n}{k}p^k(1-p)^{n-k}$.
+\item Going the other way, the likelihood shows how likely the observed $k$ is for each possible value of $p$. A likelihood curve looks like a probability distribution, but its area is not 1.
+\item The maximum likelihood estimator is $\frac{k}{n}$, the value of $p$ that makes the observed data most likely.
+\item With a uniform prior, Bayes' Law turns the likelihood into a probability density function for $p$ by scaling it so its area is 1.
+\item That density is the beta distribution with $a = k + 1$ and $b = n - k + 1$.
+\item A larger sample gives a narrower distribution around the same estimate, so you can be more confident about $p$.
+\item In Python, \texttt{beta.cdf} gives the probability that $p$ is below a chosen value. Subtract it from 1 to get the probability that $p$ is above that value.
+\end{itemize}
+\end{mdframed}

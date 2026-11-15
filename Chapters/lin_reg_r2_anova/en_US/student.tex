@@ -366,3 +366,15 @@ and print the RMSE in hours with two decimal places (it is 0.65 hours). The prog
 $R^2 = 0.563$, $F = 36$ with $p \approx 1.8 \times 10^{-6}$, and $t = -6.00$ with $t^2 = 36$. (Use \verb|:.2f|
 in the $F$ line to see 36.04.)
 \end{Answer}
+
+\begin{mdframed}[style=important, frametitle={Key Ideas}]
+\begin{itemize}
+\item Look at the residual plot first. Random scatter around 0 means the line is a reasonable model, a curve means the relationship is not linear, and a fan means predictions are less precise for some values of $x$.
+\item The total variation in $y$ splits into a part the line explains and a residual part: $SS_{tot} = SS_{reg} + SS_{res}$.
+\item $R^2 = \frac{SS_{reg}}{SS_{tot}} = 1 - \frac{SS_{res}}{SS_{tot}}$ is the fraction of the variation the line explains. It runs from 0, no better than always guessing $\bar{y}$, to 1, a perfect fit. For one predictor, $R^2 = r^2$.
+\item $\text{RMSE} = \sqrt{SS_{res}/n}$ is the typical prediction error, in the units of $y$. $R^2$ and RMSE answer different questions, so report both.
+\item The ANOVA table tests whether the line explains more than noise would: $F = \frac{SS_{reg}/1}{SS_{res}/(n - 2)}$. A large $F$ gives a small p-value. With one predictor, $F = t^2$, so the $F$-test and the $t$-test agree.
+\item Adding predictors never lowers $R^2$ on the data used to fit the model, even when the predictors are useless. This overfitting makes predictions on new data worse. Adjusted $R^2$ charges a fee for each predictor but can still be fooled, so compare models on data they did not see.
+\item $R^2$ measures how close the points are to the line, and only the residual plot shows whether a line is the right shape. A low p-value means the relationship is probably real, and it says nothing about how strong it is or whether $x$ causes $y$.
+\end{itemize}
+\end{mdframed}
